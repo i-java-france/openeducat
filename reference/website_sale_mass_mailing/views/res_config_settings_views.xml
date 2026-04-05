@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="res_config_settings_view_form" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.website.sale.mass.mailing</field>
+        <field
+            name="name"
+        >res.config.settings.view.form.inherit.website.sale.mass.mailing</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="website_sale.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="website_sale.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <setting id="abandoned_carts_setting" position="after">
                 <setting
@@ -13,9 +14,9 @@
                     help="Show a checkbox to sign up for the selected newsletter to guest users"
                     groups="mass_mailing.group_mass_mailing_user"
                 >
-                    <field name="is_newsletter_enabled"/>
+                    <field name="is_newsletter_enabled" />
                     <div class="content-group" invisible="not is_newsletter_enabled">
-                        <label for="newsletter_id" class="o_light_label me-2"/>
+                        <label for="newsletter_id" class="o_light_label me-2" />
                         <field
                             name="newsletter_id"
                             class="oe_inline"
@@ -26,5 +27,4 @@
             </setting>
         </field>
     </record>
-
 </odoo>

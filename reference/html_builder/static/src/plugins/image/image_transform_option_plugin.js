@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { ImageTransformation } from "@html_editor/main/media/image_transformation";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Deferred } from "@web/core/utils/concurrency";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {ImageTransformation} from "@html_editor/main/media/image_transformation";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Deferred} from "@web/core/utils/concurrency";
 
 export class ImageTransformOptionPlugin extends Plugin {
     static id = "imageTransformOption";
@@ -18,12 +18,12 @@ export class ImageTransformOptionPlugin extends Plugin {
 class TransformImageAction extends BuilderAction {
     static id = "transformImage";
     static dependencies = ["history"];
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return editingElement.matches(`[style*="transform"]`);
     }
     async apply({
         editingElement,
-        params: { isImageTransformationOpen, closeImageTransformation },
+        params: {isImageTransformationOpen, closeImageTransformation},
     }) {
         if (!isImageTransformationOpen()) {
             let changed = false;
@@ -56,10 +56,12 @@ class TransformImageAction extends BuilderAction {
 class ResetTransformImageAction extends BuilderAction {
     static id = "resetTransformImage";
     static dependencies = ["image"];
-    apply({ editingElement, params: { mainParam: closeImageTransformation } }) {
+    apply({editingElement, params: {mainParam: closeImageTransformation}}) {
         this.dependencies.image.resetImageTransformation(editingElement);
         closeImageTransformation();
     }
 }
 
-registry.category("builder-plugins").add(ImageTransformOptionPlugin.id, ImageTransformOptionPlugin);
+registry
+    .category("builder-plugins")
+    .add(ImageTransformOptionPlugin.id, ImageTransformOptionPlugin);

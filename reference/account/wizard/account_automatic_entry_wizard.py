@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools.misc import format_date, formatLang
-from odoo.tools.float_utils import float_repr
-from odoo.tools import groupby
-
-from collections import defaultdict
-from markupsafe import Markup, escape
-from odoo.tools import frozendict
 import json
+from collections import defaultdict
+
+from markupsafe import Markup, escape
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import frozendict, groupby
+from odoo.tools.float_utils import float_repr
+from odoo.tools.misc import format_date, formatLang
 
 
 class AccountAutomaticEntryWizard(models.TransientModel):

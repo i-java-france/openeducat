@@ -1,6 +1,8 @@
-from odoo.tests.common import tagged
-from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
 from freezegun import freeze_time
+
+from odoo.tests.common import tagged
+
+from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
 
 
 @tagged('post_install_l10n', '-at_install', 'post_install')

@@ -7,29 +7,29 @@
       "colNumber": 7,
       "rowNumber": 69,
       "rows": {
-        "6": { "size": 40 },
-        "26": { "size": 40 },
-        "46": { "size": 40 },
-        "47": { "size": 40 },
-        "48": { "size": 29 },
-        "49": { "size": 29 },
-        "50": { "size": 29 },
-        "51": { "size": 29 },
-        "52": { "size": 29 },
-        "53": { "size": 29 },
-        "54": { "size": 29 },
-        "55": { "size": 29 },
-        "56": { "size": 29 },
-        "57": { "size": 29 }
+        "6": {"size": 40},
+        "26": {"size": 40},
+        "46": {"size": 40},
+        "47": {"size": 40},
+        "48": {"size": 29},
+        "49": {"size": 29},
+        "50": {"size": 29},
+        "51": {"size": 29},
+        "52": {"size": 29},
+        "53": {"size": 29},
+        "54": {"size": 29},
+        "55": {"size": 29},
+        "56": {"size": 29},
+        "57": {"size": 29}
       },
       "cols": {
-        "0": { "size": 275 },
-        "1": { "size": 100 },
-        "2": { "size": 100 },
-        "3": { "size": 50 },
-        "4": { "size": 275 },
-        "5": { "size": 100 },
-        "6": { "size": 100 }
+        "0": {"size": 275},
+        "1": {"size": 100},
+        "2": {"size": 100},
+        "3": {"size": 50},
+        "4": {"size": 275},
+        "5": {"size": 100},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -70,12 +70,12 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "C49:C58" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "C49:C58"},
           "id": "3056558c-1b57-47bf-9c5f-6261b292e428",
           "ranges": ["A49:A58"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "G49:G58" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "G49:G58"},
           "id": "136a8cad-572a-41e9-9cbe-e2d5b8d8dfa9",
           "ranges": ["E49:E58"]
         }
@@ -88,7 +88,7 @@
           "height": 436,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -103,38 +103,40 @@
               "context": {
                 "group_by": []
               },
-              "domain": [
-                [
-                  "state",
-                  "not in",
-                  ["draft", "sent", "cancel"]
-                ]
-              ],
+              "domain": [["state", "not in", ["draft", "sent", "cancel"]]],
               "groupBy": ["product_id"],
               "orderBy": []
             },
             "type": "odoo_bar",
-            "dataSets": [
-              {}
-            ],
+            "dataSets": [{}],
             "verticalAxisPosition": "left",
             "stacked": true,
             "axesDesign": {
               "x": {
-                "title": { "text": "Product" }
+                "title": {"text": "Product"}
               },
               "y": {
-                "title": { "text": "Revenue" }
+                "title": {"text": "Revenue"}
               }
             },
             "chartId": "e35856cf-9090-489b-b055-2d441380d954",
             "fieldMatching": {
-              "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": { "chain": "date", "type": "datetime", "offset": 0 },
-              "36814ad9-adac-4aba-a5ad-df595a306ef7": { "chain": "product_id", "type": "many2one" },
-              "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": { "chain": "categ_id", "type": "many2one" }
+              "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": {
+                "chain": "date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "36814ad9-adac-4aba-a5ad-df595a306ef7": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": {
+                "chain": "categ_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -144,7 +146,7 @@
           "height": 438,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -159,38 +161,40 @@
               "context": {
                 "group_by": []
               },
-              "domain": [
-                [
-                  "state",
-                  "not in",
-                  ["draft", "sent", "cancel"]
-                ]
-              ],
+              "domain": [["state", "not in", ["draft", "sent", "cancel"]]],
               "groupBy": ["product_id"],
               "orderBy": []
             },
             "type": "odoo_bar",
-            "dataSets": [
-              {}
-            ],
+            "dataSets": [{}],
             "verticalAxisPosition": "left",
             "stacked": true,
             "axesDesign": {
               "x": {
-                "title": { "text": "Product" }
+                "title": {"text": "Product"}
               },
               "y": {
-                "title": { "text": "Unit sold" }
+                "title": {"text": "Unit sold"}
               }
             },
             "chartId": "d0171069-d2cd-4c2c-a686-cd7515e93bb5",
             "fieldMatching": {
-              "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": { "chain": "date", "type": "datetime", "offset": 0 },
-              "36814ad9-adac-4aba-a5ad-df595a306ef7": { "chain": "product_id", "type": "many2one" },
-              "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": { "chain": "categ_id", "type": "many2one" }
+              "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": {
+                "chain": "date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "36814ad9-adac-4aba-a5ad-df595a306ef7": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": {
+                "chain": "categ_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 655 },
+          "offset": {"x": 0, "y": 655},
           "col": 0,
           "row": 0
         },
@@ -203,16 +207,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "text",
-            "title": { "text": "Best Seller", "color": "#434343", "bold": true },
+            "title": {"text": "Best Seller", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!C2",
-            "baselineDescr": { "text": "sold" },
+            "baselineDescr": {"text": "sold"},
             "keyValue": "Data!B2",
             "humanize": false,
             "chartId": "5f383918-4073-4f19-9cc9-603216c953ad"
           },
-          "offset": { "x": 0, "y": 12 },
+          "offset": {"x": 0, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -225,16 +229,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "text",
-            "title": { "text": "Best Category", "color": "#434343", "bold": true },
+            "title": {"text": "Best Category", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!C3",
-            "baselineDescr": { "text": "sold" },
+            "baselineDescr": {"text": "sold"},
             "keyValue": "Data!B3",
             "humanize": false,
             "chartId": "ec57f69b-f2b1-4dfc-990c-91ab61b526bf"
           },
-          "offset": { "x": 459, "y": 12 },
+          "offset": {"x": 459, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -242,7 +246,7 @@
           "id": "8ee8675a-7e31",
           "col": 3,
           "row": 46,
-          "offset": { "x": 49, "y": 7 },
+          "offset": {"x": 49, "y": 7},
           "width": 476,
           "height": 369,
           "tag": "carousel",
@@ -269,14 +273,12 @@
                 },
                 "type": "odoo_treemap",
                 "actionXmlId": "sale.action_order_report_all",
-                "dataSets": [
-                  {}
-                ]
+                "dataSets": [{}]
               }
             },
             "items": [
-              { "type": "chart", "chartId": "779aed3e-b442" },
-              { "type": "carouselDataView", "title": "Top 10" }
+              {"type": "chart", "chartId": "779aed3e-b442"},
+              {"type": "carouselDataView", "title": "Top 10"}
             ],
             "title": {
               "text": "Best Selling Categories",
@@ -286,9 +288,18 @@
             },
             "fieldMatching": {
               "779aed3e-b442": {
-                "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": { "chain": "date", "type": "datetime" },
-                "36814ad9-adac-4aba-a5ad-df595a306ef7": { "chain": "product_id", "type": "many2one" },
-                "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": { "chain": "categ_id", "type": "many2one" }
+                "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": {
+                  "chain": "date",
+                  "type": "datetime"
+                },
+                "36814ad9-adac-4aba-a5ad-df595a306ef7": {
+                  "chain": "product_id",
+                  "type": "many2one"
+                },
+                "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": {
+                  "chain": "categ_id",
+                  "type": "many2one"
+                }
               }
             }
           }
@@ -356,7 +367,7 @@
         "D2": "=FORMAT.LARGE.NUMBER(PIVOT.VALUE(1,\"price_subtotal\",\"#product_id\",1))",
         "D3": "=FORMAT.LARGE.NUMBER(PIVOT.VALUE(2,\"price_subtotal\",\"#categ_id\",1))"
       },
-      "styles": { "A1:D3": 5 },
+      "styles": {"A1:D3": 5},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -373,34 +384,34 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
-    "2": { "textColor": "#434343", "fontSize": 11, "bold": true },
-    "3": { "textColor": "#434343", "verticalAlign": "middle" },
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
+    "2": {"textColor": "#434343", "fontSize": 11, "bold": true},
+    "3": {"textColor": "#434343", "verticalAlign": "middle"},
     "4": {
       "textColor": "#434343",
       "fontSize": 11,
       "bold": true,
       "align": "center"
     },
-    "5": { "fillColor": "#f2f2f2" }
+    "5": {"fillColor": "#f2f2f2"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thin", "color": "#FFFFFF" },
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"},
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -421,20 +432,24 @@
     "1": {
       "type": "ODOO",
       "fieldMatching": {
-        "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": { "chain": "date", "type": "datetime", "offset": 0 },
-        "36814ad9-adac-4aba-a5ad-df595a306ef7": { "chain": "product_id", "type": "many2one" },
-        "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": { "chain": "categ_id", "type": "many2one" }
+        "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "36814ad9-adac-4aba-a5ad-df595a306ef7": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": {
+          "chain": "categ_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
       },
-      "domain": [
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
-      ],
+      "domain": [["state", "not in", ["draft", "sent", "cancel"]]],
       "id": "1",
       "measures": [
         {
@@ -457,27 +472,29 @@
       },
       "formulaId": "1",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ]
+      "rows": [{"fieldName": "product_id"}]
     },
     "2": {
       "type": "ODOO",
       "fieldMatching": {
-        "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": { "chain": "date", "type": "datetime", "offset": 0 },
-        "36814ad9-adac-4aba-a5ad-df595a306ef7": { "chain": "product_id", "type": "many2one" },
-        "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": { "chain": "categ_id", "type": "many2one" }
+        "a6c3274b-e53c-4c6b-90a8-bc3e3d109f52": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "36814ad9-adac-4aba-a5ad-df595a306ef7": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "edaf4d0c-df4b-48bc-b61a-48a07e8afd91": {
+          "chain": "categ_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
       },
-      "domain": [
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
-      ],
+      "domain": [["state", "not in", ["draft", "sent", "cancel"]]],
       "id": "2",
       "measures": [
         {
@@ -500,9 +517,7 @@
       },
       "formulaId": "2",
       "columns": [],
-      "rows": [
-        { "fieldName": "categ_id" }
-      ]
+      "rows": [{"fieldName": "categ_id"}]
     }
   },
   "pivotNextId": 3,

@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { getRelatedModelsInstance } from "../data/get_model_definitions";
-import { makeMockServer } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {getRelatedModelsInstance} from "../data/get_model_definitions";
+import {makeMockServer} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -9,11 +9,11 @@ test("basic", async () => {
     await makeMockServer();
     const models = getRelatedModelsInstance(false);
     const order = models["pos.order"].create({});
-    const line1 = models["pos.order.line"].create({ order_id: order, qty: 1 });
-    const line2 = models["pos.order.line"].create({ order_id: order, qty: 2 });
+    const line1 = models["pos.order.line"].create({order_id: order, qty: 1});
+    const line2 = models["pos.order.line"].create({order_id: order, qty: 2});
     order.amount_total = 10;
 
-    const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+    const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
     const result = models.serializeForORM(order);
     {
         expect(keepCommandResult).toEqual(result);
@@ -38,16 +38,16 @@ test("basic", async () => {
 
     // Server results with ids
     models.connectNewData({
-        "pos.order": [{ ...order.raw, id: 1, lines: [11, 12] }],
+        "pos.order": [{...order.raw, id: 1, lines: [11, 12]}],
         "pos.order.line": [
-            { ...line1.raw, id: 11, order_id: 1 },
-            { ...line2.raw, id: 12, order_id: 1 },
+            {...line1.raw, id: 11, order_id: 1},
+            {...line2.raw, id: 12, order_id: 1},
         ],
     });
 
     line1.qty = 99;
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -59,7 +59,7 @@ test("basic", async () => {
     // Delete line
     line1.delete();
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -73,21 +73,21 @@ test("serialization of non-dynamic model relationships", async () => {
     const models = getRelatedModelsInstance(false);
     const order = models["pos.order"].create({});
 
-    const tax1 = models["account.tax"].create({ id: 99 });
-    const tax2 = models["account.tax"].create({ id: 999 });
-    const line = models["pos.order.line"].create({ order_id: order, qty: 1 });
+    const tax1 = models["account.tax"].create({id: 99});
+    const tax2 = models["account.tax"].create({id: 999});
+    const line = models["pos.order.line"].create({order_id: order, qty: 1});
     line.tax_ids = [["link", tax1, tax2]];
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines[0][2].tax_ids).toEqual([99, 999]);
     }
 
-    const tax3 = models["account.tax"].create({ id: 9999 });
+    const tax3 = models["account.tax"].create({id: 9999});
     line.tax_ids = [["link", tax3]];
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines[0][2].tax_ids).toEqual([99, 999, 9999]);
@@ -95,7 +95,7 @@ test("serialization of non-dynamic model relationships", async () => {
 
     line.tax_ids = [["unlink", tax3, tax2]];
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines[0][2].tax_ids).toEqual([99]);
@@ -103,7 +103,7 @@ test("serialization of non-dynamic model relationships", async () => {
 
     line.tax_ids = [];
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines[0][2].tax_ids).toEqual([]);
@@ -121,9 +121,12 @@ test("serialization of dynamic model without uuid", async () => {
     });
     const line1UUID = line1.uuid;
 
-    models["pos.pack.operation.lot"].create({ pos_order_line_id: line1, lot_name: "lot1" });
+    models["pos.pack.operation.lot"].create({
+        pos_order_line_id: line1,
+        lot_name: "lot1",
+    });
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -131,7 +134,7 @@ test("serialization of dynamic model without uuid", async () => {
         expect(pack_lot_ids.length).toBe(1);
         expect(pack_lot_ids[0][0]).toBe(0);
         expect(pack_lot_ids[0][0]).toBe(0);
-        expect(pack_lot_ids[0][2]).toEqual({ lot_name: "lot1", write_date: false });
+        expect(pack_lot_ids[0][2]).toEqual({lot_name: "lot1", write_date: false});
     }
 
     models.connectNewData({
@@ -160,9 +163,12 @@ test("serialization of dynamic model without uuid", async () => {
     order = models["pos.order"].getBy("uuid", orderUUID);
     line1 = models["pos.order.line"].getBy("uuid", line1UUID);
 
-    models["pos.pack.operation.lot"].create({ pos_order_line_id: line1, lot_name: "lot2" });
+    models["pos.pack.operation.lot"].create({
+        pos_order_line_id: line1,
+        lot_name: "lot2",
+    });
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -206,7 +212,7 @@ test("serialization of dynamic model without uuid", async () => {
     order.lines[0].pack_lot_ids[1].delete();
     order.lines[0].pack_lot_ids[0].delete();
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -223,7 +229,7 @@ test("nested lines relationship", async () => {
     await makeMockServer();
     const models = getRelatedModelsInstance(false);
     let order = models["pos.order"].create({});
-    let parentLine = models["pos.order.line"].create({ order_id: order });
+    let parentLine = models["pos.order.line"].create({order_id: order});
     let line1 = models["pos.order.line"].create({
         order_id: order,
         combo_parent_id: parentLine,
@@ -234,7 +240,7 @@ test("nested lines relationship", async () => {
     });
 
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(3);
@@ -245,14 +251,14 @@ test("nested lines relationship", async () => {
         expect(result.lines[2][2].combo_line_ids).toBeEmpty();
         expect(result.lines[2][2].combo_parent_id).toBeEmpty();
 
-        const { relations_uuid_mapping } = result;
+        const {relations_uuid_mapping} = result;
         expect(Object.keys(relations_uuid_mapping["pos.order.line"]).length).toBe(2);
-        expect(relations_uuid_mapping["pos.order.line"][line1.uuid]["combo_parent_id"]).toBe(
-            parentLine.uuid
-        );
-        expect(relations_uuid_mapping["pos.order.line"][line2.uuid]["combo_parent_id"]).toBe(
-            parentLine.uuid
-        );
+        expect(
+            relations_uuid_mapping["pos.order.line"][line1.uuid].combo_parent_id
+        ).toBe(parentLine.uuid);
+        expect(
+            relations_uuid_mapping["pos.order.line"][line2.uuid].combo_parent_id
+        ).toBe(parentLine.uuid);
     }
 
     models.connectNewData({
@@ -289,7 +295,7 @@ test("nested lines relationship", async () => {
 
     line1.qty = 99;
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(1);
@@ -324,21 +330,21 @@ test("recursive relationship with group of lines", async () => {
     expect(order.lines[0].combo_line_ids.length).toBe(3);
 
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines.length).toBe(4);
         expect(result.lines[0][2].combo_parent_id).toBeEmpty();
         expect(result.lines[1][2].combo_parent_id).toBeEmpty();
 
-        const { relations_uuid_mapping } = result;
+        const {relations_uuid_mapping} = result;
         expect(Object.keys(relations_uuid_mapping["pos.order.line"]).length).toBe(3);
-        expect(relations_uuid_mapping["pos.order.line"][line2.uuid]["combo_parent_id"]).toBe(
-            line1.uuid
-        );
-        expect(relations_uuid_mapping["pos.order.line"][line3.uuid]["combo_parent_id"]).toBe(
-            line1.uuid
-        );
+        expect(
+            relations_uuid_mapping["pos.order.line"][line2.uuid].combo_parent_id
+        ).toBe(line1.uuid);
+        expect(
+            relations_uuid_mapping["pos.order.line"][line3.uuid].combo_parent_id
+        ).toBe(line1.uuid);
     }
 
     models.connectNewData({
@@ -375,7 +381,7 @@ test("recursive relationship with group of lines", async () => {
     line3 = models["pos.order.line"].getBy("uuid", line3.uuid);
 
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.relations_uuid_mapping).toBe(undefined);
@@ -384,7 +390,7 @@ test("recursive relationship with group of lines", async () => {
     // Delete line
     line3.delete();
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
 
@@ -395,8 +401,8 @@ test("recursive relationship with group of lines", async () => {
     }
 
     {
-        //All update/delete have been cleared
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        // All update/delete have been cleared
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
         expect(result.lines).toHaveLength(1);
@@ -407,7 +413,7 @@ test("grouped lines and nested lines", async () => {
     await makeMockServer();
     const models = getRelatedModelsInstance(false);
     const order = models["pos.order"].create({});
-    const parentLine = models["pos.order.line"].create({ order_id: order });
+    const parentLine = models["pos.order.line"].create({order_id: order});
     const line1 = models["pos.order.line"].create({
         order_id: order,
         combo_parent_id: parentLine,
@@ -421,17 +427,17 @@ test("grouped lines and nested lines", async () => {
     });
 
     {
-        const keepCommandResult = models.serializeForORM(order, { keepCommands: true });
+        const keepCommandResult = models.serializeForORM(order, {keepCommands: true});
         const result = models.serializeForORM(order);
         expect(keepCommandResult).toEqual(result);
 
         expect(result.lines.length).toBe(4);
-        const { relations_uuid_mapping } = result;
+        const {relations_uuid_mapping} = result;
         expect(Object.keys(relations_uuid_mapping["pos.order.line"]).length).toBe(2);
 
         const lineMapping = relations_uuid_mapping["pos.order.line"];
-        expect(lineMapping[line1.uuid]["combo_parent_id"]).toBe(parentLine.uuid);
-        expect(lineMapping[line2.uuid]["combo_parent_id"]).toBe(parentLine.uuid);
-        expect(lineMapping[line3.uuid]?.["combo_parent_id"]?.length).toBeEmpty();
+        expect(lineMapping[line1.uuid].combo_parent_id).toBe(parentLine.uuid);
+        expect(lineMapping[line2.uuid].combo_parent_id).toBe(parentLine.uuid);
+        expect(lineMapping[line3.uuid]?.combo_parent_id?.length).toBeEmpty();
     }
 });

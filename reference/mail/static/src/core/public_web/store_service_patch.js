@@ -1,7 +1,7 @@
-import { Store, storeService } from "@mail/core/common/store_service";
-import { fields } from "@mail/core/common/record";
-import { router } from "@web/core/browser/router";
-import { patch } from "@web/core/utils/patch";
+import {Store, storeService} from "@mail/core/common/store_service";
+import {fields} from "@mail/core/common/record";
+import {router} from "@web/core/browser/router";
+import {patch} from "@web/core/utils/patch";
 
 patch(Store.prototype, {
     setup() {
@@ -12,10 +12,10 @@ patch(Store.prototype, {
     },
     onStarted() {
         super.onStarted(...arguments);
-        this.discuss = { activeTab: "notification" };
+        this.discuss = {activeTab: "notification"};
         this.env.bus.addEventListener(
             "discuss.channel/new_message",
-            ({ detail: { channel, message, silent } }) => {
+            ({detail: {channel, message, silent}}) => {
                 if (this.env.services.ui.isSmall || message.isSelfAuthored || silent) {
                     return;
                 }

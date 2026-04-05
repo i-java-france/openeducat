@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import requests
 from datetime import datetime, timedelta, timezone
 
-from odoo import models, fields, _
-from odoo.exceptions import ValidationError, UserError
+import requests
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class ResConfigSettings(models.TransientModel):

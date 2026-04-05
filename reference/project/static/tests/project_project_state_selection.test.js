@@ -1,8 +1,8 @@
-import { expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { fields, mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {fields, mountView} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, ProjectProject } from "./project_models";
+import {ProjectProject, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 
@@ -17,7 +17,7 @@ test("project.project (kanban): check that ProjectStateSelectionField does not p
                 ["on_hold", "On Hold"],
             ],
         }),
-        last_update_color: fields.Integer({ string: "Update State Color" }),
+        last_update_color: fields.Integer({string: "Update State Color"}),
     });
     ProjectProject._records = [
         {

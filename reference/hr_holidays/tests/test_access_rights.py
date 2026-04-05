@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import unittest
-
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import tests
+from odoo.exceptions import AccessError, UserError
+from odoo.tools import date_utils, mute_logger
+
 from odoo.addons.hr_holidays.tests.common import TestHrHolidaysCommon
-from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tools import date_utils
-from odoo.tools import mute_logger
 
 
 @tests.tagged('access_rights', 'post_install', '-at_install')
 class TestHrHolidaysAccessRightsCommon(TestHrHolidaysCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestHrHolidaysAccessRightsCommon, cls).setUpClass()
+        super().setUpClass()
         cls.leave_type = cls.env['hr.leave.type'].create({
             'name': 'Unlimited',
             'leave_validation_type': 'hr',
@@ -462,7 +461,7 @@ class TestMultiCompany(TestHrHolidaysCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMultiCompany, cls).setUpClass()
+        super().setUpClass()
         cls.new_company = cls.env['res.company'].create({
             'name': 'Crocodile Dundee Company',
         })

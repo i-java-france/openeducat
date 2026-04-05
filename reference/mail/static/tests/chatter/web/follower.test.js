@@ -8,9 +8,14 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
-import { asyncStep, mockService, onRpc, waitForSteps } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred} from "@odoo/hoot-mock";
+import {
+    asyncStep,
+    mockService,
+    onRpc,
+    waitForSteps,
+} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -18,8 +23,8 @@ defineMailModels();
 test("base rendering not editable", async () => {
     const pyEnv = await startServer();
     const [threadId, partnerId] = pyEnv["res.partner"].create([
-        { hasWriteAccess: false },
-        { hasWriteAccess: false },
+        {hasWriteAccess: false},
+        {hasWriteAccess: false},
     ]);
     pyEnv["mail.followers"].create({
         is_active: true,
@@ -33,7 +38,7 @@ test("base rendering not editable", async () => {
     await contains(".o-mail-Follower");
     await contains(".o-mail-Follower-details");
     await contains(".o-mail-Follower-avatar");
-    await contains(".o-mail-Follower-action", { count: 0 });
+    await contains(".o-mail-Follower-action", {count: 0});
 });
 
 test("base rendering editable", async () => {
@@ -85,7 +90,7 @@ test("click on partner follower details", async () => {
     await contains(".o-mail-Follower-details");
     await click(".o-mail-Follower-details:first");
     await openFormDef;
-    await waitForSteps(["do_action"]); // redirect to partner profile
+    await waitForSteps(["do_action"]); // Redirect to partner profile
 });
 
 test("click on edit follower", async () => {
@@ -104,7 +109,7 @@ test("click on edit follower", async () => {
     await contains(".o-mail-Follower");
     await contains("[title='Edit subscription']");
     await click("[title='Edit subscription']");
-    await contains(".o-mail-Follower", { count: 0 });
+    await contains(".o-mail-Follower", {count: 0});
     await waitForSteps(["fetch_subtypes"]);
     await contains(".o-mail-FollowerSubtypeDialog");
 });
@@ -127,14 +132,14 @@ test("edit follower and close subtype dialog", async () => {
     await click("[title='Edit subscription']");
     await contains(".o-mail-FollowerSubtypeDialog");
     await waitForSteps(["fetch_subtypes"]);
-    await click(".o-mail-FollowerSubtypeDialog button", { text: "Cancel" });
-    await contains(".o-mail-FollowerSubtypeDialog", { count: 0 });
+    await click(".o-mail-FollowerSubtypeDialog button", {text: "Cancel"});
+    await contains(".o-mail-FollowerSubtypeDialog", {count: 0});
 });
 
 test("remove a follower in a dirty form view", async () => {
     const pyEnv = await startServer();
     const [threadId, partnerId] = pyEnv["res.partner"].create([{}, {}]);
-    pyEnv["discuss.channel"].create({ name: "General", display_name: "General" });
+    pyEnv["discuss.channel"].create({name: "General", display_name: "General"});
     pyEnv["mail.followers"].create({
         is_active: true,
         partner_id: partnerId,
@@ -151,15 +156,15 @@ test("remove a follower in a dirty form view", async () => {
             </form>`,
     });
     await click(".o_field_many2many_tags[name='channel_ids'] input");
-    await click(".dropdown-item", { text: "General" });
-    await contains(".o_tag", { text: "General" });
-    await contains(".o-mail-Followers-counter", { text: "1" });
+    await click(".dropdown-item", {text: "General"});
+    await contains(".o_tag", {text: "General"});
+    await contains(".o-mail-Followers-counter", {text: "1"});
     await editInput(document.body, ".o_field_char[name=name] input", "some value");
     await click(".o-mail-Followers-button");
     await click("[title='Remove this follower']");
-    await contains(".o-mail-Followers-counter", { text: "0" });
-    await contains(".o_field_char[name=name] input", { value: "some value" });
-    await contains(".o_tag", { text: "General" });
+    await contains(".o-mail-Followers-counter", {text: "0"});
+    await contains(".o_field_char[name=name] input", {value: "some value"});
+    await contains(".o_tag", {text: "General"});
 });
 
 test("removing a follower should reload form view", async function () {
@@ -171,13 +176,13 @@ test("removing a follower should reload form view", async function () {
         res_id: threadId,
         res_model: "res.partner",
     });
-    onRpc("res.partner", "web_read", ({ args }) => asyncStep(`read ${args[0][0]}`));
+    onRpc("res.partner", "web_read", ({args}) => asyncStep(`read ${args[0][0]}`));
     await start();
     await openFormView("res.partner", threadId);
     await contains(".o-mail-Followers-button");
     await waitForSteps([`read ${threadId}`]);
     await click(".o-mail-Followers-button");
     await click("[title='Remove this follower']");
-    await contains(".o-mail-Followers-counter", { text: "0" });
+    await contains(".o-mail-Followers-counter", {text: "0"});
     await waitForSteps([`read ${threadId}`]);
 });

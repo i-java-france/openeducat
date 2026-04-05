@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { IntegerField } from "@web/views/fields/integer/integer_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {IntegerField} from "@web/views/fields/integer/integer_field";
 
 export class Many2OneReferenceIntegerField extends IntegerField {
     get value() {
@@ -15,4 +15,6 @@ const many2oneReferenceIntegerField = {
     supportedTypes: ["many2one_reference"],
 };
 
-registry.category("fields").add("many2one_reference_integer", many2oneReferenceIntegerField);
+registry
+    .category("fields")
+    .add("many2one_reference_integer", many2oneReferenceIntegerField);

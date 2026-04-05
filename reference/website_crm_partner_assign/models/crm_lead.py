@@ -4,7 +4,7 @@ import random
 
 from markupsafe import Markup
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, AccessError, UserError
 
 
@@ -55,7 +55,7 @@ class CrmLead(models.Model):
         return super().write(vals)
 
     def _merge_get_fields(self):
-        fields_list = super(CrmLead, self)._merge_get_fields()
+        fields_list = super()._merge_get_fields()
         fields_list += ['partner_latitude', 'partner_longitude', 'partner_assigned_id', 'date_partner_assign']
         return fields_list
 
@@ -281,7 +281,7 @@ class CrmLead(models.Model):
         fields = ['partner_name', 'phone', 'email_from', 'street', 'street2',
             'city', 'zip', 'state_id', 'country_id']
         if any([key not in fields for key in values]):
-            raise UserError(_("Not allowed to update the following field(s): %s.", ", ".join([key for key in values if not key in fields])))
+            raise UserError(_("Not allowed to update the following field(s): %s.", ", ".join([key for key in values if key not in fields])))
         return self.sudo().write(values)
 
     def update_stage_from_portal(self, stage_id):
@@ -332,7 +332,7 @@ class CrmLead(models.Model):
             try:
                 record.check_access("read")
             except AccessError:
-                return super(CrmLead, self)._get_access_action(access_uid=access_uid, force_website=force_website)
+                return super()._get_access_action(access_uid=access_uid, force_website=force_website)
             user = self.env['res.users'].sudo().browse(access_uid)
             record = self.with_user(user)
         if user.share or force_website:
@@ -345,7 +345,7 @@ class CrmLead(models.Model):
                     'type': 'ir.actions.act_url',
                     'url': '/my/opportunity/%s' % record.id,
                 }
-        return super(CrmLead, self)._get_access_action(access_uid=access_uid, force_website=force_website)
+        return super()._get_access_action(access_uid=access_uid, force_website=force_website)
 
     @api.model
     def _mail_get_operation_for_mail_message_operation(self, message_operation):

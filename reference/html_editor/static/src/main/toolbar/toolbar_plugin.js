@@ -1,16 +1,16 @@
-import { Plugin } from "@html_editor/plugin";
-import { isEmptyTextNode, isZWS } from "@html_editor/utils/dom_info";
-import { reactive } from "@odoo/owl";
-import { composeToolbarButton, Toolbar } from "./toolbar";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { registry } from "@web/core/registry";
-import { ToolbarMobile } from "./mobile_toolbar";
-import { debounce } from "@web/core/utils/timing";
-import { omit, pick } from "@web/core/utils/objects";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { memoize } from "@web/core/utils/functions";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {Plugin} from "@html_editor/plugin";
+import {isEmptyTextNode, isZWS} from "@html_editor/utils/dom_info";
+import {reactive} from "@odoo/owl";
+import {composeToolbarButton, Toolbar} from "./toolbar";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {registry} from "@web/core/registry";
+import {ToolbarMobile} from "./mobile_toolbar";
+import {debounce} from "@web/core/utils/timing";
+import {omit, pick} from "@web/core/utils/objects";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {memoize} from "@web/core/utils/functions";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 /** @typedef { import("@html_editor/core/selection_plugin").EditorSelection } EditorSelection */
 /** @typedef {import("@html_editor/core/selection_plugin").SelectionData} SelectionData */
@@ -172,8 +172,8 @@ export class ToolbarPlugin extends Plugin {
             },
         },
         toolbar_groups: [
-            withSequence(100, { id: "expand_toolbar", namespaces: ["compact"] }),
-            withSequence(30, { id: "layout" }),
+            withSequence(100, {id: "expand_toolbar", namespaces: ["compact"]}),
+            withSequence(30, {id: "layout"}),
         ],
         toolbar_items: {
             id: "expand_toolbar",
@@ -184,7 +184,9 @@ export class ToolbarPlugin extends Plugin {
         },
         toolbar_namespace_providers: [
             withSequence(100, (targetedNodes, editableSelection) =>
-                this.isToolbarVisible(targetedNodes, editableSelection) ? "compact" : undefined
+                this.isToolbarVisible(targetedNodes, editableSelection)
+                    ? "compact"
+                    : undefined
             ),
         ],
     };
@@ -198,7 +200,7 @@ export class ToolbarPlugin extends Plugin {
             groupIds.add(group.id);
         }
         this.buttonGroups = this.getButtonGroups();
-        this.buttonsByNamespace = { DISABLED_NAMESPACE: [] };
+        this.buttonsByNamespace = {DISABLED_NAMESPACE: []};
 
         this.isMobileToolbar = hasTouch() && window.visualViewport;
 
@@ -212,7 +214,7 @@ export class ToolbarPlugin extends Plugin {
                 closeOnPointerdown: false,
             });
         }
-        this.state = reactive({ buttonGroups: [], namespace: undefined });
+        this.state = reactive({buttonGroups: [], namespace: undefined});
 
         this.onSelectionChangeActive = true;
         this.debouncedUpdateToolbar = debounce(this._updateToolbar, DELAY_TOOLBAR_OPEN);
@@ -298,11 +300,15 @@ export class ToolbarPlugin extends Plugin {
             isAvailable: () => true,
             ...item,
             description:
-                item.description instanceof Function ? item.description : () => item.description,
+                item.description instanceof Function
+                    ? item.description
+                    : () => item.description,
         });
 
         return toolbarItems.map((item) =>
-            "Component" in item ? componentItemToButton(item) : commandItemToButton(item)
+            "Component" in item
+                ? componentItemToButton(item)
+                : commandItemToButton(item)
         );
     }
 
@@ -353,7 +359,7 @@ export class ToolbarPlugin extends Plugin {
      * selection change) in the same tick. To avoid unnecessary updates, we
      * batch the calls.
      */
-    updateToolbar = debounce(this._updateToolbar, 0, { trailing: true });
+    updateToolbar = debounce(this._updateToolbar, 0, {trailing: true});
     _updateToolbar(selectionData = this.dependencies.selection.getSelectionData()) {
         // Prevent toolbar to open if the selection is not in the editable area,
         // or if the selection is protected or protecting.
@@ -367,7 +373,11 @@ export class ToolbarPlugin extends Plugin {
         }
         // Prevent toolbar to open if the selection is only non-editable nodes.
         const targetedNodes = this.dependencies.selection.getTargetedNodes();
-        if (targetedNodes.every((node) => !this.dependencies.selection.isNodeEditable(node))) {
+        if (
+            targetedNodes.every(
+                (node) => !this.dependencies.selection.isNodeEditable(node)
+            )
+        ) {
             this.closeToolbar();
             return;
         }
@@ -376,7 +386,10 @@ export class ToolbarPlugin extends Plugin {
         let filteredtargetedNodes = [];
         filteredtargetedNodes = this.getFilteredTargetedNodes(targetedNodes);
         for (const fn of this.getResource("toolbar_namespace_providers")) {
-            currentNamespace = fn(filteredtargetedNodes, selectionData.editableSelection);
+            currentNamespace = fn(
+                filteredtargetedNodes,
+                selectionData.editableSelection
+            );
             if (currentNamespace) {
                 break;
             }
@@ -395,9 +408,12 @@ export class ToolbarPlugin extends Plugin {
             this.state.namespace = currentNamespace;
             // Do not reposition the toolbar if it's already open.
             if (!this.overlay.isOpen) {
-                this.overlay.open({ props: this.toolbarProps });
+                this.overlay.open({props: this.toolbarProps});
             }
-            this.updateButtonsStates(selectionData.editableSelection, filteredtargetedNodes);
+            this.updateButtonsStates(
+                selectionData.editableSelection,
+                filteredtargetedNodes
+            );
         } else {
             this.closeToolbar();
         }
@@ -408,7 +424,8 @@ export class ToolbarPlugin extends Plugin {
             .filter(
                 (node) =>
                     this.dependencies.selection.isNodeEditable(node) &&
-                    (node.nodeType !== Node.TEXT_NODE || (!isEmptyTextNode(node) && !isZWS(node)))
+                    (node.nodeType !== Node.TEXT_NODE ||
+                        (!isEmptyTextNode(node) && !isZWS(node)))
             )
             .filter((node) => {
                 const element = closestElement(node);
@@ -450,8 +467,8 @@ export class ToolbarPlugin extends Plugin {
             ? selectionData.editableSelection?.anchorNode
             : document.getSelection()?.anchorNode;
         const shouldPreventClosing =
-            anchor?.closest?.("[data-prevent-closing-overlay]")?.dataset?.preventClosingOverlay ===
-            "true";
+            anchor?.closest?.("[data-prevent-closing-overlay]")?.dataset
+                ?.preventClosingOverlay === "true";
         if (!shouldPreventClosing) {
             this.overlay.close();
             this.isToolbarExpanded = false;
@@ -478,7 +495,10 @@ export class ToolbarPlugin extends Plugin {
                             ? pick(button, "Component", "props")
                             : {
                                   ...pick(button, "run", "icon", "text"),
-                                  isActive: !!button.isActive?.(selection, targetedNodes),
+                                  isActive: !!button.isActive?.(
+                                      selection,
+                                      targetedNodes
+                                  ),
                               }),
                     })),
             }))
@@ -497,7 +517,9 @@ export class ToolbarPlugin extends Plugin {
             return this.getAvailableButtonsCompact(selection);
         }
         const isAvailable = (button) => button.isAvailable(selection);
-        return new Set(this.getButtonsForNamespace(this.state.namespace).filter(isAvailable));
+        return new Set(
+            this.getButtonsForNamespace(this.state.namespace).filter(isAvailable)
+        );
     }
 
     /**
@@ -532,7 +554,7 @@ class MobileToolbarOverlay {
         this.editable = editable;
     }
 
-    open({ props }) {
+    open({props}) {
         props.class = "shadow";
         if (!this.isOpen) {
             const modal = this.editable.closest(".o_modal_full");

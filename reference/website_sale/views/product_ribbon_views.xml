@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="product_ribbon_form_view" model="ir.ui.view">
         <field name="name">product.ribbon.form.view</field>
         <field name="model">product.ribbon</field>
@@ -9,16 +8,23 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="New Collection"/>
+                            <field name="name" placeholder="New Collection" />
                         </h1>
                     </div>
                     <group>
-                        <label for="assign"/>
+                        <label for="assign" />
                         <div>
-                            <field name="assign" class="oe_inline"/>
-                            <div invisible="assign != 'new'" class="text-muted ms-2 d-inline-flex align-items-center">
+                            <field name="assign" class="oe_inline" />
+                            <div
+                                invisible="assign != 'new'"
+                                class="text-muted ms-2 d-inline-flex align-items-center"
+                            >
                                 <span>for</span>
-                                <field name="new_period" style="width: 3rem; !important" class="ms-1 mb-0"/>
+                                <field
+                                    name="new_period"
+                                    style="width: 3rem; !important"
+                                    class="ms-1 mb-0"
+                                />
                                 <span>days after publication.</span>
                             </div>
                         </div>
@@ -26,10 +32,18 @@
                     <notebook>
                         <page string="Display">
                             <group>
-                                <field name="position" widget="radio" options="{'horizontal': True}"/>
-                                <field name="style" widget="radio" options="{'horizontal': True}"/>
-                                <field name="text_color" widget="color"/>
-                                <field name="bg_color" widget="color"/>
+                                <field
+                                    name="position"
+                                    widget="radio"
+                                    options="{'horizontal': True}"
+                                />
+                                <field
+                                    name="style"
+                                    widget="radio"
+                                    options="{'horizontal': True}"
+                                />
+                                <field name="text_color" widget="color" />
+                                <field name="bg_color" widget="color" />
                             </group>
                         </page>
                     </notebook>
@@ -43,11 +57,11 @@
         <field name="model">product.ribbon</field>
         <field name="arch" type="xml">
             <list string="Product Ribbon">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="position"/>
-                <field name="text_color" widget="color" readonly="1"/>
-                <field name="bg_color" widget="color" readonly="1"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="position" />
+                <field name="text_color" widget="color" readonly="1" />
+                <field name="bg_color" widget="color" readonly="1" />
             </list>
         </field>
     </record>
@@ -64,5 +78,4 @@
             </p>
         </field>
     </record>
-
 </odoo>

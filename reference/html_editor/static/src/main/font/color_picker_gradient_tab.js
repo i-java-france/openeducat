@@ -1,8 +1,8 @@
-import { Component, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { applyOpacityToGradient, isColorGradient } from "@web/core/utils/colors";
-import { GradientPicker } from "./gradient_picker/gradient_picker";
+import {Component, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {applyOpacityToGradient, isColorGradient} from "@web/core/utils/colors";
+import {GradientPicker} from "./gradient_picker/gradient_picker";
 
 const DEFAULT_GRADIENT_COLORS = [
     "linear-gradient(135deg, rgb(255, 204, 51) 0%, rgb(226, 51, 255) 100%)",
@@ -17,7 +17,7 @@ const DEFAULT_GRADIENT_COLORS = [
 
 export class ColorPickerGradientTab extends Component {
     static template = "html_editor.ColorPickerGradientTab";
-    static components = { GradientPicker };
+    static components = {GradientPicker};
     static props = {
         applyColor: Function,
         onColorClick: Function,
@@ -26,12 +26,12 @@ export class ColorPickerGradientTab extends Component {
         onColorPointerOut: Function,
         onFocusin: Function,
         onFocusout: Function,
-        setOnCloseCallback: { type: Function, optional: true },
-        setOperationCallbacks: { type: Function, optional: true },
-        defaultOpacity: { type: Number, optional: true },
-        noTransparency: { type: Boolean, optional: true },
-        selectedColor: { type: String, optional: true },
-        "*": { optional: true },
+        setOnCloseCallback: {type: Function, optional: true},
+        setOperationCallbacks: {type: Function, optional: true},
+        defaultOpacity: {type: Number, optional: true},
+        noTransparency: {type: Boolean, optional: true},
+        selectedColor: {type: String, optional: true},
+        "*": {optional: true},
     };
     setup() {
         this.state = useState({
@@ -59,5 +59,5 @@ registry.category("color_picker_tabs").add(
         name: _t("Gradient"),
         component: ColorPickerGradientTab,
     },
-    { sequence: 60 }
+    {sequence: 60}
 );

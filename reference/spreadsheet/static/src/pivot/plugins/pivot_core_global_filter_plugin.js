@@ -8,13 +8,16 @@
  * @typedef {import("@spreadsheet").FieldMatching} FieldMatching
  */
 
-import { CommandResult } from "../../o_spreadsheet/cancelled_reason";
-import { checkFilterFieldMatching } from "@spreadsheet/global_filters/helpers";
-import { deepCopy } from "@web/core/utils/objects";
-import { OdooCorePlugin } from "@spreadsheet/plugins";
+import {CommandResult} from "../../o_spreadsheet/cancelled_reason";
+import {checkFilterFieldMatching} from "@spreadsheet/global_filters/helpers";
+import {deepCopy} from "@web/core/utils/objects";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
 
 export class PivotCoreGlobalFilterPlugin extends OdooCorePlugin {
-    static getters = /** @type {const} */ (["getPivotFieldMatch", "getPivotFieldMatching"]);
+    static getters = /** @type {const} */ ([
+        "getPivotFieldMatch",
+        "getPivotFieldMatching",
+    ]);
     constructor(config) {
         super(config);
 
@@ -55,7 +58,7 @@ export class PivotCoreGlobalFilterPlugin extends OdooCorePlugin {
                 break;
             }
             case "DUPLICATE_PIVOT": {
-                const { pivotId, newPivotId } = cmd;
+                const {pivotId, newPivotId} = cmd;
                 const pivotDefinition = this.getters.getPivotCoreDefinition(pivotId);
                 if (pivotDefinition.type !== "ODOO") {
                     break;
@@ -118,14 +121,26 @@ export class PivotCoreGlobalFilterPlugin extends OdooCorePlugin {
             if (pivot.type !== "ODOO") {
                 continue;
             }
-            this.history.update("pivots", pivotId, "fieldMatching", filterId, fieldMatch);
+            this.history.update(
+                "pivots",
+                pivotId,
+                "fieldMatching",
+                filterId,
+                fieldMatch
+            );
         }
     }
 
     _onFilterDeletion(filterId) {
-        const pivots = { ...this.pivots };
+        const pivots = {...this.pivots};
         for (const pivotId in pivots) {
-            this.history.update("pivots", pivotId, "fieldMatching", filterId, undefined);
+            this.history.update(
+                "pivots",
+                pivotId,
+                "fieldMatching",
+                filterId,
+                undefined
+            );
         }
     }
 
@@ -138,7 +153,8 @@ export class PivotCoreGlobalFilterPlugin extends OdooCorePlugin {
         if (pivot.type === "ODOO") {
             this.history.update("pivots", id, {
                 id,
-                fieldMatching: fieldMatching || this.getters.getFieldMatchingForModel(pivot.model),
+                fieldMatching:
+                    fieldMatching || this.getters.getFieldMatchingForModel(pivot.model),
             });
         }
     }

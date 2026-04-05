@@ -1,0 +1,1422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_view_kanban_apps_op_inherit" model="ir.ui.view">
+        <field name="name">Apps Kanban Data Modules Op</field>
+        <field name="model">ir.module.module</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="Apps Kanban"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//button[@name='button_immediate_install']" position="attributes">
+        
+                
+        <attribute name="invisible">state != 'uninstalled' or module_type not in ('official','institutes')</attribute>
+        
+            
+    </xpath>
+    
+             
+    <xpath expr="//button[@name='button_immediate_install_app']" position="attributes">
+        
+                
+        <attribute name="invisible">state != 'uninstalled' or module_type in ('official','institutes')</attribute>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//button[@name='button_immediate_install_app'][2]" position="attributes">
+        
+                
+        <attribute name="invisible">state == 'uninstalled' or module_type in ('official','institutes')</attribute>
+        
+            
+    </xpath>
+    
+        
+</data>
+        </field>
+    </record>
+
+    <record id="op_badge_kanban_view" model="ir.ui.view">
+        <field name="name">Badge Kanban View</field>
+        <field name="model">op.gamification.badge</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban class="oe_background_grey">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="id"/>
+    
+                    
+    <field name="image"/>
+    
+                    
+    <field name="description"/>
+    
+                    
+    <field name="create_date"/>
+    
+                     
+    <templates>
+        
+                        
+        <t t-name="card" class="row g-0">
+            
+                            
+            <aside class="col-2">
+                
+                                
+                <field name="id" widget="image" options="{'image': 'image'}" t-att-alt="record.id.value"/>
+                
+                            
+            </aside>
+            
+                            
+            <main class="col ps-2">
+                
+                                
+                <field class="fw-bold fs-5" type="open" name="name"/>
+                
+                                
+                <field name="description"/>
+                
+                            
+            </main>
+            
+                        
+        </t>
+        
+                    
+    </templates>
+    
+                
+</kanban>
+        </field>
+    </record>
+
+    <record id="kanban_view_inherit" model="ir.ui.view">
+        <field name="name">kanban.view.inherit</field>
+        <field name="model">op.faculty</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="Faculty Kanban"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='activity_ids']" position="before">
+    
+                
+    <button class="btn oe_stat_button" type="object" name="get_courses" style="border-right: 1px solid;" icon="fa-book">
+                </button>
+    
+                
+    <button class="btn oe_stat_button" type="object" name="get_subjects" style="border-right: 1px solid;" icon="fa-pencil-square-o">
+                </button>
+    
+            
+</xpath>
+        </field>
+    </record>
+
+    <record id="view_op_academic_plan_kanban" model="ir.ui.view">
+        <field name="name">op.academic.plan.kanban</field>
+        <field name="model">op.academic.plan</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban default_group_by="stages_id" highlight_color="color">
+    
+                
+    <field name="stages_id"/>
+    
+                
+    <field name="color"/>
+    
+                
+    <templates>
+        
+                    
+        <t t-name="menu" groups="base.group_user">
+            
+                        
+            <div class="container">
+                
+                            
+                <div class="o_kanban_card_manage_settings row">
+                    
+                                
+                    <div role="menuitem" aria-haspopup="true" class="col-6">
+                        
+                                    
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-12 ps-0">
+                        
+                                    
+                        <div role="menuitem" class="w-100">
+                            
+                                        
+                            <a class="dropdown-item mx-0" role="menuitem" type="open">View</a>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                    
+        <t t-name="card">
+            
+                        
+            <field name="name" class="fw-bold fs-4 me-auto ms-1"/>
+            
+                        
+            <div class="row g-0 mb16 mt-2 ms-2 me-2">
+                
+                            
+                <div class="d-flex align-items-center o_kanban_record_subtitle">
+                    
+                                
+                    <span class="fw-bold me-2">Start Date:</span>
+                    
+                                
+                    <field name="start_date" widget="date" class="me-2"/>
+                    
+                                
+                    <span class="fw-bold mx-2">-</span>
+                    
+                                
+                    <field name="end_date" widget="date"/>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                        
+            <div class="d-flex flex-column mt-2" name="dashboard_links">
+                
+                            
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3" name="first_row_links">
+                    
+                                
+                    <div class="d-flex flex-column align-items-center col-6 border-end">
+                        
+                                    
+                        <span class="o_stat_value">
+                            
+                                        
+                            <b>
+                                
+                                            
+                                <field name="course_configure_count"/>
+                                
+                                        
+                            </b>
+                            
+                                        Course
+                                    
+                        </span>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="d-flex flex-column align-items-center col-6">
+                        
+                                    
+                        <span class="o_stat_value">
+                            
+                                        
+                            <b>
+                                
+                                            
+                                <field name="subject_count"/>
+                                
+                                        
+                            </b>
+                            
+                                        Subject
+                                    
+                        </span>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                
+    </templates>
+    
+            
+</kanban>
+        </field>
+    </record>
+
+    <record id="openeducat_batch_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">op.batch.dashboard.kanban</field>
+        <field name="model">op.batch</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban highlight_color="color" string="Batch kanban" class="o_slide_kanban o_slide_channel_kanban" sample="1">
+    
+                
+    <field name="id"/>
+    
+                
+    <field name="name"/>
+    
+                
+    <field name="color"/>
+    
+                
+    <field name="course_id"/>
+    
+                
+    <field name="start_date"/>
+    
+                
+    <field name="end_date"/>
+    
+                
+    <templates>
+        
+                    
+        <t t-name="menu" groups="base.group_user">
+            
+                        
+            <div class="container" role="menu">
+                
+                        
+                <div class="row my-2">
+                    
+                                
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_view">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_views" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Views</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_new">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_new" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>New</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_operations">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_reports" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Reports</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                            
+                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                    
+                                
+                    <div role="menuitem" aria-haspopup="true" class="col-8">
+                        
+                                    
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div role="menuitem" class="col-4">
+                        
+                                    
+                        <a type="open">Settings</a>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                    
+        <t t-name="card">
+            
+                        
+            <field name="name" class="fw-bold fs-4 me-auto ms-1"/>
+            
+                        
+            <field name="course_id" class="w-100 mt-1 ms-1 text-muted"/>
+            
+                        
+            <div class="row g-0 mb16 mt-2 ms-2 me-2">
+                
+                            
+                <div class="d-flex align-items-center o_kanban_record_subtitle mt-2 mb-2">
+                    
+                                
+                    <span class="fw-bold me-2">Start Date : </span>
+                    
+                                
+                    <field name="start_date" widget="date" class="me-2"/>
+                    
+                                
+                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                    
+                                
+                    <field name="end_date" widget="date"/>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                        
+            <div class="d-flex flex-column mt-auto" name="dashboard_links">
+                
+                            
+                <div class="d-flex flex-wrap justify-content-center align-items-stretch mb-3" name="first_row_links">
+                    
+                                
+                    <a name="1015" type="action" class="d-flex flex-column align-items-center col-6 counter-item">
+                        
+                                    
+                        <field name="student_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Students</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+
+                    
+        </t>
+        
+                
+    </templates>
+    
+            
+</kanban>
+        </field>
+    </record>
+
+    <record id="openeducat_course_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">op.course.dashboard.kanban</field>
+        <field name="model">op.course</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban highlight_color="color" string="Courses kanban" class="o_slide_kanban o_slide_channel_kanban" sample="1">
+    
+                
+    <field name="id"/>
+    
+                
+    <field name="name"/>
+    
+                
+    <field name="min_unit_load"/>
+    
+                
+    <field name="max_unit_load"/>
+    
+                
+    <field name="evaluation_type"/>
+    
+                
+    <templates>
+        
+                    
+        <t t-name="menu" groups="base.group_user">
+            
+                        
+            <div class="container" role="menu">
+                
+                        
+                <div class="row my-2">
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_view">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_views" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Views</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_new">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_new" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>New</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_operations">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_reports" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Reports</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                            
+                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                    
+                                
+                    <div role="menuitem" aria-haspopup="true" class="col-8">
+                        
+                                    
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div role="menuitem" class="col-4">
+                        
+                                    
+                        <a type="open">Settings</a>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                    
+        <t t-name="card">
+            
+                        
+            <div class="o_kanban_card_header d-flex p-1">
+                
+                            
+                <div class="o_kanban_card_header_title" style="max-width: 90%;">
+                    
+                                
+                    <div class="fw-bold fs-4 me-auto ms-1">
+                        
+                                    
+                        <p type="edit" class="fw-bold me-auto" style="display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;height:50px;">
+                            
+                                        
+                            <field name="name" class="fw-bold" style="font-weight: 700 !important;"/>
+                            
+                                    
+                        </p>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                        
+            <div class="d-flex flex-column mt-2" name="dashboard_links">
+                
+                            
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3">
+                    
+                                
+                    <a name="1016" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                    
+                        <field name="student_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Students</span>
+                        
+                                
+                    </a>
+                    
+                                
+                    <a name="1026" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                    
+                        <field name="child_course_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Sub-Courses</span>
+                        
+                                
+                    </a>
+                    
+                                
+                    <a name="1019" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                    
+                        <field name="subject_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Subjects</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+
+                            
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3" name="second_row_links">
+                    
+                                
+                    <a name="1018" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                    
+                        <field name="batch_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Batches</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+
+                    
+        </t>
+        
+                
+    </templates>
+    
+            
+</kanban>
+        </field>
+    </record>
+
+    <record id="openeducat_department_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">op.department.dashboard.kanban</field>
+        <field name="model">op.department</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban highlight_color="color" string="Department kanban" class="o_slide_kanban o_slide_channel_kanban" sample="1">
+    
+                
+    <field name="id"/>
+    
+                
+    <field name="name"/>
+    
+                
+    <field name="code"/>
+    
+                
+    <templates>
+        
+                    
+        <t t-name="menu" groups="base.group_user">
+            
+                        
+            <div class="container" role="menu">
+                
+                        
+                <div class="row my-2">
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_view">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_views" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Views</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_new">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_new" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>New</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_operations">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_reports" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Reports</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                            
+                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                    
+                                
+                    <div role="menuitem" aria-haspopup="true" class="col-8">
+                        
+                                    
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div role="menuitem" class="col-4">
+                        
+                                    
+                        <a type="open">Settings</a>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                    
+        <t t-name="card">
+            
+                            
+            <div class="o_kanban_card_header d-flex p-1">
+                
+                                
+                <div class="o_kanban_card_header_title" style="max-width: 90%;">
+                    
+                                    
+                    <div class="fw-bold fs-4 me-auto ms-1">
+                        
+                                        
+                        <p type="edit" class="fw-bold me-auto" style="display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;height:50px;">
+                            
+                                            
+                            <field name="name" class="fw-bold" style="font-weight: 700 !important;"/>
+                            
+                                        
+                        </p>
+                        
+                                    
+                    </div>
+                    
+                                
+                </div>
+                
+                            
+            </div>
+            
+                            
+            <div class="d-flex flex-column mt-1" name="dashboard_links">
+                
+                                
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3">
+                    
+                                    
+                    <a name="1035" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                        
+                        <field name="program_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Programs</span>
+                        
+                                    
+                    </a>
+                    
+                                    
+                    <a name="1034" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                        
+                        <field name="course_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Courses</span>
+                        
+                                    
+                    </a>
+                    
+                                    
+                    <a name="1039" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                        
+                        <field name="faculty_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Faculties</span>
+                        
+                                    
+                    </a>
+                    
+                                
+                </div>
+                
+                                
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3" name="second_row_links">
+                    
+                                    
+                    <a name="1038" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                        
+                        <field name="student_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Students</span>
+                        
+                                    
+                    </a>
+                    
+                                    
+                    <a name="1036" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                        
+                        <field name="subject_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Subjects</span>
+                        
+                                    
+                    </a>
+                    
+                                    
+                    <a name="1017" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                        
+                        <field name="batch_count" class="fw-bold fs-4"/>
+                        
+                                        
+                        <span class="text-muted">Batches</span>
+                        
+                                    
+                    </a>
+                    
+                                
+                </div>
+                
+                            
+            </div>
+            
+                        
+        </t>
+        
+                
+    </templates>
+    
+            
+</kanban>
+        </field>
+    </record>
+
+    <record id="openeducat_program_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">op.program.dashboard.kanban</field>
+        <field name="model">op.program</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban highlight_color="color" string="Program kanban" class="o_slide_kanban o_slide_channel_kanban" sample="1">
+    
+                
+    <field name="id"/>
+    
+                
+    <field name="name"/>
+    
+                
+    <field name="min_unit_load"/>
+    
+                
+    <field name="max_unit_load"/>
+    
+                
+    <templates>
+        
+                    
+        <t t-name="menu" groups="base.group_user">
+            
+                        
+            <div class="container" role="menu">
+                
+                        
+                <div class="row my-2">
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_view">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_views" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Views</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_new">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_new" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>New</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div class="col-4 o_kanban_card_manage_section o_kanban_manage_operations">
+                        
+                                    
+                        <div role="menuitem" class="px-1">
+                            
+                                        
+                            <div name="openeducat_reports" class="o_kanban_card_manage_title">
+                                
+                                            
+                                <span>Reports</span>
+                                
+                                        
+                            </div>
+                            
+                                    
+                        </div>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                            
+                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                    
+                                
+                    <div role="menuitem" aria-haspopup="true" class="col-8">
+                        
+                                    
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                
+                    </div>
+                    
+                                
+                    <div role="menuitem" class="col-4">
+                        
+                                    
+                        <a type="open">Settings</a>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                    
+        <t t-name="card">
+            
+                        
+            <div class="o_kanban_card_header d-flex p-1">
+                
+                            
+                <div class="o_kanban_card_header_title" style="max-width: 90%;">
+                    
+                                
+                    <div class="fw-bold fs-4 me-auto ms-1">
+                        
+                                    
+                        <p type="edit" class="fw-bold me-auto" style="display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;height:50px;">
+                            
+                                        
+                            <field name="name" class="fw-bold" style="font-weight: 700 !important;"/>
+                            
+                                    
+                        </p>
+                        
+                                
+                    </div>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                        
+            <div class="d-flex flex-column mt-1" name="dashboard_links">
+                
+                            
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3">
+                    
+                                
+                    <a name="1029" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                    
+                        <field name="course_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Courses</span>
+                        
+                                
+                    </a>
+                    
+                                
+                    <a name="1030" type="action" class="d-flex flex-column align-items-center col-4 counter-item border-end">
+                        
+                                    
+                        <field name="subject_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Subjects</span>
+                        
+                                
+                    </a>
+                    
+                                
+                    <a name="1032" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                    
+                        <field name="student_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Students</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+                            
+                <div class="d-flex flex-wrap justify-content-start align-items-stretch mb-3" name="second_row_links">
+                    
+                                
+                    <a name="1031" type="action" class="d-flex flex-column align-items-center col-4 counter-item">
+                        
+                                    
+                        <field name="batch_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Batches</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                    
+        </t>
+        
+                
+    </templates>
+    
+            
+</kanban>
+        </field>
+    </record>
+
+    <record id="openeducat_section_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">op.section.dashboard.kanban</field>
+        <field name="model">op.section</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<kanban highlight_color="color" string="Section kanban" class="o_slide_kanban o_slide_channel_kanban" sample="1">
+    
+                    
+    <field name="id"/>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="color"/>
+    
+                    
+    <templates>
+        
+                        
+        <t t-name="menu" groups="base.group_user">
+            
+                            
+            <div class="container" role="menu">
+                
+                            
+                <div class="row my-2">
+                    
+                                    
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_view">
+                        
+                                        
+                        <div role="menuitem" class="px-1">
+                            
+                                            
+                            <div name="openeducat_views" class="o_kanban_card_manage_title">
+                                
+                                                
+                                <span>Views</span>
+                                
+                                            
+                            </div>
+                            
+                                        
+                        </div>
+                        
+                                    
+                    </div>
+                    
+                                    
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_new">
+                        
+                                        
+                        <div role="menuitem" class="px-1">
+                            
+                                            
+                            <div name="openeducat_new" class="o_kanban_card_manage_title">
+                                
+                                                
+                                <span>New</span>
+                                
+                                            
+                            </div>
+                            
+                                        
+                        </div>
+                        
+                                    
+                    </div>
+                    
+                                    
+                    <div class="col-md-4 o_kanban_card_manage_section o_kanban_manage_operations">
+                        
+                                        
+                        <div role="menuitem" class="px-1">
+                            
+                                            
+                            <div name="openeducat_reports" class="o_kanban_card_manage_title">
+                                
+                                                
+                                <span>Reports</span>
+                                
+                                            
+                            </div>
+                            
+                                        
+                        </div>
+                        
+                                    
+                    </div>
+                    
+                                
+                </div>
+                
+                                
+                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                    
+                                    
+                    <div role="menuitem" aria-haspopup="true" class="col-8">
+                        
+                                        
+                        <field name="color" widget="kanban_color_picker"/>
+                        
+                                    
+                    </div>
+                    
+                                    
+                    <div role="menuitem" class="col-4">
+                        
+                                        
+                        <a type="open">Settings</a>
+                        
+                                    
+                    </div>
+                    
+                                
+                </div>
+                
+                            
+            </div>
+            
+                        
+        </t>
+        
+                        
+        <t t-name="card">
+            
+                            
+            <div class="o_kanban_card_header d-flex p-1">
+                
+                                
+                <div class="o_kanban_card_header_title" style="max-width: 90%;">
+                    
+                                    
+                    <div class="fw-bold fs-4 me-auto ms-1">
+                        
+                                        
+                        <p type="edit" class="fw-bold me-auto" style="display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;height:50px;">
+                            
+                                            
+                            <field name="name" class="fw-bold" style="font-weight: 700 !important;"/>
+                            
+                                        
+                        </p>
+                        
+                                    
+                    </div>
+                    
+                                
+                </div>
+                
+                            
+            </div>
+            
+                            
+            <div class="d-flex flex-column mt-1" name="dashboard_links">
+                
+                            
+                <div class="d-flex flex-wrap justify-content-center align-items-stretch mb-3">
+                    
+                                
+                    <a name="action_view_students" type="object" class="d-flex flex-column align-items-center col-4 counter-item border-start border-end">
+                        
+                                    
+                        <field name="student_count" class="fw-bold fs-4"/>
+                        
+                                    
+                        <span class="text-muted">Students</span>
+                        
+                                
+                    </a>
+                    
+                            
+                </div>
+                
+                        
+            </div>
+            
+                        
+        </t>
+        
+                    
+    </templates>
+    
+                
+</kanban>
+        </field>
+    </record>
+
+    <record id="kanban_view_student_inherit" model="ir.ui.view">
+        <field name="name">Student Kanban - Inherited</field>
+        <field name="model">op.student</field>
+        <field name="type">kanban</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="Student Kanban"/>
+        <field name="arch" type="xml">
+<xpath expr="//footer//field[@name='activity_ids']" position="before">
+    
+                    
+    <button class="btn oe_stat_button" type="object" name="get_student" style="border-right: 1px solid;" title="Show Enrollments" icon="fa-book">
+                    </button>
+    
+                
+</xpath>
+        </field>
+    </record>
+</odoo>

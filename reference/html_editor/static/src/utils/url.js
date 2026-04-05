@@ -1,5 +1,5 @@
-import { browser } from "@web/core/browser/browser";
-import { session } from "@web/session";
+import {browser} from "@web/core/browser/browser";
+import {session} from "@web/session";
 
 const ODOO_DOMAIN_REGEX = new RegExp(`^https?://${session.db}\\.odoo\\.com(/.*)?$`);
 
@@ -30,7 +30,9 @@ export function checkURL(url, hostnameList) {
  */
 export function isImageUrl(url) {
     const urlFileExtention = url.split(".").pop();
-    return ["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(urlFileExtention.toLowerCase());
+    return ["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(
+        urlFileExtention.toLowerCase()
+    );
 }
 
 /**
@@ -107,9 +109,11 @@ export function scrollAndHighlightHeading(
         // a Youtube video is in the document and loads while the
         // autoscroll is happening, and stops it.
         setTimeout(() => {
-            const heading = content.querySelector(`[data-heading-link-id="${headingId}"]`);
+            const heading = content.querySelector(
+                `[data-heading-link-id="${headingId}"]`
+            );
             if (heading) {
-                heading.scrollIntoView({ behavior: "smooth" });
+                heading.scrollIntoView({behavior: "smooth"});
                 heading.classList.add("o-highlight-heading");
                 setTimeout(() => {
                     heading.classList.remove("o-highlight-heading");

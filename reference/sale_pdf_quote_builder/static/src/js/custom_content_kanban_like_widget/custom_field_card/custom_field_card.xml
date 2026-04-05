@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-
     <t t-name="sale_pdf_quote_builder.customFieldCard">
         <div>
-            <h5 t-out="this.props.name" class="text-primary"/>
+            <h5 t-out="this.props.name" class="text-primary" />
             <div class="mb-3">
                 <span t-attf-class="card-text #{this.props.value ? '' : 'text-muted'}">
                     <textarea
@@ -19,5 +18,4 @@
             </div>
         </div>
     </t>
-
 </templates>

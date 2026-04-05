@@ -1,5 +1,5 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { useAutofocus } from "@web/core/utils/hooks";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {useAutofocus} from "@web/core/utils/hooks";
 
 export class CategoryAddDialog extends ConfirmationDialog {
     static template = "website_slides.CategoryAddDialog";
@@ -21,7 +21,7 @@ export class CategoryAddDialog extends ConfirmationDialog {
                 return;
             }
             this.lastInputValue = this.inputRef.el.value;
-            return this.props.confirm({ formEl: this.modalRef.el.querySelector("form") });
+            return this.props.confirm({formEl: this.modalRef.el.querySelector("form")});
         });
     }
 }

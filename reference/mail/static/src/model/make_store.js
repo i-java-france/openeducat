@@ -1,13 +1,13 @@
-import { markRaw, reactive, toRaw } from "@odoo/owl";
-import { Store } from "./store";
-import { STORE_SYM, isFieldDefinition, isMany, isRelation, modelRegistry } from "./misc";
-import { Record } from "./record";
-import { StoreInternal } from "./store_internal";
-import { ModelInternal } from "./model_internal";
-import { RecordInternal } from "./record_internal";
+import {markRaw, reactive, toRaw} from "@odoo/owl";
+import {Store} from "./store";
+import {STORE_SYM, isFieldDefinition, isMany, isRelation, modelRegistry} from "./misc";
+import {Record} from "./record";
+import {StoreInternal} from "./store_internal";
+import {ModelInternal} from "./model_internal";
+import {RecordInternal} from "./record_internal";
 
 /** @returns {import("models").Store} */
-export function makeStore(env, { localRegistry } = {}) {
+export function makeStore(env, {localRegistry} = {}) {
     const recordByLocalId = reactive(new Map());
     // fake store for now, until it becomes a model
     /** @type {import("models").Store} */
@@ -55,7 +55,10 @@ export function makeStore(env, { localRegistry } = {}) {
                          * @param {Record} recordFullProxy
                          */
                         get(record, name, recordFullProxy) {
-                            recordFullProxy = record._.downgradeProxy(record, recordFullProxy);
+                            recordFullProxy = record._.downgradeProxy(
+                                record,
+                                recordFullProxy
+                            );
                             if (record._.gettingField || !Model._.fields.get(name)) {
                                 let res = Reflect.get(...arguments);
                                 if (typeof res === "function") {
@@ -63,13 +66,19 @@ export function makeStore(env, { localRegistry } = {}) {
                                 }
                                 return res;
                             }
-                            if (Model._.fieldsCompute.get(name) && !Model._.fieldsEager.get(name)) {
+                            if (
+                                Model._.fieldsCompute.get(name) &&
+                                !Model._.fieldsEager.get(name)
+                            ) {
                                 record._.fieldsComputeInNeed.set(name, true);
                                 if (record._.fieldsComputeOnNeed.get(name)) {
                                     record._.compute(record, name);
                                 }
                             }
-                            if (Model._.fieldsSort.get(name) && !Model._.fieldsEager.get(name)) {
+                            if (
+                                Model._.fieldsSort.get(name) &&
+                                !Model._.fieldsEager.get(name)
+                            ) {
                                 record._.fieldsSortInNeed.set(name, true);
                                 if (record._.fieldsSortOnNeed.get(name)) {
                                     record._.sort(record, name);
@@ -116,7 +125,7 @@ export function makeStore(env, { localRegistry } = {}) {
                                 if (reactiveSet) {
                                     record._.proxyUsed.set(name, true);
                                 }
-                                store._.updateFields(record, { [name]: val });
+                                store._.updateFields(record, {[name]: val});
                                 if (reactiveSet) {
                                     record._.proxyUsed.delete(name);
                                 }
@@ -197,7 +206,7 @@ export function makeStore(env, { localRegistry } = {}) {
      * store/_rawStore are assigned on models at next step, but they are
      * required on Store model to make the initial store insert.
      */
-    Object.assign(store.Store, { store, _rawStore: store });
+    Object.assign(store.Store, {store, _rawStore: store});
     // Make true store (as a model)
     store = toRaw(store.Store.insert())._raw;
     for (const Model of Object.values(Models)) {
@@ -205,6 +214,6 @@ export function makeStore(env, { localRegistry } = {}) {
         Model.store = store._proxy;
         store._proxy[Model.getName()] = Model;
     }
-    Object.assign(store, { Models, storeReady: true });
+    Object.assign(store, {Models, storeReady: true});
     return store._proxy;
 }

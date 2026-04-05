@@ -1,29 +1,31 @@
-import { Component, markup, onMounted, useRef } from "@odoo/owl";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import {Component, markup, onMounted, useRef} from "@odoo/owl";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 import {
     clickableBuilderComponentProps,
     useActionInfo,
     useSelectableItemComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderSelectItem extends Component {
     static template = "html_builder.BuilderSelectItem";
     static props = {
         ...clickableBuilderComponentProps,
-        title: { type: String, optional: true },
-        label: { type: String, optional: true },
-        className: { type: String, optional: true },
-        slots: { type: Object, optional: true },
+        title: {type: String, optional: true},
+        label: {type: String, optional: true},
+        className: {type: String, optional: true},
+        slots: {type: Object, optional: true},
     };
     static defaultProps = {
         className: "",
     };
-    static components = { BuilderComponent };
+    static components = {BuilderComponent};
 
     setup() {
         if (!this.env.selectableContext) {
-            throw new Error("BuilderSelectItem must be used inside a BuilderSelect component.");
+            throw new Error(
+                "BuilderSelectItem must be used inside a BuilderSelect component."
+            );
         }
         this.info = useActionInfo();
         const item = useRef("item");
@@ -33,13 +35,17 @@ export class BuilderSelectItem extends Component {
             // some cases. We fallback on a previously set value to circumvent
             // the problem, but it should be investigated.
 
-            label = this.props.label || (item.el ? markup(item.el.innerHTML) : "") || label || "";
+            label =
+                this.props.label ||
+                (item.el ? markup(item.el.innerHTML) : "") ||
+                label ||
+                "";
             return label;
         };
 
         onMounted(getLabel);
 
-        const { state, operation } = useSelectableItemComponent(this.props.id, {
+        const {state, operation} = useSelectableItemComponent(this.props.id, {
             getLabel,
         });
         this.state = state;

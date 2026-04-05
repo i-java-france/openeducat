@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_op_student_progression_graph" model="ir.ui.view">
+        <field name="name">op.student.progression.graph</field>
+        <field name="model">op.student.progression</field>
+        <field name="type">graph</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<graph string="Student Progression graph" type="pie">
+    
+                    
+    <field name="student_id" type="row"/>
+    
+                    
+    <field name="state" type="col"/>
+    
+                    
+    <field name="date" interval="month"/>
+    
+                
+</graph>
+        </field>
+    </record>
+</odoo>

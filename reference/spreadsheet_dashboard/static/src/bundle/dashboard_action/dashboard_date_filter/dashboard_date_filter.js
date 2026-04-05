@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
-import { DateFilterDropdown } from "@spreadsheet/global_filters/components/date_filter_dropdown/date_filter_dropdown";
+import {Component} from "@odoo/owl";
+import {DateFilterDropdown} from "@spreadsheet/global_filters/components/date_filter_dropdown/date_filter_dropdown";
 import {
     dateFilterValueToString,
     getNextDateFilterValue,
     getPreviousDateFilterValue,
 } from "@spreadsheet/global_filters/helpers";
-import { Dropdown } from "@web/core/dropdown/dropdown";
+import {Dropdown} from "@web/core/dropdown/dropdown";
 
 /**
  * This component is used to select a date filter value in a dashboard.
@@ -15,9 +15,9 @@ import { Dropdown } from "@web/core/dropdown/dropdown";
  */
 export class DashboardDateFilter extends Component {
     static template = "spreadsheet_dashboard.DashboardDateFilter";
-    static components = { Dropdown, DateFilterDropdown };
+    static components = {Dropdown, DateFilterDropdown};
     static props = {
-        value: { type: Object, optional: true },
+        value: {type: Object, optional: true},
         update: Function,
     };
 

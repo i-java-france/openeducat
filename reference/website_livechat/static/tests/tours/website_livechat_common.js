@@ -26,7 +26,7 @@ export const start = [
         content: "Verify the message has been sent",
         trigger:
             ".o-livechat-root:shadow .o-mail-ChatWindow:contains(El Deboulonnator) .o-mail-Thread:not([data-transient])",
-        async run({ waitFor }) {
+        async run({waitFor}) {
             await waitFor(".o-mail-Message:contains('Hello Sir!')", {
                 root: this.anchor,
                 only: true,
@@ -88,7 +88,8 @@ export const emailTranscript = [
     },
     {
         content: "Check conversation is sent",
-        trigger: ".o-livechat-root:shadow .form-text:contains(The conversation was sent)",
+        trigger:
+            ".o-livechat-root:shadow .form-text:contains(The conversation was sent)",
         run: "click",
     },
 ];
@@ -96,7 +97,8 @@ export const emailTranscript = [
 export const downloadTranscript = [
     {
         content: "Download transcript",
-        trigger: ".o-livechat-root:shadow .btn[title='Download a copy of this conversation']",
+        trigger:
+            ".o-livechat-root:shadow .btn[title='Download a copy of this conversation']",
         run: "click",
     },
 ];

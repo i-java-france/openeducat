@@ -1,4 +1,4 @@
-import { GraphRenderer } from "@web/views/graph/graph_renderer";
+import {GraphRenderer} from "@web/views/graph/graph_renderer";
 
 export const LivechatGraphRendererMixin = (model) =>
     class extends GraphRenderer {
@@ -7,7 +7,7 @@ export const LivechatGraphRendererMixin = (model) =>
                 model,
                 "action_open_discuss_channel_view",
                 [],
-                { domain }
+                {domain}
             );
             this.env.services.action.doAction(action);
         }

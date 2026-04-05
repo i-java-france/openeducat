@@ -38,7 +38,8 @@ registerWebsitePreviewTour(
         ...clickOnSave(),
         {
             content: "Change the language to French",
-            trigger: ':iframe .js_language_selector .js_change_lang[data-url_code="fr"]',
+            trigger:
+                ':iframe .js_language_selector .js_change_lang[data-url_code="fr"]',
             run: "click",
         },
         {
@@ -67,7 +68,8 @@ registerWebsitePreviewTour(
             run: "click",
         },
         {
-            content: "Check that the highlight options were displayed and open highlight options",
+            content:
+                "Check that the highlight options were displayed and open highlight options",
             trigger: ".o-we-toolbar button[title='Apply highlight'].active",
             run: "click",
         },
@@ -93,7 +95,10 @@ registerWebsitePreviewTour(
             trigger: ".o-we-toolbar button[title='Animate Text'].active",
         },
         // Select a text content without any option.
-        selectFullText("text content without any option", "footer .s_text_block p:first span"),
+        selectFullText(
+            "text content without any option",
+            "footer .s_text_block p:first span"
+        ),
         {
             content: "Expand the toolbar for more buttons",
             trigger: ".o-we-toolbar button[name='expand_toolbar']",

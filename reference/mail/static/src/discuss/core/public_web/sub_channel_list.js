@@ -1,12 +1,12 @@
-import { NotificationItem } from "@mail/core/public_web/notification_item";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
-import { SubChannelPreview } from "@mail/discuss/core/public_web/sub_channel_preview";
-import { useSequential, useVisible } from "@mail/utils/common/hooks";
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { fuzzyLookup } from "@web/core/utils/search";
+import {NotificationItem} from "@mail/core/public_web/notification_item";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
+import {SubChannelPreview} from "@mail/discuss/core/public_web/sub_channel_preview";
+import {useSequential, useVisible} from "@mail/utils/common/hooks";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {fuzzyLookup} from "@web/core/utils/search";
 
 /**
  * @typedef {Object} Props
@@ -16,7 +16,7 @@ import { fuzzyLookup } from "@web/core/utils/search";
  */
 export class SubChannelList extends Component {
     static template = "mail.SubChannelList";
-    static components = { ActionPanel, NotificationItem, SubChannelPreview };
+    static components = {ActionPanel, NotificationItem, SubChannelPreview};
 
     static props = ["thread", "close?"];
 
@@ -31,11 +31,13 @@ export class SubChannelList extends Component {
         });
         this.searchRef = useRef("search");
         this.sequential = useSequential();
-        useAutofocus({ refName: "search" });
+        useAutofocus({refName: "search"});
         this.loadMoreState = useVisible("load-more", (isVisible) => {
             if (isVisible) {
                 this.props.thread.loadMoreSubChannels({
-                    searchTerm: this.state.searching ? this.state.searchTerm : undefined,
+                    searchTerm: this.state.searching
+                        ? this.state.searchTerm
+                        : undefined,
                 });
             }
         });
@@ -50,14 +52,16 @@ export class SubChannelList extends Component {
     }
 
     get NO_THREAD_FOUND() {
-        return _t(`No thread named "%(thread_name)s"`, { thread_name: this.state.lastSearchTerm });
+        return _t(`No thread named "%(thread_name)s"`, {
+            thread_name: this.state.lastSearchTerm,
+        });
     }
 
     async onClickSubThread(subThread) {
         if (!subThread.hasSelfAsMember) {
-            await rpc("/discuss/channel/join", { channel_id: subThread.id });
+            await rpc("/discuss/channel/join", {channel_id: subThread.id});
         }
-        subThread.open({ focus: true });
+        subThread.open({focus: true});
         if (this.env.inChatWindow) {
             this.props.close?.();
         }
@@ -78,7 +82,7 @@ export class SubChannelList extends Component {
     }
 
     async onClickCreate() {
-        await this.props.thread.createSubChannel({ name: this.state.searchTerm });
+        await this.props.thread.createSubChannel({name: this.state.searchTerm});
         this._refreshSubChannelList();
         this.props.close?.();
     }
@@ -108,7 +112,7 @@ export class SubChannelList extends Component {
         this.state.subChannels = fuzzyLookup(
             this.state.searchTerm ?? "",
             this.props.thread.sub_channel_ids,
-            ({ name }) => name
+            ({name}) => name
         );
     }
 }

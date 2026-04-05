@@ -3,19 +3,20 @@
 import base64
 import json
 from datetime import datetime, timedelta
-from freezegun import freeze_time
 from unittest.mock import patch
+
+from freezegun import freeze_time
 from markupsafe import Markup
 
 from odoo import Command, fields
-from odoo.addons.bus.models.bus import json_dump
-from odoo.addons.mail.models.discuss.discuss_channel import channel_avatar, group_avatar
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.mail.tests.common import MailCommon
-from odoo.addons.mail.tools.discuss import Store
 from odoo.exceptions import ValidationError
 from odoo.tests import HttpCase, tagged, users
 from odoo.tools import html_escape, mute_logger
+
+from odoo.addons.bus.models.bus import json_dump
+from odoo.addons.mail.models.discuss.discuss_channel import channel_avatar, group_avatar
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
+from odoo.addons.mail.tools.discuss import Store
 
 
 @tagged("post_install", "-at_install")
@@ -615,7 +616,7 @@ class TestChannelInternals(MailCommon, HttpCase):
         self.assertEqual(base64.b64decode(test_channel.avatar_128), expceted_avatar_channel)
         self.assertEqual(base64.b64decode(private_group.avatar_128), expected_avatar_group)
 
-        test_channel.image_128 = base64.b64encode(("<svg/>").encode())
+        test_channel.image_128 = base64.b64encode(b"<svg/>")
         self.assertEqual(test_channel.avatar_128, test_channel.image_128)
 
     def test_channel_write_should_send_notification(self):
@@ -634,7 +635,7 @@ class TestChannelInternals(MailCommon, HttpCase):
     def test_channel_write_should_send_notification_if_image_128_changed(self):
         channel = self.env['discuss.channel'].create({'name': '', 'uuid': 'test-uuid'})
         # do the operation once before the assert to grab the value to expect
-        channel.image_128 = base64.b64encode(("<svg/>").encode())
+        channel.image_128 = base64.b64encode(b"<svg/>")
         avatar_cache_key = channel.avatar_cache_key
         channel.image_128 = False
         with self.assertBus(
@@ -648,7 +649,7 @@ class TestChannelInternals(MailCommon, HttpCase):
                 }
             ],
         ):
-            channel.image_128 = base64.b64encode(("<svg/>").encode())
+            channel.image_128 = base64.b64encode(b"<svg/>")
 
     def test_channel_notification(self):
         all_test_user = mail_new_test_user(

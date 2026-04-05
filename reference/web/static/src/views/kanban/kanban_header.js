@@ -1,15 +1,15 @@
-import { Component, useRef } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { registry } from "@web/core/registry";
-import { utils } from "@web/core/ui/ui_service";
-import { memoize } from "@web/core/utils/functions";
-import { useService } from "@web/core/utils/hooks";
-import { useDebounced } from "@web/core/utils/timing";
-import { ColumnProgress } from "@web/views/view_components/column_progress";
-import { GroupConfigMenu } from "@web/views/view_components/group_config_menu";
+import {Component, useRef} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {registry} from "@web/core/registry";
+import {utils} from "@web/core/ui/ui_service";
+import {memoize} from "@web/core/utils/functions";
+import {useService} from "@web/core/utils/hooks";
+import {useDebounced} from "@web/core/utils/timing";
+import {ColumnProgress} from "@web/views/view_components/column_progress";
+import {GroupConfigMenu} from "@web/views/view_components/group_config_menu";
 
 class KanbanHeaderTooltip extends Component {
     static template = "web.KanbanGroupTooltip";
@@ -21,18 +21,18 @@ class KanbanHeaderTooltip extends Component {
 
 export class KanbanHeader extends Component {
     static template = "web.KanbanHeader";
-    static components = { ColumnProgress, Dropdown, DropdownItem, GroupConfigMenu };
+    static components = {ColumnProgress, Dropdown, DropdownItem, GroupConfigMenu};
     static props = {
-        activeActions: { type: Object },
-        canQuickCreate: { type: Boolean },
-        deleteGroup: { type: Function },
-        dialogClose: { type: Array },
-        group: { type: Object },
-        list: { type: Object },
-        quickCreateState: { type: Object },
-        scrollTop: { type: Function },
-        tooltipInfo: { type: Object },
-        progressBarState: { type: true, optional: true },
+        activeActions: {type: Object},
+        canQuickCreate: {type: Boolean},
+        deleteGroup: {type: Function},
+        dialogClose: {type: Array},
+        group: {type: Object},
+        list: {type: Object},
+        quickCreateState: {type: Object},
+        scrollTop: {type: Function},
+        tooltipInfo: {type: Object},
+        progressBarState: {type: true, optional: true},
     };
 
     setup() {
@@ -49,7 +49,7 @@ export class KanbanHeader extends Component {
         }
         const tooltip = await this.loadTooltip();
         if (tooltip.length) {
-            this.popover.open(ev.target, { tooltip });
+            this.popover.open(ev.target, {tooltip});
         }
     }
 
@@ -97,8 +97,8 @@ export class KanbanHeader extends Component {
     }
 
     get groupAggregate() {
-        const { group, progressBarState } = this.props;
-        const { sumField } = progressBarState.progressAttributes;
+        const {group, progressBarState} = this.props;
+        const {sumField} = progressBarState.progressAttributes;
         return progressBarState.getAggregateValue(group, sumField);
     }
 
@@ -107,12 +107,14 @@ export class KanbanHeader extends Component {
     // ------------------------------------------------------------------------
 
     get hasTooltip() {
-        const { name, type } = this.group.groupByField;
-        return type === "many2one" && this.group.value && name in this.props.tooltipInfo;
+        const {name, type} = this.group.groupByField;
+        return (
+            type === "many2one" && this.group.value && name in this.props.tooltipInfo
+        );
     }
 
     loadTooltip = memoize(async () => {
-        const { name, relation: resModel } = this.group.groupByField;
+        const {name, relation: resModel} = this.group.groupByField;
         const tooltipInfo = this.props.tooltipInfo[name];
         const fieldNames = Object.keys(tooltipInfo);
         const [values] = await this.orm.silent.read(
@@ -123,7 +125,10 @@ export class KanbanHeader extends Component {
 
         return fieldNames
             .filter((fieldName) => values[fieldName])
-            .map((fieldName) => ({ title: tooltipInfo[fieldName], value: values[fieldName] }));
+            .map((fieldName) => ({
+                title: tooltipInfo[fieldName],
+                value: values[fieldName],
+            }));
     });
 
     quickCreate(group) {

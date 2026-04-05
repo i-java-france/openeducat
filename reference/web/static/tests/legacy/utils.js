@@ -1,7 +1,7 @@
 /** @odoo-module alias=@web/../tests/utils default=false */
 
-import { isVisible } from "@web/core/utils/ui";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import {isVisible} from "@web/core/utils/ui";
+import {registerCleanup} from "@web/../tests/helpers/cleanup";
 import {
     click as webClick,
     getFixture,
@@ -35,9 +35,9 @@ function createFakeDataTransfer(files) {
  * @param {boolean} [options.shiftKey]
  */
 export async function click(selector, options = {}) {
-    const { shiftKey } = options;
+    const {shiftKey} = options;
     delete options.shiftKey;
-    await contains(selector, { click: { shiftKey }, ...options });
+    await contains(selector, {click: {shiftKey}, ...options});
 }
 
 /**
@@ -49,7 +49,7 @@ export async function click(selector, options = {}) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function dragenterFiles(selector, files, options) {
-    await contains(selector, { dragenterFiles: files, ...options });
+    await contains(selector, {dragenterFiles: files, ...options});
 }
 
 /**
@@ -61,7 +61,7 @@ export async function dragenterFiles(selector, files, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function dragoverFiles(selector, files, options) {
-    await contains(selector, { dragoverFiles: files, ...options });
+    await contains(selector, {dragoverFiles: files, ...options});
 }
 
 /**
@@ -73,7 +73,7 @@ export async function dragoverFiles(selector, files, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function dropFiles(selector, files, options) {
-    await contains(selector, { dropFiles: files, ...options });
+    await contains(selector, {dropFiles: files, ...options});
 }
 
 /**
@@ -85,7 +85,7 @@ export async function dropFiles(selector, files, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function inputFiles(selector, files, options) {
-    await contains(selector, { inputFiles: files, ...options });
+    await contains(selector, {inputFiles: files, ...options});
 }
 
 /**
@@ -97,7 +97,7 @@ export async function inputFiles(selector, files, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function pasteFiles(selector, files, options) {
-    await contains(selector, { pasteFiles: files, ...options });
+    await contains(selector, {pasteFiles: files, ...options});
 }
 
 /**
@@ -108,7 +108,7 @@ export async function pasteFiles(selector, files, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function focus(selector, options) {
-    await contains(selector, { setFocus: true, ...options });
+    await contains(selector, {setFocus: true, ...options});
 }
 
 /**
@@ -121,9 +121,9 @@ export async function focus(selector, options) {
  * @param {boolean} [options.replace=false]
  */
 export async function insertText(selector, content, options = {}) {
-    const { replace = false } = options;
+    const {replace = false} = options;
     delete options.replace;
-    await contains(selector, { ...options, insertText: { content, replace } });
+    await contains(selector, {...options, insertText: {content, replace}});
 }
 
 /**
@@ -135,7 +135,7 @@ export async function insertText(selector, content, options = {}) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function scroll(selector, scrollTop, options) {
-    await contains(selector, { setScroll: scrollTop, ...options });
+    await contains(selector, {setScroll: scrollTop, ...options});
 }
 
 /**
@@ -147,7 +147,7 @@ export async function scroll(selector, scrollTop, options) {
  * @param {ContainsOptions} [options] forwarded to `contains`
  */
 export async function triggerEvents(selector, events, options) {
-    await contains(selector, { triggerEvents: events, ...options });
+    await contains(selector, {triggerEvents: events, ...options});
 }
 
 function log(ok, message) {
@@ -284,7 +284,7 @@ class Contains {
         this.onScroll = () => this.runOnce("after scroll");
         if (!this.runOnce("immediately")) {
             this.timer = setTimeout(
-                () => this.runOnce("Timeout of 5 seconds", { crashOnFail: true }),
+                () => this.runOnce("Timeout of 5 seconds", {crashOnFail: true}),
                 5000
             );
             this.observer = new MutationObserver((mutations) => {
@@ -301,7 +301,7 @@ class Contains {
             });
             registerCleanup(() => {
                 if (!this.done) {
-                    this.runOnce("Test ended", { crashOnFail: true });
+                    this.runOnce("Test ended", {crashOnFail: true});
                 }
             });
         }
@@ -320,7 +320,7 @@ class Contains {
      * @param {boolean} [options.executeOnSuccess=true]
      * @returns {HTMLElement[]|undefined}
      */
-    runOnce(whenMessage, { crashOnFail = false, executeOnSuccess = true } = {}) {
+    runOnce(whenMessage, {crashOnFail = false, executeOnSuccess = true} = {}) {
         const res = this.select();
         if (res?.length === this.options.count || crashOnFail) {
             // clean before doing anything else to avoid infinite loop due to side effects
@@ -384,7 +384,7 @@ class Contains {
         }
         if (this.options.dragenterFiles) {
             message = `${message} and dragentered ${this.options.dragenterFiles.length} file(s)`;
-            const ev = new Event("dragenter", { bubbles: true });
+            const ev = new Event("dragenter", {bubbles: true});
             Object.defineProperty(ev, "dataTransfer", {
                 value: createFakeDataTransfer(this.options.dragenterFiles),
             });
@@ -392,7 +392,7 @@ class Contains {
         }
         if (this.options.dragoverFiles) {
             message = `${message} and dragovered ${this.options.dragoverFiles.length} file(s)`;
-            const ev = new Event("dragover", { bubbles: true });
+            const ev = new Event("dragover", {bubbles: true});
             Object.defineProperty(ev, "dataTransfer", {
                 value: createFakeDataTransfer(this.options.dragoverFiles),
             });
@@ -400,7 +400,7 @@ class Contains {
         }
         if (this.options.dropFiles) {
             message = `${message} and dropped ${this.options.dropFiles.length} file(s)`;
-            const ev = new Event("drop", { bubbles: true });
+            const ev = new Event("drop", {bubbles: true});
             Object.defineProperty(ev, "dataTransfer", {
                 value: createFakeDataTransfer(this.options.dropFiles),
             });
@@ -432,21 +432,23 @@ class Contains {
             el.focus();
             if (this.options.insertText.replace) {
                 el.value = "";
-                el.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Backspace" }));
-                el.dispatchEvent(new window.KeyboardEvent("keyup", { key: "Backspace" }));
+                el.dispatchEvent(
+                    new window.KeyboardEvent("keydown", {key: "Backspace"})
+                );
+                el.dispatchEvent(new window.KeyboardEvent("keyup", {key: "Backspace"}));
                 el.dispatchEvent(new window.InputEvent("input"));
             }
             for (const char of this.options.insertText.content) {
                 el.value += char;
-                el.dispatchEvent(new window.KeyboardEvent("keydown", { key: char }));
-                el.dispatchEvent(new window.KeyboardEvent("keyup", { key: char }));
+                el.dispatchEvent(new window.KeyboardEvent("keydown", {key: char}));
+                el.dispatchEvent(new window.KeyboardEvent("keyup", {key: char}));
                 el.dispatchEvent(new window.InputEvent("input"));
             }
             el.dispatchEvent(new window.InputEvent("change"));
         }
         if (this.options.pasteFiles) {
             message = `${message} and pasted ${this.options.pasteFiles.length} file(s)`;
-            const ev = new Event("paste", { bubbles: true });
+            const ev = new Event("paste", {bubbles: true});
             Object.defineProperty(ev, "clipboardData", {
                 value: createFakeDataTransfer(this.options.pasteFiles),
             });
@@ -459,7 +461,9 @@ class Contains {
         if (this.options.setScroll !== undefined) {
             message = `${message} and set scroll to "${this.options.setScroll}"`;
             el.scrollTop =
-                this.options.setScroll === "bottom" ? el.scrollHeight : this.options.setScroll;
+                this.options.setScroll === "bottom"
+                    ? el.scrollHeight
+                    : this.options.setScroll;
         }
         if (this.options.triggerEvents) {
             message = `${message} and triggered "${this.options.triggerEvents.join(", ")}" events`;
@@ -500,7 +504,8 @@ class Contains {
                 (this.options.value === undefined || el.value === this.options.value) &&
                 (this.options.scroll === undefined ||
                     (this.options.scroll === "bottom"
-                        ? Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) <= 1
+                        ? Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) <=
+                          1
                         : Math.abs(el.scrollTop - this.options.scroll) <= 1));
             if (condition && this.options.text !== undefined) {
                 if (
@@ -514,7 +519,10 @@ class Contains {
             }
             if (condition && this.options.contains) {
                 for (const param of this.options.contains) {
-                    const childContains = new Contains(param[0], { ...param[1], target: el });
+                    const childContains = new Contains(param[0], {
+                        ...param[1],
+                        target: el,
+                    });
                     if (
                         !childContains.runOnce(`as child of el ${currentIndex + 1})`, {
                             executeOnSuccess: false,
@@ -540,7 +548,10 @@ class Contains {
                 })?.[0];
                 if (
                     !afterEl ||
-                    !(el.compareDocumentPosition(afterEl) & Node.DOCUMENT_POSITION_PRECEDING)
+                    !(
+                        el.compareDocumentPosition(afterEl) &
+                        Node.DOCUMENT_POSITION_PRECEDING
+                    )
                 ) {
                     condition = false;
                 }
@@ -556,7 +567,10 @@ class Contains {
                 })?.[0];
                 if (
                     !beforeEl ||
-                    !(el.compareDocumentPosition(beforeEl) & Node.DOCUMENT_POSITION_FOLLOWING)
+                    !(
+                        el.compareDocumentPosition(beforeEl) &
+                        Node.DOCUMENT_POSITION_FOLLOWING
+                    )
                 ) {
                     condition = false;
                 }
@@ -593,7 +607,9 @@ class Contains {
                 ...this.options.parent[1],
                 target: this.options.target,
             });
-            return this.parentContains.runOnce(`as parent`, { executeOnSuccess: false })?.[0];
+            return this.parentContains.runOnce(`as parent`, {
+                executeOnSuccess: false,
+            })?.[0];
         }
         return this.options.target;
     }
@@ -625,7 +641,7 @@ const stepState = {
         this.expectedSteps = null;
     },
 
-    check({ crashOnFail = false } = {}) {
+    check({crashOnFail = false} = {}) {
         const success =
             this.expectedSteps.length === this.currentSteps.length &&
             this.expectedSteps.every((s, i) => s === this.currentSteps[i]);
@@ -646,7 +662,7 @@ if (window.QUnit) {
     QUnit.testStart(() =>
         registerCleanup(() => {
             if (stepState.expectedSteps) {
-                stepState.check({ crashOnFail: true });
+                stepState.check({crashOnFail: true});
             } else {
                 stepState.clear();
             }
@@ -675,11 +691,11 @@ export function step(step) {
  */
 export function assertSteps(steps) {
     if (stepState.expectedSteps) {
-        stepState.check({ crashOnFail: true });
+        stepState.check({crashOnFail: true});
     }
     stepState.expectedSteps = steps;
     stepState.deferred = makeDeferred();
-    stepState.timeout = setTimeout(() => stepState.check({ crashOnFail: true }), 2000);
+    stepState.timeout = setTimeout(() => stepState.check({crashOnFail: true}), 2000);
     stepState.check();
     return stepState.deferred;
 }

@@ -1,5 +1,5 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { useDynamicSnippetOption } from "./dynamic_snippet_hook";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {useDynamicSnippetOption} from "./dynamic_snippet_hook";
 
 export class DynamicSnippetCarouselOption extends BaseOptionComponent {
     static template = "website.DynamicSnippetCarouselOption";
@@ -8,7 +8,7 @@ export class DynamicSnippetCarouselOption extends BaseOptionComponent {
 
     setup() {
         super.setup();
-        const { getModelNameFilter } = this.dependencies.dynamicSnippetCarouselOption;
+        const {getModelNameFilter} = this.dependencies.dynamicSnippetCarouselOption;
         this.dynamicOptionParams = useDynamicSnippetOption(getModelNameFilter());
     }
 }

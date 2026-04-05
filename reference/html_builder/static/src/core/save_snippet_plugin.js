@@ -1,8 +1,8 @@
-import { escapeTextNodes } from "@html_builder/utils/escaping";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { markup } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {escapeTextNodes} from "@html_builder/utils/escaping";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {markup} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 const savableSelector = "[data-snippet], a.btn";
 // TODO `so_submit_button_selector` ?
@@ -50,13 +50,17 @@ export class SaveSnippetPlugin extends Plugin {
      */
     async wrapWithBeforeAfterSaveHandlers(snippetEl, callback) {
         await Promise.all(
-            this.getResource("before_save_handlers").map((handler) => handler(snippetEl))
+            this.getResource("before_save_handlers").map((handler) =>
+                handler(snippetEl)
+            )
         );
         let node;
         try {
             node = callback();
         } finally {
-            this.getResource("after_save_handlers").forEach((handler) => handler(snippetEl));
+            this.getResource("after_save_handlers").forEach((handler) =>
+                handler(snippetEl)
+            );
         }
         return node;
     }
@@ -64,7 +68,7 @@ export class SaveSnippetPlugin extends Plugin {
     async saveSnippet(el) {
         const cleanForSaveHandlers = [
             ...this.getResource("clean_for_save_handlers"),
-            ({ root }) => escapeTextNodes(root),
+            ({root}) => escapeTextNodes(root),
         ];
         const savedName = await this.config.saveSnippet(
             el,

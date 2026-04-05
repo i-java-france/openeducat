@@ -1,5 +1,5 @@
-import { ActivityModel } from "@mail/views/web/activity/activity_model";
-import { ProjectModelMixin } from "../project_model_mixin";
+import {ActivityModel} from "@mail/views/web/activity/activity_model";
+import {ProjectModelMixin} from "../project_model_mixin";
 
 export class ProjectActivityModel extends ProjectModelMixin(ActivityModel) {
     async load(params = {}) {

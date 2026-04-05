@@ -1,13 +1,13 @@
 /* global posmodel */
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
 import * as CartPage from "@pos_self_order/../tests/tours/utils/cart_page_util";
 import * as LandingPage from "@pos_self_order/../tests/tours/utils/landing_page_util";
 import * as ProductPage from "@pos_self_order/../tests/tours/utils/product_page_util";
 import * as ConfirmationPage from "@pos_self_order/../tests/tours/utils/confirmation_page_util";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 registry.category("web_tour.tours").add("self_mobile_each_table_takeaway_in", {
     steps: () => [
@@ -305,21 +305,23 @@ registry.category("web_tour.tours").add("self_order_mobile_special_products_cate
     ],
 });
 
-registry.category("web_tour.tours").add("self_mobile_auto_table_selection_takeaway_in", {
-    steps: () => [
-        Utils.checkIsNoBtn("My Order"),
-        Utils.clickBtn("Order Now"),
-        LandingPage.selectLocation("Test-In"),
-        ProductPage.clickProduct("Coca-Cola"),
-        Utils.clickBtn("Checkout"),
-        CartPage.checkProduct("Coca-Cola", "2.53", "1"),
-        Utils.clickBtn("Order"),
-        CartPage.checkNoTableSelector(),
-        ConfirmationPage.isShown(),
-        Utils.clickBtn("Ok"),
-        Utils.checkIsNoBtn("Order Now"),
-    ],
-});
+registry
+    .category("web_tour.tours")
+    .add("self_mobile_auto_table_selection_takeaway_in", {
+        steps: () => [
+            Utils.checkIsNoBtn("My Order"),
+            Utils.clickBtn("Order Now"),
+            LandingPage.selectLocation("Test-In"),
+            ProductPage.clickProduct("Coca-Cola"),
+            Utils.clickBtn("Checkout"),
+            CartPage.checkProduct("Coca-Cola", "2.53", "1"),
+            Utils.clickBtn("Order"),
+            CartPage.checkNoTableSelector(),
+            ConfirmationPage.isShown(),
+            Utils.clickBtn("Ok"),
+            Utils.checkIsNoBtn("Order Now"),
+        ],
+    });
 
 registry.category("web_tour.tours").add("test_self_order_product_availability", {
     steps: () => [
@@ -387,7 +389,12 @@ const createPaidOrder = [
 
 registry.category("web_tour.tours").add("test_order_sequence_in_self", {
     steps: () =>
-        [...createPaidOrder, ...createPaidOrder, ...createPaidOrder, ...createPaidOrder].flat(),
+        [
+            ...createPaidOrder,
+            ...createPaidOrder,
+            ...createPaidOrder,
+            ...createPaidOrder,
+        ].flat(),
 });
 
 registry.category("web_tour.tours").add("test_sub_categories_products_displayed", {

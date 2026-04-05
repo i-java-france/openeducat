@@ -26,7 +26,7 @@ registerWebsitePreviewTour(
     },
     () => [
         ...insertSnippet(blogPostsSnippet),
-        ...clickOnSnippet({ ...blogPostsSnippet, id: "s_blog_posts" }),
+        ...clickOnSnippet({...blogPostsSnippet, id: "s_blog_posts"}),
         {
             content: "Check That the `Model` option is hidden",
             trigger: `.options-container:not(:has([data-label="Model"]))`,
@@ -64,7 +64,8 @@ registerWebsitePreviewTour(
         ),
         {
             content: "Check if the content width is not set as 'Full-width'",
-            trigger: ":iframe .s_dynamic_snippet_container.o_container_small:not(.container-fluid)",
+            trigger:
+                ":iframe .s_dynamic_snippet_container.o_container_small:not(.container-fluid)",
         },
     ]
 );

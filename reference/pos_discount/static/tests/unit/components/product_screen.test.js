@@ -1,8 +1,8 @@
-import { animationFrame, expect, test } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupPosEnv, expectFormattedPrice } from "@point_of_sale/../tests/unit/utils";
-import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {animationFrame, expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {expectFormattedPrice, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {ProductScreen} from "@point_of_sale/app/screens/product_screen/product_screen";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -18,7 +18,7 @@ test("getNumpadButtons", async () => {
         order
     );
     const productScreen = await mountWithCleanup(ProductScreen, {
-        props: { orderUuid: order.uuid },
+        props: {orderUuid: order.uuid},
     });
     await store.applyDiscount(10);
     await animationFrame();
@@ -47,7 +47,7 @@ test("addProductToOrder reapplies the global discount", async () => {
     const order = store.addNewOrder();
     const product = store.models["product.template"].get(5);
     const productScreen = await mountWithCleanup(ProductScreen, {
-        props: { orderUuid: order.uuid },
+        props: {orderUuid: order.uuid},
     });
 
     await productScreen.addProductToOrder(product);
@@ -65,7 +65,7 @@ test("addProductToOrder reapplies the global discount", async () => {
     await productScreen.addProductToOrder(product);
     await animationFrame();
     expectFormattedPrice(productScreen.total, "$ 6.21");
-    expect(order.priceIncl).toBeCloseTo(6.21, { margin: 1e-12 });
+    expect(order.priceIncl).toBeCloseTo(6.21, {margin: 1e-12});
     expect(order.priceExcl).toBe(5.4);
     expect(order.amountTaxes).toBe(0.81);
 });

@@ -1,9 +1,9 @@
-import { expect, test } from "@odoo/hoot";
-import { mockPermission } from "@odoo/hoot-mock";
-import { defineModels, models, mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {mockPermission} from "@odoo/hoot-mock";
+import {defineModels, models, mountView} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    _records = [{ id: 1 }];
+    _records = [{id: 1}];
 }
 
 defineModels([Partner]);

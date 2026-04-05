@@ -1,11 +1,11 @@
-import { Component, useRef, onPatched } from "@odoo/owl";
+import {Component, useRef, onPatched} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { scrollTo } from "@web/core/utils/scrolling";
+import {_t} from "@web/core/l10n/translation";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {scrollTo} from "@web/core/utils/scrolling";
 
-import { HierarchyCard } from "./hierarchy_card";
-import { useHierarchyNodeDraggable } from "./hierarchy_node_draggable";
+import {HierarchyCard} from "./hierarchy_card";
+import {useHierarchyNodeDraggable} from "./hierarchy_node_draggable";
 
 export class HierarchyRenderer extends Component {
     static components = {
@@ -29,11 +29,11 @@ export class HierarchyRenderer extends Component {
                 handle: ".o_hierarchy_node",
                 rows: ".o_hierarchy_row",
                 ignore: "button",
-                onDragStart: ({ addClass, element }) => {
+                onDragStart: ({addClass, element}) => {
                     addClass(element, "o_hierarchy_dragged");
                     addClass(element.querySelector(".o_hierarchy_node"), "shadow");
                 },
-                onDragEnd: ({ removeClass, element, row, hierarchyRow }) => {
+                onDragEnd: ({removeClass, element, row, hierarchyRow}) => {
                     removeClass(element, "o_hierarchy_dragged");
                     if (row) {
                         removeClass(row, "o_hierarchy_hover");
@@ -45,16 +45,16 @@ export class HierarchyRenderer extends Component {
                 onDrop: (params) => {
                     this.nodeDrop(params);
                 },
-                onElementEnter: ({ addClass, element }) => {
+                onElementEnter: ({addClass, element}) => {
                     addClass(element, "o_hierarchy_hover");
                 },
-                onElementLeave: ({ removeClass, element }) => {
+                onElementLeave: ({removeClass, element}) => {
                     removeClass(element, "o_hierarchy_hover");
                 },
-                onRowEnter: ({ addClass, row }) => {
+                onRowEnter: ({addClass, row}) => {
                     addClass(row, "o_hierarchy_hover");
                 },
-                onRowLeave: ({ removeClass, row }) => {
+                onRowLeave: ({removeClass, row}) => {
                     removeClass(row, "o_hierarchy_hover");
                 },
             });
@@ -72,21 +72,27 @@ export class HierarchyRenderer extends Component {
             case "none":
                 return;
             case "bottom":
-                row = this.rendererRef.el.querySelector(":scope .o_hierarchy_row:last-child");
+                row = this.rendererRef.el.querySelector(
+                    ":scope .o_hierarchy_row:last-child"
+                );
                 break;
             case "up":
-                row = this.rendererRef.el.querySelector(":scope .o_hierarchy_row:first-child");
+                row = this.rendererRef.el.querySelector(
+                    ":scope .o_hierarchy_row:first-child"
+                );
                 break;
             default:
                 row = this.rendererRef.el
-                    .querySelector(`:scope .o_hierarchy_node[data-node-id="${this.scrollTarget}"]`)
+                    .querySelector(
+                        `:scope .o_hierarchy_node[data-node-id="${this.scrollTarget}"]`
+                    )
                     ?.closest(".o_hierarchy_row");
         }
         this.scrollTarget = "none";
         if (!row) {
             return;
         }
-        scrollTo(row, { behavior: "smooth" });
+        scrollTo(row, {behavior: "smooth"});
     }
 
     get canDragAndDropRecord() {
@@ -99,11 +105,11 @@ export class HierarchyRenderer extends Component {
 
     get rows() {
         const rootNodes = this.props.model.root.rootNodes;
-        const rows = [{ nodes: rootNodes }];
+        const rows = [{nodes: rootNodes}];
         const processNode = (node, rootNode) => {
             const subNodes = node.nodes;
             if (subNodes.length && !subNodes.includes(rootNode)) {
-                rows.push({ parentNode: node, nodes: subNodes });
+                rows.push({parentNode: node, nodes: subNodes});
                 for (const subNode of subNodes) {
                     processNode(subNode, rootNode);
                 }
@@ -117,7 +123,7 @@ export class HierarchyRenderer extends Component {
         return rows;
     }
 
-    async nodeDrop({ element, row, nextRow, newParentNode }) {
+    async nodeDrop({element, row, nextRow, newParentNode}) {
         let parentNodeId, parentResId;
         if (newParentNode) {
             parentNodeId = newParentNode.dataset.nodeId;
@@ -131,7 +137,9 @@ export class HierarchyRenderer extends Component {
                         parentResId = nodes[0].parentResId;
                         if (!nodes.every((node) => node.parentResId === parentResId)) {
                             this.notification.add(
-                                _t("Impossible to update the parent node of the dragged node because no parent has been found."),
+                                _t(
+                                    "Impossible to update the parent node of the dragged node because no parent has been found."
+                                ),
                                 {
                                     type: "danger",
                                 }
@@ -142,6 +150,9 @@ export class HierarchyRenderer extends Component {
                 }
             }
         }
-        await this.props.model.updateParentNode(element.dataset.nodeId, { parentResId, parentNodeId });
+        await this.props.model.updateParentNode(element.dataset.nodeId, {
+            parentResId,
+            parentNodeId,
+        });
     }
 }

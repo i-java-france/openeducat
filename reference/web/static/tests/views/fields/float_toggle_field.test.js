@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { queryText } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {queryText} from "@odoo/hoot-dom";
 import {
     clickSave,
     contains,
@@ -11,9 +11,9 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    float_field = fields.Float({ string: "Float field" });
+    float_field = fields.Float({string: "Float field"});
 
-    _records = [{ id: 1, float_field: 0.44444 }];
+    _records = [{id: 1, float_field: 0.44444}];
 }
 
 class User extends models.Model {
@@ -26,7 +26,7 @@ class User extends models.Model {
 defineModels([Partner, User]);
 
 test("basic flow in form view", async () => {
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         // 1.000 / 0.125 = 8
         expect.step(args[1].float_field.toString());
     });
@@ -53,7 +53,7 @@ test("basic flow in form view", async () => {
         message: "The value should be rendered correctly on the button.",
     });
 
-    // note, 0 will not be written, it's kept in the _changes of the datapoint.
+    // Note, 0 will not be written, it's kept in the _changes of the datapoint.
     // because save has not been clicked.
 
     await contains("button.o_field_float_toggle").click();

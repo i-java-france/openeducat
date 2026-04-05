@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.sql import column_exists, create_column
 
@@ -149,7 +149,7 @@ class AccountMove(models.Model):
     def _deduce_sequence_number_reset(self, name):
         if self.l10n_latam_use_documents:
             return 'never'
-        return super(AccountMove, self)._deduce_sequence_number_reset(name)
+        return super()._deduce_sequence_number_reset(name)
 
     def _get_last_sequence_domain(self, relaxed=False):
         no_anti_regex = False
@@ -170,7 +170,7 @@ class AccountMove(models.Model):
             # There was no pattern found, propose one
             return ""
 
-        return super(AccountMove, self)._get_starting_sequence()
+        return super()._get_starting_sequence()
 
     def _post(self, soft=True):
         for rec in self.filtered(lambda x: x.l10n_latam_use_documents and (not x.name or x.name == '/')):

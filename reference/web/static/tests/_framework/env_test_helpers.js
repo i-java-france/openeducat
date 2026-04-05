@@ -1,16 +1,16 @@
-import { after, afterEach, beforeEach, registerDebugInfo } from "@odoo/hoot";
-import { startRouter } from "@web/core/browser/router";
-import { createDebugContext } from "@web/core/debug/debug_context";
+import {after, afterEach, beforeEach, registerDebugInfo} from "@odoo/hoot";
+import {startRouter} from "@web/core/browser/router";
+import {createDebugContext} from "@web/core/debug/debug_context";
 import {
     translatedTerms,
     translatedTermsGlobal,
     translationLoaded,
 } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { pick } from "@web/core/utils/objects";
-import { patch } from "@web/core/utils/patch";
-import { makeEnv, startServices } from "@web/env";
-import { MockServer, makeMockServer } from "./mock_server/mock_server";
+import {registry} from "@web/core/registry";
+import {pick} from "@web/core/utils/objects";
+import {patch} from "@web/core/utils/patch";
+import {makeEnv, startServices} from "@web/env";
+import {MockServer, makeMockServer} from "./mock_server/mock_server";
 
 /**
  * @typedef {Record<keyof Services, any>} Dependencies
@@ -34,7 +34,10 @@ import { MockServer, makeMockServer } from "./mock_server/mock_server";
  * @param {Registry} registry
  */
 const registerRegistryForCleanup = (registry) => {
-    const content = Object.entries(registry.content).map(([key, value]) => [key, value.slice()]);
+    const content = Object.entries(registry.content).map(([key, value]) => [
+        key,
+        value.slice(),
+    ]);
     registriesContent.set(registry, content);
 
     for (const subRegistry of Object.values(registry.subRegistries)) {
@@ -173,13 +176,16 @@ export function mockService(name, serviceFactory) {
                 }
             },
         },
-        { force: true }
+        {force: true}
     );
 
     // Patch already initialized service
     if (currentEnv?.services?.[name]) {
         if (typeof serviceFactory === "function") {
-            const dependencies = pick(currentEnv.services, ...(originalService.dependencies || []));
+            const dependencies = pick(
+                currentEnv.services,
+                ...(originalService.dependencies || [])
+            );
             currentEnv.services[name] = serviceFactory(currentEnv, dependencies);
         } else {
             patch(currentEnv.services[name], serviceFactory);

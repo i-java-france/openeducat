@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { mergeClasses } from "@web/core/utils/classname";
-import { badgeSelectionField, BadgeSelectionField } from "./badge_selection_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {mergeClasses} from "@web/core/utils/classname";
+import {badgeSelectionField, BadgeSelectionField} from "./badge_selection_field";
 
 export class ListBadgeSelectionField extends BadgeSelectionField {
     static template = "web.ListBadgeSelectionField";
     static props = {
         ...BadgeSelectionField.props,
-        colorField: { type: String, optional: true },
+        colorField: {type: String, optional: true},
     };
     getBadgeClassNames(option = false) {
         if (this.props.readonly) {
@@ -17,7 +17,7 @@ export class ListBadgeSelectionField extends BadgeSelectionField {
             ) {
                 return `o_badge_color_${this.props.record.data[this.props.colorField]}`;
             }
-            return mergeClasses({ "btn btn-secondary": this.value });
+            return mergeClasses({"btn btn-secondary": this.value});
         }
         return mergeClasses({
             "active o_badge_border": this.value === option[0],

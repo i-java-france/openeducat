@@ -6,17 +6,17 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
+import {describe, test} from "@odoo/hoot";
 
 describe.current.tags("desktop");
 defineMailModels();
 
 test("Empty attachment panel", async () => {
     const pyEnv = await startServer();
-    const channelId = await pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = await pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
-    await contains(".o-discuss-ChannelMemberList"); // wait for auto-open of this panel
+    await contains(".o-discuss-ChannelMemberList"); // Wait for auto-open of this panel
     await click(".o-mail-DiscussContent-header button[title='Attachments']");
     await contains(".o-mail-ActionPanel", {
         text: "This channel doesn't have any attachments.",
@@ -25,7 +25,7 @@ test("Empty attachment panel", async () => {
 
 test("Attachment panel sort by date", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["ir.attachment"].create([
         {
             res_id: channelId,
@@ -42,15 +42,15 @@ test("Attachment panel sort by date", async () => {
     ]);
     await start();
     await openDiscuss(channelId);
-    await contains(".o-discuss-ChannelMemberList"); // wait for auto-open of this panel
+    await contains(".o-discuss-ChannelMemberList"); // Wait for auto-open of this panel
     await click(".o-mail-DiscussContent-header button[title='Attachments']");
     await contains(".o-mail-AttachmentList", {
         text: "file2.pdf",
-        after: [".o-mail-DateSection", { text: "September, 2023" }],
-        before: [".o-mail-DateSection", { text: "August, 2023" }],
+        after: [".o-mail-DateSection", {text: "September, 2023"}],
+        before: [".o-mail-DateSection", {text: "August, 2023"}],
     });
     await contains(".o-mail-AttachmentList", {
         text: "file1.pdf",
-        after: [".o-mail-DateSection", { text: "August, 2023" }],
+        after: [".o-mail-DateSection", {text: "August, 2023"}],
     });
 });

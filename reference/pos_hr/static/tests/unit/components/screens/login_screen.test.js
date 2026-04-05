@@ -1,8 +1,8 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { LoginScreen } from "@point_of_sale/app/screens/login_screen/login_screen";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {LoginScreen} from "@point_of_sale/app/screens/login_screen/login_screen";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 

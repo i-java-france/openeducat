@@ -1,8 +1,8 @@
-import { CalendarFilterSection } from "@web/views/calendar/calendar_filter_section/calendar_filter_section";
-import { TimeOffCardMobile } from "../../../dashboard/time_off_card";
+import {CalendarFilterSection} from "@web/views/calendar/calendar_filter_section/calendar_filter_section";
+import {TimeOffCardMobile} from "../../../dashboard/time_off_card";
 
-import { useService } from "@web/core/utils/hooks";
-import { useState, onWillStart } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {useState, onWillStart} from "@odoo/owl";
 
 export class TimeOffCalendarFilterSection extends CalendarFilterSection {
     static components = {
@@ -28,7 +28,11 @@ export class TimeOffCalendarFilterSection extends CalendarFilterSection {
             return;
         }
         const filterData = {};
-        const data = await this.orm.call("hr.leave.type", "get_allocation_data_request", []);
+        const data = await this.orm.call(
+            "hr.leave.type",
+            "get_allocation_data_request",
+            []
+        );
         data.forEach((leave) => {
             filterData[leave[3]] = leave;
         });

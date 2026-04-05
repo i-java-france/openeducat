@@ -1,11 +1,11 @@
-import { test, expect, beforeEach } from "@odoo/hoot";
-import { queryAll } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {queryAll} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { mountView, contains, onRpc } from "@web/../tests/web_test_helpers";
+import {contains, mountView, onRpc} from "@web/../tests/web_test_helpers";
 
-import { defineTodoModels } from "./todo_test_helpers";
-import { ProjectTask } from "./mock_server/mock_models/project_task";
+import {defineTodoModels} from "./todo_test_helpers";
+import {ProjectTask} from "./mock_server/mock_models/project_task";
 
 defineTodoModels();
 

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template id="delivery_form">
         <!-- Parameters description:
             - delivery_methods: The delivery methods to display, as a `delivery.carrier` recordset.
@@ -12,7 +11,7 @@
                 <t t-foreach="delivery_methods" t-as="dm">
                     <li name="o_delivery_method" class="list-group-item">
                         <t t-call="website_sale.delivery_method">
-                            <t t-set="is_selected" t-value="dm.id == selected_dm_id"/>
+                            <t t-set="is_selected" t-value="dm.id == selected_dm_id" />
                         </t>
                     </li>
                 </t>
@@ -28,7 +27,7 @@
             - dm: The delivery method to display, as a `delivery.carrier` recordset.
             - is_selected: Whether the radio button of the delivery method should be checked.
         -->
-        <t t-set="delivery_type" t-value="dm.delivery_type + '_use_locations'"/>
+        <t t-set="delivery_type" t-value="dm.delivery_type + '_use_locations'" />
         <t
             t-set="is_pickup_needed"
             t-value="delivery_type in dm._fields and dm[delivery_type]"
@@ -53,11 +52,14 @@
                     class="form-check-label w-100"
                     t-attf-for="o_delivery_{{dm.id}}"
                 >
-                    <span name="o_delivery_method_name" t-field="dm.name"/>
+                    <span name="o_delivery_method_name" t-field="dm.name" />
                 </label>
             </div>
             <!-- === Delivery price badge === -->
-            <span class="o_wsale_delivery_price_badge text-muted fw-bold text-end" name="price">
+            <span
+                class="o_wsale_delivery_price_badge text-muted fw-bold text-end"
+                name="price"
+            >
                 <small class="fw-normal">Select to compute delivery rate</small>
             </span>
         </div>
@@ -76,8 +78,11 @@
                 t-attf-class="d-flex justify-items-between align-items-center gap-3 w-100 border p-3 rounded {{'' if pickup_location_data else 'd-none'}}"
             >
                 <span>
-                    <b name="o_pickup_location_name" t-out="pickup_location_data.get('name', '')"/>
-                    <br/>
+                    <b
+                        name="o_pickup_location_name"
+                        t-out="pickup_location_data.get('name', '')"
+                    />
+                    <br />
                     <span
                         name="o_pickup_location_address"
                         class="text-muted"
@@ -114,5 +119,4 @@
             class="text-muted mt-1"
         />
     </template>
-
 </odoo>

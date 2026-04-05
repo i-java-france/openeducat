@@ -1,5 +1,5 @@
-import { mailModels } from "@mail/../tests/mail_test_helpers";
-import { fields } from "@web/../tests/web_test_helpers";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
+import {fields} from "@web/../tests/web_test_helpers";
 
 export class DiscussChannelMember extends mailModels.DiscussChannelMember {
     livechat_member_type = fields.Selection({

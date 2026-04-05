@@ -1,7 +1,13 @@
-import { after, beforeEach, describe, expect, getFixture, test } from "@odoo/hoot";
-import { queryAllProperties, queryAllTexts, queryOne, queryRect, resize } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {after, beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
+import {
+    queryAllProperties,
+    queryAllTexts,
+    queryOne,
+    queryRect,
+    resize,
+} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -17,12 +23,12 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { resetDateFieldWidths } from "@web/views/list/column_width_hook";
+import {registry} from "@web/core/registry";
+import {resetDateFieldWidths} from "@web/views/list/column_width_hook";
 
 describe.current.tags("desktop");
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 
 class Foo extends models.Model {
     foo = fields.Char();
@@ -31,13 +37,13 @@ class Foo extends models.Model {
     datetime = fields.Datetime();
     int_field = fields.Integer();
     qux = fields.Float();
-    m2o = fields.Many2one({ relation: "bar" });
-    o2m = fields.One2many({ relation: "bar" });
-    foo_o2m = fields.One2many({ relation: "foo" });
-    m2m = fields.Many2many({ relation: "bar" });
+    m2o = fields.Many2one({relation: "bar"});
+    o2m = fields.One2many({relation: "bar"});
+    foo_o2m = fields.One2many({relation: "foo"});
+    m2m = fields.Many2many({relation: "bar"});
     text = fields.Text();
-    amount = fields.Monetary({ currency_field: "currency_id" });
-    currency_id = fields.Many2one({ relation: "res.currency", default: 1 });
+    amount = fields.Monetary({currency_field: "currency_id"});
+    currency_id = fields.Many2one({relation: "res.currency", default: 1});
     reference = fields.Reference({
         selection: [
             ["bar", "Bar"],
@@ -99,9 +105,9 @@ class Bar extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Value 1" },
-        { id: 2, name: "Value 2" },
-        { id: 3, name: "Value 3" },
+        {id: 1, name: "Value 1"},
+        {id: 2, name: "Value 2"},
+        {id: 3, name: "Value 3"},
     ];
 }
 
@@ -119,15 +125,15 @@ class Currency extends models.Model {
     inverse_rate = fields.Float();
 
     _records = [
-        { id: 1, name: "USD", symbol: "$", position: "before", inverse_rate: 1 },
-        { id: 2, name: "EUR", symbol: "€", position: "after", inverse_rate: 0.5 },
+        {id: 1, name: "USD", symbol: "$", position: "before", inverse_rate: 1},
+        {id: 2, name: "EUR", symbol: "€", position: "after", inverse_rate: 0.5},
     ];
 }
 
 defineModels([Foo, Bar, Currency, ResCompany, ResPartner, ResUsers]);
 
 beforeEach(() => {
-    resize({ width: 800 });
+    resize({width: 800});
     document.body.style.fontFamily = "sans-serif";
 });
 
@@ -137,11 +143,11 @@ function getColumnWidths() {
 
 function expectedColumnWidthsToBeCloseTo(expectedColumnWidths) {
     getColumnWidths().forEach((width, index) =>
-        expect(width).toBeCloseTo(expectedColumnWidths[index], { margin: 3 })
+        expect(width).toBeCloseTo(expectedColumnWidths[index], {margin: 3})
     );
 }
 
-// width computation
+// Width computation
 test(`width computation: no record, lot of fields`, async () => {
     Foo._records = [];
     await mountView({
@@ -307,7 +313,8 @@ test(`width computation: with records, very long text field`, async () => {
 test(`width computation: with records, lot of fields, long texts`, async () => {
     Foo._records[0].text =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt";
-    Foo._records[1].foo = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillumt";
+    Foo._records[1].foo =
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillumt";
 
     await mountView({
         type: "list",
@@ -416,7 +423,7 @@ test(`width computation: editable list, no record, with handle field`, async () 
             </list>
         `,
     });
-    expect(`thead th`).toHaveCount(4, { message: "there should be 4 th" });
+    expect(`thead th`).toHaveCount(4, {message: "there should be 4 th"});
     expect(`thead th:eq(0)`).toHaveClass("o_list_record_selector");
     expect(`thead th:eq(1)`).toHaveClass("o_handle_cell");
     expect(`thead th:eq(0)`).toHaveText("", {
@@ -587,8 +594,8 @@ test(`width computation: x2many, column_invisible`, async () => {
 });
 
 test(`width computation: x2many, editable list, initially invisible, overflowing`, async () => {
-    Foo._fields.o2m = fields.One2many({ relation: "abc" });
-    Foo._records = [{ id: 1, o2m: [1] }];
+    Foo._fields.o2m = fields.One2many({relation: "abc"});
+    Foo._records = [{id: 1, o2m: [1]}];
 
     class Abc extends models.Model {
         titi = fields.Char();
@@ -638,8 +645,8 @@ test(`width computation: x2many, editable list, initially invisible, overflowing
 });
 
 test(`width computation: x2many, editable list, with invisible modifier on x2many`, async () => {
-    Foo._fields.o2m = fields.One2many({ relation: "abc" });
-    Foo._records = [{ id: 1, bar: true, o2m: [1] }];
+    Foo._fields.o2m = fields.One2many({relation: "abc"});
+    Foo._records = [{id: 1, bar: true, o2m: [1]}];
     class Abc extends models.Model {
         titi = fields.Char();
         grosminet = fields.Char();
@@ -702,7 +709,7 @@ test(`width computation: widths are re-computed on window resize`, async () => {
 
     expect(getColumnWidths()).toEqual([40, 80, 680]);
 
-    resize({ width: queryRect(getFixture()).width * 1.2 });
+    resize({width: queryRect(getFixture()).width * 1.2});
     await runAllTimers();
     expect(getColumnWidths()).toEqual([40, 80, 840]);
 });
@@ -732,7 +739,7 @@ test(`width computation: widths are re-computed on parent resize`, async () => {
 });
 
 test(`width computation: button columns don't have a max width`, async () => {
-    // set a long foo value s.t. the column can be squeezed
+    // Set a long foo value s.t. the column can be squeezed
     Foo._records[0].foo = "Lorem ipsum dolor sit amet";
 
     await mountView({
@@ -753,15 +760,15 @@ test(`width computation: button columns don't have a max width`, async () => {
     expect(columnWidths[1]).toBeGreaterThan(130);
     expect(columnWidths[2]).toBeGreaterThan(330);
 
-    // simulate a window resize (buttons column width should not be squeezed)
-    await resize({ width: 300 });
+    // Simulate a window resize (buttons column width should not be squeezed)
+    await resize({width: 300});
     await runAllTimers();
     await animationFrame();
     const tableWidth = queryAllProperties(".o_list_table", "offsetWidth")[0];
     expect(tableWidth).toBeGreaterThan(300);
     expect(tableWidth).toBeLessThan(800);
     columnWidths = getColumnWidths();
-    // indices 0 and 1 because selectors aren't displayed on small screens
+    // Indices 0 and 1 because selectors aren't displayed on small screens
     expect(columnWidths[0]).toBe(100);
     expect(columnWidths[1]).toBeGreaterThan(330);
 });
@@ -787,9 +794,9 @@ test(`width computation: button with width in arch`, async () => {
     expect(getColumnWidths()).toEqual([40, 216, 216, 34, 68, 227]);
 });
 
-// freeze column widths
+// Freeze column widths
 test(`freeze widths: add first record`, async () => {
-    Foo._records = []; // in this scenario, we start with no records
+    Foo._records = []; // In this scenario, we start with no records
 
     await mountView({
         resModel: "foo",
@@ -828,7 +835,9 @@ test(`freeze widths: edit a record`, async () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
         "Sed blandit, justo nec tincidunt feugiat, mi justo suscipit libero, sit amet tempus " +
         "ipsum purus bibendum est.";
-    await contains(`.o_field_widget[name=text] .o_input`).edit(longVal, { confirm: false });
+    await contains(`.o_field_widget[name=text] .o_input`).edit(longVal, {
+        confirm: false,
+    });
     await contains(`.o_list_button_save`).click();
     expect(`.o_selected_row`).toHaveCount(0);
     expect(getColumnWidths()).toEqual(initialWidths);
@@ -873,24 +882,26 @@ test(`freeze widths: switch mode`, async () => {
     const startWidths = getColumnWidths();
     const startWidth = queryRect(`table`).width;
 
-    // start edition of first row
+    // Start edition of first row
     await contains(`td:not(.o_list_record_selector)`).click();
     const editionWidths = getColumnWidths();
     const editionWidth = queryRect(`table`).width;
 
-    // leave edition
+    // Leave edition
     await contains(`.o_list_button_save`).click();
     const readonlyWidths = getColumnWidths();
     const readonlyWidth = queryRect(`table`).width;
     expect(editionWidth).toBe(startWidth, {
-        message: "table should have kept the same width when switching from readonly to edit mode",
+        message:
+            "table should have kept the same width when switching from readonly to edit mode",
     });
     expect(editionWidths).toEqual(startWidths, {
         message:
             "width of columns should remain unchanged when switching from readonly to edit mode",
     });
     expect(readonlyWidth).toBe(editionWidth, {
-        message: "table should have kept the same width when switching from edit to readonly mode",
+        message:
+            "table should have kept the same width when switching from edit to readonly mode",
     });
     expect(readonlyWidths).toEqual(editionWidths, {
         message:
@@ -902,12 +913,12 @@ test(`freeze widths: switch mode (lot of fields)`, async () => {
     // Warning: this test is css dependant
     serverState.multiLang = true;
 
-    Foo._fields.foo = fields.Char({ translate: true });
+    Foo._fields.foo = fields.Char({translate: true});
     Foo._fields.boolean = fields.Boolean();
 
-    // the width is hardcoded to make sure we have the same condition
+    // The width is hardcoded to make sure we have the same condition
     // between debug mode and non debug mode
-    await resize({ width: 1200 });
+    await resize({width: 1200});
     await mountView({
         resModel: "foo",
         type: "list",
@@ -928,13 +939,13 @@ test(`freeze widths: switch mode (lot of fields)`, async () => {
     const startHeight = queryRect(`.o_data_row:eq(0)`).height;
     const startWidth = queryRect(`.o_data_row:eq(0)`).width;
 
-    // start edition of first row
+    // Start edition of first row
     await contains(`.o_data_row > td:not(.o_list_record_selector)`).click();
     expect(`.o_data_row:eq(0)`).toHaveClass("o_selected_row");
     const editionHeight = queryRect(`.o_data_row:eq(0)`).height;
     const editionWidth = queryRect(`.o_data_row:eq(0)`).width;
 
-    // leave edition
+    // Leave edition
     await contains(`.o_list_button_save`).click();
     const readonlyHeight = queryRect(`.o_data_row:eq(0)`).height;
     const readonlyWidth = queryRect(`.o_data_row:eq(0)`).width;
@@ -1053,10 +1064,10 @@ test(`freeze widths: grouped list, open a group`, async () => {
 });
 
 test(`freeze widths: toggle a filter, vertical scrollbar appears`, async () => {
-    await resize({ height: 500 });
+    await resize({height: 500});
 
     for (let i = 10; i < 20; i++) {
-        Foo._records.push({ id: i, bar: true, foo: `Foo ${i}` });
+        Foo._records.push({id: i, bar: true, foo: `Foo ${i}`});
     }
     await mountView({
         resModel: "foo",
@@ -1083,8 +1094,8 @@ test(`freeze widths: toggle a filter, vertical scrollbar appears`, async () => {
 
     await removeFacet("My Filter");
     expect(".o_data_row").toHaveCount(14);
-    expect(renderer.scrollHeight).toBeGreaterThan(renderer.clientHeight); // there must be a vertical scrollbar
-    expect(renderer.scrollWidth).toBe(renderer.clientWidth); // there must be no horizontal scrollbar
+    expect(renderer.scrollHeight).toBeGreaterThan(renderer.clientHeight); // There must be a vertical scrollbar
+    expect(renderer.scrollWidth).toBe(renderer.clientWidth); // There must be no horizontal scrollbar
 });
 
 test(`freeze widths: add a record in empty list`, async () => {
@@ -1102,17 +1113,19 @@ test(`freeze widths: add a record in empty list`, async () => {
         `,
         noContentHelp: '<p class="hello">click to add a foo</p>',
     });
-    expect(`.o_view_nocontent`).toHaveCount(1, { message: "should have no content help" });
+    expect(`.o_view_nocontent`).toHaveCount(1, {
+        message: "should have no content help",
+    });
     const initialWidths = getColumnWidths();
 
-    // click on create button
+    // Click on create button
     await contains(`.o_list_button_add`).click();
     expect(getColumnWidths()).toEqual(initialWidths);
 
-    // creating one record
+    // Creating one record
     await contains(`.o_selected_row [name='foo'] input`).edit(
         "Some very very long value for a char field",
-        { confirm: false }
+        {confirm: false}
     );
     await contains(`.o_list_button_save`).click();
     expect(getColumnWidths()).toEqual(initialWidths);
@@ -1132,15 +1145,19 @@ test(`freeze widths: add a record in empty list with handle widget`, async () =>
         `,
         noContentHelp: '<p class="hello">click to add a foo</p>',
     });
-    expect(`.o_view_nocontent`).toHaveCount(1, { message: "should have no content help" });
+    expect(`.o_view_nocontent`).toHaveCount(1, {
+        message: "should have no content help",
+    });
     const initialWidths = getColumnWidths();
 
-    // click on create button
+    // Click on create button
     await contains(`.o_list_button_add`).click();
     expect(getColumnWidths()).toEqual(initialWidths);
 
-    // creating one record
-    await contains(`.o_selected_row [name='foo'] input`).edit("test_foo", { confirm: false });
+    // Creating one record
+    await contains(`.o_selected_row [name='foo'] input`).edit("test_foo", {
+        confirm: false,
+    });
     await contains(`.o_list_button_save`).click();
     expect(getColumnWidths()).toEqual(initialWidths);
 });
@@ -1159,7 +1176,7 @@ test(`freeze widths: edit multiple records`, async () => {
 
     const initialWidths = getColumnWidths();
 
-    // select two records and edit
+    // Select two records and edit
     await contains(`.o_data_row:eq(0) .o_list_record_selector input`).click();
     await contains(`.o_data_row:eq(1) .o_list_record_selector input`).click();
     await contains(`.o_data_row:eq(0) .o_data_cell:eq(1)`).click();
@@ -1303,7 +1320,7 @@ test(`freeze widths: x2many, toggle optional field`, async () => {
 
     expect(getColumnWidths()).toEqual([110, 626, 32]);
 
-    // create a record to store the current widths, but discard it directly to keep
+    // Create a record to store the current widths, but discard it directly to keep
     // the list empty (otherwise, the browser automatically computes the optimal widths)
     await contains(".o_field_x2many_list_row_add a").click();
     expect(getColumnWidths()).toEqual([110, 626, 32]);
@@ -1313,7 +1330,7 @@ test(`freeze widths: x2many, toggle optional field`, async () => {
     expect(getColumnWidths()).toEqual([110, 545, 80, 32]);
 });
 
-// manually resize columns
+// Manually resize columns
 test(`resize, reorder, resize again`, async () => {
     await mountView({
         resModel: "foo",
@@ -1328,7 +1345,7 @@ test(`resize, reorder, resize again`, async () => {
 
     // 1. Resize column foo to middle of column int_field.
     const originalWidths = getColumnWidths();
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     let widthsAfterResize = getColumnWidths();
     expect(widthsAfterResize[0]).toBe(originalWidths[0]);
     expect(widthsAfterResize[1]).toBeGreaterThan(originalWidths[1]);
@@ -1340,7 +1357,9 @@ test(`resize, reorder, resize again`, async () => {
     expect(widthsAfterResize[1]).toBe(widthsAfterReorder[1]);
 
     // 3. Resize again, this time check sizes while dragging and after drop.
-    const { moveTo, drop } = await contains(`th:eq(1) .o_resize`, { visible: false }).drag();
+    const {moveTo, drop} = await contains(`th:eq(1) .o_resize`, {
+        visible: false,
+    }).drag();
     await moveTo(`th:eq(2)`);
     widthsAfterResize = getColumnWidths();
     expect(widthsAfterResize[1]).toBeGreaterThan(widthsAfterReorder[1]);
@@ -1362,7 +1381,7 @@ test(`resize column and toggle one checkbox`, async () => {
     });
 
     // 1. Resize column foo to middle of column int_field.
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     const widthsAfterResize = getColumnWidths();
 
     // 2. Column size should be the same after selecting a row
@@ -1387,24 +1406,24 @@ test(`resize column, then resize window`, async () => {
     expect(getColumnWidths()).toEqual([40, 80, 680]);
 
     // Resize column foo to middle of column int_field.
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     expect(getColumnWidths()).toEqual([40, 520, 679]);
 
     // Resize the window
-    resize({ width: 1200 });
+    resize({width: 1200});
     await runAllTimers();
     await animationFrame();
-    expect(getColumnWidths()).toEqual([40, 80, 1080]); // all available space should be used again
+    expect(getColumnWidths()).toEqual([40, 80, 1080]); // All available space should be used again
 
     // Reduce size of column foo
-    await contains(`th:eq(2) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(2) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     expect(getColumnWidths()).toEqual([40, 80, 591]);
 
     // Resize the window
-    resize({ width: 1000 });
+    resize({width: 1000});
     await runAllTimers();
     await animationFrame();
-    expect(getColumnWidths()).toEqual([40, 80, 880]); // all available space should be used again
+    expect(getColumnWidths()).toEqual([40, 80, 880]); // All available space should be used again
 });
 
 test(`resize column and toggle check all`, async () => {
@@ -1420,7 +1439,7 @@ test(`resize column and toggle check all`, async () => {
     });
 
     // 1. Resize column foo to middle of column int_field.
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     const widthsAfterResize = getColumnWidths();
 
     // 2. Column size should be the same after selecting all
@@ -1444,7 +1463,7 @@ test("resize column headers in editable list", async () => {
 
     const originalWidths = getColumnWidths();
 
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
 
     const finalWidths = getColumnWidths();
     expect(finalWidths[0]).toBe(originalWidths[0]);
@@ -1471,14 +1490,17 @@ test("resize column headers in editable list (2)", async () => {
 
     const originalWidths = getColumnWidths();
 
-    await contains(".o_resize:first", { visible: false }).dragAndDrop("th[data-name=foo]", {
-        position: { x: 100 },
-        relative: true,
-    });
+    await contains(".o_resize:first", {visible: false}).dragAndDrop(
+        "th[data-name=foo]",
+        {
+            position: {x: 100},
+            relative: true,
+        }
+    );
 
     const finalWidths = getColumnWidths();
     expect(finalWidths[0]).toBe(originalWidths[0]);
-    expect(finalWidths[1]).toBeCloseTo(100, { margin: 10 });
+    expect(finalWidths[1]).toBeCloseTo(100, {margin: 10});
     expect(finalWidths[2]).toBe(originalWidths[2]);
 });
 
@@ -1515,19 +1537,20 @@ test(`resize column with several x2many lists in form group`, async () => {
         message: "both table columns have same width",
     });
 
-    await contains(`th:eq(0) .o_resize`, { visible: false }).dragAndDrop(`th:eq(1)`, {
+    await contains(`th:eq(0) .o_resize`, {visible: false}).dragAndDrop(`th:eq(1)`, {
         position: "right",
     });
     expect(`.o_field_x2many_list table:eq(0)`).not.toHaveRect(
-        { width: initialWidth0 },
+        {width: initialWidth0},
         {
             message: "first o2m table is resized and width of table has changed",
         }
     );
     expect(`.o_field_x2many_list table:eq(1)`).toHaveRect(
-        { width: initialWidth1 },
+        {width: initialWidth1},
         {
-            message: "second o2m table should not be impacted on first o2m in group resized",
+            message:
+                "second o2m table should not be impacted on first o2m in group resized",
         }
     );
 });
@@ -1560,11 +1583,11 @@ test(`resize column with x2many list with several fields in form notebook`, asyn
     });
 
     const listInitialWidth = queryRect(`.o_list_renderer`).width;
-    await contains(`th:eq(0) .o_resize`, { visible: false }).dragAndDrop(`th:eq(1)`, {
+    await contains(`th:eq(0) .o_resize`, {visible: false}).dragAndDrop(`th:eq(1)`, {
         position: "right",
     });
     expect(`.o_list_renderer`).toHaveRect(
-        { width: listInitialWidth },
+        {width: listInitialWidth},
         {
             message: "resizing the column should not impact the width of list",
         }
@@ -1572,8 +1595,8 @@ test(`resize column with x2many list with several fields in form notebook`, asyn
 });
 
 test(`resize: unnamed columns cannot be resized`, async () => {
-    Foo._records = [{ id: 1, o2m: [1] }];
-    Bar._records = [{ id: 1, display_name: "Oui" }];
+    Foo._records = [{id: 1, o2m: [1]}];
+    Bar._records = [{id: 1, display_name: "Oui"}];
 
     await mountView({
         resModel: "foo",
@@ -1595,7 +1618,8 @@ test(`resize: unnamed columns cannot be resized`, async () => {
     expect(Math.floor(queryRect(`.o_field_one2many th:eq(0)`).right)).toBe(
         Math.floor(queryRect(`.o_field_one2many th:eq(0) .o_resize`).right),
         {
-            message: "First resize handle should be attached at the end of the first header",
+            message:
+                "First resize handle should be attached at the end of the first header",
         }
     );
     expect(`.o_field_one2many th:eq(1) .o_resize`).toHaveCount(0, {
@@ -1615,11 +1639,11 @@ test(`dblclick on resize handle to force a recomputation of all widths`, async (
     });
 
     const originalWidths = getColumnWidths();
-    await contains(`th:eq(1) .o_resize`, { visible: false }).dragAndDrop(`th:eq(2)`);
+    await contains(`th:eq(1) .o_resize`, {visible: false}).dragAndDrop(`th:eq(2)`);
     const widthsAfterResize = getColumnWidths();
     expect(widthsAfterResize[0]).toBe(originalWidths[0]);
     expect(widthsAfterResize[1]).toBeGreaterThan(originalWidths[1]);
 
-    await contains(".o_list_table th .o_resize", { visible: false }).dblclick();
+    await contains(".o_list_table th .o_resize", {visible: false}).dblclick();
     expect(getColumnWidths()).toEqual(originalWidths);
 });

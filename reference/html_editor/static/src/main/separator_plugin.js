@@ -1,20 +1,27 @@
-import { _t } from "@web/core/l10n/translation";
-import { Plugin } from "../plugin";
-import { closestBlock } from "../utils/blocks";
-import { closestElement, firstLeaf, selectElements } from "../utils/dom_traversal";
+import {_t} from "@web/core/l10n/translation";
+import {Plugin} from "../plugin";
+import {closestBlock} from "../utils/blocks";
+import {closestElement, firstLeaf, selectElements} from "../utils/dom_traversal";
 import {
     isEmptyBlock,
     isListItemElement,
     paragraphRelatedElementsSelector,
 } from "../utils/dom_info";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { removeClass } from "@html_editor/utils/dom";
-import { withSequence } from "@html_editor/utils/resource";
-import { fillEmpty } from "../utils/dom";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {removeClass} from "@html_editor/utils/dom";
+import {withSequence} from "@html_editor/utils/resource";
+import {fillEmpty} from "../utils/dom";
 
 export class SeparatorPlugin extends Plugin {
     static id = "separator";
-    static dependencies = ["selection", "history", "split", "delete", "lineBreak", "baseContainer"];
+    static dependencies = [
+        "selection",
+        "history",
+        "split",
+        "delete",
+        "lineBreak",
+        "baseContainer",
+    ];
     /** @type {import("plugins").EditorResources} */
     resources = {
         user_commands: [
@@ -44,17 +51,20 @@ export class SeparatorPlugin extends Plugin {
         selectionchange_handlers: this.handleSelectionInHr.bind(this),
         deselect_custom_selected_nodes_handlers: this.deselectHR.bind(this),
         clean_handlers: this.deselectHR.bind(this),
-        clean_for_save_handlers: ({ root }) => {
+        clean_for_save_handlers: ({root}) => {
             this.deselectHR(root);
         },
     };
 
     insertSeparator() {
-        const selection = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        const selection =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         const block = closestBlock(selection.startContainer);
         const element =
-            closestElement(selection.startContainer, paragraphRelatedElementsSelector) ||
-            (block && !isListItemElement(block) ? block : null);
+            closestElement(
+                selection.startContainer,
+                paragraphRelatedElementsSelector
+            ) || (block && !isListItemElement(block) ? block : null);
 
         if (element && element !== this.editable) {
             const sep = this.document.createElement("hr");
@@ -70,7 +80,8 @@ export class SeparatorPlugin extends Plugin {
                 element.before(sep);
             } else {
                 element.after(sep);
-                const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                const baseContainer =
+                    this.dependencies.baseContainer.createBaseContainer();
                 fillEmpty(baseContainer);
                 sep.after(baseContainer);
                 this.dependencies.selection.setCursorStart(baseContainer);

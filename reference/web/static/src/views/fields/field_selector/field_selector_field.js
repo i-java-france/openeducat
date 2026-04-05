@@ -1,20 +1,20 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
-import { registry } from "@web/core/registry";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { standardFieldProps } from "../standard_field_props";
-import { formatChar } from "../formatters";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {ModelFieldSelector} from "@web/core/model_field_selector/model_field_selector";
+import {registry} from "@web/core/registry";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {standardFieldProps} from "../standard_field_props";
+import {formatChar} from "../formatters";
 
 export class FieldSelectorField extends Component {
     static template = "web.FieldSelectorField";
-    static components = { ModelFieldSelector };
+    static components = {ModelFieldSelector};
     static props = {
         ...standardFieldProps,
-        resModel: { type: String, optional: true },
-        onlySearchable: { type: Boolean, optional: true },
-        allowProperties: { type: Boolean, optional: true },
-        followRelations: { type: Boolean, optional: true },
+        resModel: {type: String, optional: true},
+        onlySearchable: {type: Boolean, optional: true},
+        allowProperties: {type: Boolean, optional: true},
+        followRelations: {type: Boolean, optional: true},
     };
 
     filter(fieldDef) {
@@ -29,7 +29,7 @@ export class FieldSelectorField extends Component {
     }
 
     async update(value) {
-        await this.props.record.update({ [this.props.name]: value });
+        await this.props.record.update({[this.props.name]: value});
     }
 
     //---- Getters ----
@@ -38,7 +38,9 @@ export class FieldSelectorField extends Component {
     }
 
     get resModel() {
-        return this.props.record.data[this.props.resModel] || this.props.record.resModel;
+        return (
+            this.props.record.data[this.props.resModel] || this.props.record.resModel
+        );
     }
 
     get selectorProps() {
@@ -77,7 +79,7 @@ export const fieldSelectorField = {
             type: "string",
         },
     ],
-    extractProps({ options }, dynamicInfo) {
+    extractProps({options}, dynamicInfo) {
         return {
             allowProperties: options.allow_properties ?? true,
             followRelations: options.follow_relations ?? true,

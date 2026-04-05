@@ -1,11 +1,11 @@
-import { patch } from "@web/core/utils/patch";
-import { CONSOLE_COLOR, PosStore } from "@point_of_sale/app/services/pos_store";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
+import {patch} from "@web/core/utils/patch";
+import {CONSOLE_COLOR, PosStore} from "@point_of_sale/app/services/pos_store";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
 
 patch(PosStore.prototype, {
     async setup() {
         await super.setup(...arguments);
-        this.data.connectWebSocket("ONLINE_PAYMENTS_NOTIFICATION", async ({ id }) => {
+        this.data.connectWebSocket("ONLINE_PAYMENTS_NOTIFICATION", async ({id}) => {
             // The bus communication is only protected by the name of the channel.
             // Therefore, no sensitive information is sent through it, only a
             // notification to invite the local browser to do a safe RPC to
@@ -20,10 +20,11 @@ patch(PosStore.prototype, {
             return false;
         }
         try {
-            const opData = await this.data.call("pos.order", "get_and_set_online_payments_data", [
-                order.id,
-                next_online_payment_amount,
-            ]);
+            const opData = await this.data.call(
+                "pos.order",
+                "get_and_set_online_payments_data",
+                [order.id, next_online_payment_amount]
+            );
             return this.processOnlinePaymentsDataFromServer(order, opData);
         } catch (ex) {
             logPosMessage(

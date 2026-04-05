@@ -1,8 +1,8 @@
-import { useOpenChat } from "@mail/core/web/open_chat_hook";
+import {useOpenChat} from "@mail/core/web/open_chat_hook";
 
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { patch } from "@web/core/utils/patch";
-import { PropertyValue } from "@web/views/fields/properties/property_value";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {patch} from "@web/core/utils/patch";
+import {PropertyValue} from "@web/views/fields/properties/property_value";
 
 /**
  * Allow to open the chatter of the user when we click on the avatar of a Many2one

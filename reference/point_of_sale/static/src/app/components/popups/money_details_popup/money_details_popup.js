@@ -1,19 +1,19 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { NumericInput } from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {NumericInput} from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export class MoneyDetailsPopup extends Component {
     static template = "point_of_sale.MoneyDetailsPopup";
-    static components = { NumericInput, Dialog };
+    static components = {NumericInput, Dialog};
     static props = {
-        moneyDetails: { type: [Object, { value: null }], optional: true },
+        moneyDetails: {type: [Object, {value: null}], optional: true},
         action: String,
         getPayload: Function,
         close: Function,
-        context: { type: String, optional: true },
+        context: {type: String, optional: true},
     };
     static defaultProps = {
         moneyDetails: null,
@@ -26,8 +26,10 @@ export class MoneyDetailsPopup extends Component {
         this.currency = this.pos.currency;
         this.state = useState({
             moneyDetails: this.props.moneyDetails
-                ? { ...this.props.moneyDetails }
-                : Object.fromEntries(this.pos.models["pos.bill"].map((bill) => [bill.value, 0])),
+                ? {...this.props.moneyDetails}
+                : Object.fromEntries(
+                      this.pos.models["pos.bill"].map((bill) => [bill.value, 0])
+                  ),
         });
         this.env.dialogData.dismiss = () => {
             if (
@@ -66,7 +68,7 @@ export class MoneyDetailsPopup extends Component {
         this.props.getPayload({
             total: this.computeTotal(),
             moneyDetailsNotes,
-            moneyDetails: { ...this.state.moneyDetails },
+            moneyDetails: {...this.state.moneyDetails},
             action: this.props.action,
         });
         this.props.close();

@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
 import * as LandingPage from "@pos_self_order/../tests/tours/utils/landing_page_util";
 import * as ProductPage from "@pos_self_order/../tests/tours/utils/product_page_util";
@@ -23,7 +23,10 @@ registry.category("web_tour.tours").add("self_order_is_open_consultation", {
 });
 
 registry.category("web_tour.tours").add("self_order_landing_page_carousel", {
-    steps: () => [Utils.checkIsNoBtn("My Order"), LandingPage.checkCarouselAutoPlaying()],
+    steps: () => [
+        Utils.checkIsNoBtn("My Order"),
+        LandingPage.checkCarouselAutoPlaying(),
+    ],
 });
 
 registry.category("web_tour.tours").add("self_order_pos_closed", {
@@ -38,8 +41,8 @@ registry.category("web_tour.tours").add("self_order_pos_closed", {
         ProductPage.clickProduct("Desk Organizer"),
         ...ProductPage.setupAttribute(
             [
-                { name: "Size", value: "M" },
-                { name: "Fabric", value: "Leather" },
+                {name: "Size", value: "M"},
+                {name: "Fabric", value: "Leather"},
             ],
             false
         ),
@@ -52,8 +55,8 @@ registry.category("web_tour.tours").add("self_order_pos_closed", {
                 {
                     product: "Desk Organizer",
                     attributes: [
-                        { name: "Size", value: "M" },
-                        { name: "Fabric", value: "Leather" },
+                        {name: "Size", value: "M"},
+                        {name: "Fabric", value: "Leather"},
                     ],
                 },
                 {
@@ -85,8 +88,8 @@ registry.category("web_tour.tours").add("kiosk_order_pos_closed", {
         ProductPage.clickProduct("Desk Organizer"),
         ...ProductPage.setupAttribute(
             [
-                { name: "Size", value: "M" },
-                { name: "Fabric", value: "Leather" },
+                {name: "Size", value: "M"},
+                {name: "Fabric", value: "Leather"},
             ],
             false
         ),
@@ -100,8 +103,8 @@ registry.category("web_tour.tours").add("kiosk_order_pos_closed", {
                 {
                     product: "Desk Organizer",
                     attributes: [
-                        { name: "Size", value: "M" },
-                        { name: "Fabric", value: "Leather" },
+                        {name: "Size", value: "M"},
+                        {name: "Fabric", value: "Leather"},
                     ],
                 },
                 {

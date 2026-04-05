@@ -1,4 +1,4 @@
-import { expect, test, waitFor } from "@odoo/hoot";
+import {expect, test, waitFor} from "@odoo/hoot";
 import {
     contains,
     getService,
@@ -7,12 +7,12 @@ import {
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
-import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_progress_container";
-import { FileUploadProgressRecord } from "@web/core/file_upload/file_upload_progress_record";
-import { useService } from "@web/core/utils/hooks";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {FileUploadProgressContainer} from "@web/core/file_upload/file_upload_progress_container";
+import {FileUploadProgressRecord} from "@web/core/file_upload/file_upload_progress_record";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component, xml } from "@odoo/owl";
+import {Component, xml} from "@odoo/owl";
 
 class FileUploadProgressTestRecord extends FileUploadProgressRecord {
     static template = xml`
@@ -101,7 +101,7 @@ test("upload can be aborted by clicking on cross", async () => {
     const fileUploadService = await getService("file_upload");
     fileUploadService.upload("/test/", []);
     await animationFrame();
-    await contains(".o-file-upload-progress-bar-abort", { visible: false }).click();
+    await contains(".o-file-upload-progress-bar-abort", {visible: false}).click();
     await animationFrame();
     expect(".file_upload").toHaveCount(0);
 });
@@ -113,7 +113,7 @@ test("upload updates on progress", async () => {
     fileUploadService.upload("/test/", []);
     await animationFrame();
 
-    const progressEvent = new Event("progress", { bubbles: true });
+    const progressEvent = new Event("progress", {bubbles: true});
     progressEvent.loaded = 250000000;
     progressEvent.total = 500000000;
     fileUploadService.uploads[1].xhr.upload.dispatchEvent(progressEvent);
@@ -132,12 +132,14 @@ test("handles error", async () => {
     });
     const fileUploadService = await getService("file_upload");
     fileUploadService.upload("/test/", []);
-    await waitFor(".o_notification:has(.bg-danger):contains(An error occured while uploading)");
+    await waitFor(
+        ".o_notification:has(.bg-danger):contains(An error occured while uploading)"
+    );
 });
 
 test("handles http not success", async () => {
     await mountWithCleanup(Parent);
-    onRpc("/test/", () => new Response("<p>Boom HTML</p>", { status: 500 }));
+    onRpc("/test/", () => new Response("<p>Boom HTML</p>", {status: 500}));
     const fileUploadService = await getService("file_upload");
     fileUploadService.upload("/test/", []);
     await waitFor(".o_notification:has(.bg-danger):contains(Boom HTML)");
@@ -168,5 +170,7 @@ test("handles Odoo's jsonrpc error", async () => {
     }));
     const fileUploadService = await getService("file_upload");
     fileUploadService.upload("/test/", []);
-    await waitFor(".o_notification:has(.bg-danger):contains(ValidationError: Boom Odoo)");
+    await waitFor(
+        ".o_notification:has(.bg-danger):contains(ValidationError: Boom Odoo)"
+    );
 });

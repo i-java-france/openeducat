@@ -2,7 +2,8 @@
 
 from base64 import b32encode
 from hashlib import sha256
-from odoo import api, fields, models, _
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 

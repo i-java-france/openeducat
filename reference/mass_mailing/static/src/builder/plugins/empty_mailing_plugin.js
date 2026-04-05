@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class EmptyMailingPlugin extends Plugin {
     static id = "EmptyMailing";
@@ -21,7 +21,7 @@ export class EmptyMailingPlugin extends Plugin {
         if (!wrapperTd) {
             return;
         }
-        const { anchorNode } = this.dependencies.selection.getEditableSelection();
+        const {anchorNode} = this.dependencies.selection.getEditableSelection();
         if (anchorNode === wrapperTd && !wrapperTd.firstChild) {
             const textSnippet = this.config.snippetModel
                 .getSnippetByName("snippet_structure", "s_text_block")
@@ -42,4 +42,6 @@ export class EmptyMailingPlugin extends Plugin {
     }
 }
 
-registry.category("mass_mailing-plugins").add(EmptyMailingPlugin.id, EmptyMailingPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(EmptyMailingPlugin.id, EmptyMailingPlugin);

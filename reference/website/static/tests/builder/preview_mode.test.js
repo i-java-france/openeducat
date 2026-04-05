@@ -1,10 +1,15 @@
-import { Plugin } from "@html_editor/plugin";
-import { expect, test } from "@odoo/hoot";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
-import { uniqueId } from "@web/core/utils/functions";
-import { addOption, addPlugin, defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {expect, test} from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
+import {uniqueId} from "@web/core/utils/functions";
+import {
+    addOption,
+    addPlugin,
+    defineWebsiteModels,
+    setupWebsiteBuilder,
+} from "./website_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 defineWebsiteModels();
 
@@ -35,11 +40,11 @@ test("do not update builder if in preview mode", async () => {
 class CustomAction extends BuilderAction {
     static id = "customAction";
     static dependencies = ["history"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.classList.add("applied");
         this.dependencies.history.addStep();
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return editingElement.classList.contains("applied");
     }
 }

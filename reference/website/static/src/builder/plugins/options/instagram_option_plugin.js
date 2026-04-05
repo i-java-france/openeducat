@@ -1,11 +1,11 @@
-import { SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { getCommonAncestor, selectElements } from "@html_editor/utils/dom_traversal";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {SNIPPET_SPECIFIC_END} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {getCommonAncestor, selectElements} from "@html_editor/utils/dom_traversal";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef { Object } InstagramOptionShared
@@ -37,7 +37,10 @@ class InstagramOptionPlugin extends Plugin {
 
     normalize(root) {
         const nodes = [
-            ...selectElements(root, ".s_instagram_page[data-instagram-page-is-default]"),
+            ...selectElements(
+                root,
+                ".s_instagram_page[data-instagram-page-is-default]"
+            ),
         ];
         if (nodes.length) {
             this.loadAndSetPage(nodes);
@@ -68,7 +71,7 @@ class InstagramOptionPlugin extends Plugin {
             if (hasChanged) {
                 const commonAncestor = getCommonAncestor(nodes, this.editable);
                 this.dispatchTo("content_manually_updated_handlers", commonAncestor);
-                this.config.onChange({ isPreviewing: false });
+                this.config.onChange({isPreviewing: false});
             }
         }
     }
@@ -111,13 +114,14 @@ class InstagramOptionPlugin extends Plugin {
 export class InstagramPageAction extends BuilderAction {
     static id = "instagramPage";
     static dependencies = ["instagramOption"];
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset["instagramPage"];
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         delete editingElement.dataset.instagramPageIsDefault;
         if (value.includes(this.instagramUrlStr)) {
-            value = this.dependencies.instagramOption.instagramPageNameFromUrl(value) || "";
+            value =
+                this.dependencies.instagramOption.instagramPageNameFromUrl(value) || "";
         }
         editingElement.dataset["instagramPage"] = value;
         if (value === "") {
@@ -128,4 +132,6 @@ export class InstagramPageAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(InstagramOptionPlugin.id, InstagramOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(InstagramOptionPlugin.id, InstagramOptionPlugin);

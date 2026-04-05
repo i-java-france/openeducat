@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { MentionList } from "@mail/core/web/mention_list";
-import { router } from "@web/core/browser/router";
-import { renderToElement } from "@web/core/utils/render";
-import { url } from "@web/core/utils/urls";
+import {Plugin} from "@html_editor/plugin";
+import {MentionList} from "@mail/core/web/mention_list";
+import {router} from "@web/core/browser/router";
+import {renderToElement} from "@web/core/utils/render";
+import {url} from "@web/core/utils/urls";
 
 export class MentionPlugin extends Plugin {
     static id = "mention";

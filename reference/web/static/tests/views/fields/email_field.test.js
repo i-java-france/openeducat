@@ -1,4 +1,4 @@
-import { expect, getFixture, test } from "@odoo/hoot";
+import {expect, getFixture, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -8,7 +8,7 @@ import {
     mountView,
     onRpc,
 } from "../../web_test_helpers";
-import { queryAllTexts, queryFirst } from "@odoo/hoot-dom";
+import {queryAllTexts, queryFirst} from "@odoo/hoot-dom";
 
 class Contact extends models.Model {
     email = fields.Char();
@@ -19,7 +19,7 @@ defineModels([Contact]);
 onRpc("has_group", () => true);
 
 test("in form view", async () => {
-    Contact._records = [{ id: 1, email: "john.doe@odoo.com" }];
+    Contact._records = [{id: 1, email: "john.doe@odoo.com"}];
     await mountView({
         type: "form",
         resModel: "contact",
@@ -37,8 +37,8 @@ test("in form view", async () => {
 
 test("in editable list view", async () => {
     Contact._records = [
-        { id: 1, email: "john.doe@odoo.com" },
-        { id: 2, email: "jane.doe@odoo.com" },
+        {id: 1, email: "john.doe@odoo.com"},
+        {id: 2, email: "jane.doe@odoo.com"},
     ];
     await mountView({
         type: "list",
@@ -51,7 +51,10 @@ test("in editable list view", async () => {
         "john.doe@odoo.com",
         "jane.doe@odoo.com",
     ]);
-    expect(".o_field_email a:first").toHaveAttribute("href", "mailto:john.doe@odoo.com");
+    expect(".o_field_email a:first").toHaveAttribute(
+        "href",
+        "mailto:john.doe@odoo.com"
+    );
     let cell = queryFirst("tbody td:not(.o_list_record_selector)");
     await contains(cell).click();
     expect(cell.parentElement).toHaveClass("o_selected_row");
@@ -118,7 +121,7 @@ test("onchange scenario with readonly", async () => {
             record.email = "onchange@domain.ext";
         },
     });
-    Contact._records = [{ id: 1, email: "default@domain.ext" }];
+    Contact._records = [{id: 1, email: "default@domain.ext"}];
     await mountView({
         type: "form",
         resModel: "contact",

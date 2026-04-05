@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # pylint: disable=bad-whitespace
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests import Form, tagged
-from odoo import fields, Command
-from odoo.exceptions import UserError, ValidationError
-
 from collections import defaultdict
-from unittest.mock import patch
 from datetime import timedelta
+from unittest.mock import patch
+
 from freezegun import freeze_time
 
+from odoo import Command, fields
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form, tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')
@@ -134,7 +134,7 @@ class TestAccountMoveOutInvoiceOnchanges(AccountTestInvoicingCommon):
         cls.env.user.group_ids += cls.env.ref('uom.group_uom')
 
     def setUp(self):
-        super(TestAccountMoveOutInvoiceOnchanges, self).setUp()
+        super().setUp()
         self.assertInvoiceValues(self.invoice, [
             self.product_line_vals_1,
             self.product_line_vals_2,
@@ -3058,7 +3058,7 @@ class TestAccountMoveOutInvoiceOnchanges(AccountTestInvoicingCommon):
         })
         wizard_res = wizard.do_action()
 
-        for date, move, ref in zip(dates, moves, ['INV/2017/00001', 'INV/2017/00002', 'INV/2017/00003']):
+        for date, move, ref in zip(dates, moves, ['INV/2017/00001', 'INV/2017/00002', 'INV/2017/00003'], strict=False):
             self.assertInvoiceValues(move, [
                 {
                     **self.product_line_vals_1,

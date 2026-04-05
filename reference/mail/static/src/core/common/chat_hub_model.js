@@ -1,7 +1,7 @@
-import { browser } from "@web/core/browser/browser";
-import { fields, Record } from "./record";
+import {browser} from "@web/core/browser/browser";
+import {fields, Record} from "./record";
 
-import { Deferred, Mutex } from "@web/core/utils/concurrency";
+import {Deferred, Mutex} from "@web/core/utils/concurrency";
 
 export const CHAT_HUB_KEY = "mail.ChatHub";
 export const CHAT_HUB_COMPACT_LS = "mail.user_setting.chathub_compact";
@@ -52,7 +52,7 @@ export class ChatHub extends Record {
         },
     });
     /** From top to bottom. Bottom-most will actually be hidden */
-    folded = fields.Many("ChatWindow", { inverse: "hubAsFolded" });
+    folded = fields.Many("ChatWindow", {inverse: "hubAsFolded"});
     initPromise = new Deferred();
     preFirstFetchPromise = new Deferred();
     loadMutex = new Mutex();
@@ -61,7 +61,7 @@ export class ChatHub extends Record {
         await this.initPromise;
         const promises = [];
         for (const cw of [...this.opened, ...this.folded]) {
-            promises.push(cw.close({ notifyState: false }));
+            promises.push(cw.close({notifyState: false}));
         }
         await Promise.all(promises);
         this.save(); // sync only once at the end
@@ -88,7 +88,7 @@ export class ChatHub extends Record {
 
     async _load(str) {
         /** @type {{ opened: Object[], folded: Object[] }} */
-        const { opened = [], folded = [] } = JSON.parse(str);
+        const {opened = [], folded = []} = JSON.parse(str);
         const hasInvalidData =
             opened.some((data) => !data.id || !data.model) ||
             folded.some((data) => !data.id || !data.model);
@@ -97,7 +97,8 @@ export class ChatHub extends Record {
             folded.length = 0;
             browser.localStorage.removeItem(CHAT_HUB_KEY);
         }
-        const getThread = (data) => this.store.Thread.getOrFetch(data, ["display_name"]);
+        const getThread = (data) =>
+            this.store.Thread.getOrFetch(data, ["display_name"]);
         const openPromises = opened.map(getThread);
         const foldPromises = folded.map(getThread);
         this.preFirstFetchPromise.resolve();
@@ -107,13 +108,13 @@ export class ChatHub extends Record {
         const insertChatWindows = (threads) =>
             threads
                 .filter((thread) => thread?.model === "discuss.channel")
-                .map((thread) => this.store.ChatWindow.insert({ thread }));
+                .map((thread) => this.store.ChatWindow.insert({thread}));
         const toFold = insertChatWindows(foldThreads);
         const toOpen = insertChatWindows(openThreads);
         // close first to make room for others
         for (const chatWindow of [...this.opened, ...this.folded]) {
             if (chatWindow.notIn(toOpen) && chatWindow.notIn(toFold)) {
-                chatWindow.close({ force: true, notifyState: false });
+                chatWindow.close({force: true, notifyState: false});
             }
         }
         // folded before opened because if there are too many opened they will be added to folded
@@ -122,7 +123,8 @@ export class ChatHub extends Record {
     }
 
     get maxOpened() {
-        const chatBubblesWidth = this.BUBBLE_START + this.BUBBLE + this.BUBBLE_OUTER * 2;
+        const chatBubblesWidth =
+            this.BUBBLE_START + this.BUBBLE + this.BUBBLE_OUTER * 2;
         const startGap = this.store.env.services.ui.isSmall ? 0 : this.WINDOW_GAP;
         const endGap = this.store.env.services.ui.isSmall ? 0 : this.WINDOW_GAP;
         const available = browser.innerWidth - startGap - endGap - chatBubblesWidth;
@@ -135,15 +137,24 @@ export class ChatHub extends Record {
 
     get maxFolded() {
         const chatBubbleSpace = this.BUBBLE_START + this.BUBBLE + this.BUBBLE_OUTER * 2;
-        return Math.min(this.BUBBLE_LIMIT, Math.floor(browser.innerHeight / chatBubbleSpace));
+        return Math.min(
+            this.BUBBLE_LIMIT,
+            Math.floor(browser.innerHeight / chatBubbleSpace)
+        );
     }
 
     save() {
         browser.localStorage.setItem(
             CHAT_HUB_KEY,
             JSON.stringify({
-                opened: this.opened.map((cw) => ({ id: cw.thread.id, model: cw.thread.model })),
-                folded: this.folded.map((cw) => ({ id: cw.thread.id, model: cw.thread.model })),
+                opened: this.opened.map((cw) => ({
+                    id: cw.thread.id,
+                    model: cw.thread.model,
+                })),
+                folded: this.folded.map((cw) => ({
+                    id: cw.thread.id,
+                    model: cw.thread.model,
+                })),
             })
         );
     }

@@ -1,17 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from ast import literal_eval
-from dateutil.relativedelta import relativedelta
 import json
+from ast import literal_eval
+
 import werkzeug.urls
-
+from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
-from pytz import utc, timezone
+from pytz import timezone, utc
 
-from odoo import api, fields, models, tools, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import _, api, fields, models, tools
+from odoo.exceptions import ValidationError
 from odoo.fields import Domain
-from odoo.tools.misc import get_lang, format_date
+from odoo.tools.misc import format_date, get_lang
 
 GOOGLE_CALENDAR_URL = 'https://www.google.com/calendar/render?'
 
@@ -97,7 +97,7 @@ class EventEvent(models.Model):
         """Fall back on the website_url to share the event."""
         for event in self:
             event.event_share_url = event.event_url or tools.urls.urljoin(event.get_base_url(), event.website_url)
- 
+
     @api.depends('registration_ids')
     @api.depends_context('uid')
     def _compute_is_participating(self):
@@ -245,7 +245,7 @@ class EventEvent(models.Model):
         return res
 
     def copy_event_menus(self, old_events):
-        for new_event, old_event in zip(self, old_events):
+        for new_event, old_event in zip(self, old_events, strict=False):
             default_menu_values = {'event_id': new_event.id}
             new_event.menu_id = old_event.menu_id.copy({'name': new_event.name, 'website_id': new_event.website_id.id})
             new_event.introduction_menu_ids = old_event.introduction_menu_ids.copy(default_menu_values)
@@ -639,7 +639,7 @@ class EventEvent(models.Model):
         with_date = 'detail' in mapping
         results_data = super()._search_render_results(fetch_fields, mapping, icon, limit)
         if with_date:
-            for event, data in zip(self, results_data):
+            for event, data in zip(self, results_data, strict=False):
                 begin = self.env['ir.qweb.field.date'].record_to_html(event, 'date_begin', {})
                 end = self.env['ir.qweb.field.date'].record_to_html(event, 'date_end', {})
                 data['range'] = (

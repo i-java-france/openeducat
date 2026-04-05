@@ -4,11 +4,11 @@ import logging
 
 import odoo.tools
 from odoo import http
-from odoo.modules import Manifest
 from odoo.http import request
+from odoo.modules import Manifest
 from odoo.tools.misc import file_path
-from .utils import _local_web_translations
 
+from .utils import _local_web_translations
 
 _logger = logging.getLogger(__name__)
 

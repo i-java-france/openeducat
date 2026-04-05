@@ -1,18 +1,19 @@
-from abc import ABC, abstractmethod
-from base64 import b64decode
-import threading
-from escpos.escpos import EscposIO
-import escpos.printer
-import escpos.exceptions
 import io
 import logging
-from PIL import Image, ImageOps
 import re
+import threading
 import time
+from abc import ABC, abstractmethod
+from base64 import b64decode
+
+import escpos.exceptions
+import escpos.printer
+from escpos.escpos import EscposIO
+from PIL import Image, ImageOps
 
 from odoo.addons.iot_drivers.driver import Driver
-from odoo.addons.iot_drivers.main import iot_devices
 from odoo.addons.iot_drivers.event_manager import event_manager
+from odoo.addons.iot_drivers.main import iot_devices
 
 _logger = logging.getLogger(__name__)
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_op_activity_type_inherited_tree_view" model="ir.ui.view">
+        <field name="name">op.activity.inherited.tree.view</field>
+        <field name="model">op.activity.type</field>
+        <field name="type">list</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="op.activity.type.list" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="show"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_op_activity_inherited_tree_view" model="ir.ui.view">
+        <field name="name">op.activity.list</field>
+        <field name="model">op.activity</field>
+        <field name="type">list</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="op.activity.list" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='date']" position="after">
+                    <field
+                        name="company_id"
+                        groups="base.group_multi_company"
+                        optional="show"
+                    />
+                </xpath>
+
+                <xpath expr="//field[@name='student_id']" position="before">
+                    <field name="progression_id" optional="show" />
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_op_student_progress_activity_tree_inherite" model="ir.ui.view">
+        <field name="name">Student Progression list</field>
+        <field name="model">op.student.progression</field>
+        <field name="type">list</field>
+        <field name="priority">60</field>
+        <field name="inherit_id" ref="Student Progression List" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='student_id']" position="after">
+                <field name="activity_lines" string="Activity" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

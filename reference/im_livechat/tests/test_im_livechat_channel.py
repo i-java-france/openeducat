@@ -1,10 +1,11 @@
 from datetime import timedelta
 
-from odoo.tests import new_test_user, tagged
 from odoo.exceptions import AccessError, ValidationError
+from odoo.fields import Command, Datetime
+from odoo.tests import new_test_user, tagged
+
 from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 from odoo.addons.im_livechat.tests.test_get_operator import TestGetOperator
-from odoo.fields import Command, Datetime
 
 
 @tagged("-at_install", "post_install")

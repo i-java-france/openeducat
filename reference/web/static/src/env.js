@@ -1,10 +1,10 @@
-import { App, EventBus } from "@odoo/owl";
-import { SERVICES_METADATA } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { getTemplate } from "@web/core/templates";
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { session } from "@web/session";
-import { isMacOS } from "@web/core/browser/feature_detection";
+import {App, EventBus} from "@odoo/owl";
+import {SERVICES_METADATA} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {getTemplate} from "@web/core/templates";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {session} from "@web/session";
+import {isMacOS} from "@web/core/browser/feature_detection";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -31,7 +31,7 @@ import { isMacOS } from "@web/core/browser/feature_detection";
 export function makeEnv() {
     const bus = new EventBus();
     const prom = new Promise((resolve) => {
-        bus.addEventListener("SERVICES-LOADED", resolve, { once: true });
+        bus.addEventListener("SERVICES-LOADED", resolve, {once: true});
     });
     return {
         bus,
@@ -52,8 +52,8 @@ const serviceRegistry = registry.category("services");
 
 serviceRegistry.addValidation({
     start: Function,
-    dependencies: { type: Array, element: String, optional: true },
-    async: { type: [{ type: Array, element: String }, { value: true }], optional: true },
+    dependencies: {type: Array, element: String, optional: true},
+    async: {type: [{type: Array, element: String}, {value: true}], optional: true},
     "*": true,
 });
 
@@ -78,7 +78,7 @@ export async function startServices(env) {
         // one another are added to the registry, they're all present before we
         // start them regardless of the order they're added to the registry.
         await Promise.resolve();
-        const { operation, key: name, value: service } = ev.detail;
+        const {operation, key: name, value: service} = ev.detail;
         if (operation === "delete") {
             // We hardly see why it would be usefull to remove a service.
             // Furthermore we could encounter problems with dependencies.
@@ -86,7 +86,7 @@ export async function startServices(env) {
             return;
         }
         if (toStart.size) {
-            const namedService = Object.assign(Object.create(service), { name });
+            const namedService = Object.assign(Object.create(service), {name});
             toStart.set(name, namedService);
         } else {
             await _startServices(env, toStart);
@@ -102,7 +102,7 @@ async function _startServices(env, toStart) {
     const services = env.services;
     for (const [name, service] of serviceRegistry.getEntries()) {
         if (!(name in services)) {
-            const namedService = Object.assign(Object.create(service), { name });
+            const namedService = Object.assign(Object.create(service), {name});
             toStart.set(name, namedService);
         }
     }
@@ -114,7 +114,10 @@ async function _startServices(env, toStart) {
         while ((service = findNext())) {
             const name = service.name;
             toStart.delete(name);
-            const entries = (service.dependencies || []).map((dep) => [dep, services[dep]]);
+            const entries = (service.dependencies || []).map((dep) => [
+                dep,
+                services[dep],
+            ]);
             const dependencies = Object.fromEntries(entries);
             if (name in services) {
                 continue;
@@ -224,7 +227,7 @@ export const globalValues = {
  *  containing a (partial) config for the app.
  */
 export async function mountComponent(component, target, appConfig = {}) {
-    let { env } = appConfig;
+    let {env} = appConfig;
     const isRoot = !env;
     if (isRoot) {
         env = await makeEnv();
@@ -244,7 +247,7 @@ export async function mountComponent(component, target, appConfig = {}) {
     });
     const root = await app.mount(target);
     if (isRoot) {
-        odoo.__WOWL_DEBUG__ = { root };
+        odoo.__WOWL_DEBUG__ = {root};
     }
     return app;
 }

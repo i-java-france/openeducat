@@ -7,6 +7,7 @@ import requests
 
 from odoo import _, fields, models
 from odoo.exceptions import LockError, UserError
+
 from .account_edi_proxy_auth import OdooEdiProxyAuth
 
 _logger = logging.getLogger(__name__)

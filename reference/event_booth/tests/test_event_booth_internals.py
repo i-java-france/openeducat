@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
 
-from odoo.addons.event_booth.tests.common import TestEventBoothCommon
 from odoo.fields import Datetime as FieldsDatetime
-from odoo.tests.common import users, tagged
+from odoo.tests.common import tagged, users
+
+from odoo.addons.event_booth.tests.common import TestEventBoothCommon
 
 
 @tagged('post_install', '-at_install', 'event_booth')

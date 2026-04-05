@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="mailing_report_deactivated" name="Report Unsubscribed">
         <t t-call="mass_mailing.layout">
@@ -8,9 +8,13 @@
                         <h3>Mailing Reports Turned Off</h3>
                         <div class="alert alert-success text-center" role="status">
                             <p>
-                                Mailing Reports have been turned off for all users. <br/>
+                                Mailing Reports have been turned off for all users. <br
+                            />
                                 If needed, they can be turned back on from the
-                                <a t-if="menu_id" t-attf-href="/odoo?menu_id={{menu_id}}">
+                                <a
+                                t-if="menu_id"
+                                t-attf-href="/odoo?menu_id={{menu_id}}"
+                            >
                                     Settings Menu.
                                 </a>
                                 <t t-else="">
@@ -31,12 +35,14 @@
                 <header>
                     <title>Odoo</title>
                 </header>
-                <div id="wrap" class="oe_structure oe_empty"/>
+                <div id="wrap" class="oe_structure oe_empty" />
                 <main class="h-100 align-content-center">
                     <div class="o_view_nocontent">
                         <div class="justify-content-center o_nocontent_help col-6">
-                            <img src="/web/static/img/smiling_face.svg"/>
-                            <p class="o_view_nocontent_smiling_face row justify-content-center col-6 offset-3 pt-3">
+                            <img src="/web/static/img/smiling_face.svg" />
+                            <p
+                                class="o_view_nocontent_smiling_face row justify-content-center col-6 offset-3 pt-3"
+                            >
                                 Nothing to see yet!
                             </p>
                             <div class="row justify-content-center col-6 offset-3 pb-5">
@@ -46,27 +52,27 @@
                     </div>
                 </main>
             </body>
-         </t>
+        </t>
     </template>
 
     <!-- Dummy layout to "view" a template content (html) -->
     <template id="mailing_view" name="Browser View">
 &lt;!DOCTYPE html&gt;
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <style type="text/css">
+            <style type="text/css">
             <!-- Hide the link view online as it is displayed online -->
             .o_snippet_view_in_browser {
                 display: none;
             }
         </style>
-    </head>
-    <body>
-        <!-- Raw body inserted here because it is a rendered mailing, therefore internal content -->
-        <t t-out="body"/>
-    </body>
-</html>
+        </head>
+        <body>
+            <!-- Raw body inserted here because it is a rendered mailing, therefore internal content -->
+            <t t-out="body" />
+        </body>
+    </html>
     </template>
 </odoo>

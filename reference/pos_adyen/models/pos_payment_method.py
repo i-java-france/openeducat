@@ -1,13 +1,13 @@
-# coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 import logging
 import pprint
-import requests
 from urllib.parse import parse_qs
 
-from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError, UserError, AccessDenied
+import requests
+
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tools import hmac
 
 _logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class PosPaymentMethod(models.Model):
     _inherit = 'pos.payment.method'
 
     def _get_payment_terminal_selection(self):
-        return super(PosPaymentMethod, self)._get_payment_terminal_selection() + [('adyen', 'Adyen')]
+        return super()._get_payment_terminal_selection() + [('adyen', 'Adyen')]
 
     # Adyen
     adyen_api_key = fields.Char(string="Adyen API key", help='Used when connecting to Adyen: https://docs.adyen.com/user-management/how-to-get-the-api-key/#description', copy=False, groups='base.group_erp_manager')
@@ -66,7 +66,7 @@ class PosPaymentMethod(models.Model):
         }
 
     def _is_write_forbidden(self, fields):
-        return super(PosPaymentMethod, self)._is_write_forbidden(fields - {'adyen_latest_response'})
+        return super()._is_write_forbidden(fields - {'adyen_latest_response'})
 
     def get_latest_adyen_status(self):
         self.ensure_one()

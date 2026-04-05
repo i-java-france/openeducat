@@ -1,26 +1,26 @@
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { isDisplayStandalone } from "@web/core/browser/feature_detection";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {isDisplayStandalone} from "@web/core/browser/feature_detection";
 
-import { CashierName } from "@point_of_sale/app/components/navbar/cashier_name/cashier_name";
-import { ProxyStatus } from "@point_of_sale/app/components/navbar/proxy_status/proxy_status";
-import { SyncPopup } from "@point_of_sale/app/components/popups/sync_popup/sync_popup";
+import {CashierName} from "@point_of_sale/app/components/navbar/cashier_name/cashier_name";
+import {ProxyStatus} from "@point_of_sale/app/components/navbar/proxy_status/proxy_status";
+import {SyncPopup} from "@point_of_sale/app/components/popups/sync_popup/sync_popup";
 import {
     SaleDetailsButton,
     handleSaleDetails,
 } from "@point_of_sale/app/components/navbar/sale_details_button/sale_details_button";
-import { Component, onMounted, useState, useExternalListener } from "@odoo/owl";
-import { Input } from "@point_of_sale/app/components/inputs/input/input";
-import { isBarcodeScannerSupported } from "@web/core/barcode/barcode_video_scanner";
-import { barcodeService } from "@barcodes/barcode_service";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { OrderTabs } from "@point_of_sale/app/components/order_tabs/order_tabs";
-import { _t } from "@web/core/l10n/translation";
-import { uuidv4 } from "@point_of_sale/utils";
-import { QrCodeCustomerDisplay } from "@point_of_sale/app/customer_display/customer_display_qr_code_popup";
-import { useAsyncLockedMethod } from "@point_of_sale/app/hooks/hooks";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Component, onMounted, useState, useExternalListener} from "@odoo/owl";
+import {Input} from "@point_of_sale/app/components/inputs/input/input";
+import {isBarcodeScannerSupported} from "@web/core/barcode/barcode_video_scanner";
+import {barcodeService} from "@barcodes/barcode_service";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {OrderTabs} from "@point_of_sale/app/components/order_tabs/order_tabs";
+import {_t} from "@web/core/l10n/translation";
+import {uuidv4} from "@point_of_sale/utils";
+import {QrCodeCustomerDisplay} from "@point_of_sale/app/customer_display/customer_display_qr_code_popup";
+import {useAsyncLockedMethod} from "@point_of_sale/app/hooks/hooks";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class Navbar extends Component {
     static template = "point_of_sale.Navbar";
@@ -39,7 +39,7 @@ export class Navbar extends Component {
     setup() {
         this.pos = usePos();
         this.ui = useService("ui");
-        this.state = useState({ searchBarOpen: false });
+        this.state = useState({searchBarOpen: false});
         this.dialog = useService("dialog");
         this.notification = useService("notification");
         this.hardwareProxy = useService("hardware_proxy");
@@ -65,7 +65,8 @@ export class Navbar extends Component {
     handleKeydown(event) {
         const isEndCharacter = event.key?.match(/(Enter|Tab)/);
         const isSpecialKey =
-            !["Control", "Alt"].includes(event.key) && (event.key?.length > 1 || event.metaKey);
+            !["Control", "Alt"].includes(event.key) &&
+            (event.key?.length > 1 || event.metaKey);
 
         clearTimeout(this.timeout);
         if (isEndCharacter) {
@@ -119,7 +120,9 @@ export class Navbar extends Component {
             const screenName = this.pos.router.state.current;
             if (["ProductScreen", "TicketScreen"].includes(screenName)) {
                 const params =
-                    screenName === "ProductScreen" ? { orderUuid: this.pos.getOrder().uuid } : {};
+                    screenName === "ProductScreen"
+                        ? {orderUuid: this.pos.getOrder().uuid}
+                        : {};
                 this.pos.navigate(screenName, params);
             }
         }
@@ -180,7 +183,12 @@ export class Navbar extends Component {
     }
 
     get mainButton() {
-        const screens = ["ProductScreen", "PaymentScreen", "ReceiptScreen", "TipScreen"];
+        const screens = [
+            "ProductScreen",
+            "PaymentScreen",
+            "ReceiptScreen",
+            "TipScreen",
+        ];
         return screens.includes(this.pos.router.state.current) ? "register" : "order";
     }
 }

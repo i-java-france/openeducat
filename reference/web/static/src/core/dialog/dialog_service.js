@@ -1,11 +1,11 @@
-import { Component, markRaw, reactive, useChildSubEnv, xml } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {Component, markRaw, reactive, useChildSubEnv, xml} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
 class DialogWrapper extends Component {
     static template = xml`<t t-component="props.subComponent" t-props="props.subProps" />`;
     static props = ["*"];
     setup() {
-        useChildSubEnv({ dialogData: this.props.subEnv });
+        useChildSubEnv({dialogData: this.props.subEnv});
     }
 }
 
@@ -27,7 +27,7 @@ class DialogWrapper extends Component {
 export const dialogService = {
     dependencies: ["overlay"],
     /** @returns {DialogServiceInterface} */
-    start(env, { overlay }) {
+    start(env, {overlay}) {
         const stack = [];
         let nextId = 0;
 
@@ -51,7 +51,7 @@ export const dialogService = {
             document.body.classList.add("modal-open");
             let isBeingClosed = false;
 
-            const scrollOrigin = { top: window.scrollY, left: window.scrollX };
+            const scrollOrigin = {top: window.scrollY, left: window.scrollX};
             subEnv.scrollToOrigin = () => {
                 if (!stack.length) {
                     window.scrollTo(scrollOrigin);
@@ -62,7 +62,7 @@ export const dialogService = {
                 DialogWrapper,
                 {
                     subComponent: dialogClass,
-                    subProps: markRaw({ ...props, close }),
+                    subProps: markRaw({...props, close}),
                     subEnv,
                 },
                 {
@@ -96,7 +96,7 @@ export const dialogService = {
             }
         }
 
-        return { add, closeAll };
+        return {add, closeAll};
     },
 };
 

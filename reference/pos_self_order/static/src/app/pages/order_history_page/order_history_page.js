@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export class OrdersHistoryPage extends Component {
     static template = "pos_self_order.OrdersHistoryPage";
@@ -38,10 +38,10 @@ export class OrdersHistoryPage extends Component {
         if (matches && matches.length > 1) {
             const attributes = matches[matches.length - 1].trim();
             const productName = fullName.replace(matches[0], "").trim();
-            return { productName, attributes };
+            return {productName, attributes};
         }
 
-        return { productName: fullName, attributes: "" };
+        return {productName: fullName, attributes: ""};
     }
 
     editOrder(order) {

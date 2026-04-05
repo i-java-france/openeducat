@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-
+import base64
 from contextlib import contextmanager
 from functools import wraps
 from unittest.mock import patch
 
-import base64
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 def _generate_mocked_needs_web_services(needs_web_services):

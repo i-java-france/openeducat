@@ -1,7 +1,17 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { animationFrame, mockDate } from "@odoo/hoot-mock";
-import { defineActions, defineModels, fields, getService, models, mountWebClient, onRpc, serverState, switchView } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {animationFrame, mockDate} from "@odoo/hoot-mock";
+import {
+    defineActions,
+    defineModels,
+    fields,
+    getService,
+    models,
+    mountWebClient,
+    onRpc,
+    serverState,
+    switchView,
+} from "@web/../tests/web_test_helpers";
 
 class CalendarEvent extends models.Model {
     _name = "calendar.event";
@@ -34,32 +44,32 @@ class CalendarEvent extends models.Model {
                 <field name="partner_ids" write_model="calendar.filter" write_field="partner_id"/>
             </calendar>
         `,
-        list: `<list sample="1"/>`
+        list: `<list sample="1"/>`,
     };
 
-    user_id = fields.Many2one({ relation: "users" });
-    partner_id = fields.Many2one({ relation: "partner" });
+    user_id = fields.Many2one({relation: "users"});
+    partner_id = fields.Many2one({relation: "partner"});
     name = fields.Char();
     start = fields.Datetime();
     stop = fields.Datetime();
     allday = fields.Boolean();
-    partner_ids = fields.One2many({ relation: "partner" });
+    partner_ids = fields.One2many({relation: "partner"});
 }
 
 class CalendarFilter extends models.Model {
     _records = [
-        { id: 3, user_id: serverState.userId, partner_id: 4, partner_checked: true },
+        {id: 3, user_id: serverState.userId, partner_id: 4, partner_checked: true},
     ];
 
-    user_id = fields.Many2one({ relation: "users" });
-    partner_id = fields.Many2one({ relation: "partner" });
+    user_id = fields.Many2one({relation: "users"});
+    partner_id = fields.Many2one({relation: "partner"});
     partner_checked = fields.Boolean();
 }
 
 class Partner extends models.Model {
     _records = [
-        { id: 4, name: "Partner 4", image_1920: "DDD" },
-        { id: 5, name: "Partner 5", image_1920: "DDD" },
+        {id: 4, name: "Partner 4", image_1920: "DDD"},
+        {id: 5, name: "Partner 5", image_1920: "DDD"},
     ];
 
     name = fields.Char();
@@ -67,21 +77,21 @@ class Partner extends models.Model {
 }
 
 class Users extends models.Model {
-    _records = [
-        { id: serverState.userId, name: "User 4", partner_id: 4 },
-    ];
+    _records = [{id: serverState.userId, name: "User 4", partner_id: 4}];
 
     name = fields.Char();
-    partner_id = fields.Many2one({ relation: "partner" });
+    partner_id = fields.Many2one({relation: "partner"});
     image_1920 = fields.Binary();
 }
 
 defineModels([CalendarEvent, CalendarFilter, Partner, Users]);
 defineMailModels();
 
-onRpc("/calendar/check_credentials", async () => ({ microsoft_calendar: true }));
-onRpc("/microsoft_calendar/sync_data", () => ({ status: "no_new_event_from_microsoft" }));
-onRpc("check_synchronization_status", async () => ({ microsoft_calendar: "sync_active" }));
+onRpc("/calendar/check_credentials", async () => ({microsoft_calendar: true}));
+onRpc("/microsoft_calendar/sync_data", () => ({status: "no_new_event_from_microsoft"}));
+onRpc("check_synchronization_status", async () => ({
+    microsoft_calendar: "sync_active",
+}));
 onRpc("get_attendee_detail", () => []);
 onRpc("get_default_duration", () => 3.25);
 
@@ -96,7 +106,10 @@ test(`component is destroyed while sync microsoft calendar`, async () => {
             name: "Partners",
             res_model: "calendar.event",
             type: "ir.actions.act_window",
-            views: [[false, "list"], [false, "calendar"]],
+            views: [
+                [false, "list"],
+                [false, "calendar"],
+            ],
         },
     ]);
 
@@ -105,7 +118,7 @@ test(`component is destroyed while sync microsoft calendar`, async () => {
         expect.step("sync_data");
         return deferred.promise;
     });
-    onRpc("calendar.event", "search_read", ({ method }) => {
+    onRpc("calendar.event", "search_read", ({method}) => {
         expect.step(method);
     });
 

@@ -1,4 +1,4 @@
-import { areCssValuesEqual } from "@html_builder/utils/utils_css";
+import {areCssValuesEqual} from "@html_builder/utils/utils_css";
 import {
     clickOnEditAndWaitEditMode,
     clickOnSave,
@@ -14,7 +14,9 @@ const TARGET_BODY_COLOR_V2 = "rgb(255, 0, 255)";
 
 const checkFontSize = function () {
     const style = document.defaultView.getComputedStyle(this.anchor);
-    if (!areCssValuesEqual(style.fontSize, `${TARGET_FONT_SIZE}px`, "font-size", style)) {
+    if (
+        !areCssValuesEqual(style.fontSize, `${TARGET_FONT_SIZE}px`, "font-size", style)
+    ) {
         console.error(
             `Expected the font-size to be equal to ${TARGET_FONT_SIZE}px but found ${style.fontSize} instead`
         );
@@ -60,7 +62,8 @@ registerWebsitePreviewTour(
         {
             // Waiting the CSS to be reloaded: the code adds a new assets bundle
             // with a #t=... at the end then removes the old one.
-            trigger: ':iframe html:not(:has(link[href$="web.assets_frontend.min.css"]))',
+            trigger:
+                ':iframe html:not(:has(link[href$="web.assets_frontend.min.css"]))',
         },
         {
             content: "Check the font size was properly adapted",
@@ -139,11 +142,13 @@ registerWebsitePreviewTour(
         ...clickOnEditAndWaitEditMode(),
         ...goToTheme(),
         {
-            trigger: "div[data-label='Background'] button[data-action-value='NONE'].active",
+            trigger:
+                "div[data-label='Background'] button[data-action-value='NONE'].active",
         },
         {
             content: "Click on the Background Image selection",
-            trigger: "div[data-label='Background'] button[data-action-value='image']:not(.active)",
+            trigger:
+                "div[data-label='Background'] button[data-action-value='image']:not(.active)",
             run: "click",
         },
         {

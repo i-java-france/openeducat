@@ -1,29 +1,29 @@
 /* global SignaturePad */
 
-import { loadJS } from "@web/core/assets";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { rpc } from "@web/core/network/rpc";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { renderToString } from "@web/core/utils/render";
-import { getDataURLFromFile } from "@web/core/utils/urls";
+import {loadJS} from "@web/core/assets";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {rpc} from "@web/core/network/rpc";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {renderToString} from "@web/core/utils/render";
+import {getDataURLFromFile} from "@web/core/utils/urls";
 
-import { Component, useState, onWillStart, useRef, useEffect } from "@odoo/owl";
+import {Component, useState, onWillStart, useRef, useEffect} from "@odoo/owl";
 
 let htmlId = 0;
 export class NameAndSignature extends Component {
     static template = "web.NameAndSignature";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
-        signature: { type: Object },
-        defaultFont: { type: String, optional: true },
-        displaySignatureRatio: { type: Number, optional: true },
-        fontColor: { type: String, optional: true },
-        signatureType: { type: String, optional: true },
-        noInputName: { type: Boolean, optional: true },
-        mode: { type: String, optional: true },
-        onSignatureChange: { type: Function, optional: true },
+        signature: {type: Object},
+        defaultFont: {type: String, optional: true},
+        displaySignatureRatio: {type: Number, optional: true},
+        fontColor: {type: String, optional: true},
+        signatureType: {type: String, optional: true},
+        noInputName: {type: Boolean, optional: true},
+        mode: {type: String, optional: true},
+        onSignatureChange: {type: Function, optional: true},
     };
     static defaultProps = {
         defaultFont: "",
@@ -42,14 +42,15 @@ export class NameAndSignature extends Component {
 
         this.state = useState({
             signMode:
-                this.props.mode || (this.props.noInputName && !this.defaultName ? "draw" : "auto"),
+                this.props.mode ||
+                (this.props.noInputName && !this.defaultName ? "draw" : "auto"),
             showSignatureArea: !!(this.props.noInputName || this.defaultName),
             showFontList: false,
         });
 
         this.signNameInputRef = useRef("signNameInput");
         this.signInputLoad = useRef("signInputLoad");
-        useAutofocus({ refName: "signNameInput" });
+        useAutofocus({refName: "signNameInput"});
         useEffect(
             (el) => {
                 if (el) {
@@ -82,7 +83,8 @@ export class NameAndSignature extends Component {
                         this.props.onSignatureChange(this.state.signMode);
                     });
                     this.resetSignature();
-                    this.props.signature.getSignatureImage = () => this.signaturePad.toDataURL();
+                    this.props.signature.getSignatureImage = () =>
+                        this.signaturePad.toDataURL();
                     this.props.signature.resetSignature = () => this.resetSignature();
                     if (this.state.signMode === "auto") {
                         this.drawCurrentName();
@@ -128,8 +130,8 @@ export class NameAndSignature extends Component {
     }
 
     /**
-    * Loads a signature image from a base64 dataURL and updates the empty state.
-    */
+     * Loads a signature image from a base64 dataURL and updates the empty state.
+     */
     async fromDataURL() {
         await this.signaturePad.fromDataURL(...arguments);
         this.props.signature.isSignatureEmpty = this.isSignatureEmpty;
@@ -263,13 +265,16 @@ export class NameAndSignature extends Component {
         const img = new Image();
         img.onload = () => {
             const ctx = c.getContext("2d");
-            var ratio = ((img.width / img.height) > (c.width / c.height)) ? c.width / img.width : c.height / img.height;
-            ctx.drawImage( 
+            var ratio =
+                img.width / img.height > c.width / c.height
+                    ? c.width / img.width
+                    : c.height / img.height;
+            ctx.drawImage(
                 img,
-                (c.width / 2) - (img.width * ratio / 2),
-                (c.height / 2) - (img.height * ratio / 2)
-                , img.width * ratio
-                , img.height * ratio
+                c.width / 2 - (img.width * ratio) / 2,
+                c.height / 2 - (img.height * ratio) / 2,
+                img.width * ratio,
+                img.height * ratio
             );
             this.props.signature.isSignatureEmpty = this.isSignatureEmpty;
             this.props.onSignatureChange(this.state.signMode);
@@ -298,7 +303,7 @@ export class NameAndSignature extends Component {
         const width = this.signatureRef.el.clientWidth;
         const height = parseInt(width / this.props.displaySignatureRatio);
 
-        Object.assign(this.signatureRef.el, { width, height });
+        Object.assign(this.signatureRef.el, {width, height});
     }
 
     /**

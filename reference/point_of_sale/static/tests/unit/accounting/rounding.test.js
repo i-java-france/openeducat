@@ -1,13 +1,13 @@
-import { test, expect } from "@odoo/hoot";
-import { setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { getFilledOrderForPriceCheck, prepareRoundingVals } from "./utils";
+import {expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {getFilledOrderForPriceCheck, prepareRoundingVals} from "./utils";
 
 definePosModels();
 
 test("Rounding sale HALF-UP 0.05 (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -29,7 +29,7 @@ test("Rounding sale HALF-UP 0.05 (cash only)", async () => {
 
 test("Rounding sale HALF-UP 0.05 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -59,7 +59,7 @@ test("Rounding sale HALF-UP 0.05 (all methods)", async () => {
 
 test("Rounding sale UP 10  (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 10, "UP", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 10, "UP", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -81,7 +81,7 @@ test("Rounding sale UP 10  (cash only)", async () => {
 
 test("Rounding sale UP 10 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 10, "UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 10, "UP", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -112,7 +112,7 @@ test("Rounding sale UP 10 (all methods)", async () => {
 
 test("Rounding sale DOWN 10 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 10, "DOWN", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 10, "DOWN", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -143,7 +143,7 @@ test("Rounding sale DOWN 10 (all methods)", async () => {
 
 test("Rounding sale DOWN 1 (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 1, "DOWN", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 1, "DOWN", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -165,7 +165,7 @@ test("Rounding sale DOWN 1 (cash only)", async () => {
 
 test("Rounding sale DOWN 1 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 1, "DOWN", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 1, "DOWN", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
@@ -187,7 +187,7 @@ test("Rounding sale DOWN 1 (all methods)", async () => {
 
 test("Rounding refund HALF-UP 0.05 (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -212,7 +212,7 @@ test("Rounding refund HALF-UP 0.05 (cash only)", async () => {
 
 test("Rounding refund HALF-UP 0.05 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -237,7 +237,7 @@ test("Rounding refund HALF-UP 0.05 (all methods)", async () => {
 
 test("Rounding refund UP 10 (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 10, "UP", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 10, "UP", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -262,7 +262,7 @@ test("Rounding refund UP 10 (cash only)", async () => {
 
 test("Rounding refund UP 10 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 10, "UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 10, "UP", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -287,7 +287,7 @@ test("Rounding refund UP 10 (all methods)", async () => {
 
 test("Rounding refund DOWN 1 (cash only)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 1, "DOWN", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 1, "DOWN", true);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -312,7 +312,7 @@ test("Rounding refund DOWN 1 (cash only)", async () => {
 
 test("Rounding refund DOWN 1 (all methods)", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 1, "DOWN", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 1, "DOWN", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     order.is_refund = true;
@@ -337,12 +337,12 @@ test("Rounding refund DOWN 1 (all methods)", async () => {
 
 test("Rouding sale HALF-UP 0.05 with two payment method", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const order = await getFilledOrderForPriceCheck(store);
 
     expect(order.displayPrice).toBe(52.54);
 
-    // only_round_cash_method is false so the order due is 52.55
+    // Only_round_cash_method is false so the order due is 52.55
     order.addPaymentline(cardPm);
     order.payment_ids[0].setAmount(2.54);
     expect(order.payment_ids[0].amount).toBe(2.54);

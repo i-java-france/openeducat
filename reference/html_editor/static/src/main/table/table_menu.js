@@ -1,8 +1,8 @@
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { Component } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {Component} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
 
 export class TableMenu extends Component {
     static template = "html_editor.TableMenu";
@@ -23,11 +23,11 @@ export class TableMenu extends Component {
         clearRowContent: Function,
         overlay: Object,
         dropdownState: Object,
-        target: { validate: (el) => el.nodeType === Node.ELEMENT_NODE },
-        direction: { type: String, optional: true },
+        target: {validate: (el) => el.nodeType === Node.ELEMENT_NODE},
+        direction: {type: String, optional: true},
     };
-    static defaultProps = { direction: "ltr" };
-    static components = { Dropdown, DropdownItem };
+    static defaultProps = {direction: "ltr"};
+    static components = {Dropdown, DropdownItem};
 
     setup() {
         if (this.props.type === "column") {
@@ -107,7 +107,8 @@ export class TableMenu extends Component {
                 name: "reset_column_size",
                 icon: "fa-table",
                 text: _t("Reset column size"),
-                action: (target) => this.props.resetColumnWidth(target.closest("td, th")),
+                action: (target) =>
+                    this.props.resetColumnWidth(target.closest("td, th")),
             },
             this.hasCustomTableSize && {
                 name: "reset_table_size",

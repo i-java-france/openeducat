@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "../registry";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "../registry";
 
-import { EventBus, reactive } from "@odoo/owl";
+import {EventBus, reactive} from "@odoo/owl";
 
 export const fileUploadService = {
     dependencies: ["notification"],
@@ -15,7 +15,7 @@ export const fileUploadService = {
         return new window.XMLHttpRequest();
     },
 
-    start(env, { notification: notificationService }) {
+    start(env, {notification: notificationService}) {
         const uploads = reactive({});
         let nextId = 1;
         const bus = new EventBus();
@@ -54,7 +54,8 @@ export const fileUploadService = {
                 loaded: 0,
                 total: 0,
                 state: "pending",
-                title: files.length === 1 ? files[0].name : _t("%s Files", files.length),
+                title:
+                    files.length === 1 ? files[0].name : _t("%s Files", files.length),
                 type: files.length === 1 ? files[0].type : undefined,
             });
             uploads[upload.id] = upload;
@@ -75,7 +76,7 @@ export const fileUploadService = {
                 }
                 delete uploads[upload.id];
                 upload.state = "loaded";
-                bus.trigger("FILE_UPLOAD_LOADED", { upload });
+                bus.trigger("FILE_UPLOAD_LOADED", {upload});
             });
 
             function handleResponse() {
@@ -92,7 +93,10 @@ export const fileUploadService = {
                             content = JSON.parse(content);
                         } catch {
                             try {
-                                content = new DOMParser().parseFromString(content, "text/html");
+                                content = new DOMParser().parseFromString(
+                                    content,
+                                    "text/html"
+                                );
                             } catch {
                                 /** pass */
                             }
@@ -133,7 +137,7 @@ export const fileUploadService = {
                         sticky: true,
                     });
                 }
-                bus.trigger("FILE_UPLOAD_ERROR", { upload });
+                bus.trigger("FILE_UPLOAD_ERROR", {upload});
             }
             // Error listener
             xhr.addEventListener("error", (ev) => onError(ev.error));
@@ -141,14 +145,14 @@ export const fileUploadService = {
             xhr.addEventListener("abort", async () => {
                 delete uploads[upload.id];
                 upload.state = "abort";
-                bus.trigger("FILE_UPLOAD_ERROR", { upload });
+                bus.trigger("FILE_UPLOAD_ERROR", {upload});
             });
             xhr.send(formData);
-            bus.trigger("FILE_UPLOAD_ADDED", { upload });
+            bus.trigger("FILE_UPLOAD_ADDED", {upload});
             return upload;
         };
 
-        return { bus, upload, uploads };
+        return {bus, upload, uploads};
     },
 };
 

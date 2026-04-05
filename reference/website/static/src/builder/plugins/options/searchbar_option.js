@@ -1,4 +1,4 @@
-import { BaseOptionComponent, useGetItemValue } from "@html_builder/core/utils";
+import {BaseOptionComponent, useGetItemValue} from "@html_builder/core/utils";
 
 export class SearchbarOption extends BaseOptionComponent {
     static template = "website.SearchbarOption";

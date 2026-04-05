@@ -1,14 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from contextlib import contextmanager
 from datetime import datetime
+
 from freezegun import freeze_time
 from lxml import etree
 
 from odoo import Command, fields
-from odoo.tests import Form, TransactionCase
 from odoo.exceptions import AccessError, UserError
+from odoo.tests import Form, TransactionCase
+
 
 class TestMultiCompanyCommon(TransactionCase):
 
@@ -125,7 +126,7 @@ class TestMultiCompanyProject(TestMultiCompanyCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMultiCompanyProject, cls).setUpClass()
+        super().setUpClass()
 
         cls.setUpMultiCompany()
 

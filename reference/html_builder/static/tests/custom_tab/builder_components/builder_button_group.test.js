@@ -4,7 +4,7 @@ import {
     setupHTMLBuilder,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {BuilderAction} from "@html_builder/core/builder_action";
 import {
     describe,
     expect,
@@ -14,17 +14,17 @@ import {
     test,
     waitFor,
 } from "@odoo/hoot";
-import { hover } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {hover} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 describe.current.tags("desktop");
 
 test("change the editingElement of sub widget through `applyTo` prop", async () => {
     class CustomAction extends BuilderAction {
         static id = "customAction";
-        apply({ editingElement }) {
+        apply({editingElement}) {
             expect.step(`customAction ${editingElement.className}`);
         }
     }
@@ -53,7 +53,7 @@ test("change the editingElement of sub widget through `applyTo` prop", async () 
 test("should propagate actionParam in the context", async () => {
     class CustomAction extends BuilderAction {
         static id = "customAction";
-        apply({ params: { mainParam: testParam } }) {
+        apply({params: {mainParam: testParam}}) {
             expect.step(`customAction ${testParam}`);
         }
     }
@@ -160,7 +160,9 @@ test("hide/display base on applyTo", async () => {
         }
     );
 
-    await setupHTMLBuilder(`<div class="parent-target"><div class="child-target">b</div></div>`);
+    await setupHTMLBuilder(
+        `<div class="parent-target"><div class="child-target">b</div></div>`
+    );
     await contains(":iframe .parent-target").click();
     expect(".options-container .btn-group").toHaveCount(0);
 
@@ -186,7 +188,9 @@ test("hide/display base on applyTo - 2", async () => {
         }
     );
 
-    await setupHTMLBuilder(`<div class="parent-target"><div class="child-target">b</div></div>`);
+    await setupHTMLBuilder(
+        `<div class="parent-target"><div class="child-target">b</div></div>`
+    );
     await contains(":iframe .parent-target").click();
     expect(".options-container .btn-group").not.toBeVisible();
 
@@ -204,9 +208,11 @@ test("click on BuilderButton with empty value should remove styleAction", async 
         </BuilderButtonGroup>`;
         }
     );
-    const { contentEl } = await setupHTMLBuilder(`<p class="test-options-target">b</p>`);
+    const {contentEl} = await setupHTMLBuilder(`<p class="test-options-target">b</p>`);
     await contains(":iframe .test-options-target").click();
-    await contains("[data-style-action='width'][data-style-action-value='25%']").click();
+    await contains(
+        "[data-style-action='width'][data-style-action-value='25%']"
+    ).click();
     expect(contentEl).toHaveInnerHTML(
         `<p class="test-options-target" style="width: 25% !important;">b</p>`
     );
@@ -284,7 +290,8 @@ test("BuilderButton: no activation on preview", async () => {
     await press(["Esc"]);
     await waitForEndOfOperation();
     expect(builderButtonEl).not.toHaveClass("active", {
-        message: "Since we are still in preview, the button should NOT switch to active",
+        message:
+            "Since we are still in preview, the button should NOT switch to active",
     });
     expect(targetEl).toHaveClass("b2", {
         message: "It should still preview b2",

@@ -1,15 +1,13 @@
 import base64
-from dataclasses import dataclass
 import hashlib
 import json
-from typing import List
+from dataclasses import dataclass
 
 from cryptography import x509
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509.oid import NameOID
 
-from ....webauthn.helpers.cose import COSEAlgorithmIdentifier
 from ....webauthn.helpers import (
     base64url_to_bytes,
     parse_cbor,
@@ -17,6 +15,7 @@ from ....webauthn.helpers import (
     verify_safetynet_timestamp,
     verify_signature,
 )
+from ....webauthn.helpers.cose import COSEAlgorithmIdentifier
 from ....webauthn.helpers.exceptions import (
     InvalidCertificateChain,
     InvalidRegistrationResponse,
@@ -30,7 +29,7 @@ class SafetyNetJWSHeader:
     """Properties in the Header of a SafetyNet JWS"""
 
     alg: str
-    x5c: List[str]
+    x5c: list[str]
 
 
 @dataclass
@@ -46,7 +45,7 @@ class SafetyNetJWSPayload:
     apk_package_name: str
     apk_digest_sha256: str
     cts_profile_match: bool
-    apk_certificate_digest_sha256: List[str]
+    apk_certificate_digest_sha256: list[str]
     basic_integrity: bool
 
 
@@ -55,7 +54,7 @@ def verify_android_safetynet(
     attestation_statement: AttestationStatement,
     attestation_object: bytes,
     client_data_json: bytes,
-    pem_root_certs_bytes: List[bytes],
+    pem_root_certs_bytes: list[bytes],
     verify_timestamp_ms: bool = True,
 ) -> bool:
     """Verify an "android-safetynet" attestation statement
@@ -174,7 +173,7 @@ def verify_android_safetynet(
         raise InvalidRegistrationResponse(f"{err} (SafetyNet)")
 
     # Verify signature
-    verification_data = f"{jws_parts[0]}.{jws_parts[1]}".encode("utf-8")
+    verification_data = f"{jws_parts[0]}.{jws_parts[1]}".encode()
     signature_bytes = base64url_to_bytes(signature_bytes_str)
 
     if header.alg != "RS256":

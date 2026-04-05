@@ -1,11 +1,11 @@
-import { before, expect } from "@odoo/hoot";
-import { queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { contains, findComponent, preloadBundle } from "@web/../tests/web_test_helpers";
+import {before, expect} from "@odoo/hoot";
+import {queryAllTexts, queryOne} from "@odoo/hoot-dom";
+import {contains, findComponent, preloadBundle} from "@web/../tests/web_test_helpers";
 
-import { ensureArray } from "@web/core/utils/arrays";
-import { patch } from "@web/core/utils/patch";
-import { GraphController } from "@web/views/graph/graph_controller";
-import { GraphRenderer } from "@web/views/graph/graph_renderer";
+import {ensureArray} from "@web/core/utils/arrays";
+import {patch} from "@web/core/utils/patch";
+import {GraphController} from "@web/views/graph/graph_controller";
+import {GraphRenderer} from "@web/views/graph/graph_renderer";
 
 /**
  * @typedef {"bar" | "line" | "pie"} GraphMode
@@ -49,11 +49,11 @@ export const checkModeIs = (view, mode) => {
  * @param {number} index
  * @param {number} datasetIndex
  */
-export const checkTooltip = (view, { title, lines }, index, datasetIndex = null) => {
+export const checkTooltip = (view, {title, lines}, index, datasetIndex = null) => {
     // If the tooltip options are changed, this helper should change: we construct the dataPoints
     // similarly to Chart.js according to the values set for the tooltips options 'mode' and 'intersect'.
     const chart = getChart(view);
-    const { datasets } = chart.data;
+    const {datasets} = chart.data;
     const dataPoints = [];
     for (let i = 0; i < datasets.length; i++) {
         const dataset = datasets[i];
@@ -67,7 +67,7 @@ export const checkTooltip = (view, { title, lines }, index, datasetIndex = null)
         }
     }
     chart.config.options.plugins.tooltip.external({
-        tooltip: { opacity: 1, x: 1, y: 1, dataPoints },
+        tooltip: {opacity: 1, x: 1, y: 1, dataPoints},
     });
     const lineLabels = [];
     const lineValues = [];
@@ -85,7 +85,8 @@ export const checkTooltip = (view, { title, lines }, index, datasetIndex = null)
 /**
  * @param {"asc" | "desc"} direction
  */
-export const clickSort = (direction) => contains(`.fa-sort-amount-${direction}`).click();
+export const clickSort = (direction) =>
+    contains(`.fa-sort-amount-${direction}`).click();
 
 /**
  * @param {GraphView} view
@@ -110,7 +111,8 @@ export const getScaleY = (view) => getChart(view).config.options.scales.y;
 /**
  * @param {GraphView} view
  */
-export const getYAxisLabel = (view) => getChart(view).config.options.scales.y.title.text;
+export const getYAxisLabel = (view) =>
+    getChart(view).config.options.scales.y.title.text;
 
 /**
  * @param {GraphView} view
@@ -152,7 +154,7 @@ export function checkLegend(view, expectedLabels) {
 export async function clickOnDataset(view, options = {}) {
     const chart = getChart(view);
     const point = chart.getDatasetMeta(0).data[0].getCenterPoint();
-    return contains(chart.canvas).click({ position: point, relative: true, ...options });
+    return contains(chart.canvas).click({position: point, relative: true, ...options});
 }
 
 /**
@@ -191,12 +193,12 @@ export function selectMode(mode) {
 export async function clickOnLegend(view, text) {
     const chart = getChart(view);
     const index = chart.legend.legendItems.findIndex((e) => e.text === text);
-    const { left, top, width, height } = chart.legend.legendHitBoxes[index];
+    const {left, top, width, height} = chart.legend.legendHitBoxes[index];
     const point = {
         x: left + width / 2,
         y: top + height / 2,
     };
-    return contains(chart.canvas).click({ position: point, relative: true });
+    return contains(chart.canvas).click({position: point, relative: true});
 }
 
 /**
@@ -208,5 +210,5 @@ export async function clickOnLegend(view, text) {
  */
 export function setupChartJsForTests() {
     preloadBundle("web.chartjs_lib");
-    before(() => patch(Chart.defaults, { animation: false }));
+    before(() => patch(Chart.defaults, {animation: false}));
 }

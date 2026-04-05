@@ -1,22 +1,22 @@
 import {
-    startInteractions,
     setupInteractionWhiteList,
+    startInteractions,
 } from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { advanceTime, queryOne } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {advanceTime, queryOne} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("account_payment.portal_invoice_page_payment");
 
 describe.current.tags("interaction_dev");
 
 test("portal_invoice_page_payment is not started without #portal_pay", async () => {
-    const { core } = await startInteractions("");
+    const {core} = await startInteractions("");
     expect(core.interactions).toHaveLength(0);
 });
 
 test("portal_invoice_page_payment is started with #portal_pay", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
     <div id="wrapwrap" class="o_portal">
         <header style="height: 50px;"></header>
         <main>
@@ -177,5 +177,5 @@ test("portal_invoice_page_payment is started with #portal_pay", async () => {
     expect(core.interactions).toHaveLength(1);
     expect(queryOne("#pay_with")).toBeInstanceOf(HTMLElement);
     await advanceTime(400);
-    expect("#pay_with").not.toHaveStyle({ "display": "none" });
+    expect("#pay_with").not.toHaveStyle({display: "none"});
 });

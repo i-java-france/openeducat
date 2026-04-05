@@ -1,4 +1,4 @@
-import { Component, useExternalListener, useState } from "@odoo/owl";
+import {Component, useExternalListener, useState} from "@odoo/owl";
 
 export class TablePicker extends Component {
     static template = "html_editor.TablePicker";
@@ -64,7 +64,7 @@ export class TablePicker extends Component {
                         break;
                 }
             },
-            { capture: true }
+            {capture: true}
         );
     }
 
@@ -74,7 +74,7 @@ export class TablePicker extends Component {
     }
 
     insertTable() {
-        this.props.insertTable({ cols: this.state.cols, rows: this.state.rows });
+        this.props.insertTable({cols: this.state.cols, rows: this.state.rows});
         this.props.overlay.close();
     }
 }

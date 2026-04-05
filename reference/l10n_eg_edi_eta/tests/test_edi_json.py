@@ -6,7 +6,6 @@ from freezegun import freeze_time
 
 from odoo import Command
 from odoo.tests import tagged
-from odoo import Command
 
 from .common import TestEGEdiCommon
 

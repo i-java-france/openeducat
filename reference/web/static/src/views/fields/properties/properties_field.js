@@ -1,20 +1,27 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { reposition } from "@web/core/position/utils";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { useSortable } from "@web/core/utils/sortable_owl";
-import { exprToBoolean, uuid } from "@web/core/utils/strings";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { standardFieldProps } from "../standard_field_props";
-import { PropertyDefinition } from "./property_definition";
-import { PropertyValue } from "./property_value";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {reposition} from "@web/core/position/utils";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {useSortable} from "@web/core/utils/sortable_owl";
+import {exprToBoolean, uuid} from "@web/core/utils/strings";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {standardFieldProps} from "../standard_field_props";
+import {PropertyDefinition} from "./property_definition";
+import {PropertyValue} from "./property_value";
 
-import { Component, onWillStart, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onWillStart,
+    onWillUpdateProps,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
 export class PropertiesField extends Component {
     static template = "web.PropertiesField";
@@ -26,13 +33,13 @@ export class PropertiesField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        context: { type: Object, optional: true },
+        context: {type: Object, optional: true},
         columns: {
             type: Number,
             optional: true,
             validate: (columns) => [1, 2].includes(columns),
         },
-        editMode: { type: Boolean, optional: true },
+        editMode: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -106,7 +113,10 @@ export class PropertiesField extends Component {
         useEffect(
             () => {
                 // when the field has a new definition record:
-                if (this.props.readonly || (!this.state.isInEditMode && !this.props.editMode)) {
+                if (
+                    this.props.readonly ||
+                    (!this.state.isInEditMode && !this.props.editMode)
+                ) {
                     return;
                 }
                 this.checkDefinitionWriteAccess().then((canChangeDefinition) => {
@@ -170,7 +180,7 @@ export class PropertiesField extends Component {
             groups: ".o_property_group",
             connectGroups: true,
             cursor: "grabbing",
-            onDragStart: ({ element, group }) => {
+            onDragStart: ({element, group}) => {
                 this.propertiesRef.el.classList.add("o_property_dragging");
                 element.classList.add("o_property_drag_item");
                 group.classList.add("o_property_drag_group");
@@ -178,7 +188,7 @@ export class PropertiesField extends Component {
                 // the change will be reset when we drop the property
                 document.activeElement.blur();
             },
-            onDrop: async ({ parent, element, next, previous }) => {
+            onDrop: async ({parent, element, next, previous}) => {
                 const from = element.getAttribute("property-name");
                 let to = previous && previous.getAttribute("property-name");
                 let moveBefore = false;
@@ -203,24 +213,28 @@ export class PropertiesField extends Component {
                         to = null;
                         moveBefore = false;
                     } else {
-                        to = group.elements.length ? group.elements.at(-1).name : groupName;
+                        to = group.elements.length
+                            ? group.elements.at(-1).name
+                            : groupName;
                     }
                 }
                 await this.onPropertyMoveTo(from, to, moveBefore);
             },
-            onDragEnd: ({ element }) => {
+            onDragEnd: ({element}) => {
                 this.propertiesRef.el.classList.remove("o_property_dragging");
                 element.classList.remove("o_property_drag_item");
-                const targetGroup = this.propertiesRef.el.querySelector(".o_property_drag_group");
+                const targetGroup = this.propertiesRef.el.querySelector(
+                    ".o_property_drag_group"
+                );
                 if (targetGroup) {
                     targetGroup.classList.remove("o_property_drag_group");
                 }
             },
-            onGroupEnter: ({ group }) => {
+            onGroupEnter: ({group}) => {
                 group.classList.add("o_property_drag_group");
                 this._toggleSeparators([group.getAttribute("property-name")], false);
             },
-            onGroupLeave: ({ group }) => {
+            onGroupLeave: ({group}) => {
                 group.classList.remove("o_property_drag_group");
             },
         });
@@ -232,17 +246,17 @@ export class PropertiesField extends Component {
             handle: ".o_field_property_group_label .oi-draggable",
             elements: ".o_property_group:not([property-name=''])",
             cursor: "grabbing",
-            onDragStart: ({ element }) => {
+            onDragStart: ({element}) => {
                 this.propertiesRef.el.classList.add("o_property_dragging");
                 element.classList.add("o_property_drag_item");
                 document.activeElement.blur();
             },
-            onDrop: async ({ element, previous }) => {
+            onDrop: async ({element, previous}) => {
                 const from = element.getAttribute("property-name");
                 const to = previous && previous.getAttribute("property-name");
                 await this.onGroupMoveTo(from, to);
             },
-            onDragEnd: ({ element }) => {
+            onDragEnd: ({element}) => {
                 this.propertiesRef.el.classList.remove("o_property_dragging");
                 element.classList.remove("o_property_drag_item");
             },
@@ -276,7 +290,7 @@ export class PropertiesField extends Component {
     get propertiesList() {
         return (this.props.record.data[this.props.name] || [])
             .filter((definition) => !definition.definition_deleted)
-            .map((definition) => ({ ...definition }));
+            .map((definition) => ({...definition}));
     }
 
     // for overrides
@@ -300,7 +314,7 @@ export class PropertiesField extends Component {
         // default invisible group
         const groupedProperties =
             propertiesList[0]?.type !== "separator"
-                ? [{ title: null, name: null, elements: [], invisibleLabel: true }]
+                ? [{title: null, name: null, elements: [], invisibleLabel: true}]
                 : [];
 
         propertiesList.forEach((property) => {
@@ -330,7 +344,9 @@ export class PropertiesField extends Component {
                     invisibleLabel: true,
                 });
             }
-            const properties = propertiesList.filter((property) => property.type !== "separator");
+            const properties = propertiesList.filter(
+                (property) => property.type !== "separator"
+            );
             properties.forEach((property, index) => {
                 const columnIndex = Math.floor(
                     (index * this.renderedColumnsCount) / properties.length
@@ -440,7 +456,7 @@ export class PropertiesField extends Component {
                 direction === "down"
                     ? _t("This field is already last")
                     : _t("This field is already first"),
-                { type: "warning" }
+                {type: "warning"}
             );
             return;
         }
@@ -451,7 +467,7 @@ export class PropertiesField extends Component {
         propertiesValues[propertyIndex] = prop;
         propertiesValues[propertyIndex].definition_changed = true;
 
-        await this.props.record.update({ [this.props.name]: propertiesValues });
+        await this.props.record.update({[this.props.name]: propertiesValues});
         await this._unfoldPropertyGroup(targetIndex, propertiesValues);
 
         // move the popover once the DOM is updated
@@ -468,16 +484,24 @@ export class PropertiesField extends Component {
     async onPropertyMoveTo(propertyName, toPropertyName, moveBefore) {
         const propertiesValues = this.propertiesList || [];
 
-        let fromIndex = propertiesValues.findIndex((property) => property.name === propertyName);
-        let toIndex = propertiesValues.findIndex((property) => property.name === toPropertyName);
-        const columnSize = Math.ceil(propertiesValues.length / this.renderedColumnsCount);
+        let fromIndex = propertiesValues.findIndex(
+            (property) => property.name === propertyName
+        );
+        let toIndex = propertiesValues.findIndex(
+            (property) => property.name === toPropertyName
+        );
+        const columnSize = Math.ceil(
+            propertiesValues.length / this.renderedColumnsCount
+        );
 
         // if we have no separator at first, we might want to create some
         // to keep the initial column separation (only if needed, if we move properties
         // inside the same column we do nothing)
         if (
             this.renderedColumnsCount > 1 &&
-            !propertiesValues.some((p, index) => index !== 0 && p.type === "separator") &&
+            !propertiesValues.some(
+                (p, index) => index !== 0 && p.type === "separator"
+            ) &&
             Math.floor(fromIndex / columnSize) !== Math.floor(toIndex / columnSize)
         ) {
             const newSeparators = [];
@@ -500,8 +524,12 @@ export class PropertiesField extends Component {
             toPropertyName = toPropertyName || propertiesValues.at(-1).name;
 
             // indexes might have changed
-            fromIndex = propertiesValues.findIndex((property) => property.name === propertyName);
-            toIndex = propertiesValues.findIndex((property) => property.name === toPropertyName);
+            fromIndex = propertiesValues.findIndex(
+                (property) => property.name === propertyName
+            );
+            toIndex = propertiesValues.findIndex(
+                (property) => property.name === toPropertyName
+            );
         }
 
         if (moveBefore) {
@@ -513,7 +541,7 @@ export class PropertiesField extends Component {
         }
         propertiesValues.splice(toIndex, 0, propertiesValues.splice(fromIndex, 1)[0]);
         propertiesValues[0].definition_changed = true;
-        this.props.record.update({ [this.props.name]: propertiesValues });
+        this.props.record.update({[this.props.name]: propertiesValues});
     }
 
     /**
@@ -525,8 +553,12 @@ export class PropertiesField extends Component {
      */
     onGroupMoveTo(propertyName, toPropertyName) {
         const propertiesValues = this.propertiesList || [];
-        const fromIndex = propertiesValues.findIndex((property) => property.name === propertyName);
-        const toIndex = propertiesValues.findIndex((property) => property.name === toPropertyName);
+        const fromIndex = propertiesValues.findIndex(
+            (property) => property.name === propertyName
+        );
+        const toIndex = propertiesValues.findIndex(
+            (property) => property.name === toPropertyName
+        );
         if (
             propertiesValues[fromIndex].type !== "separator" ||
             (toIndex >= 0 && propertiesValues[toIndex].type !== "separator")
@@ -539,7 +571,9 @@ export class PropertiesField extends Component {
             const nextSeparatorIndex = propertiesValues.findIndex(
                 (property, index) => property.type === "separator" && index > startIndex
             );
-            return nextSeparatorIndex < 0 ? propertiesValues.length : nextSeparatorIndex;
+            return nextSeparatorIndex < 0
+                ? propertiesValues.length
+                : nextSeparatorIndex;
         };
         const groupSize = getNextSeparatorIndex(fromIndex) - fromIndex;
         let targetIndex = getNextSeparatorIndex(toIndex);
@@ -548,9 +582,13 @@ export class PropertiesField extends Component {
             // so we need to correct the index
             targetIndex -= groupSize;
         }
-        propertiesValues.splice(targetIndex, 0, ...propertiesValues.splice(fromIndex, groupSize));
+        propertiesValues.splice(
+            targetIndex,
+            0,
+            ...propertiesValues.splice(fromIndex, groupSize)
+        );
         propertiesValues[0].definition_changed = true;
-        this.props.record.update({ [this.props.name]: propertiesValues });
+        this.props.record.update({[this.props.name]: propertiesValues});
     }
 
     /**
@@ -562,8 +600,9 @@ export class PropertiesField extends Component {
      */
     onPropertyValueChange(propertyName, propertyValue) {
         const propertiesValues = this.propertiesList;
-        propertiesValues.find((property) => property.name === propertyName).value = propertyValue;
-        this.props.record.update({ [this.props.name]: propertiesValues });
+        propertiesValues.find((property) => property.name === propertyName).value =
+            propertyValue;
+        this.props.record.update({[this.props.name]: propertiesValues});
     }
 
     /**
@@ -618,23 +657,33 @@ export class PropertiesField extends Component {
         const oldType = propertiesValues[propertyIndex].type;
         const newType = propertyDefinition.type;
 
-        this._regeneratePropertyName(propertyDefinition, propertiesValues[propertyIndex]);
+        this._regeneratePropertyName(
+            propertyDefinition,
+            propertiesValues[propertyIndex]
+        );
 
         propertiesValues[propertyIndex] = propertyDefinition;
-        await this.props.record.update({ [this.props.name]: propertiesValues });
+        await this.props.record.update({[this.props.name]: propertiesValues});
 
         if (newType === "separator" && oldType !== "separator") {
             // unfold automatically the new separator
-            await this._toggleSeparators([propertyDefinition.name], propertyDefinition.fold_by_default);
+            await this._toggleSeparators(
+                [propertyDefinition.name],
+                propertyDefinition.fold_by_default
+            );
             // layout has been changed, move the definition popover
             this.movePopoverToProperty = propertyDefinition.name;
         } else if (oldType === "separator" && newType !== "separator") {
             // unfold automatically the previous separator
             const previousSeperator = propertiesValues.findLast(
-                (property, index) => index < propertyIndex && property.type === "separator"
+                (property, index) =>
+                    index < propertyIndex && property.type === "separator"
             );
             if (previousSeperator) {
-                await this._toggleSeparators([previousSeperator.name], propertyDefinition.fold_by_default);
+                await this._toggleSeparators(
+                    [previousSeperator.name],
+                    propertyDefinition.fold_by_default
+                );
             }
             // layout has been changed, move the definition popover
             this.movePopoverToProperty = propertyDefinition.name;
@@ -649,11 +698,13 @@ export class PropertiesField extends Component {
     onPropertyDelete(propertyName) {
         let message = _t("Are you sure you want to delete this property field?") + " ";
         if (this.definitionRecordModel !== "properties.base.definition") {
-            const parentName = this.props.record.data[this.definitionRecordField].display_name;
-            const parentFieldLabel = this.props.record.fields[this.definitionRecordField].string;
+            const parentName =
+                this.props.record.data[this.definitionRecordField].display_name;
+            const parentFieldLabel =
+                this.props.record.fields[this.definitionRecordField].string;
             message += _t(
                 'It will be removed for everyone using the "%(parentName)s" %(parentFieldLabel)s.',
-                { parentName, parentFieldLabel }
+                {parentName, parentFieldLabel}
             );
         } else {
             message += _t("It will be removed for everyone!");
@@ -669,7 +720,7 @@ export class PropertiesField extends Component {
                 propertiesDefinitions.find(
                     (property) => property.name === propertyName
                 ).definition_deleted = true;
-                this.props.record.update({ [this.props.name]: propertiesDefinitions });
+                this.props.record.update({[this.props.name]: propertiesDefinitions});
             },
             cancel: () => {},
         };
@@ -685,7 +736,7 @@ export class PropertiesField extends Component {
                         parentFieldLabel:
                             this.props.record.fields[this.definitionRecordField].string,
                     },
-                    { type: "warning" }
+                    {type: "warning"}
                 )
             );
             return;
@@ -695,20 +746,28 @@ export class PropertiesField extends Component {
         if (
             propertiesDefinitions.length &&
             propertiesDefinitions.some(
-                (prop) => prop.type !== "separator" && (!prop.string || !prop.string.length)
+                (prop) =>
+                    prop.type !== "separator" && (!prop.string || !prop.string.length)
             )
         ) {
             // do not allow to add new field until we set a label on the previous one
-            this.propertiesRef.el.closest(".o_field_properties").classList.add("o_field_invalid");
+            this.propertiesRef.el
+                .closest(".o_field_properties")
+                .classList.add("o_field_invalid");
 
-            this.notification.add(_t("Please complete your properties before adding a new one"), {
-                type: "warning",
-            });
+            this.notification.add(
+                _t("Please complete your properties before adding a new one"),
+                {
+                    type: "warning",
+                }
+            );
             return;
         }
         const count = propertiesDefinitions.length;
 
-        this.propertiesRef.el.closest(".o_field_properties").classList.remove("o_field_invalid");
+        this.propertiesRef.el
+            .closest(".o_field_properties")
+            .classList.remove("o_field_invalid");
 
         const newName = this.generatePropertyName("char");
         propertiesDefinitions.push({
@@ -717,9 +776,9 @@ export class PropertiesField extends Component {
             type: "char",
             definition_changed: true,
         });
-        this.initialValues[newName] = { name: newName, type: "char" };
+        this.initialValues[newName] = {name: newName, type: "char"};
         this.openPropertyDefinition = newName;
-        await this.props.record.update({ [this.props.name]: propertiesDefinitions });
+        await this.props.record.update({[this.props.name]: propertiesDefinitions});
         await this._unfoldPropertyGroup(count - 1, propertiesDefinitions);
     }
 
@@ -783,12 +842,15 @@ export class PropertiesField extends Component {
     _toggleSeparators(separatorNames, forceState) {
         const propertiesValues = this.propertiesList;
         for (const separatorName of separatorNames) {
-            const property = propertiesValues.find((prop) => prop.name === separatorName);
+            const property = propertiesValues.find(
+                (prop) => prop.name === separatorName
+            );
             if (property) {
-                property.value = forceState ?? !(property.value ?? property.fold_by_default);
+                property.value =
+                    forceState ?? !(property.value ?? property.fold_by_default);
             }
         }
-        return this.props.record.update({ [this.props.name]: propertiesValues });
+        return this.props.record.update({[this.props.name]: propertiesValues});
     }
 
     /**
@@ -812,7 +874,7 @@ export class PropertiesField extends Component {
             `*[property-name="${propertyName}"] .o_field_property_open_popover`
         );
 
-        reposition(popover, target, { position: "top", margin: 10 });
+        reposition(popover, target, {position: "top", margin: 10});
     }
 
     /**
@@ -953,7 +1015,9 @@ export class PropertiesField extends Component {
      */
     _setDefaultPropertyValue(propertyName) {
         const propertiesValues = this.propertiesList;
-        const newProperty = propertiesValues.find((property) => property.name === propertyName);
+        const newProperty = propertiesValues.find(
+            (property) => property.name === propertyName
+        );
         if (newProperty.default) {
             newProperty.value = newProperty.default;
         }
@@ -961,7 +1025,7 @@ export class PropertiesField extends Component {
         // is called not synchronously, and so if we click on "create a property", it will close
         // the popover, calling this function, but the value will be overwritten because of onPropertyCreate
         this.props.value = propertiesValues;
-        this.props.record.update({ [this.props.name]: propertiesValues });
+        this.props.record.update({[this.props.name]: propertiesValues});
     }
 
     /**
@@ -986,7 +1050,8 @@ export class PropertiesField extends Component {
     _getPropertyEditWarningText() {
         return _t('Oops! You cannot edit the %(parentFieldLabel)s "%(parentName)s".', {
             parentName: this.props.record.data[this.definitionRecordField].display_name,
-            parentFieldLabel: this.props.record.fields[this.definitionRecordField].string,
+            parentFieldLabel:
+                this.props.record.fields[this.definitionRecordField].string,
         });
     }
 }
@@ -995,7 +1060,7 @@ export const propertiesField = {
     component: PropertiesField,
     displayName: _t("Properties"),
     supportedTypes: ["properties"],
-    extractProps({ attrs }, dynamicInfo) {
+    extractProps({attrs}, dynamicInfo) {
         return {
             context: dynamicInfo.context,
             columns: parseInt(attrs.columns || "1"),

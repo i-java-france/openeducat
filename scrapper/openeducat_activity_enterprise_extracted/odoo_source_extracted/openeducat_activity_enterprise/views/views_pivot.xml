@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_report_migration_pivot" model="ir.ui.view">
+        <field name="name">migration.pivot</field>
+        <field name="model">migration.report</field>
+        <field name="type">pivot</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <pivot string="Migration Statistics" disable_linking="True">
+                <field name="date" />
+
+                <field name="student_id" type="row" />
+
+                <field name="faculty_id" />
+            </pivot>
+        </field>
+    </record>
+</odoo>

@@ -3,8 +3,9 @@
 import werkzeug
 
 from odoo import http
-from odoo.addons.portal.controllers.portal import CustomerPortal
 from odoo.exceptions import AccessError, MissingError
+
+from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
 class EcpayInvoiceController(http.Controller):

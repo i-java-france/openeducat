@@ -1,7 +1,13 @@
-import { describe, test } from "@odoo/hoot";
-import { click, contains, openDiscuss, start, startServer } from "@mail/../tests/mail_test_helpers";
-import { Command, serverState } from "@web/../tests/web_test_helpers";
-import { defineLivechatModels } from "./livechat_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {
+    click,
+    contains,
+    openDiscuss,
+    start,
+    startServer,
+} from "@mail/../tests/mail_test_helpers";
+import {Command, serverState} from "@web/../tests/web_test_helpers";
+import {defineLivechatModels} from "./livechat_test_helpers";
 
 describe.current.tags("desktop");
 defineLivechatModels();
@@ -11,9 +17,12 @@ test("message translation in livechat (agent is member)", async () => {
     const channelId = pyEnv["discuss.channel"].create({
         channel_type: "livechat",
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId, livechat_member_type: "agent" }),
             Command.create({
-                guest_id: pyEnv["mail.guest"].create({ name: "Mario" }),
+                partner_id: serverState.partnerId,
+                livechat_member_type: "agent",
+            }),
+            Command.create({
+                guest_id: pyEnv["mail.guest"].create({name: "Mario"}),
                 livechat_member_type: "visitor",
             }),
         ],
@@ -36,7 +45,7 @@ test("message translation in livechat (agent is not member)", async () => {
         channel_type: "livechat",
         channel_member_ids: [
             Command.create({
-                guest_id: pyEnv["mail.guest"].create({ name: "Mario" }),
+                guest_id: pyEnv["mail.guest"].create({name: "Mario"}),
                 livechat_member_type: "visitor",
             }),
         ],

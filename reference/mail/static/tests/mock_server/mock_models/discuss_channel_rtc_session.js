@@ -1,6 +1,6 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { getKwArgs, makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {getKwArgs, makeKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class DiscussChannelRtcSession extends models.ServerModel {
     _name = "discuss.channel.rtc.session";
@@ -26,14 +26,16 @@ export class DiscussChannelRtcSession extends models.ServerModel {
         }
         const notifications = [];
         for (const [channelId, sessions] of Object.entries(sessionsByChannelId)) {
-            const [channel] = DiscussChannel.search_read([["id", "=", Number(channelId)]]);
+            const [channel] = DiscussChannel.search_read([
+                ["id", "=", Number(channelId)],
+            ]);
             notifications.push([
                 channel,
                 "mail.record/insert",
                 new mailDataHelpers.Store(DiscussChannel.browse(channel.id), {
                     rtc_session_ids: mailDataHelpers.Store.many(
                         this.browse(sessions.map((session) => session.id)),
-                        makeKwArgs({ mode: "ADD" })
+                        makeKwArgs({mode: "ADD"})
                     ),
                 }).get_result(),
             ]);
@@ -76,12 +78,15 @@ export class DiscussChannelRtcSession extends models.ServerModel {
                 [
                     partner,
                     "mail.record/insert",
-                    new mailDataHelpers.Store(DiscussChannel.browse(Number(session.channel_id)), {
-                        rtc_session_ids: mailDataHelpers.Store.many(
-                            sessions,
-                            makeKwArgs({ only_id: true, mode: "DELETE" })
-                        ),
-                    }).get_result(),
+                    new mailDataHelpers.Store(
+                        DiscussChannel.browse(Number(session.channel_id)),
+                        {
+                            rtc_session_ids: mailDataHelpers.Store.many(
+                                sessions,
+                                makeKwArgs({only_id: true, mode: "DELETE"})
+                            ),
+                        }
+                    ).get_result(),
                 ],
             ]);
         }
@@ -113,7 +118,12 @@ export class DiscussChannelRtcSession extends models.ServerModel {
                 ),
             ];
             if (extra) {
-                data = data.concat(["is_camera_on", "is_deaf", "is_muted", "is_screen_sharing_on"]);
+                data = data.concat([
+                    "is_camera_on",
+                    "is_deaf",
+                    "is_muted",
+                    "is_screen_sharing_on",
+                ]);
             }
             store._add_record_fields(this.browse(rtcSession.id), data);
         }
@@ -145,7 +155,7 @@ export class DiscussChannelRtcSession extends models.ServerModel {
         BusBus._sendone(channel, "discuss.channel.rtc.session/update_and_broadcast", {
             data: new mailDataHelpers.Store(
                 DiscussChannelRtcSession.browse(id),
-                makeKwArgs({ extra: true })
+                makeKwArgs({extra: true})
             ).get_result(),
             channelId: channel.id,
         });

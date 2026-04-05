@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
-const { arg, toString, toJsDate, toNumber } = spreadsheet.helpers;
-const { functionRegistry } = spreadsheet.registries;
+const {arg, toString, toJsDate, toNumber} = spreadsheet.helpers;
+const {functionRegistry} = spreadsheet.registries;
 
 functionRegistry.add("ODOO.CURRENCY.RATE", {
     description: _t(
@@ -19,7 +19,10 @@ functionRegistry.add("ODOO.CURRENCY.RATE", {
         arg("currency_from (string)", _t("First currency code.")),
         arg("currency_to (string)", _t("Second currency code.")),
         arg("date (date, optional)", _t("Date of the rate.")),
-        arg("company_id (number, optional)", _t("The company to take the exchange rate from.")),
+        arg(
+            "company_id (number, optional)",
+            _t("The company to take the exchange rate from.")
+        ),
     ],
     returns: ["NUMBER"],
 });

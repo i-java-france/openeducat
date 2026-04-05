@@ -1,17 +1,17 @@
-import { BEGIN, SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { isElement } from "@html_editor/utils/dom_info";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { BaseAddProductOption } from "@html_builder/plugins/add_product_option";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BaseVerticalAlignmentOption } from "@html_builder/plugins/base_vertical_alignment_option";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
+import {BEGIN, SNIPPET_SPECIFIC_END} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {isElement} from "@html_editor/utils/dom_info";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {BaseAddProductOption} from "@html_builder/plugins/add_product_option";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BaseVerticalAlignmentOption} from "@html_builder/plugins/base_vertical_alignment_option";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
 
 export class PriceListCafeDescriptionOption extends BaseOptionComponent {
     static template = "website.PriceListCafeDescriptionOption";
     static selector = ".s_pricelist_cafe";
-    static components = { BorderConfigurator };
+    static components = {BorderConfigurator};
 }
 
 export class PricelistCafeVerticalAlignmentOption extends BaseVerticalAlignmentOption {
@@ -47,7 +47,10 @@ class PriceListCafePlugin extends Plugin {
             selector: ".s_pricelist_cafe_item",
             dropNear: ".s_pricelist_cafe_item",
         },
-        is_movable_selector: { selector: ".s_pricelist_cafe_item", direction: "vertical" },
+        is_movable_selector: {
+            selector: ".s_pricelist_cafe_item",
+            direction: "vertical",
+        },
         // Protect pricelist item, price, and description blocks from being
         // split/merged by the delete plugin.
         unsplittable_node_predicates: (node) =>

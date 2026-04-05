@@ -1,19 +1,19 @@
-import { Loader } from "@point_of_sale/app/components/loader/loader";
-import { getTemplate } from "@web/core/templates";
-import { mount, reactive, whenReady } from "@odoo/owl";
-import { _t, appTranslateFn } from "@web/core/l10n/translation";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { localization } from "@web/core/l10n/localization";
-import { user } from "@web/core/user";
-import { session } from "@web/session";
-import { mountComponent } from "@web/env";
-import { Chrome } from "@point_of_sale/app/pos_app";
+import {Loader} from "@point_of_sale/app/components/loader/loader";
+import {getTemplate} from "@web/core/templates";
+import {mount, reactive, whenReady} from "@odoo/owl";
+import {_t, appTranslateFn} from "@web/core/l10n/translation";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {localization} from "@web/core/l10n/localization";
+import {user} from "@web/core/user";
+import {session} from "@web/session";
+import {mountComponent} from "@web/env";
+import {Chrome} from "@point_of_sale/app/pos_app";
 
-const loader = reactive({ isShown: true, error: false });
+const loader = reactive({isShown: true, error: false});
 whenReady(() => {
     mount(Loader, document.body, {
         getTemplate,
-        props: { loader },
+        props: {loader},
         translatableAttributes: ["data-tooltip"],
         translateFn: appTranslateFn,
     });
@@ -30,7 +30,7 @@ whenReady(() => {
     try {
         const app = await mountComponent(Chrome, document.body, {
             name: "Odoo Point of Sale",
-            props: { disableLoader: () => (loader.isShown = false) },
+            props: {disableLoader: () => (loader.isShown = false)},
         });
         window.addEventListener("beforeunload", function (event) {
             if (app.env.services.pos_data.network.offline) {
@@ -70,7 +70,8 @@ function registerServiceWorker() {
     urlsToCache.push("/web/static/lib/zxing-library/zxing-library.js");
 
     navigator.serviceWorker?.register("/pos/service-worker.js").then((registration) => {
-        const worker = registration.installing || registration.waiting || registration.active;
-        worker.postMessage({ urlsToCache });
+        const worker =
+            registration.installing || registration.waiting || registration.active;
+        worker.postMessage({urlsToCache});
     });
 }

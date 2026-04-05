@@ -1,12 +1,10 @@
-import {
-    LocationSchedule
-} from '@delivery/js/location_selector/location_schedule/location_schedule';
-import { Component } from '@odoo/owl';
-import { _t } from '@web/core/l10n/translation';
+import {LocationSchedule} from "@delivery/js/location_selector/location_schedule/location_schedule";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 export class Location extends Component {
-    static components = { LocationSchedule };
-    static template = 'delivery.locationSelector.location';
+    static components = {LocationSchedule};
+    static template = "delivery.locationSelector.location";
     static props = {
         id: String,
         number: Number,
@@ -22,7 +20,7 @@ export class Location extends Component {
                 optional: true,
             },
         },
-        additionalData: { type: Object, optional: true },
+        additionalData: {type: Object, optional: true},
         isSelected: Boolean,
         setSelectedLocation: Function,
     };

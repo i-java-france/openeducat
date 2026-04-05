@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -14,7 +13,7 @@ class CalendarEvent(models.Model):
                 default_res_model_id=self.env.ref('crm.model_crm_lead').id,
                 default_res_id=self.env.context['default_opportunity_id']
             )
-        defaults = super(CalendarEvent, self).default_get(fields)
+        defaults = super().default_get(fields)
 
         # sync res_model / res_id to opportunity id (aka creating meeting from lead chatter)
         if 'opportunity_id' not in defaults:
@@ -28,7 +27,7 @@ class CalendarEvent(models.Model):
         index=True, ondelete='set null')
 
     def _compute_is_highlighted(self):
-        super(CalendarEvent, self)._compute_is_highlighted()
+        super()._compute_is_highlighted()
         if self.env.context.get('active_model') == 'crm.lead':
             opportunity_id = self.env.context.get('active_id')
             for event in self:

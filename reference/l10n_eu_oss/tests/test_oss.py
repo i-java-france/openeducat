@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 
 from odoo import Command
 from odoo.exceptions import RedirectWarning
+from odoo.tests import tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.l10n_eu_oss.models.eu_tag_map import EU_TAG_MAP
-from odoo.tests import tagged
 
 
 @tagged('post_install', 'post_install_l10n', '-at_install')

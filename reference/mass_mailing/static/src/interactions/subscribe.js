@@ -1,8 +1,8 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
-import { renderToMarkup, renderToFragment } from "@web/core/utils/render";
-import { _t } from "@web/core/l10n/translation";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {renderToMarkup, renderToFragment} from "@web/core/utils/render";
+import {_t} from "@web/core/l10n/translation";
 
 export class Subscribe extends Interaction {
     static selector = "#o_mailing_portal_subscription";
@@ -88,7 +88,9 @@ export class Subscribe extends Interaction {
     };
 
     setup() {
-        this.customerData = { ...document.getElementById("o_mailing_portal_subscription").dataset };
+        this.customerData = {
+            ...document.getElementById("o_mailing_portal_subscription").dataset,
+        };
         this.customerData.documentId = parseInt(this.customerData.documentId || 0);
         this.customerData.mailingId = parseInt(this.customerData.mailingId || 0);
         this.lastAction = this.customerData.lastAction;
@@ -116,7 +118,8 @@ export class Subscribe extends Interaction {
                 this.customerData.isBlocklisted = true;
                 this.customerData.feedbackEnabled = true;
             }
-            this.changeSubscriptionStatus = result === true ? "blocklist_add" : "blocklist_error";
+            this.changeSubscriptionStatus =
+                result === true ? "blocklist_add" : "blocklist_error";
             this.onActionDone(result === true ? "blocklist_add" : result);
         })(result);
     }
@@ -173,7 +176,9 @@ export class Subscribe extends Interaction {
                 callKey = "error";
             } else {
                 callKey =
-                    parseInt(result) > 0 ? "subscription_updated_optout" : "subscription_updated";
+                    parseInt(result) > 0
+                        ? "subscription_updated_optout"
+                        : "subscription_updated";
                 this.updateDisplayForm(mailingListOptinIds);
             }
             this.changeSubscriptionStatus = has_error
@@ -223,7 +228,8 @@ export class Subscribe extends Interaction {
      */
     onOptOutReasonClick(ev) {
         this.showFeedbackTextbox = ev.target.dataset["isFeedback"];
-        document.querySelector("div#o_mailing_subscription_feedback textarea").value = "";
+        document.querySelector("div#o_mailing_subscription_feedback textarea").value =
+            "";
     }
 
     /**
@@ -232,17 +238,17 @@ export class Subscribe extends Interaction {
      * propagating it through various layers.
      */
     getListInfo() {
-        return [...document.querySelectorAll("#o_mailing_subscription_form_manage input")].map(
-            (node) => {
-                const listInfo = {
-                    id: parseInt(node.getAttribute("value")),
-                    member: node.dataset.member === "1",
-                    name: node.getAttribute("title"),
-                    opt_out: node.getAttribute("checked") !== "checked",
-                };
-                return listInfo;
-            }
-        );
+        return [
+            ...document.querySelectorAll("#o_mailing_subscription_form_manage input"),
+        ].map((node) => {
+            const listInfo = {
+                id: parseInt(node.getAttribute("value")),
+                member: node.dataset.member === "1",
+                name: node.getAttribute("title"),
+                opt_out: node.getAttribute("checked") !== "checked",
+            };
+            return listInfo;
+        });
     }
 
     onActionDone(callKey) {
@@ -251,7 +257,8 @@ export class Subscribe extends Interaction {
             this.askingFeedbackFor = callKey;
         }
         this.unsubscribeFeedbackStatus = "hidden";
-        document.querySelector("div#o_mailing_subscription_feedback textarea").value = "";
+        document.querySelector("div#o_mailing_subscription_feedback textarea").value =
+            "";
     }
 
     /*
@@ -270,7 +277,9 @@ export class Subscribe extends Interaction {
             listsMember: this.listInfo.filter((item) => item.member === true),
             listsProposal: this.listInfo.filter((item) => item.member === false),
         });
-        const manageForm = document.getElementById("o_mailing_subscription_form_manage");
+        const manageForm = document.getElementById(
+            "o_mailing_subscription_form_manage"
+        );
         manageForm.replaceChildren(formContent);
         /* update readonly display of customer's lists */
         const formReadonlyContent = renderToFragment(
@@ -279,7 +288,9 @@ export class Subscribe extends Interaction {
                 listsOptin: this.listInfo.filter((item) => item.opt_out === false),
             }
         );
-        const readonlyForm = document.getElementById("o_mailing_subscription_form_blocklisted");
+        const readonlyForm = document.getElementById(
+            "o_mailing_subscription_form_blocklisted"
+        );
         readonlyForm.replaceChildren(formReadonlyContent);
     }
 

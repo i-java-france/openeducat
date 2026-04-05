@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.exceptions import UserError, ValidationError
@@ -8,7 +7,7 @@ from odoo.tests import Form, TransactionCase
 class TestMultiCompany(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMultiCompany, cls).setUpClass()
+        super().setUpClass()
         group_user = cls.env.ref('base.group_user')
         group_stock_manager = cls.env.ref('stock.group_stock_manager')
 

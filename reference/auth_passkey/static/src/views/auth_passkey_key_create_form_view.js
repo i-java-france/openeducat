@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { FormController } from "@web/views/form/form_controller";
-import { formView } from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
+import {FormController} from "@web/views/form/form_controller";
+import {formView} from "@web/views/form/form_view";
 import * as passkeyLib from "../../lib/simplewebauthn.js";
 
 export class PassKeyNameFormController extends FormController {
@@ -9,12 +9,16 @@ export class PassKeyNameFormController extends FormController {
      */
     async beforeExecuteActionButton(clickParams) {
         if (clickParams.name === "make_key") {
-            const name = document.querySelector("div[name='name'].o_field_widget input").value;
-            if(name.length > 0) {
+            const name = document.querySelector(
+                "div[name='name'].o_field_widget input"
+            ).value;
+            if (name.length > 0) {
                 const serverOptions = this.props.context.registration;
-                const registration = await passkeyLib.startRegistration(serverOptions).catch(e => console.error(e));
+                const registration = await passkeyLib
+                    .startRegistration(serverOptions)
+                    .catch((e) => console.error(e));
                 // In case the user cancelled the passkey browser check, just interrupt.
-                if(!registration) return false;
+                if (!registration) return false;
                 clickParams.args = JSON.stringify([registration]);
             }
         }
@@ -27,4 +31,6 @@ export const PassKeyNameFormView = {
     Controller: PassKeyNameFormController,
 };
 
-registry.category("views").add("auth_passkey_key_create_view_form", PassKeyNameFormView);
+registry
+    .category("views")
+    .add("auth_passkey_key_create_view_form", PassKeyNameFormView);

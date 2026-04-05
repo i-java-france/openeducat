@@ -1,7 +1,10 @@
-import { formatDuration } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { statusBarField, StatusBarField } from "@web/views/fields/statusbar/statusbar_field";
+import {formatDuration} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {
+    statusBarField,
+    StatusBarField,
+} from "@web/views/fields/statusbar/statusbar_field";
 
 export class StatusBarDurationField extends StatusBarField {
     static template = "mail.StatusBarDurationField";
@@ -29,7 +32,7 @@ export const statusBarDurationField = {
     component: StatusBarDurationField,
     displayName: _t("Status with time"),
     supportedTypes: ["many2one"],
-    fieldDependencies: [{ name: "duration_tracking", type: "JSON" }],
+    fieldDependencies: [{name: "duration_tracking", type: "JSON"}],
 };
 
 registry.category("fields").add("statusbar_duration", statusBarDurationField);

@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import werkzeug.urls
 
 from odoo import http
+from odoo.http import request
+from odoo.tools.translate import LazyTranslate, _
+
 from odoo.addons.website.models.ir_http import sitemap_qs2dom
 from odoo.addons.website_google_map.controllers.main import GoogleMap
-from odoo.tools.translate import _, LazyTranslate
-from odoo.http import request
 
 _lt = LazyTranslate(__name__)
 

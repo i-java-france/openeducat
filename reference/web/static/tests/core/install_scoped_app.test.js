@@ -1,6 +1,6 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 import {
     contains,
     makeMockEnv,
@@ -9,8 +9,8 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { InstallScopedApp } from "@web/core/install_scoped_app/install_scoped_app";
+import {browser} from "@web/core/browser/browser";
+import {InstallScopedApp} from "@web/core/install_scoped_app/install_scoped_app";
 
 const mountManifestLink = (href) => {
     const fixture = getFixture();
@@ -23,7 +23,7 @@ const mountManifestLink = (href) => {
 test("Installation page displays the app info correctly", async () => {
     const beforeInstallPromptEvent = new CustomEvent("beforeinstallprompt");
     beforeInstallPromptEvent.preventDefault = () => {};
-    beforeInstallPromptEvent.prompt = async () => ({ outcome: "accepted" });
+    beforeInstallPromptEvent.prompt = async () => ({outcome: "accepted"});
     browser.BeforeInstallPromptEvent = beforeInstallPromptEvent;
     await makeMockEnv();
     patchWithCleanup(browser.location, {
@@ -53,7 +53,7 @@ test("Installation page displays the app info correctly", async () => {
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { InstallScopedApp };
+        static components = {InstallScopedApp};
         static template = xml`<InstallScopedApp/>`;
     }
 
@@ -100,7 +100,7 @@ test("Installation page displays the error message when browser is not supported
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { InstallScopedApp };
+        static components = {InstallScopedApp};
         static template = xml`<InstallScopedApp/>`;
     }
 

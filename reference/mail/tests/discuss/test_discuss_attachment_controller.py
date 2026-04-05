@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo
-from odoo.addons.mail.tests.common_controllers import MailControllerAttachmentCommon
 from odoo.tools.misc import file_open
+
+from odoo.addons.mail.tests.common_controllers import MailControllerAttachmentCommon
 
 
 @odoo.tests.tagged("-at_install", "post_install", "mail_controller")

@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
-from hashlib import sha256
-from base64 import b64encode
-from lxml import etree
-from odoo import models, fields
-from odoo.tools.misc import file_path
 import re
+from base64 import b64encode
+from hashlib import sha256
+
+from lxml import etree
+
+from odoo import fields, models
+from odoo.tools.misc import file_path
 
 TAX_EXEMPTION_CODES = ['VATEX-SA-29', 'VATEX-SA-29-7', 'VATEX-SA-30']
 TAX_ZERO_RATE_CODES = ['VATEX-SA-32', 'VATEX-SA-33', 'VATEX-SA-34-1', 'VATEX-SA-34-2', 'VATEX-SA-34-3', 'VATEX-SA-34-4',

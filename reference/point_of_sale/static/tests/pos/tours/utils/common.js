@@ -15,7 +15,7 @@ export function inLeftSide(steps) {
             run: "click",
         },
         ...[steps].flat(),
-        { ...back(), isActive: ["mobile"] },
+        {...back(), isActive: ["mobile"]},
     ];
 }
 

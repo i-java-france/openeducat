@@ -1,6 +1,6 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred, queryAllTexts } from "@odoo/hoot-dom";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame, queryAllTexts} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -10,15 +10,15 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { user } from "@web/core/user";
-import { AnimatedNumber } from "@web/views/view_components/animated_number";
+import {user} from "@web/core/user";
+import {AnimatedNumber} from "@web/views/view_components/animated_number";
 
 class Users extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Dhvanil" },
-        { id: 2, name: "Trivedi" },
+        {id: 1, name: "Dhvanil"},
+        {id: 2, name: "Trivedi"},
     ];
 }
 
@@ -26,12 +26,12 @@ class Stage extends models.Model {
     _name = "crm.stage";
 
     name = fields.Char();
-    is_won = fields.Boolean({ string: "Is won" });
+    is_won = fields.Boolean({string: "Is won"});
 
     _records = [
-        { id: 1, name: "New" },
-        { id: 2, name: "Qualified" },
-        { id: 3, name: "Won", is_won: true },
+        {id: 1, name: "New"},
+        {id: 2, name: "Qualified"},
+        {id: 3, name: "Won", is_won: true},
     ];
 }
 
@@ -40,15 +40,19 @@ class Lead extends models.Model {
 
     name = fields.Char();
     bar = fields.Boolean();
-    activity_state = fields.Char({ string: "Activity State" });
-    expected_revenue = fields.Integer({ string: "Revenue", sortable: true, aggregator: "sum" });
+    activity_state = fields.Char({string: "Activity State"});
+    expected_revenue = fields.Integer({
+        string: "Revenue",
+        sortable: true,
+        aggregator: "sum",
+    });
     recurring_revenue_monthly = fields.Integer({
         string: "Recurring Revenue",
         sortable: true,
         aggregator: "sum",
     });
-    stage_id = fields.Many2one({ string: "Stage", relation: "crm.stage" });
-    user_id = fields.Many2one({ string: "Salesperson", relation: "users" });
+    stage_id = fields.Many2one({string: "Stage", relation: "crm.stage"});
+    user_id = fields.Many2one({string: "Salesperson", relation: "users"});
 
     _records = [
         {
@@ -115,11 +119,13 @@ class Lead extends models.Model {
 defineModels([Lead, Users, Stage]);
 defineMailModels();
 beforeEach(() => {
-    patchWithCleanup(AnimatedNumber, { enableAnimations: false });
-    patchWithCleanup(user, { hasGroup: (group) => group === "crm.group_use_recurring_revenues" });
+    patchWithCleanup(AnimatedNumber, {enableAnimations: false});
+    patchWithCleanup(user, {
+        hasGroup: (group) => group === "crm.group_use_recurring_revenues",
+    });
 });
 test("Progressbar: do not show sum of MRR if recurring revenues is not enabled", async () => {
-    patchWithCleanup(user, { hasGroup: () => false });
+    patchWithCleanup(user, {hasGroup: () => false});
     await mountView({
         type: "kanban",
         resModel: "crm.lead",
@@ -187,37 +193,34 @@ test("Progressbar: ensure correct MRR updation after state change", async () => 
                 </kanban>`,
     });
 
-    //MRR before state change
-    expect(queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")).toEqual(
-        ["+30", "+35"],
-        {
-            message: "counter should display the sum of recurring_revenue_monthly values",
-        }
-    );
+    // MRR before state change
+    expect(
+        queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")
+    ).toEqual(["+30", "+35"], {
+        message: "counter should display the sum of recurring_revenue_monthly values",
+    });
 
     // Drag the first kanban record from 1st column to the top of the last column
     await contains(".o_kanban_record:first").dragAndDrop(".o_kanban_record:last");
 
-    //check MRR after drag&drop
-    expect(queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")).toEqual(
-        ["+25", "+40"],
-        {
-            message:
-                "counter should display the sum of recurring_revenue_monthly correctly after drag and drop",
-        }
-    );
+    // Check MRR after drag&drop
+    expect(
+        queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")
+    ).toEqual(["+25", "+40"], {
+        message:
+            "counter should display the sum of recurring_revenue_monthly correctly after drag and drop",
+    });
 
-    //Activate "planned" filter on first column
+    // Activate "planned" filter on first column
     await contains('.o_kanban_group:eq(1) .progress-bar[aria-valuenow="2"]').click();
 
-    //check MRR after applying filter
-    expect(queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")).toEqual(
-        ["+25", "+25"],
-        {
-            message:
-                "counter should display the sum of recurring_revenue_monthly only of overdue filter in 1st column",
-        }
-    );
+    // Check MRR after applying filter
+    expect(
+        queryAllTexts(".o_animated_number[data-tooltip='Recurring Revenue']")
+    ).toEqual(["+25", "+25"], {
+        message:
+            "counter should display the sum of recurring_revenue_monthly only of overdue filter in 1st column",
+    });
 });
 
 test.tags("desktop");
@@ -249,7 +252,7 @@ test("Quickly drag&drop records when grouped by stage_id", async () => {
     expect(".o_kanban_group:eq(1) .o_kanban_record").toHaveCount(2);
     expect(".o_kanban_group:eq(2) .o_kanban_record").toHaveCount(2);
 
-    // drag the first record of the first column on top of the second column
+    // Drag the first record of the first column on top of the second column
     await contains(".o_kanban_group:eq(0) .o_kanban_record").dragAndDrop(
         ".o_kanban_group:eq(1) .o_kanban_record"
     );
@@ -258,7 +261,7 @@ test("Quickly drag&drop records when grouped by stage_id", async () => {
     expect(".o_kanban_group:eq(1) .o_kanban_record").toHaveCount(3);
     expect(".o_kanban_group:eq(2) .o_kanban_record").toHaveCount(2);
 
-    // drag that same record to the third column -> should have no effect as save still pending
+    // Drag that same record to the third column -> should have no effect as save still pending
     // (but mostly, should not crash)
     await contains(".o_kanban_group:eq(1) .o_kanban_record").dragAndDrop(
         ".o_kanban_group:eq(2) .o_kanban_record"
@@ -271,7 +274,7 @@ test("Quickly drag&drop records when grouped by stage_id", async () => {
     def.resolve();
     await animationFrame();
 
-    // drag that same record to the third column
+    // Drag that same record to the third column
     await contains(".o_kanban_group:eq(1) .o_kanban_record").dragAndDrop(
         ".o_kanban_group:eq(2) .o_kanban_record"
     );

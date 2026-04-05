@@ -6,6 +6,7 @@ from odoo import api, fields, models
 from odoo.exceptions import AccessError
 from odoo.tools.constants import GC_UNLINK_LIMIT
 from odoo.tools.translate import _
+
 from odoo.addons.mail.tools.discuss import Store
 
 
@@ -80,14 +81,14 @@ class MailNotification(models.Model):
         for vals in vals_list:
             if vals.get('is_read'):
                 vals['read_date'] = fields.Datetime.now()
-        return super(MailNotification, self).create(vals_list)
+        return super().create(vals_list)
 
     def write(self, vals):
         if ('mail_message_id' in vals or 'res_partner_id' in vals) and not self.env.is_admin():
             raise AccessError(_("Can not update the message or recipient of a notification."))
         if vals.get('is_read'):
             vals['read_date'] = fields.Datetime.now()
-        return super(MailNotification, self).write(vals)
+        return super().write(vals)
 
     @api.model
     def _gc_notifications(self, max_age_days=180):

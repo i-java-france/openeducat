@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <record id="hr_contract_type_view_tree" model="ir.ui.view">
             <field name="model">hr.contract.type</field>
             <field name="arch" type="xml">
                 <list string="Contract Types" editable="bottom">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                    <field name="code" column_invisible="1"/>
-                    <field name="country_id" optional="hide"/>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                    <field name="code" column_invisible="1" />
+                    <field name="country_id" optional="hide" />
                 </list>
             </field>
         </record>
@@ -19,9 +19,9 @@
                 <form>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="code" invisible="1"/>
-                            <field name="country_id"/>
+                            <field name="name" />
+                            <field name="code" invisible="1" />
+                            <field name="country_id" />
                         </group>
                     </group>
                 </form>

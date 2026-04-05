@@ -1,5 +1,5 @@
-import { formatAST, parseExpr } from "@web/core/py_js/py";
-import { isBool, isNot } from "./ast_utils";
+import {formatAST, parseExpr} from "@web/core/py_js/py";
+import {isBool, isNot} from "./ast_utils";
 import {
     astFromValue,
     condition,
@@ -13,7 +13,7 @@ function bool(ast) {
     if (isBool(ast) || isNot(ast) || ast.type === 2) {
         return ast;
     }
-    return { type: 8, fn: { type: 5, value: "bool" }, args: [ast], kwargs: {} };
+    return {type: 8, fn: {type: 5, value: "bool"}, args: [ast], kwargs: {}};
 }
 
 function getASTs(tree, isSubTree = false) {
@@ -39,7 +39,11 @@ function getASTs(tree, isSubTree = false) {
         if (tree.value === "|") {
             return tree.negate ? getASTs(TRUE_TREE) : getASTs(FALSE_TREE);
         } else {
-            return tree.negate ? getASTs(FALSE_TREE) : isSubTree ? getASTs(TRUE_TREE) : [];
+            return tree.negate
+                ? getASTs(FALSE_TREE)
+                : isSubTree
+                  ? getASTs(TRUE_TREE)
+                  : [];
         }
     }
 
@@ -57,7 +61,7 @@ function getASTs(tree, isSubTree = false) {
 
 function toAST(value) {
     if (isTree(value)) {
-        return { type: 4, value: getASTs(value) };
+        return {type: 4, value: getASTs(value)};
     }
     return astFromValue(value);
 }

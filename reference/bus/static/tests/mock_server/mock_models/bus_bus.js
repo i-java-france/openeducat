@@ -1,5 +1,5 @@
-import { getWebSocketWorker } from "@bus/../tests/mock_websocket";
-import { models } from "@web/../tests/web_test_helpers";
+import {getWebSocketWorker} from "@bus/../tests/mock_websocket";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class BusBus extends models.Model {
     _name = "bus.bus";
@@ -28,10 +28,12 @@ export class BusBus extends models.Model {
         const values = [];
         const authenticatedUserId =
             "res.users" in this.env
-                ? this.env.cookie.get("authenticated_user_sid") ?? this.env.uid
+                ? (this.env.cookie.get("authenticated_user_sid") ?? this.env.uid)
                 : null;
         const channels = [
-            ...IrWebSocket._build_bus_channel_list(this.channelsByUser[authenticatedUserId] || []),
+            ...IrWebSocket._build_bus_channel_list(
+                this.channelsByUser[authenticatedUserId] || []
+            ),
         ];
         notifications = notifications.filter(([target]) =>
             channels.some((channel) => {
@@ -57,7 +59,7 @@ export class BusBus extends models.Model {
             const [type, payload] = notification.slice(1, notification.length);
             values.push({
                 id: ++this.lastBusNotificationId,
-                message: { payload: JSON.parse(JSON.stringify(payload)), type },
+                message: {payload: JSON.parse(JSON.stringify(payload)), type},
             });
         }
         getWebSocketWorker().broadcast("BUS:NOTIFICATION", values);

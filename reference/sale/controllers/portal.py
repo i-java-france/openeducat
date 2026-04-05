@@ -7,7 +7,6 @@ from odoo.exceptions import AccessError, MissingError, ValidationError
 from odoo.fields import Command
 from odoo.http import request
 
-from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment.controllers import portal as payment_portal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 
@@ -325,7 +324,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             })
             # flush now to make signature data available to PDF render request
             request.env.cr.flush()
-        except (TypeError, binascii.Error) as e:
+        except (TypeError, binascii.Error):
             return {'error': _('Invalid signature data.')}
 
         if not order_sudo._has_to_be_paid():

@@ -1,9 +1,9 @@
-import { Composer } from "@mail/core/common/composer";
-import { patch } from "@web/core/utils/patch";
-import { useVoiceRecorder } from "./voice_recorder";
+import {Composer} from "@mail/core/common/composer";
+import {patch} from "@web/core/utils/patch";
+import {useVoiceRecorder} from "./voice_recorder";
 
 patch(Composer, {
-    components: { ...Composer.components },
+    components: {...Composer.components},
 });
 
 patch(Composer.prototype, {

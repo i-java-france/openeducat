@@ -1,26 +1,34 @@
-import { useDateTimePicker } from "@web/core/datetime/datetime_picker_hook";
-import { Component, useState } from "@odoo/owl";
-import { effect } from "@web/core/utils/reactive";
-import { ConversionError, formatDate, formatDateTime, parseDateTime } from "@web/core/l10n/dates";
-import { pick } from "@web/core/utils/objects";
+import {useDateTimePicker} from "@web/core/datetime/datetime_picker_hook";
+import {Component, useState} from "@odoo/owl";
+import {effect} from "@web/core/utils/reactive";
+import {
+    ConversionError,
+    formatDate,
+    formatDateTime,
+    parseDateTime,
+} from "@web/core/l10n/dates";
+import {pick} from "@web/core/utils/objects";
 import {
     basicContainerBuilderComponentProps,
     useBuilderComponent,
     useInputBuilderComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
-import { BuilderTextInputBase, textInputBasePassthroughProps } from "./builder_text_input_base";
+import {BuilderComponent} from "./builder_component";
+import {
+    BuilderTextInputBase,
+    textInputBasePassthroughProps,
+} from "./builder_text_input_base";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class BuilderDateTimePicker extends Component {
     static template = "html_builder.BuilderDateTimePicker";
     static props = {
         ...basicContainerBuilderComponentProps,
         ...textInputBasePassthroughProps,
-        type: { type: [{ value: "date" }, { value: "datetime" }], optional: true },
-        format: { type: String, optional: true },
-        acceptEmptyDate: { type: Boolean, optional: true },
+        type: {type: [{value: "date"}, {value: "datetime"}], optional: true},
+        format: {type: String, optional: true},
+        acceptEmptyDate: {type: Boolean, optional: true},
     };
     static defaultProps = {
         type: "datetime",
@@ -34,7 +42,7 @@ export class BuilderDateTimePicker extends Component {
     setup() {
         useBuilderComponent();
         this.defaultValue = DateTime.now().toUnixInteger().toString();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
             defaultValue: this.props.acceptEmptyDate ? undefined : this.defaultValue,
             formatRawValue: this.formatRawValue.bind(this),
@@ -43,7 +51,7 @@ export class BuilderDateTimePicker extends Component {
         this.domState = state;
         this.state = useState({});
         effect(
-            ({ value }) => {
+            ({value}) => {
                 // State to display in the input.
                 this.state.value = value;
             },
@@ -61,8 +69,8 @@ export class BuilderDateTimePicker extends Component {
             preview(userInputValue);
         };
 
-        const minDate = DateTime.fromObject({ year: 1000 });
-        const maxDate = DateTime.now().plus({ year: 200 });
+        const minDate = DateTime.fromObject({year: 1000});
+        const maxDate = DateTime.now().plus({year: 200});
         const getPickerProps = () => ({
             type: this.props.type,
             minDate,
@@ -94,7 +102,9 @@ export class BuilderDateTimePicker extends Component {
      * @returns {DateTime} the current value of the datetime picker
      */
     getCurrentValueDateTime() {
-        return this.domState.value ? DateTime.fromSeconds(parseInt(this.domState.value)) : false;
+        return this.domState.value
+            ? DateTime.fromSeconds(parseInt(this.domState.value))
+            : false;
     }
 
     /**
@@ -102,7 +112,9 @@ export class BuilderDateTimePicker extends Component {
      * @returns {String} a formatted date string
      */
     formatRawValue(rawValue) {
-        return rawValue ? this.formatDateTime(DateTime.fromSeconds(parseInt(rawValue))) : "";
+        return rawValue
+            ? this.formatDateTime(DateTime.fromSeconds(parseInt(rawValue)))
+            : "";
     }
 
     /**
@@ -135,7 +147,9 @@ export class BuilderDateTimePicker extends Component {
      * @returns {String} a formatted date string
      */
     get displayValue() {
-        return this.state.value !== undefined ? this.formatRawValue(this.state.value) : undefined;
+        return this.state.value !== undefined
+            ? this.formatRawValue(this.state.value)
+            : undefined;
     }
 
     get textInputBaseProps() {

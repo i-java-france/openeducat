@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { loadBundle } from "@web/core/assets";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {loadBundle} from "@web/core/assets";
 
 const actionRegistry = registry.category("actions");
 
@@ -29,9 +29,9 @@ export function addSpreadsheetActionLazyLoader(actionName, path, displayName) {
                 actionName,
                 () => {
                     const msg = _t("%s couldn't be loaded", actionName);
-                    env.services.notification.add(msg, { type: "danger" });
+                    env.services.notification.add(msg, {type: "danger"});
                 },
-                { force: true }
+                {force: true}
             );
         }
         // then do the action again, with the actual definition registered

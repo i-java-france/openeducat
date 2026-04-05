@@ -1,6 +1,6 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     fields,
@@ -9,10 +9,10 @@ import {
     mountWithCleanup,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { WebClient } from "@web/webclient/webclient";
-import { ProjectTask } from "./mock_server/mock_models/project_task";
-import { defineTodoModels } from "./todo_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {WebClient} from "@web/webclient/webclient";
+import {ProjectTask} from "./mock_server/mock_models/project_task";
+import {defineTodoModels} from "./todo_test_helpers";
 
 defineTodoModels();
 
@@ -102,13 +102,14 @@ test("Check that todo_form view contains the TodoDoneCheckmark and remaining_day
     await contains(".o_data_cell").click();
     await animationFrame();
     expect(".o_field_remaining_days").toHaveCount(1, {
-        message: "The todo form view should have deadline field (o_field_remaining_days)",
+        message:
+            "The todo form view should have deadline field (o_field_remaining_days)",
     });
 });
 test.tags("desktop");
 test("Check if opening form view from activity view does open with chatter visble", async () => {
     // Basic/Minimum data needed for activity view to be displayed
-    onRpc("web_search_read", function ({ model }) {
+    onRpc("web_search_read", function ({model}) {
         return {
             length: 1,
             records: this.env[model].read(1, ["name"]),
@@ -120,8 +121,8 @@ test("Check if opening form view from activity view does open with chatter visbl
             grouped_activities: {},
             activity_types: this.env["mail.activity.type"].map((type) => {
                 const templates = (type.mail_template_ids || []).map((template_id) => {
-                    const { id, name } = this.env["mail.template"].browse(template_id)[0];
-                    return { id, name };
+                    const {id, name} = this.env["mail.template"].browse(template_id)[0];
+                    return {id, name};
                 });
                 return {
                     id: type.id,

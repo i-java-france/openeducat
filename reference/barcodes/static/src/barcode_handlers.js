@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { getVisibleElements } from "@web/core/utils/ui";
-import { Macro } from "@web/core/macro";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {getVisibleElements} from "@web/core/utils/ui";
+import {Macro} from "@web/core/macro";
 
 const ACTION_HELPERS = {
     click(el) {
@@ -16,8 +16,8 @@ const ACTION_HELPERS = {
     text(el, value) {
         this.click(el);
         el.value = value;
-        el.dispatchEvent(new InputEvent("input", { bubbles: true }));
-        el.dispatchEvent(new InputEvent("change", { bubbles: true }));
+        el.dispatchEvent(new InputEvent("input", {bubbles: true}));
+        el.dispatchEvent(new InputEvent("change", {bubbles: true}));
     },
 };
 
@@ -39,7 +39,7 @@ function updatePager(position) {
     } else {
         next = parseInt(pager.querySelector(".o_pager_limit").textContent, 10);
     }
-    let current = parseInt(pager.innerText.split('/')[0], 10);
+    let current = parseInt(pager.innerText.split("/")[0], 10);
     if (current === next) {
         return;
     }
@@ -64,19 +64,18 @@ function updatePager(position) {
 }
 
 export const COMMANDS = {
-    "OCDEDIT": () => clickOnButton(".o_form_button_edit"),
-    "OCDDISC": () => clickOnButton(".o_form_button_cancel"),
-    "OCDSAVE": () => clickOnButton(".o_form_button_save"),
-    "OCDPREV": () => clickOnButton(".o_pager_previous"),
-    "OCDNEXT": () => clickOnButton(".o_pager_next"),
-    "OCDPAGERFIRST": () => updatePager("first"),
-    "OCDPAGERLAST": () => updatePager("last"),
+    OCDEDIT: () => clickOnButton(".o_form_button_edit"),
+    OCDDISC: () => clickOnButton(".o_form_button_cancel"),
+    OCDSAVE: () => clickOnButton(".o_form_button_save"),
+    OCDPREV: () => clickOnButton(".o_pager_previous"),
+    OCDNEXT: () => clickOnButton(".o_pager_next"),
+    OCDPAGERFIRST: () => updatePager("first"),
+    OCDPAGERLAST: () => updatePager("last"),
 };
 
 export const barcodeGenericHandlers = {
     dependencies: ["ui", "barcode", "notification"],
-    start(env, { ui, barcode, notification }) {
-
+    start(env, {ui, barcode, notification}) {
         barcode.bus.addEventListener("barcode_scanned", (ev) => {
             const barcode = ev.detail.barcode;
             if (barcode.startsWith("OBT")) {
@@ -84,7 +83,10 @@ export const barcodeGenericHandlers = {
                 try {
                     // the scanned barcode could be anything, and could crash the queryselectorall
                     // function
-                    targets = getVisibleElements(ui.activeElement, `[barcode_trigger=${barcode.slice(3)}]`);
+                    targets = getVisibleElements(
+                        ui.activeElement,
+                        `[barcode_trigger=${barcode.slice(3)}]`
+                    );
                 } catch {
                     console.warn(`Barcode '${barcode}' is not valid`);
                 }
@@ -97,14 +99,14 @@ export const barcodeGenericHandlers = {
                 if (fn) {
                     fn();
                 } else {
-                    notification.add(_t("Barcode: %(barcode)s", { barcode }), {
+                    notification.add(_t("Barcode: %(barcode)s", {barcode}), {
                         title: _t("Unknown barcode command"),
-                        type: "danger"
+                        type: "danger",
                     });
                 }
             }
         });
-    }
+    },
 };
 
 registry.category("services").add("barcode_handlers", barcodeGenericHandlers);

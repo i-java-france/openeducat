@@ -1,6 +1,6 @@
-import { Component, onWillStart, whenReady, xml } from "@odoo/owl";
-import { session } from "@web/session";
-import { registry } from "./registry";
+import {Component, onWillStart, whenReady, xml} from "@odoo/owl";
+import {session} from "@web/session";
+import {registry} from "./registry";
 
 /**
  * @typedef {{
@@ -94,17 +94,21 @@ export class LazyComponent extends Component {
     static props = {
         Component: String,
         bundle: String,
-        props: { type: [Object, Function], optional: true },
+        props: {type: [Object, Function], optional: true},
     };
     setup() {
         onWillStart(async () => {
             await loadBundle(this.props.bundle);
-            this.Component = registry.category("lazy_components").get(this.props.Component);
+            this.Component = registry
+                .category("lazy_components")
+                .get(this.props.Component);
         });
     }
 
     get componentProps() {
-        return typeof this.props.props === "function" ? this.props.props() : this.props.props;
+        return typeof this.props.props === "function"
+            ? this.props.props()
+            : this.props.props;
     }
 }
 
@@ -141,7 +145,7 @@ export const assets = {
                 const jsLibs = [];
                 if (!response.bodyUsed) {
                     const result = await response.json();
-                    for (const { src, type } of Object.values(result)) {
+                    for (const {src, type} of Object.values(result)) {
                         if (type === "link" && src) {
                             cssLibs.push(src);
                         } else if (type === "script" && src) {
@@ -149,11 +153,13 @@ export const assets = {
                         }
                     }
                 }
-                return { cssLibs, jsLibs };
+                return {cssLibs, jsLibs};
             })
             .catch((reason) => {
                 cacheMap.delete(bundleName);
-                throw new AssetsLoadingError(`The loading of ${url} failed`, { cause: reason });
+                throw new AssetsLoadingError(`The loading of ${url} failed`, {
+                    cause: reason,
+                });
             });
         cacheMap.set(bundleName, promise);
         return promise;
@@ -170,7 +176,7 @@ export const assets = {
      * @param {Boolean} [options.js=true] apply bundle js on targetDoc
      * @returns {Promise<void[]>}
      */
-    loadBundle(bundleName, { targetDoc = document, css = true, js = true } = {}) {
+    loadBundle(bundleName, {targetDoc = document, css = true, js = true} = {}) {
         if (typeof bundleName !== "string") {
             throw new Error(
                 `loadBundle(bundleName:string) accepts only bundleName argument as a string ! Not ${JSON.stringify(
@@ -178,13 +184,15 @@ export const assets = {
                 )} as ${typeof bundleName}`
             );
         }
-        return getBundle(bundleName).then(({ cssLibs, jsLibs }) => {
+        return getBundle(bundleName).then(({cssLibs, jsLibs}) => {
             const promises = [];
             if (css && cssLibs) {
-                promises.push(...cssLibs.map((url) => assets.loadCSS(url, { targetDoc })));
+                promises.push(
+                    ...cssLibs.map((url) => assets.loadCSS(url, {targetDoc}))
+                );
             }
             if (js && jsLibs) {
-                promises.push(...jsLibs.map((url) => assets.loadJS(url, { targetDoc })));
+                promises.push(...jsLibs.map((url) => assets.loadJS(url, {targetDoc})));
             }
             return Promise.all(promises);
         });
@@ -200,7 +208,7 @@ export const assets = {
      * @param {Document} [options.targetDoc=document] document to which the bundle will be applied (e.g. iframe document)
      * @returns {Promise<void>} resolved when the stylesheet has been loaded
      */
-    loadCSS(url, { retryCount = 0, targetDoc = document } = {}) {
+    loadCSS(url, {retryCount = 0, targetDoc = document} = {}) {
         const cacheMap = getAssetCache(targetDoc);
         if (cacheMap.has(url)) {
             return cacheMap.get(url);
@@ -213,10 +221,11 @@ export const assets = {
             onLoadAndError(linkEl, resolve, async (error) => {
                 cacheMap.delete(url);
                 if (retryCount < assets.retries.count) {
-                    const delay = assets.retries.delay + assets.retries.extraDelay * retryCount;
+                    const delay =
+                        assets.retries.delay + assets.retries.extraDelay * retryCount;
                     await new Promise((res) => setTimeout(res, delay));
                     linkEl.remove();
-                    loadCSS(url, { retryCount: retryCount + 1, targetDoc })
+                    loadCSS(url, {retryCount: retryCount + 1, targetDoc})
                         .then(resolve)
                         .catch((reason) => {
                             cacheMap.delete(url);
@@ -224,7 +233,9 @@ export const assets = {
                         });
                 } else {
                     reject(
-                        new AssetsLoadingError(`The loading of ${url} failed`, { cause: error })
+                        new AssetsLoadingError(`The loading of ${url} failed`, {
+                            cause: error,
+                        })
                     );
                 }
             })
@@ -241,18 +252,24 @@ export const assets = {
      * @param {Document} targetDoc document to which the bundle will be applied (e.g. iframe document)
      * @returns {Promise<void>} resolved when the script has been loaded
      */
-    loadJS(url, { targetDoc = document } = {}) {
+    loadJS(url, {targetDoc = document} = {}) {
         const cacheMap = getAssetCache(targetDoc);
         if (cacheMap.has(url)) {
             return cacheMap.get(url);
         }
         const scriptEl = targetDoc.createElement("script");
         scriptEl.setAttribute("src", url);
-        scriptEl.type = url.includes("web/static/lib/pdfjs/") ? "module" : "text/javascript";
+        scriptEl.type = url.includes("web/static/lib/pdfjs/")
+            ? "module"
+            : "text/javascript";
         const promise = new Promise((resolve, reject) =>
             onLoadAndError(scriptEl, resolve, (error) => {
                 cacheMap.delete(url);
-                reject(new AssetsLoadingError(`The loading of ${url} failed`, { cause: error }));
+                reject(
+                    new AssetsLoadingError(`The loading of ${url} failed`, {
+                        cause: error,
+                    })
+                );
             })
         );
         cacheMap.set(url, promise);

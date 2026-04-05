@@ -1,16 +1,16 @@
-import { Component, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { _t } from "@web/core/l10n/translation";
-import { uniqueId } from "@web/core/utils/functions";
-import { rpc } from "@web/core/network/rpc";
+import {Component, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {_t} from "@web/core/l10n/translation";
+import {uniqueId} from "@web/core/utils/functions";
+import {rpc} from "@web/core/network/rpc";
 
 export class CourseTagAddDialog extends Component {
-    static components = { Dialog, DropdownItem, SelectMenu };
+    static components = {Dialog, DropdownItem, SelectMenu};
     static props = {
-        channelId: { type: Number, optional: true },
-        defaultTag: { type: String, optional: true },
+        channelId: {type: Number, optional: true},
+        defaultTag: {type: String, optional: true},
         tagIds: Array,
         close: Function,
     };
@@ -62,7 +62,8 @@ export class CourseTagAddDialog extends Component {
 
     get displayTagGroupValue() {
         return this.choices.tagGroupId
-            ? this.choices.tagGroupIds.find((t) => t.value === this.choices.tagGroupId).label
+            ? this.choices.tagGroupIds.find((t) => t.value === this.choices.tagGroupId)
+                  .label
             : _t("Select or create a tag group");
     }
 
@@ -91,7 +92,7 @@ export class CourseTagAddDialog extends Component {
      */
     createChoice(label, type = "tag") {
         const tempId = uniqueId("temp");
-        this.choices[`${type}Ids`].push({ value: tempId, label: label });
+        this.choices[`${type}Ids`].push({value: tempId, label: label});
         this.choices[`${type}Id`] = tempId;
         this.state.showTagGroup = true;
     }
@@ -181,15 +182,18 @@ export class CourseTagAddDialog extends Component {
      * @returns {Object} result
      */
     async _fetchChoices(type, domain = [], fields = ["name"]) {
-        const { read_results, can_create } = await rpc(`/slides/channel/${type}/search_read`, {
-            fields,
-            domain,
-        });
+        const {read_results, can_create} = await rpc(
+            `/slides/channel/${type}/search_read`,
+            {
+                fields,
+                domain,
+            }
+        );
 
         const choices = read_results.map((choice) => {
-            return { value: choice.id, label: choice.name };
+            return {value: choice.id, label: choice.name};
         });
-        return { choices, can_create };
+        return {choices, can_create};
     }
 
     /**
@@ -203,15 +207,19 @@ export class CourseTagAddDialog extends Component {
         }
         if (!this._toCreate(tag.value)) {
             // existing tag
-            return { tag_id: [tag.value] };
+            return {tag_id: [tag.value]};
         }
-        const group = this.choices.tagGroupIds.find((c) => c.value === this.choices.tagGroupId);
+        const group = this.choices.tagGroupIds.find(
+            (c) => c.value === this.choices.tagGroupId
+        );
         if (!group) {
             return {};
         }
         return {
-            tag_id: [0, { name: tag.label }],
-            group_id: this._toCreate(group.value) ? [0, { name: group.label }] : [group.value],
+            tag_id: [0, {name: tag.label}],
+            group_id: this._toCreate(group.value)
+                ? [0, {name: group.label}]
+                : [group.value],
         };
     }
 

@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from unittest.mock import patch
 
 from odoo.tests import tagged
+
 from odoo.addons.analytic.tests.common import AnalyticCommon
 
 

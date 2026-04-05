@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_main_dashboard_openeducat"
+              name="Dashboard"
+              sequence="1" parent="SIS"/>
+    <menuitem id="menu_department_dashboard_openeducat"
+              name="Department"
+              sequence="1" parent="SIS/Dashboard" action="ir.actions.act_window,1040"/>
+    <menuitem id="menu_program_dashboard_openeducat"
+              name="Program"
+              sequence="2" parent="SIS/Dashboard" action="ir.actions.act_window,1033"/>
+    <menuitem id="menu_course_dashboard_openeducat"
+              name="Course"
+              sequence="3" parent="SIS/Dashboard" action="ir.actions.act_window,1027"/>
+    <menuitem id="menu_batch_dashboard_openeducat"
+              name="Batch"
+              sequence="3" parent="SIS/Dashboard" action="ir.actions.act_window,1028"/>
+    <menuitem id="menu_section_dashboard_openeducat"
+              name="Section"
+              sequence="4" parent="SIS/Dashboard" action="ir.actions.act_window,1022"/>
+    <menuitem id="menu_op_subject_sub"
+              name="Assessment Type"
+              sequence="8" parent="SIS/Configuration/General Management" action="ir.actions.act_window,1049"/>
+    <menuitem id="menu_op_Academic_stages"
+              name="Academic Plan Stages"
+              sequence="9" parent="SIS/Configuration/General Management" action="ir.actions.act_window,1050"/>
+    <menuitem id="menu_op_board_affiliation"
+              name="Board Affiliation"
+              sequence="20" parent="Settings/Users &amp; Companies" action="ir.actions.act_window,1021"/>
+    <menuitem id="menu_op_subject_registration_analysis"
+              name="Subject Registration Analysis"
+              sequence="30" parent="Students/Reporting" action="ir.actions.act_window,1042"/>
+    <menuitem id="menu_op_course_analysis_reporting"
+              name="Reporting"
+              sequence="38" parent="Students"/>
+    <menuitem id="menu_op_student_course_analysis"
+              name="Student Course Analysis"
+              sequence="40" parent="Students/Reporting" action="ir.actions.act_window,1043"/>
+    <menuitem id="menu_op_area"
+              name="Area"
+              sequence="41" parent="SIS/Configuration/General Management" action="ir.actions.act_window,1045"/>
+    <menuitem id="menu_op_specialization"
+              name="Specialization"
+              sequence="42" parent="SIS/Configuration/General Management" action="ir.actions.act_window,1046"/>
+    <menuitem id="menu_op_intake_year"
+              name="Intake Year"
+              sequence="43" parent="SIS/Configuration/General Management" action="ir.actions.act_window,1047"/>
+    <menuitem id="menu_op_academic_plan"
+              name="Academic Plan"
+              sequence="44" parent="SIS/General" action="ir.actions.act_window,1048"/>
+</odoo>

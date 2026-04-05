@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from datetime import datetime, time
+
+import pytz
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 from odoo.tools import babel_locale_parse
 from odoo.tools.date_utils import weeknumber
-import pytz
-from datetime import datetime, time
 
 
 class ResourceCalendarLeaves(models.Model):
@@ -71,7 +73,7 @@ class ResourceCalendarLeaves(models.Model):
         })
         sick_time_status = self.env.ref('hr_holidays.leave_type_sick_time_off', raise_if_not_found=False)
         leaves_to_recreate = self.env['hr.leave']
-        for previous_duration, leave, state in zip(previous_durations, leaves, previous_states):
+        for previous_duration, leave, state in zip(previous_durations, leaves, previous_states, strict=False):
             duration_difference = previous_duration - leave.number_of_days
             message = False
             if duration_difference > 0 and leave.holiday_status_id.requires_allocation:

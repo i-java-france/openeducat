@@ -1,6 +1,6 @@
 /* global posmodel */
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as ProductScreen from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
@@ -11,7 +11,7 @@ import * as OfflineUtil from "@point_of_sale/../tests/generic_helpers/offline_ut
 import * as ProductConfigurator from "@point_of_sale/../tests/pos/tours/utils/product_configurator_util";
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
-import { refresh, scan_barcode } from "@point_of_sale/../tests/generic_helpers/utils";
+import {refresh, scan_barcode} from "@point_of_sale/../tests/generic_helpers/utils";
 
 registry.category("web_tour.tours").add("pos_pricelist", {
     steps: () =>
@@ -31,21 +31,25 @@ registry.category("web_tour.tours").add("pos_pricelist", {
             ProductScreen.clickDisplayedProduct("Wall Shelf", true, "1"),
             ProductScreen.clickPriceList("min_quantity ordering"),
             ProductScreen.clickReview(),
-            { ...ProductScreen.clickLine("Wall Shelf")[0], isActive: ["mobile"] },
+            {...ProductScreen.clickLine("Wall Shelf")[0], isActive: ["mobile"]},
             Numpad.click("2"),
             ...ProductScreen.selectedOrderlineHasDirect("Wall Shelf", "2"),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ...Order.hasTotal(`$ 2.00`),
             ProductScreen.clickDisplayedProduct("Small Shelf", true, "1"),
             ProductScreen.clickReview(),
-            { ...ProductScreen.clickLine("Small Shelf")[0], isActive: ["mobile"] },
+            {...ProductScreen.clickLine("Small Shelf")[0], isActive: ["mobile"]},
             Numpad.click("Price"),
             Numpad.isActive("Price"),
             Numpad.click("5"),
-            ...Order.hasLine({ productName: "Small Shelf", price: "5.0", withClass: ".selected" }),
+            ...Order.hasLine({
+                productName: "Small Shelf",
+                price: "5.0",
+                withClass: ".selected",
+            }),
             Numpad.click("Qty"),
             Numpad.isActive("Qty"),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ProductScreen.clickPriceList("Public Pricelist"),
             ...Order.hasTotal(`$ 8.96`),
             ProductScreen.clickPriceList("min_quantity ordering"),
@@ -142,7 +146,7 @@ const test_pricelists_in_pos_steps = [
     ProductConfigurator.isUnavailable("RED"),
     Dialog.confirm(),
     ProductScreen.clickPayButton(),
-    PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.00" }),
+    PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.00"}),
     PaymentScreen.clickValidate(),
     ReceiptScreen.isShown(),
     ReceiptScreen.clickNextOrder(),

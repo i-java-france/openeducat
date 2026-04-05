@@ -7,8 +7,9 @@ from datetime import datetime, timedelta
 
 from odoo import models
 from odoo.fields import Domain
-from odoo.addons.mail.tools.discuss import add_guest_to_context
 from odoo.tools.misc import verify_limited_field_access_token
+
+from odoo.addons.mail.tools.discuss import add_guest_to_context
 
 PRESENCE_CHANNEL_PREFIX = "odoo-presence-"
 PRESENCE_CHANNEL_REGEX = re.compile(

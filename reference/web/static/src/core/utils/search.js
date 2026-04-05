@@ -1,4 +1,4 @@
-import { normalize } from "@web/core/l10n/utils";
+import {normalize} from "@web/core/l10n/utils";
 
 /**
  * @param {string} pattern
@@ -70,7 +70,7 @@ export function fuzzyLookup(pattern, list, fn) {
     list.forEach((data) => {
         const score = match(pattern, fn(data));
         if (score > 0) {
-            results.push({ score, elem: data });
+            results.push({score, elem: data});
         }
     });
 
@@ -115,18 +115,17 @@ export function fuzzyLevenshteinLookup(pattern, list, errorRatio = 3) {
         let score = -1;
         if (candidate.includes(pattern)) {
             score = 0;
-            results.push({ score, elem: pattern });
+            results.push({score, elem: pattern});
         } else {
             score = getLevenshteinScore(pattern, candidate);
             if (score >= 0 && score <= maxNbrCorrection) {
-                results.push({ score, elem: candidate });
+                results.push({score, elem: candidate});
             }
         }
     });
     results.sort((a, b) => a.score - b.score);
     return results.map((r) => r.elem);
 }
-
 
 /**
  * Computes the Levenshtein distance between two strings.

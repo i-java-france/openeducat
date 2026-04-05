@@ -1,6 +1,6 @@
-import { Store } from "@mail/core/common/store_service";
+import {Store} from "@mail/core/common/store_service";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Store} */
 const storeServicePatch = {

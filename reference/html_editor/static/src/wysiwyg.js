@@ -1,9 +1,9 @@
-import { Component, onMounted, onWillDestroy, useRef, useSubEnv } from "@odoo/owl";
-import { Editor } from "./editor";
-import { Toolbar } from "./main/toolbar/toolbar";
-import { useChildRef, useSpellCheck } from "@web/core/utils/hooks";
-import { LocalOverlayContainer } from "./local_overlay_container";
-import { uniqueId } from "@web/core/utils/functions";
+import {Component, onMounted, onWillDestroy, useRef, useSubEnv} from "@odoo/owl";
+import {Editor} from "./editor";
+import {Toolbar} from "./main/toolbar/toolbar";
+import {useChildRef, useSpellCheck} from "@web/core/utils/hooks";
+import {LocalOverlayContainer} from "./local_overlay_container";
+import {uniqueId} from "@web/core/utils/functions";
 
 /**
  * @typedef { import("./editor").EditorConfig } EditorConfig
@@ -24,17 +24,17 @@ function copyCssRules(sourceDoc, targetDoc) {
 
 export class Wysiwyg extends Component {
     static template = "html_editor.Wysiwyg";
-    static components = { Toolbar, LocalOverlayContainer };
+    static components = {Toolbar, LocalOverlayContainer};
     static props = {
-        config: { type: Object, optional: true },
-        class: { type: String, optional: true },
-        contentClass: { type: String, optional: true }, // on editable element
-        style: { type: String, optional: true },
-        iframe: { type: Boolean, optional: true },
-        copyCss: { type: Boolean, optional: true },
-        onLoad: { type: Function, optional: true },
-        onBlur: { type: Function, optional: true },
-        dynamicPlaceholder: { type: Boolean, optional: true },
+        config: {type: Object, optional: true},
+        class: {type: String, optional: true},
+        contentClass: {type: String, optional: true}, // on editable element
+        style: {type: String, optional: true},
+        iframe: {type: Boolean, optional: true},
+        copyCss: {type: Boolean, optional: true},
+        onLoad: {type: Function, optional: true},
+        onBlur: {type: Function, optional: true},
+        dynamicPlaceholder: {type: Boolean, optional: true},
     };
 
     static defaultProps = {
@@ -87,7 +87,7 @@ export class Wysiwyg extends Component {
                             attachEditor();
                             this.render();
                         },
-                        { once: true }
+                        {once: true}
                     );
                 }
             } else {

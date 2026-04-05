@@ -1,10 +1,13 @@
-import { HtmlUpgradeManager } from "@html_editor/html_migrations/html_upgrade_manager";
-import { afterEach, beforeEach, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, queryOne } from "@odoo/hoot-dom";
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { setupMigrateFunctions } from "@html_editor/../tests/public/html_migrations_test_utils";
+import {HtmlUpgradeManager} from "@html_editor/html_migrations/html_upgrade_manager";
+import {afterEach, beforeEach, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, queryOne} from "@odoo/hoot-dom";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {registry} from "@web/core/registry";
+import {setupMigrateFunctions} from "@html_editor/../tests/public/html_migrations_test_utils";
 
 setupInteractionWhiteList("html_editor.html_migrations");
 
@@ -35,10 +38,14 @@ describe("Public HTML migration only run once per interaction", () => {
     test("HTML migration is not executed if interactions are restarted", async () => {
         setupMigrateFunctions([
             (container) => {
-                container.querySelector("div").replaceChildren(document.createTextNode("after"));
+                container
+                    .querySelector("div")
+                    .replaceChildren(document.createTextNode("after"));
             },
         ]);
-        const { core } = await startInteractions(`<div data-oe-version="1.0">before</div>`);
+        const {core} = await startInteractions(
+            `<div data-oe-version="1.0">before</div>`
+        );
         expect.verifySteps(["html upgrade"]);
         expect(queryOne("#wrapwrap")).toHaveInnerHTML(`<div>after</div>`);
         core.stopInteractions();
@@ -53,7 +60,9 @@ describe("Public HTML migration only run once per interaction", () => {
                 throw new Error("failed html migration");
             },
         ]);
-        const { core } = await startInteractions(`<div data-oe-version="1.0">before</div>`);
+        const {core} = await startInteractions(
+            `<div data-oe-version="1.0">before</div>`
+        );
         expect.verifySteps(["html upgrade", "html upgrade attempt"]);
         expect(queryOne("#wrapwrap")).toHaveInnerHTML(`<div>before</div>`);
         core.stopInteractions();

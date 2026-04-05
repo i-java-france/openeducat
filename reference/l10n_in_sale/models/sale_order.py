@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -72,7 +71,7 @@ class SaleOrder(models.Model):
                 )._get_fiscal_position(virtual_partner)
 
     def _prepare_invoice(self):
-        invoice_vals = super(SaleOrder, self)._prepare_invoice()
+        invoice_vals = super()._prepare_invoice()
         if self.country_code == 'IN':
             invoice_vals['l10n_in_reseller_partner_id'] = self.l10n_in_reseller_partner_id.id
         return invoice_vals

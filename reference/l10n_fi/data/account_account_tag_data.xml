@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
     <!-- Tags for accounts -->
     <record id="account_tag_development_costs" model="account.account.tag">
@@ -66,9 +66,16 @@
         <field name="name@fi">Tase: Osuudet saman konsernin yrityksissä</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_receivables_from_associated_companies_investments" model="account.account.tag">
-        <field name="name">Tase: Saamiset saman konsernin yrityksiltä sijoitukset</field>
-        <field name="name@fi">Tase: Saamiset omistusyhteysyrityksiltä sijoitukset</field>
+    <record
+        id="account_tag_receivables_from_associated_companies_investments"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Tase: Saamiset saman konsernin yrityksiltä sijoitukset</field>
+        <field
+            name="name@fi"
+        >Tase: Saamiset omistusyhteysyrityksiltä sijoitukset</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_shares_in_associated_companies" model="account.account.tag">
@@ -76,12 +83,22 @@
         <field name="name@fi">Tase: Osuudet omistusyhteysyrityksissä</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_receivables_from_associated_companies_investments" model="account.account.tag">
-        <field name="name">Balance sheet: Receivables from associated companies investments</field>
-        <field name="name@fi">Tase: Saamiset omistusyhteysyrityksiltä sijoitukset</field>
+    <record
+        id="account_tag_receivables_from_associated_companies_investments"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Receivables from associated companies investments</field>
+        <field
+            name="name@fi"
+        >Tase: Saamiset omistusyhteysyrityksiltä sijoitukset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_shares_and_participations" model="account.account.tag">
+    <record
+        id="account_tag_other_shares_and_participations"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Other shares and shares</field>
         <field name="name@fi">Tase: Muut osakkeet ja osuudet</field>
         <field name="applicability">accounts</field>
@@ -91,7 +108,10 @@
         <field name="name@fi">Tase: Muut saamiset sijoitukset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_materials_and_supplies_inventories" model="account.account.tag">
+    <record
+        id="account_tag_materials_and_supplies_inventories"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Materials and supplies, inventory</field>
         <field name="name@fi">Tase: Aineet ja tarvikkeet vaihto-omaisuus</field>
         <field name="applicability">accounts</field>
@@ -126,14 +146,24 @@
         <field name="name@fi">Tase: Myyntisaamiset pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_receivables_from_group_long-term" model="account.account.tag">
+    <record
+        id="account_tag_receivables_from_group_long-term"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: The group's long-term receivables</field>
         <field name="name@fi">Tase: Saamiset konserni pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_receivables_from_associated_companies_non-current" model="account.account.tag">
-        <field name="name">Balance sheet: Receivables from joint ventures long-term</field>
-        <field name="name@fi">Tase: Saamiset omistusyhteysyritykset pitkäaikaiset</field>
+    <record
+        id="account_tag_receivables_from_associated_companies_non-current"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Receivables from joint ventures long-term</field>
+        <field
+            name="name@fi"
+        >Tase: Saamiset omistusyhteysyritykset pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_loan_receivables_long-term" model="account.account.tag">
@@ -141,7 +171,10 @@
         <field name="name@fi">Tase: Lainasaamiset pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_deferred_tax_assets_are_long-term" model="account.account.tag">
+    <record
+        id="account_tag_deferred_tax_assets_are_long-term"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Long-term deferred tax assets</field>
         <field name="name@fi">Tase: Laskennalliset verosaamiset pitkäaikaiset</field>
         <field name="applicability">accounts</field>
@@ -176,12 +209,18 @@
         <field name="name@fi">Tase: Saamiset konserni</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_accounts_receivable_from_associated_companies" model="account.account.tag">
+    <record
+        id="account_tag_accounts_receivable_from_associated_companies"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Accounts receivable joint ventures</field>
         <field name="name@fi">Tase: Myyntisaamiset omistusyhteysyritykset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_receivables_from_associated_companies" model="account.account.tag">
+    <record
+        id="account_tag_receivables_from_associated_companies"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Receivables from joint ventures</field>
         <field name="name@fi">Tase: Saamiset omistusyhteysyritykset</field>
         <field name="applicability">accounts</field>
@@ -211,13 +250,21 @@
         <field name="name@fi">Tase: Siirtosaamiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_shares_in_the_consolidated_financial_securities" model="account.account.tag">
+    <record
+        id="account_tag_shares_in_the_consolidated_financial_securities"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Shares in group financial securities</field>
         <field name="name@fi">Tase: Osuudet konserni rahoitusarvopaperit</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_shares_and_marketable_securities" model="account.account.tag">
-        <field name="name">Balance sheet: Other shares and shares financial securities</field>
+    <record
+        id="account_tag_other_shares_and_marketable_securities"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Other shares and shares financial securities</field>
         <field name="name@fi">Tase: Muut osakkeet ja osuudet rahoitusarvopaperit</field>
         <field name="applicability">accounts</field>
     </record>
@@ -246,7 +293,10 @@
         <field name="name@fi">Tase: Arvonkorotusrahasto</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_the_invested_unrestricted_equity_fund" model="account.account.tag">
+    <record
+        id="account_tag_the_invested_unrestricted_equity_fund"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Invested unrestricted equity fund</field>
         <field name="name@fi">Tase: Sijoitetun vapaan oman pääoman rahasto</field>
         <field name="applicability">accounts</field>
@@ -256,9 +306,16 @@
         <field name="name@fi">Tase: Vararahasto</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_the_articles_of_association_or_fund_under_the_rules" model="account.account.tag">
-        <field name="name">Balance sheet: Fund according to the articles of association or rules</field>
-        <field name="name@fi">Tase: Yhtiöjärjestyksen tai sääntöjen mukainen rahasto</field>
+    <record
+        id="account_tag_the_articles_of_association_or_fund_under_the_rules"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Fund according to the articles of association or rules</field>
+        <field
+            name="name@fi"
+        >Tase: Yhtiöjärjestyksen tai sääntöjen mukainen rahasto</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_the_fair_value_reserve" model="account.account.tag">
@@ -272,7 +329,9 @@
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_retained_earnings" model="account.account.tag">
-        <field name="name">Balance sheet: The result of the previous financial periods</field>
+        <field
+            name="name"
+        >Balance sheet: The result of the previous financial periods</field>
         <field name="name@fi">Tase: Edellisten tilikausien tulos</field>
         <field name="applicability">accounts</field>
     </record>
@@ -321,8 +380,13 @@
         <field name="name@fi">Tase: Vaihtovelkakirjalainat pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_loans_from_financial_institutions_long-term" model="account.account.tag">
-        <field name="name">Balance sheet: Long-term loans from financial institutions</field>
+    <record
+        id="account_tag_loans_from_financial_institutions_long-term"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Long-term loans from financial institutions</field>
         <field name="name@fi">Tase: Lainat rahoituslaitoksilta pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
@@ -346,17 +410,26 @@
         <field name="name@fi">Tase: Rahoitusvekselit pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_consolidated_long-term_liabilities" model="account.account.tag">
+    <record
+        id="account_tag_consolidated_long-term_liabilities"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: The group's long-term liabilities</field>
         <field name="name@fi">Tase: Velat konserni pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_payables_to_associated_companies_non-current" model="account.account.tag">
+    <record
+        id="account_tag_payables_to_associated_companies_non-current"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Liabilities joint ventures long-term</field>
         <field name="name@fi">Tase: Velat omistusyhteysyritykset pitkäaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_deferred_tax_liabilities_are_long-term" model="account.account.tag">
+    <record
+        id="account_tag_deferred_tax_liabilities_are_long-term"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Long-term deferred tax liabilities</field>
         <field name="name@fi">Tase: Laskennalliset verovelat pitkäaikaiset</field>
         <field name="applicability">accounts</field>
@@ -386,8 +459,13 @@
         <field name="name@fi">Tase: Vaihtovelkakirjalainat lyhytaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_loans_from_financial_institutions_short-term" model="account.account.tag">
-        <field name="name">Balance sheet: Short-term loans from financial institutions</field>
+    <record
+        id="account_tag_loans_from_financial_institutions_short-term"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Balance sheet: Short-term loans from financial institutions</field>
         <field name="name@fi">Tase: Lainat rahoituslaitoksilta lyhytaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
@@ -421,17 +499,26 @@
         <field name="name@fi">Tase: Velat konserni lyhytaikaiset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_trade_payables_to_associated_companies" model="account.account.tag">
+    <record
+        id="account_tag_trade_payables_to_associated_companies"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Accounts payable joint ventures</field>
         <field name="name@fi">Tase: Ostovelat omistusyhteysyritykset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_payables_to_associated_companies" model="account.account.tag">
+    <record
+        id="account_tag_payables_to_associated_companies"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Liabilities of joint ventures</field>
         <field name="name@fi">Tase: Velat omistusyhteysyritykset</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_deferred_tax_liabilities_are_short-term" model="account.account.tag">
+    <record
+        id="account_tag_deferred_tax_liabilities_are_short-term"
+        model="account.account.tag"
+    >
         <field name="name">Balance sheet: Deferred tax liabilities short-term</field>
         <field name="name@fi">Tase: Laskennalliset verovelat lyhytaikaiset</field>
         <field name="applicability">accounts</field>
@@ -457,8 +544,12 @@
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_manufacturing_warehouse_change" model="account.account.tag">
-        <field name="name">Result: Change in inventories of finished and work-in-progress products</field>
-        <field name="name@fi">Tulos: Valmiiden ja keskeneräisten tuotteiden varastojen muutos</field>
+        <field
+            name="name"
+        >Result: Change in inventories of finished and work-in-progress products</field>
+        <field
+            name="name@fi"
+        >Tulos: Valmiiden ja keskeneräisten tuotteiden varastojen muutos</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_manufacturing_own_use" model="account.account.tag">
@@ -491,7 +582,10 @@
         <field name="name@fi">Tulos: Ulkopuoliset palvelut</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_wages_and_salaries_in_production" model="account.account.tag">
+    <record
+        id="account_tag_wages_and_salaries_in_production"
+        model="account.account.tag"
+    >
         <field name="name">Result: Wages and bonuses production</field>
         <field name="name@fi">Tulos: Palkat ja palkkiot tuotanto</field>
         <field name="applicability">accounts</field>
@@ -511,12 +605,18 @@
         <field name="name@fi">Tulos: Eläkekulut muut</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_additional_expenses_production" model="account.account.tag">
+    <record
+        id="account_tag_other_additional_expenses_production"
+        model="account.account.tag"
+    >
         <field name="name">Result: Other side costs production</field>
         <field name="name@fi">Tulos: Muut sivukulut tuotanto</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_additional_expenses_other" model="account.account.tag">
+    <record
+        id="account_tag_other_additional_expenses_other"
+        model="account.account.tag"
+    >
         <field name="name">Result: Other incidental expenses other</field>
         <field name="name@fi">Tulos: Muut sivukulut muut</field>
         <field name="applicability">accounts</field>
@@ -531,9 +631,14 @@
         <field name="name@fi">Tulos: Arvonalentumiset pysyvät vastaavat</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_impairment_losses_financial_assets_current_assets" model="account.account.tag">
+    <record
+        id="account_tag_impairment_losses_financial_assets_current_assets"
+        model="account.account.tag"
+    >
         <field name="name">Tulos: Arvonalentumiset vaihtuvat vastaavat</field>
-        <field name="name@fi">Tulos: Arvonalentumiset rahoitusarvopaperit vaihtuvat vastaavat</field>
+        <field
+            name="name@fi"
+        >Tulos: Arvonalentumiset rahoitusarvopaperit vaihtuvat vastaavat</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_personnel_other" model="account.account.tag">
@@ -556,7 +661,10 @@
         <field name="name@fi">Tulos: IT-kulut</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_in_machinery_and_equipment_expenses" model="account.account.tag">
+    <record
+        id="account_tag_in_machinery_and_equipment_expenses"
+        model="account.account.tag"
+    >
         <field name="name">Result: Machine and equipment costs</field>
         <field name="name@fi">Tulos: Kone- ja kalustokulut</field>
         <field name="applicability">accounts</field>
@@ -611,34 +719,62 @@
         <field name="name@fi">Tulos: Tuotot osuuksista omistusyhteysyritys</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_investment_income_other_current_assets_group" model="account.account.tag">
-        <field name="name">Result: Investment income other permanent corresponding group</field>
-        <field name="name@fi">Tulos: Sijoitustuotot muut pysyvät vastaavat konserni</field>
+    <record
+        id="account_tag_investment_income_other_current_assets_group"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Result: Investment income other permanent corresponding group</field>
+        <field
+            name="name@fi"
+        >Tulos: Sijoitustuotot muut pysyvät vastaavat konserni</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_investment_income_from_fixed_assets" model="account.account.tag">
+    <record
+        id="account_tag_other_investment_income_from_fixed_assets"
+        model="account.account.tag"
+    >
         <field name="name">Result: Other investment income remains the same</field>
         <field name="name@fi">Tulos: Muut sijoitustuotot pysyvät vastaavat</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_interest_and_financial_income_from_group" model="account.account.tag">
+    <record
+        id="account_tag_interest_and_financial_income_from_group"
+        model="account.account.tag"
+    >
         <field name="name">Result: Interest and financial income group</field>
         <field name="name@fi">Tulos: Korko ja rahoitustuotot konserni</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_other_interest_and_financial_income" model="account.account.tag">
+    <record
+        id="account_tag_other_interest_and_financial_income"
+        model="account.account.tag"
+    >
         <field name="name">Result: Other interest and financial income</field>
         <field name="name@fi">Tulos: Muut korko ja rahoitustuotot</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_impairment_losses_on_investments_in_fixed_assets" model="account.account.tag">
+    <record
+        id="account_tag_impairment_losses_on_investments_in_fixed_assets"
+        model="account.account.tag"
+    >
         <field name="name">Result: Impaired investments remain the same</field>
-        <field name="name@fi">Tulos: Arvonalentumiset sijoitukset pysyvät vastaavat</field>
+        <field
+            name="name@fi"
+        >Tulos: Arvonalentumiset sijoitukset pysyvät vastaavat</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_impairment_losses_financial_assets_current_assets" model="account.account.tag">
-        <field name="name">Result: Impaired financial securities are replaced by equivalents</field>
-        <field name="name@fi">Tulos: Arvonalentumiset rahoitusarvopaperit vaihtuvat vastaavat</field>
+    <record
+        id="account_tag_impairment_losses_financial_assets_current_assets"
+        model="account.account.tag"
+    >
+        <field
+            name="name"
+        >Result: Impaired financial securities are replaced by equivalents</field>
+        <field
+            name="name@fi"
+        >Tulos: Arvonalentumiset rahoitusarvopaperit vaihtuvat vastaavat</field>
         <field name="applicability">accounts</field>
     </record>
     <record id="account_tag_financial_expenses_group" model="account.account.tag">
@@ -651,7 +787,10 @@
         <field name="name@fi">Tulos: Rahoituskulut muut</field>
         <field name="applicability">accounts</field>
     </record>
-    <record id="account_tag_change_in_depreciation_difference" model="account.account.tag">
+    <record
+        id="account_tag_change_in_depreciation_difference"
+        model="account.account.tag"
+    >
         <field name="name">Result: Change in depreciation difference</field>
         <field name="name@fi">Tulos: Poistoeron muutos</field>
         <field name="applicability">accounts</field>

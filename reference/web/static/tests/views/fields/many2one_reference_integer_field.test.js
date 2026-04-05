@@ -1,7 +1,13 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
 
-import { defineModels, fields, models, mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {
+    defineModels,
+    fields,
+    models,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
     model = fields.Char({
@@ -14,8 +20,8 @@ class Partner extends models.Model {
     });
 
     _records = [
-        { id: 1, model: "partner.type", res_id: 10 },
-        { id: 2, res_id: false },
+        {id: 1, model: "partner.type", res_id: 10},
+        {id: 2, res_id: false},
     ];
 }
 
@@ -23,8 +29,8 @@ class PartnerType extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 10, name: "gold" },
-        { id: 14, name: "silver" },
+        {id: 10, name: "gold"},
+        {id: 14, name: "silver"},
     ];
 }
 

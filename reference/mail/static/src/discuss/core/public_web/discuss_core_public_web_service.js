@@ -1,8 +1,8 @@
-import { reactive } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
+import {reactive} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export class DiscussCorePublicWeb {
     /**
@@ -21,7 +21,7 @@ export class DiscussCorePublicWeb {
             );
             this.sidebarCategoriesBroadcast.addEventListener(
                 "message",
-                ({ data: { id, open } }) => {
+                ({data: {id, open}}) => {
                     const category = this.store.DiscussAppCategory.get(id);
                     if (category) {
                         category.open = open;
@@ -40,7 +40,10 @@ export class DiscussCorePublicWeb {
             } = payload;
             this.store.insert(data);
             await this.store.fetchChannel(channel_id);
-            const thread = this.store.Thread.get({ id: channel_id, model: "discuss.channel" });
+            const thread = this.store.Thread.get({
+                id: channel_id,
+                model: "discuss.channel",
+            });
             if (
                 thread &&
                 invitedByUserId &&
@@ -49,20 +52,24 @@ export class DiscussCorePublicWeb {
             ) {
                 this.notificationService.add(
                     _t("You have been invited to #%s", thread.displayName),
-                    { type: "info" }
+                    {type: "info"}
                 );
             }
         });
         browser.navigator.serviceWorker?.addEventListener(
             "message",
-            async ({ data: { action, data } }) => {
+            async ({data: {action, data}}) => {
                 if (action === "OPEN_CHANNEL") {
                     const channel = await this.store.Thread.getOrFetch({
                         model: "discuss.channel",
                         id: data.id,
                     });
-                    channel?.open({ focus: true });
-                    if (!data.joinCall || !channel || this.rtcService.state.channel?.eq(channel)) {
+                    channel?.open({focus: true});
+                    if (
+                        !data.joinCall ||
+                        !channel ||
+                        this.rtcService.state.channel?.eq(channel)
+                    ) {
                         return;
                     }
                     if (this.rtcService.state.channel) {
@@ -73,7 +80,7 @@ export class DiscussCorePublicWeb {
                     const logs = data || {};
                     logs.odooInfo = odoo.info;
                     const string = JSON.stringify(logs);
-                    const blob = new Blob([string], { type: "application/json" });
+                    const blob = new Blob([string], {type: "application/json"});
                     const downloadLink = document.createElement("a");
                     const now = luxon.DateTime.now().toFormat("yyyy-LL-dd_HH-mm");
                     downloadLink.download = `RtcLogs_${now}.json`;
@@ -92,7 +99,10 @@ export class DiscussCorePublicWeb {
      * @param {import("models").DiscussAppCategory} category
      */
     broadcastCategoryState(category) {
-        this.sidebarCategoriesBroadcast?.postMessage({ id: category.id, open: category.open });
+        this.sidebarCategoriesBroadcast?.postMessage({
+            id: category.id,
+            open: category.open,
+        });
     }
 }
 

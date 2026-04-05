@@ -1,18 +1,18 @@
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 const sessionStorage = browser.sessionStorage;
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { delay } from "@web/core/utils/concurrency";
-import { getDataURLFromFile, redirect } from "@web/core/utils/urls";
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
-import { _t } from "@web/core/l10n/translation";
-import { svgToPNG, webpToPNG } from "@website/js/utils";
-import { escapeRegExp } from "@web/core/utils/strings";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
-import { mixCssColors } from "@web/core/utils/colors";
-import { router } from "@web/core/browser/router";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {delay} from "@web/core/utils/concurrency";
+import {getDataURLFromFile, redirect} from "@web/core/utils/urls";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
+import {_t} from "@web/core/l10n/translation";
+import {svgToPNG, webpToPNG} from "@website/js/utils";
+import {escapeRegExp} from "@web/core/utils/strings";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {mixCssColors} from "@web/core/utils/colors";
+import {router} from "@web/core/browser/router";
 import {
     Component,
     onMounted,
@@ -25,9 +25,9 @@ import {
     onWillStart,
     useExternalListener,
 } from "@odoo/owl";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { fuzzyLevenshteinLookup } from "@web/core/utils/search";
-import { isBrowserSafari } from "@web/core/browser/feature_detection";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {fuzzyLevenshteinLookup} from "@web/core/utils/search";
+import {isBrowserSafari} from "@web/core/browser/feature_detection";
 
 export const ROUTES = {
     descriptionScreen: 2,
@@ -37,19 +37,19 @@ export const ROUTES = {
 };
 
 export const WEBSITE_TYPES = {
-    1: { id: 1, label: _t("a website"), name: "business" },
-    2: { id: 2, label: _t("an online store"), name: "online_store" },
-    3: { id: 3, label: _t("a blog"), name: "blog" },
-    4: { id: 4, label: _t("an event website"), name: "event" },
-    5: { id: 5, label: _t("an elearning platform"), name: "elearning" },
+    1: {id: 1, label: _t("a website"), name: "business"},
+    2: {id: 2, label: _t("an online store"), name: "online_store"},
+    3: {id: 3, label: _t("a blog"), name: "blog"},
+    4: {id: 4, label: _t("an event website"), name: "event"},
+    5: {id: 5, label: _t("an elearning platform"), name: "elearning"},
 };
 
 export const WEBSITE_PURPOSES = {
-    1: { id: 1, label: _t("get leads"), name: "get_leads" },
-    2: { id: 2, label: _t("develop the brand"), name: "develop_brand" },
-    3: { id: 3, label: _t("sell more"), name: "sell_more" },
-    4: { id: 4, label: _t("inform customers"), name: "inform_customers" },
-    5: { id: 5, label: _t("schedule appointments"), name: "schedule_appointments" },
+    1: {id: 1, label: _t("get leads"), name: "get_leads"},
+    2: {id: 2, label: _t("develop the brand"), name: "develop_brand"},
+    3: {id: 3, label: _t("sell more"), name: "sell_more"},
+    4: {id: 4, label: _t("inform customers"), name: "inform_customers"},
+    5: {id: 5, label: _t("schedule appointments"), name: "schedule_appointments"},
 };
 
 export const PALETTE_NAMES = [
@@ -109,7 +109,11 @@ const MAX_NBR_DISPLAY_MAIN_THEMES = 3;
  * theme names and their related text svgs (as result of a Promise). The length
  * of the list is at most 'resultNbrMax'.
  */
-async function getRecommendedThemes(orm, state, resultNbrMax = MAX_NBR_DISPLAY_MAIN_THEMES) {
+async function getRecommendedThemes(
+    orm,
+    state,
+    resultNbrMax = MAX_NBR_DISPLAY_MAIN_THEMES
+) {
     return orm.call("website", "configurator_recommended_themes", [], {
         industry_id: state.selectedIndustry.id,
         palette: state.selectedPalette,
@@ -130,7 +134,7 @@ export class SkipButton extends Component {
 
 export class WelcomeScreen extends Component {
     static template = "website.Configurator.WelcomeScreen";
-    static components = { SkipButton };
+    static components = {SkipButton};
     static props = {
         skip: Function,
         navigate: Function,
@@ -146,7 +150,7 @@ export class WelcomeScreen extends Component {
 
 export class DescriptionScreen extends Component {
     static template = "website.Configurator.DescriptionScreen";
-    static components = { SkipButton, AutoComplete };
+    static components = {SkipButton, AutoComplete};
     static props = {
         navigate: Function,
         skip: Function,
@@ -165,7 +169,9 @@ export class DescriptionScreen extends Component {
         for (const industry of this.state.industries) {
             let industryWords = this._splitToSet(industry.label);
             if (industry.synonyms) {
-                industryWords = industryWords.union(this._splitToSet(industry.synonyms));
+                industryWords = industryWords.union(
+                    this._splitToSet(industry.synonyms)
+                );
             }
             this.dictionarySet = this.dictionarySet.union(industryWords);
         }
@@ -211,7 +217,8 @@ export class DescriptionScreen extends Component {
     get sources() {
         return [
             {
-                options: (request) => (request.length < 1 ? [] : this._autocompleteSearch(request)),
+                options: (request) =>
+                    request.length < 1 ? [] : this._autocompleteSearch(request),
             },
         ];
     }
@@ -262,7 +269,9 @@ export class DescriptionScreen extends Component {
         } else {
             let synonymMatches = this.state.industries.filter((val, index) => {
                 // To match, every term should be contained in the synonym
-                for (const candidate of [...(val.synonyms || "").split(this.splitRegex)]) {
+                for (const candidate of [
+                    ...(val.synonyms || "").split(this.splitRegex),
+                ]) {
                     // Check if industry label has already matched
                     if (
                         terms.every((term) => candidate.toLowerCase().includes(term)) &&
@@ -273,14 +282,16 @@ export class DescriptionScreen extends Component {
                 }
                 return false;
             });
-            synonymMatches = synonymMatches.sort((x, y) => x.hitCountOrder - y.hitCountOrder);
+            synonymMatches = synonymMatches.sort(
+                (x, y) => x.hitCountOrder - y.hitCountOrder
+            );
             matches = matches.concat(synonymMatches);
             if (matches.length > limit) {
                 matches = matches.slice(0, limit);
             }
         }
         if (matches.length === 0) {
-            matches = [{ label: term, id: -1 }];
+            matches = [{label: term, id: -1}];
             terms = [term];
         }
         return matches.map((match) => ({
@@ -316,7 +327,9 @@ export class DescriptionScreen extends Component {
             let bitIndex = 0;
             while (bitIndex < matchTermOrder.labelBits.length) {
                 const currentBit = matchTermOrder.labelBits[bitIndex];
-                const splitBits = currentBit.split(new RegExp(`(${escapeRegExp(term)})`));
+                const splitBits = currentBit.split(
+                    new RegExp(`(${escapeRegExp(term)})`)
+                );
                 matchTermOrder.labelBits.splice(bitIndex, 1, ...splitBits);
                 bitIndex += splitBits.length;
             }
@@ -347,7 +360,7 @@ export class DescriptionScreen extends Component {
     }
 
     checkDescriptionCompletion() {
-        const { selectedType, selectedPurpose, selectedIndustry } = this.state;
+        const {selectedType, selectedPurpose, selectedIndustry} = this.state;
         if (selectedType && selectedPurpose && selectedIndustry) {
             // If the industry name is not known by the server, send it to the
             // IAP server.
@@ -364,7 +377,9 @@ export class DescriptionScreen extends Component {
         // outside of it
         if (isBrowserSafari() && this.safariHackFocusedOutDropdown) {
             if (ev.target.closest(".dropdown") !== this.safariHackFocusedOutDropdown) {
-                window.Dropdown.getOrCreateInstance(this.safariHackFocusedOutDropdown).hide();
+                window.Dropdown.getOrCreateInstance(
+                    this.safariHackFocusedOutDropdown
+                ).hide();
             }
             this.safariHackFocusedOutDropdown = null;
         }
@@ -386,7 +401,7 @@ export class DescriptionScreen extends Component {
         }
     }
 
-    onAutocompleteInput({ inputValue }) {
+    onAutocompleteInput({inputValue}) {
         if (!inputValue) {
             this.state.selectIndustry(); // reset
         }
@@ -394,7 +409,7 @@ export class DescriptionScreen extends Component {
 }
 
 export class PaletteSelectionScreen extends Component {
-    static components = { SkipButton };
+    static components = {SkipButton};
     static template = "website.Configurator.PaletteSelectionScreen";
     static props = {
         navigate: Function,
@@ -441,7 +456,9 @@ export class PaletteSelectionScreen extends Component {
             const file = logoSelectInput.files[0];
             if (file.size > 2500000) {
                 this.notification.add(
-                    _t("The logo is too large. Please upload a logo smaller than 2.5 MB."),
+                    _t(
+                        "The logo is too large. Please upload a logo smaller than 2.5 MB."
+                    ),
                     {
                         title: file.name,
                         type: "warning",
@@ -482,7 +499,7 @@ export class PaletteSelectionScreen extends Component {
             "base.document.layout",
             "extract_image_primary_secondary_colors",
             [img],
-            { mitigate: 255 }
+            {mitigate: 255}
         );
         this.state.setRecommendedPalette(color1, color2);
     }
@@ -499,7 +516,7 @@ export class PaletteSelectionScreen extends Component {
      * @param {Array<number>} ids the attachment ids to remove
      */
     async _removeAttachments(ids) {
-        rpc("/html_editor/attachment/remove", { ids: ids });
+        rpc("/html_editor/attachment/remove", {ids: ids});
     }
 }
 
@@ -520,7 +537,12 @@ export class ApplyConfiguratorScreen extends Component {
 
         const attemptConfiguratorApply = async (data, retryCount = 0) => {
             try {
-                return await this.orm.silent.call("website", "configurator_apply", [], data);
+                return await this.orm.silent.call(
+                    "website",
+                    "configurator_apply",
+                    [],
+                    data
+                );
             } catch (error) {
                 // Wait a bit before retrying or allowing manual retry.
                 await delay(5000);
@@ -577,8 +599,9 @@ export class ApplyConfiguratorScreen extends Component {
             selected_palette: selectedPalette,
             theme_name: themeName,
             website_purpose:
-                WEBSITE_PURPOSES[this.state.selectedPurpose || this.state.formerSelectedPurpose]
-                    .name,
+                WEBSITE_PURPOSES[
+                    this.state.selectedPurpose || this.state.formerSelectedPurpose
+                ].name,
             website_type: WEBSITE_TYPES[this.state.selectedType].name,
             logo_attachment_id: this.state.logoAttachmentId,
         };
@@ -586,7 +609,7 @@ export class ApplyConfiguratorScreen extends Component {
 }
 
 export class FeaturesSelectionScreen extends Component {
-    static components = { SkipButton };
+    static components = {SkipButton};
     static template = "website.Configurator.FeatureSelection";
     static props = {
         navigate: Function,
@@ -607,7 +630,8 @@ export class FeaturesSelectionScreen extends Component {
     }
 
     async buildWebsite() {
-        const industryId = this.state.selectedIndustry && this.state.selectedIndustry.id;
+        const industryId =
+            this.state.selectedIndustry && this.state.selectedIndustry.id;
         if (!industryId) {
             return this.props.navigate(ROUTES.descriptionScreen);
         }
@@ -660,7 +684,10 @@ export class ThemeSelectionScreen extends ApplyConfiguratorScreen {
 
         useEffect(
             () =>
-                this.blockUiDuringImageLoading(this.state.extraThemes, this.extraThemeSVGPreviews),
+                this.blockUiDuringImageLoading(
+                    this.state.extraThemes,
+                    this.extraThemeSVGPreviews
+                ),
             () => [this.state.extraThemes]
         );
     }
@@ -691,7 +718,7 @@ export class ThemeSelectionScreen extends ApplyConfiguratorScreen {
             return;
         }
         const proms = [];
-        this.uiService.block({ delay: 700 });
+        this.uiService.block({delay: 700});
         themes.forEach((theme, idx) => {
             const svgEl = new DOMParser().parseFromString(
                 theme.svg,
@@ -705,14 +732,14 @@ export class ThemeSelectionScreen extends ApplyConfiguratorScreen {
                             () => {
                                 resolve(imgEl);
                             },
-                            { once: true }
+                            {once: true}
                         );
                         imgEl.addEventListener(
                             "error",
                             () => {
                                 reject(imgEl);
                             },
-                            { once: true }
+                            {once: true}
                         );
                     })
                 );
@@ -828,7 +855,10 @@ export class Store {
             .forEach((feature) => {
                 // need to check id, since we set to undefined in mount() to avoid the auto next screen on back button
                 feature.selected |=
-                    id && feature.website_config_preselection.includes(WEBSITE_PURPOSES[id].name);
+                    id &&
+                    feature.website_config_preselection.includes(
+                        WEBSITE_PURPOSES[id].name
+                    );
             });
         this.selectedPurpose = id;
     }
@@ -837,7 +867,7 @@ export class Store {
         if (!label || !id) {
             this.selectedIndustry = undefined;
         } else {
-            this.selectedIndustry = { id, label };
+            this.selectedIndustry = {id, label};
         }
     }
 
@@ -901,7 +931,7 @@ export class Configurator extends Component {
         ThemeSelectionScreen,
     };
     static template = "website.Configurator.Configurator";
-    static props = { ...standardActionServiceProps };
+    static props = {...standardActionServiceProps};
 
     setup() {
         this.orm = useService("orm");
@@ -925,7 +955,7 @@ export class Configurator extends Component {
             currentStep: initialStep,
         });
 
-        useSubEnv({ store });
+        useSubEnv({store});
 
         onWillStart(async () => {
             this.websiteId = (await this.orm.call("website", "get_current_website"))[0];
@@ -950,7 +980,9 @@ export class Configurator extends Component {
 
     get pathname() {
         return `/website/configurator${
-            this.state.currentStep ? `/${encodeURIComponent(this.state.currentStep)}` : ""
+            this.state.currentStep
+                ? `/${encodeURIComponent(this.state.currentStep)}`
+                : ""
         }`;
     }
 
@@ -960,7 +992,7 @@ export class Configurator extends Component {
 
     updateBrowserUrl() {
         history.pushState(
-            { skipRouteChange: true, configuratorStep: this.state.currentStep },
+            {skipRouteChange: true, configuratorStep: this.state.currentStep},
             "",
             this.pathname
         );
@@ -1032,7 +1064,10 @@ export class Configurator extends Component {
                 );
             }
             CUSTOM_BG_COLOR_ATTRS.forEach((attr) => {
-                palette[attr] = getCSSVariableValue(`o-palette-${paletteName}-${attr}-bg`, style);
+                palette[attr] = getCSSVariableValue(
+                    `o-palette-${paletteName}-${attr}-bg`,
+                    style
+                );
             });
             palettes[paletteName] = palette;
         });
@@ -1043,7 +1078,7 @@ export class Configurator extends Component {
             if (localState.selectedIndustry && localState.selectedPalette) {
                 themes = await getRecommendedThemes(this.orm, localState);
             }
-            return Object.assign(r, { ...localState, palettes, themes });
+            return Object.assign(r, {...localState, palettes, themes});
         }
 
         const features = {};
@@ -1052,7 +1087,9 @@ export class Configurator extends Component {
                 selected: feature.module_state === "installed",
             });
             const wtp = features[feature.id]["website_config_preselection"];
-            features[feature.id]["website_config_preselection"] = wtp ? wtp.split(",") : [];
+            features[feature.id]["website_config_preselection"] = wtp
+                ? wtp.split(",")
+                : [];
         });
 
         // Palette color used by default as background color for menu and footer.
@@ -1097,7 +1134,7 @@ export class Configurator extends Component {
     }
 
     async skipConfigurator() {
-        this.website.showLoader({ showTips: true });
+        this.website.showLoader({showTips: true});
         const redirectUrl = await this.orm.call("website", "configurator_skip");
         this.clearStorage();
         // Here the website service goToWebsite method is not used because

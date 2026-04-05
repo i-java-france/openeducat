@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { TableOfContent } from "./table_of_content";
+import {registry} from "@web/core/registry";
+import {TableOfContent} from "./table_of_content";
 
 export const TableOfContentEdit = (I) =>
     class extends I {

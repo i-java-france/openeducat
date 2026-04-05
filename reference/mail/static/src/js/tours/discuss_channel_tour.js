@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
-import { markup } from "@odoo/owl";
-import { delay } from "@web/core/utils/concurrency";
+import {markup} from "@odoo/owl";
+import {delay} from "@web/core/utils/concurrency";
 
 registry.category("web_tour.tours").add("discuss_channel_tour", {
     url: "/odoo",
@@ -53,7 +53,8 @@ registry.category("web_tour.tours").add("discuss_channel_tour", {
             run: "press Enter",
         },
         {
-            trigger: ".o-mail-Message[data-persistent] [title='Add Star']:not(:visible)",
+            trigger:
+                ".o-mail-Message[data-persistent] [title='Add Star']:not(:visible)",
             content: _t("Hover on your message and add a star"),
             tooltipPosition: "top",
             async run(helpers) {

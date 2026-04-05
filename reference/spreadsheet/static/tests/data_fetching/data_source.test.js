@@ -1,9 +1,9 @@
-import { animationFrame } from "@odoo/hoot-mock";
-import { LoadableDataSource } from "@spreadsheet/data_sources/data_source";
-import { Deferred } from "@web/core/utils/concurrency";
-import { makeServerError } from "@web/../tests/web_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { defineSpreadsheetActions, defineSpreadsheetModels } from "../helpers/data";
+import {animationFrame} from "@odoo/hoot-mock";
+import {LoadableDataSource} from "@spreadsheet/data_sources/data_source";
+import {Deferred} from "@web/core/utils/concurrency";
+import {makeServerError} from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {defineSpreadsheetActions, defineSpreadsheetModels} from "../helpers/data";
 
 describe.current.tags("headless");
 
@@ -41,7 +41,7 @@ test("data source is ready after all concurrent requests are resolved", async ()
     });
     dataSource.load();
     expect.verifySteps(["notify-from-promise"]);
-    dataSource.load({ reload: true });
+    dataSource.load({reload: true});
     expect(dataSource.isReady()).toBe(false);
     def1.resolve();
     await animationFrame();
@@ -71,7 +71,7 @@ test("Datasources handle errors thrown at _load", async () => {
             cancelPromise: () => expect.step("cancel-promise"),
             orm: {
                 call: () => {
-                    throw makeServerError({ description: "Ya done!" });
+                    throw makeServerError({description: "Ya done!"});
                 },
             },
         },

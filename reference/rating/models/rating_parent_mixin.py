@@ -4,9 +4,10 @@ from collections import defaultdict
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.addons.rating.models import rating_data
 from odoo.fields import Domain
 from odoo.tools.float_utils import float_compare
+
+from odoo.addons.rating.models import rating_data
 
 
 class RatingParentMixin(models.AbstractModel):

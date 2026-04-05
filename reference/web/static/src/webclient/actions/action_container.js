@@ -1,4 +1,4 @@
-import { Component, xml, onWillDestroy } from "@odoo/owl";
+import {Component, xml, onWillDestroy} from "@odoo/owl";
 
 // -----------------------------------------------------------------------------
 // ActionContainer (Component)
@@ -14,13 +14,19 @@ export class ActionContainer extends Component {
 
     setup() {
         this.info = {};
-        this.onActionManagerUpdate = ({ detail: info }) => {
+        this.onActionManagerUpdate = ({detail: info}) => {
             this.info = info;
             this.render();
         };
-        this.env.bus.addEventListener("ACTION_MANAGER:UPDATE", this.onActionManagerUpdate);
+        this.env.bus.addEventListener(
+            "ACTION_MANAGER:UPDATE",
+            this.onActionManagerUpdate
+        );
         onWillDestroy(() => {
-            this.env.bus.removeEventListener("ACTION_MANAGER:UPDATE", this.onActionManagerUpdate);
+            this.env.bus.removeEventListener(
+                "ACTION_MANAGER:UPDATE",
+                this.onActionManagerUpdate
+            );
         });
     }
 }

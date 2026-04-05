@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -137,7 +137,7 @@ class SaleOrder(models.Model):
 
     def copy_data(self, default=None):
         data_list = super().copy_data(default)
-        for order, data in zip(self, data_list):
+        for order, data in zip(self, data_list, strict=False):
             partner = order.partner_id.commercial_partner_id
             date = fields.Date.context_today(self)
             if order.l10n_it_edi_doi_id._get_validity_warnings(order.company_id, partner, order.currency_id, date, sales_order=True):

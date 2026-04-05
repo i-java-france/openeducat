@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import collections
-from datetime import timedelta
 import operator as py_operator
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from datetime import timedelta
 
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 PY_OPERATORS = {
     '<': py_operator.lt,
@@ -237,7 +237,7 @@ class ProductProduct(models.Model):
             boms, bom_sub_lines = bom_kit.explode(self, 1)
             return [bom_line.product_id.id for bom_line, data in bom_sub_lines if bom_line.product_id.is_storable]
         else:
-            return super(ProductProduct, self).get_components()
+            return super().get_components()
 
     def action_used_in_bom(self):
         self.ensure_one()
@@ -402,7 +402,7 @@ class ProductProduct(models.Model):
         op = PY_OPERATORS.get(operator)
         if not op:
             return NotImplemented
-        product_ids = super(ProductProduct, self)._search_qty_available_new(operator, value, lot_id, owner_id, package_id)
+        product_ids = super()._search_qty_available_new(operator, value, lot_id, owner_id, package_id)
         kit_boms = self.env['mrp.bom'].search([('type', "=", 'phantom')])
         kit_products = self.env['product.product']
         for kit in kit_boms:

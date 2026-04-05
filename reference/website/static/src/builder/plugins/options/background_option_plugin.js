@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { _t } from "@web/core/l10n/translation";
-import { VideoSelector } from "@html_editor/main/media/media_dialog/video_selector";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {_t} from "@web/core/l10n/translation";
+import {VideoSelector} from "@html_editor/main/media/media_dialog/video_selector";
 
 /**
  * @typedef { Object } WebsiteBackgroundVideoShared
@@ -92,7 +92,7 @@ class WebsiteBackgroundVideoPlugin extends Plugin {
     applyReplaceBackgroundVideo({
         editingElement,
         loadResult: mediaSrc,
-        params: { forceClean = false },
+        params: {forceClean = false},
     }) {
         if (!forceClean && !mediaSrc) {
             // No video has been chosen by the user on the media dialog
@@ -112,12 +112,12 @@ class WebsiteBackgroundVideoPlugin extends Plugin {
      * @param {HTMLElement} context.editingElement
      * @param {Object} [context.params]
      */
-    removeBackgroundVideo({ editingElement, params }) {
+    removeBackgroundVideo({editingElement, params}) {
         editingElement.querySelector(":scope > .o_we_bg_filter")?.remove();
         this.applyReplaceBackgroundVideo({
             editingElement,
             loadResult: "",
-            params: { ...params, forceClean: true },
+            params: {...params, forceClean: true},
         });
         this.dispatchTo("on_bg_image_hide_handlers", editingElement);
     }
@@ -127,9 +127,11 @@ export class ToggleBgVideoAction extends BuilderAction {
     static id = "toggleBgVideo";
     static dependencies = ["websiteBackgroundVideoPlugin"];
     load(context) {
-        return this.dependencies.websiteBackgroundVideoPlugin.loadReplaceBackgroundVideo(context);
+        return this.dependencies.websiteBackgroundVideoPlugin.loadReplaceBackgroundVideo(
+            context
+        );
     }
-    apply({ editingElement, params, loadResult }) {
+    apply({editingElement, params, loadResult}) {
         this.dependencies.websiteBackgroundVideoPlugin.applyReplaceBackgroundVideo({
             editingElement: editingElement,
             params: params,
@@ -137,7 +139,7 @@ export class ToggleBgVideoAction extends BuilderAction {
         });
         this.dispatchTo("on_bg_image_hide_handlers", editingElement);
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return editingElement.classList.contains("o_background_video");
     }
     clean(context) {
@@ -157,10 +159,14 @@ export class ReplaceBgVideoAction extends BuilderAction {
     static id = "replaceBgVideo";
     static dependencies = ["websiteBackgroundVideoPlugin"];
     load(context) {
-        return this.dependencies.websiteBackgroundVideoPlugin.loadReplaceBackgroundVideo(context);
+        return this.dependencies.websiteBackgroundVideoPlugin.loadReplaceBackgroundVideo(
+            context
+        );
     }
     apply(context) {
-        return this.dependencies.websiteBackgroundVideoPlugin.applyReplaceBackgroundVideo(context);
+        return this.dependencies.websiteBackgroundVideoPlugin.applyReplaceBackgroundVideo(
+            context
+        );
     }
 }
 

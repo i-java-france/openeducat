@@ -4,10 +4,11 @@ import {
     openLinkPopup,
     clickToolbarButton,
 } from "@website/js/tours/tour_utils";
-import { browser } from "@web/core/browser/browser";
-import { patch } from "@web/core/utils/patch";
+import {browser} from "@web/core/browser/browser";
+import {patch} from "@web/core/utils/patch";
 
-const FIRST_PARAGRAPH = ":iframe #wrap .s_text_image p:not([data-selection-placeholder]):nth-child(2)";
+const FIRST_PARAGRAPH =
+    ":iframe #wrap .s_text_image p:not([data-selection-placeholder]):nth-child(2)";
 
 const clickEditLink = {
     content: "Click on Edit Link in Popover",
@@ -46,7 +47,12 @@ registerWebsitePreviewTour(
             trigger: FIRST_PARAGRAPH,
             run: "editor Paragraph", // Make sure the selection is set in the paragraph
         },
-        ...clickToolbarButton("Paragraph", "#wrap .s_text_image p", "Add a link", false),
+        ...clickToolbarButton(
+            "Paragraph",
+            "#wrap .s_text_image p",
+            "Add a link",
+            false
+        ),
         ...editLinkAndApply("/contactus"),
         ...openLinkPopup(`${FIRST_PARAGRAPH} a`, "/contactus", 1, true),
         {
@@ -89,7 +95,12 @@ registerWebsitePreviewTour(
             trigger: ':iframe .top_menu a:contains("Home")',
             run: "click",
         },
-        ...openLinkPopup(":iframe #o_main_nav a.nav-link:contains('Home')", "/contactus", 1, false),
+        ...openLinkPopup(
+            ":iframe #o_main_nav a.nav-link:contains('Home')",
+            "/contactus",
+            1,
+            false
+        ),
         {
             content: "Popover should be shown (2)",
             trigger: ".o-we-linkpopover .o_we_url_link:contains('Home')",
@@ -134,7 +145,12 @@ registerWebsitePreviewTour(
             trigger: ":iframe html:not(.modal-body)",
         },
         // 3. Test other links (CTA in navbar & links in footer)
-        ...openLinkPopup(":iframe #o_main_nav a.btn-primary[href='/contactus']", "CTA", 1, true),
+        ...openLinkPopup(
+            ":iframe #o_main_nav a.btn-primary[href='/contactus']",
+            "CTA",
+            1,
+            true
+        ),
         {
             content: "Popover should be shown (3)",
             trigger: ".o-we-linkpopover .o_we_url_link:contains('Contact Us')",
@@ -179,7 +195,8 @@ registerWebsitePreviewTour(
         // 6. Test link popover link opens a new window in edit mode
         ...openLinkPopup(":iframe footer a[href='/']", "Footer Home", 1, true),
         {
-            content: "Ensure that a click on the link popover link opens a new window in edit mode",
+            content:
+                "Ensure that a click on the link popover link opens a new window in edit mode",
             trigger: ".o-we-linkpopover a.o_we_url_link[target='_blank']",
             run(actions) {
                 // We do not want to open a link in a tour
@@ -197,7 +214,7 @@ registerWebsitePreviewTour(
                             }
                         },
                     },
-                    { pure: true }
+                    {pure: true}
                 );
                 actions.click();
             },

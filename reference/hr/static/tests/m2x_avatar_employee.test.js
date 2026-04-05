@@ -1,22 +1,27 @@
-import { defineHrModels } from "@hr/../tests/hr_test_helpers";
-import { start } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
-import { contains, makeMockServer, mountView, onRpc } from "@web/../tests/web_test_helpers";
-import { getOrigin } from "@web/core/utils/urls";
+import {defineHrModels} from "@hr/../tests/hr_test_helpers";
+import {start} from "@mail/../tests/mail_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
+import {
+    contains,
+    makeMockServer,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
+import {getOrigin} from "@web/core/utils/urls";
 
 describe.current.tags("desktop");
 defineHrModels();
 
 test("many2one in list view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const [partnerId_1, partnerId_2] = env["res.partner"].create([
-        { name: "Mario" },
-        { name: "Luigi" },
+        {name: "Mario"},
+        {name: "Luigi"},
     ]);
     const [userId_1, userId_2] = env["res.users"].create([
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
         {
@@ -36,8 +41,8 @@ test("many2one in list view", async () => {
             employee_id: employeeId_1,
             employee_ids: [employeeId_1, employeeId_2],
         },
-        { employee_id: employeeId_2 },
-        { employee_id: employeeId_1 },
+        {employee_id: employeeId_2},
+        {employee_id: employeeId_1},
     ]);
     await start();
     onRpc("has_group", () => false);
@@ -51,7 +56,7 @@ test("many2one in list view", async () => {
     expect(".o_data_cell div[name='employee_id']:eq(2)").toHaveText("Mario");
     expect("div[name='employee_id'] a").toHaveCount(0);
 
-    // click on first employee avatar
+    // Click on first employee avatar
     await contains(".o_data_cell .o_m2o_avatar > img:eq(0)").click();
     await waitFor(".o_avatar_card");
     expect(".o_card_user_infos > span").toHaveText("Mario");
@@ -61,7 +66,7 @@ test("many2one in list view", async () => {
     await waitFor(".o-mail-ChatWindow");
     await waitFor(".o-mail-ChatWindow-header:contains('Mario')");
 
-    // click on second employee
+    // Click on second employee
     await contains(".o_data_cell .o_m2o_avatar > img:eq(1)").click();
     expect(".o_card_user_infos span").toHaveText("Luigi");
     expect(".o_avatar_card").toHaveCount(1);
@@ -70,7 +75,7 @@ test("many2one in list view", async () => {
     await waitFor(".o-mail-ChatWindow-header:contains('Luigi')");
     expect(".o-mail-ChatWindow").toHaveCount(2);
 
-    // click on third employee (same as first)
+    // Click on third employee (same as first)
     await contains(".o_data_cell .o_m2o_avatar > img:eq(2)").click();
     expect(".o_card_user_infos span").toHaveText("Mario");
     expect(".o_avatar_card").toHaveCount(1);
@@ -83,9 +88,9 @@ test("many2one in list view", async () => {
 });
 
 test("many2one in kanban view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const partnerId = env["res.partner"].create({});
-    const userId = env["res.users"].create({ partner_id: partnerId });
+    const userId = env["res.users"].create({partner_id: partnerId});
     const employeeId = env["hr.employee.public"].create({
         user_id: userId,
         user_partner_id: partnerId,
@@ -115,9 +120,9 @@ test("many2one in kanban view", async () => {
 });
 
 test("many2one: click on an employee not associated with a user", async () => {
-    const { env } = await makeMockServer();
-    const employeeId = env["hr.employee.public"].create({ name: "Mario" });
-    const avatarId = env["m2x.avatar.employee"].create({ employee_id: employeeId });
+    const {env} = await makeMockServer();
+    const employeeId = env["hr.employee.public"].create({name: "Mario"});
+    const avatarId = env["m2x.avatar.employee"].create({employee_id: employeeId});
     onRpc("has_group", () => false);
     await mountView({
         type: "form",
@@ -130,9 +135,9 @@ test("many2one: click on an employee not associated with a user", async () => {
 });
 
 test("many2one with hr group widget in kanban view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const partnerId = env["res.partner"].create({});
-    const userId = env["res.users"].create({ partner_id: partnerId });
+    const userId = env["res.users"].create({partner_id: partnerId});
     const employeeId = env["hr.employee.public"].create({
         user_id: userId,
         user_partner_id: partnerId,
@@ -161,9 +166,9 @@ test("many2one with hr group widget in kanban view", async () => {
 });
 
 test("many2one with relation set in options", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const partnerId = env["res.partner"].create({});
-    const userId = env["res.users"].create({ partner_id: partnerId });
+    const userId = env["res.users"].create({partner_id: partnerId});
     const employeeId = env["hr.employee.public"].create({
         user_id: userId,
         user_partner_id: partnerId,
@@ -192,10 +197,10 @@ test("many2one with relation set in options", async () => {
 });
 
 test("many2one without hr.group_hr_user", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     env["m2x.avatar.employee"].create({});
-    env["hr.employee"].create({ name: "babar" });
-    env["hr.employee.public"].create({ name: "babar" });
+    env["hr.employee"].create({name: "babar"});
+    env["hr.employee.public"].create({name: "babar"});
     onRpc("web_name_search", (args) => {
         expect.step("web_name_search");
         expect(args.model).toBe("hr.employee.public");
@@ -221,14 +226,14 @@ test("many2one without hr.group_hr_user", async () => {
 });
 
 test("many2one in form view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const [partnerId_1, partnerId_2] = env["res.partner"].create([
-        { name: "Mario" },
-        { name: "Luigi" },
+        {name: "Mario"},
+        {name: "Luigi"},
     ]);
     const [userId_1, userId_2] = env["res.users"].create([
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
         {
@@ -261,7 +266,9 @@ test("many2one in form view", async () => {
     );
 
     // Clicking on first employee's avatar
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)").click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)"
+    ).click();
     await waitFor(".o_avatar_card");
     expect(".o_card_user_infos > span").toHaveText("Mario");
     expect(".o_card_user_infos > a").toHaveText("Mario@partner.com");
@@ -271,7 +278,9 @@ test("many2one in form view", async () => {
     await waitFor(".o-mail-ChatWindow-header:contains('Mario')");
 
     // Clicking on second employee's avatar
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)").click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)"
+    ).click();
     expect(".o_card_user_infos span").toHaveText("Luigi");
     expect(".o_avatar_card").toHaveCount(1);
     expect(".o_avatar_card_buttons button:eq(0)").toHaveText("Send message");
@@ -281,20 +290,20 @@ test("many2one in form view", async () => {
 });
 
 test("many2one with hr group widget in form view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const [partnerId_1, partnerId_2] = env["res.partner"].create([{}, {}]);
     const [userId_1, userId_2] = env["res.users"].create([
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     const [employeeData_1, employeeData_2] = [
-        { user_id: userId_1, user_partner_id: partnerId_1 },
-        { user_id: userId_2, user_partner_id: partnerId_2 },
+        {user_id: userId_1, user_partner_id: partnerId_1},
+        {user_id: userId_2, user_partner_id: partnerId_2},
     ];
-    env["hr.employee"].create([{ ...employeeData_1 }, { ...employeeData_2 }]);
+    env["hr.employee"].create([{...employeeData_1}, {...employeeData_2}]);
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
-        { ...employeeData_1 },
-        { ...employeeData_2 },
+        {...employeeData_1},
+        {...employeeData_2},
     ]);
     const avatarId_1 = env["m2x.avatar.employee"].create({
         employee_ids: [employeeId_1, employeeId_2],
@@ -312,8 +321,12 @@ test("many2one with hr group widget in form view", async () => {
         "data-src",
         `${getOrigin()}/web/image/hr.employee/${employeeId_1}/avatar_128`
     );
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)").click();
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)").click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)"
+    ).click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)"
+    ).click();
     expect.verifySteps([
         `read hr.employee ${employeeId_1}`,
         `read hr.employee ${employeeId_2}`,
@@ -321,14 +334,14 @@ test("many2one with hr group widget in form view", async () => {
 });
 
 test("many2one widget in list view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const [partnerId_1, partnerId_2] = env["res.partner"].create([
-        { name: "Mario" },
-        { name: "Yoshi" },
+        {name: "Mario"},
+        {name: "Yoshi"},
     ]);
     const [userId_1, userId_2] = env["res.users"].create([
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
         {
@@ -353,7 +366,9 @@ test("many2one widget in list view", async () => {
         resModel: "m2x.avatar.employee",
         arch: `<list><field name="employee_ids" widget="many2many_avatar_employee"/></list>`,
     });
-    expect(".o_data_cell:first .o_field_many2many_avatar_employee > div > span").toHaveCount(2);
+    expect(
+        ".o_data_cell:first .o_field_many2many_avatar_employee > div > span"
+    ).toHaveCount(2);
 
     // Clicking on first employee's avatar
     await contains(".o_data_cell .o_m2m_avatar:eq(0)").click();
@@ -375,14 +390,14 @@ test("many2one widget in list view", async () => {
 });
 
 test("many2many in kanban view", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const [partnerId_1, partnerId_2] = env["res.partner"].create([
-        { name: "Mario" },
-        { name: "Luigi" },
+        {name: "Mario"},
+        {name: "Luigi"},
     ]);
     const [userId_1, userId_2] = env["res.users"].create([
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
         {
@@ -452,9 +467,9 @@ test("many2many in kanban view", async () => {
 });
 
 test("many2many: click on an employee not associated with a user", async () => {
-    const { env } = await makeMockServer();
-    const partnerId = env["res.partner"].create({ name: "Luigi" });
-    const userId = env["res.users"].create({ partner_id: partnerId });
+    const {env} = await makeMockServer();
+    const partnerId = env["res.partner"].create({name: "Luigi"});
+    const userId = env["res.users"].create({partner_id: partnerId});
     const [employeeId_1, employeeId_2] = env["hr.employee.public"].create([
         {
             name: "Mario",
@@ -484,14 +499,18 @@ test("many2many: click on an employee not associated with a user", async () => {
     );
 
     // Clicking on first employee's avatar (employee with no user)
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)").click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(0)"
+    ).click();
     await waitFor(".o_avatar_card");
     expect(".o_card_user_infos > span").toHaveText("Mario");
     expect(".o_card_user_infos > a").toHaveText("Mario@partner.com");
     expect(".o_avatar_card_buttons button:eq(0)").toHaveText("View Profile");
 
     // Clicking on second employee's avatar (employee with user)
-    await contains(".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)").click();
+    await contains(
+        ".o_field_many2many_avatar_employee .o_tag .o_m2m_avatar:eq(1)"
+    ).click();
     expect(".o_card_user_infos span").toHaveText("Luigi");
     expect(".o_avatar_card").toHaveCount(1);
     expect(".o_avatar_card_buttons button:eq(0)").toHaveText("Send message");

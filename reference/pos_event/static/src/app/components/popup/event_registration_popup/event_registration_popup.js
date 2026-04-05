@@ -1,11 +1,11 @@
 // Part of Odoo. See LICENSE file for full copyright and licensing details.
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { ProductCard } from "@point_of_sale/app/components/product_card/product_card";
-import { NumericInput } from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
-import { useService } from "@web/core/utils/hooks";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {ProductCard} from "@point_of_sale/app/components/product_card/product_card";
+import {NumericInput} from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
+import {useService} from "@web/core/utils/hooks";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class EventRegistrationPopup extends Component {
     static template = "pos_event.EventRegistrationPopup";
@@ -51,11 +51,15 @@ export class EventRegistrationPopup extends Component {
     }
 
     get questionsByRegistration() {
-        return this.props.event.question_ids.filter((question) => !question.once_per_order);
+        return this.props.event.question_ids.filter(
+            (question) => !question.once_per_order
+        );
     }
 
     get questionsOncePerOrder() {
-        return this.props.event.question_ids.filter((question) => question.once_per_order);
+        return this.props.event.question_ids.filter(
+            (question) => question.once_per_order
+        );
     }
 
     isQuestionMissingMandatoryAnswer(id, value) {
@@ -64,13 +68,15 @@ export class EventRegistrationPopup extends Component {
     }
 
     confirm() {
-        const requiredByRegistration = Object.values(this.state.byRegistration).some((data) => {
-            for (const [id, value] of Object.entries(data.questions)) {
-                if (this.isQuestionMissingMandatoryAnswer(id, value)) {
-                    return true;
+        const requiredByRegistration = Object.values(this.state.byRegistration).some(
+            (data) => {
+                for (const [id, value] of Object.entries(data.questions)) {
+                    if (this.isQuestionMissingMandatoryAnswer(id, value)) {
+                        return true;
+                    }
                 }
             }
-        });
+        );
 
         const requiredByOrder = Object.entries(this.state.byOrder).some(([id, value]) =>
             this.isQuestionMissingMandatoryAnswer(id, value)

@@ -1,15 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from datetime import datetime
 from uuid import uuid4
-import pytz
-from collections import defaultdict
 
-from odoo import api, fields, models, _, Command, tools, SUPERUSER_ID
+import pytz
+
+from odoo import SUPERUSER_ID, Command, _, api, fields, models, tools
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.http import request
-from odoo.exceptions import AccessError, ValidationError, UserError
-from odoo.tools import SQL, convert
 from odoo.service.common import exp_version
+from odoo.tools import SQL, convert
+
 from odoo.addons.point_of_sale.models.pos_printer import format_epson_certified_domain
 
 DEFAULT_LIMIT_LOAD_PRODUCT = 5000
@@ -646,7 +648,7 @@ class PosConfig(models.Model):
                     ", ".join(forbidden_fields)
                 ))
 
-        result = super(PosConfig, self).write(vals)
+        result = super().write(vals)
 
         for config in self:
             if config.use_presets and config.default_preset_id and config.default_preset_id.id not in config.available_preset_ids.ids:
@@ -717,7 +719,7 @@ class PosConfig(models.Model):
     def unlink(self):
         # Delete the pos.config records first then delete the sequences linked to them
         sequences_to_delete = self.order_line_seq_id | self.device_seq_id
-        res = super(PosConfig, self).unlink()
+        res = super().unlink()
         sequences_to_delete.unlink()
         return res
 

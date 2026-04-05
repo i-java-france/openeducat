@@ -2,16 +2,16 @@
 
 import contextlib
 import logging
-
 from ast import literal_eval
+
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 
-from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 from odoo.addons.auth_signup.models.res_partner import SignupError
+from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 
 _logger = logging.getLogger(__name__)
 
@@ -258,7 +258,7 @@ class ResUsers(models.Model):
     def web_create_users(self, emails):
         inactive_users = self.search([('state', '=', 'new'), '|', ('login', 'in', emails), ('email', 'in', emails)])
         new_emails = set(emails) - set(inactive_users.mapped('email'))
-        res = super(ResUsers, self).web_create_users(list(new_emails))
+        res = super().web_create_users(list(new_emails))
         if inactive_users:
             inactive_users.with_context(create_user=True).action_reset_password()
         return res
@@ -266,7 +266,7 @@ class ResUsers(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         # overridden to automatically invite user to sign up
-        users = super(ResUsers, self).create(vals_list)
+        users = super().create(vals_list)
         if not self.env.context.get('no_reset_password'):
             users_with_email = users.filtered('email')
             if users_with_email:

@@ -1,21 +1,21 @@
-import { _t } from "@web/core/l10n/translation";
-import { parseFloat } from "@web/views/fields/parsers";
-import { useErrorHandlers, useAsyncLockedMethod } from "@point_of_sale/app/hooks/hooks";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {parseFloat} from "@web/views/fields/parsers";
+import {useErrorHandlers, useAsyncLockedMethod} from "@point_of_sale/app/hooks/hooks";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { NumberPopup } from "@point_of_sale/app/components/popups/number_popup/number_popup";
-import { PriceFormatter } from "@point_of_sale/app/components/price_formatter/price_formatter";
-import { DatePickerPopup } from "@point_of_sale/app/components/popups/date_picker_popup/date_picker_popup";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {NumberPopup} from "@point_of_sale/app/components/popups/number_popup/number_popup";
+import {PriceFormatter} from "@point_of_sale/app/components/price_formatter/price_formatter";
+import {DatePickerPopup} from "@point_of_sale/app/components/popups/date_picker_popup/date_picker_popup";
 
-import { PaymentScreenPaymentLines } from "@point_of_sale/app/screens/payment_screen/payment_lines/payment_lines";
-import { PaymentScreenStatus } from "@point_of_sale/app/screens/payment_screen/payment_status/payment_status";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { Component, onMounted } from "@odoo/owl";
-import { Numpad, enhancedButtons } from "@point_of_sale/app/components/numpad/numpad";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { useRouterParamsChecker } from "@point_of_sale/app/hooks/pos_router_hook";
+import {PaymentScreenPaymentLines} from "@point_of_sale/app/screens/payment_screen/payment_lines/payment_lines";
+import {PaymentScreenStatus} from "@point_of_sale/app/screens/payment_screen/payment_status/payment_status";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {Component, onMounted} from "@odoo/owl";
+import {Numpad, enhancedButtons} from "@point_of_sale/app/components/numpad/numpad";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {useRouterParamsChecker} from "@point_of_sale/app/hooks/pos_router_hook";
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
 
 export class PaymentScreen extends Component {
@@ -65,11 +65,14 @@ export class PaymentScreen extends Component {
         for (const payment of order.payment_ids) {
             const pmid = payment.payment_method_id.id;
             if (!this.pos.config.payment_method_ids.map((pm) => pm.id).includes(pmid)) {
-                payment.delete({ backend: true });
+                payment.delete({backend: true});
             }
         }
 
-        if (this.payment_methods_from_config.length == 1 && this.paymentLines.length == 0) {
+        if (
+            this.payment_methods_from_config.length == 1 &&
+            this.paymentLines.length == 0
+        ) {
             this.addNewPaymentLine(this.payment_methods_from_config[0]);
         }
 
@@ -84,7 +87,8 @@ export class PaymentScreen extends Component {
 
     getNumpadButtons() {
         const colorClassMap = {
-            [this.env.services.localization.decimalPoint]: "o_colorlist_item_numpad_color_6",
+            [this.env.services.localization.decimalPoint]:
+                "o_colorlist_item_numpad_color_6",
             Backspace: "o_colorlist_item_numpad_color_1",
             "+10": "o_colorlist_item_numpad_color_10",
             "+20": "o_colorlist_item_numpad_color_10",
@@ -182,7 +186,8 @@ export class PaymentScreen extends Component {
             }
         }
         // disable changing amount on paymentlines with running or done payments on a payment terminal
-        const payment_terminal = this.selectedPaymentLine.payment_method_id.payment_terminal;
+        const payment_terminal =
+            this.selectedPaymentLine.payment_method_id.payment_terminal;
         const hasCashPaymentMethod = this.payment_methods_from_config.some(
             (method) => method.type === "cash"
         );
@@ -210,8 +215,10 @@ export class PaymentScreen extends Component {
     async toggleIsToInvoice() {
         if (!this.pos.config.canInvoice) {
             this.notification.add(
-                _t("To enable invoice creation, please add a journal for it in the settings."),
-                { type: "warning" }
+                _t(
+                    "To enable invoice creation, please add a journal for it in the settings."
+                ),
+                {type: "warning"}
             );
             return;
         }
@@ -251,7 +258,8 @@ export class PaymentScreen extends Component {
             return;
         }
         const tipDifference = parseFloat(newTip) - (tip || 0);
-        const tipToAdd = change <= 0 ? tipDifference : Math.max(0, tipDifference - change);
+        const tipToAdd =
+            change <= 0 ? tipDifference : Math.max(0, tipDifference - change);
         pLine.setAmount(pLine.getAmount() + tipToAdd);
     }
     async toggleShippingDatePicker() {
@@ -355,7 +363,9 @@ export class PaymentScreen extends Component {
         const payment_terminal = line.payment_method_id.payment_terminal;
         line.setPaymentStatus("reversing");
 
-        const isReversalSuccessful = await payment_terminal.sendPaymentReversal(line.uuid);
+        const isReversalSuccessful = await payment_terminal.sendPaymentReversal(
+            line.uuid
+        );
         if (isReversalSuccessful) {
             line.setAmount(0);
             line.setPaymentStatus("reversed");

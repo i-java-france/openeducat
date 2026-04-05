@@ -1,23 +1,25 @@
-import { Plugin } from "@html_editor/plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { expect, test } from "@odoo/hoot";
-import { click, tick, waitFor } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { getContent, setContent } from "./_helpers/selection";
-import { withSequence } from "@html_editor/utils/resource";
-import { execCommand } from "./_helpers/userCommands";
+import {Plugin} from "@html_editor/plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {expect, test} from "@odoo/hoot";
+import {click, tick, waitFor} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {getContent, setContent} from "./_helpers/selection";
+import {withSequence} from "@html_editor/utils/resource";
+import {execCommand} from "./_helpers/userCommands";
 
 test("can instantiate a Editor", async () => {
-    const { el, editor } = await setupEditor("<p>hel[lo] world</p>", {});
+    const {el, editor} = await setupEditor("<p>hel[lo] world</p>", {});
     expect(el.innerHTML).toBe(`<p>hello world</p>`);
     expect(getContent(el)).toBe(`<p>hel[lo] world</p>`);
     setContent(el, "<div>a[dddb]</div>");
     execCommand(editor, "formatBold");
-    expect(getContent(el)).toBe(`<div class="o-paragraph">a<strong>[dddb]</strong></div>`);
+    expect(getContent(el)).toBe(
+        `<div class="o-paragraph">a<strong>[dddb]</strong></div>`
+    );
 });
 
 test("cannot reattach an editor", async () => {
-    const { el, editor } = await setupEditor("<p>[]</p>", {});
+    const {el, editor} = await setupEditor("<p>[]</p>", {});
     expect(getContent(el)).toBe(
         `<p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]</p>`
     );
@@ -25,7 +27,7 @@ test("cannot reattach an editor", async () => {
 });
 
 test("cannot reattach a destroyed editor", async () => {
-    const { el, editor } = await setupEditor("<p>[]</p>", {});
+    const {el, editor} = await setupEditor("<p>[]</p>", {});
     expect(getContent(el)).toBe(
         `<p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]</p>`
     );
@@ -36,18 +38,22 @@ test("cannot reattach a destroyed editor", async () => {
 
 test.tags("iframe");
 test("can instantiate a Editor in an iframe", async () => {
-    const { el, editor } = await setupEditor("<p>hel[lo] world</p>", { props: { iframe: true } });
+    const {el, editor} = await setupEditor("<p>hel[lo] world</p>", {
+        props: {iframe: true},
+    });
     await waitFor(".o-we-toolbar");
     expect("iframe").toHaveCount(2);
     expect(el.innerHTML).toBe(`<p>hello world</p>`);
     expect(getContent(el)).toBe(`<p>hel[lo] world</p>`);
     setContent(el, "<div>a[dddb]</div>");
     execCommand(editor, "formatBold");
-    expect(getContent(el)).toBe(`<div class="o-paragraph">a<strong>[dddb]</strong></div>`);
+    expect(getContent(el)).toBe(
+        `<div class="o-paragraph">a<strong>[dddb]</strong></div>`
+    );
 });
 
 test("with an empty selector", async () => {
-    const { el } = await setupEditor("<div>[]</div>", {});
+    const {el} = await setupEditor("<div>[]</div>", {});
     expect(el.innerHTML).toBe(
         `<div class="o-paragraph o-we-hint" o-we-hint-text="Type &quot;/&quot; for commands"><br></div>`
     );
@@ -57,7 +63,7 @@ test("with an empty selector", async () => {
 });
 
 test("with a part of the selector in an empty HTMLElement", async () => {
-    const { el } = await setupEditor("<div>a[bc<div>]</div></div>", {});
+    const {el} = await setupEditor("<div>a[bc<div>]</div></div>", {});
     expect(el.innerHTML).toBe(
         '<p data-selection-placeholder=""><br></p>' +
             `<div>abc<div class="o-paragraph"><br></div></div>` +
@@ -71,7 +77,7 @@ test("with a part of the selector in an empty HTMLElement", async () => {
 });
 
 test("inverse selection", async () => {
-    const { el } = await setupEditor("<div>a]bc<div>[</div></div>", {});
+    const {el} = await setupEditor("<div>a]bc<div>[</div></div>", {});
     expect(el.innerHTML).toBe(
         '<p data-selection-placeholder=""><br></p>' +
             `<div>abc<div class="o-paragraph"><br></div></div>` +
@@ -85,7 +91,7 @@ test("inverse selection", async () => {
 });
 
 test("with an empty selector and a <br>", async () => {
-    const { el } = await setupEditor("<p>[]<br></p>", {});
+    const {el} = await setupEditor("<p>[]<br></p>", {});
     expect(getContent(el)).toBe(
         `<p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p>`
     );
@@ -125,8 +131,8 @@ test("event handlers are properly cleaned up after destruction", async () => {
         }
     }
 
-    const { editor } = await setupEditor("<p></p>", {
-        config: { Plugins: [...MAIN_PLUGINS, TestHandlerPlugin] },
+    const {editor} = await setupEditor("<p></p>", {
+        config: {Plugins: [...MAIN_PLUGINS, TestHandlerPlugin]},
     });
     expect(count).toBe(0);
 
@@ -151,7 +157,7 @@ test("can give resources in config", async () => {
     await setupEditor("<p></p>", {
         config: {
             Plugins: [...MAIN_PLUGINS, TestPlugin],
-            resources: { some: ["value"] },
+            resources: {some: ["value"]},
         },
     });
 });
@@ -162,19 +168,19 @@ test("resource can have sequence", async () => {
         static id = "test";
         resources = {
             test_resource: [
-                { value: 2 },
-                withSequence(20, { value: 4 }),
-                withSequence(5, { value: 1 }),
-                { value: 3 },
+                {value: 2},
+                withSequence(20, {value: 4}),
+                withSequence(5, {value: 1}),
+                {value: 3},
             ],
         };
 
         setup() {
             expect(this.getResource("test_resource")).toEqual([
-                { value: 1 },
-                { value: 2 },
-                { value: 3 },
-                { value: 4 },
+                {value: 1},
+                {value: 2},
+                {value: 3},
+                {value: 4},
             ]);
         }
     }

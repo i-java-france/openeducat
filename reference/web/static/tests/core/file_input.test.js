@@ -1,4 +1,4 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
+import {beforeEach, expect, test} from "@odoo/hoot";
 import {
     contains,
     mockService,
@@ -6,23 +6,23 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { setInputFiles } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
-import { FileInput } from "@web/core/file_input/file_input";
-import { session } from "@web/session";
+import {setInputFiles} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {FileInput} from "@web/core/file_input/file_input";
+import {session} from "@web/session";
 
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
 
-async function createFileInput({ mockPost, mockAdd, props }) {
+async function createFileInput({mockPost, mockAdd, props}) {
     mockService("notification", {
         add: mockAdd || (() => {}),
     });
     mockService("http", {
         post: mockPost || (() => {}),
     });
-    await mountWithCleanup(FileInput, { props });
+    await mountWithCleanup(FileInput, {props});
 }
 
 // -----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ async function createFileInput({ mockPost, mockAdd, props }) {
 // -----------------------------------------------------------------------------
 
 beforeEach(() => {
-    patchWithCleanup(odoo, { csrf_token: "dummy" });
+    patchWithCleanup(odoo, {csrf_token: "dummy"});
 });
 
 test("Upload a file: default props", async () => {
@@ -55,7 +55,7 @@ test("Upload a file: default props", async () => {
         message: "Input should accept all files by default",
     });
 
-    await contains(".o_file_input input", { visible: false }).click();
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([]);
 
     expect(".o_file_input input").not.toHaveAttribute("multiple", null, {
@@ -96,7 +96,7 @@ test("Upload a file: custom attachment", async () => {
         message: "Input should now only accept pngs",
     });
 
-    await contains(".o_file_input input", { visible: false }).click();
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([]);
 
     expect(".o_file_input input").toHaveAttribute("multiple", null, {
@@ -108,7 +108,7 @@ test("Upload a file: custom attachment", async () => {
 
 test("Hidden file input", async () => {
     await createFileInput({
-        props: { hidden: true },
+        props: {hidden: true},
     });
 
     expect(".o_file_input").not.toBeVisible();
@@ -122,24 +122,24 @@ test("uploading the same file twice triggers the onChange twice", async () => {
             },
         },
         mockPost: (_, params) => {
-            return JSON.stringify([{ name: params.ufile[0].name }]);
+            return JSON.stringify([{name: params.ufile[0].name}]);
         },
     });
 
-    const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
-    await contains(".o_file_input input", { visible: false }).click();
+    const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([file]);
     await animationFrame();
     expect.verifySteps(["fake_file.txt"]);
 
-    await contains(".o_file_input input", { visible: false }).click();
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([file]);
     await animationFrame();
     expect.verifySteps(["fake_file.txt"]);
 });
 
 test("uploading a file that is too heavy will send a notification", async () => {
-    patchWithCleanup(session, { max_file_upload_size: 2 });
+    patchWithCleanup(session, {max_file_upload_size: 2});
     await createFileInput({
         props: {
             onUpload(files) {
@@ -148,7 +148,7 @@ test("uploading a file that is too heavy will send a notification", async () => 
             },
         },
         mockPost: (_, params) => {
-            return JSON.stringify([{ name: params.ufile[0].name }]);
+            return JSON.stringify([{name: params.ufile[0].name}]);
         },
         mockAdd: (message) => {
             expect.step("notification");
@@ -159,8 +159,8 @@ test("uploading a file that is too heavy will send a notification", async () => 
         },
     });
 
-    const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
-    await contains(".o_file_input input", { visible: false }).click();
+    const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([file]);
     await animationFrame();
     expect.verifySteps(["notification"]);
@@ -177,12 +177,12 @@ test("Upload button is disabled if attachment upload is not finished", async () 
         },
         props: {},
     });
-    //enable button
-    await contains(".o_file_input input", { visible: false }).click();
+    // Enable button
+    await contains(".o_file_input input", {visible: false}).click();
     await setInputFiles([]);
     await animationFrame();
 
-    //disable button
+    // Disable button
     expect(".o_file_input input").not.toBeEnabled({
         message: "the upload button should be disabled on upload",
     });
@@ -203,12 +203,12 @@ test("support preprocessing of files via props", async () => {
             },
         },
         mockPost: (route, params) => {
-            return JSON.stringify([{ name: params.ufile[0].name }]);
+            return JSON.stringify([{name: params.ufile[0].name}]);
         },
     });
 
-    await contains(".o_file_input input", { visible: false }).click();
-    await setInputFiles([new File(["test"], "fake_file.txt", { type: "text/plain" })]);
+    await contains(".o_file_input input", {visible: false}).click();
+    await setInputFiles([new File(["test"], "fake_file.txt", {type: "text/plain"})]);
     await animationFrame();
 
     expect.verifySteps(["fake_file.txt"]);

@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 const selector = "a.btn";
 const exclude = ".s_donation_donate_btn, .s_website_form_send";
@@ -20,16 +20,16 @@ class ButtonOptionPlugin extends Plugin {
         on_cloned_handlers: this.onCloned.bind(this),
         // Drag and drop from sidebar: manage the button preview.
         on_snippet_over_dropzone_handlers: this.onSnippetPreview.bind(this),
-        on_snippet_out_dropzone_handlers: ({ snippetEl, dragState }) =>
+        on_snippet_out_dropzone_handlers: ({snippetEl, dragState}) =>
             this.resetPreview(snippetEl, dragState),
-        on_snippet_dropped_over_handlers: ({ droppedEl, dragState }) =>
+        on_snippet_dropped_over_handlers: ({droppedEl, dragState}) =>
             this.resetPreview(droppedEl, dragState),
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
     };
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         if (cloneEl.matches(selector) && !cloneEl.matches(exclude)) {
-            this.adaptButtons(cloneEl, { adaptAppearance: false });
+            this.adaptButtons(cloneEl, {adaptAppearance: false});
         }
     }
 
@@ -40,7 +40,7 @@ class ButtonOptionPlugin extends Plugin {
      * @param {Object} - snippetEl: the dragged snippet
      *                 - dragState: the current drag state
      */
-    onSnippetPreview({ snippetEl, dragState }) {
+    onSnippetPreview({snippetEl, dragState}) {
         if (snippetEl.matches(selector) && !snippetEl.matches(exclude)) {
             const dropzoneEl = dragState.currentDropzoneEl;
             // No need to preview if it is a grid item, as it is alone.
@@ -49,10 +49,12 @@ class ButtonOptionPlugin extends Plugin {
             }
 
             // Preview the button.
-            const initialState = this.adaptButtons(snippetEl, { isDragAndDropPreview: true });
+            const initialState = this.adaptButtons(snippetEl, {
+                isDragAndDropPreview: true,
+            });
             // Store the restore function to undo the preview.
             dragState.restoreButtonPreview = () => {
-                const { isWrapped, previousClassName, nextClassName } = initialState;
+                const {isWrapped, previousClassName, nextClassName} = initialState;
                 // Restore the classes and remove the added spaces.
                 snippetEl.className = initialState.buttonClassName;
                 if (previousClassName) {
@@ -93,7 +95,7 @@ class ButtonOptionPlugin extends Plugin {
      *
      * @param {Object} - snippetEl: the dropped snippet.
      */
-    onSnippetDropped({ snippetEl }) {
+    onSnippetDropped({snippetEl}) {
         if (snippetEl.matches(selector) && !snippetEl.matches(exclude)) {
             this.adaptButtons(snippetEl, {});
         }
@@ -109,7 +111,10 @@ class ButtonOptionPlugin extends Plugin {
      *   - [isDragAndDropPreview = false]
      * @returns {Object} the info needed to restore the drag and drop preview
      */
-    adaptButtons(editingElement, { adaptAppearance = true, isDragAndDropPreview = false }) {
+    adaptButtons(
+        editingElement,
+        {adaptAppearance = true, isDragAndDropPreview = false}
+    ) {
         let previousSiblingEl = editingElement.previousElementSibling;
         let nextSiblingEl = editingElement.nextElementSibling;
         // If we are in the case of a drag and drop preview, ignore the
@@ -124,7 +129,7 @@ class ButtonOptionPlugin extends Plugin {
         }
 
         let siblingButtonEl = null;
-        const initialState = { buttonClassName: editingElement.className };
+        const initialState = {buttonClassName: editingElement.className};
         // When multiple buttons follow each other, they may break on 2 lines or
         // more on mobile, so they need a margin-bottom. Also, if the button is
         // dropped next to another button add a space between them.
@@ -152,8 +157,12 @@ class ButtonOptionPlugin extends Plugin {
                 // its appearance to match its sibling.
                 // TODO this should consider the old option classes (for already
                 // existing buttons) + custom ?
-                const styleClass = styleClasses.find((c) => siblingButtonEl.classList.contains(c));
-                const sizeClass = sizeClasses.find((c) => siblingButtonEl.classList.contains(c));
+                const styleClass = styleClasses.find((c) =>
+                    siblingButtonEl.classList.contains(c)
+                );
+                const sizeClass = sizeClasses.find((c) =>
+                    siblingButtonEl.classList.contains(c)
+                );
 
                 if (styleClass) {
                     editingElement.classList.remove("btn-primary");
@@ -183,7 +192,7 @@ class ButtonOptionPlugin extends Plugin {
             }
             editingElement.classList.remove("s_custom_button");
         }
-        return { ...initialState, previousSiblingEl, nextSiblingEl };
+        return {...initialState, previousSiblingEl, nextSiblingEl};
     }
 }
 

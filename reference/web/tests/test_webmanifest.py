@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.tests.common import tagged
+
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 
 @tagged("-at_install", "post_install")

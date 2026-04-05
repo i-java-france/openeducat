@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-from odoo.addons.account.models.chart_template import template
 from odoo import models
+
+from odoo.addons.account.models.chart_template import template
 
 
 class AccountChartTemplate(models.AbstractModel):

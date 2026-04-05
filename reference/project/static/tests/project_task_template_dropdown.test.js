@@ -1,8 +1,8 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { animationFrame, hover } from "@odoo/hoot-dom";
-import { contains, mockService, mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {animationFrame, hover} from "@odoo/hoot-dom";
+import {contains, mockService, mountView, onRpc} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, ProjectTask } from "./project_models";
+import {ProjectTask, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 
@@ -69,7 +69,8 @@ for (const [viewType, newButtonClass] of [
             message: "The “New” button should be displayed",
         });
         expect(newButtonClass).not.toHaveClass("dropdown-toggle", {
-            message: "The “New” button should not be a dropdown since there is no template",
+            message:
+                "The “New” button should not be a dropdown since there is no template",
         });
 
         // Test that we can create a new record without errors
@@ -79,7 +80,7 @@ for (const [viewType, newButtonClass] of [
     test(`template dropdown in ${viewType} view of a project with one template with showing Edit and Delete actions`, async () => {
         addTemplateTasks();
 
-        onRpc(({ method }) => {
+        onRpc(({method}) => {
             if (method === "unlink") {
                 expect.step(method);
             }
@@ -130,7 +131,6 @@ for (const [viewType, newButtonClass] of [
         await animationFrame();
         await contains(".o_template_icon_group:first > i.fa-pencil").click();
         expect.verifySteps(["task template opened"]);
-
     });
 }
 

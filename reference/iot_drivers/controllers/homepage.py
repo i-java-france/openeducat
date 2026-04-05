@@ -2,25 +2,26 @@
 
 import json
 import logging
-import netifaces
 import subprocess
 import threading
 import time
-
 from itertools import groupby
 from pathlib import Path
 
+import netifaces
+
 from odoo import http
-from odoo.addons.iot_drivers.tools import certificate, helpers, route, upgrade, wifi
-from odoo.addons.iot_drivers.tools.system import IOT_SYSTEM, IS_RPI
-from odoo.addons.iot_drivers.main import iot_devices, unsupported_devices
-from odoo.addons.iot_drivers.connection_manager import connection_manager
 from odoo.tools.misc import file_path
+
+from odoo.addons.iot_drivers.connection_manager import connection_manager
+from odoo.addons.iot_drivers.main import iot_devices, unsupported_devices
 from odoo.addons.iot_drivers.server_logger import (
     check_and_update_odoo_config_log_to_server_option,
-    get_odoo_config_log_to_server_option,
     close_server_log_sender_handler,
+    get_odoo_config_log_to_server_option,
 )
+from odoo.addons.iot_drivers.tools import certificate, helpers, route, upgrade, wifi
+from odoo.addons.iot_drivers.tools.system import IOT_SYSTEM, IS_RPI
 
 _logger = logging.getLogger(__name__)
 

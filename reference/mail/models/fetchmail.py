@@ -4,13 +4,12 @@ import datetime
 import functools
 import logging
 import poplib
-
 from imaplib import IMAP4, IMAP4_SSL
 from poplib import POP3, POP3_SSL
-from socket import gaierror, timeout
+from socket import gaierror
 from ssl import SSLError
 
-from odoo import api, fields, models, tools, _
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tools import exception_to_unicode
@@ -216,7 +215,7 @@ odoo_mailgate: "|/path/to/odoo-mailgate.py --host=localhost -u %(uid)d -p PASSWO
                 server.write({'state': 'done'})
             except UnicodeError as e:
                 raise UserError(_("Invalid server name!\n %s", tools.exception_to_unicode(e)))
-            except (gaierror, timeout, IMAP4.abort) as e:
+            except (TimeoutError, gaierror, IMAP4.abort) as e:
                 raise UserError(_("No response received. Check server information.\n %s", tools.exception_to_unicode(e)))
             except (IMAP4.error, poplib.error_proto) as err:
                 raise UserError(_("Server replied with following exception:\n %s", tools.exception_to_unicode(err)))

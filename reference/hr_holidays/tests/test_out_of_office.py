@@ -1,13 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime, timezone
-from dateutil.relativedelta import relativedelta
 
+from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from odoo import fields
-from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.tests.common import tagged, users, warmup
+
+from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.addons.hr_holidays.tests.common import TestHrHolidaysCommon
 from odoo.addons.mail.tools.discuss import Store
 
@@ -87,7 +87,7 @@ class TestOutOfOfficePerformance(TestHrHolidaysCommon, TransactionCaseWithUserDe
 
     @classmethod
     def setUpClass(cls):
-        super(TestOutOfOfficePerformance, cls).setUpClass()
+        super().setUpClass()
         cls.leave_type = cls.env['hr.leave.type'].create({
             'name': 'Legal Leaves',
             'time_type': 'leave',

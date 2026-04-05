@@ -1,6 +1,6 @@
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { expandToolbar } from "@html_editor/../tests/_helpers/toolbar";
-import { expect, test } from "@odoo/hoot";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {expandToolbar} from "@html_editor/../tests/_helpers/toolbar";
+import {expect, test} from "@odoo/hoot";
 import {
     click,
     pointerDown,
@@ -12,10 +12,10 @@ import {
     waitForNone,
     waitUntil,
 } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
-import { defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { animationFrame } from "@odoo/hoot-mock";
-import { expectElementCount } from "@html_editor/../tests/_helpers/ui_expectations";
+import {contains} from "@web/../tests/web_test_helpers";
+import {defineWebsiteModels, setupWebsiteBuilder} from "./website_helpers";
+import {animationFrame} from "@odoo/hoot-mock";
+import {expectElementCount} from "@html_editor/../tests/_helpers/ui_expectations";
 
 defineWebsiteModels();
 
@@ -40,15 +40,15 @@ test("Popovers scroll with iframe", async () => {
         const previousTop = parseFloat(popover.style.top);
         popover.style.top = "0px";
         // Wait for the initial call of `reposition`
-        await waitUntil(() => popover.style.top !== "0px", { timeout: 500 });
+        await waitUntil(() => popover.style.top !== "0px", {timeout: 500});
 
         const delta = 100;
-        await scroll(body, { y: delta }, { scrollable: false, force: true });
+        await scroll(body, {y: delta}, {scrollable: false, force: true});
         await animationFrame();
         expect(popover).toHaveStyle({
             top: `${previousTop - delta}px`,
         });
-        await scroll(body, { y: 0 }, { scrollable: false });
+        await scroll(body, {y: 0}, {scrollable: false});
         await animationFrame();
         expect(popover).toHaveStyle({
             top: `${previousTop}px`,
@@ -89,7 +89,9 @@ test("Floating toolbar visual consistency and usability", async () => {
     // Verify animation option dropdown matches font style popover design
     await contains(".o-we-toolbar button[title='Animate Text']").click();
     await contains(".o_animate_text_popover .hb-row-content button").click();
-    const animationPopover = await waitFor(".o_popover:has([data-action-value='onAppearance'])");
+    const animationPopover = await waitFor(
+        ".o_popover:has([data-action-value='onAppearance'])"
+    );
     expect(animationPopover).not.toHaveClass("o-hb-select-dropdown");
 
     // Verify highlight picker grid is scrollable and scrollbar is hidden
@@ -97,7 +99,10 @@ test("Floating toolbar visual consistency and usability", async () => {
     await waitForNone(".o_popover:has([data-action-value='onAppearance'])");
     await pointerUp(".o-we-toolbar button[title='Apply highlight']");
     const textHighlightPopover = await waitFor(".o_popover .grid");
-    expect(textHighlightPopover).toHaveStyle({ overflow: "auto", scrollbarWidth: "thin" });
+    expect(textHighlightPopover).toHaveStyle({
+        overflow: "auto",
+        scrollbarWidth: "thin",
+    });
 
     // Verify highlight color picker has sublevel rows for hierarchy
     await contains(".o_popover .o_text_highlight_underline").click();
@@ -120,7 +125,7 @@ test("closing the link popover should re-open the toolbar", async () => {
     `);
 
     const p = queryOne(":iframe p");
-    setSelection({ anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1 });
+    setSelection({anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1});
 
     await waitFor(".o-we-toolbar");
     await contains('.o-we-toolbar button[name="link"]').click();

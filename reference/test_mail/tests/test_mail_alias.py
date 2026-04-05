@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-import psycopg2
 
 from ast import literal_eval
 
+import psycopg2
+
 from odoo import exceptions
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import tagged
 from odoo.tests.common import users
 from odoo.tools import formataddr, mute_logger
+
+from odoo.addons.mail.tests.common import MailCommon
 
 
 class TestMailAliasCommon(MailCommon):
@@ -274,7 +274,7 @@ class TestMailAlias(TestMailAliasCommon):
             'Only a subset of unaccented latin chars are valid, others are replaced',
             'Only a subset of unaccented latin chars are valid, others are replaced',
         ]
-        for alias_name, expected, msg in zip(alias_names, expected_names, msgs):
+        for alias_name, expected, msg in zip(alias_names, expected_names, msgs, strict=False):
             with self.subTest(alias_name=alias_name):
                 alias = self.env['mail.alias'].create({
                     'alias_model_id': self.env['ir.model']._get('mail.test.container').id,
@@ -287,7 +287,7 @@ class TestMailAlias(TestMailAliasCommon):
             'alias_model_id': self.env['ir.model']._get('mail.test.container').id,
         })
         # check at write
-        for alias_name, expected, msg in zip(alias_names, expected_names, msgs):
+        for alias_name, expected, msg in zip(alias_names, expected_names, msgs, strict=False):
             with self.subTest(alias_name=alias_name):
                 alias.write({'alias_name': alias_name})
                 self.assertEqual(alias.alias_name, expected, msg)
@@ -735,7 +735,7 @@ class TestMailAliasDomain(TestMailAliasCommon):
                     f'catchall@{alias_domain.name}',
                     'notifications@valid.complete.com',
                 ),
-            ]
+            ], strict=False
         ):
             with self.subTest(bounce_alias=bounce_alias):
                 alias_domain.write({'bounce_alias': bounce_alias})

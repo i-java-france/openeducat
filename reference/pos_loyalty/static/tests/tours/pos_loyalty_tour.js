@@ -10,8 +10,8 @@ import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as Notification from "@point_of_sale/../tests/generic_helpers/notification_util";
 import * as Utils from "@point_of_sale/../tests/generic_helpers/utils";
-import { registry } from "@web/core/registry";
-import { scan_barcode } from "@point_of_sale/../tests/generic_helpers/utils";
+import {registry} from "@web/core/registry";
+import {scan_barcode} from "@point_of_sale/../tests/generic_helpers/utils";
 
 registry.category("web_tour.tours").add("PosLoyaltyTour1", {
     steps: () =>
@@ -237,7 +237,7 @@ registry.category("web_tour.tours").add("PosLoyaltyTour6", {
             ProductScreen.clickDisplayedProduct("Test Product A"),
             PosLoyalty.checkAddedLoyaltyPoints("26.5"),
             ProductScreen.clickControlButton("Reward"),
-            SelectionPopup.has("$ 1 per point on your order", { run: "click" }),
+            SelectionPopup.has("$ 1 per point on your order", {run: "click"}),
             ProductScreen.totalAmountIs("165.00"),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Cash"),
@@ -423,32 +423,43 @@ function createOrderCoupon(totalAmount, couponName, couponAmount, loyaltyPoints)
     ].flat();
 }
 
-registry.category("web_tour.tours").add("PosLoyaltyPointsDiscountNoDomainProgramNoDomain", {
-    steps: () => [createOrderCoupon("135.00", "10% on your order", "-15.00", "135")].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("PosLoyaltyPointsDiscountNoDomainProgramNoDomain", {
+        steps: () =>
+            [createOrderCoupon("135.00", "10% on your order", "-15.00", "135")].flat(),
+    });
 
-registry.category("web_tour.tours").add("PosLoyaltyPointsDiscountNoDomainProgramDomain", {
-    steps: () => [createOrderCoupon("135.00", "10% on your order", "-15.00", "100")].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("PosLoyaltyPointsDiscountNoDomainProgramDomain", {
+        steps: () =>
+            [createOrderCoupon("135.00", "10% on your order", "-15.00", "100")].flat(),
+    });
 
-registry.category("web_tour.tours").add("PosLoyaltyPointsDiscountWithDomainProgramDomain", {
-    steps: () => [createOrderCoupon("140.00", "10% on food", "-10.00", "90")].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("PosLoyaltyPointsDiscountWithDomainProgramDomain", {
+        steps: () =>
+            [createOrderCoupon("140.00", "10% on food", "-10.00", "90")].flat(),
+    });
 
-registry.category("web_tour.tours").add("PosLoyaltyPointsGlobalDiscountProgramNoDomain", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.addOrderline("product_a", "1"),
-            ProductScreen.clickPartnerButton(),
-            ProductScreen.clickCustomer("AAAA"),
-            PosLoyalty.hasRewardLine("10% on your order", "-10.00"),
-            PosLoyalty.orderTotalIs("90"),
-            PosLoyalty.pointsAwardedAre("90"),
-            PosLoyalty.finalizeOrder("Cash", "90"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("PosLoyaltyPointsGlobalDiscountProgramNoDomain", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.addOrderline("product_a", "1"),
+                ProductScreen.clickPartnerButton(),
+                ProductScreen.clickCustomer("AAAA"),
+                PosLoyalty.hasRewardLine("10% on your order", "-10.00"),
+                PosLoyalty.orderTotalIs("90"),
+                PosLoyalty.pointsAwardedAre("90"),
+                PosLoyalty.finalizeOrder("Cash", "90"),
+            ].flat(),
+    });
 
 registry.category("web_tour.tours").add("ChangeRewardValueWithLanguage", {
     steps: () =>
@@ -532,19 +543,21 @@ registry.category("web_tour.tours").add("PosLoyalty2DiscountsSpecificGlobal", {
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("PosLoyaltySpecificProductDiscountWithGlobalDiscount", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.addOrderline("Product A", "1"),
-            PosLoyalty.hasRewardLine("$ 40 on Product A", "-40.00"),
-            PosLoyalty.clickDiscountButton(),
-            Dialog.confirm(),
-            PosLoyalty.hasRewardLine("$ 40 on Product A", "-40.00"),
-            PosLoyalty.orderTotalIs("20.00"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("PosLoyaltySpecificProductDiscountWithGlobalDiscount", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.addOrderline("Product A", "1"),
+                PosLoyalty.hasRewardLine("$ 40 on Product A", "-40.00"),
+                PosLoyalty.clickDiscountButton(),
+                Dialog.confirm(),
+                PosLoyalty.hasRewardLine("$ 40 on Product A", "-40.00"),
+                PosLoyalty.orderTotalIs("20.00"),
+            ].flat(),
+    });
 
 registry.category("web_tour.tours").add("PosRewardProductScan", {
     steps: () =>
@@ -629,7 +642,7 @@ registry.category("web_tour.tours").add("test_refund_does_not_decrease_points", 
             ProductScreen.clickCustomer("Refunding Guy", true),
             ProductScreen.clickDisplayedProduct("Refund Product"),
             ProductScreen.clickControlButton("Reward"),
-            SelectionPopup.has("$ 1 per point on your order", { run: "click" }),
+            SelectionPopup.has("$ 1 per point on your order", {run: "click"}),
             PosLoyalty.finalizeOrder("Cash", "200"),
             ProductScreen.clickRefund(),
             TicketScreen.selectOrder("001"),
@@ -700,7 +713,10 @@ registry.category("web_tour.tours").add("test_confirm_coupon_programs_one_by_one
                             (p) => p.program_type === "gift_card"
                         );
 
-                        await posmodel.addLineToOrder({ product_tmpl_id: product }, order);
+                        await posmodel.addLineToOrder(
+                            {product_tmpl_id: product},
+                            order
+                        );
                         posmodel.addPendingOrder([order.id]);
                         order.addPaymentline(pm);
                         order.state = "paid";
@@ -726,64 +742,74 @@ registry.category("web_tour.tours").add("test_confirm_coupon_programs_one_by_one
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("test_order_reward_product_tax_included_included", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.addOrderline("Product Include", "1"),
-            PosLoyalty.enterCode("hellopromo"),
-            PosLoyalty.hasRewardLine("$ 10 on your order", "-10.00"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_order_reward_product_tax_included_included", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.addOrderline("Product Include", "1"),
+                PosLoyalty.enterCode("hellopromo"),
+                PosLoyalty.hasRewardLine("$ 10 on your order", "-10.00"),
+            ].flat(),
+    });
 
-registry.category("web_tour.tours").add("test_order_reward_product_tax_included_excluded", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            ProductScreen.addOrderline("Product Include", "1"),
-            PosLoyalty.enterCode("hellopromo"),
-            PosLoyalty.hasRewardLine("$ 10 on your order", "-10.00"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_order_reward_product_tax_included_excluded", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                ProductScreen.addOrderline("Product Include", "1"),
+                PosLoyalty.enterCode("hellopromo"),
+                PosLoyalty.hasRewardLine("$ 10 on your order", "-10.00"),
+            ].flat(),
+    });
 
-registry.category("web_tour.tours").add("test_specific_reward_product_tax_included_included", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.addOrderline("Product Include", "1"),
-            PosLoyalty.enterCode("hellopromo"),
-            PosLoyalty.hasRewardLine("$ 10 on Product Include", "-10.00"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_specific_reward_product_tax_included_included", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.addOrderline("Product Include", "1"),
+                PosLoyalty.enterCode("hellopromo"),
+                PosLoyalty.hasRewardLine("$ 10 on Product Include", "-10.00"),
+            ].flat(),
+    });
 
-registry.category("web_tour.tours").add("test_specific_reward_product_tax_included_excluded", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            ProductScreen.addOrderline("Product Include", "1"),
-            PosLoyalty.enterCode("hellopromo"),
-            PosLoyalty.hasRewardLine("$ 10 on Product Include", "-10.00"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_specific_reward_product_tax_included_excluded", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                ProductScreen.addOrderline("Product Include", "1"),
+                PosLoyalty.enterCode("hellopromo"),
+                PosLoyalty.hasRewardLine("$ 10 on Product Include", "-10.00"),
+            ].flat(),
+    });
 
-registry.category("web_tour.tours").add("test_loyalty_is_not_processed_for_draft_order", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.clickPartnerButton(),
-            ProductScreen.clickCustomer("AAAA"),
-            ProductScreen.addOrderline("Whiteboard Pen", "1", "100"),
-            PosLoyalty.pointsAwardedAre("100"),
-            PosLoyalty.pointsTotalIs("150"),
-            ProductScreen.saveOrder(),
-            ProductScreen.selectFloatingOrder(0),
-            PosLoyalty.pointsAwardedAre("100"),
-            PosLoyalty.pointsTotalIs("150"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_loyalty_is_not_processed_for_draft_order", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.clickPartnerButton(),
+                ProductScreen.clickCustomer("AAAA"),
+                ProductScreen.addOrderline("Whiteboard Pen", "1", "100"),
+                PosLoyalty.pointsAwardedAre("100"),
+                PosLoyalty.pointsTotalIs("150"),
+                ProductScreen.saveOrder(),
+                ProductScreen.selectFloatingOrder(0),
+                PosLoyalty.pointsAwardedAre("100"),
+                PosLoyalty.pointsTotalIs("150"),
+            ].flat(),
+    });
 
 registry.category("web_tour.tours").add("test_race_conditions_update_program", {
     steps: () =>

@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { htmlField, HtmlField } from "@html_editor/fields/html_field";
-import { MoveNodePlugin } from "@html_editor/main/movenode_plugin";
+import {registry} from "@web/core/registry";
+import {htmlField, HtmlField} from "@html_editor/fields/html_field";
+import {MoveNodePlugin} from "@html_editor/main/movenode_plugin";
 
 class CalendarEventNotesHtmlField extends HtmlField {
     getConfig() {
@@ -10,5 +10,10 @@ class CalendarEventNotesHtmlField extends HtmlField {
     }
 }
 
-export const calendarEventNotesHtmlField = { ...htmlField, component: CalendarEventNotesHtmlField };
-registry.category("fields").add("calendar_event_notes_html", calendarEventNotesHtmlField);
+export const calendarEventNotesHtmlField = {
+    ...htmlField,
+    component: CalendarEventNotesHtmlField,
+};
+registry
+    .category("fields")
+    .add("calendar_event_notes_html", calendarEventNotesHtmlField);

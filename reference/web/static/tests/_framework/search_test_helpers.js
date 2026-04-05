@@ -1,11 +1,11 @@
-import { queryAll, queryAllTexts, queryOne, queryText } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { findComponent, mountWithCleanup } from "./component_test_helpers";
-import { contains } from "./dom_test_helpers";
-import { getMockEnv, makeMockEnv } from "./env_test_helpers";
+import {queryAll, queryAllTexts, queryOne, queryText} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {findComponent, mountWithCleanup} from "./component_test_helpers";
+import {contains} from "./dom_test_helpers";
+import {getMockEnv, makeMockEnv} from "./env_test_helpers";
 
-import { WithSearch } from "@web/search/with_search/with_search";
-import { getDefaultConfig } from "@web/views/view";
+import {WithSearch} from "@web/search/with_search/with_search";
+import {getDefaultConfig} from "@web/views/view";
 
 const ensureSearchView = async () => {
     if (
@@ -71,14 +71,18 @@ function filterPropsForComponent(Component, props) {
  * @param {Record<string, any>} [config]
  * @returns {Promise<InstanceType<T>>}
  */
-export async function mountWithSearch(componentConstructor, searchProps = {}, config = {}) {
+export async function mountWithSearch(
+    componentConstructor,
+    searchProps = {},
+    config = {}
+) {
     class ComponentWithSearch extends Component {
         static template = xml`
             <WithSearch t-props="withSearchProps" t-slot-scope="search">
                 <t t-component="component" t-props="getProps(search)"/>
             </WithSearch>
         `;
-        static components = { WithSearch };
+        static components = {WithSearch};
         static props = ["*"];
 
         setup() {
@@ -99,10 +103,13 @@ export async function mountWithSearch(componentConstructor, searchProps = {}, co
         }
     }
 
-    const fullConfig = { ...getDefaultConfig(), ...config };
-    const env = await makeMockEnv({ config: fullConfig });
-    const root = await mountWithCleanup(ComponentWithSearch, { env });
-    return findComponent(root, (component) => component instanceof componentConstructor);
+    const fullConfig = {...getDefaultConfig(), ...config};
+    const env = await makeMockEnv({config: fullConfig});
+    const root = await mountWithCleanup(ComponentWithSearch, {env});
+    return findComponent(
+        root,
+        (component) => component instanceof componentConstructor
+    );
 }
 
 //-----------------------------------------------------------------------------
@@ -133,8 +140,8 @@ export async function toggleMenuItem(label) {
  * @param {string} optionLabel
  */
 export async function toggleMenuItemOption(itemLabel, optionLabel) {
-    const { parentElement: root } = queryOne`.o_menu_item:text(${itemLabel})`;
-    const target = queryOne(`.o_item_option:text(${optionLabel})`, { root });
+    const {parentElement: root} = queryOne`.o_menu_item:text(${itemLabel})`;
+    const target = queryOne(`.o_item_option:text(${optionLabel})`, {root});
     if (target.classList.contains("dropdown-toggle")) {
         await contains(target).hover();
     } else {
@@ -154,8 +161,8 @@ export function isItemSelected(label) {
  * @param {string} optionLabel
  */
 export function isOptionSelected(itemLabel, optionLabel) {
-    const { parentElement: root } = queryOne`.o_menu_item:text(${itemLabel})`;
-    return queryOne(`.o_item_option:text(${optionLabel})`, { root }).classList.contains(
+    const {parentElement: root} = queryOne`.o_menu_item:text(${itemLabel})`;
+    return queryOne(`.o_item_option:text(${optionLabel})`, {root}).classList.contains(
         "selected"
     );
 }
@@ -234,7 +241,7 @@ export async function editFavoriteName(name) {
     await ensureSearchBarMenu();
     await contains(
         `.o_favorite_menu .o_add_favorite + .o_accordion_values input[type="text"]`
-    ).edit(name, { confirm: false });
+    ).edit(name, {confirm: false});
 }
 
 export async function saveFavorite() {
@@ -268,7 +275,7 @@ export async function removeFacet(label) {
  */
 export async function editSearch(value) {
     await ensureSearchView();
-    await contains(`.o_searchview input`).edit(value, { confirm: false });
+    await contains(`.o_searchview input`).edit(value, {confirm: false});
 }
 
 export async function validateSearch() {
@@ -300,7 +307,7 @@ export async function switchView(viewType) {
  * @param {HTMLElement} root
  */
 export function getPagerValue(root) {
-    return queryText(".o_pager .o_pager_value", { root })
+    return queryText(".o_pager .o_pager_value", {root})
         .split(/\s*-\s*/)
         .map(Number);
 }
@@ -309,21 +316,21 @@ export function getPagerValue(root) {
  * @param {HTMLElement} root
  */
 export function getPagerLimit(root) {
-    return parseInt(queryText(".o_pager .o_pager_limit", { root }), 10);
+    return parseInt(queryText(".o_pager .o_pager_limit", {root}), 10);
 }
 
 /**
  * @param {HTMLElement} root
  */
 export async function pagerNext(root) {
-    await contains(".o_pager button.o_pager_next", { root }).click();
+    await contains(".o_pager button.o_pager_next", {root}).click();
 }
 
 /**
  * @param {HTMLElement} root
  */
 export async function pagerPrevious(root) {
-    await contains(".o_pager button.o_pager_previous", { root }).click();
+    await contains(".o_pager button.o_pager_previous", {root}).click();
 }
 
 /**

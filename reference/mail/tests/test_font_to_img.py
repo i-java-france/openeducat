@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from io import BytesIO
+
 from PIL import Image
 
 from odoo.tests.common import HttpCase, tagged

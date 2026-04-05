@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests import HttpCase, freeze_time, tagged, new_test_user
+from odoo.tests import HttpCase, freeze_time, new_test_user, tagged
 
 
 @tagged('-at_install', 'post_install', 'is_tour')

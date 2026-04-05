@@ -1,4 +1,4 @@
-import { EventBus, validate } from "@odoo/owl";
+import {EventBus, validate} from "@odoo/owl";
 
 // -----------------------------------------------------------------------------
 // Errors
@@ -18,7 +18,9 @@ const validateSchema = (name, key, value, schema) => {
     try {
         validate(value, schema);
     } catch (error) {
-        throw new Error(`Validation error for key "${key}" in registry "${name}": ${error}`);
+        throw new Error(
+            `Validation error for key "${key}" in registry "${name}": ${error}`
+        );
     }
 };
 
@@ -96,7 +98,7 @@ export class Registry extends EventBus {
      * @param {{force?: boolean, sequence?: number}} [options]
      * @returns {Registry<T>}
      */
-    add(key, value, { force, sequence } = {}) {
+    add(key, value, {force, sequence} = {}) {
         if (this.validationSchema) {
             validateSchema(this.name, key, value, this.validationSchema);
         }
@@ -112,7 +114,7 @@ export class Registry extends EventBus {
         }
         sequence = sequence === undefined ? previousSequence || 50 : sequence;
         this.content[key] = [sequence, value];
-        const payload = { operation: "add", key, value };
+        const payload = {operation: "add", key, value};
         this.trigger("UPDATE", payload);
         return this;
     }
@@ -125,7 +127,9 @@ export class Registry extends EventBus {
      */
     get(key, defaultValue) {
         if (arguments.length < 2 && !(key in this.content)) {
-            throw new KeyNotFoundError(`Cannot find key "${key}" in the "${this.name}" registry`);
+            throw new KeyNotFoundError(
+                `Cannot find key "${key}" in the "${this.name}" registry`
+            );
         }
         const info = this.content[key];
         return info ? info[1] : defaultValue;
@@ -149,7 +153,9 @@ export class Registry extends EventBus {
      */
     getAll() {
         if (!this.elements) {
-            const content = Object.values(this.content).sort((el1, el2) => el1[0] - el2[0]);
+            const content = Object.values(this.content).sort(
+                (el1, el2) => el1[0] - el2[0]
+            );
             this.elements = content.map((elem) => elem[1]);
         }
         return this.elements.slice();
@@ -162,7 +168,9 @@ export class Registry extends EventBus {
      */
     getEntries() {
         if (!this.entries) {
-            const entries = Object.entries(this.content).sort((el1, el2) => el1[1][0] - el2[1][0]);
+            const entries = Object.entries(this.content).sort(
+                (el1, el2) => el1[1][0] - el2[1][0]
+            );
             this.entries = entries.map(([str, elem]) => [str, elem[1]]);
         }
         return this.entries.slice();
@@ -176,7 +184,7 @@ export class Registry extends EventBus {
     remove(key) {
         const value = this.content[key];
         delete this.content[key];
-        const payload = { operation: "delete", key, value };
+        const payload = {operation: "delete", key, value};
         this.trigger("UPDATE", payload);
     }
 

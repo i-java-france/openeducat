@@ -1,13 +1,13 @@
-import { browser } from "@web/core/browser/browser";
-import { describe, test, expect } from "@odoo/hoot";
-import { animationFrame, tick } from "@odoo/hoot-mock";
+import {browser} from "@web/core/browser/browser";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, tick} from "@odoo/hoot-mock";
 import {
+    makeDialogMockEnv,
+    mockService,
     mountWithCleanup,
     patchWithCleanup,
-    mockService,
-    makeDialogMockEnv,
 } from "@web/../tests/web_test_helpers";
-import { click, freezeTime, queryAllTexts } from "@odoo/hoot-dom";
+import {click, freezeTime, queryAllTexts} from "@odoo/hoot-dom";
 import {
     ClientErrorDialog,
     Error504Dialog,
@@ -27,7 +27,7 @@ test("ErrorDialog with traceback", async () => {
         env,
         props: {
             message: "Something bad happened",
-            data: { debug: "Some strange unreadable stack" },
+            data: {debug: "Some strange unreadable stack"},
             name: "ERROR_NAME",
             traceback: "This is a traceback string",
             close() {},
@@ -60,7 +60,7 @@ test("Client ErrorDialog with traceback", async () => {
         env,
         props: {
             message: "Something bad happened",
-            data: { debug: "Some strange unreadable stack" },
+            data: {debug: "Some strange unreadable stack"},
             name: "ERROR_NAME",
             traceback: "This is a traceback string",
             close() {},
@@ -120,7 +120,7 @@ test("Display a tooltip on clicking copy button", async () => {
     expect.assertions(1);
     mockService("popover", () => ({
         add(el, comp, params) {
-            expect(params).toEqual({ tooltip: "Copied" });
+            expect(params).toEqual({tooltip: "Copied"});
             return () => {};
         },
     }));
@@ -148,7 +148,7 @@ test("WarningDialog", async () => {
         props: {
             exceptionName: "odoo.exceptions.UserError",
             message: "...",
-            data: { arguments: ["Some strange unreadable message"] },
+            data: {arguments: ["Some strange unreadable message"]},
             close() {},
         },
     });
@@ -185,13 +185,16 @@ test("RedirectWarningDialog", async () => {
     expect(".o_dialog").toHaveCount(1);
     expect("header .modal-title").toHaveText("Odoo Warning");
     expect("main").toHaveText("Some strange unreadable message");
-    expect(queryAllTexts("footer button")).toEqual(["Buy book on cryptography", "Close"]);
+    expect(queryAllTexts("footer button")).toEqual([
+        "Buy book on cryptography",
+        "Close",
+    ]);
 
-    await click("footer button:nth-child(1)"); // click on "Buy book on cryptography"
+    await click("footer button:nth-child(1)"); // Click on "Buy book on cryptography"
     await animationFrame();
     expect.verifySteps(["buy_action_id", "dialog-closed"]);
 
-    await click("footer button:nth-child(2)"); // click on "Cancel"
+    await click("footer button:nth-child(2)"); // Click on "Cancel"
     await animationFrame();
     expect.verifySteps(["dialog-closed"]);
 });
@@ -199,7 +202,7 @@ test("RedirectWarningDialog", async () => {
 test("Error504Dialog", async () => {
     expect(".o_dialog").toHaveCount(0);
     const env = await makeDialogMockEnv();
-    await mountWithCleanup(Error504Dialog, { env, props: { close() {} } });
+    await mountWithCleanup(Error504Dialog, {env, props: {close() {}}});
     expect(".o_dialog").toHaveCount(1);
     expect("header .modal-title").toHaveText("Request timeout");
     expect("main p").toHaveText(
@@ -216,7 +219,7 @@ test("SessionExpiredDialog", async () => {
     });
     expect(".o_dialog").toHaveCount(0);
     const env = await makeDialogMockEnv();
-    await mountWithCleanup(SessionExpiredDialog, { env, props: { close() {} } });
+    await mountWithCleanup(SessionExpiredDialog, {env, props: {close() {}}});
     expect(".o_dialog").toHaveCount(1);
     expect(".o_dialog").toHaveCount(1);
     expect("header .modal-title").toHaveText("Odoo Session Expired");

@@ -1,13 +1,13 @@
-import { patch } from "@web/core/utils/patch";
-import { AvatarCardResourcePopover } from "@resource_mail/components/avatar_card_resource/avatar_card_resource_popover";
-import { useService } from "@web/core/utils/hooks";
-import { TagsList } from "@web/core/tags_list/tags_list";
+import {patch} from "@web/core/utils/patch";
+import {AvatarCardResourcePopover} from "@resource_mail/components/avatar_card_resource/avatar_card_resource_popover";
+import {useService} from "@web/core/utils/hooks";
+import {TagsList} from "@web/core/tags_list/tags_list";
 
 const patchAvatarCardResourcePopover = {
     setup() {
         super.setup();
-        (this.userInfoTemplate = "hr.avatarCardResourceInfos"),
-            (this.actionService = useService("action"));
+        ((this.userInfoTemplate = "hr.avatarCardResourceInfos"),
+            (this.actionService = useService("action")));
     },
     get fieldNames() {
         return [

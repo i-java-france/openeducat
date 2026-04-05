@@ -1,4 +1,5 @@
 from odoo import models
+
 from odoo.addons.mail.tools.discuss import Store
 
 

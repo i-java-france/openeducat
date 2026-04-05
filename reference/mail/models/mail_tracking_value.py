@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
@@ -270,7 +269,7 @@ class MailTrackingValue(models.Model):
                 'newValue': tracking._format_display_value(col_info['type'], new=True)[0],
                 'oldValue': tracking._format_display_value(col_info['type'], new=False)[0],
             }
-            for tracking, col_info in sorted(zip(self, fields_col_info), key=sort_tracking_info)
+            for tracking, col_info in sorted(zip(self, fields_col_info, strict=False), key=sort_tracking_info)
         ]
         return formatted
 

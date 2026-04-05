@@ -1,15 +1,17 @@
-import { browser } from "@web/core/browser/browser";
-import { localization } from "@web/core/l10n/localization";
-import { clamp } from "@web/core/utils/numbers";
+import {browser} from "@web/core/browser/browser";
+import {localization} from "@web/core/l10n/localization";
+import {clamp} from "@web/core/utils/numbers";
 
-import { Component, onMounted, onWillUnmount, useRef, useState } from "@odoo/owl";
-import { Deferred } from "@web/core/utils/concurrency";
+import {Component, onMounted, onWillUnmount, useRef, useState} from "@odoo/owl";
+import {Deferred} from "@web/core/utils/concurrency";
 
 const isScrollSwipable = (scrollables) => {
     return {
         left: !scrollables.filter((e) => e.scrollLeft !== 0).length,
         right: !scrollables.filter(
-            (e) => e.scrollLeft + Math.round(e.getBoundingClientRect().width) !== e.scrollWidth
+            (e) =>
+                e.scrollLeft + Math.round(e.getBoundingClientRect().width) !==
+                e.scrollWidth
         ).length,
     };
 };
@@ -45,10 +47,10 @@ export class ActionSwiper extends Component {
             optional: true,
         },
         slots: Object,
-        animationOnMove: { type: Boolean, optional: true },
-        animationType: { type: String, optional: true },
-        swipeDistanceRatio: { type: Number, optional: true },
-        swipeInvalid: { type: Function, optional: true },
+        animationOnMove: {type: Boolean, optional: true},
+        animationType: {type: String, optional: true},
+        swipeDistanceRatio: {type: Number, optional: true},
+        swipeInvalid: {type: Function, optional: true},
     };
 
     static defaultProps = {
@@ -69,14 +71,15 @@ export class ActionSwiper extends Component {
         };
         this.root = useRef("root");
         this.targetContainer = useRef("targetContainer");
-        this.state = useState({ ...this.defaultState });
+        this.state = useState({...this.defaultState});
         this.scrollables = undefined;
         this.startX = undefined;
         this.swipedDistance = 0;
         this.isScrollValidated = false;
         onMounted(() => {
             if (this.targetContainer.el) {
-                this.state.width = this.targetContainer.el.getBoundingClientRect().width;
+                this.state.width =
+                    this.targetContainer.el.getBoundingClientRect().width;
             }
             // Forward classes set on component to slot, as we only want to wrap an
             // existing component without altering the DOM structure any more than
@@ -98,9 +101,13 @@ export class ActionSwiper extends Component {
     get localizedProps() {
         return {
             onLeftSwipe:
-                localization.direction === "rtl" ? this.props.onRightSwipe : this.props.onLeftSwipe,
+                localization.direction === "rtl"
+                    ? this.props.onRightSwipe
+                    : this.props.onLeftSwipe,
             onRightSwipe:
-                localization.direction === "rtl" ? this.props.onLeftSwipe : this.props.onRightSwipe,
+                localization.direction === "rtl"
+                    ? this.props.onLeftSwipe
+                    : this.props.onRightSwipe,
         };
     }
 
@@ -138,7 +145,7 @@ export class ActionSwiper extends Component {
                 this.state.isSwiping = false;
                 return;
             }
-            const { onLeftSwipe, onRightSwipe } = this.localizedProps;
+            const {onLeftSwipe, onRightSwipe} = this.localizedProps;
             this.swipedDistance = clamp(
                 ev.touches[0].clientX - this.startX,
                 onLeftSwipe ? -this.state.width : 0,
@@ -154,7 +161,9 @@ export class ActionSwiper extends Component {
             if (
                 !this.isScrollValidated &&
                 this.scrollables &&
-                !isScrollSwipable(this.scrollables)[this.swipedDistance > 0 ? "left" : "right"]
+                !isScrollSwipable(this.scrollables)[
+                    this.swipedDistance > 0 ? "left" : "right"
+                ]
             ) {
                 return this._reset();
             }
@@ -177,11 +186,14 @@ export class ActionSwiper extends Component {
                     e.nodeType === 1 &&
                     this.targetContainer.el.contains(e) &&
                     e.scrollWidth > e.getBoundingClientRect().width &&
-                    ["auto", "scroll"].includes(window.getComputedStyle(e)["overflow-x"])
+                    ["auto", "scroll"].includes(
+                        window.getComputedStyle(e)["overflow-x"]
+                    )
             );
         if (!this.state.width) {
             this.state.width =
-                this.targetContainer && this.targetContainer.el.getBoundingClientRect().width;
+                this.targetContainer &&
+                this.targetContainer.el.getBoundingClientRect().width;
         }
         this.state.isSwiping = true;
         this.isScrollValidated = false;
@@ -192,7 +204,7 @@ export class ActionSwiper extends Component {
      * @private
      */
     _reset() {
-        Object.assign(this.state, { ...this.defaultState });
+        Object.assign(this.state, {...this.defaultState});
         this.scrollables = undefined;
         this.startX = undefined;
         this.swipedDistance = 0;

@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from typing import List, Tuple
 import random
 
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class PosCategory(models.Model):
@@ -47,7 +45,7 @@ class PosCategory(models.Model):
     def _load_pos_data_fields(self, config):
         return ['id', 'name', 'parent_id', 'child_ids', 'write_date', 'has_image', 'color', 'sequence', 'hour_until', 'hour_after']
 
-    def _get_hierarchy(self) -> List[str]:
+    def _get_hierarchy(self) -> list[str]:
         """ Returns a list representing the hierarchy of the categories. """
         self.ensure_one()
         return (self.parent_id._get_hierarchy() if self.parent_id else []) + [(self.name or '')]

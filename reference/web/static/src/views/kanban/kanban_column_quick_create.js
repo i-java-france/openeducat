@@ -1,7 +1,7 @@
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
 
-import { Component, useExternalListener, useState, useRef, onPatched } from "@odoo/owl";
+import {Component, useExternalListener, useState, useRef, onPatched} from "@odoo/owl";
 
 export class KanbanColumnQuickCreate extends Component {
     static template = "web.KanbanColumnQuickCreate";
@@ -39,14 +39,14 @@ export class KanbanColumnQuickCreate extends Component {
                 }
                 this.mousedownTarget = null;
             },
-            { capture: true }
+            {capture: true}
         );
 
         // Key Navigation
         useHotkey("escape", () => this.fold());
         onPatched(() => {
             if (this.state.hasInputFocused && !this.props.folded) {
-                this.root.el.scrollIntoView({ behavior: "smooth" });
+                this.root.el.scrollIntoView({behavior: "smooth"});
             }
         });
     }

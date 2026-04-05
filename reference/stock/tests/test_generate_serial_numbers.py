@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
@@ -53,7 +52,7 @@ class StockGenerateCommon(TransactionCase):
 
     def assert_move_line_vals_values(self, line_vals_list, checked_vals_list):
         self.assertEqual(len(line_vals_list), len(checked_vals_list))
-        for (line_vals, checked_vals) in zip(line_vals_list, checked_vals_list):
+        for (line_vals, checked_vals) in zip(line_vals_list, checked_vals_list, strict=False):
             for checked_field in checked_vals:
                 self.assertEqual(line_vals[checked_field], checked_vals[checked_field])
 

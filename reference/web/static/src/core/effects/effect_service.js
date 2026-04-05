@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { RainbowMan } from "./rainbow_man";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {RainbowMan} from "./rainbow_man";
 
 const effectRegistry = registry.category("effects");
 
@@ -51,7 +51,7 @@ function rainbowMan(env, params = {}) {
             Component: params.Component,
             props: params.props,
         };
-        return { Component: RainbowMan, props };
+        return {Component: RainbowMan, props};
     }
     env.services.notification.add(message);
 }
@@ -63,7 +63,7 @@ effectRegistry.add("rainbow_man", rainbowMan);
 
 export const effectService = {
     dependencies: ["overlay"],
-    start(env, { overlay }) {
+    start(env, {overlay}) {
         /**
          * @param {Object} [params] various params depending on the type of effect
          * @param {string} [params.type="rainbow_man"] the effect to display
@@ -71,7 +71,7 @@ export const effectService = {
         const add = (params = {}) => {
             const type = params.type || "rainbow_man";
             const effect = effectRegistry.get(type);
-            const { Component, props } = effect(env, params) || {};
+            const {Component, props} = effect(env, params) || {};
             if (Component) {
                 const remove = overlay.add(Component, {
                     ...props,
@@ -80,7 +80,7 @@ export const effectService = {
             }
         };
 
-        return { add };
+        return {add};
     },
 };
 

@@ -4,7 +4,8 @@ import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_
 export function checkSimplifiedInvoiceNumber(number) {
     return [
         {
-            content: "verify that the simplified invoice number appears correctly on the receipt",
+            content:
+                "verify that the simplified invoice number appears correctly on the receipt",
             trigger: `.receipt-screen .simplified-invoice-number:contains('${number}')`,
         },
     ];

@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     SectionAndNoteListRenderer,
     SectionAndNoteFieldOne2Many,
@@ -26,13 +26,14 @@ export class AccountMergeWizardLinesRenderer extends SectionAndNoteListRenderer 
     getSectionColumns(columns) {
         const sectionCols = columns.filter(
             (col) =>
-                col.type === "field" && (col.name === this.titleField || col.name === "is_selected")
+                col.type === "field" &&
+                (col.name === this.titleField || col.name === "is_selected")
         );
         return sectionCols.map((col) => {
             if (col.name === this.titleField) {
-                return { ...col, colspan: columns.length - sectionCols.length + 1 };
+                return {...col, colspan: columns.length - sectionCols.length + 1};
             } else {
-                return { ...col };
+                return {...col};
             }
         });
     }

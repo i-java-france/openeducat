@@ -1,11 +1,11 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { unique } from "@web/core/utils/arrays";
-import { DataPoint } from "./datapoint";
-import { Operation } from "./operation";
-import { Record as RelationalRecord } from "./record";
-import { getFieldsSpec, resequence } from "./utils";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {unique} from "@web/core/utils/arrays";
+import {DataPoint} from "./datapoint";
+import {Operation} from "./operation";
+import {Record as RelationalRecord} from "./record";
+import {getFieldsSpec, resequence} from "./utils";
 
 /**
  * @typedef {import("./record").Record} RelationalRecord
@@ -103,7 +103,7 @@ export class DynamicList extends DataPoint {
         const canProceed = await this.leaveEditMode();
         if (canProceed) {
             record._checkValidity();
-            this.model._updateConfig(record.config, { mode: "edit" }, { reload: false });
+            this.model._updateConfig(record.config, {mode: "edit"}, {reload: false});
         }
         return canProceed;
     }
@@ -129,7 +129,7 @@ export class DynamicList extends DataPoint {
         return unique(resIds);
     }
 
-    async leaveEditMode({ discard } = {}) {
+    async leaveEditMode({discard} = {}) {
         let editedRecord = this.editedRecord;
         if (editedRecord) {
             let canProceed = true;
@@ -161,8 +161,8 @@ export class DynamicList extends DataPoint {
             if (canProceed && editedRecord) {
                 this.model._updateConfig(
                     editedRecord.config,
-                    { mode: "readonly" },
-                    { reload: false }
+                    {mode: "readonly"},
+                    {reload: false}
                 );
             } else {
                 return canProceed;
@@ -192,7 +192,7 @@ export class DynamicList extends DataPoint {
             let orderBy = [...this.orderBy];
             if (orderBy.length && orderBy[0].name === fieldName) {
                 if (orderBy[0].asc) {
-                    orderBy[0] = { name: orderBy[0].name, asc: false };
+                    orderBy[0] = {name: orderBy[0].name, asc: false};
                 } else {
                     orderBy = [];
                 }
@@ -219,12 +219,17 @@ export class DynamicList extends DataPoint {
         const isSelected = this.isDomainSelected || this.selection.length > 0;
         if (archive) {
             const defaultProps = {
-                body: _t("Are you sure that you want to archive all the selected records?"),
+                body: _t(
+                    "Are you sure that you want to archive all the selected records?"
+                ),
                 cancel: () => {},
                 confirm: () => this.archive(isSelected),
                 confirmLabel: _t("Archive"),
             };
-            this.model.dialog.add(ConfirmationDialog, { ...defaultProps, ...dialogProps });
+            this.model.dialog.add(ConfirmationDialog, {
+                ...defaultProps,
+                ...dialogProps,
+            });
         } else {
             this.unarchive(isSelected);
         }
@@ -243,9 +248,14 @@ export class DynamicList extends DataPoint {
         }
 
         const copy = async (resIds) => {
-            const copiedRecords = await this.model.orm.call(this.resModel, "copy", [resIds], {
-                context: this.context,
-            });
+            const copiedRecords = await this.model.orm.call(
+                this.resModel,
+                "copy",
+                [resIds],
+                {
+                    context: this.context,
+                }
+            );
 
             if (resIds.length > copiedRecords.length) {
                 this.model.notification.add(_t("Some records could not be duplicated"));
@@ -255,7 +265,9 @@ export class DynamicList extends DataPoint {
 
         if (resIds.length > 1) {
             this.model.dialog.add(ConfirmationDialog, {
-                body: _t("Are you sure that you want to duplicate all the selected records?"),
+                body: _t(
+                    "Are you sure that you want to duplicate all the selected records?"
+                ),
                 confirm: () => copy(resIds),
                 cancel: () => {},
                 confirmLabel: _t("Confirm"),
@@ -286,7 +298,7 @@ export class DynamicList extends DataPoint {
         ) {
             const msg = _t(
                 "Only the first %(count)s records have been deleted (out of %(total)s selected)",
-                { count: resIds.length, total: this.count }
+                {count: resIds.length, total: this.count}
             );
             this.model.notification.add(msg);
         }
@@ -323,7 +335,7 @@ export class DynamicList extends DataPoint {
                     for (const command of commands) {
                         if (command[0] === x2ManyCommands.LINK) {
                             const relRecord = list._cache[command[1]];
-                            command[2] = { display_name: relRecord.data.display_name };
+                            command[2] = {display_name: relRecord.data.display_name};
                         }
                     }
                 }
@@ -352,15 +364,18 @@ export class DynamicList extends DataPoint {
         for (const record of selectedRecords) {
             const isEditedRecord = record === editedRecord;
             if (
-                Object.keys(changes).every((fieldName) => !record._isReadonly(fieldName)) &&
-                record._checkValidity({ silent: !isEditedRecord })
+                Object.keys(changes).every(
+                    (fieldName) => !record._isReadonly(fieldName)
+                ) &&
+                record._checkValidity({silent: !isEditedRecord})
             ) {
                 validRecords.push(record);
             } else {
                 invalidRecords.push(record);
             }
         }
-        const discardInvalidRecords = () => invalidRecords.forEach((record) => record._discard());
+        const discardInvalidRecords = () =>
+            invalidRecords.forEach((record) => record._discard());
 
         if (validRecords.length === 0) {
             editedRecord._displayInvalidFieldNotification();
@@ -373,7 +388,10 @@ export class DynamicList extends DataPoint {
         const resIds = unique(validRecords.map((r) => r.resId));
         const kwargs = {
             context: this.context,
-            specification: getFieldsSpec(editedRecord.activeFields, editedRecord.fields),
+            specification: getFieldsSpec(
+                editedRecord.activeFields,
+                editedRecord.fields
+            ),
         };
         let save;
         if (Object.values(changes).some((v) => v instanceof Operation)) {
@@ -381,10 +399,12 @@ export class DynamicList extends DataPoint {
             // save each record individually
             const changesById = {};
             for (const record of validRecords) {
-                changesById[record.resId] = changesById[record.resId] || record._getChanges();
+                changesById[record.resId] =
+                    changesById[record.resId] || record._getChanges();
             }
             const valsList = resIds.map((resId) => changesById[resId]);
-            save = () => this.model.orm.webSaveMulti(this.resModel, resIds, valsList, kwargs);
+            save = () =>
+                this.model.orm.webSaveMulti(this.resModel, resIds, valsList, kwargs);
         } else {
             const vals = editedRecord._getChanges();
             save = () => this.model.orm.webSave(this.resModel, resIds, vals, kwargs);
@@ -407,10 +427,13 @@ export class DynamicList extends DataPoint {
         discardInvalidRecords();
 
         // ask confirmation
-        canProceed = await this.model.hooks.onAskMultiSaveConfirmation(_changes, validRecords);
+        canProceed = await this.model.hooks.onAskMultiSaveConfirmation(
+            _changes,
+            validRecords
+        );
         if (canProceed === false) {
             selectedRecords.forEach((record) => record._discard());
-            this.leaveEditMode({ discard: true });
+            this.leaveEditMode({discard: true});
             return false;
         }
 
@@ -420,16 +443,26 @@ export class DynamicList extends DataPoint {
             records = await save();
         } catch (e) {
             selectedRecords.forEach((record) => record._discard());
-            this.model._updateConfig(editedRecord.config, { mode: "readonly" }, { reload: false });
+            this.model._updateConfig(
+                editedRecord.config,
+                {mode: "readonly"},
+                {reload: false}
+            );
             throw e;
         }
-        const serverValuesById = Object.fromEntries(records.map((record) => [record.id, record]));
+        const serverValuesById = Object.fromEntries(
+            records.map((record) => [record.id, record])
+        );
         for (const record of validRecords) {
             const serverValues = serverValuesById[record.resId];
             record._setData(serverValues);
             this.model._updateSimilarRecords(record, serverValues);
         }
-        this.model._updateConfig(editedRecord.config, { mode: "readonly" }, { reload: false });
+        this.model._updateConfig(
+            editedRecord.config,
+            {mode: "readonly"},
+            {reload: false}
+        );
         this.model.hooks.onSavedMulti(validRecords);
         return true;
     }
@@ -438,7 +471,8 @@ export class DynamicList extends DataPoint {
         if (this.resModel === resModel && !this.canResequence()) {
             return;
         }
-        const handleField = this.resModel === resModel ? this.handleField : DEFAULT_HANDLE_FIELD;
+        const handleField =
+            this.resModel === resModel ? this.handleField : DEFAULT_HANDLE_FIELD;
         const order = this.orderBy.find((o) => o.name === handleField);
         const getSequence = (dp) => dp && this._getDPFieldValue(dp, handleField);
         const getResId = (dp) => this._getDPresId(dp);
@@ -472,7 +506,9 @@ export class DynamicList extends DataPoint {
         const method = state ? "action_archive" : "action_unarchive";
         const context = this.context;
         const resIds = await this.getResIds(isSelected);
-        const action = await this.model.orm.call(this.resModel, method, [resIds], { context });
+        const action = await this.model.orm.call(this.resModel, method, [resIds], {
+            context,
+        });
         if (
             this.isDomainSelected &&
             resIds.length === this.model.activeIdsLimit &&

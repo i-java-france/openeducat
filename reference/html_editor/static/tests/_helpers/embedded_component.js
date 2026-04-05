@@ -5,14 +5,14 @@ import {
     useEmbeddedState,
     StateChangeManager,
 } from "@html_editor/others/embedded_component_utils";
-import { Component, useRef, useState, xml } from "@odoo/owl";
+import {Component, useRef, useState, xml} from "@odoo/owl";
 
 export class Counter extends Component {
     static props = ["*"];
     static template = xml`
         <span t-ref="root" class="counter" t-on-click="increment">Counter:<t t-esc="state.value"/></span>`;
 
-    state = useState({ value: 0 });
+    state = useState({value: 0});
     ref = useRef("root");
 
     increment() {
@@ -77,7 +77,7 @@ export class OffsetCounter extends Component {
 export const offsetCounter = {
     name: "counter",
     Component: OffsetCounter,
-    getProps: (host) => ({ host }),
+    getProps: (host) => ({host}),
     getStateChangeManager: (config) =>
         new StateChangeManager(
             Object.assign(config, {
@@ -115,7 +115,7 @@ export class SavedCounter extends Component {
 export const savedCounter = {
     name: "counter",
     Component: SavedCounter,
-    getProps: (host) => ({ host }),
+    getProps: (host) => ({host}),
     getStateChangeManager: (config) => new StateChangeManager(config),
 };
 
@@ -138,13 +138,18 @@ export class CollaborativeObject extends Component {
 export const collaborativeObject = {
     name: "obj",
     Component: CollaborativeObject,
-    getProps: (host) => ({ host }),
+    getProps: (host) => ({host}),
     getStateChangeManager: (config) =>
         new StateChangeManager(
             Object.assign(config, {
                 propertyUpdater: {
                     obj: (state, previous, next) => {
-                        applyObjectPropertyDifference(state, "obj", previous.obj, next.obj);
+                        applyObjectPropertyDifference(
+                            state,
+                            "obj",
+                            previous.obj,
+                            next.obj
+                        );
                     },
                 },
             })
@@ -204,12 +209,12 @@ export function embedding(
     name,
     Component,
     getProps = undefined,
-    { getEditableDescendants, getStateChangeManager } = {}
+    {getEditableDescendants, getStateChangeManager} = {}
 ) {
     return {
         name,
         Component,
-        ...(getProps ? { getProps } : {}),
+        ...(getProps ? {getProps} : {}),
         ...arguments[3],
     };
 }

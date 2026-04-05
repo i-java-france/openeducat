@@ -1,12 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
+
 from markupsafe import Markup
 
-from odoo import api, models, fields, _
-from odoo.addons.mail.tools.discuss import Store
-from odoo.tools.misc import OrderedSet
+from odoo import _, api, fields, models
 from odoo.fields import Domain
+from odoo.tools.misc import OrderedSet
+
+from odoo.addons.mail.tools.discuss import Store
+
 
 class ResPartner(models.Model):
     """Update of res.partner class to take into account the livechat username."""

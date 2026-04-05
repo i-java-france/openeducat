@@ -1,6 +1,7 @@
-from odoo.fields import Datetime, Date
-from odoo.addons.hr.tests.common import TestHrCommon
+from odoo.fields import Date, Datetime
 from odoo.tests import Form
+
+from odoo.addons.hr.tests.common import TestHrCommon
 
 
 class TestContractCalendars(TestHrCommon):

@@ -2,20 +2,20 @@
 import contextlib
 import functools
 import logging
-from lxml import etree
 import unittest
 
 import pytz
 import werkzeug
+from lxml import etree
 
 import odoo
-from odoo import api, models, tools
-from odoo import SUPERUSER_ID
+from odoo import SUPERUSER_ID, api, models, tools
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.http import request
 from odoo.tools.json import scriptsafe as json_scriptsafe
 from odoo.tools.safe_eval import safe_eval
+
 from odoo.addons.http_routing.models import ir_http
 from odoo.addons.portal.controllers.portal import _build_url_w_params
 

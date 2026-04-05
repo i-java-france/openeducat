@@ -1,17 +1,17 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, queryOne } from "@odoo/hoot-dom";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame, queryOne} from "@odoo/hoot-dom";
 import {
+    MockServer,
     contains,
     defineModels,
     fields,
-    MockServer,
     models,
     mountView,
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 const arch = `
     <list editable="top" js_class="inventory_report_list">
@@ -25,8 +25,8 @@ const arch = `
 
 const setup_date = "2022-01-03 08:03:44";
 
-onRpc("person", "web_save", ({ args }) => {
-    // simulate 'stock.quant' create function which can return existing record
+onRpc("person", "web_save", ({args}) => {
+    // Simulate 'stock.quant' create function which can return existing record
     const values = args[1];
     const existingRecord = MockServer.env.person.find((p) => p.name === values.name);
     if (existingRecord) {
@@ -39,9 +39,9 @@ onRpc("person", "web_save", ({ args }) => {
 class Person extends models.Model {
     name = fields.Char();
     age = fields.Integer();
-    job = fields.Char({ string: "Profession" });
-    create_date = fields.Datetime({ string: "Created on" });
-    write_date = fields.Datetime({ string: "Last Updated on" });
+    job = fields.Char({string: "Profession"});
+    create_date = fields.Datetime({string: "Created on"});
+    write_date = fields.Datetime({string: "Last Updated on"});
 
     _records = [
         {
@@ -89,8 +89,8 @@ test("Create new record correctly", async function () {
 
     // Create a new line...
     await contains(".o_control_panel_main_buttons .o_list_button_add").click();
-    await contains("[name=name] input").edit("Bilou", { confirm: false });
-    await contains("[name=age] input").edit("24", { confirm: false });
+    await contains("[name=name] input").edit("Bilou", {confirm: false});
+    await contains("[name=age] input").edit("24", {confirm: false});
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
 
     // Check new record is in the list
@@ -112,11 +112,11 @@ test("Don't duplicate record", async function () {
 
     // Create a new line for an existing record...
     await contains(".o_control_panel_main_buttons .o_list_button_add").click();
-    await contains("[name=name] input").edit("Leto II Atreides", { confirm: false });
-    await contains("[name=age] input").edit("72", { confirm: false });
+    await contains("[name=name] input").edit("Leto II Atreides", {confirm: false});
+    await contains("[name=age] input").edit("72", {confirm: false});
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
 
-    expect(".o_data_row").toHaveCount(3, { message: "should still have 3 records" });
+    expect(".o_data_row").toHaveCount(3, {message: "should still have 3 records"});
     expect(".o_data_row:eq(2) .o_list_number").toHaveText("72", {
         message: "The age field must be updated",
     });
@@ -146,25 +146,25 @@ test("Work in grouped list", async function () {
 
     // Create a new record...
     await contains(".o_group_field_row_add a").click();
-    await contains("[name=name] input").edit("Del Tutorial", { confirm: false });
-    await contains("[name=age] input").edit("32", { confirm: false });
+    await contains("[name=name] input").edit("Del Tutorial", {confirm: false});
+    await contains("[name=age] input").edit("32", {confirm: false});
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
     // Check we have 2 records...
     expect(".o_data_row").toHaveCount(2);
 
     // Create an existing record...
     await contains(".o_group_field_row_add a").click();
-    await contains("[name=name] input").edit("Samuel Oak", { confirm: false });
-    await contains("[name=age] input").edit("55", { confirm: false });
+    await contains("[name=name] input").edit("Samuel Oak", {confirm: false});
+    await contains("[name=age] input").edit("55", {confirm: false});
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
     // Check we still have 2 records...
     expect(".o_data_row").toHaveCount(2);
 
     // Create an existing but not displayed record...
     await contains(".o_group_field_row_add a").click();
-    await contains("[name=name] input").edit("Daniel Fortesque", { confirm: false });
-    await contains("[name=age] input").edit("55", { confirm: false });
-    await contains("[name=job] input").edit("Soldier", { confirm: false }); // let it in its original group
+    await contains("[name=name] input").edit("Daniel Fortesque", {confirm: false});
+    await contains("[name=age] input").edit("55", {confirm: false});
+    await contains("[name=job] input").edit("Soldier", {confirm: false}); // Let it in its original group
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
     // Check we have 3 records...
     expect(".o_data_row").toHaveCount(3);

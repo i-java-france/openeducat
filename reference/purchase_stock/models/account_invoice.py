@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
-from odoo.tools import float_compare, float_is_zero
-from odoo.tools.misc import unique
+from odoo import api, fields, models
+from odoo.tools import float_compare
 
 
 class AccountMove(models.Model):

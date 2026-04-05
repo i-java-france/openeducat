@@ -1,5 +1,6 @@
 import re
-from odoo import _, api, models, fields
+
+from odoo import _, api, fields, models
 
 
 class ProductTemplate(models.Model):

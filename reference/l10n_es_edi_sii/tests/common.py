@@ -1,9 +1,10 @@
-# coding: utf-8
 import base64
-from pytz import timezone
 from datetime import datetime
 
+from pytz import timezone
+
 from odoo.tools import misc
+
 from odoo.addons.account_edi.tests.common import AccountEdiTestCommon
 
 

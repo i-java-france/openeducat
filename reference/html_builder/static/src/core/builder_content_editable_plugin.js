@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {registry} from "@web/core/registry";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 /**
@@ -34,12 +34,16 @@ export class BuilderContentEditablePlugin extends Plugin {
     }
 
     getContentEditableEls(rootEl) {
-        const editableSelector = this.getResource("content_editable_selectors").join(",");
+        const editableSelector = this.getResource("content_editable_selectors").join(
+            ","
+        );
         return [...selectElements(rootEl, editableSelector)];
     }
 
     getContentNotEditableEls(rootEl) {
-        const notEditableSelector = this.getResource("content_not_editable_selectors").join(",");
+        const notEditableSelector = this.getResource(
+            "content_not_editable_selectors"
+        ).join(",");
         return [...selectElements(rootEl, notEditableSelector)];
     }
 

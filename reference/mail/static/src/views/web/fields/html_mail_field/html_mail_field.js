@@ -1,7 +1,7 @@
-import { HtmlField, htmlField } from "@html_editor/fields/html_field";
-import { registry } from "@web/core/registry";
-import { getCSSRules, toInline } from "./convert_inline";
-import { ColumnPlugin } from "@html_editor/main/column_plugin";
+import {HtmlField, htmlField} from "@html_editor/fields/html_field";
+import {registry} from "@web/core/registry";
+import {getCSSRules, toInline} from "./convert_inline";
+import {ColumnPlugin} from "@html_editor/main/column_plugin";
 
 const cssRulesByElement = new WeakMap();
 
@@ -32,7 +32,7 @@ export class HtmlMailField extends HtmlField {
     getConfig() {
         const config = super.getConfig();
         config.dropImageAsAttachment = false;
-        config.defaultLinkAttributes = { target: "_blank", rel: "noreferrer noopener" };
+        config.defaultLinkAttributes = {target: "_blank", rel: "noreferrer noopener"};
         config.Plugins = config.Plugins.filter((plugin) => plugin !== ColumnPlugin);
         return config;
     }
@@ -42,8 +42,8 @@ export const htmlMailField = {
     ...htmlField,
     component: HtmlMailField,
     additionalClasses: ["o_field_html"],
-    extractProps({ attrs, options }, dynamicInfo) {
-        const props = htmlField.extractProps({ attrs, options }, dynamicInfo);
+    extractProps({attrs, options}, dynamicInfo) {
+        const props = htmlField.extractProps({attrs, options}, dynamicInfo);
         props.editorConfig.allowChecklist = false;
         props.embeddedComponents = false;
         return props;

@@ -1,14 +1,14 @@
-import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
-import { useOpenChat } from "@mail/core/web/open_chat_hook";
-import { ImStatus } from "@mail/core/common/im_status";
+import {useService} from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {useOpenChat} from "@mail/core/web/open_chat_hook";
+import {ImStatus} from "@mail/core/common/im_status";
 
 export class AvatarCardPopover extends Component {
     static template = "mail.AvatarCardPopover";
-    static components = { ImStatus };
+    static components = {ImStatus};
     static props = {
-        id: { type: Number, required: true },
-        close: { type: Function, required: true },
+        id: {type: Number, required: true},
+        close: {type: Function, required: true},
         model: {
             type: String,
             validate: (m) => ["res.users", "res.partner"].includes(m),
@@ -82,6 +82,6 @@ export class AvatarCardPopover extends Component {
         if (!action) {
             return;
         }
-        this.actionService.doAction(action, { newWindow });
+        this.actionService.doAction(action, {newWindow});
     }
 }

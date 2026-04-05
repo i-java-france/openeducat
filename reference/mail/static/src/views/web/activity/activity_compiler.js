@@ -1,6 +1,6 @@
-import { createElement, extractAttributes } from "@web/core/utils/xml";
-import { toInterpolatedStringExpression, ViewCompiler } from "@web/views/view_compiler";
-import { toStringExpression } from "@web/views/utils";
+import {createElement, extractAttributes} from "@web/core/utils/xml";
+import {toInterpolatedStringExpression, ViewCompiler} from "@web/views/view_compiler";
+import {toStringExpression} from "@web/views/utils";
 
 export class ActivityCompiler extends ViewCompiler {
     /**
@@ -17,7 +17,11 @@ export class ActivityCompiler extends ViewCompiler {
             });
         }
         const classNames = [];
-        const { bold, display, muted } = extractAttributes(el, ["bold", "display", "muted"]);
+        const {bold, display, muted} = extractAttributes(el, [
+            "bold",
+            "display",
+            "muted",
+        ]);
         if (display === "right") {
             classNames.push("float-end");
         }

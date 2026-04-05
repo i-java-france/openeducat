@@ -6,7 +6,7 @@ from collections import defaultdict
 
 import werkzeug
 
-from odoo import api, exceptions, fields, models, _
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import is_html_empty
@@ -327,7 +327,7 @@ class SurveySurvey(models.Model):
             code_count=len(survey_without_session_code),
             excluded_codes=set((self - survey_without_session_code).mapped('session_code'))
         )
-        for survey, session_code in zip(survey_without_session_code, session_codes):
+        for survey, session_code in zip(survey_without_session_code, session_codes, strict=False):
             survey.session_code = session_code
 
     @api.depends('session_code')
@@ -501,24 +501,24 @@ class SurveySurvey(models.Model):
         if default and 'question_ids' in default:
             return new_surveys
 
-        for old_survey, new_survey in zip(self, new_surveys):
+        for old_survey, new_survey in zip(self, new_surveys, strict=False):
             cloned_question_ids = new_survey.question_ids.sorted()
 
             answers_map = {
                 src_answer.id: dst_answer.id
                 for src, dst
-                in zip(old_survey.question_ids, cloned_question_ids)
+                in zip(old_survey.question_ids, cloned_question_ids, strict=False)
                 for src_answer, dst_answer
-                in zip(src.suggested_answer_ids, dst.suggested_answer_ids.sorted())
+                in zip(src.suggested_answer_ids, dst.suggested_answer_ids.sorted(), strict=False)
             }
-            for src, dst in zip(old_survey.question_ids, cloned_question_ids):
+            for src, dst in zip(old_survey.question_ids, cloned_question_ids, strict=False):
                 if src.triggering_answer_ids:
                     dst.triggering_answer_ids = [answers_map[src_answer_id.id] for src_answer_id in src.triggering_answer_ids]
         return new_surveys
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, title=self.env._("%s (copy)", survey.title)) for survey, vals in zip(self, vals_list)]
+        return [dict(vals, title=self.env._("%s (copy)", survey.title)) for survey, vals in zip(self, vals_list, strict=False)]
 
     def action_archive(self):
         super().action_archive()

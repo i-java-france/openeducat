@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class SharedPopup extends Interaction {
     static selector = ".s_popup";
@@ -25,7 +25,7 @@ export class SharedPopup extends Interaction {
             },
             "t-on-shown.bs.modal": () => (this.popupShown = true),
             "t-on-hidden.bs.modal": this.onModalHidden,
-            "t-att-class": () => ({ "d-none": !this.popupShown }),
+            "t-att-class": () => ({"d-none": !this.popupShown}),
         },
     };
 

@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { parseFloat } from "@web/views/fields/parsers";
-import { SelectionPopup } from "@point_of_sale/app/components/popups/selection_popup/selection_popup";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { NumberPopup } from "@point_of_sale/app/components/popups/number_popup/number_popup";
-import { ask, makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { enhancedButtons, DECIMAL } from "@point_of_sale/app/components/numpad/numpad";
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { accountTaxHelpers } from "@account/helpers/account_tax";
+import {_t} from "@web/core/l10n/translation";
+import {parseFloat} from "@web/views/fields/parsers";
+import {SelectionPopup} from "@point_of_sale/app/components/popups/selection_popup/selection_popup";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {NumberPopup} from "@point_of_sale/app/components/popups/number_popup/number_popup";
+import {ask, makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {enhancedButtons, DECIMAL} from "@point_of_sale/app/components/numpad/numpad";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
 
 patch(PosStore.prototype, {
     async onClickSaleOrder(clickedOrderId) {
@@ -54,7 +54,7 @@ patch(PosStore.prototype, {
         const selectedOption = await makeAwaitable(this.dialog, SelectionPopup, {
             title: _t("What do you want to do?"),
             list: [
-                { id: "0", label: _t("Settle the order"), item: "settle" },
+                {id: "0", label: _t("Settle the order"), item: "settle"},
                 {
                     id: "1",
                     label: _t("Apply a down payment (percentage)"),
@@ -76,10 +76,11 @@ patch(PosStore.prototype, {
         this.selectOrderLine(this.getOrder(), this.getOrder().lines.at(-1));
     },
     async _getSaleOrder(id) {
-        const result = await this.data.callRelated("sale.order", "load_sale_order_from_pos", [
-            id,
-            this.config.id,
-        ]);
+        const result = await this.data.callRelated(
+            "sale.order",
+            "load_sale_order_from_pos",
+            [id, this.config.id]
+        );
         return result["sale.order"][0];
     },
     async settleSO(sale_order, orderFiscalPos) {
@@ -90,9 +91,11 @@ patch(PosStore.prototype, {
         let userWasAskedAboutLoadedLots = false;
         let previousProductLine = null;
 
-        const converted_lines = await this.data.call("sale.order.line", "read_converted", [
-            sale_order.order_line.map((l) => l.id),
-        ]);
+        const converted_lines = await this.data.call(
+            "sale.order.line",
+            "read_converted",
+            [sale_order.order_line.map((l) => l.id)]
+        );
 
         for (const line of sale_order.order_line) {
             if (line.display_type === "line_note") {
@@ -109,7 +112,9 @@ patch(PosStore.prototype, {
                 line.product_id = this.config.down_payment_product_id;
             }
 
-            const taxes = orderFiscalPos?.getTaxesAfterFiscalPosition(line.tax_ids) || line.tax_ids;
+            const taxes =
+                orderFiscalPos?.getTaxesAfterFiscalPosition(line.tax_ids) ||
+                line.tax_ids;
             const newLineValues = {
                 product_tmpl_id: line.product_id?.product_tmpl_id,
                 product_id: line.product_id,
@@ -136,35 +141,43 @@ patch(PosStore.prototype, {
             if (line.display_type === "line_section") {
                 continue;
             }
-            newLineValues.attribute_value_ids = (line.product_custom_attribute_value_ids || []).map(
-                (value_line) => {
-                    if (value_line?.custom_product_template_attribute_value_id) {
-                        return ["link", value_line.custom_product_template_attribute_value_id];
-                    }
+            newLineValues.attribute_value_ids = (
+                line.product_custom_attribute_value_ids || []
+            ).map((value_line) => {
+                if (value_line?.custom_product_template_attribute_value_id) {
+                    return [
+                        "link",
+                        value_line.custom_product_template_attribute_value_id,
+                    ];
                 }
-            );
+            });
             const newLine = await this.addLineToCurrentOrder(newLineValues, {}, false);
             previousProductLine = newLine;
 
             const converted_line = converted_lines.find((l) => l.id === line.id);
             if (
                 newLine.getProduct().tracking !== "none" &&
-                (this.pickingType.use_create_lots || this.pickingType.use_existing_lots) &&
+                (this.pickingType.use_create_lots ||
+                    this.pickingType.use_existing_lots) &&
                 converted_line.lot_names.length > 0
             ) {
                 if (!useLoadedLots && !userWasAskedAboutLoadedLots) {
                     useLoadedLots = await ask(this.dialog, {
                         title: _t("SN/Lots Loading"),
-                        body: _t("Do you want to load the SN/Lots linked to the Sales Order?"),
+                        body: _t(
+                            "Do you want to load the SN/Lots linked to the Sales Order?"
+                        ),
                     });
                     userWasAskedAboutLoadedLots = true;
                 }
                 if (useLoadedLots) {
                     newLine.setPackLotLines({
                         modifiedPackLotLines: [],
-                        newPackLotLines: (converted_line.lot_names || []).map((name) => ({
-                            lot_name: name,
-                        })),
+                        newPackLotLines: (converted_line.lot_names || []).map(
+                            (name) => ({
+                                lot_name: name,
+                            })
+                        ),
                     });
                 }
             }
@@ -203,12 +216,13 @@ patch(PosStore.prototype, {
                 newLine.delete();
                 let total_lot_quantity = 0;
                 for (const lot of converted_line.lot_names) {
-                    let lot_remaining_quantity = converted_line.lot_qty_by_name[lot] || 0;
+                    let lot_remaining_quantity =
+                        converted_line.lot_qty_by_name[lot] || 0;
                     while (lot_splitted_lines.length && lot_remaining_quantity > 0) {
                         const splitted_line = lot_splitted_lines.shift();
                         splitted_line.setPackLotLines({
                             modifiedPackLotLines: [],
-                            newPackLotLines: [{ lot_name: lot }],
+                            newPackLotLines: [{lot_name: lot}],
                             setQuantity: false,
                         });
                         total_lot_quantity += splitted_line.qty;
@@ -223,17 +237,23 @@ patch(PosStore.prototype, {
                         splitted_line.setDiscount(line.discount);
                         splitted_line.setPackLotLines({
                             modifiedPackLotLines: [],
-                            newPackLotLines: [{ lot_name: lot }],
+                            newPackLotLines: [{lot_name: lot}],
                             setQuantity: false,
                         });
                         total_lot_quantity += lot_remaining_quantity;
                     }
                 }
-                if (total_lot_quantity < newLineValues.qty && lot_splitted_lines.length == 0) {
+                if (
+                    total_lot_quantity < newLineValues.qty &&
+                    lot_splitted_lines.length == 0
+                ) {
                     const splitted_line = this.models["pos.order.line"].create({
                         ...newLineValues,
                     });
-                    splitted_line.setQuantity(newLineValues.qty - total_lot_quantity, true);
+                    splitted_line.setQuantity(
+                        newLineValues.qty - total_lot_quantity,
+                        true
+                    );
                     splitted_line.setDiscount(line.discount);
                 }
             }
@@ -241,7 +261,7 @@ patch(PosStore.prototype, {
     },
 
     prepareSoBaseLineForTaxesComputationExtraValues(so, soLine) {
-        const extraValues = { currency_id: so.currency_id || this.company.currency_id };
+        const extraValues = {currency_id: so.currency_id || this.company.currency_id};
         return {
             ...extraValues,
             quantity: soLine.product_uom_qty,
@@ -264,7 +284,10 @@ patch(PosStore.prototype, {
 
         const payload = await makeAwaitable(this.dialog, NumberPopup, {
             title: _t("Down Payment"),
-            subtitle: _t("Due balance: %s", this.env.utils.formatCurrency(saleOrder.amount_unpaid)),
+            subtitle: _t(
+                "Due balance: %s",
+                this.env.utils.formatCurrency(saleOrder.amount_unpaid)
+            ),
             buttons: enhancedButtons().map((button) => ({
                 ...button,
                 class: `${colorClassMap[button.value] || ""}`,
@@ -283,11 +306,20 @@ patch(PosStore.prototype, {
         }
 
         const amount = parseFloat(payload);
-        await this.addDownPaymentProductOrderlineToOrder(saleOrder, amount, isPercentage);
+        await this.addDownPaymentProductOrderlineToOrder(
+            saleOrder,
+            amount,
+            isPercentage
+        );
     },
     async loadDownPaymentProduct() {
-        if (!this.config.down_payment_product_id && this.config.raw.down_payment_product_id) {
-            await this.data.read("product.product", [this.config.raw.down_payment_product_id]);
+        if (
+            !this.config.down_payment_product_id &&
+            this.config.raw.down_payment_product_id
+        ) {
+            await this.data.read("product.product", [
+                this.config.raw.down_payment_product_id,
+            ]);
         }
         if (!this.config.down_payment_product_id) {
             this.dialog.add(AlertDialog, {
@@ -305,13 +337,18 @@ patch(PosStore.prototype, {
         if (!result) {
             return;
         }
-        const saleOrderLines = saleOrder.order_line.filter((soLine) => !soLine.display_type);
+        const saleOrderLines = saleOrder.order_line.filter(
+            (soLine) => !soLine.display_type
+        );
         const baseLines = [];
         for (const saleOrderLine of saleOrderLines) {
             baseLines.push(
                 accountTaxHelpers.prepare_base_line_for_taxes_computation(
                     saleOrderLine,
-                    this.prepareSoBaseLineForTaxesComputationExtraValues(saleOrder, saleOrderLine)
+                    this.prepareSoBaseLineForTaxesComputationExtraValues(
+                        saleOrder,
+                        saleOrderLine
+                    )
                 )
             );
         }
@@ -324,8 +361,8 @@ patch(PosStore.prototype, {
 
         const downPaymentProduct = this.config.down_payment_product_id;
         const groupingFunction = (base_line) => ({
-            grouping_key: { product_id: downPaymentProduct },
-            raw_grouping_key: { product_id: downPaymentProduct.id },
+            grouping_key: {product_id: downPaymentProduct},
+            raw_grouping_key: {product_id: downPaymentProduct.id},
         });
         const downPaymentBaseLines = accountTaxHelpers.prepare_down_payment_lines(
             baseLines,
@@ -378,7 +415,8 @@ patch(PosStore.prototype, {
                     total: saleOrderLine.price_total,
                 })),
                 tax_ids: [["link", ...baseLine.tax_ids]],
-                extra_tax_data: accountTaxHelpers.export_base_line_extra_tax_data(baseLine),
+                extra_tax_data:
+                    accountTaxHelpers.export_base_line_extra_tax_data(baseLine),
             });
         }
     },

@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { parseExpr } from "@web/core/py_js/py";
-import { formatValue, toValue } from "@web/core/tree_editor/condition_tree";
-import { Select } from "@web/core/tree_editor/tree_editor_components";
+import {_t} from "@web/core/l10n/translation";
+import {parseExpr} from "@web/core/py_js/py";
+import {formatValue, toValue} from "@web/core/tree_editor/condition_tree";
+import {Select} from "@web/core/tree_editor/tree_editor_components";
 
 const OPERATOR_DESCRIPTIONS = {
     // valid operators (see TERM_OPERATORS in expression.py)
@@ -136,12 +136,14 @@ export function getOperatorLabel(
 ) {
     let label;
     if (typeof operator === "string" && operator in OPERATOR_DESCRIPTIONS) {
-        label = getDescr(operator, fieldDefType) || getOperatorDescription(operator, fieldDefType);
+        label =
+            getDescr(operator, fieldDefType) ||
+            getOperatorDescription(operator, fieldDefType);
     } else {
         label = formatValue(operator);
     }
     if (negate) {
-        return _t(`not %(operator_label)s`, { operator_label: label });
+        return _t(`not %(operator_label)s`, {operator_label: label});
     }
     return label;
 }
@@ -154,11 +156,17 @@ function getOperatorInfo(operator, fieldDefType, negate = false) {
 
 export function getOperatorEditorInfo(operators, fieldDef) {
     const defaultOperator = operators[0];
-    const operatorsInfo = operators.map((operator) => getOperatorInfo(operator, fieldDef?.type));
+    const operatorsInfo = operators.map((operator) =>
+        getOperatorInfo(operator, fieldDef?.type)
+    );
     return {
         component: Select,
-        extractProps: ({ update, value: [operator, negate] }) => {
-            const [operatorKey, operatorLabel] = getOperatorInfo(operator, fieldDef?.type, negate);
+        extractProps: ({update, value: [operator, negate]}) => {
+            const [operatorKey, operatorLabel] = getOperatorInfo(
+                operator,
+                fieldDef?.type,
+                negate
+            );
             const options = [...operatorsInfo];
             if (!options.some(([key]) => key === operatorKey)) {
                 options.push([operatorKey, operatorLabel]);
@@ -173,6 +181,7 @@ export function getOperatorEditorInfo(operators, fieldDef) {
         isSupported: ([operator]) =>
             typeof operator === "string" && operator in OPERATOR_DESCRIPTIONS, // should depend on fieldDef too... (e.g. parent_id does not always make sense)
         message: _t("Operator not supported"),
-        stringify: ([operator, negate]) => getOperatorLabel(operator, fieldDef?.type, negate),
+        stringify: ([operator, negate]) =>
+            getOperatorLabel(operator, fieldDef?.type, negate),
     };
 }

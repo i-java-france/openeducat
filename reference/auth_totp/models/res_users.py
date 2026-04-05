@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -6,16 +5,15 @@ import functools
 import logging
 import os
 import re
-
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
-from odoo.addons.base.models.res_users import check_identity
 from odoo.exceptions import AccessDenied, UserError
 from odoo.http import request
 from odoo.tools import sql
 
 from odoo.addons.auth_totp.models.totp import TOTP, TOTP_SECRET_SIZE
+from odoo.addons.base.models.res_users import check_identity
 
 _logger = logging.getLogger(__name__)
 
@@ -60,7 +58,7 @@ class ResUsers(models.Model):
 
     @api.depends('totp_secret')
     def _compute_totp_enabled(self):
-        for r, v in zip(self, self.sudo()):
+        for r, v in zip(self, self.sudo(), strict=False):
             r.totp_enabled = bool(v.totp_secret)
 
     def _rpc_api_keys_only(self):
@@ -189,7 +187,7 @@ class ResUsers(models.Model):
         secret_bytes_count = TOTP_SECRET_SIZE // 8
         secret = base64.b32encode(os.urandom(secret_bytes_count)).decode()
         # format secret in groups of 4 characters for readability
-        secret = ' '.join(map(''.join, zip(*[iter(secret)]*4)))
+        secret = ' '.join(map(''.join, zip(*[iter(secret)]*4, strict=False)))
         w = self.env['auth_totp.wizard'].create({
             'user_id': self.id,
             'secret': secret,

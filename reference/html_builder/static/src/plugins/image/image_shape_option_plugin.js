@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { DEFAULT_PALETTE } from "@html_editor/utils/color";
-import { getShapeURL } from "@html_builder/plugins/image/image_helpers";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {DEFAULT_PALETTE} from "@html_editor/utils/color";
+import {getShapeURL} from "@html_builder/plugins/image/image_helpers";
 import {
     activateCropper,
     createDataURL,
@@ -10,17 +10,17 @@ import {
     loadImageInfo,
     isGif,
 } from "@html_editor/utils/image_processing";
-import { getValueFromVar } from "@html_builder/utils/utils";
-import { imageShapeDefinitions } from "@html_builder/plugins/image/image_shapes_definition";
+import {getValueFromVar} from "@html_builder/utils/utils";
+import {imageShapeDefinitions} from "@html_builder/plugins/image/image_shapes_definition";
 import {
     getImageTransformationData,
     shouldPreventGifTransformation,
 } from "@html_editor/main/media/image_post_process_plugin";
-import { _t } from "@web/core/l10n/translation";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { getMimetype } from "@html_editor/utils/image";
-import { withSequence } from "@html_editor/utils/resource";
-import { deepCopy, deepMerge } from "@web/core/utils/objects";
+import {_t} from "@web/core/l10n/translation";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {getMimetype} from "@html_editor/utils/image";
+import {withSequence} from "@html_editor/utils/resource";
+import {deepCopy, deepMerge} from "@web/core/utils/objects";
 
 /**
  * @typedef {Object.<string, {
@@ -66,7 +66,12 @@ const CSS_ANIMATION_RATIO_REGEX = /(--animation_ratio: (?<ratio>\d*(\.\d+)?));/m
 
 export class ImageShapeOptionPlugin extends Plugin {
     static id = "imageShapeOption";
-    static dependencies = ["history", "userCommand", "imagePostProcess", "imageToolOption"];
+    static dependencies = [
+        "history",
+        "userCommand",
+        "imagePostProcess",
+        "imageToolOption",
+    ];
     static shared = [
         "getImageShapeGroups",
         "isTransformableShape",
@@ -89,7 +94,9 @@ export class ImageShapeOptionPlugin extends Plugin {
         process_image_warmup_handlers: this.processImageWarmup.bind(this),
         process_image_post_handlers: this.processImagePost.bind(this),
         hover_effect_allowed_predicates: (el) => this.canHaveHoverEffect(el),
-        image_shape_groups_providers: withSequence(0, () => deepCopy(imageShapeDefinitions)),
+        image_shape_groups_providers: withSequence(0, () =>
+            deepCopy(imageShapeDefinitions)
+        ),
     };
     setup() {
         this.shapeSvgTextCache = {};
@@ -141,14 +148,19 @@ export class ImageShapeOptionPlugin extends Plugin {
     }
     async loadShape(img, newData = {}) {
         // todo: find a way to apply to carousel thumbnail after processImage
-        return this.dependencies.imagePostProcess.processImage({ img, newDataset: newData });
+        return this.dependencies.imagePostProcess.processImage({
+            img,
+            newDataset: newData,
+        });
     }
     async processImageWarmup(img, newDataset) {
         const getData = (propName) =>
             propName in newDataset ? newDataset[propName] : img.dataset[propName];
-        const combinedDataset = { ...img.dataset, ...newDataset };
-        const previousShapeId = img.dataset.shape || this.getDefaultShapeId(img.dataset);
-        const shapeId = combinedDataset.shape || this.getDefaultShapeId(combinedDataset);
+        const combinedDataset = {...img.dataset, ...newDataset};
+        const previousShapeId =
+            img.dataset.shape || this.getDefaultShapeId(img.dataset);
+        const shapeId =
+            combinedDataset.shape || this.getDefaultShapeId(combinedDataset);
         // todo: should we reset some data if shapeName is not defined?
         if (!shapeId) {
             return;
@@ -160,7 +172,9 @@ export class ImageShapeOptionPlugin extends Plugin {
         const defaultShapeColors = this.getThemedSvgColors(shapeSvgText).join(";");
         newDataset.shapeColors =
             newDataset.shapeColors ??
-            (isNewShape ? defaultShapeColors : img.dataset.shapeColors ?? defaultShapeColors);
+            (isNewShape
+                ? defaultShapeColors
+                : (img.dataset.shapeColors ?? defaultShapeColors));
 
         const getNaturalWidth = async () => {
             if (img.naturalWidth) {
@@ -169,7 +183,8 @@ export class ImageShapeOptionPlugin extends Plugin {
             const loadedImgEl = await loadImage(img.getAttribute("src"));
             return loadedImgEl.naturalWidth;
         };
-        const svgWidth = getData("resizeWidth") || getData("width") || (await getNaturalWidth());
+        const svgWidth =
+            getData("resizeWidth") || getData("width") || (await getNaturalWidth());
 
         // Get the svg element.
         const svg = await this.computeShape(shapeSvgText, {
@@ -187,7 +202,7 @@ export class ImageShapeOptionPlugin extends Plugin {
         const imgAspectRatio = svg.dataset.imgAspectRatio;
 
         if (isNewShape && !("aspectRatio" in newDataset)) {
-            const data = getImageTransformationData({ ...img.dataset, ...newDataset });
+            const data = getImageTransformationData({...img.dataset, ...newDataset});
 
             // The togglable ratio is squared by default.
             const shouldBeSquared =
@@ -204,14 +219,16 @@ export class ImageShapeOptionPlugin extends Plugin {
         const postProcessCroppedCanvas = async (canvas) => {
             const img = await loadImage(canvas.toDataURL());
             document.createElement("div").appendChild(img);
-            const cropper = await activateCropper(img, 1, { y: 0 });
+            const cropper = await activateCropper(img, 1, {y: 0});
             const croppedCanvas = cropper.getCroppedCanvas();
             cropper.destroy();
             return croppedCanvas;
         };
 
         return {
-            getHeight: svg.dataset.imgPerspective && ((canvas) => canvas.width / svgAspectRatio),
+            getHeight:
+                svg.dataset.imgPerspective &&
+                ((canvas) => canvas.width / svgAspectRatio),
             perspective: svg.dataset.imgPerspective || null,
             newDataset,
             // If imgAspectRatio is defined, the image is cropped a second time
@@ -225,7 +242,7 @@ export class ImageShapeOptionPlugin extends Plugin {
         };
     }
     async processImagePost(b64url, handlerDataset, processContext) {
-        const { svg, svgAspectRatio, svgWidth } = processContext;
+        const {svg, svgAspectRatio, svgWidth} = processContext;
         if (!svg) {
             return;
         }
@@ -253,7 +270,7 @@ export class ImageShapeOptionPlugin extends Plugin {
             type: "image/svg+xml",
         });
         const dataURL = await createDataURL(blob);
-        return [dataURL, { ...handlerDataset, mimetype: "image/svg+xml" }];
+        return [dataURL, {...handlerDataset, mimetype: "image/svg+xml"}];
     }
 
     /**
@@ -264,7 +281,8 @@ export class ImageShapeOptionPlugin extends Plugin {
      * @returns {SVGElement}
      */
     async computeShape(svgText, params) {
-        const { shapeId, shapeFlip, shapeRotate, shapeAnimationSpeed, shapeColors } = params;
+        const {shapeId, shapeFlip, shapeRotate, shapeAnimationSpeed, shapeColors} =
+            params;
         // Apply the colors to the shape.
         svgText = this.replaceSvgColors(svgText, shapeColors.split(";"));
         // Apply the right animation speed if there is an animated shape.
@@ -272,7 +290,10 @@ export class ImageShapeOptionPlugin extends Plugin {
             svgText = this.replaceAnimationDuration(svgText, shapeAnimationSpeed);
         }
 
-        const svg = new DOMParser().parseFromString(svgText, "image/svg+xml").documentElement;
+        const svg = new DOMParser().parseFromString(
+            svgText,
+            "image/svg+xml"
+        ).documentElement;
 
         // Modifies the SVG according to the "flip" or/and "rotate" options.
         if ((shapeFlip || shapeRotate) && this.isTransformableShape(shapeId)) {
@@ -339,10 +360,16 @@ export class ImageShapeOptionPlugin extends Plugin {
         // Applying regex substitutions to modify animation speed in the 'svg'
         // variable.
         svgText = svgText.replace(CSS_ANIMATION_RULE_REGEX, callbackCssAnimationRule);
-        svgText = svgText.replace(SVG_DUR_TIMECOUNT_VAL_REGEX, callbackSvgDurTimecountVal);
+        svgText = svgText.replace(
+            SVG_DUR_TIMECOUNT_VAL_REGEX,
+            callbackSvgDurTimecountVal
+        );
         if (CSS_ANIMATION_RATIO_REGEX.test(svgText)) {
             // Replace the CSS --animation_ratio variable for future purpose.
-            svgText = svgText.replace(CSS_ANIMATION_RATIO_REGEX, `--animation_ratio: ${ratio};`);
+            svgText = svgText.replace(
+                CSS_ANIMATION_RATIO_REGEX,
+                `--animation_ratio: ${ratio};`
+            );
         } else {
             // Add the style tag with the root variable --animation ratio for
             // future purpose.
@@ -447,8 +474,8 @@ export class ImageShapeOptionPlugin extends Plugin {
 export class SetImageShapeAction extends BuilderAction {
     static id = "setImageShape";
     static dependencies = ["imageShapeOption"];
-    async load({ editingElement: img, value: shapeId }) {
-        const params = { shape: shapeId };
+    async load({editingElement: img, value: shapeId}) {
+        const params = {shape: shapeId};
         // A crop is applied to the image at the same time as certain shapes,
         // which is why we reset the crop here or when the shape is removed.
         // However, we don’t reset it when the crop was applied intentionally.
@@ -464,12 +491,12 @@ export class SetImageShapeAction extends BuilderAction {
         // todo nby: re-read the old option method `setImgShape` and be sure all the logic is in there
         return this.dependencies.imageShapeOption.loadShape(img, params);
     }
-    apply({ editingElement: img, loadResult: updateImageAttributes }) {
+    apply({editingElement: img, loadResult: updateImageAttributes}) {
         updateImageAttributes();
         const imgFilename = img.dataset.originalSrc.split("/").pop().split(".")[0];
         img.dataset.fileName = `${imgFilename}.svg`;
     }
-    isApplied({ editingElement: img, value }) {
+    isApplied({editingElement: img, value}) {
         const datasetShape = img.dataset.shape;
         if (!datasetShape) {
             return false;
@@ -482,10 +509,10 @@ export class SetImageShapeAction extends BuilderAction {
 export class SetImgShapeColorAction extends BuilderAction {
     static id = "setImgShapeColor";
     static dependencies = ["imageShapeOption", "imageToolOption"];
-    getValue({ editingElement: img, params: { index: colorIndex } }) {
+    getValue({editingElement: img, params: {index: colorIndex}}) {
         return img.dataset.shapeColors?.split(";")[colorIndex] || "";
     }
-    async load({ editingElement: img, params: { index: colorIndex }, value: color }) {
+    async load({editingElement: img, params: {index: colorIndex}, value: color}) {
         color = getValueFromVar(color);
         const newColorId = parseInt(colorIndex);
         const oldColors = img.dataset.shapeColors.split(";");
@@ -497,14 +524,14 @@ export class SetImgShapeColorAction extends BuilderAction {
             shapeColors: newColors.join(";"),
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
 export class FlipImageShapeAction extends BuilderAction {
     static id = "flipImageShape";
     static dependencies = ["imageShapeOption"];
-    async load({ editingElement: img, params: { axis } }) {
+    async load({editingElement: img, params: {axis}}) {
         const currentAxis = img.dataset.shapeFlip || "";
         const newAxis = currentAxis.includes(axis)
             ? currentAxis.replace(axis, "")
@@ -513,7 +540,7 @@ export class FlipImageShapeAction extends BuilderAction {
             shapeFlip: newAxis === "yx" ? "xy" : newAxis,
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
@@ -521,28 +548,30 @@ export class FlipImageShapeAction extends BuilderAction {
 export class RotateImageShapeAction extends BuilderAction {
     static id = "rotateImageShape";
     static dependencies = ["imageShapeOption"];
-    async load({ editingElement: img, params: { side } }) {
+    async load({editingElement: img, params: {side}}) {
         const currentRotateValue = parseInt(img.dataset.shapeRotate) || 0;
         const rotation = side === "left" ? -90 : 90;
         const newRotateValue = (currentRotateValue + rotation + 360) % 360;
-        return this.dependencies.imageShapeOption.loadShape(img, { shapeRotate: newRotateValue });
+        return this.dependencies.imageShapeOption.loadShape(img, {
+            shapeRotate: newRotateValue,
+        });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
 export class SetImageShapeSpeedAction extends BuilderAction {
     static id = "setImageShapeSpeed";
     static dependencies = ["imageShapeOption"];
-    getValue({ editingElement: img }) {
+    getValue({editingElement: img}) {
         return img.dataset.shapeAnimationSpeed || 0;
     }
-    async load({ editingElement: img, value: speed }) {
+    async load({editingElement: img, value: speed}) {
         return this.dependencies.imageShapeOption.loadShape(img, {
             shapeAnimationSpeed: speed,
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
@@ -550,10 +579,10 @@ export class ToggleImageShapeRatioAction extends BuilderAction {
     static id = "toggleImageShapeRatio";
     static dependencies = ["imageShapeOption"];
 
-    isApplied({ editingElement: img }) {
+    isApplied({editingElement: img}) {
         return img.dataset.aspectRatio !== "1/1";
     }
-    async load({ editingElement: img }) {
+    async load({editingElement: img}) {
         const isStretched = img.dataset.aspectRatio !== "1/1";
         return this.dependencies.imageShapeOption.loadShape(img, {
             aspectRatio: isStretched ? "1/1" : "0/0",
@@ -563,12 +592,14 @@ export class ToggleImageShapeRatioAction extends BuilderAction {
             height: undefined,
         });
     }
-    apply({ editingElement: img, loadResult: updateImageAttributes }) {
+    apply({editingElement: img, loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
 
-registry.category("builder-plugins").add(ImageShapeOptionPlugin.id, ImageShapeOptionPlugin);
+registry
+    .category("builder-plugins")
+    .add(ImageShapeOptionPlugin.id, ImageShapeOptionPlugin);
 
 /**
  * @param {String} mimetype

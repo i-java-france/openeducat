@@ -1,12 +1,17 @@
-import { contains, openDiscuss, start, startServer } from "@mail/../tests/mail_test_helpers";
+import {
+    contains,
+    openDiscuss,
+    start,
+    startServer,
+} from "@mail/../tests/mail_test_helpers";
 
-import { describe, test } from "@odoo/hoot";
+import {describe, test} from "@odoo/hoot";
 
-import { Command, serverState } from "@web/../tests/web_test_helpers";
-import { url } from "@web/core/utils/urls";
-import { deserializeDateTime } from "@web/core/l10n/dates";
+import {Command, serverState} from "@web/../tests/web_test_helpers";
+import {url} from "@web/core/utils/urls";
+import {deserializeDateTime} from "@web/core/l10n/dates";
 
-import { defineWebsiteLivechatModels } from "@website_livechat/../tests/website_livechat_test_helpers";
+import {defineWebsiteLivechatModels} from "@website_livechat/../tests/website_livechat_test_helpers";
 
 describe.current.tags("desktop");
 defineWebsiteLivechatModels();
@@ -14,11 +19,11 @@ defineWebsiteLivechatModels();
 test("Discuss header shows visitor avatar", async () => {
     const pyEnv = await startServer();
     const visitorId = pyEnv["website.visitor"].create({});
-    const guestId = pyEnv["mail.guest"].create({ name: `Visitor #${visitorId}` });
+    const guestId = pyEnv["mail.guest"].create({name: `Visitor #${visitorId}`});
     const channelId = pyEnv["discuss.channel"].create({
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ guest_id: guestId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({guest_id: guestId}),
         ],
         channel_type: "livechat",
         livechat_operator_id: serverState.partnerId,

@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="portal_student_progresssion" model="ir.ui.view">
+        <field name="name">Portal layout : student progression</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="portal_breadcrumbs_inhetrite"/>
+        <field name="arch" type="xml">
+<data name="Portal layout : student progression" inherit_id="openeducat_core_enterprise.portal_breadcrumbs_inhetrite" priority="10">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        
+            
+        <t t-if="user_id.sudo().is_parent">
+            
+                
+            <li t-if="page_name == 'student_progress_info' or student_progress_info" t-attf-class="breadcrumb-item #{'active ' if not student_progress_info else ''}">
+                
+                    
+                <t t-if="progression" t-attf-href="#">
+                        Student Progression
+                    </t>
+                
+                    
+                <t t-else="">Student progression</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+            
+        <t t-if="user_id.sudo().is_student">
+            
+                
+            <li t-if="page_name == 'student_progress_info' or student_progress_info" t-attf-class="breadcrumb-item #{'active ' if not student_progress_info else ''}">
+                
+                    
+                <t t-if="progression" t-attf-href="#">
+                        Student Progression
+                    </t>
+                
+                    
+                <t t-else="">Student progression</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="openeducat_student_progression_portal_data" model="ir.ui.view">
+        <field name="name">openeducat_student_progression_portal_data</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_student_progress_enterprise.openeducat_student_progression_portal_data">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+        
+
+            
+        <t t-call="portal.portal_searchbar">
+            
+                
+            <t t-set="title">Student Progression</t>
+            
+            
+        </t>
+        
+            
+        <t t-if="not progression">
+            
+                
+            <div class="alert alert-warning mt8" role="alert">
+                    There are no records.
+                </div>
+            
+            
+        </t>
+        
+
+            
+        <div class="custom_responsive_data oe_student_progression" t-if="progression" style="background-color:white; padding: 20px;">
+            
+                
+            <div class="mt-md-2 table_data_inline table_content">
+                
+                    
+                <div t-if="progression.student_id" class="row col-md-12 table_content">
+                    
+                        
+                    <div class="row col-md-6" style="font-size: 16px;">
+                        
+                            
+                        <div t-if="progression.name" class="col-md-6 mb-1 mb-md-2 text-o-color-5">
+                            
+                                
+                            <b class="display-hidden text-nowrap">Progression No:</b>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.name" class="col-md-6 mb-1 mb-md-2">
+                            
+                                
+                            <span id="progression_name" t-esc="progression.name" class="content_para d-block mb-1" data-label="Progression No : "/>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.date" class="col-md-6 mb-1 mb-md-2 text-o-color-5">
+                            
+                                
+                            <b class="display-hidden">Date:</b>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.date" class="col-md-6 mb-1 mb-md-2">
+                            
+                                
+                            <span t-esc="progression.date" t-options="{'widget': 'date'}" class="content_para d-block mb-1" data-label="Date : "/>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                        
+                    <div class="row col-md-6" style="font-size: 16px;">
+                        
+                            
+                        <div t-if="progression.state" class="col-md-6 mb-1 mb-md-2 text-o-color-5">
+                            
+                                
+                            <b class="display-hidden">Status:</b>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.state" class="col-md-6 mb-1 mb-md-2">
+                            
+                                
+                            <span class="content_para d-block mb-1" data-label="Status : ">
+                                
+                                        
+                                <t t-if="progression.state == 'draft'">
+                                    
+                                            
+                                    <span class="badge badge-pill text-bg-primary">
+                                        
+                                                
+                                        <span class="d-inline">Draft</span>
+                                        
+                                            
+                                    </span>
+                                    
+                                        
+                                </t>
+                                
+                                        
+                                <t t-elif="progression.state == 'open'">
+                                    
+                                            
+                                    <span class="badge badge-pill text-bg-secondary">
+                                        
+                                                
+                                        <span class="d-inline">In Progress</span>
+                                        
+                                            
+                                    </span>
+                                    
+                                        
+                                </t>
+                                
+                                        
+                                <t t-elif="progression.state == 'done'">
+                                    
+                                            
+                                    <span class="badge badge-pill text-bg-success">
+                                        
+                                                
+                                        <span class="d-inline">Done</span>
+                                        
+                                            
+                                    </span>
+                                    
+                                        
+                                </t>
+                                
+                                        
+                                <t t-elif="progression.state == 'cancel'">
+                                    
+                                            
+                                    <span class="badge badge-pill text-bg-danger">
+                                        
+                                                
+                                        <span class="d-inline">Cancel</span>
+                                        
+                                            
+                                    </span>
+                                    
+                                        
+                                </t>
+                                
+                                        
+                                <t t-else="">
+                                    
+                                            
+                                    <span class="badge badge-pill text-bg-warning">
+                                        
+                                                
+                                        <span class="d-inline" t-field="progression.state"/>
+                                        
+                                            
+                                    </span>
+                                    
+                                        
+                                </t>
+                                
+                                
+                            </span>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.name" class="col-md-6 mb-1 mb-md-2 text-o-color-5">
+                            
+                                
+                            <b class="display-hidden">Created By:</b>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div t-if="progression.created_by" class="col-md-6 mb-1 mb-md-2">
+                            
+                                
+                            <span id="progression_created_by" t-esc="progression.created_by.name" class="content_para d-block mb-1" data-label="Created By : "/>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+
+                
+            <div class="mt48 mb8 progression_list" style="">
+                
+                    
+                <b style="font-size: 18px" class="text-o-color-5">Progression Details:</b>
+                
+                    
+                <div class="row pt16" id="student-progression">
+                    
+                        
+                    <div class="col-md-4 col-lg-3 col-12 mb24">
+                        
+                            
+                        <ul class="nav nav-pills d-block">
+                            </ul>
+                        
+                        
+                    </div>
+                    
+                        
+                    <div class="col-md-8 col-lg-9 col-12 tab-content-box">
+                        
+                            
+                        <div class="tab-content">
+                            </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="student_progression_report" model="ir.ui.view">
+        <field name="name">student_progression_report</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_student_progress_enterprise.student_progression_report">
+    
+            
+    <style>
+                .font{
+                font-size:14px;
+                font-family:&quot;Helvetica&quot;
+                }
+                @page{
+                margin-top:1%;
+                size: A4;
+                }
+            </style>
+    
+            
+    <t t-call="web.html_container">
+        
+                
+        <t t-call="web.external_layout">
+            
+                    
+            <div class="font">
+                
+                        
+                <div class="page" style="font-family: 'Odoo Unicode Support Noto';">
+                    
+                            
+                    <br/>
+                    
+                            
+                    <br/>
+                    
+                            
+                    <t t-foreach="docs" t-as="objs">
+                        
+                                
+                        <div class="row text-center">
+                            
+                                    
+                            <div class="col-md-12">
+                                
+                                        
+                                <h4 style="width:100%;">
+                                    
+                                            
+                                    <strong>
+                                                Student Progression Report
+                                            </strong>
+                                    
+                                        
+                                </h4>
+                                
+                                    
+                            </div>
+                            
+                                
+                        </div>
+                        
+                                
+                        <div class="row mt32 progression">
+                            
+                                    
+                            <div class="col-12">
+                                
+                                        
+                                <table width="100%" style="font-size:14px; border-collapse: collapse;">
+                                    
+                                            
+                                    <tbody>
+                                        
+                                                
+                                        <tr>
+                                            
+                                                    
+                                            <td style="border: 1px solid black; padding: 5px; width: 50%;">
+                                                
+                                                        
+                                                <b>Progression No :</b>
+                                                
+                                                        
+                                                <span t-esc="objs.name"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                    
+                                            <td style="border: 1px solid black; padding: 5px; width: 50%;">
+                                                
+                                                        
+                                                <b>Student :</b>
+                                                
+                                                        
+                                                <span t-esc="objs.student_id.name"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                
+                                        </tr>
+                                        
+                                                
+                                        <tr>
+                                            
+                                                    
+                                            <td style="border: 1px solid black; padding: 5px;">
+                                                
+                                                        
+                                                <b>Date :</b>
+                                                
+                                                        
+                                                <span t-esc="objs.date" t-options="{'widget':'date'}"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                    
+                                            <td style="border: 1px solid black; padding: 5px;">
+                                                
+                                                        
+                                                <b>Created By:</b>
+                                                
+                                                        
+                                                <span t-esc="objs.created_by.name"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                
+                                        </tr>
+                                        
+                                                
+                                        <tr>
+                                            
+                                                    
+                                            <td style="border: 1px solid black; padding: 5px;" colspan="2">
+                                                
+                                                        
+                                                <b>Status:</b>
+                                                
+                                                        
+                                                <span t-esc="{false:false, 'draft':'Draft',                                                                         'open':'In Progress', 'done':'Done', 'cancel':'Cancel'}[objs.state]"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                
+                                        </tr>
+                                        
+                                            
+                                    </tbody>
+                                    
+                                        
+                                </table>
+                                
+                                    
+                            </div>
+                            
+                                
+                        </div>
+                        
+                                
+                        <p style="page-break-after: always;"/>
+                        
+                            
+                    </t>
+                    
+                        
+                </div>
+                
+                    
+            </div>
+            
+                
+        </t>
+        
+            
+    </t>
+    
+        
+</t>
+        </field>
+    </record>
+
+    <record id="portal_home_inherit_student_progress" model="ir.ui.view">
+        <field name="name">Show Progression</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="Show Profile"/>
+        <field name="arch" type="xml">
+<data name="Show Progression" customize_show="True" inherit_id="openeducat_core_enterprise.portal_home_inherit" priority="99">
+    
+        
+    <xpath expr="//div[@id='portal_openeducat_category']" position="inside">
+        
+            
+        <t t-call="portal.portal_docs_entry">
+            
+                
+            <t t-set="icon" t-value="'/openeducat_student_progress_enterprise/static/src/img/progression.svg'"/>
+            
+                
+            <t t-set="title">Progression</t>
+            
+                
+            <t t-set="text">Monitor and evaluate student academic progress</t>
+            
+                
+            <t t-set="url" t-value="'/student/progression/'"/>
+            
+                
+            <t t-if="is_parent">
+                
+                    
+                <t t-set="url" t-value="'/student/progression/' + student_id"/>
+                
+                
+            </t>
+            
+                
+            <t t-set="config_card" t-value="True"/>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+</odoo>

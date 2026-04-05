@@ -1,16 +1,18 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { Form } from "./form";
-import { patch } from "@web/core/utils/patch";
-import { formatDate, formatDateTime } from "@web/core/l10n/dates";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Form} from "./form";
+import {patch} from "@web/core/utils/patch";
+import {formatDate, formatDateTime} from "@web/core/l10n/dates";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class FormEdit extends Interaction {
     static selector = ".s_website_form form, form.s_website_form"; // !compatibility
     start() {
         // We do not initialize the datetime picker in edit mode but want the dates to be formatted.
-        for (const el of this.el.querySelectorAll(".s_website_form_input.datetimepicker-input")) {
+        for (const el of this.el.querySelectorAll(
+            ".s_website_form_input.datetimepicker-input"
+        )) {
             const value = el.getAttribute("value");
             if (value) {
                 const format =

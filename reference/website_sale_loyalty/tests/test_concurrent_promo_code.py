@@ -1,5 +1,6 @@
 import threading
 from concurrent.futures import ThreadPoolExecutor
+
 from psycopg2 import OperationalError
 
 from odoo import SUPERUSER_ID, api

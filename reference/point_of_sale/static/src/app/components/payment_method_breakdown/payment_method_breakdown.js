@@ -1,14 +1,14 @@
-import { Component } from "@odoo/owl";
-import { AccordionItem } from "@point_of_sale/app/components/accordion_item/accordion_item";
+import {Component} from "@odoo/owl";
+import {AccordionItem} from "@point_of_sale/app/components/accordion_item/accordion_item";
 
 export class PaymentMethodBreakdown extends Component {
-    static components = { AccordionItem };
+    static components = {AccordionItem};
     static template = "point_of_sale.PaymentMethodBreakdown";
 
     static props = {
         title: String,
         total_amount: Number,
-        transactions: { type: Array, optional: true },
+        transactions: {type: Array, optional: true},
     };
 
     static defaultProps = {

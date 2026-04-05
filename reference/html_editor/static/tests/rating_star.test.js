@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, press } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
+import {expect, test} from "@odoo/hoot";
+import {click, press} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
 import {
     deleteBackward,
     deleteForward,
@@ -8,16 +8,16 @@ import {
     simulateArrowKeyPress,
     splitBlock,
 } from "./_helpers/user_actions";
-import { getContent } from "./_helpers/selection";
-import { animationFrame } from "@odoo/hoot-mock";
-import { expectElementCount } from "./_helpers/ui_expectations";
+import {getContent} from "./_helpers/selection";
+import {animationFrame} from "@odoo/hoot-mock";
+import {expectElementCount} from "./_helpers/ui_expectations";
 
 /**
  * Rating Star Element Tests
  */
 
 test("add 3 star elements", async () => {
-    const { el, editor } = await setupEditor("<p>[]</p>");
+    const {el, editor} = await setupEditor("<p>[]</p>");
     await insertText(editor, "/3star");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 1);
@@ -29,7 +29,7 @@ test("add 3 star elements", async () => {
 });
 
 test("add 5 star elements", async () => {
-    const { el, editor } = await setupEditor("<p>[]</p>");
+    const {el, editor} = await setupEditor("<p>[]</p>");
     await insertText(editor, "/5star");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 1);
@@ -41,7 +41,7 @@ test("add 5 star elements", async () => {
 });
 
 test("select star rating", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<p><span contenteditable="false" class="o_stars"><i class="fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i></span>[]</p>`
     );
 
@@ -65,7 +65,7 @@ test("select star rating", async () => {
 });
 
 test("should insert two empty paragraphs when Enter is pressed twice before the star element", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         `<p>\u200B[]<span contenteditable="false" class="o_stars o_three_stars"><i class="fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i></span>\u200B</p>`
     );
     splitBlock(editor);
@@ -79,7 +79,7 @@ test("should insert two empty paragraphs when Enter is pressed twice before the 
 });
 
 test("should insert two empty paragraphs when Enter is pressed twice after the star element", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         `<p>\u200B<span contenteditable="false" class="o_stars o_three_stars"><i class="fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i><i class="o_stars fa fa-star-o" contenteditable="false">\u200B</i></span>\u200B[]</p>`
     );
     splitBlock(editor);
@@ -104,7 +104,7 @@ test("should delete star rating elements when delete is pressed twice", async ()
 });
 
 test("stars line should be reachable with up/down", async () => {
-    const { el, editor } = await setupEditor("<p>abc[]def</p>");
+    const {el, editor} = await setupEditor("<p>abc[]def</p>");
     splitBlock(editor);
     splitBlock(editor);
     await simulateArrowKeyPress(editor, "ArrowUp");

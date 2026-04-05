@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { Many2OneOption } from "./many2one_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {Many2OneOption} from "./many2one_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 export class Many2OneOptionPlugin extends Plugin {
     static id = "many2OneOption";
@@ -12,7 +12,7 @@ export class Many2OneOptionPlugin extends Plugin {
             Many2OneAction,
         },
         content_not_editable_selectors: "[data-oe-field][data-oe-many2one-id]",
-        after_replication_handlers: ({ sourceEl, targetEl }) => {
+        after_replication_handlers: ({sourceEl, targetEl}) => {
             if (
                 sourceEl.hasAttribute("data-oe-many2one-model") &&
                 targetEl.hasAttribute("data-oe-many2one-model")
@@ -28,9 +28,9 @@ export class Many2OneOptionPlugin extends Plugin {
 
 export class Many2OneAction extends BuilderAction {
     static id = "many2One";
-    async load({ editingElement, value }) {
-        const { id } = JSON.parse(value);
-        const { oeModel, oeId, oeField } = editingElement.dataset;
+    async load({editingElement, value}) {
+        const {id} = JSON.parse(value);
+        const {oeModel, oeId, oeField} = editingElement.dataset;
         const allContactOptions = new Set(
             this.editable
                 .querySelectorAll(
@@ -49,22 +49,25 @@ export class Many2OneAction extends BuilderAction {
                             "ir.qweb.field.contact",
                             "get_record_to_html",
                             [[id]],
-                            { options: JSON.parse(contactOptions) }
+                            {options: JSON.parse(contactOptions)}
                         ),
                     ])
             )
         );
     }
-    apply({ editingElement, value, loadResult }) {
-        const { id, name } = JSON.parse(value);
-        const { oeModel, oeId, oeField, oeContactOptions } = editingElement.dataset;
+    apply({editingElement, value, loadResult}) {
+        const {id, name} = JSON.parse(value);
+        const {oeModel, oeId, oeField, oeContactOptions} = editingElement.dataset;
 
         const selector =
             `[data-oe-model="${oeModel}"][data-oe-id="${oeId}"][data-oe-field="${oeField}"]` +
             (oeContactOptions === undefined
                 ? "[data-oe-contact-options]"
                 : `:not([data-oe-contact-options='${oeContactOptions}'])`);
-        for (const el of [...this.editable.querySelectorAll(selector), editingElement]) {
+        for (const el of [
+            ...this.editable.querySelectorAll(selector),
+            editingElement,
+        ]) {
             el.dataset.oeMany2oneId = id;
             if (el.dataset.oeType === "contact") {
                 el.replaceChildren(
@@ -78,8 +81,8 @@ export class Many2OneAction extends BuilderAction {
             }
         }
     }
-    getValue({ editingElement }) {
-        return JSON.stringify({ id: parseInt(editingElement.dataset.oeMany2oneId) });
+    getValue({editingElement}) {
+        return JSON.stringify({id: parseInt(editingElement.dataset.oeMany2oneId)});
     }
 }
 

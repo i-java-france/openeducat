@@ -1,4 +1,4 @@
-import { Component, onWillDestroy, useChildSubEnv, xml } from "@odoo/owl";
+import {Component, onWillDestroy, useChildSubEnv, xml} from "@odoo/owl";
 
 const GROUPS = new Map();
 
@@ -25,7 +25,7 @@ export const DROPDOWN_GROUP = Symbol("dropdownGroup");
 export class DropdownGroup extends Component {
     static template = xml`<t t-slot="default"/>`;
     static props = {
-        group: { type: String, optional: true },
+        group: {type: String, optional: true},
         slots: Object,
     };
 
@@ -33,9 +33,9 @@ export class DropdownGroup extends Component {
         if (this.props.group) {
             const group = getGroup(this.props.group);
             onWillDestroy(() => removeGroup(this.props.group));
-            useChildSubEnv({ [DROPDOWN_GROUP]: group });
+            useChildSubEnv({[DROPDOWN_GROUP]: group});
         } else {
-            useChildSubEnv({ [DROPDOWN_GROUP]: new Set() });
+            useChildSubEnv({[DROPDOWN_GROUP]: new Set()});
         }
     }
 }

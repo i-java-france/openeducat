@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * Initialize Local Network Access permission handling.
@@ -31,19 +31,22 @@ export const initLNA = async (notificationService, callback = () => {}) => {
             message = _t(
                 "Local Network Access permission is denied. Some hardware devices might not work properly. Please allow Local Network Access in your browser settings."
             );
-            notificationService.add(message, { type: "warning" });
+            notificationService.add(message, {type: "warning"});
         }
 
         callback(type, message);
     };
 
     try {
-        const result = await navigator.permissions.query({ name: "local-network-access" });
+        const result = await navigator.permissions.query({
+            name: "local-network-access",
+        });
         processLNAState(result);
         result.onchange = () => processLNAState(result);
     } catch {
         odoo.use_lna = false;
-        const isChromiumBased = navigator.userAgent.includes("Chromium") || !!window.chrome;
+        const isChromiumBased =
+            navigator.userAgent.includes("Chromium") || !!window.chrome;
         let message;
         if (!isChromiumBased) {
             message = _t(
@@ -55,7 +58,7 @@ export const initLNA = async (notificationService, callback = () => {}) => {
             );
         }
 
-        notificationService.add(message, { type: "warning" });
+        notificationService.add(message, {type: "warning"});
         callback("danger", message);
     }
 };

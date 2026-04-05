@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-from odoo.addons.l10n_es_edi_tbai.models.account_move import TBAI_REFUND_REASONS
 from odoo.exceptions import UserError
+
+from odoo.addons.l10n_es_edi_tbai.models.account_move import TBAI_REFUND_REASONS
 
 
 class PosOrder(models.Model):

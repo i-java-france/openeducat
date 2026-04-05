@@ -1,4 +1,4 @@
-from odoo import _, api, models, exceptions
+from odoo import _, api, exceptions, models
 
 
 class UtmSource(models.Model):

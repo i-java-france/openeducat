@@ -3,12 +3,12 @@
 import ast
 import logging
 import uuid
-
 from collections import defaultdict
+
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
-from odoo import api, fields, models, tools, _
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import is_html_empty
@@ -511,7 +511,7 @@ class SlideChannel(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for channel, vals in zip(self, vals_list):
+        for channel, vals in zip(self, vals_list, strict=False):
             if 'name' not in default:
                 vals['name'] = f"{channel.name} ({_('copy')})"
             if 'enroll' not in default and channel.visibility == "members":

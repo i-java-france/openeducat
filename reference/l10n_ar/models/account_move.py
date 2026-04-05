@@ -1,10 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, RedirectWarning, ValidationError
+import logging
+
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools.misc import formatLang
-from dateutil.relativedelta import relativedelta
-import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -224,7 +227,7 @@ class AccountMove(models.Model):
     def _reverse_moves(self, default_values_list=None, cancel=False):
         if not default_values_list:
             default_values_list = [{} for move in self]
-        for move, default_values in zip(self, default_values_list):
+        for move, default_values in zip(self, default_values_list, strict=False):
             default_values.update({
                 'l10n_ar_afip_service_start': move.l10n_ar_afip_service_start,
                 'l10n_ar_afip_service_end': move.l10n_ar_afip_service_end,
@@ -269,7 +272,7 @@ class AccountMove(models.Model):
         return super()._get_starting_sequence()
 
     def _get_last_sequence_domain(self, relaxed=False):
-        where_string, param = super(AccountMove, self)._get_last_sequence_domain(relaxed)
+        where_string, param = super()._get_last_sequence_domain(relaxed)
         if self.company_id.account_fiscal_country_id.code == "AR" and self.l10n_latam_use_documents:
             where_string += " AND l10n_latam_document_type_id = %(l10n_latam_document_type_id)s"
             param['l10n_latam_document_type_id'] = self.l10n_latam_document_type_id.id or 0

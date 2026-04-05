@@ -1,15 +1,19 @@
-import { expect, test } from "@odoo/hoot";
-import { click, press, waitFor, waitForNone, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { cleanLinkArtifacts } from "@html_editor/../tests/_helpers/format";
-import { getContent, setContent, setSelection } from "@html_editor/../tests/_helpers/selection";
-import { base64Img, setupEditor } from "@html_editor/../tests/_helpers/editor";
+import {expect, test} from "@odoo/hoot";
+import {click, press, queryOne, waitFor, waitForNone} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {cleanLinkArtifacts} from "@html_editor/../tests/_helpers/format";
+import {
+    getContent,
+    setContent,
+    setSelection,
+} from "@html_editor/../tests/_helpers/selection";
+import {base64Img, setupEditor} from "@html_editor/../tests/_helpers/editor";
 import {
     contains,
     defineModels,
     onRpc,
-    serverState,
     patchWithCleanup,
+    serverState,
 } from "@web/../tests/web_test_helpers";
 import {
     click as mailClick,
@@ -17,9 +21,9 @@ import {
     openFormView,
     start,
 } from "@mail/../tests/mail_test_helpers";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { HtmlField } from "@html_editor/fields/html_field";
-import { browser } from "@web/core/browser/browser";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {HtmlField} from "@html_editor/fields/html_field";
+import {browser} from "@web/core/browser/browser";
 
 defineModels(mailModels);
 
@@ -50,20 +54,24 @@ test("autocomplete should shown and able to edit the link", async () => {
     onRpc("/contactus", () => ({}));
     onRpc("/html_editor/link_preview_internal", () => ({}));
 
-    const { el } = await setupEditor('<p>this is a <a href="http://test.com/">li[]nk</a></p>');
+    const {el} = await setupEditor(
+        '<p>this is a <a href="http://test.com/">li[]nk</a></p>'
+    );
 
     await waitFor(".o-we-linkpopover");
     await click(".o_we_edit_link");
     await animationFrame();
-    // the url input should be autocomplete
+    // The url input should be autocomplete
     await contains(".o-autocomplete--input").focus();
 
-    // autocomplete dropdown should be there
+    // Autocomplete dropdown should be there
     await press(["ctrl", "a"]);
     await press("c");
     // Should update preview with typed URL.
-    expect(cleanLinkArtifacts(getContent(el))).toBe('<p>this is a <a href="c">link</a></p>');
-    await waitFor(".o-autocomplete--dropdown-menu", { timeout: 3000 });
+    expect(cleanLinkArtifacts(getContent(el))).toBe(
+        '<p>this is a <a href="c">link</a></p>'
+    );
+    await waitFor(".o-autocomplete--dropdown-menu", {timeout: 3000});
     expect.verifySteps(["/website/get_suggested_links"]);
 
     expect(".ui-autocomplete-category").toHaveCount(1);
@@ -75,7 +83,7 @@ test("autocomplete should shown and able to edit the link", async () => {
         '<p>this is a <a href="/contactus">link</a></p>'
     );
     await click(".o_we_apply_link");
-    // the url should be applied after selecting a dropdown item
+    // The url should be applied after selecting a dropdown item
     expect(cleanLinkArtifacts(getContent(el))).toBe(
         '<p>this is a <a href="/contactus">li[]nk</a></p>'
     );
@@ -87,8 +95,8 @@ test("autocomplete should shown and able to edit the link", async () => {
 
     await press(["ctrl", "a"]);
     await press("#");
-    await waitFor(".o-autocomplete--dropdown-menu", { timeout: 3000 });
-    // check the default page anchors are in the autocomplete dropdown
+    await waitFor(".o-autocomplete--dropdown-menu", {timeout: 3000});
+    // Check the default page anchors are in the autocomplete dropdown
     expect(".o-autocomplete--dropdown-item:first").toHaveText("#top");
     expect(".o-autocomplete--dropdown-item:last").toHaveText("#bottom");
 });
@@ -120,33 +128,39 @@ test("autocomplete suggestions for image links don’t update preview until appl
     onRpc("/contactus", () => ({}));
     onRpc("/html_editor/link_preview_internal", () => ({}));
 
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<p><a href="http://test.test/">[<img src="${base64Img}">]</a></p>`
     );
 
     await waitFor(".o-we-linkpopover");
     await click(".o_we_edit_link");
     await animationFrame();
-    // the url input should be autocomplete
+    // The url input should be autocomplete
     await contains(".o-autocomplete--input").focus();
 
-    // autocomplete dropdown should be there
+    // Autocomplete dropdown should be there
     await press(["ctrl", "a"]);
     await press("c");
-    // typing URL shouldn’t change image link preview.
-    expect(getContent(el)).toBe(`<p><a href="http://test.test/"><img src="${base64Img}"></a></p>`);
-    await waitFor(".o-autocomplete--dropdown-menu", { timeout: 3000 });
+    // Typing URL shouldn’t change image link preview.
+    expect(getContent(el)).toBe(
+        `<p><a href="http://test.test/"><img src="${base64Img}"></a></p>`
+    );
+    await waitFor(".o-autocomplete--dropdown-menu", {timeout: 3000});
     expect.verifySteps(["/website/get_suggested_links"]);
 
     expect(".ui-autocomplete-category").toHaveCount(1);
     expect(".o-autocomplete--dropdown-item img").toHaveCount(1);
 
     await click(".o-autocomplete--dropdown-item:first");
-    // selecting suggestion shouldn’t change image link preview.
-    expect(getContent(el)).toBe(`<p><a href="http://test.test/"><img src="${base64Img}"></a></p>`);
+    // Selecting suggestion shouldn’t change image link preview.
+    expect(getContent(el)).toBe(
+        `<p><a href="http://test.test/"><img src="${base64Img}"></a></p>`
+    );
     await click(".o_we_apply_link");
-    // the url should be applied after selecting a dropdown item
-    expect(getContent(el)).toBe(`<p><a href="/contactus">[<img src="${base64Img}">]</a></p>`);
+    // The url should be applied after selecting a dropdown item
+    expect(getContent(el)).toBe(
+        `<p><a href="/contactus">[<img src="${base64Img}">]</a></p>`
+    );
 });
 
 test("LinkPopover opens in full composer", async () => {
@@ -165,13 +179,13 @@ test("LinkPopover opens in full composer", async () => {
     });
     await start();
     await openFormView("res.partner", serverState.partnerId);
-    await mailClick("button", { text: "Log note" });
+    await mailClick("button", {text: "Log note"});
     await mailClick("button[title='Open Full Composer']");
     await waitFor(".odoo-editor-editable");
     htmlEditor.editable.focus();
     await insertText(htmlEditor, "test");
     const node = queryOne(".odoo-editor-editable div");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await mailClick(".o-we-toolbar .fa-link");
     await waitFor(".o-we-linkpopover");
     await animationFrame();
@@ -190,13 +204,13 @@ test("link redirection should be prefixed for url of website pages only", async 
     onRpc("/odoo/project/1", () => ({}));
     onRpc("/web/project/1", () => ({}));
 
-    // website pages should be prefixed with /@
-    const { el } = await setupEditor('<p>this is a <a href="/contactus">li[]nk</a></p>');
+    // Website pages should be prefixed with /@
+    const {el} = await setupEditor('<p>this is a <a href="/contactus">li[]nk</a></p>');
     await waitFor(".o-we-linkpopover");
     await click(".o-we-linkpopover a");
     expect.verifySteps(["website page url prefixed"]);
 
-    // other backend urls and external urls should not be prefixed
+    // Other backend urls and external urls should not be prefixed
     setContent(el, `<p>this is a[] <a href="/odoo/project/1">link</a></p>`);
     await waitForNone(".o-we-linkpopover");
     setContent(el, `<p>this is a <a href="/odoo/project/1">li[]nk</a></p>`);
@@ -226,7 +240,7 @@ test("link redirection should not be prefixed when the current page is not a web
             expect(url.pathname.startsWith("/@")).toBe(true);
         },
         location: {
-            // simulating being on a non-website page (eg. backend) by using /odoo/ URL
+            // Simulating being on a non-website page (eg. backend) by using /odoo/ URL
             href: browser.location.origin + "/odoo/contactus",
             hostname: browser.location.hostname,
         },
@@ -234,16 +248,16 @@ test("link redirection should not be prefixed when the current page is not a web
     onRpc("/html_editor/link_preview_internal", () => ({}));
     onRpc("/contactus", () => ({}));
 
-    // website pages should not be prefixed with /@
+    // Website pages should not be prefixed with /@
     await setupEditor('<p>this is a <a href="/contactus">li[]nk</a></p>');
     await waitFor(".o-we-linkpopover");
     await click(".o-we-linkpopover a");
-    // the open method should not be called from onClickForcePreviewMode
+    // The open method should not be called from onClickForcePreviewMode
     expect.verifySteps([]);
 });
 
 test("Focus should be on label when adding a new URL", async () => {
-    const { editor } = await setupEditor("<p>ab[]</p>");
+    const {editor} = await setupEditor("<p>ab[]</p>");
     await insertText(editor, "/link");
     await animationFrame();
     expect(".active .o-we-command-name").toHaveText("Link");

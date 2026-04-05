@@ -1,17 +1,17 @@
-import { browser } from "@web/core/browser/browser";
-import { Tooltip } from "@web/core/tooltip/tooltip";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { Component, useRef } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {Tooltip} from "@web/core/tooltip/tooltip";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {Component, useRef} from "@odoo/owl";
 
 export class CopyButton extends Component {
     static template = "web.CopyButton";
     static props = {
-        className: { type: String, optional: true },
-        copyText: { type: String, optional: true },
-        disabled: { type: Boolean, optional: true },
-        successText: { type: String, optional: true },
-        icon: { type: String, optional: true },
-        content: { type: [String, Object, Function], optional: true },
+        className: {type: String, optional: true},
+        copyText: {type: String, optional: true},
+        disabled: {type: Boolean, optional: true},
+        successText: {type: String, optional: true},
+        icon: {type: String, optional: true},
+        content: {type: [String, Object, Function], optional: true},
     };
 
     setup() {
@@ -20,7 +20,7 @@ export class CopyButton extends Component {
     }
 
     showTooltip() {
-        this.popover.open(this.button.el, { tooltip: this.props.successText });
+        this.popover.open(this.button.el, {tooltip: this.props.successText});
         browser.setTimeout(this.popover.close, 800);
     }
 

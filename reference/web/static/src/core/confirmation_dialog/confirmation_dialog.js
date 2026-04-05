@@ -1,8 +1,8 @@
-import { Dialog } from "../dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useChildRef } from "@web/core/utils/hooks";
+import {Dialog} from "../dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useChildRef} from "@web/core/utils/hooks";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export const deleteConfirmationMessage = _t(
     `Ready to make your record disappear into thin air? Are you sure?
@@ -13,7 +13,7 @@ Think twice before you click that 'Delete' button!`
 
 export class ConfirmationDialog extends Component {
     static template = "web.ConfirmationDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         close: Function,
         title: {
@@ -25,13 +25,13 @@ export class ConfirmationDialog extends Component {
             },
             optional: true,
         },
-        body: { type: String, optional: true },
-        confirm: { type: Function, optional: true },
-        confirmLabel: { type: String, optional: true },
-        confirmClass: { type: String, optional: true },
-        cancel: { type: Function, optional: true },
-        cancelLabel: { type: String, optional: true },
-        dismiss: { type: Function, optional: true },
+        body: {type: String, optional: true},
+        confirm: {type: Function, optional: true},
+        confirmLabel: {type: String, optional: true},
+        confirmClass: {type: String, optional: true},
+        cancel: {type: Function, optional: true},
+        cancelLabel: {type: String, optional: true},
+        dismiss: {type: Function, optional: true},
     };
     static defaultProps = {
         confirmLabel: _t("Ok"),
@@ -63,7 +63,9 @@ export class ConfirmationDialog extends Component {
         if (!this.modalRef.el) {
             return; // safety belt for stable versions
         }
-        for (const button of [...this.modalRef.el.querySelectorAll(".modal-footer button")]) {
+        for (const button of [
+            ...this.modalRef.el.querySelectorAll(".modal-footer button"),
+        ]) {
             button.disabled = disabled;
         }
     }
@@ -94,7 +96,7 @@ export class AlertDialog extends ConfirmationDialog {
     static template = "web.AlertDialog";
     static props = {
         ...ConfirmationDialog.props,
-        contentClass: { type: String, optional: true },
+        contentClass: {type: String, optional: true},
     };
     static defaultProps = {
         ...ConfirmationDialog.defaultProps,

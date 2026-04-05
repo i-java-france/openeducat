@@ -1,10 +1,10 @@
-import { RPCError } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { Deferred, Race } from "@web/core/utils/concurrency";
-import { useService } from "@web/core/utils/hooks";
-import { useSetupAction } from "@web/search/action_hook";
-import { SEARCH_KEYS } from "@web/search/with_search/with_search";
-import { buildSampleORM } from "./sample_server";
+import {RPCError} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {Deferred, Race} from "@web/core/utils/concurrency";
+import {useService} from "@web/core/utils/hooks";
+import {useSetupAction} from "@web/search/action_hook";
+import {SEARCH_KEYS} from "@web/search/with_search/with_search";
+import {buildSampleORM} from "./sample_server";
 
 import {
     EventBus,
@@ -164,7 +164,8 @@ export function useModelWithSampleData(ModelClass, params, options = {}) {
         await model.load(searchParams);
         if (useSampleModel && !model.hasData()) {
             sampleORM =
-                sampleORM || buildSampleORM(component.props.resModel, component.props.fields, user);
+                sampleORM ||
+                buildSampleORM(component.props.resModel, component.props.fields, user);
             // Load data with sampleORM then restore real ORM.
             model.orm = sampleORM;
             await model.load(searchParams);
@@ -203,16 +204,20 @@ export function useModelWithSampleData(ModelClass, params, options = {}) {
     useSetupAction({
         getGlobalState() {
             if (component.props.useSampleModel) {
-                return { useSampleModel };
+                return {useSampleModel};
             }
         },
-        getLocalState: () => ({ sampleORM }),
+        getLocalState: () => ({sampleORM}),
     });
 
     return model;
 }
 
-export function _makeFieldFromPropertyDefinition(name, definition, relatedPropertyField) {
+export function _makeFieldFromPropertyDefinition(
+    name,
+    definition,
+    relatedPropertyField
+) {
     return {
         ...definition,
         name,
@@ -237,7 +242,11 @@ export async function addPropertyFieldDefs(orm, resModel, context, fields, group
                         context,
                     })
                     .then((definition) => {
-                        fields[gb] = _makeFieldFromPropertyDefinition(gb, definition, field);
+                        fields[gb] = _makeFieldFromPropertyDefinition(
+                            gb,
+                            definition,
+                            field
+                        );
                     })
                     .catch(() => {
                         fields[gb] = _makeFieldFromPropertyDefinition(gb, {}, field);

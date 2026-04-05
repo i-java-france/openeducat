@@ -1,35 +1,38 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { ColorList } from "@web/core/colorlist/colorlist";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { imageUrl } from "@web/core/utils/urls";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { Field } from "@web/views/fields/field";
-import { fileTypeMagicWordMap } from "@web/views/fields/image/image_field";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { useViewCompiler } from "@web/views/view_compiler";
-import { Widget } from "@web/views/widgets/widget";
-import { getFormattedValue } from "../utils";
-import { KANBAN_CARD_ATTRIBUTE, KANBAN_MENU_ATTRIBUTE } from "./kanban_arch_parser";
-import { KanbanCompiler } from "./kanban_compiler";
-import { KanbanCoverImageDialog } from "./kanban_cover_image_dialog";
-import { KanbanDropdownMenuWrapper } from "./kanban_dropdown_menu_wrapper";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {ColorList} from "@web/core/colorlist/colorlist";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {imageUrl} from "@web/core/utils/urls";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {Field} from "@web/views/fields/field";
+import {fileTypeMagicWordMap} from "@web/views/fields/image/image_field";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {useViewCompiler} from "@web/views/view_compiler";
+import {Widget} from "@web/views/widgets/widget";
+import {getFormattedValue} from "../utils";
+import {KANBAN_CARD_ATTRIBUTE, KANBAN_MENU_ATTRIBUTE} from "./kanban_arch_parser";
+import {KanbanCompiler} from "./kanban_compiler";
+import {KanbanCoverImageDialog} from "./kanban_cover_image_dialog";
+import {KanbanDropdownMenuWrapper} from "./kanban_dropdown_menu_wrapper";
 
-import { Component, onWillUpdateProps, useRef, useState } from "@odoo/owl";
+import {Component, onWillUpdateProps, useRef, useState} from "@odoo/owl";
 
-const { COLORS } = ColorList;
+const {COLORS} = ColorList;
 
 const formatters = registry.category("formatters");
 
 // These classes determine whether a click on a record should open it.
-export const CANCEL_GLOBAL_CLICK = ["a", ".dropdown", ".oe_kanban_action", "[data-bs-toggle]"].join(
-    ","
-);
+export const CANCEL_GLOBAL_CLICK = [
+    "a",
+    ".dropdown",
+    ".oe_kanban_action",
+    "[data-bs-toggle]",
+].join(",");
 
 /**
  * Returns the index of a color determined by a given record.
@@ -38,7 +41,10 @@ export function getColorIndex(value) {
     if (typeof value === "number") {
         return Math.round(value) % COLORS.length;
     } else if (typeof value === "string") {
-        const charCodeSum = [...value].reduce((acc, _, i) => acc + value.charCodeAt(i), 0);
+        const charCodeSum = [...value].reduce(
+            (acc, _, i) => acc + value.charCodeAt(i),
+            0
+        );
         return charCodeSum % COLORS.length;
     } else {
         return 0;
@@ -84,7 +90,7 @@ function getValue(record, fieldName) {
     const field = record.fields[fieldName];
     const value = record.data[fieldName];
     const formatter = formatters.get(field.type, String);
-    return formatter(value, { field, data: record.data });
+    return formatter(value, {field, data: record.data});
 }
 
 export function getFormattedRecord(record) {
@@ -131,7 +137,7 @@ export function getImageSrcFromRecordInfo(record, model, field, idOrIds, placeho
     } else {
         // Else: fetches the image related to the given id.
         const unique = isCurrentRecord && record.data.write_date;
-        return imageUrl(model, id, field, { unique });
+        return imageUrl(model, id, field, {unique});
     }
 }
 
@@ -188,15 +194,15 @@ export class KanbanRecord extends Component {
         this.dialog = useService("dialog");
         this.notification = useService("notification");
 
-        const { Compiler, archInfo } = this.props;
+        const {Compiler, archInfo} = this.props;
         const ViewCompiler = Compiler || KanbanCompiler;
-        const { templateDocs: templates } = archInfo;
+        const {templateDocs: templates} = archInfo;
 
         this.templates = useViewCompiler(ViewCompiler, templates);
 
         this.showMenu = this.constructor.KANBAN_MENU_ATTRIBUTE in templates;
 
-        this.dataState = useState({ record: {}, widget: {} });
+        this.dataState = useState({record: {}, widget: {}});
         this.createWidget(this.props);
         onWillUpdateProps(this.createWidget);
         useRecordObserver((record) =>
@@ -214,8 +220,8 @@ export class KanbanRecord extends Component {
     }
 
     getFormattedValue(fieldId) {
-        const { archInfo, record } = this.props;
-        const { name } = archInfo.fieldNodes[fieldId];
+        const {archInfo, record} = this.props;
+        const {name} = archInfo.fieldNodes[fieldId];
         return getFormattedValue(record, name, archInfo.fieldNodes[fieldId]);
     }
 
@@ -225,8 +231,8 @@ export class KanbanRecord extends Component {
      * @param {Object} props
      */
     createWidget(props) {
-        const { archInfo, groupByField } = props;
-        const { activeActions } = archInfo;
+        const {archInfo, groupByField} = props;
+        const {activeActions} = archInfo;
         // Widget
         const deletable =
             activeActions.delete &&
@@ -240,7 +246,8 @@ export class KanbanRecord extends Component {
     }
 
     getRecordClasses() {
-        const { archInfo, canResequence, forceGlobalClick, record, progressBarState } = this.props;
+        const {archInfo, canResequence, forceGlobalClick, record, progressBarState} =
+            this.props;
         const classes = ["o_kanban_record d-flex"];
         if (canResequence) {
             classes.push("o_draggable");
@@ -249,7 +256,7 @@ export class KanbanRecord extends Component {
             classes.push("cursor-pointer");
         }
         if (progressBarState) {
-            const { fieldName, colors } = progressBarState.progressAttributes;
+            const {fieldName, colors} = progressBarState.progressAttributes;
             const value = record.data[fieldName];
             const color = colors[value];
             if (color) {
@@ -287,7 +294,7 @@ export class KanbanRecord extends Component {
             this.props.toggleSelection(this.props.record, ev.shiftKey);
             return;
         }
-        const { archInfo, forceGlobalClick, openRecord, record } = this.props;
+        const {archInfo, forceGlobalClick, openRecord, record} = this.props;
         if (!forceGlobalClick && archInfo.openAction) {
             this.action.doActionButton(
                 {
@@ -306,7 +313,7 @@ export class KanbanRecord extends Component {
                 }
             );
         } else if (forceGlobalClick || this.props.archInfo.canOpenRecords) {
-            openRecord(record, { newWindow });
+            openRecord(record, {newWindow});
         }
     }
 
@@ -340,8 +347,8 @@ export class KanbanRecord extends Component {
      * @param {Object} params
      */
     triggerAction(params) {
-        const { archInfo, openRecord, deleteRecord, record, archiveRecord } = this.props;
-        const { type } = params;
+        const {archInfo, openRecord, deleteRecord, record, archiveRecord} = this.props;
+        const {type} = params;
         switch (type) {
             case "open": {
                 return openRecord(record);
@@ -356,7 +363,7 @@ export class KanbanRecord extends Component {
                 return deleteRecord(record);
             }
             case "set_cover": {
-                const { autoOpen, fieldName } = params;
+                const {autoOpen, fieldName} = params;
                 const widgets = Object.values(archInfo.fieldNodes)
                     .filter((x) => x.name === fieldName)
                     .map((x) => x.widget);
@@ -366,20 +373,27 @@ export class KanbanRecord extends Component {
                     field.relation === "ir.attachment" &&
                     widgets.includes("attachment_image")
                 ) {
-                    this.dialog.add(KanbanCoverImageDialog, { autoOpen, fieldName, record });
+                    this.dialog.add(KanbanCoverImageDialog, {
+                        autoOpen,
+                        fieldName,
+                        record,
+                    });
                 } else {
                     const warning = _t(
                         `Could not set the cover image: incorrect field ("%s") is provided in the view.`,
                         fieldName
                     );
-                    this.notification.add({ title: warning, type: "danger" });
+                    this.notification.add({title: warning, type: "danger"});
                 }
                 break;
             }
             default: {
-                return this.notification.add(_t("Kanban: no action for type: %(type)s", { type }), {
-                    type: "danger",
-                });
+                return this.notification.add(
+                    _t("Kanban: no action for type: %(type)s", {type}),
+                    {
+                        type: "danger",
+                    }
+                );
             }
         }
     }
@@ -400,7 +414,7 @@ export class KanbanRecord extends Component {
             record: this.dataState.record,
             selection_mode: this.props.forceGlobalClick,
             widget: this.dataState.widget,
-            __comp__: Object.assign(Object.create(this), { this: this }),
+            __comp__: Object.assign(Object.create(this), {this: this}),
         };
         return renderingContext;
     }

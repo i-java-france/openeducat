@@ -1,17 +1,17 @@
-import { Plugin } from "../../plugin";
-import { _t } from "@web/core/l10n/translation";
-import { isImageUrl } from "@html_editor/utils/url";
-import { ImageDescription, ImageDescriptionPopover } from "./image_description";
-import { ImageToolbarDropdown } from "./image_toolbar_dropdown";
-import { createFileViewer } from "@web/core/file_viewer/file_viewer_hook";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { boundariesOut } from "@html_editor/utils/position";
-import { withSequence } from "@html_editor/utils/resource";
-import { ImageTransformButton } from "./image_transform_button";
-import { callbacksForCursorUpdate } from "@html_editor/utils/selection";
-import { closestBlock } from "@html_editor/utils/blocks";
-import { fillEmpty } from "@html_editor/utils/dom";
-import { reactive } from "@odoo/owl";
+import {Plugin} from "../../plugin";
+import {_t} from "@web/core/l10n/translation";
+import {isImageUrl} from "@html_editor/utils/url";
+import {ImageDescription, ImageDescriptionPopover} from "./image_description";
+import {ImageToolbarDropdown} from "./image_toolbar_dropdown";
+import {createFileViewer} from "@web/core/file_viewer/file_viewer_hook";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {boundariesOut} from "@html_editor/utils/position";
+import {withSequence} from "@html_editor/utils/resource";
+import {ImageTransformButton} from "./image_transform_button";
+import {callbacksForCursorUpdate} from "@html_editor/utils/selection";
+import {closestBlock} from "@html_editor/utils/blocks";
+import {fillEmpty} from "@html_editor/utils/dom";
+import {reactive} from "@odoo/owl";
 
 function hasShape(imagePlugin, shapeName) {
     return () => imagePlugin.isSelectionShaped(shapeName);
@@ -20,18 +20,18 @@ function hasShape(imagePlugin, shapeName) {
 export const IMAGE_SHAPES = ["rounded", "rounded-circle", "shadow", "img-thumbnail"];
 
 const IMAGE_PADDING = [
-    { name: "None", value: 0 },
-    { name: "Small", value: 1 },
-    { name: "Medium", value: 2 },
-    { name: "Large", value: 3 },
-    { name: "XL", value: 5 },
+    {name: "None", value: 0},
+    {name: "Small", value: 1},
+    {name: "Medium", value: 2},
+    {name: "Large", value: 3},
+    {name: "XL", value: 5},
 ];
 
 const IMAGE_SIZE = [
-    { name: "Default", value: "" },
-    { name: "100%", value: "100%" },
-    { name: "50%", value: "50%" },
-    { name: "25%", value: "25%" },
+    {name: "Default", value: ""},
+    {name: "100%", value: "100%"},
+    {name: "50%", value: "50%"},
+    {name: "25%", value: "25%"},
 ];
 
 /**
@@ -50,7 +50,7 @@ export class ImagePlugin extends Plugin {
     static id = "image";
     static dependencies = ["history", "dom", "selection", "overlay"];
     static shared = ["getTargetedImage", "previewImage", "resetImageTransformation"];
-    static defaultConfig = { allowImageTransform: true };
+    static defaultConfig = {allowImageTransform: true};
     toolbarNamespace = "image";
     /** @type {import("plugins").EditorResources} */
     resources = {
@@ -73,14 +73,16 @@ export class ImagePlugin extends Plugin {
                 id: "setImageShapeRounded",
                 description: _t("Set shape: Rounded"),
                 icon: "fa-square",
-                run: () => this.setImageShape("rounded", { excludeClasses: ["rounded-circle"] }),
+                run: () =>
+                    this.setImageShape("rounded", {excludeClasses: ["rounded-circle"]}),
                 isAvailable: isHtmlContentSupported,
             },
             {
                 id: "setImageShapeCircle",
                 description: _t("Set shape: Circle"),
                 icon: "fa-circle-o",
-                run: () => this.setImageShape("rounded-circle", { excludeClasses: ["rounded"] }),
+                run: () =>
+                    this.setImageShape("rounded-circle", {excludeClasses: ["rounded"]}),
                 isAvailable: isHtmlContentSupported,
             },
             {
@@ -114,13 +116,13 @@ export class ImagePlugin extends Plugin {
             },
         ],
         toolbar_groups: [
-            withSequence(23, { id: "image_preview", namespaces: ["image"] }),
-            withSequence(24, { id: "image_description", namespaces: ["image"] }),
-            withSequence(25, { id: "image_shape", namespaces: ["image"] }),
-            withSequence(26, { id: "image_padding", namespaces: ["image"] }),
-            withSequence(26, { id: "image_size", namespaces: ["image"] }),
-            withSequence(26, { id: "image_modifiers", namespaces: ["image"] }),
-            withSequence(32, { id: "image_delete", namespaces: ["image"] }),
+            withSequence(23, {id: "image_preview", namespaces: ["image"]}),
+            withSequence(24, {id: "image_description", namespaces: ["image"]}),
+            withSequence(25, {id: "image_shape", namespaces: ["image"]}),
+            withSequence(26, {id: "image_padding", namespaces: ["image"]}),
+            withSequence(26, {id: "image_size", namespaces: ["image"]}),
+            withSequence(26, {id: "image_modifiers", namespaces: ["image"]}),
+            withSequence(32, {id: "image_delete", namespaces: ["image"]}),
         ],
         toolbar_items: [
             {
@@ -134,7 +136,8 @@ export class ImagePlugin extends Plugin {
                 groupId: "image_description",
                 Component: ImageDescription,
                 props: {
-                    openImageDescriptionPopover: this.openImageDescriptionPopover.bind(this),
+                    openImageDescriptionPopover:
+                        this.openImageDescriptionPopover.bind(this),
                 },
                 isAvailable: isHtmlContentSupported,
             },
@@ -172,7 +175,7 @@ export class ImagePlugin extends Plugin {
                     icon: "html_editor.ImagePaddingIcon",
                     items: IMAGE_PADDING,
                     onSelected: (item) => {
-                        this.setImagePadding({ size: item.value });
+                        this.setImagePadding({size: item.value});
                     },
                 },
                 isAvailable: isHtmlContentSupported,
@@ -187,21 +190,25 @@ export class ImagePlugin extends Plugin {
                     getDisplay: () => this.imageSize,
                     items: IMAGE_SIZE,
                     onSelected: (item) => {
-                        this.resizeImage({ size: item.value });
+                        this.resizeImage({size: item.value});
                         this.updateImageParams();
                     },
                 },
                 isAvailable: (selection) =>
-                    isHtmlContentSupported(selection) && (this.config.allowImageResize ?? true),
+                    isHtmlContentSupported(selection) &&
+                    (this.config.allowImageResize ?? true),
             },
             {
                 id: "image_transform",
                 groupId: "image_modifiers",
-                description: _t("Transform the picture (click twice to reset transformation)"),
+                description: _t(
+                    "Transform the picture (click twice to reset transformation)"
+                ),
                 Component: ImageTransformButton,
                 props: this.getImageTransformProps(),
                 isAvailable: (selection) =>
-                    this.config.allowImageTransform && isHtmlContentSupported(selection),
+                    this.config.allowImageTransform &&
+                    isHtmlContentSupported(selection),
             },
             {
                 id: "image_delete",
@@ -220,7 +227,7 @@ export class ImagePlugin extends Plugin {
     };
 
     setup() {
-        this.imageSize = reactive({ displayName: "Default" });
+        this.imageSize = reactive({displayName: "Default"});
         this.addDomListener(this.editable, "pointerdown", (e) => {
             const selection = this.dependencies.selection.getEditableSelection();
             if (selection.isCollapsed && e.target.tagName === "IMG") {
@@ -233,9 +240,12 @@ export class ImagePlugin extends Plugin {
             }
         });
         this.fileViewer = createFileViewer();
-        this.overlay = this.dependencies.overlay.createOverlay(ImageDescriptionPopover, {
-            className: "popover",
-        });
+        this.overlay = this.dependencies.overlay.createOverlay(
+            ImageDescriptionPopover,
+            {
+                className: "popover",
+            }
+        );
     }
 
     destroy() {
@@ -250,7 +260,7 @@ export class ImagePlugin extends Plugin {
         return targetedImg.style.width || "Default";
     }
 
-    setImagePadding({ size } = {}) {
+    setImagePadding({size} = {}) {
         const targetedImg = this.getTargetedImage();
         if (!targetedImg) {
             return;
@@ -263,7 +273,7 @@ export class ImagePlugin extends Plugin {
         targetedImg.classList.add(`p-${size}`);
         this.dependencies.history.addStep();
     }
-    resizeImage({ size } = {}) {
+    resizeImage({size} = {}) {
         const targetedImg = this.getTargetedImage();
         if (!targetedImg) {
             return;
@@ -272,7 +282,7 @@ export class ImagePlugin extends Plugin {
         this.dependencies.history.addStep();
     }
 
-    setImageShape(className, { excludeClasses = [] } = {}) {
+    setImageShape(className, {excludeClasses = []} = {}) {
         const targetedImg = this.getTargetedImage();
         if (!targetedImg) {
             return;
@@ -370,7 +380,7 @@ export class ImagePlugin extends Plugin {
         }
     }
 
-    updateImageDescription({ description, tooltip } = {}) {
+    updateImageDescription({description, tooltip} = {}) {
         const targetedImg = this.getTargetedImage();
         if (!targetedImg) {
             return;
@@ -418,7 +428,7 @@ export class ImagePlugin extends Plugin {
                     description: this.getImageAttribute("alt"),
                     tooltip: this.getImageAttribute("title"),
                     onConfirm: (description, tooltip) => {
-                        this.updateImageDescription({ description, tooltip });
+                        this.updateImageDescription({description, tooltip});
                     },
                 },
             });

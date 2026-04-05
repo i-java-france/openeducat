@@ -1,18 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
 import base64
 import json
 import logging
-import requests
-from werkzeug.urls import url_quote
 from base64 import b64encode
 from json import JSONDecodeError
-from odoo.addons.account.tools import LegacyHTTPAdapter
 
-from odoo import api, models, _
+import requests
+from werkzeug.urls import url_quote
+
+from odoo import _, api, models
 from odoo.tools.float_utils import json_float_round
+
+from odoo.addons.account.tools import LegacyHTTPAdapter
 
 _logger = logging.getLogger(__name__)
 

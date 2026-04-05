@@ -1,11 +1,11 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { renderToElement } from "@web/core/utils/render";
-import { Plugin } from "@html_editor/plugin";
-import { GoogleMapsApiKeyDialog } from "./google_maps_api_key_dialog";
-import { GoogleMapsOption } from "./google_maps_option";
-import { Deferred } from "@web/core/utils/concurrency";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {renderToElement} from "@web/core/utils/render";
+import {Plugin} from "@html_editor/plugin";
+import {GoogleMapsApiKeyDialog} from "./google_maps_api_key_dialog";
+import {GoogleMapsOption} from "./google_maps_option";
+import {Deferred} from "@web/core/utils/concurrency";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 /**
  * A `google.maps.places.PlaceResult` object.
@@ -78,7 +78,7 @@ export class GoogleMapsOptionPlugin extends Plugin {
         this.recentlyDroppedSnippetDeferredInit = new Map();
     }
 
-    async onSnippetDropped({ snippetEl }) {
+    async onSnippetDropped({snippetEl}) {
         if (snippetEl.matches(".s_google_map")) {
             const deferredInit = new Deferred();
             this.recentlyDroppedSnippetDeferredInit.set(snippetEl, deferredInit);
@@ -148,7 +148,7 @@ export class GoogleMapsOptionPlugin extends Plugin {
             this.gpsMapCache.set(coordinates, place);
             /** @type {{mapGps: Coordinates, pinAddress: string}} */
             const currentMapData = editingElement.dataset;
-            const { mapGps, pinAddress } = currentMapData;
+            const {mapGps, pinAddress} = currentMapData;
             if (mapGps !== coordinates || pinAddress !== place.formatted_address) {
                 editingElement.dataset.mapGps = coordinates;
                 editingElement.dataset.pinAddress = place.formatted_address;
@@ -210,7 +210,9 @@ export class GoogleMapsOptionPlugin extends Plugin {
         const p = coordinates.substring(1).slice(0, -1).split(",");
         const location = new this.mapsAPI.LatLng(p[0] || 0, p[1] || 0);
         return new Promise((resolve) => {
-            const placesService = new this.placesAPI.PlacesService(document.createElement("div"));
+            const placesService = new this.placesAPI.PlacesService(
+                document.createElement("div")
+            );
             placesService.nearbySearch(
                 {
                     // Do a 'nearbySearch' followed by 'getDetails' to avoid using
@@ -236,14 +238,14 @@ export class GoogleMapsOptionPlugin extends Plugin {
                                     this.gpsMapCache.set(coordinates, place);
                                     resolve(place);
                                 } else if (GMAPS_CRITICAL_ERRORS.includes(status)) {
-                                    resolve({ error: status });
+                                    resolve({error: status});
                                 } else {
                                     resolve();
                                 }
                             }
                         );
                     } else if (GMAPS_CRITICAL_ERRORS.includes(status)) {
-                        resolve({ error: status });
+                        resolve({error: status});
                     } else {
                         resolve();
                     }
@@ -271,7 +273,7 @@ export class GoogleMapsOptionPlugin extends Plugin {
                 _t(
                     "A Google Maps error occurred. Make sure to read the key configuration popup carefully."
                 ),
-                { type: "danger", sticky: true }
+                {type: "danger", sticky: true}
             );
             // Try again: invalidate the API key then restart interactions.
             this.orm
@@ -281,7 +283,9 @@ export class GoogleMapsOptionPlugin extends Plugin {
                 .then(() => {
                     this.wasApiKeyInvalidated = true;
                     this.isGoogleMapsErrorBeingHandled = false;
-                    this.dependencies.edit_interaction.restartInteractions(editingElement);
+                    this.dependencies.edit_interaction.restartInteractions(
+                        editingElement
+                    );
                 });
         }
     }
@@ -295,21 +299,23 @@ export class GoogleMapsOptionPlugin extends Plugin {
 
 export class ResetMapColorAction extends BuilderAction {
     static id = "resetMapColor";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.dataset.mapColor = "";
     }
 }
 export class ShowDescriptionAction extends BuilderAction {
     static id = "showDescription";
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return !!editingElement.querySelector(".description");
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.append(renderToElement("html_builder.GoogleMapsDescription"));
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         editingElement.querySelector(".description").remove();
     }
 }
 
-registry.category("website-plugins").add(GoogleMapsOptionPlugin.id, GoogleMapsOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(GoogleMapsOptionPlugin.id, GoogleMapsOptionPlugin);

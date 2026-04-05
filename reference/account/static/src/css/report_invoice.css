@@ -7,14 +7,14 @@
 }
 
 .justify-text {
-    text-align:justify;
-    text-justify:inter-word;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 #qrcode_odoo_logo {
-    -webkit-transform:translate(-50%,-50%);
-    height:18%;
-    width:18%;
+    -webkit-transform: translate(-50%, -50%);
+    height: 18%;
+    width: 18%;
     border-color: white !important;
 }
 

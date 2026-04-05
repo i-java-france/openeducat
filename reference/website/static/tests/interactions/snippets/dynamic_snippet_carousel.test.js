@@ -1,13 +1,16 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, queryAll, queryOne } from "@odoo/hoot-dom";
-import { advanceTime, enableTransitions } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, queryAll, queryOne} from "@odoo/hoot-dom";
+import {advanceTime, enableTransitions} from "@odoo/hoot-mock";
 
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 class TestDynamicCarouselItem extends Interaction {
     static selector = ".s_test_dynamic_carousel_item";
@@ -62,7 +65,9 @@ test("dynamic snippet carousel loads items and displays them through template (d
     onRpc("/website/snippet/filters", async (args) => {
         const json = JSON.parse(new TextDecoder().decode(await args.arrayBuffer()));
         expect(json.params.filter_id).toBe(1);
-        expect(json.params.template_key).toBe("website.dynamic_filter_template_test_item");
+        expect(json.params.template_key).toBe(
+            "website.dynamic_filter_template_test_item"
+        );
         expect(json.params.limit).toBe(16);
         expect(json.params.search_domain).toEqual([]);
         return [
@@ -73,7 +78,7 @@ test("dynamic snippet carousel loads items and displays them through template (d
             `<div class="s_test_dynamic_carousel_item" data-test-param="test5">Test Record 5</div>`,
         ];
     });
-    const { core } = await startInteractions(testTemplate);
+    const {core} = await startInteractions(testTemplate);
     expect(core.interactions).toHaveLength(6);
     const carouselEl = queryOne(".carousel");
     // Neutralize carousel automatic sliding.
@@ -108,7 +113,9 @@ test("dynamic snippet carousel loads items and displays them through template (m
     onRpc("/website/snippet/filters", async (args) => {
         const json = JSON.parse(new TextDecoder().decode(await args.arrayBuffer()));
         expect(json.params.filter_id).toBe(1);
-        expect(json.params.template_key).toBe("website.dynamic_filter_template_test_item");
+        expect(json.params.template_key).toBe(
+            "website.dynamic_filter_template_test_item"
+        );
         expect(json.params.limit).toBe(16);
         expect(json.params.search_domain).toEqual([]);
         return [
@@ -119,7 +126,7 @@ test("dynamic snippet carousel loads items and displays them through template (m
             `<div class="s_test_dynamic_carousel_item" data-test-param="test5">Test Record 5</div>`,
         ];
     });
-    const { core } = await startInteractions(testTemplate);
+    const {core} = await startInteractions(testTemplate);
     expect(core.interactions).toHaveLength(6);
     const carouselEl = queryOne(".carousel");
     // Neutralize carousel automatic sliding.

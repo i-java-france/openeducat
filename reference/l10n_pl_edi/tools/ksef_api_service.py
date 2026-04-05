@@ -15,7 +15,6 @@ from odoo.exceptions import UserError
 
 from odoo.addons.l10n_pl_edi.exceptions import KSeFRateLimitError
 
-
 _logger = logging.getLogger(__name__)
 TIMEOUT = 10
 

@@ -1,4 +1,5 @@
 import odoo.tests
+
 from odoo.addons.pos_self_order.tests.self_order_common_test import SelfOrderCommonTest
 
 

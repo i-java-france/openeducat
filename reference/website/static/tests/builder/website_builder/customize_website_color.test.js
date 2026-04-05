@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, defineModels, models, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, defineModels, models, onRpc} from "@web/../tests/web_test_helpers";
 import {
     addOption,
     defineWebsiteModels,

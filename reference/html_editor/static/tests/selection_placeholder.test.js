@@ -1,12 +1,12 @@
-import { expect, test } from "@odoo/hoot";
-import { testEditor } from "./_helpers/editor";
-import { unformat } from "./_helpers/format";
-import { animationFrame, press, tick } from "@odoo/hoot-dom";
-import { insertText, simulateArrowKeyPress, splitBlock } from "./_helpers/user_actions";
-import { getContent } from "./_helpers/selection";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { isTableCell } from "@html_editor/utils/dom_info";
-import { parseHTML } from "@html_editor/utils/html";
+import {expect, test} from "@odoo/hoot";
+import {testEditor} from "./_helpers/editor";
+import {unformat} from "./_helpers/format";
+import {animationFrame, press, tick} from "@odoo/hoot-dom";
+import {insertText, simulateArrowKeyPress, splitBlock} from "./_helpers/user_actions";
+import {getContent} from "./_helpers/selection";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {isTableCell} from "@html_editor/utils/dom_info";
+import {parseHTML} from "@html_editor/utils/html";
 
 const pressArrowKey = async (editor, key) => {
     const selection = editor.shared.selection.getSelectionData().deepEditableSelection;
@@ -160,7 +160,7 @@ test("can navigate in and out of selection placeholders", async () => {
                     <table><tbody><tr><td>d</td></tr></tbody></table>
                     <p>e</p>`
                 ),
-                { message: "Stepped down into the placeholder." }
+                {message: "Stepped down into the placeholder."}
             );
             await pressArrowKey(editor, "ArrowRight");
             expect(getContent(editor.editable)).toBe(
@@ -171,7 +171,7 @@ test("can navigate in and out of selection placeholders", async () => {
                     <table><tbody><tr><td>[]d</td></tr></tbody></table>
                     <p>e</p>`
                 ),
-                { message: "Stepped down out of the placeholder." }
+                {message: "Stepped down out of the placeholder."}
             );
             await pressArrowKey(editor, "ArrowUp");
             expect(getContent(editor.editable)).toBe(
@@ -182,7 +182,7 @@ test("can navigate in and out of selection placeholders", async () => {
                     <table><tbody><tr><td>d</td></tr></tbody></table>
                     <p>e</p>`
                 ),
-                { message: "Stepped up into the placeholder." }
+                {message: "Stepped up into the placeholder."}
             );
             await pressArrowKey(editor, "ArrowLeft");
             expect(getContent(editor.editable)).toBe(
@@ -193,7 +193,7 @@ test("can navigate in and out of selection placeholders", async () => {
                     <table><tbody><tr><td>d</td></tr></tbody></table>
                     <p>e</p>`
                 ),
-                { message: "Stepped up out of the placeholder." }
+                {message: "Stepped up out of the placeholder."}
             );
         },
         contentAfterEdit: unformat(
@@ -250,14 +250,16 @@ test("moving the caret into a selection placeholder shows a horizontal caret", a
                     <p data-selection-placeholder=""><br></p>`
                 ),
                 {
-                    message: "The placeholder stopped blinking when taking the focus out.",
+                    message:
+                        "The placeholder stopped blinking when taking the focus out.",
                 }
             );
             // Focus the editable.
             editor.editable.focus();
             await animationFrame();
             expect(getContent(editor.editable)).toBe(focusedResult, {
-                message: "The placeholder started blinking again when taking the focus back in.",
+                message:
+                    "The placeholder started blinking again when taking the focus back in.",
             });
             // Focus the textarea, blurring the editable.
             editor.editable.querySelector("textarea").focus();
@@ -345,7 +347,7 @@ test("moving the caret into a trailing selection placeholder in the root persist
         ),
         stepFunction: async (editor) => {
             await pressArrowKey(editor, "ArrowDown");
-            await animationFrame(); // wait for selectionchange
+            await animationFrame(); // Wait for selectionchange
         },
         contentAfterEdit: unformat(
             `<p>a</p>
@@ -381,7 +383,7 @@ test("moving the caret into a trailing selection placeholder not in the root doe
         ),
         stepFunction: async (editor) => {
             await pressArrowKey(editor, "ArrowDown");
-            await animationFrame(); // wait for selectionchange
+            await animationFrame(); // Wait for selectionchange
         },
         contentAfterEdit: unformat(
             `<p>a</p>
@@ -429,7 +431,7 @@ test("enter in a selection placeholder persists it", async () => {
                     <table><tbody><tr><td>c</td></tr></tbody></table>
                     <p>d</p>`
                 ),
-                { message: "The placeholder was selected." }
+                {message: "The placeholder was selected."}
             );
             splitBlock(editor);
             await tick();
@@ -466,7 +468,10 @@ test("can undo/redo the persiting of selection placeholders", async () => {
     });
     await testEditor({
         contentBefore: makeContent("b[]"),
-        contentBeforeEdit: makeContent("b[]", '<p data-selection-placeholder=""><br></p>'),
+        contentBeforeEdit: makeContent(
+            "b[]",
+            '<p data-selection-placeholder=""><br></p>'
+        ),
         stepFunction: async (editor) => {
             await insertText(editor, "c");
             expect(getContent(editor.editable)).toBe(
@@ -486,7 +491,7 @@ test("can undo/redo the persiting of selection placeholders", async () => {
                     "bc",
                     `<p data-selection-placeholder="" class="o-horizontal-caret o-we-hint" o-we-hint-text='Type "/" for commands'>[]<br></p>`
                 ),
-                { message: "Undo un-persisted the placeholder." }
+                {message: "Undo un-persisted the placeholder."}
             );
             await redo();
             expect(getContent(editor.editable)).toBe(makeContent("bc", "<p>d[]</p>"), {
@@ -498,7 +503,7 @@ test("can undo/redo the persiting of selection placeholders", async () => {
                     "bc",
                     `<p data-selection-placeholder="" class="o-horizontal-caret o-we-hint" o-we-hint-text='Type "/" for commands'>[]<br></p>`
                 ),
-                { message: "Undo un-persisted the placeholder again." }
+                {message: "Undo un-persisted the placeholder again."}
             );
             await undo();
             expect(getContent(editor.editable)).toBe(
@@ -532,7 +537,7 @@ test("a selection placeholder is restored after deletion from within", async () 
                 `<p data-selection-placeholder="" o-we-hint-text='Type "/" for commands' class="o-we-hint o-horizontal-caret">[]<br></p>` +
                     `<table><tbody><tr><td>a</td></tr></tbody></table>` +
                     '<p data-selection-placeholder=""><br></p>',
-                { message: "The top placeholder was selected." }
+                {message: "The top placeholder was selected."}
             );
             await press("Delete");
             await tick();

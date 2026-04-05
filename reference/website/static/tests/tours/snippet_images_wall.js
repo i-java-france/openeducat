@@ -44,7 +44,8 @@ const selectSignImageStep = [
 const reselectSignImageSteps = [
     ...preventRaceConditionSteps,
     {
-        trigger: ":iframe .s_image_gallery .o_masonry_col:nth-child(2):has(img[data-index='1'])",
+        trigger:
+            ":iframe .s_image_gallery .o_masonry_col:nth-child(2):has(img[data-index='1'])",
     },
     {
         content: "Select footer",

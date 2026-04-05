@@ -1,16 +1,16 @@
 import json
 import logging
 import platform
-import requests
 import time
 import urllib.parse
-import websocket
-
 from threading import Thread
 
+import requests
+import websocket
+
 from odoo.addons.iot_drivers import main
-from odoo.addons.iot_drivers.tools import helpers, upgrade
 from odoo.addons.iot_drivers.server_logger import close_server_log_sender_handler
+from odoo.addons.iot_drivers.tools import helpers, upgrade
 from odoo.addons.iot_drivers.webrtc_client import webrtc_client
 
 _logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ class WebsocketClient(Thread):
             payload = message['message']['payload']
             _logger.info("Received message of type %s", message['message']['type'])
 
-            if not helpers.get_identifier() in payload.get('iot_identifiers', []):
+            if helpers.get_identifier() not in payload.get('iot_identifiers', []):
                 continue
 
             match message['message']['type']:

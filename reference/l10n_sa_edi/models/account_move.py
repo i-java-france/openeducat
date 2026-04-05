@@ -1,12 +1,14 @@
 import base64
 import uuid
+from base64 import b64decode, b64encode
+from datetime import datetime
+
+from lxml import etree
 from markupsafe import Markup
-from odoo import _, fields, models, api
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_repr
-from datetime import datetime
-from base64 import b64decode, b64encode
-from lxml import etree
 
 
 class AccountMove(models.Model):

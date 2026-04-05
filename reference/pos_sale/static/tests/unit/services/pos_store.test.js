@@ -1,10 +1,10 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { setupPosEnv, getFilledOrder } from "@point_of_sale/../tests/unit/utils";
-import { click, waitFor } from "@odoo/hoot-dom";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
-import { Orderline } from "@point_of_sale/app/components/orderline/orderline";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {click, waitFor} from "@odoo/hoot-dom";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ProductScreen} from "@point_of_sale/app/screens/product_screen/product_screen";
+import {Orderline} from "@point_of_sale/app/components/orderline/orderline";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -12,7 +12,7 @@ describe("onClickSaleOrder", () => {
     test("no selection → abort", async () => {
         const store = await setupPosEnv();
         const order = await getFilledOrder(store);
-        await mountWithCleanup(ProductScreen, { props: { orderUuid: order.uuid } });
+        await mountWithCleanup(ProductScreen, {props: {orderUuid: order.uuid}});
 
         const promiseResult = store.onClickSaleOrder(1);
         const button =
@@ -36,7 +36,7 @@ describe("onClickSaleOrder", () => {
     test("settle → calls settleSO", async () => {
         const store = await setupPosEnv();
         const order = await getFilledOrder(store);
-        await mountWithCleanup(ProductScreen, { props: { orderUuid: order.uuid } });
+        await mountWithCleanup(ProductScreen, {props: {orderUuid: order.uuid}});
 
         const promiseResult = store.onClickSaleOrder(1);
         const button = ".modal-body button:contains('Settle the order')";
@@ -73,7 +73,7 @@ describe("onClickSaleOrder", () => {
     test("dpPercentage → calls downPaymentSO", async () => {
         const store = await setupPosEnv();
         const order = await getFilledOrder(store);
-        await mountWithCleanup(ProductScreen, { props: { orderUuid: order.uuid } });
+        await mountWithCleanup(ProductScreen, {props: {orderUuid: order.uuid}});
 
         const promiseResult = store.onClickSaleOrder(1);
         const buttonDownPaymentPercentage =
@@ -106,11 +106,12 @@ describe("onClickSaleOrder", () => {
         expect(currentOrder.lines[2].prices.total_excluded).toBe(325);
 
         const comp = await mountWithCleanup(Orderline, {
-            props: { line: currentOrder.lines[2] },
+            props: {line: currentOrder.lines[2]},
         });
 
         const saleOrderInfo = ".orderline .info-list .sale-order-info";
-        const cell = (tr, td) => `${saleOrderInfo} tr:nth-child(${tr}) td:nth-child(${td})`;
+        const cell = (tr, td) =>
+            `${saleOrderInfo} tr:nth-child(${tr}) td:nth-child(${td})`;
 
         expect(comp.line).toEqual(currentOrder.lines[2]);
         expect(`${saleOrderInfo} tr`).toHaveCount(4);
@@ -127,7 +128,7 @@ describe("onClickSaleOrder", () => {
     test("dpAmount → calls downPaymentSO", async () => {
         const store = await setupPosEnv();
         const order = await getFilledOrder(store);
-        await mountWithCleanup(ProductScreen, { props: { orderUuid: order.uuid } });
+        await mountWithCleanup(ProductScreen, {props: {orderUuid: order.uuid}});
 
         const promiseResult = store.onClickSaleOrder(1);
         const buttonDownPaymentPercentage =
@@ -160,11 +161,12 @@ describe("onClickSaleOrder", () => {
         expect(currentOrder.lines[2].prices.total_excluded).toBe(50);
 
         const comp = await mountWithCleanup(Orderline, {
-            props: { line: currentOrder.lines[2] },
+            props: {line: currentOrder.lines[2]},
         });
 
         const saleOrderInfo = ".orderline .info-list .sale-order-info";
-        const cell = (tr, td) => `${saleOrderInfo} tr:nth-child(${tr}) td:nth-child(${td})`;
+        const cell = (tr, td) =>
+            `${saleOrderInfo} tr:nth-child(${tr}) td:nth-child(${td})`;
 
         expect(comp.line).toEqual(currentOrder.lines[2]);
         expect(`${saleOrderInfo} tr`).toHaveCount(4);

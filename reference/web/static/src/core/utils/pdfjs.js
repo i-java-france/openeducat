@@ -1,5 +1,5 @@
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { loadJS } from "@web/core/assets";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {loadJS} from "@web/core/assets";
 
 /**
  * Until we have our own implementation of the /web/static/lib/pdfjs/web/viewer.{html,js,css}
@@ -48,7 +48,9 @@ export function hidePDFJSButtons(rootElement, options = {}) {
     display: none !important;
 }`;
     const iframe =
-        rootElement.tagName === "IFRAME" ? rootElement : rootElement.querySelector("iframe");
+        rootElement.tagName === "IFRAME"
+            ? rootElement
+            : rootElement.querySelector("iframe");
     if (iframe) {
         if (!iframe.dataset.hideButtons) {
             iframe.dataset.hideButtons = "true";

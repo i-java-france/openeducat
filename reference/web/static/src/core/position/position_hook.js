@@ -1,6 +1,6 @@
-import { reposition } from "@web/core/position/utils";
-import { omit } from "@web/core/utils/objects";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
+import {reposition} from "@web/core/position/utils";
+import {omit} from "@web/core/utils/objects";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
 import {
     EventBus,
     onWillDestroy,
@@ -77,7 +77,7 @@ export function usePosition(refName, getTarget, options = {}) {
 
     const isTopmost = !(POSITION_BUS in component.env);
     if (isTopmost) {
-        useChildSubEnv({ [POSITION_BUS]: bus });
+        useChildSubEnv({[POSITION_BUS]: bus});
     }
 
     const throttledUpdate = useThrottleForAnimation(() => bus.trigger("update"));
@@ -114,14 +114,18 @@ export function usePosition(refName, getTarget, options = {}) {
                 }
             }
             for (const document of documents) {
-                document.addEventListener("scroll", scrollListener, { capture: true });
-                document.addEventListener("load", throttledUpdate, { capture: true });
+                document.addEventListener("scroll", scrollListener, {capture: true});
+                document.addEventListener("load", throttledUpdate, {capture: true});
             }
             window.addEventListener("resize", throttledUpdate);
             return () => {
                 for (const document of documents) {
-                    document.removeEventListener("scroll", scrollListener, { capture: true });
-                    document.removeEventListener("load", throttledUpdate, { capture: true });
+                    document.removeEventListener("scroll", scrollListener, {
+                        capture: true,
+                    });
+                    document.removeEventListener("load", throttledUpdate, {
+                        capture: true,
+                    });
                 }
                 window.removeEventListener("resize", throttledUpdate);
             };

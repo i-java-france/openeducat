@@ -1,12 +1,15 @@
 import logging
-import requests
-
 from datetime import timedelta
+
+import requests
 from lxml import etree
 from requests import RequestException
 
-from odoo import api, fields, models, Command
-from odoo.addons.l10n_gr_edi.models.preferred_classification import INVOICE_TYPES_HAVE_EXPENSE
+from odoo import Command, api, fields, models
+
+from odoo.addons.l10n_gr_edi.models.preferred_classification import (
+    INVOICE_TYPES_HAVE_EXPENSE,
+)
 
 NS_MYDATA = {"ns": "http://www.aade.gr/myDATA/invoice/v1.0"}
 
@@ -109,5 +112,5 @@ class ResCompany(models.Model):
                     'move_id': bill.id,
                     'mydata_mark': mark,
                 }
-                for bill, mark in zip(new_bills, marks_to_create)
+                for bill, mark in zip(new_bills, marks_to_create, strict=False)
             ])

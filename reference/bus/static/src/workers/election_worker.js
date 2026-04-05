@@ -1,4 +1,4 @@
-import { Deferred } from "@bus/workers/bus_worker_utils";
+import {Deferred} from "@bus/workers/bus_worker_utils";
 
 export class ElectionWorker {
     MAIN_TAB_TIMEOUT_PERIOD = 3000;
@@ -25,11 +25,11 @@ export class ElectionWorker {
 
     requestHeartbeat(messagePort) {
         if (messagePort) {
-            messagePort.postMessage({ type: "ELECTION:HEARTBEAT_REQUEST" });
+            messagePort.postMessage({type: "ELECTION:HEARTBEAT_REQUEST"});
             return;
         }
         for (const candidate of this.candidates) {
-            candidate.postMessage({ type: "ELECTION:HEARTBEAT_REQUEST" });
+            candidate.postMessage({type: "ELECTION:HEARTBEAT_REQUEST"});
         }
     }
 
@@ -45,7 +45,7 @@ export class ElectionWorker {
 
     startElection() {
         clearInterval(this.heartbeatRequestInterval);
-        this.masterTab?.postMessage({ type: "ELECTION:UNASSIGN_MASTER" });
+        this.masterTab?.postMessage({type: "ELECTION:UNASSIGN_MASTER"});
         this.masterTab = null;
         this.electionDeferred ??= new Deferred();
         this.requestHeartbeat();
@@ -53,7 +53,7 @@ export class ElectionWorker {
 
     finishElection(messagePort) {
         this.masterTab = messagePort;
-        messagePort.postMessage({ type: "ELECTION:ASSIGN_MASTER" });
+        messagePort.postMessage({type: "ELECTION:ASSIGN_MASTER"});
         this.electionDeferred.resolve();
         this.electionDeferred = null;
         this.heartbeatRequestInterval = setInterval(
@@ -63,7 +63,7 @@ export class ElectionWorker {
     }
 
     async handleMessage(event) {
-        const { action } = event.data;
+        const {action} = event.data;
         if (!action?.startsWith("ELECTION:")) {
             return;
         }
@@ -85,7 +85,7 @@ export class ElectionWorker {
                 await this.ensureMasterPresence();
                 event.target.postMessage({
                     type: "ELECTION:IS_MASTER_RESPONSE",
-                    data: { answer: this.masterTab === event.target },
+                    data: {answer: this.masterTab === event.target},
                 });
                 break;
             case "ELECTION:HEARTBEAT":

@@ -9,7 +9,7 @@ from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 class TestUiCertification(HttpCaseWithUserDemo):
 
     def setUp(self):
-        super(TestUiCertification, self).setUp()
+        super().setUp()
 
         self.survey_certification = self.env['survey.survey'].create({
             'title': 'MyCompany Vendor Certification',

@@ -1,12 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
 import logging
 import os
-from socket import gethostname
 import time
-from werkzeug.exceptions import InternalServerError
+from datetime import datetime
+from socket import gethostname
 from zlib import adler32
+
+from werkzeug.exceptions import InternalServerError
 
 from odoo import http, tools
 

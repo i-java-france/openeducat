@@ -1,7 +1,12 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { click, queryAllAttributes, queryAllProperties, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {
+    click,
+    queryAllAttributes,
+    queryAllProperties,
+    queryAllTexts,
+} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 import {
     clearRegistry,
     contains,
@@ -13,13 +18,16 @@ import {
     stepAllNetworkCalls,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { getOrigin } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {getOrigin} from "@web/core/utils/urls";
 
-import { UserMenu } from "@web/webclient/user_menu/user_menu";
-import { odooAccountItem, preferencesItem } from "@web/webclient/user_menu/user_menu_items";
+import {UserMenu} from "@web/webclient/user_menu/user_menu";
+import {
+    odooAccountItem,
+    preferencesItem,
+} from "@web/webclient/user_menu/user_menu_items";
 
 const userMenuRegistry = registry.category("user_menuitems");
 
@@ -31,7 +39,7 @@ beforeEach(async () => {
 });
 
 test("can be rendered", async () => {
-    patchWithCleanup(user, { writeDate: "2024-01-01 12:00:00" });
+    patchWithCleanup(user, {writeDate: "2024-01-01 12:00:00"});
     userMenuRegistry.add("bad_item", () => ({
         type: "item",
         id: "bad",
@@ -103,12 +111,17 @@ test("can be rendered", async () => {
         "frodo",
         "eye",
     ]);
-    expect(queryAllTexts(".dropdown-menu .dropdown-item")).toEqual(["Ring", "Bad", "Frodo", "Eye"]);
+    expect(queryAllTexts(".dropdown-menu .dropdown-item")).toEqual([
+        "Ring",
+        "Bad",
+        "Frodo",
+        "Eye",
+    ]);
 
     for (let i = 0; i < 4; i++) {
         await click(`.dropdown-menu .dropdown-item:eq(${i})`);
 
-        await click("button.dropdown-toggle"); // re-open the dropdown
+        await click("button.dropdown-toggle"); // Re-open the dropdown
         await animationFrame();
     }
 

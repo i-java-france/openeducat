@@ -70,27 +70,73 @@ export function setUp() {
                     .find((p) => p.display_name === "Letter Tray");
 
                 assertProductPrice(product_letter_tray, "Public Pricelist", 0, 4.8)()
-                    .then(assertProductPrice(product_letter_tray, "Public Pricelist", 1, 4.8))
+                    .then(
+                        assertProductPrice(
+                            product_letter_tray,
+                            "Public Pricelist",
+                            1,
+                            4.8
+                        )
+                    )
                     .then(assertProductPrice(product_letter_tray, "Fixed", 1, 1))
                     .then(assertProductPrice(product_letter_tray, "Fixed", -1, 1))
                     .then(assertProductPrice(product_wall_shelf, "Fixed", 1, 2))
                     .then(assertProductPrice(product_small_shelf, "Fixed", 1, 13.95))
                     .then(assertProductPrice(product_wall_shelf, "Percentage", 1, 0))
-                    .then(assertProductPrice(product_small_shelf, "Percentage", 1, 0.03))
-                    .then(assertProductPrice(product_magnetic_board, "Percentage", 1, 1.98))
+                    .then(
+                        assertProductPrice(product_small_shelf, "Percentage", 1, 0.03)
+                    )
+                    .then(
+                        assertProductPrice(
+                            product_magnetic_board,
+                            "Percentage",
+                            1,
+                            1.98
+                        )
+                    )
                     .then(assertProductPrice(product_wall_shelf, "Formula", 1, 6.86))
                     .then(assertProductPrice(product_small_shelf, "Formula", 1, 2.99))
-                    .then(assertProductPrice(product_magnetic_board, "Formula", 1, 11.98))
+                    .then(
+                        assertProductPrice(product_magnetic_board, "Formula", 1, 11.98)
+                    )
                     .then(assertProductPrice(product_monitor_stand, "Formula", 1, 8.19))
                     .then(assertProductPrice(product_desk_pad, "Formula", 1, 6.98))
-                    .then(assertProductPrice(product_wall_shelf, "min_quantity ordering", 1, 2))
-                    .then(assertProductPrice(product_wall_shelf, "min_quantity ordering", 2, 1))
-                    .then(assertProductPrice(product_letter_tray, "Category vs no category", 1, 2))
+                    .then(
+                        assertProductPrice(
+                            product_wall_shelf,
+                            "min_quantity ordering",
+                            1,
+                            2
+                        )
+                    )
+                    .then(
+                        assertProductPrice(
+                            product_wall_shelf,
+                            "min_quantity ordering",
+                            2,
+                            1
+                        )
+                    )
+                    .then(
+                        assertProductPrice(
+                            product_letter_tray,
+                            "Category vs no category",
+                            1,
+                            2
+                        )
+                    )
                     .then(assertProductPrice(product_letter_tray, "Category", 1, 2))
-                    .then(assertProductPrice(product_wall_shelf, "Product template", 1, 1))
+                    .then(
+                        assertProductPrice(product_wall_shelf, "Product template", 1, 1)
+                    )
                     .then(assertProductPrice(product_wall_shelf, "Dates", 1, 2))
                     .then(
-                        assertProductPrice(product_small_shelf, "Pricelist base rounding", 1, 13.95)
+                        assertProductPrice(
+                            product_small_shelf,
+                            "Pricelist base rounding",
+                            1,
+                            13.95
+                        )
                     )
                     .then(function () {
                         document.querySelector(".pos").classList.add("done-testing");

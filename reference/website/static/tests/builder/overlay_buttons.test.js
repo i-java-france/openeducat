@@ -1,10 +1,10 @@
-import { undo } from "@html_editor/../tests/_helpers/user_actions";
-import { Plugin } from "@html_editor/plugin";
-import { setContent, setSelection } from "@html_editor/../tests/_helpers/selection";
-import { expect, test } from "@odoo/hoot";
-import { Deferred, queryOne, tick, waitFor } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {undo} from "@html_editor/../tests/_helpers/user_actions";
+import {Plugin} from "@html_editor/plugin";
+import {setContent, setSelection} from "@html_editor/../tests/_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, queryOne, tick, waitFor} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     addActionOption,
     addOption,
@@ -13,7 +13,7 @@ import {
     setupWebsiteBuilder,
     setupWebsiteBuilderWithSnippet,
 } from "./website_helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 defineWebsiteModels();
 
@@ -39,7 +39,7 @@ test("Use the 'move arrows' overlay buttons", async () => {
             <p>TEST</p>
         </section>
     `,
-        { loadIframeBundles: true }
+        {loadIframeBundles: true}
     );
 
     await contains(":iframe section").click();
@@ -81,7 +81,7 @@ test("Full-width columns use vertical move arrows", async () => {
             </div>
         </section>
     `,
-        { loadIframeBundles: true }
+        {loadIframeBundles: true}
     );
 
     await contains(":iframe .col-lg-12:nth-child(1)").click();
@@ -124,7 +124,7 @@ test("Use the 'move arrows' overlay buttons within an editable div", async () =>
         </section>
         </div>
     `,
-        { loadIframeBundles: true }
+        {loadIframeBundles: true}
     );
 
     await contains(":iframe section").click();
@@ -175,10 +175,10 @@ test("Use the 'grid' overlay buttons", async () => {
     expect(".overlay .o_bring_front").toHaveCount(1);
 
     await contains(".overlay .o_send_back").click();
-    expect(":iframe .g-col-lg-5").toHaveStyle({ zIndex: "0" });
+    expect(":iframe .g-col-lg-5").toHaveStyle({zIndex: "0"});
 
     await contains(".overlay .o_bring_front").click();
-    expect(":iframe .g-col-lg-5").toHaveStyle({ zIndex: "2" });
+    expect(":iframe .g-col-lg-5").toHaveStyle({zIndex: "2"});
 });
 
 test("Refresh the overlay buttons when toggling the mobile preview", async () => {
@@ -200,7 +200,7 @@ test("Refresh the overlay buttons when toggling the mobile preview", async () =>
             </div>
         </section>
     `,
-        { loadIframeBundles: true }
+        {loadIframeBundles: true}
     );
 
     await contains(":iframe .g-col-lg-4").click();
@@ -262,7 +262,7 @@ test("Use the 'remove' overlay buttons: closes the link popover if it is open du
 
     await contains(":iframe .g-height-14").click();
     const p = queryOne(":iframe .g-height-14 p");
-    setSelection({ anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1 });
+    setSelection({anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1});
     await waitFor(".o-we-toolbar");
     await contains('.o-we-toolbar button[name="link"]').click();
     expect(".o-we-linkpopover").toHaveCount(1);
@@ -321,8 +321,8 @@ test("Applying an overlay button action should wait for the actions in progress"
     class TestPlugin extends Plugin {
         static id = "test";
         resources = {
-            get_overlay_buttons: { getButtons: this.getOverlayButtons.bind(this) },
-            has_overlay_options: { hasOption: () => true },
+            get_overlay_buttons: {getButtons: this.getOverlayButtons.bind(this)},
+            has_overlay_options: {hasOption: () => true},
         };
 
         getOverlayButtons(target) {
@@ -345,7 +345,7 @@ test("Applying an overlay button action should wait for the actions in progress"
             load() {
                 return customActionDef;
             }
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 editingElement.classList.add("customAction");
             }
         },
@@ -355,7 +355,7 @@ test("Applying an overlay button action should wait for the actions in progress"
         template: xml`<BuilderButton action="'customAction'"/>`,
     });
 
-    const { getEditableContent, getEditor } = await setupWebsiteBuilder(`
+    const {getEditableContent, getEditor} = await setupWebsiteBuilder(`
         <div class="test-options-target">plop</div>
     `);
     const editor = getEditor();
@@ -376,7 +376,9 @@ test("Applying an overlay button action should wait for the actions in progress"
     );
 
     undo(editor);
-    expect(editable).toHaveInnerHTML(`<div class="test-options-target customAction">plop</div>`);
+    expect(editable).toHaveInnerHTML(
+        `<div class="test-options-target customAction">plop</div>`
+    );
 
     undo(editor);
     expect(editable).toHaveInnerHTML(`<div class="test-options-target">plop</div>`);
@@ -386,8 +388,8 @@ test("The overlay buttons should only appear for elements in editable areas, unl
     class PluginA extends Plugin {
         static id = "a";
         resources = {
-            get_overlay_buttons: { getButtons: this.getOverlayButtons.bind(this) },
-            has_overlay_options: { hasOption: () => true },
+            get_overlay_buttons: {getButtons: this.getOverlayButtons.bind(this)},
+            has_overlay_options: {hasOption: () => true},
         };
 
         getOverlayButtons(target) {
@@ -409,7 +411,7 @@ test("The overlay buttons should only appear for elements in editable areas, unl
                 getButtons: this.getOverlayButtons.bind(this),
                 editableOnly: false,
             },
-            has_overlay_options: { hasOption: () => true, editableOnly: false },
+            has_overlay_options: {hasOption: () => true, editableOnly: false},
         };
 
         getOverlayButtons(target) {
@@ -427,7 +429,7 @@ test("The overlay buttons should only appear for elements in editable areas, unl
     addPlugin(PluginA);
     addPlugin(PluginB);
 
-    const { getEditor } = await setupWebsiteBuilder(`<div></div>`);
+    const {getEditor} = await setupWebsiteBuilder(`<div></div>`);
     const editor = getEditor();
     setContent(
         editor.editable,

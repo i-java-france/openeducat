@@ -1,7 +1,12 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { _makeUser, user } from "@web/core/user";
-import { makeMockEnv, onRpc, patchWithCleanup, serverState } from "@web/../tests/web_test_helpers";
-import { cookie } from "@web/core/browser/cookie";
+import {describe, expect, test} from "@odoo/hoot";
+import {_makeUser, user} from "@web/core/user";
+import {
+    makeMockEnv,
+    onRpc,
+    patchWithCleanup,
+    serverState,
+} from "@web/../tests/web_test_helpers";
+import {cookie} from "@web/core/browser/cookie";
 
 describe.current.tags("headless");
 
@@ -26,27 +31,27 @@ test("successive calls to hasGroup", async () => {
 
 test("set user settings do not override old valid keys", async () => {
     await makeMockEnv();
-    patchWithCleanup(user, _makeUser({ user_settings: { a: 1, b: 2 } }));
+    patchWithCleanup(user, _makeUser({user_settings: {a: 1, b: 2}}));
     onRpc("set_res_users_settings", (args) => {
         expect.step(args.kwargs.new_settings);
-        return { a: 3, c: 4 };
+        return {a: 3, c: 4};
     });
 
-    expect(user.settings).toEqual({ a: 1, b: 2 });
+    expect(user.settings).toEqual({a: 1, b: 2});
 
     await user.setUserSettings("a", 3);
-    expect.verifySteps([{ a: 3 }]);
-    expect(user.settings).toEqual({ a: 3, b: 2, c: 4 });
+    expect.verifySteps([{a: 3}]);
+    expect(user.settings).toEqual({a: 3, b: 2, c: 4});
 });
 
 test("extract allowed company ids from cookies", async () => {
-    // cookies need to be set before the serverState
+    // Cookies need to be set before the serverState
     // the modification of the serverState will force the re-creation of the user with the new values (see mock_user.hoot.js)
     cookie.set("cids", "3-1");
     serverState.companies = [
-        { id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: [] },
+        {id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: []},
+        {id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: []},
     ];
 
     expect(user.allowedCompanies.map((c) => c.id)).toEqual([1, 2, 3]);
@@ -56,9 +61,9 @@ test("extract allowed company ids from cookies", async () => {
 
 test("active companies are sorted", async () => {
     serverState.companies = [
-        { id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: [] },
+        {id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: []},
+        {id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: []},
     ];
 
     expect(user.activeCompanies.map((c) => c.id)).toEqual([1]);

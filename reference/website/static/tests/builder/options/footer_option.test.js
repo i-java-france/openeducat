@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains, mockService, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains, mockService, onRpc} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -33,7 +33,7 @@ test("saving page after footer visibility change should work when header is not 
         footerContent: `
             <footer data-name="Footer">Footer Content</footer>`,
     });
-    onRpc("website.page", "write", ({ args }) => {
+    onRpc("website.page", "write", ({args}) => {
         expect(args[1]).toEqual({
             footer_visible: false,
         });

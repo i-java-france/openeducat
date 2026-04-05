@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { Deferred, press, waitFor, waitUntil } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { onWillStart } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, press, waitFor, waitUntil} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {onWillStart} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -11,12 +11,12 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { DynamicPlaceholderPopover } from "@web/views/fields/dynamic_placeholder_popover";
+import {DynamicPlaceholderPopover} from "@web/views/fields/dynamic_placeholder_popover";
 
 class Partner extends models.Model {
     char = fields.Char();
-    placeholder = fields.Char({ default: "partner" });
-    product_id = fields.Many2one({ relation: "product" });
+    placeholder = fields.Char({default: "partner"});
+    product_id = fields.Many2one({relation: "product"});
     properties = fields.Properties({
         string: "Properties",
         definition_record: "product_id",
@@ -28,10 +28,10 @@ class Partner extends models.Model {
             id: 1,
             char: "yop",
             product_id: 37,
-            properties: { f80b6fb58d0d4c72: 3, f424643eee1f3655: 41 },
+            properties: {f80b6fb58d0d4c72: 3, f424643eee1f3655: 41},
         },
-        { id: 2, char: "blip", product_id: false },
-        { id: 4, char: "abc", product_id: 41 },
+        {id: 2, char: "blip", product_id: false},
+        {id: 4, char: "abc", product_id: 41},
     ];
 
     _views = {
@@ -55,7 +55,7 @@ class Partner extends models.Model {
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
+    name = fields.Char({string: "Product Name"});
     properties_definitions = fields.PropertiesDefinition();
 
     _records = [
@@ -63,11 +63,16 @@ class Product extends models.Model {
             id: 37,
             name: "xphone",
             properties_definitions: [
-                { name: "f80b6fb58d0d4c72", type: "integer", string: "prop 1" },
-                { name: "f424643eee1f3655", type: "many2one", string: "prop 2", comodel: "product" },
+                {name: "f80b6fb58d0d4c72", type: "integer", string: "prop 1"},
+                {
+                    name: "f424643eee1f3655",
+                    type: "many2one",
+                    string: "prop 2",
+                    comodel: "product",
+                },
             ],
         },
-        { id: 41, name: "xpad" },
+        {id: 41, name: "xpad"},
     ];
 }
 
@@ -77,27 +82,27 @@ onRpc("has_group", () => true);
 onRpc("mail_allowed_qweb_expressions", () => []);
 
 test("dynamic placeholder close with click out", async () => {
-    await mountView({ type: "form", resModel: "partner", resId: 1 });
+    await mountView({type: "form", resModel: "partner", resId: 1});
 
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     expect(".o_model_field_selector_popover").toHaveCount(1);
     await contains(".o_content").click();
     expect(".o_model_field_selector_popover").toHaveCount(0);
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     await contains(".o_model_field_selector_popover_item_relation").click();
     await contains(".o_content").click();
     expect(".o_model_field_selector_popover").toHaveCount(0);
 });
 
 test("dynamic placeholder close with escape", async () => {
-    await mountView({ type: "form", resModel: "partner", resId: 1 });
+    await mountView({type: "form", resModel: "partner", resId: 1});
 
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     expect(".o_model_field_selector_popover").toHaveCount(1);
     press("Escape");
     await animationFrame();
     expect(".o_model_field_selector_popover").toHaveCount(0);
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     await contains(".o_model_field_selector_popover_item_relation").click();
     press("Escape");
     await animationFrame();
@@ -105,42 +110,58 @@ test("dynamic placeholder close with escape", async () => {
 });
 
 test("dynamic placeholder close when clicking on the cross", async () => {
-    await mountView({ type: "form", resModel: "partner", resId: 1 });
+    await mountView({type: "form", resModel: "partner", resId: 1});
 
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     expect(".o_model_field_selector_popover").toHaveCount(1);
     await contains(".o_model_field_selector_popover_close").click();
     expect(".o_model_field_selector_popover").toHaveCount(0);
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     await contains(".o_model_field_selector_popover_item_relation").click();
     await contains(".o_model_field_selector_popover_close").click();
     expect(".o_model_field_selector_popover").toHaveCount(0);
 });
 
 test("dynamic placeholder properties", async () => {
-    await mountView({ type: "form", resModel: "partner", resId: 1 });
+    await mountView({type: "form", resModel: "partner", resId: 1});
 
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     expect(".o_model_field_selector_popover").toHaveCount(1);
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Properties')").toHaveCount(1);
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Properties')"
+    ).toHaveCount(1);
 
-    // select the properties
-    await contains(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Properties') + .o_model_field_selector_popover_item_relation").click();
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 1 (xphone)')").toHaveCount(1);
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 2 (xphone)')").toHaveCount(1);
+    // Select the properties
+    await contains(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Properties') + .o_model_field_selector_popover_item_relation"
+    ).click();
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 1 (xphone)')"
+    ).toHaveCount(1);
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 2 (xphone)')"
+    ).toHaveCount(1);
 
-    // select the many2one property
-    await contains(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 2 (xphone)') + .o_model_field_selector_popover_item_relation").click();
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Created on')").toHaveCount(1);
+    // Select the many2one property
+    await contains(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('prop 2 (xphone)') + .o_model_field_selector_popover_item_relation"
+    ).click();
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Created on')"
+    ).toHaveCount(1);
 
-    // select the product name
-    await contains(".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Product Name')").click();
+    // Select the product name
+    await contains(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_item_name:contains('Product Name')"
+    ).click();
 
-    // click on insert
+    // Click on insert
     await contains(".o_model_field_selector_popover button:contains('Insert')").click();
 
     const value = document.querySelector(".o_field_placeholder").value.trim();
-    expect(value).toBe("{{object.properties.get('f424643eee1f3655', env['product']).name}}");
+    expect(value).toBe(
+        "{{object.properties.get('f424643eee1f3655', env['product']).name}}"
+    );
 });
 
 test("correctly cache model qweb variables and don't prevent opening of other popovers", async () => {
@@ -161,10 +182,10 @@ test("correctly cache model qweb variables and don't prevent opening of other po
         return [];
     });
 
-    await mountView({ type: "form", resModel: "partner", resId: 1 });
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await mountView({type: "form", resModel: "partner", resId: 1});
+    await contains(".o_field_char input").edit("#", {confirm: false});
     await waitUntil(() => willStarts === 1);
-    await contains(".o_field_char input").edit("#", { confirm: false });
+    await contains(".o_field_char input").edit("#", {confirm: false});
     await waitUntil(() => willStarts === 2);
 
     def.resolve();

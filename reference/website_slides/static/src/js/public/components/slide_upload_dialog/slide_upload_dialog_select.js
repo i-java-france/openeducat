@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class ModuleToInstallIcon extends Component {
     static template = "website_slides.ModuleToInstallIcon";

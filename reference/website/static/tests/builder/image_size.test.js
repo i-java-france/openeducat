@@ -1,12 +1,12 @@
-import { expect, test } from "@odoo/hoot";
-import { contains } from "@web/../tests/web_test_helpers";
-import { defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { testImg, testImgSrc, testGifImg, testGifImgSrc } from "./image_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains} from "@web/../tests/web_test_helpers";
+import {defineWebsiteModels, setupWebsiteBuilder} from "./website_helpers";
+import {testGifImg, testGifImgSrc, testImg, testImgSrc} from "./image_test_helpers";
 
 defineWebsiteModels();
 
 test("the image should show its size", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -19,7 +19,7 @@ test("the image should show its size", async () => {
 });
 
 test("the background image should show its size", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             <section style="background-image: url(${testImgSrc});">text</section>
         </div>
@@ -37,7 +37,7 @@ function expectAround(value, expected, delta = 0.2) {
 }
 
 test("the GIF image should show its size", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testGifImg}
         </div>
@@ -50,7 +50,7 @@ test("the GIF image should show its size", async () => {
 });
 
 test("the GIF background image should show its size", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             <section style="background-image: url(${testGifImgSrc});">text</section>
         </div>

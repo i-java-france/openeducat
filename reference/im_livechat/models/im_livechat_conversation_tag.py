@@ -2,7 +2,7 @@
 
 from random import randint
 
-from odoo import fields, models, api, Command
+from odoo import Command, api, fields, models
 
 
 class Im_LivechatConversationTag(models.Model):

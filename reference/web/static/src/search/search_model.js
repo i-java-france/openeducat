@@ -1,16 +1,16 @@
-import { EventBus, toRaw } from "@odoo/owl";
-import { makeContext } from "@web/core/context";
-import { Domain } from "@web/core/domain";
-import { getDefaultDomain } from "@web/core/domain_selector/utils";
-import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { rpcBus } from "@web/core/network/rpc";
-import { evaluateExpr } from "@web/core/py_js/py";
-import { domainFromTree } from "@web/core/tree_editor/domain_from_tree";
-import { user } from "@web/core/user";
-import { groupBy, sortBy } from "@web/core/utils/arrays";
-import { deepCopy } from "@web/core/utils/objects";
-import { SearchArchParser } from "./search_arch_parser";
+import {EventBus, toRaw} from "@odoo/owl";
+import {makeContext} from "@web/core/context";
+import {Domain} from "@web/core/domain";
+import {getDefaultDomain} from "@web/core/domain_selector/utils";
+import {DomainSelectorDialog} from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {rpcBus} from "@web/core/network/rpc";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {domainFromTree} from "@web/core/tree_editor/domain_from_tree";
+import {user} from "@web/core/user";
+import {groupBy, sortBy} from "@web/core/utils/arrays";
+import {deepCopy} from "@web/core/utils/objects";
+import {SearchArchParser} from "./search_arch_parser";
 import {
     constructDateDomain,
     DEFAULT_INTERVAL,
@@ -20,9 +20,9 @@ import {
     rankInterval,
     yearSelected,
 } from "./utils/dates";
-import { FACET_COLORS, FACET_ICONS } from "./utils/misc";
+import {FACET_COLORS, FACET_ICONS} from "./utils/misc";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @typedef {import("@web/core/context").Context} Context
@@ -93,7 +93,7 @@ const SPECIAL = Symbol("special");
  * @returns {boolean}
  */
 function hasValues(section) {
-    const { errorMsg, type, values } = section;
+    const {errorMsg, type, values} = section;
     if (errorMsg) {
         return true;
     }
@@ -135,8 +135,15 @@ function arraytoMap(array) {
  * @param {Object} target
  */
 function execute(op, source, target) {
-    const { query, nextId, nextGroupId, nextGroupNumber, searchItems, searchPanelInfo, sections } =
-        source;
+    const {
+        query,
+        nextId,
+        nextGroupId,
+        nextGroupNumber,
+        searchItems,
+        searchPanelInfo,
+        sections,
+    } = source;
 
     target.nextGroupId = nextGroupId;
     target.nextGroupNumber = nextGroupNumber;
@@ -175,7 +182,7 @@ export class SearchModel extends EventBus {
 
     setup(services) {
         // services
-        const { field: fieldService, orm, view, dialog, treeProcessor } = services;
+        const {field: fieldService, orm, view, dialog, treeProcessor} = services;
         this.orm = orm;
         this.fieldService = fieldService;
         this.viewService = view;
@@ -212,7 +219,7 @@ export class SearchModel extends EventBus {
      * @param {Object} [config.state]
      */
     async load(config) {
-        const { resModel } = config;
+        const {resModel} = config;
         if (!resModel) {
             throw Error(`SearchModel config should have a "resModel" key`);
         }
@@ -221,7 +228,7 @@ export class SearchModel extends EventBus {
         // used to avoid useless recomputations
         this._reset();
 
-        const { context, domain, groupBy, hideCustomGroupBy, orderBy } = config;
+        const {context, domain, groupBy, hideCustomGroupBy, orderBy} = config;
 
         this.globalContext = toRaw(Object.assign({}, context));
         this.globalDomain = domain || [];
@@ -229,11 +236,14 @@ export class SearchModel extends EventBus {
         this.globalOrderBy = orderBy || [];
         this.hideCustomGroupBy = hideCustomGroupBy;
 
-        this.searchMenuTypes = new Set(config.searchMenuTypes || ["filter", "groupBy", "favorite"]);
+        this.searchMenuTypes = new Set(
+            config.searchMenuTypes || ["filter", "groupBy", "favorite"]
+        );
         this.canOrderByCount = config.canOrderByCount;
         this.defaultGroupBy = config.defaultGroupBy;
 
-        let { irFilters, loadIrFilters, searchViewArch, searchViewFields, searchViewId } = config;
+        let {irFilters, loadIrFilters, searchViewArch, searchViewFields, searchViewId} =
+            config;
         const loadSearchView =
             searchViewId !== undefined &&
             (!searchViewArch || !searchViewFields || (!irFilters && loadIrFilters));
@@ -273,12 +283,15 @@ export class SearchModel extends EventBus {
             this.searchViewId = searchViewDescription.viewId;
         }
 
-        const { searchDefaults, searchPanelDefaults } =
+        const {searchDefaults, searchPanelDefaults} =
             this._extractSearchDefaultsFromGlobalContext();
 
         if (config.state) {
             this._importState(config.state);
-            this.__legacyParseSearchPanelArchAnyway(searchViewDescription, searchViewFields);
+            this.__legacyParseSearchPanelArchAnyway(
+                searchViewDescription,
+                searchViewFields
+            );
             this.display = this._getDisplay(config.display);
             this._reconciliateFavorites();
             if (!this.searchPanelInfo.loaded) {
@@ -302,9 +315,9 @@ export class SearchModel extends EventBus {
             searchDefaults,
             searchPanelDefaults
         );
-        const { labels, preSearchItems, searchPanelInfo, sections } = parser.parse();
+        const {labels, preSearchItems, searchPanelInfo, sections} = parser.parse();
 
-        this.searchPanelInfo = { ...searchPanelInfo, loaded: false, shouldReload: false };
+        this.searchPanelInfo = {...searchPanelInfo, loaded: false, shouldReload: false};
 
         await Promise.all(labels.map((cb) => cb(this.orm)));
 
@@ -313,15 +326,20 @@ export class SearchModel extends EventBus {
             this._createGroupOfSearchItems(preGroup);
         }
         this.nextGroupNumber =
-            1 + Math.max(...Object.values(this.searchItems).map((i) => i.groupNumber || 0), 0);
+            1 +
+            Math.max(
+                ...Object.values(this.searchItems).map((i) => i.groupNumber || 0),
+                0
+            );
 
-        const { dynamicFilters } = config;
+        const {dynamicFilters} = config;
         if (dynamicFilters) {
             this._createGroupOfDynamicFilters(dynamicFilters);
         }
 
         const defaultFavoriteId = this._createGroupOfFavorites(this.irFilters || []);
-        const activateFavorite = "activateFavorite" in config ? config.activateFavorite : true;
+        const activateFavorite =
+            "activateFavorite" in config ? config.activateFavorite : true;
 
         // activate default search items (populate this.query)
         this._activateDefaultSearchItems(activateFavorite ? defaultFavoriteId : null);
@@ -334,9 +352,12 @@ export class SearchModel extends EventBus {
 
         if (this.display.searchPanel) {
             /** @type DomainListRepr */
-            this.searchDomain = this._getDomain({ withSearchPanel: false });
-            this.sectionsPromise = this._fetchSections(this.categories, this.filters).then(() => {
-                for (const { fieldName, values } of this.filters) {
+            this.searchDomain = this._getDomain({withSearchPanel: false});
+            this.sectionsPromise = this._fetchSections(
+                this.categories,
+                this.filters
+            ).then(() => {
+                for (const {fieldName, values} of this.filters) {
                     const filterDefaults = searchPanelDefaults[fieldName] || [];
                     for (const valueId of filterDefaults) {
                         const value = values.get(valueId);
@@ -346,7 +367,10 @@ export class SearchModel extends EventBus {
                     }
                 }
             });
-            if (Object.keys(searchPanelDefaults).length || this._shouldWaitForData(false)) {
+            if (
+                Object.keys(searchPanelDefaults).length ||
+                this._shouldWaitForData(false)
+            ) {
                 await this.sectionsPromise;
             }
         }
@@ -364,7 +388,7 @@ export class SearchModel extends EventBus {
     async reload(config = {}) {
         this._reset();
 
-        const { context, domain, groupBy, orderBy } = config;
+        const {context, domain, groupBy, orderBy} = config;
 
         this.globalContext = Object.assign({}, context);
         this.globalDomain = domain || [];
@@ -411,7 +435,7 @@ export class SearchModel extends EventBus {
      * @returns {string}
      */
     get domainString() {
-        return this._getDomain({ raw: true }).toString();
+        return this._getDomain({raw: true}).toString();
     }
 
     get domainEvalContext() {
@@ -476,7 +500,7 @@ export class SearchModel extends EventBus {
         if (!["field", "field_property"].includes(searchItem.type)) {
             return;
         }
-        const { label, value, operator } = autocompleteValue;
+        const {label, value, operator} = autocompleteValue;
         const queryElem = this.query.find(
             (queryElem) =>
                 queryElem.searchItemId === searchItemId &&
@@ -485,7 +509,7 @@ export class SearchModel extends EventBus {
                 queryElem.autocompleteValue.operator === operator
         );
         if (!queryElem) {
-            this.query.push({ searchItemId, autocompleteValue });
+            this.query.push({searchItemId, autocompleteValue});
         } else {
             queryElem.autocompleteValue.label = label; // seems related to old stuff --> should be useless now
         }
@@ -523,7 +547,7 @@ export class SearchModel extends EventBus {
      * @returns {Promise}
      */
     async createNewFavorite(params) {
-        const { preFavorite, irFilter } = this._getIrFilterDescription(params);
+        const {preFavorite, irFilter} = this._getIrFilterDescription(params);
         const serverSideId = await this._createIrFilters(irFilter);
 
         // before the filter cache was cleared!
@@ -535,12 +559,14 @@ export class SearchModel extends EventBus {
             id: this.nextId,
             groupId: this.nextGroupId,
             groupNumber:
-                preFavorite.userIds.length === 1 ? FAVORITE_PRIVATE_GROUP : FAVORITE_SHARED_GROUP,
+                preFavorite.userIds.length === 1
+                    ? FAVORITE_PRIVATE_GROUP
+                    : FAVORITE_SHARED_GROUP,
             removable: true,
             serverSideId,
         };
         this.searchItems[this.nextId] = favorite;
-        this.query.push({ searchItemId: this.nextId });
+        this.query.push({searchItemId: this.nextId});
         this.nextGroupId++;
         this.nextId++;
         this.blockNotification = false;
@@ -549,7 +575,9 @@ export class SearchModel extends EventBus {
     }
 
     async _createIrFilters(irFilter) {
-        const serverSideIds = await this.orm.call("ir.filters", "create_filter", [irFilter]);
+        const serverSideIds = await this.orm.call("ir.filters", "create_filter", [
+            irFilter,
+        ]);
         rpcBus.trigger("CLEAR-CACHES", "get_views");
         return serverSideIds[0];
     }
@@ -570,7 +598,7 @@ export class SearchModel extends EventBus {
                 type: "filter",
             });
             this.searchItems[this.nextId] = filter;
-            this.query.push({ searchItemId: this.nextId });
+            this.query.push({searchItemId: this.nextId});
             this.nextId++;
         });
         this.nextGroupId++;
@@ -586,10 +614,12 @@ export class SearchModel extends EventBus {
      * @param {string} [param.interval=DEFAULT_INTERVAL]
      * @param {boolean} [param.invisible=false]
      */
-    createNewGroupBy(fieldName, { interval, invisible } = {}) {
+    createNewGroupBy(fieldName, {interval, invisible} = {}) {
         const field = this.searchViewFields[fieldName];
-        const { string, type: fieldType } = field;
-        const firstGroupBy = Object.values(this.searchItems).find((f) => f.type === "groupBy");
+        const {string, type: fieldType} = field;
+        const firstGroupBy = Object.values(this.searchItems).find(
+            (f) => f.type === "groupBy"
+        );
         const preSearchItem = {
             description: string || fieldName,
             fieldName,
@@ -604,12 +634,15 @@ export class SearchModel extends EventBus {
         }
         if (["date", "datetime"].includes(fieldType)) {
             this.searchItems[this.nextId] = Object.assign(
-                { type: "dateGroupBy", defaultIntervalId: interval || DEFAULT_INTERVAL },
+                {type: "dateGroupBy", defaultIntervalId: interval || DEFAULT_INTERVAL},
                 preSearchItem
             );
             this.toggleDateGroupBy(this.nextId);
         } else {
-            this.searchItems[this.nextId] = Object.assign({ type: "groupBy" }, preSearchItem);
+            this.searchItems[this.nextId] = Object.assign(
+                {type: "groupBy"},
+                preSearchItem
+            );
             this.toggleSearchItem(this.nextId);
         }
         this.nextGroupNumber++; // FIXME: with this, all subsequent added groups are in different groups (visually)
@@ -645,12 +678,12 @@ export class SearchModel extends EventBus {
     }
 
     getIrFilterValues(params) {
-        const { irFilter } = this._getIrFilterDescription(params);
+        const {irFilter} = this._getIrFilterDescription(params);
         return irFilter;
     }
 
     getPreFavoriteValues(params) {
-        const { preFavorite } = this._getIrFilterDescription(params);
+        const {preFavorite} = this._getIrFilterDescription(params);
         return preFavorite;
     }
 
@@ -688,7 +721,7 @@ export class SearchModel extends EventBus {
      */
     getSections(predicate) {
         let sections = [...this.sections.values()].map((section) =>
-            Object.assign({}, section, { empty: !hasValues(section) })
+            Object.assign({}, section, {empty: !hasValues(section)})
         );
         if (predicate) {
             sections = sections.filter(predicate);
@@ -755,7 +788,7 @@ export class SearchModel extends EventBus {
             queryItemIndex = this.query.findIndex(
                 (queryElem) => queryElem.searchItemId === firstActiveItem.searchItemId
             );
-            const { type } = firstSearchItem;
+            const {type} = firstSearchItem;
             if (type === "favorite") {
                 const activeItemGroupBys = this._getSearchItemGroupBys(firstActiveItem);
                 let createNewGroupBys = Boolean(activeItemGroupBys.length);
@@ -764,18 +797,24 @@ export class SearchModel extends EventBus {
                     this.defaultGroupBy &&
                     this.env.config.viewType === "kanban"
                 ) {
-                    const currentGroupBy = this._getGroupBy({ fallbackOnDefault: false });
-                    if (JSON.stringify(currentGroupBy) === JSON.stringify(this.defaultGroupBy)) {
+                    const currentGroupBy = this._getGroupBy({fallbackOnDefault: false});
+                    if (
+                        JSON.stringify(currentGroupBy) ===
+                        JSON.stringify(this.defaultGroupBy)
+                    ) {
                         createNewGroupBys = false;
                     }
                 }
                 if (createNewGroupBys) {
                     for (const activeItemGroupBy of activeItemGroupBys) {
                         const [fieldName, interval] = activeItemGroupBy.split(":");
-                        this.createNewGroupBy(fieldName, { interval, invisible: true });
+                        this.createNewGroupBy(fieldName, {interval, invisible: true});
                     }
                     const index = this.query.length - activeItemGroupBys.length;
-                    this.query = [...this.query.slice(index), ...this.query.slice(0, index)];
+                    this.query = [
+                        ...this.query.slice(index),
+                        ...this.query.slice(0, index),
+                    ];
                 }
             }
             this.deactivateGroup(groupId);
@@ -859,7 +898,9 @@ export class SearchModel extends EventBus {
                 return;
             }
         }
-        const index = this.query.findIndex((queryElem) => queryElem.searchItemId === searchItemId);
+        const index = this.query.findIndex(
+            (queryElem) => queryElem.searchItemId === searchItemId
+        );
         if (index >= 0) {
             this.query.splice(index, 1);
             this._checkOrderByCountStatus();
@@ -867,7 +908,7 @@ export class SearchModel extends EventBus {
             if (searchItem.type === "favorite") {
                 this.query = [];
             }
-            this.query.push({ searchItemId });
+            this.query.push({searchItemId});
         }
         this._notify();
     }
@@ -882,7 +923,9 @@ export class SearchModel extends EventBus {
         if (searchItem.type !== "dateFilter") {
             return;
         }
-        const generatorIds = generatorId ? [generatorId] : searchItem.defaultGeneratorIds;
+        const generatorIds = generatorId
+            ? [generatorId]
+            : searchItem.defaultGeneratorIds;
         for (const generatorId of generatorIds) {
             const index = this.query.findIndex(
                 (queryElem) =>
@@ -906,7 +949,7 @@ export class SearchModel extends EventBus {
                     this.query = this.query.filter(
                         (queryElem) => searchItemId !== queryElem.searchItemId
                     );
-                    this.query.push({ searchItemId, generatorId });
+                    this.query.push({searchItemId, generatorId});
                     continue;
                 }
                 this.query = this.query.filter(
@@ -914,15 +957,15 @@ export class SearchModel extends EventBus {
                         queryElem.searchItemId !== searchItemId ||
                         !queryElem.generatorId.startsWith("custom")
                 );
-                this.query.push({ searchItemId, generatorId });
+                this.query.push({searchItemId, generatorId});
                 if (!yearSelected(this._getSelectedGeneratorIds(searchItemId))) {
                     // Here we add 'year' as options if no option of type
                     // year is already selected.
-                    const { defaultYearId } = getPeriodOptions(
+                    const {defaultYearId} = getPeriodOptions(
                         this.referenceMoment,
                         searchItem.optionsParams
                     ).find((o) => o.id === generatorId);
-                    this.query.push({ searchItemId, generatorId: defaultYearId });
+                    this.query.push({searchItemId, generatorId: defaultYearId});
                 }
             }
         }
@@ -945,7 +988,7 @@ export class SearchModel extends EventBus {
             this.query.splice(index, 1);
             this._checkOrderByCountStatus();
         } else {
-            this.query.push({ searchItemId, intervalId });
+            this.query.push({searchItemId, intervalId});
         }
         this._notify();
     }
@@ -986,17 +1029,23 @@ export class SearchModel extends EventBus {
         }
         const field = this.searchViewFields[searchItem.fieldName];
         const definitionRecord = field.definition_record;
-        const result = await this._fetchPropertiesDefinition(this.resModel, searchItem.fieldName);
+        const result = await this._fetchPropertiesDefinition(
+            this.resModel,
+            searchItem.fieldName
+        );
 
         const searchItemIds = new Set();
         const existingFieldProperties = {};
         for (const item of Object.values(this.searchItems)) {
-            if (item.type === "field_property" && item.propertyItemId === searchItem.id) {
+            if (
+                item.type === "field_property" &&
+                item.propertyItemId === searchItem.id
+            ) {
                 existingFieldProperties[item.propertyFieldDefinition.name] = item;
             }
         }
 
-        for (const { definitionRecordId, definitionRecordName, definitions } of result) {
+        for (const {definitionRecordId, definitionRecordName, definitions} of result) {
             for (const definition of definitions) {
                 if (definition.type === "separator") {
                     continue;
@@ -1054,13 +1103,24 @@ export class SearchModel extends EventBus {
                 continue;
             }
 
-            const result = await this._fetchPropertiesDefinition(this.resModel, field.name);
+            const result = await this._fetchPropertiesDefinition(
+                this.resModel,
+                field.name
+            );
 
             const searchItemsNames = Object.values(this.searchItems)
-                .filter((item) => item.isProperty && ["groupBy", "dateGroupBy"].includes(item.type))
+                .filter(
+                    (item) =>
+                        item.isProperty &&
+                        ["groupBy", "dateGroupBy"].includes(item.type)
+                )
                 .map((item) => item.fieldName);
 
-            for (const { definitionRecordId, definitionRecordName, definitions } of result) {
+            for (const {
+                definitionRecordId,
+                definitionRecordName,
+                definitions,
+            } of result) {
                 // some properties might have been deleted
                 const groupNames = definitions.map(
                     (definition) => `group_by_${field.name}.${definition.name}`
@@ -1147,7 +1207,10 @@ export class SearchModel extends EventBus {
             fieldName,
             domain
         );
-        const result = groupBy(Object.values(definitions), (definition) => definition.record_id);
+        const result = groupBy(
+            Object.values(definitions),
+            (definition) => definition.record_id
+        );
         return Object.entries(result).map(([recordId, definitions]) => ({
             definitionRecordId: parseInt(recordId),
             definitionRecordName: definitions[0]?.record_name,
@@ -1185,7 +1248,9 @@ export class SearchModel extends EventBus {
         if (
             this.orderByCount &&
             !this.query.some((item) =>
-                ["dateGroupBy", "groupBy"].includes(this.searchItems[item.searchItemId].type)
+                ["dateGroupBy", "groupBy"].includes(
+                    this.searchItems[item.searchItemId].type
+                )
             )
         ) {
             this.orderByCount = false;
@@ -1199,7 +1264,7 @@ export class SearchModel extends EventBus {
     _createCategoryTree(sectionId, result) {
         const category = this.sections.get(sectionId);
 
-        let { error_msg, parent_field: parentField, values } = result;
+        let {error_msg, parent_field: parentField, values} = result;
         if (error_msg) {
             category.errorMsg = error_msg;
             values = [];
@@ -1217,7 +1282,7 @@ export class SearchModel extends EventBus {
             );
         }
         for (const value of values) {
-            const { parentId } = category.values.get(value.id);
+            const {parentId} = category.values.get(value.id);
             if (parentId && category.values.has(parentId)) {
                 category.values.get(parentId).childrenIds.push(value.id);
             }
@@ -1225,7 +1290,7 @@ export class SearchModel extends EventBus {
         // collect rootIds
         category.rootIds = [false];
         for (const value of values) {
-            const { parentId } = category.values.get(value.id);
+            const {parentId} = category.values.get(value.id);
             if (!parentId) {
                 category.rootIds.push(value.id);
             }
@@ -1242,7 +1307,7 @@ export class SearchModel extends EventBus {
     _createFilterTree(sectionId, result) {
         const filter = this.sections.get(sectionId);
 
-        let { error_msg, values } = result;
+        let {error_msg, values} = result;
         if (error_msg) {
             filter.errorMsg = error_msg;
             values = [];
@@ -1349,18 +1414,18 @@ export class SearchModel extends EventBus {
      */
     _enrichItem(searchItem) {
         if (searchItem.type === "field" && searchItem.fieldType === "properties") {
-            return { ...searchItem };
+            return {...searchItem};
         }
         const queryElements = this.query.filter(
             (queryElem) => queryElem.searchItemId === searchItem.id
         );
         const isActive = Boolean(queryElements.length);
-        const enrichSearchItem = Object.assign({ isActive }, searchItem);
+        const enrichSearchItem = Object.assign({isActive}, searchItem);
         function _enrichOptions(options, selectedIds) {
             return options.map((o) => {
-                const { description, id, groupNumber } = o;
+                const {description, id, groupNumber} = o;
                 const isActive = selectedIds.some((optionId) => optionId === id);
-                return { description, id, groupNumber, isActive };
+                return {description, id, groupNumber, isActive};
             });
         }
         switch (searchItem.type) {
@@ -1417,7 +1482,7 @@ export class SearchModel extends EventBus {
                 delete this.globalContext[key];
             }
         }
-        return { searchDefaults, searchPanelDefaults };
+        return {searchDefaults, searchPanelDefaults};
     }
 
     /**
@@ -1437,7 +1502,10 @@ export class SearchModel extends EventBus {
                         type: "disk",
                         update: "always",
                         callback: (result, hasChanged) => {
-                            if (!hasChanged || categoriesLoadId !== this.categoriesLoadId) {
+                            if (
+                                !hasChanged ||
+                                categoriesLoadId !== this.categoriesLoadId
+                            ) {
                                 return;
                             }
                             this._createCategoryTree(category.id, result);
@@ -1445,16 +1513,21 @@ export class SearchModel extends EventBus {
                             this.trigger("update");
                         },
                     })
-                    .call(this.resModel, "search_panel_select_range", [category.fieldName], {
-                        category_domain: this._getCategoryDomain(category.id),
-                        context: this.globalContext,
-                        enable_counters: category.enableCounters,
-                        expand: category.expand,
-                        filter_domain: filterDomain,
-                        hierarchize: category.hierarchize,
-                        limit: category.limit,
-                        search_domain: searchDomain,
-                    });
+                    .call(
+                        this.resModel,
+                        "search_panel_select_range",
+                        [category.fieldName],
+                        {
+                            category_domain: this._getCategoryDomain(category.id),
+                            context: this.globalContext,
+                            enable_counters: category.enableCounters,
+                            expand: category.expand,
+                            filter_domain: filterDomain,
+                            hierarchize: category.hierarchize,
+                            limit: category.limit,
+                            search_domain: searchDomain,
+                        }
+                    );
                 this._createCategoryTree(category.id, result);
             })
         );
@@ -1489,18 +1562,25 @@ export class SearchModel extends EventBus {
                             this.trigger("update");
                         },
                     })
-                    .call(this.resModel, "search_panel_select_multi_range", [filter.fieldName], {
-                        category_domain: categoryDomain,
-                        comodel_domain: new Domain(filter.domain).toList(evalContext),
-                        context: this.globalContext,
-                        enable_counters: filter.enableCounters,
-                        filter_domain: this._getFilterDomain(filter.id),
-                        expand: filter.expand,
-                        group_by: filter.groupBy || false,
-                        group_domain: this._getGroupDomain(filter),
-                        limit: filter.limit,
-                        search_domain: searchDomain,
-                    });
+                    .call(
+                        this.resModel,
+                        "search_panel_select_multi_range",
+                        [filter.fieldName],
+                        {
+                            category_domain: categoryDomain,
+                            comodel_domain: new Domain(filter.domain).toList(
+                                evalContext
+                            ),
+                            context: this.globalContext,
+                            enable_counters: filter.enableCounters,
+                            filter_domain: this._getFilterDomain(filter.id),
+                            expand: filter.expand,
+                            group_by: filter.groupBy || false,
+                            group_domain: this._getGroupDomain(filter),
+                            limit: filter.limit,
+                            search_domain: searchDomain,
+                        }
+                    );
                 this._createFilterTree(filter.id, result);
             })
         );
@@ -1532,7 +1612,8 @@ export class SearchModel extends EventBus {
                 continue;
             }
             const field = this.searchViewFields[category.fieldName];
-            const operator = field.type === "many2one" && category.parentField ? "child_of" : "=";
+            const operator =
+                field.type === "many2one" && category.parentField ? "child_of" : "=";
             domain.push([category.fieldName, operator, category.activeValueId]);
         }
         return domain;
@@ -1562,7 +1643,11 @@ export class SearchModel extends EventBus {
      * with a date filter starting from its corresponding query elements.
      */
     _getDateFilterDomain(dateFilter, generatorIds, key = "domain") {
-        const dateFilterRange = constructDateDomain(this.referenceMoment, dateFilter, generatorIds);
+        const dateFilterRange = constructDateDomain(
+            this.referenceMoment,
+            dateFilter,
+            generatorIds
+        );
         return dateFilterRange[key];
     }
 
@@ -1577,8 +1662,8 @@ export class SearchModel extends EventBus {
      * @returns {{ controlPanel: Object | false, searchPanel: boolean, banner: boolean }}
      */
     _getDisplay(display = {}) {
-        const { viewTypes } = this.searchPanelInfo;
-        const { viewType } = this.env.config;
+        const {viewTypes} = this.searchPanelInfo;
+        const {viewType} = this.env.config;
         return {
             controlPanel: "controlPanel" in display ? display.controlPanel : {},
             searchPanel:
@@ -1598,7 +1683,8 @@ export class SearchModel extends EventBus {
      * @returns {DomainListRepr | Domain} Domain instance if 'raw', else the evaluated list domain
      */
     _getDomain(params = {}) {
-        const withSearchPanel = "withSearchPanel" in params ? params.withSearchPanel : true;
+        const withSearchPanel =
+            "withSearchPanel" in params ? params.withSearchPanel : true;
         const withGlobal = "withGlobal" in params ? params.withGlobal : true;
 
         const groups = this._getGroups();
@@ -1662,7 +1748,7 @@ export class SearchModel extends EventBus {
                     case "dateGroupBy": {
                         type = "groupBy";
                         for (const intervalId of activeItem.intervalIds) {
-                            const { description } = INTERVAL_OPTIONS[intervalId];
+                            const {description} = INTERVAL_OPTIONS[intervalId];
                             values.push(`${searchItem.description}: ${description}`);
                         }
                         break;
@@ -1695,7 +1781,9 @@ export class SearchModel extends EventBus {
             } else {
                 if (type === "groupBy" && this.orderByCount) {
                     facet.icon =
-                        FACET_ICONS[this.orderByCount === "Asc" ? "groupByAsc" : "groupByDesc"];
+                        FACET_ICONS[
+                            this.orderByCount === "Asc" ? "groupByAsc" : "groupByDesc"
+                        ];
                 } else {
                     facet.icon = FACET_ICONS[type];
                 }
@@ -1721,9 +1809,9 @@ export class SearchModel extends EventBus {
                 type: "groupBy",
                 values: this.defaultGroupBy.map((gb) => {
                     const [fieldName, interval] = gb.split(":");
-                    const { string } = this.searchViewFields[fieldName];
+                    const {string} = this.searchViewFields[fieldName];
                     if (interval) {
-                        const { description } = INTERVAL_OPTIONS[interval];
+                        const {description} = INTERVAL_OPTIONS[interval];
                         return `${string}:${description}`;
                     }
                     return string;
@@ -1741,7 +1829,7 @@ export class SearchModel extends EventBus {
      * of a search item of type 'field'.
      */
     _getFieldDomain(field, autocompleteValues) {
-        const domains = autocompleteValues.map(({ label, value, operator }) => {
+        const domains = autocompleteValues.map(({label, value, operator}) => {
             let domain;
             if (field.filterDomain) {
                 domain = new Domain(field.filterDomain).toList({
@@ -1753,7 +1841,11 @@ export class SearchModel extends EventBus {
             } else if (field.type === "field_property") {
                 domain = [
                     field.propertyDomain,
-                    [`${field.fieldName}.${field.propertyFieldDefinition.name}`, operator, value],
+                    [
+                        `${field.fieldName}.${field.propertyFieldDefinition.name}`,
+                        operator,
+                        value,
+                    ],
                 ];
             }
             return new Domain(domain);
@@ -1794,7 +1886,7 @@ export class SearchModel extends EventBus {
             if (filter.id === excludedFilterId) {
                 continue;
             }
-            const { fieldName, groups, values } = filter;
+            const {fieldName, groups, values} = filter;
             if (groups) {
                 for (const group of groups.values()) {
                     addCondition(fieldName, group.values);
@@ -1819,7 +1911,8 @@ export class SearchModel extends EventBus {
      * @returns {string[]}
      */
     _getGroupBy(options = {}) {
-        const fallbackOnDefault = "fallbackOnDefault" in options ? options.fallbackOnDefault : true;
+        const fallbackOnDefault =
+            "fallbackOnDefault" in options ? options.fallbackOnDefault : true;
         const groups = this._getGroups();
         const groupBys = [];
         for (const group of groups) {
@@ -1833,8 +1926,8 @@ export class SearchModel extends EventBus {
         const groupBy = groupBys.length
             ? groupBys
             : this.globalGroupBy.length
-            ? this.globalGroupBy.slice()
-            : (fallbackOnDefault && this.defaultGroupBy?.slice()) || [];
+              ? this.globalGroupBy.slice()
+              : (fallbackOnDefault && this.defaultGroupBy?.slice()) || [];
         return typeof groupBy === "string" ? [groupBy] : groupBy;
     }
 
@@ -1849,8 +1942,8 @@ export class SearchModel extends EventBus {
      * @returns {Object<string, Array[]> | Array[] | null}
      */
     _getGroupDomain(filter) {
-        const { fieldName, groups, enableCounters } = filter;
-        const { type: fieldType } = this.searchViewFields[fieldName];
+        const {fieldName, groups, enableCounters} = filter;
+        const {type: fieldType} = this.searchViewFields[fieldName];
 
         if (!enableCounters || !groups) {
             return {
@@ -1864,7 +1957,7 @@ export class SearchModel extends EventBus {
                 const valueIds = [];
                 let active = false;
                 for (const [valueId, value] of group.values) {
-                    const { checked } = value;
+                    const {checked} = value;
                     valueIds.push(valueId);
                     if (checked) {
                         active = true;
@@ -1881,8 +1974,8 @@ export class SearchModel extends EventBus {
             }
         } else if (fieldType === "many2many") {
             const checkedValueIds = new Map();
-            groups.forEach(({ values }, groupId) => {
-                values.forEach(({ checked }, valueId) => {
+            groups.forEach(({values}, groupId) => {
+                values.forEach(({checked}, valueId) => {
                     if (checked) {
                         if (!checkedValueIds.has(groupId)) {
                             checkedValueIds.set(groupId, []);
@@ -1914,53 +2007,57 @@ export class SearchModel extends EventBus {
     _getGroups() {
         const preGroups = [];
         for (const queryElem of this.query) {
-            const { searchItemId } = queryElem;
-            const { groupId } = this.searchItems[searchItemId];
+            const {searchItemId} = queryElem;
+            const {groupId} = this.searchItems[searchItemId];
             let preGroup = preGroups.find((group) => group.id === groupId);
             if (!preGroup) {
-                preGroup = { id: groupId, queryElements: [] };
+                preGroup = {id: groupId, queryElements: []};
                 preGroups.push(preGroup);
             }
             preGroup.queryElements.push(queryElem);
         }
         const groups = [];
         for (const preGroup of preGroups) {
-            const { queryElements, id } = preGroup;
+            const {queryElements, id} = preGroup;
             const activeItems = [];
             for (const queryElem of queryElements) {
-                const { searchItemId } = queryElem;
-                let activeItem = activeItems.find(({ searchItemId: id }) => id === searchItemId);
+                const {searchItemId} = queryElem;
+                let activeItem = activeItems.find(
+                    ({searchItemId: id}) => id === searchItemId
+                );
                 if ("generatorId" in queryElem) {
                     if (!activeItem) {
-                        activeItem = { searchItemId, generatorIds: [] };
+                        activeItem = {searchItemId, generatorIds: []};
                         activeItems.push(activeItem);
                     }
                     activeItem.generatorIds.push(queryElem.generatorId);
                 } else if ("intervalId" in queryElem) {
                     if (!activeItem) {
-                        activeItem = { searchItemId, intervalIds: [] };
+                        activeItem = {searchItemId, intervalIds: []};
                         activeItems.push(activeItem);
                     }
                     activeItem.intervalIds.push(queryElem.intervalId);
                 } else if ("autocompleteValue" in queryElem) {
                     if (!activeItem) {
-                        activeItem = { searchItemId, autocompleteValues: [] };
+                        activeItem = {searchItemId, autocompleteValues: []};
                         activeItems.push(activeItem);
                     }
                     activeItem.autocompleteValues.push(queryElem.autocompleteValue);
                 } else {
                     if (!activeItem) {
-                        activeItem = { searchItemId };
+                        activeItem = {searchItemId};
                         activeItems.push(activeItem);
                     }
                 }
             }
             for (const activeItem of activeItems) {
                 if ("intervalIds" in activeItem) {
-                    activeItem.intervalIds.sort((g1, g2) => rankInterval(g1) - rankInterval(g2));
+                    activeItem.intervalIds.sort(
+                        (g1, g2) => rankInterval(g1) - rankInterval(g2)
+                    );
                 }
             }
-            groups.push({ id, activeItems });
+            groups.push({id, activeItems});
         }
         return groups;
     }
@@ -1972,7 +2069,7 @@ export class SearchModel extends EventBus {
      * @returns {{ preFavorite: Object, irFilter: Object }}
      */
     _getIrFilterDescription(params = {}) {
-        const { description, isDefault, isShared, embeddedActionId } = params;
+        const {description, isDefault, isShared, embeddedActionId} = params;
         const fns = this.env.__getContext__.callbacks;
         const localContext = Object.assign({}, ...fns.map((fn) => fn()));
         const gs = this.env.__getOrderBy__.callbacks;
@@ -1988,7 +2085,7 @@ export class SearchModel extends EventBus {
                 delete context[key];
             }
         }
-        const domain = this._getDomain({ raw: true, withGlobal: false }).toString();
+        const domain = this._getDomain({raw: true, withGlobal: false}).toString();
         const groupBys = this._getGroupBy();
         const orderBy = localOrderBy || this._getOrderBy();
         const userIds = isShared ? [] : [user.userId];
@@ -2010,12 +2107,14 @@ export class SearchModel extends EventBus {
             embedded_action_id: embeddedActionId,
             embedded_parent_res_id: this.globalContext.active_id || false,
             is_default: isDefault,
-            sort: JSON.stringify(orderBy.map((o) => `${o.name}${o.asc === false ? " desc" : ""}`)),
+            sort: JSON.stringify(
+                orderBy.map((o) => `${o.name}${o.asc === false ? " desc" : ""}`)
+            ),
             user_ids: userIds,
-            context: { group_by: groupBys, ...context },
+            context: {group_by: groupBys, ...context},
         };
 
-        return { preFavorite, irFilter };
+        return {preFavorite, irFilter};
     }
 
     /**
@@ -2025,11 +2124,11 @@ export class SearchModel extends EventBus {
         const groups = this._getGroups();
         const orderBy = [];
         if (this.groupBy.length && this.orderByCount) {
-            orderBy.push({ name: "__count", asc: this.orderByCount === "Asc" });
+            orderBy.push({name: "__count", asc: this.orderByCount === "Asc"});
         }
         for (const group of groups) {
             for (const activeItem of group.activeItems) {
-                const { searchItemId } = activeItem;
+                const {searchItemId} = activeItem;
                 const searchItem = this.searchItems[searchItemId];
                 if (searchItem.type === "favorite") {
                     orderBy.push(...searchItem.orderBy);
@@ -2043,7 +2142,7 @@ export class SearchModel extends EventBus {
      * Return the context of the provided (active) filter.
      */
     _getSearchItemContext(activeItem) {
-        const { searchItemId } = activeItem;
+        const {searchItemId} = activeItem;
         const searchItem = this.searchItems[searchItemId];
         switch (searchItem.type) {
             case "field": {
@@ -2054,7 +2153,7 @@ export class SearchModel extends EventBus {
                     const self = activeItem.autocompleteValues.map(
                         (autocompleValue) => autocompleValue.value
                     );
-                    context = evaluateExpr(searchItem.context, { self });
+                    context = evaluateExpr(searchItem.context, {self});
                     if (typeof context !== "object") {
                         throw new Error(
                             _t("Failed to evaluate the context: %(context)s.", {
@@ -2078,7 +2177,9 @@ export class SearchModel extends EventBus {
             case "favorite":
             case "filter": {
                 //Return a deep copy of the filter/favorite to avoid the view to modify the context
-                return makeContext([searchItem.context && deepCopy(searchItem.context)]);
+                return makeContext([
+                    searchItem.context && deepCopy(searchItem.context),
+                ]);
             }
             default: {
                 return null;
@@ -2090,7 +2191,7 @@ export class SearchModel extends EventBus {
      * Return the domain of the provided filter.
      */
     _getSearchItemDomain(activeItem) {
-        const { searchItemId } = activeItem;
+        const {searchItemId} = activeItem;
         const searchItem = this.searchItems[searchItemId];
         switch (searchItem.type) {
             case "field_property":
@@ -2111,12 +2212,14 @@ export class SearchModel extends EventBus {
     }
 
     _getSearchItemGroupBys(activeItem) {
-        const { searchItemId } = activeItem;
+        const {searchItemId} = activeItem;
         const searchItem = this.searchItems[searchItemId];
         switch (searchItem.type) {
             case "dateGroupBy": {
-                const { fieldName } = searchItem;
-                return activeItem.intervalIds.map((intervalId) => `${fieldName}:${intervalId}`);
+                const {fieldName} = searchItem;
+                return activeItem.intervalIds.map(
+                    (intervalId) => `${fieldName}:${intervalId}`
+                );
             }
             case "groupBy": {
                 return [searchItem.fieldName];
@@ -2163,7 +2266,8 @@ export class SearchModel extends EventBus {
      */
     _irFilterToFavorite(irFilter) {
         const userIds = irFilter.user_ids;
-        const groupNumber = userIds.length === 1 ? FAVORITE_PRIVATE_GROUP : FAVORITE_SHARED_GROUP;
+        const groupNumber =
+            userIds.length === 1 ? FAVORITE_PRIVATE_GROUP : FAVORITE_SHARED_GROUP;
         const context = evaluateExpr(irFilter.context, user.context);
         let groupBys = [];
         if (context.group_by) {
@@ -2244,7 +2348,9 @@ export class SearchModel extends EventBus {
                 Object.assign(item, this._irFilterToFavorite(irFilter));
                 delete mapping[item.serverSideId];
             } else {
-                const queryIndex = this.query.findIndex((q) => q.searchItemId === item.id);
+                const queryIndex = this.query.findIndex(
+                    (q) => q.searchItemId === item.id
+                );
                 if (queryIndex !== -1) {
                     this.query.splice(queryIndex, 1);
                 }
@@ -2268,7 +2374,7 @@ export class SearchModel extends EventBus {
         this.blockNotification = true;
 
         // Check whether the search domain changed
-        const searchDomain = this._getDomain({ withSearchPanel: false });
+        const searchDomain = this._getDomain({withSearchPanel: false});
         const searchDomainChanged =
             this.searchPanelInfo.shouldReload ||
             JSON.stringify(this.searchDomain) !== JSON.stringify(searchDomain);
@@ -2280,9 +2386,15 @@ export class SearchModel extends EventBus {
         const categoriesToFetch = this.categories.filter(toFetch);
         const filtersToFetch = this.filters.filter(toFetch);
 
-        if (searchDomainChanged || Boolean(categoriesToFetch.length + filtersToFetch.length)) {
+        if (
+            searchDomainChanged ||
+            Boolean(categoriesToFetch.length + filtersToFetch.length)
+        ) {
             if (this.display.searchPanel) {
-                this.sectionsPromise = this._fetchSections(categoriesToFetch, filtersToFetch);
+                this.sectionsPromise = this._fetchSections(
+                    categoriesToFetch,
+                    filtersToFetch
+                );
                 if (this._shouldWaitForData(searchDomainChanged)) {
                     await this.sectionsPromise;
                 }
@@ -2308,7 +2420,10 @@ export class SearchModel extends EventBus {
      * @returns {boolean}
      */
     _shouldWaitForData(searchDomainChanged) {
-        if (this.categories.length && this.filters.some((filter) => filter.domain !== "[]")) {
+        if (
+            this.categories.length &&
+            this.filters.some((filter) => filter.domain !== "[]")
+        ) {
             // Selected category value might affect the filter values
             return true;
         }
@@ -2334,8 +2449,8 @@ export class SearchModel extends EventBus {
         }
 
         const parser = new SearchArchParser(searchViewDescription, searchViewFields);
-        const { searchPanelInfo } = parser.parse();
+        const {searchPanelInfo} = parser.parse();
 
-        this.searchPanelInfo = { ...searchPanelInfo, loaded: false, shouldReload: false };
+        this.searchPanelInfo = {...searchPanelInfo, loaded: false, shouldReload: false};
     }
 }

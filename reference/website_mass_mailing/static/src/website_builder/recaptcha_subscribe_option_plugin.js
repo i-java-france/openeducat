@@ -1,7 +1,7 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { renderToElement } from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {renderToElement} from "@web/core/utils/render";
 
 class RecaptchaSubscribeOptionPlugin extends Plugin {
     static id = "recaptchaSubscribeOption";
@@ -10,7 +10,7 @@ class RecaptchaSubscribeOptionPlugin extends Plugin {
     resources = {
         builder_actions: {
             ToggleRecaptchaLegalAction,
-        }
+        },
     };
 
     hasRecaptcha() {
@@ -20,14 +20,14 @@ class RecaptchaSubscribeOptionPlugin extends Plugin {
 
 export class ToggleRecaptchaLegalAction extends BuilderAction {
     static id = "toggleRecaptchaLegal";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const template = document.createElement("template");
         template.content.append(
             renderToElement("google_recaptcha.recaptcha_legal_terms")
         );
         editingElement.appendChild(template.content.firstElementChild);
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         editingElement.querySelector(".o_recaptcha_legal_terms").remove();
     }
 }

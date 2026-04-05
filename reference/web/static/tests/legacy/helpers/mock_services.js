@@ -1,13 +1,13 @@
 /** @odoo-module alias=@web/../tests/helpers/mock_services default=false */
 
-import { effectService } from "@web/core/effects/effect_service";
-import { localization } from "@web/core/l10n/localization";
-import { ConnectionAbortedError, rpcBus, rpc } from "@web/core/network/rpc";
-import { ormService } from "@web/core/orm_service";
-import { overlayService } from "@web/core/overlay/overlay_service";
-import { uiService } from "@web/core/ui/ui_service";
-import { user } from "@web/core/user";
-import { patchWithCleanup } from "./utils";
+import {effectService} from "@web/core/effects/effect_service";
+import {localization} from "@web/core/l10n/localization";
+import {ConnectionAbortedError, rpcBus, rpc} from "@web/core/network/rpc";
+import {ormService} from "@web/core/orm_service";
+import {overlayService} from "@web/core/overlay/overlay_service";
+import {uiService} from "@web/core/ui/ui_service";
+import {user} from "@web/core/user";
+import {patchWithCleanup} from "./utils";
 
 // -----------------------------------------------------------------------------
 // Mock Services
@@ -29,8 +29,8 @@ export const defaultLocalization = {
  * @param {Partial<typeof defaultLocalization>} [config]
  */
 export function makeFakeLocalizationService(config = {}) {
-    patchWithCleanup(localization, { ...defaultLocalization, ...config });
-    patchWithCleanup(luxon.Settings, { defaultNumberingSystem: "latn" });
+    patchWithCleanup(localization, {...defaultLocalization, ...config});
+    patchWithCleanup(luxon.Settings, {defaultNumberingSystem: "latn"});
 
     return {
         name: "localization",
@@ -51,12 +51,12 @@ export function patchRPCWithCleanup(mockRPC = () => {}) {
                 method: "call",
                 params: params,
             };
-            rpcBus.trigger("RPC:REQUEST", { data, url: route, settings });
+            rpcBus.trigger("RPC:REQUEST", {data, url: route, settings});
             const rpcProm = new Promise((resolve, reject) => {
                 rejectFn = reject;
                 Promise.resolve(mockRPC(...arguments))
                     .then((result) => {
-                        rpcBus.trigger("RPC:RESPONSE", { data, settings, result });
+                        rpcBus.trigger("RPC:RESPONSE", {data, settings, result});
                         resolve(result);
                     })
                     .catch((error) => {
@@ -146,8 +146,8 @@ export function makeMockFetch(mockRPC) {
         } catch {
             status = 500;
         }
-        const blob = new Blob([JSON.stringify(res || {})], { type: "application/json" });
-        const response = new Response(blob, { status });
+        const blob = new Blob([JSON.stringify(res || {})], {type: "application/json"});
+        const response = new Response(blob, {status});
         // Mock some functions of the Response API to make them almost synchronous (micro-tick level)
         // as their native implementation is async (tick level), which can lead to undeterministic
         // errors as it breaks the hypothesis that calling nextTick after fetching data is enough
@@ -222,10 +222,10 @@ export function makeFakePwaService() {
             return {
                 canPromptToInstall: false,
                 isAvailable: false,
-                isScopedApp: false
-            }
-        }
-    }
+                isScopedApp: false,
+            };
+        },
+    };
 }
 
 export function patchUserContextWithCleanup(patch) {

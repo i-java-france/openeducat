@@ -1,16 +1,21 @@
 //@ts-check
 
-import { Domain } from "@web/core/domain";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { NO_RECORD_AT_THIS_POSITION, OdooPivotModel } from "./pivot_model";
-import { EvaluationError, PivotRuntimeDefinition, registries, helpers } from "@odoo/o-spreadsheet";
-import { LOADING_ERROR } from "@spreadsheet/data_sources/data_source";
-import { omit } from "@web/core/utils/objects";
-import { OdooPivotLoader } from "./odoo_pivot_loader";
-import { getRelationalFieldDefinition } from "./pivot_helpers";
+import {Domain} from "@web/core/domain";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {NO_RECORD_AT_THIS_POSITION, OdooPivotModel} from "./pivot_model";
+import {
+    EvaluationError,
+    PivotRuntimeDefinition,
+    registries,
+    helpers,
+} from "@odoo/o-spreadsheet";
+import {LOADING_ERROR} from "@spreadsheet/data_sources/data_source";
+import {omit} from "@web/core/utils/objects";
+import {OdooPivotLoader} from "./odoo_pivot_loader";
+import {getRelationalFieldDefinition} from "./pivot_helpers";
 
-const { pivotRegistry, supportedPivotPositionalFormulaRegistry } = registries;
+const {pivotRegistry, supportedPivotPositionalFormulaRegistry} = registries;
 const {
     pivotTimeAdapter,
     toString,
@@ -46,7 +51,7 @@ export class OdooPivot {
      * @param {OdooPivotCoreDefinition} params.definition
      * @param {OdooGetters} params.getters
      */
-    constructor(services, { definition, getters }) {
+    constructor(services, {definition, getters}) {
         /** @type {"ODOO"} */
         this.type = "ODOO";
 
@@ -65,7 +70,10 @@ export class OdooPivot {
         this.getters = getters;
 
         /** @protected */
-        this.loader = new OdooPivotLoader(services.odooDataProvider, this._load.bind(this));
+        this.loader = new OdooPivotLoader(
+            services.odooDataProvider,
+            this._load.bind(this)
+        );
 
         /** @type {OdooFields | undefined} @protected */
         this._fields = undefined;
@@ -96,7 +104,12 @@ export class OdooPivot {
         if (!deepEquals(actualDefinition.sortedColumn, nextDefinition.sortedColumn)) {
             this.model.updateSortColumn(nextDefinition.sortedColumn);
         }
-        if (!deepEquals(actualDefinition.collapsedDomains, nextDefinition.collapsedDomains)) {
+        if (
+            !deepEquals(
+                actualDefinition.collapsedDomains,
+                nextDefinition.collapsedDomains
+            )
+        ) {
             this.model.updateCollapsedDomains(nextDefinition.collapsedDomains);
         }
         if (
@@ -127,7 +140,7 @@ export class OdooPivot {
                 return;
             }
         }
-        this.load({ reload: true });
+        this.load({reload: true});
     }
 
     /**
@@ -149,7 +162,9 @@ export class OdooPivot {
             return true;
         }
         for (const measure of nonComputedActualMeasures) {
-            const updatedMeasure = nonComputedNextMeasures.find((m) => m.id === measure.id);
+            const updatedMeasure = nonComputedNextMeasures.find(
+                (m) => m.id === measure.id
+            );
             if (
                 !updatedMeasure ||
                 updatedMeasure.fieldName !== measure.fieldName ||
@@ -172,7 +187,10 @@ export class OdooPivot {
     }
 
     getFields() {
-        return { ...this._fields, ...createCustomFields(this.coreDefinition, this._fields) };
+        return {
+            ...this._fields,
+            ...createCustomFields(this.coreDefinition, this._fields),
+        };
     }
 
     /**
@@ -194,9 +212,12 @@ export class OdooPivot {
 
     async createModelAndDefinition() {
         await this.loadMetadata();
-        const definition = new OdooPivotRuntimeDefinition(this.coreDefinition, this.getFields());
+        const definition = new OdooPivotRuntimeDefinition(
+            this.coreDefinition,
+            this.getFields()
+        );
         const model = new OdooPivotModel(
-            { _t },
+            {_t},
             {
                 fields: this.getFields(),
                 definition,
@@ -211,14 +232,17 @@ export class OdooPivot {
                 getters: this.getters,
             }
         );
-        return { model, definition };
+        return {model, definition};
     }
 
     async _load() {
-        const { model, definition } = await this.createModelAndDefinition();
+        const {model, definition} = await this.createModelAndDefinition();
         this.model = model;
         this.runtimeDefinition = definition;
-        await this.model.load({ context: this.context, domain: this.getDomainWithGlobalFilters() });
+        await this.model.load({
+            context: this.context,
+            domain: this.getDomainWithGlobalFilters(),
+        });
     }
 
     get definition() {
@@ -240,10 +264,14 @@ export class OdooPivot {
         for (let i = 0; i < stringArgs.length; i += 2) {
             const nameWithGranularity = stringArgs[i];
             if (nameWithGranularity === "measure") {
-                domain.push({ field: nameWithGranularity, value: stringArgs[i + 1], type: "char" });
+                domain.push({
+                    field: nameWithGranularity,
+                    value: stringArgs[i + 1],
+                    type: "char",
+                });
                 continue;
             }
-            const { dimensionWithGranularity, isPositional, field } =
+            const {dimensionWithGranularity, isPositional, field} =
                 this.parseGroupField(nameWithGranularity);
             if (isPositional) {
                 const table = this.getExpandedTableStructure();
@@ -253,7 +281,11 @@ export class OdooPivot {
                 const previousDomain = [
                     ...domain,
                     // Need to keep the "#"
-                    { field: nameWithGranularity, value: stringArgs[i + 1], type: "number" },
+                    {
+                        field: nameWithGranularity,
+                        value: stringArgs[i + 1],
+                        type: "number",
+                    },
                 ];
                 domain.push({
                     field: dimensionWithGranularity,
@@ -284,7 +316,9 @@ export class OdooPivot {
             .filter((_, index) => index % 2 === 0)
             .map(toString)
             .map((arg) =>
-                arg === "measure" ? "measure" : this.parseGroupField(arg).dimensionWithGranularity
+                arg === "measure"
+                    ? "measure"
+                    : this.parseGroupField(arg).dimensionWithGranularity
             );
         if (dimensions.length && dimensions.at(-1) === "measure") {
             dimensions = dimensions.slice(0, -1);
@@ -318,15 +352,15 @@ export class OdooPivot {
         this.assertIsValid();
         const lastNode = domain.at(-1);
         if (!lastNode) {
-            return { value: _t("Total") };
+            return {value: _t("Total")};
         }
         if (lastNode.field === "measure") {
             const measureId = lastNode.value;
-            return { value: this.getMeasure(measureId).displayName };
+            return {value: this.getMeasure(measureId).displayName};
         }
         const value = this.model.getGroupByCellValue(lastNode.field, lastNode.value);
         const format = this._getPivotFieldFormat(lastNode.field, lastNode.value);
-        return { value, format };
+        return {value, format};
     }
 
     /**
@@ -371,7 +405,7 @@ export class OdooPivot {
      * @returns {string | undefined}
      */
     _getPivotFieldFormat(fieldName, value) {
-        const { field, granularity } = this.parseGroupField(fieldName);
+        const {field, granularity} = this.parseGroupField(fieldName);
         switch (field.type) {
             case "integer":
                 return "0";
@@ -386,7 +420,8 @@ export class OdooPivot {
             case "date":
             case "datetime": {
                 const timeAdapter = pivotTimeAdapter(granularity);
-                return timeAdapter.toValueAndFormat(value, this.getters.getLocale()).format;
+                return timeAdapter.toValueAndFormat(value, this.getters.getLocale())
+                    .format;
             }
             default:
                 return undefined;
@@ -401,7 +436,7 @@ export class OdooPivot {
     getPivotCellValueAndFormat(measureId, domain) {
         this.assertIsValid();
         if (domain.filter((node) => node.value === NO_RECORD_AT_THIS_POSITION).length) {
-            return { value: "" };
+            return {value: ""};
         }
         const measure = this.getMeasure(measureId);
         const value = this.model.getPivotCellValue(measure, domain);
@@ -417,7 +452,7 @@ export class OdooPivot {
                         ? "0"
                         : this._getPivotFieldFormat(measure.fieldName, value);
         }
-        return { value, format };
+        return {value, format};
     }
 
     //--------------------------------------------------------------------------
@@ -445,21 +480,21 @@ export class OdooPivot {
      * @returns {{ value: string | number | boolean, label: string }[]}
      */
     getPossibleFieldValues(dimension) {
-        if (this.assertIsValid({ throwOnError: false })) {
+        if (this.assertIsValid({throwOnError: false})) {
             return [];
         }
         return this.model.getPossibleFieldValues(dimension);
     }
 
     async copyModelWithOriginalDomain() {
-        const { model } = await this.createModelAndDefinition();
+        const {model} = await this.createModelAndDefinition();
 
         const domain = new Domain(this.coreDefinition.domain).toList({
             ...this.context,
             ...user.context,
         });
 
-        const searchParams = { context: this.context, domain };
+        const searchParams = {context: this.context, domain};
         await model.load(searchParams);
         return model;
     }
@@ -480,8 +515,8 @@ export class OdooPivot {
         return this.loader.isValid();
     }
 
-    assertIsValid({ throwOnError } = { throwOnError: true }) {
-        return this.loader.assertIsValid({ throwOnError });
+    assertIsValid({throwOnError} = {throwOnError: true}) {
+        return this.loader.assertIsValid({throwOnError});
     }
 
     async _loadRelationalFieldsDefinitions() {
@@ -490,7 +525,8 @@ export class OdooPivot {
             .concat(this.coreDefinition.columns)
             .filter(
                 (dimension) =>
-                    dimension.fieldName.includes(".") && !(dimension.fieldName in this._fields)
+                    dimension.fieldName.includes(".") &&
+                    !(dimension.fieldName in this._fields)
             );
         await Promise.all(
             related.map((dimension) =>
@@ -541,7 +577,10 @@ export class OdooPivot {
      * @param {string} globalFilterDomain
      */
     addGlobalFilterDomain(globalFilterDomain) {
-        const domain = Domain.and([this.coreDefinition.domain, globalFilterDomain]).toString();
+        const domain = Domain.and([
+            this.coreDefinition.domain,
+            globalFilterDomain,
+        ]).toString();
         if (domain.toString() === new Domain(this.domainWithGlobalFilters).toString()) {
             return;
         }
@@ -551,7 +590,7 @@ export class OdooPivot {
             // at reloading it now.
             return;
         }
-        this.load({ reload: true });
+        this.load({reload: true});
     }
 
     /**
@@ -618,7 +657,9 @@ export class OdooPivotRuntimeDefinition extends PivotRuntimeDefinition {
                 orderBy: [],
             },
             metaData: {
-                activeMeasures: this.measures.filter((m) => !m.computedBy).map((m) => m.fieldName),
+                activeMeasures: this.measures
+                    .filter((m) => !m.computedBy)
+                    .map((m) => m.fieldName),
                 resModel: this.model,
                 colGroupBys: this.columns.map((c) => c.nameWithGranularity),
                 rowGroupBys: this.rows.map((r) => r.nameWithGranularity),
@@ -654,9 +695,15 @@ pivotRegistry.add("ODOO", {
     externalData: true,
     onIterationEndEvaluation: () => {},
     dateGranularities: [...granularities],
-    datetimeGranularities: [...granularities, "hour_number", "minute_number", "second_number"],
+    datetimeGranularities: [
+        ...granularities,
+        "hour_number",
+        "minute_number",
+        "second_number",
+    ],
     isMeasureCandidate: (field) =>
-        ((MEASURES_TYPES.includes(field.type) && field.aggregator) || field.type === "many2one") &&
+        ((MEASURES_TYPES.includes(field.type) && field.aggregator) ||
+            field.type === "many2one") &&
         field.name !== "id" &&
         !field.name.includes(".") && // relational field path are not supported as measures (e.g. 'company_id.partner_id')
         field.store,

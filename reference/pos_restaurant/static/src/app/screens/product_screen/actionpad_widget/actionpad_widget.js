@@ -1,7 +1,7 @@
-import { patch } from "@web/core/utils/patch";
-import { ActionpadWidget } from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
-import { _t } from "@web/core/l10n/translation";
-import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
+import {patch} from "@web/core/utils/patch";
+import {ActionpadWidget} from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
+import {_t} from "@web/core/l10n/translation";
+import {useTrackedAsync} from "@point_of_sale/app/hooks/hooks";
 
 /**
  * @props partner
@@ -9,8 +9,8 @@ import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
 patch(ActionpadWidget, {
     props: {
         ...ActionpadWidget.props,
-        setTable: { type: Function, optional: true },
-        assignOrder: { type: Function, optional: true },
+        setTable: {type: Function, optional: true},
+        assignOrder: {type: Function, optional: true},
     },
 });
 
@@ -33,7 +33,12 @@ patch(ActionpadWidget.prototype, {
         if (!order) {
             return false;
         } else {
-            return order.lines.reduce((totalQty, line) => totalQty + line.getQuantity(), 0) > 0;
+            return (
+                order.lines.reduce(
+                    (totalQty, line) => totalQty + line.getQuantity(),
+                    0
+                ) > 0
+            );
         }
     },
     get highlightPay() {

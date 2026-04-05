@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 
 
 class StockPicking(models.Model):
@@ -93,4 +92,4 @@ class StockPickingType(models.Model):
                         'name': ir_seq_name,
                         'prefix': ir_seq_prefix,
                     })
-        return super(StockPickingType, self).write(vals)
+        return super().write(vals)

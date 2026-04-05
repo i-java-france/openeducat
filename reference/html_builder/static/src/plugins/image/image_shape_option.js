@@ -1,14 +1,14 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { toRatio } from "@html_builder/utils/utils";
-import { _t } from "@web/core/l10n/translation";
-import { ShapeSelector } from "@html_builder/plugins/shape/shape_selector";
-import { deepCopy } from "@web/core/utils/objects";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {toRatio} from "@html_builder/utils/utils";
+import {_t} from "@web/core/l10n/translation";
+import {ShapeSelector} from "@html_builder/plugins/shape/shape_selector";
+import {deepCopy} from "@web/core/utils/objects";
 
 export class ImageShapeOption extends BaseOptionComponent {
     static template = "html_builder.ImageShapeOption";
     static dependencies = ["customizeTab", "imageShapeOption"];
     static props = {
-        withAnimatedShapes: { type: Boolean, optional: true },
+        withAnimatedShapes: {type: Boolean, optional: true},
     };
     static defaultProps = {
         withAnimatedShapes: true,
@@ -28,7 +28,8 @@ export class ImageShapeOption extends BaseOptionComponent {
                 showImageShape2: this.isShapeVisible(editingElement, 2),
                 showImageShape3: this.isShapeVisible(editingElement, 3),
                 showImageShape4: this.isShapeVisible(editingElement, 4),
-                showImageShapeTransform: this.imageShapeOption.isTransformableShape(shape),
+                showImageShapeTransform:
+                    this.imageShapeOption.isTransformableShape(shape),
                 showImageShapeAnimation: this.imageShapeOption.isAnimableShape(shape),
                 togglableRatio: this.imageShapeOption.isTogglableRatioShape(shape),
             };

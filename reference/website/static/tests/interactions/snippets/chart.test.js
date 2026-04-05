@@ -1,11 +1,14 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
-import { markup } from "@odoo/owl";
-import { patch } from "@web/core/utils/patch";
-import { Chart } from "@website/snippets/s_chart/chart";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
+import {markup} from "@odoo/owl";
+import {patch} from "@web/core/utils/patch";
+import {Chart} from "@website/snippets/s_chart/chart";
 
 setupInteractionWhiteList("website.chart");
 
@@ -19,7 +22,7 @@ patch(Chart.prototype, {
 });
 
 test("chart is started when there is an element .s_chart", async () => {
-    const { core } = await startInteractions(
+    const {core} = await startInteractions(
         markup`
             <div class="s_chart" data-type="bar" data-legend-position="top" data-tooltip-display="true" data-stacked="false" data-border-width="2"
                 data-data="${JSON.stringify({
@@ -40,7 +43,9 @@ test("chart is started when there is an element .s_chart", async () => {
     expect(core.interactions).toHaveLength(1);
     await advanceTime(0);
     const canvas = queryOne("canvas");
-    const data = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+    const data = canvas
+        .getContext("2d")
+        .getImageData(0, 0, canvas.width, canvas.height).data;
     const dataLength = data.length;
     let isCanvasBlank = true;
     for (let i = 0; i < dataLength; i++) {

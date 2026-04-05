@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -193,7 +193,7 @@ class PosPaymentMethod(models.Model):
         default = dict(default or {}, config_ids=[(5, 0, 0)])
         vals_list = super().copy_data(default=default)
 
-        for pm, vals in zip(self, vals_list):
+        for pm, vals in zip(self, vals_list, strict=False):
             if pm.journal_id and pm.journal_id.type == 'cash':
                 if ('journal_id' in default and default['journal_id'] == pm.journal_id.id) or ('journal_id' not in default):
                     vals['journal_id'] = False

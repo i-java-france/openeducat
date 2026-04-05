@@ -1,7 +1,7 @@
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
 
 function runUnitTestsItem() {
     const href = "/web/tests?debug=assets";
@@ -15,13 +15,13 @@ function runUnitTestsItem() {
     };
 }
 
-export function openViewItem({ env }) {
+export function openViewItem({env}) {
     async function onSelected(records) {
         const views = await env.services.orm.searchRead(
             "ir.ui.view",
             [["id", "=", records[0]]],
             ["name", "model", "type"],
-            { limit: 1 }
+            {limit: 1}
         );
         const view = views[0];
         env.services.action.doAction({

@@ -151,7 +151,7 @@ class AccountMove(models.Model):
 
     def copy_data(self, default=None):
         data_list = super().copy_data(default)
-        for move, data in zip(self, data_list):
+        for move, data in zip(self, data_list, strict=False):
             date = fields.Date.context_today(self)
             validity_warnings = move.l10n_it_edi_doi_id._get_validity_warnings(
                 move.company_id, move.commercial_partner_id, move.currency_id, date,

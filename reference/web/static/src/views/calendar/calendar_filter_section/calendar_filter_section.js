@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { Transition } from "@web/core/transition";
-import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { getColor } from "../utils";
-import { Component, useState } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {Transition} from "@web/core/transition";
+import {useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {getColor} from "../utils";
+import {Component, useState} from "@odoo/owl";
 
 let nextId = 1;
 
@@ -49,7 +49,10 @@ export class CalendarFilterSection extends Component {
     }
 
     get isAllActive() {
-        return this.section.filters.length && this.section.filters.every((filter) => filter.active);
+        return (
+            this.section.filters.length &&
+            this.section.filters.every((filter) => filter.active)
+        );
     }
 
     get nextFilterId() {
@@ -62,7 +65,9 @@ export class CalendarFilterSection extends Component {
     }
 
     getFilterColor(filter) {
-        return filter.colorIndex !== null ? "o_cw_filter_color_" + getColor(filter.colorIndex) : "";
+        return filter.colorIndex !== null
+            ? "o_cw_filter_color_" + getColor(filter.colorIndex)
+            : "";
     }
 
     getSortedFilters() {
@@ -131,12 +136,16 @@ export class CalendarFilterSection extends Component {
     }
 
     onFilterInputChange(filter, ev) {
-        this.props.model.updateFilters(this.section.fieldName, [filter], ev.target.checked);
+        this.props.model.updateFilters(
+            this.section.fieldName,
+            [filter],
+            ev.target.checked
+        );
         this.render();
     }
 
     onAllFilterInputChange(ev) {
-        const { fieldName, filters } = this.section;
+        const {fieldName, filters} = this.section;
         this.props.model.updateFilters(fieldName, filters, ev.target.checked);
         this.render();
     }
@@ -170,7 +179,8 @@ export class CalendarFilterSection extends Component {
             resModel,
             context: this.section.context,
             domain,
-            onSelected: (resId) => this.props.model.createFilter(this.section.fieldName, resId),
+            onSelected: (resId) =>
+                this.props.model.createFilter(this.section.fieldName, resId),
             dynamicFilters,
         });
     }

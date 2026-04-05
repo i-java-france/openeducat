@@ -1,23 +1,27 @@
-import { Thread } from "@mail/core/common/thread";
-import { useEffect } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { patch } from "@web/core/utils/patch";
+import {Thread} from "@mail/core/common/thread";
+import {useEffect} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {patch} from "@web/core/utils/patch";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 patch(Thread.prototype, {
     setup() {
         super.setup(...arguments);
         this.IM_STATUS_DELAY = 1500;
-        Object.assign(this.state, { isVisitorOffline: false }); // starting online avoids flickering
+        Object.assign(this.state, {isVisitorOffline: false}); // starting online avoids flickering
         useEffect(
             () => {
                 if (!this.props.thread.livechatVisitorMember?.im_status) {
                     return;
                 }
                 clearTimeout(this.imStatusTimeoutId);
-                if (this.props.thread.livechatVisitorMember.im_status.includes("offline")) {
+                if (
+                    this.props.thread.livechatVisitorMember.im_status.includes(
+                        "offline"
+                    )
+                ) {
                     this.imStatusTimeoutId = setTimeout(
                         () => (this.state.isVisitorOffline = true),
                         this.IM_STATUS_DELAY
@@ -39,17 +43,18 @@ patch(Thread.prototype, {
         );
     },
     get disconnectedText() {
-        const offlineSince = this.props.thread.livechatVisitorMember.persona.offline_since;
+        const offlineSince =
+            this.props.thread.livechatVisitorMember.persona.offline_since;
         if (!offlineSince) {
             return _t("Visitor is disconnected");
         }
-        const userLocale = { locale: user.lang };
+        const userLocale = {locale: user.lang};
         if (offlineSince.hasSame(DateTime.now(), "day")) {
             return _t("Visitor is disconnected since %(time)s", {
                 time: offlineSince.toLocaleString(DateTime.TIME_SIMPLE, userLocale),
             });
         }
-        if (offlineSince.hasSame(DateTime.now().minus({ day: 1 }), "day")) {
+        if (offlineSince.hasSame(DateTime.now().minus({day: 1}), "day")) {
             return _t("Visitor is disconnected since yesterday at %(time)s", {
                 time: offlineSince.toLocaleString(DateTime.TIME_SIMPLE, userLocale),
             });

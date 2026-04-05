@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { sendRequest } from "@website/js/utils";
+import {sendRequest} from "@website/js/utils";
 
 export class PostLink extends Interaction {
     static selector = ".post_link";

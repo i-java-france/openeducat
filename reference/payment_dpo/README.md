@@ -4,8 +4,8 @@
 
 API: [DPO Pay API](https://docs.dpopay.com/api/index.html) version `6`
 
-This module integrates DPO Pay using the generic payment with redirection flow based on form
-submission provided by the `payment` module.
+This module integrates DPO Pay using the generic payment with redirection flow based on
+form submission provided by the `payment` module.
 
 ## Supported features
 

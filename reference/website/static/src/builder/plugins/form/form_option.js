@@ -1,25 +1,27 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { getModelName, getParsedDataFor } from "./utils";
-import { FormActionFieldsOption } from "./form_action_fields_option";
-import { session } from "@web/session";
-import { selectElements } from "@html_editor/utils/dom_traversal";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {getModelName, getParsedDataFor} from "./utils";
+import {FormActionFieldsOption} from "./form_action_fields_option";
+import {session} from "@web/session";
+import {selectElements} from "@html_editor/utils/dom_traversal";
 
 export class FormOption extends BaseOptionComponent {
     static template = "website.s_website_form_form_option";
     static dependencies = ["websiteFormOption"];
     static selector = ".s_website_form";
     static applyTo = "form";
-    static components = { FormActionFieldsOption };
-    static async cleanForSave(el, { dependencies, services }) {
+    static components = {FormActionFieldsOption};
+    static async cleanForSave(el, {dependencies, services}) {
         for (const sigEl of el.querySelectorAll("input[name=website_form_signature]")) {
             sigEl.remove();
         }
 
-        for (const formEl of selectElements(el, ".s_website_form form[data-model_name]")) {
+        for (const formEl of selectElements(
+            el,
+            ".s_website_form form[data-model_name]"
+        )) {
             const model = formEl.dataset.model_name;
-            const authorizedFields = await dependencies.websiteFormOption.fetchAuthorizedFields(
-                formEl
-            );
+            const authorizedFields =
+                await dependencies.websiteFormOption.fetchAuthorizedFields(formEl);
             const fields = [
                 ...formEl.querySelectorAll(
                     ".s_website_form_field:not(.s_website_form_custom) .s_website_form_input"
@@ -38,7 +40,7 @@ export class FormOption extends BaseOptionComponent {
 
     setup() {
         super.setup();
-        const { prepareFormModel, applyFormModel, fetchModels } =
+        const {prepareFormModel, applyFormModel, fetchModels} =
             this.dependencies.websiteFormOption;
         this.hasRecaptchaKey = !!session.recaptcha_public_key;
 

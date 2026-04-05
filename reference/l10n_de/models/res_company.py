@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
 import stdnum.de.stnr
 import stdnum.exceptions
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ResCompany(models.Model):

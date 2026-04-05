@@ -1,15 +1,15 @@
-import { xml, Component, reactive, useState, useEffect } from "@odoo/owl";
-import { POSITION_BUS } from "@web/core/position/position_hook";
+import {xml, Component, reactive, useState, useEffect} from "@odoo/owl";
+import {POSITION_BUS} from "@web/core/position/position_hook";
 
 export function useStackingComponentState() {
     const stack = reactive([]);
     let counter = 0;
     const push = (component, props, title, withPrevious) => {
-        stack.push({ id: counter++, component, props, title, withPrevious });
+        stack.push({id: counter++, component, props, title, withPrevious});
     };
     const pop = () => stack.pop();
 
-    return { push, pop, stack };
+    return {push, pop, stack};
 }
 
 export class StackingComponent extends Component {
@@ -25,10 +25,10 @@ export class StackingComponent extends Component {
         </t>
     `;
     static props = {
-        stackState: { type: Object, required: true },
-        class: { type: String, optional: true },
-        style: { type: String, optional: true },
-        close: { type: Function, optional: true },
+        stackState: {type: Object, required: true},
+        class: {type: String, optional: true},
+        style: {type: String, optional: true},
+        close: {type: Function, optional: true},
     };
     setup() {
         this.stack = useState(this.props.stackState.stack);

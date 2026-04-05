@@ -1,57 +1,57 @@
 :root {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu,
-        "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu,
+        "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 0.875rem;
     line-height: 1.5;
 
-    --size-1: .5rem;
+    --size-1: 0.5rem;
     --size-2: 1rem;
     --size-3: 1.5rem;
     --size-4: 2rem;
 
+    --red: rgb(229, 107, 86);
+    --green: rgb(34, 158, 79);
+    --blue: rgb(66, 161, 205);
+    --orange: rgb(216, 99, 36);
 
-    --red:rgb(229, 107, 86);
-    --green:rgb(34, 158, 79);
-    --blue:rgb(66, 161, 205);
-    --orange:rgb(216, 99, 36);
-
-    --background:rgb(246, 246, 246);
-    --background-1:rgb(239, 239, 239);
-    --background-2:rgb(230, 230, 230);
-    --btn:rgb(225, 223, 225);
-    --btn-primary:rgb(107, 62, 102);
-    --border:rgb(207, 207, 207);
-    --text:rgb(37, 36, 39);
+    --background: rgb(246, 246, 246);
+    --background-1: rgb(239, 239, 239);
+    --background-2: rgb(230, 230, 230);
+    --btn: rgb(225, 223, 225);
+    --btn-primary: rgb(107, 62, 102);
+    --border: rgb(207, 207, 207);
+    --text: rgb(37, 36, 39);
     --text-primary: rgb(179, 95, 169);
-    --text-active:rgb(242, 247, 248);
-    --text-light:rgb(50, 52, 52);
-    --success:rgb(56, 207, 111);
-    --error:rgb(231, 90, 65);
-    --error-background:rgb(241, 219, 215);
-    --error-text:rgb(49, 33, 30);
+    --text-active: rgb(242, 247, 248);
+    --text-light: rgb(50, 52, 52);
+    --success: rgb(56, 207, 111);
+    --error: rgb(231, 90, 65);
+    --error-background: rgb(241, 219, 215);
+    --error-text: rgb(49, 33, 30);
 
     --code-editor: #282c34;
 }
 
 body[theme="odoo-dark"] {
-    --green:rgb(56, 207, 111);
-    --blue:rgb(102, 197, 242);
-    --orange:rgb(240, 122, 59);
+    --green: rgb(56, 207, 111);
+    --blue: rgb(102, 197, 242);
+    --orange: rgb(240, 122, 59);
 
-    --background:rgb(38, 42, 54);
-    --background-1:rgb(28, 32, 41);
-    --background-2:rgb(14, 16, 22);
-    --btn:#3C3E4B;
+    --background: rgb(38, 42, 54);
+    --background-1: rgb(28, 32, 41);
+    --background-2: rgb(14, 16, 22);
+    --btn: #3c3e4b;
     --btn-primary: #6b3e66;
-    --border: #3C3E4B;
-    --text:rgb(245, 245, 245);
-    --text-active:rgb(246, 239, 248);
-    --text-light:rgb(229, 235, 235);
-    --success:rgb(56, 207, 111);
-    --error:rgb(190, 49, 77);
-    --error-background:rgb(45, 21, 27);
-    --error-text:rgb(241, 229, 230);
+    --border: #3c3e4b;
+    --text: rgb(245, 245, 245);
+    --text-active: rgb(246, 239, 248);
+    --text-light: rgb(229, 235, 235);
+    --success: rgb(56, 207, 111);
+    --error: rgb(190, 49, 77);
+    --error-background: rgb(45, 21, 27);
+    --error-text: rgb(241, 229, 230);
 
     --bs-border-color: var(--border);
 }
@@ -112,21 +112,22 @@ h5 {
 }
 
 p {
-    color: rgb(from var(--text) r g b / 0.8)
+    color: rgb(from var(--text) r g b / 0.8);
 }
 
-input, select {
+input,
+select {
     color: var(--text);
     border-radius: 5px;
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
     background: var(--btn);
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
     accent-color: var(--text-primary);
     border: none;
     background-color: var(--btn);
-	outline: none;
+    outline: none;
 }
 
 small {
@@ -155,14 +156,14 @@ i {
 }
 
 code {
-    padding: 0 .3rem;
+    padding: 0 0.3rem;
     background-color: var(--background-1);
     border-radius: 5px;
 }
 
 pre {
     margin-bottom: 0 !important;
-    padding: .15rem .3rem;
+    padding: 0.15rem 0.3rem;
     background-color: var(--background-2);
     border: 1px solid var(--border) !important;
     color: var(--text);
@@ -188,8 +189,8 @@ pre {
 
 /* #region ========================== Components ========================== */
 .badge {
-    font-size: .8em;
-    padding: .15rem .3rem;
+    font-size: 0.8em;
+    padding: 0.15rem 0.3rem;
     border-radius: 3px;
 
     &.success {
@@ -209,7 +210,8 @@ pre {
         background-color: var(--error-background);
         border-radius: 5px;
 
-        h5, i {
+        h5,
+        i {
             color: var(--error);
         }
     }
@@ -242,7 +244,7 @@ pre {
     max-width: 25rem;
     background-color: var(--background);
     color: var(--text);
-    padding: .3rem .5rem;
+    padding: 0.3rem 0.5rem;
     border-radius: 6px;
     text-align: center;
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
@@ -256,19 +258,22 @@ pre {
 
 .btn:not(.btn-sm) {
     background: var(--bs-btn-bg);
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
     color: var(--text) !important;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
     z-index: 0;
-    transition: .05s ease-in-out;
+    transition: 0.05s ease-in-out;
 
-    &:disabled, &[disabled] {
+    &:disabled,
+    &[disabled] {
         opacity: 0.5;
     }
 
-    &:hover, &.active, &.o_active {
+    &:hover,
+    &.active,
+    &.o_active {
         background: var(--btn-primary) !important;
         color: var(--text-active) !important;
         box-shadow: 0px 0px 15px -5px var(--btn-primary);
@@ -286,12 +291,12 @@ pre {
 }
 
 .icon-btn {
-    padding-right: .2rem;
-    padding-top: .15rem;
+    padding-right: 0.2rem;
+    padding-top: 0.15rem;
     height: fit-content;
 }
 .icon-btn i {
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
     transform: rotate(90deg);
     font-size: 18px;
 }
@@ -300,7 +305,8 @@ pre {
 }
 
 /* Code Viewer */
-.o-doc-code-editor, .o-doc-code-editor .ace_editor {
+.o-doc-code-editor,
+.o-doc-code-editor .ace_editor {
     background-color: var(--code-editor) !important;
 }
 
@@ -314,8 +320,8 @@ pre {
 }
 .o-doc-code-editor i {
     color: inherit;
-    padding: .25rem .5rem;
-    font-size: .8em;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8em;
     z-index: 1;
     opacity: 0.5;
 
@@ -329,7 +335,7 @@ pre {
     border-collapse: collapse;
 
     tr {
-        font-size: .85em;
+        font-size: 0.85em;
         scroll-margin-top: 10rem;
 
         &:nth-child(even) {
@@ -337,10 +343,11 @@ pre {
         }
     }
 
-    td, th {
-        padding: .25rem 1rem;
+    td,
+    th {
+        padding: 0.25rem 1rem;
         &:nth-child(1) {
-            padding: .25rem 2rem;
+            padding: 0.25rem 2rem;
         }
     }
 
@@ -381,27 +388,27 @@ pre {
     width: 45%;
     background-image: linear-gradient(
         to left,
-        rgb(from var(--background) r g b / .05),
-        rgb(from var(--background) r g b / .3),
-        rgb(from var(--background) r g b / .6),
-        rgb(from var(--background) r g b / .3),
-        rgb(from var(--background) r g b / .05)
+        rgb(from var(--background) r g b / 0.05),
+        rgb(from var(--background) r g b / 0.3),
+        rgb(from var(--background) r g b / 0.6),
+        rgb(from var(--background) r g b / 0.3),
+        rgb(from var(--background) r g b / 0.05)
     );
     animation: doc-loading 1s infinite;
     z-index: 52;
 }
 
 @keyframes doc-loading {
-    0%{
+    0% {
         left: -45%;
     }
-    100%{
+    100% {
         left: 100%;
     }
 }
 
 .o-fade-in {
-    animation: o-animation-fade-in .25s;
+    animation: o-animation-fade-in 0.25s;
 }
 
 @keyframes o-animation-fade-in {
@@ -501,7 +508,8 @@ pre {
     outline: 1px solid var(--btn-primary);
 }
 
-.o-code-editor i, .o-code-editor span {
+.o-code-editor i,
+.o-code-editor span {
     color: #ffffff;
 }
 

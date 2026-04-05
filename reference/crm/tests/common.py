@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from ast import literal_eval
@@ -7,12 +6,13 @@ from contextlib import contextmanager
 from datetime import timedelta
 from unittest.mock import patch
 
+from odoo import models, tools
+from odoo.fields import Datetime
+
 from odoo.addons.crm.models.crm_lead import PARTNER_ADDRESS_FIELDS_TO_SYNC
 from odoo.addons.mail.tests.common import MailCase, mail_new_test_user
 from odoo.addons.phone_validation.tools import phone_validation
 from odoo.addons.sales_team.tests.common import TestSalesCommon
-from odoo.fields import Datetime
-from odoo import models, tools
 
 INCOMING_EMAIL = """Return-Path: {return_path}
 X-Original-To: {to}
@@ -20,10 +20,10 @@ Delivered-To: {to}
 Received: by mail.my.com (Postfix, from userid xxx)
     id 822ECBFB67; Mon, 24 Oct 2011 07:36:51 +0200 (CEST)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mail.my.com
-X-Spam-Level: 
+X-Spam-Level:
 X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED autolearn=ham
     version=3.3.1
-Received: from [192.168.1.146] 
+Received: from [192.168.1.146]
     (Authenticated sender: {email_from})
     by mail.customer.com (Postfix) with ESMTPSA id 07A30BFAB4
     for <{to}>; Mon, 24 Oct 2011 07:36:50 +0200 (CEST)
@@ -59,7 +59,7 @@ class TestCrmCommon(TestSalesCommon, MailCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestCrmCommon, cls).setUpClass()
+        super().setUpClass()
         cls._init_mail_gateway()
 
         # Salesmen organization
@@ -545,7 +545,7 @@ class TestLeadConvertCommon(TestCrmCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLeadConvertCommon, cls).setUpClass()
+        super().setUpClass()
         # Sales Team organization
         # Role: M (team member) R (team manager)
         # SALESMAN---------------sales_team_1-----sales_team_convert
@@ -670,7 +670,7 @@ class TestLeadConvertMassCommon(TestLeadConvertCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLeadConvertMassCommon, cls).setUpClass()
+        super().setUpClass()
         # Sales Team organization
         # Role: M (team member) R (team manager)
         # SALESMAN-------------------sales_team_1-----sales_team_convert

@@ -1,11 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import timedelta
+
+from odoo import fields
+from odoo.tests import Form, new_test_user, tagged
+from odoo.tools import mute_logger
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.mail.tests.common import MailCase
-from odoo.tests import tagged, Form, new_test_user
-from odoo.tools import mute_logger, format_amount
-from odoo import fields
+
 
 @tagged('-at_install', 'post_install')
 class TestPurchaseDashboard(AccountTestInvoicingCommon, MailCase):
@@ -43,7 +45,7 @@ class TestPurchaseDashboard(AccountTestInvoicingCommon, MailCase):
             'currency_id': self.user_a.company_id.currency_id.id,
             'date_order': fields.Date.today(),
         } for i in range(3)])
-        for rfq, qty in zip(rfqs, [1, 2, 3]):
+        for rfq, qty in zip(rfqs, [1, 2, 3], strict=False):
             rfq_form = Form(rfq)
             with rfq_form.order_line.new() as line_1:
                 line_1.product_id = self.product_100

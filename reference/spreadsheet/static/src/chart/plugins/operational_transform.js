@@ -1,5 +1,5 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
-const { inverseCommandRegistry, otRegistry } = spreadsheet.registries;
+const {inverseCommandRegistry, otRegistry} = spreadsheet.registries;
 
 function identity(cmd) {
     return [cmd];

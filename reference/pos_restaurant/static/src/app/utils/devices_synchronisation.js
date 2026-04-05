@@ -1,5 +1,5 @@
 import DevicesSynchronisation from "@point_of_sale/app/utils/devices_synchronisation";
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(DevicesSynchronisation.prototype, {
     async processDynamicRecords(dynamicRecords) {

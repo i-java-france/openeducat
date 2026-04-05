@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class FooterSlideout extends Interaction {
     static selector = "#wrapwrap";
@@ -18,7 +18,8 @@ export class FooterSlideout extends Interaction {
             pixelEl.style.marginTop = "-1px";
             pixelEl.style.backgroundColor = "transparent";
             pixelEl.style.backgroundAttachment = "fixed";
-            pixelEl.style.backgroundImage = "url(/website/static/src/img/website_logo.svg)";
+            pixelEl.style.backgroundImage =
+                "url(/website/static/src/img/website_logo.svg)";
             this.insert(pixelEl);
         }
     }

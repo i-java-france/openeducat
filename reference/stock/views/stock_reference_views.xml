@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="stock_reference_search_view" model="ir.ui.view">
         <field name="name">stock.reference.search</field>
         <field name="model">stock.reference</field>
         <field name="arch" type="xml">
             <search string="Search Reference">
-                <field name="name" string="Name"/>
+                <field name="name" string="Name" />
             </search>
         </field>
     </record>
@@ -17,11 +17,17 @@
             <form string="Scrap">
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" nolabel="1"/></h1>
+                        <h1>
+                            <field name="name" nolabel="1" />
+                        </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="picking_ids" widget="many2many_tags" readonly="1"/>
+                            <field
+                                name="picking_ids"
+                                widget="many2many_tags"
+                                readonly="1"
+                            />
                         </group>
                     </group>
                 </sheet>
@@ -29,12 +35,12 @@
         </field>
     </record>
 
-       <record id="stock_reference_tree_view" model="ir.ui.view">
+    <record id="stock_reference_tree_view" model="ir.ui.view">
         <field name="name">stock.reference.list</field>
         <field name="model">stock.reference</field>
         <field name="arch" type="xml">
             <list string="References" create="false" delete="false" edit="false">
-                <field name="name" decoration-bf="1"/>
+                <field name="name" decoration-bf="1" />
             </list>
         </field>
     </record>
@@ -46,7 +52,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Stock Reference
-            </p><p>
+            </p>
+            <p>
                 Start transferring goods to see references
             </p>
         </field>
@@ -57,5 +64,6 @@
         parent="menu_stock_procurement"
         action="action_stock_reference"
         sequence="99"
-        groups="base.group_no_one"/>
+        groups="base.group_no_one"
+    />
 </odoo>

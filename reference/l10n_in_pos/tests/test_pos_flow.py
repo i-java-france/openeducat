@@ -1,4 +1,5 @@
 from odoo.tests import tagged
+
 from .common import TestInPosBase
 
 

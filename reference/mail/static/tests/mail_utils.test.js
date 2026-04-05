@@ -1,5 +1,5 @@
-import { addLink, parseAndTransform } from "@mail/utils/common/format";
-import { useSequential } from "@mail/utils/common/hooks";
+import {addLink, parseAndTransform} from "@mail/utils/common/format";
+import {useSequential} from "@mail/utils/common/hooks";
 import {
     contains,
     defineMailModels,
@@ -9,9 +9,9 @@ import {
     startServer,
 } from "./mail_test_helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { markup } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {markup} from "@odoo/owl";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -50,12 +50,12 @@ test("add_link utility function", () => {
 
 test("addLink: utility function and special entities", () => {
     const testInputs = [
-        // textContent not unescaped
+        // TextContent not unescaped
         [
             markup`<p>https://example.com/?&amp;currency_id</p>`,
             '<p><a target="_blank" rel="noreferrer noopener" href="https://example.com/?&amp;currency_id">https://example.com/?&amp;currency_id</a></p>',
         ],
-        // entities not unescaped
+        // Entities not unescaped
         [markup`&amp; &amp;amp; &gt; &lt;`, "&amp; &amp;amp; &gt; &lt;"],
         // > and " not linkified since they are not in URL regex
         [
@@ -102,7 +102,7 @@ test("addLink: linkify inside text node (1 occurrence)", async () => {
     expect(linkified.startsWith("<p>some text <a")).toBe(true);
     expect(linkified.endsWith("</a></p>")).toBe(true);
 
-    // linkify may add some attributes. Since we do not care of their exact
+    // Linkify may add some attributes. Since we do not care of their exact
     // stringified representation, we continue deeper assertion with query
     // selectors.
     const fragment = document.createDocumentFragment();
@@ -110,12 +110,12 @@ test("addLink: linkify inside text node (1 occurrence)", async () => {
     fragment.appendChild(div);
     div.innerHTML = linkified;
     expect(div).toHaveText("some text https://somelink.com");
-    await contains("a", { target: div });
+    await contains("a", {target: div});
     expect(div.querySelector(":scope a")).toHaveText("https://somelink.com");
 });
 
 test("addLink: linkify inside text node (2 occurrences)", () => {
-    // linkify may add some attributes. Since we do not care of their exact
+    // Linkify may add some attributes. Since we do not care of their exact
     // stringified representation, we continue deeper assertion with query
     // selectors.
     const content = markup(
@@ -126,7 +126,9 @@ test("addLink: linkify inside text node (2 occurrences)", () => {
     const div = document.createElement("div");
     fragment.appendChild(div);
     div.innerHTML = linkified;
-    expect(div).toHaveText("some text https://somelink.com and again https://somelink2.com ...");
+    expect(div).toHaveText(
+        "some text https://somelink.com and again https://somelink2.com ..."
+    );
     expect(div.querySelectorAll(":scope a")).toHaveCount(2);
     expect(div.querySelectorAll(":scope a")[0]).toHaveText("https://somelink.com");
     expect(div.querySelectorAll(":scope a")[1]).toHaveText("https://somelink2.com");
@@ -134,10 +136,10 @@ test("addLink: linkify inside text node (2 occurrences)", () => {
 
 test("url", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
-    // see: https://www.ietf.org/rfc/rfc1738.txt
+    // See: https://www.ietf.org/rfc/rfc1738.txt
     const messageBody = "https://odoo.com?test=~^|`{}[]#";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
@@ -146,7 +148,7 @@ test("url", async () => {
 
 test("url with comma at the end", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     const messageBody = "Go to https://odoo.com, it's great!";
@@ -158,7 +160,7 @@ test("url with comma at the end", async () => {
 
 test("url with dot at the end", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     const messageBody = "Go to https://odoo.com. It's great!";
@@ -170,7 +172,7 @@ test("url with dot at the end", async () => {
 
 test("url with semicolon at the end", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     const messageBody = "Go to https://odoo.com; it's great!";
@@ -182,7 +184,7 @@ test("url with semicolon at the end", async () => {
 
 test("url with ellipsis at the end", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     const messageBody = "Go to https://odoo.com... it's great!";
@@ -194,7 +196,7 @@ test("url with ellipsis at the end", async () => {
 
 test("url with number in subdomain", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     const messageBody = "https://www.45017478-master-all.runbot134.odoo.com/odoo";
@@ -216,7 +218,13 @@ test("isSequential doesn't execute intermediate call.", async () => {
             return new Promise((r) => setTimeout(() => r(i), 1));
         });
     };
-    const result = await Promise.all([sequence(), sequence(), sequence(), sequence(), sequence()]);
+    const result = await Promise.all([
+        sequence(),
+        sequence(),
+        sequence(),
+        sequence(),
+        sequence(),
+    ]);
     expect(result).toEqual([1, undefined, undefined, undefined, 5]);
     expect.verifySteps(["1", "5"]);
 });

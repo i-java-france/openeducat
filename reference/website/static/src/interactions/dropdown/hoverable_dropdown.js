@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { SIZES, utils as uiUtils } from "@web/core/ui/ui_service";
+import {SIZES, utils as uiUtils} from "@web/core/ui/ui_service";
 
 export class HoverableDropdown extends Interaction {
     static selector = "header.o_hoverable_dropdown";
@@ -40,7 +40,11 @@ export class HoverableDropdown extends Interaction {
      */
     updateDropdownVisibility(dropdownEl, show) {
         const dropdownToggleEl = dropdownEl.querySelector(".dropdown-toggle");
-        if (this.isSmall() || !dropdownToggleEl || dropdownEl.closest(".o_extra_menu_items")) {
+        if (
+            this.isSmall() ||
+            !dropdownToggleEl ||
+            dropdownEl.closest(".o_extra_menu_items")
+        ) {
             return;
         }
         const dropdown = Dropdown.getOrCreateInstance(dropdownToggleEl);
@@ -63,7 +67,7 @@ export class HoverableDropdown extends Interaction {
         // Keep the focus on the previously focused element if any, otherwise do
         // not focus the dropdown on hover.
         if (focusedEl) {
-            focusedEl.focus({ preventScroll: true });
+            focusedEl.focus({preventScroll: true});
         } else {
             const dropdownToggleEl = ev.currentTarget.querySelector(".dropdown-toggle");
             if (dropdownToggleEl) {
@@ -87,4 +91,6 @@ export class HoverableDropdown extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.hoverable_dropdown", HoverableDropdown);
+registry
+    .category("public.interactions")
+    .add("website.hoverable_dropdown", HoverableDropdown);

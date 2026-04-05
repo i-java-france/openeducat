@@ -1,11 +1,11 @@
-import { test, expect } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { click, queryOne, waitFor } from "@odoo/hoot-dom";
-import { getContent } from "../_helpers/selection";
-import { setFontFamily, undo, redo } from "../_helpers/user_actions";
-import { execCommand } from "../_helpers/userCommands";
-import { animationFrame } from "@odoo/hoot-mock";
-import { expandToolbar } from "../_helpers/toolbar";
+import {expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {click, queryOne, waitFor} from "@odoo/hoot-dom";
+import {getContent} from "../_helpers/selection";
+import {redo, setFontFamily, undo} from "../_helpers/user_actions";
+import {execCommand} from "../_helpers/userCommands";
+import {animationFrame} from "@odoo/hoot-mock";
+import {expandToolbar} from "../_helpers/toolbar";
 
 test("should give a few characters a fontFamily", async () => {
     await testEditor({
@@ -56,7 +56,7 @@ test("should overide fontFamily on the selected characters", async () => {
 });
 
 test("should change the font family of a few characters", async () => {
-    const { el } = await setupEditor("<p>ab[cde]fg</p>");
+    const {el} = await setupEditor("<p>ab[cde]fg</p>");
     await expandToolbar();
     expect(queryOne(".btn[name='font_family']").textContent).toBe("Default font");
     await click(".btn[name='font_family']");
@@ -69,7 +69,7 @@ test("should change the font family of a few characters", async () => {
     );
 });
 test("should undo and redo the font family changes", async () => {
-    const { editor, el } = await setupEditor("<p>ab[cde]fg</p>");
+    const {editor, el} = await setupEditor("<p>ab[cde]fg</p>");
     await expandToolbar();
     expect(queryOne(".btn[name='font_family']").textContent).toBe("Default font");
     await click(".btn[name='font_family']");
@@ -86,7 +86,7 @@ test("should undo and redo the font family changes", async () => {
 });
 
 test("should remove font family on the selected content using remove format", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         '<p>ab<span style="font-family: Arial, sans-serif;">[cde]</span>fg</p>'
     );
     await expandToolbar();
@@ -98,7 +98,7 @@ test("should remove font family on the selected content using remove format", as
 });
 
 test("should remove font family on the selected content using Default font family option", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         '<p>ab<span style="font-family: Arial, sans-serif;">[cde]</span>fg</p>'
     );
     await expandToolbar();
@@ -118,7 +118,9 @@ test("should contain the 5 available font + default", async () => {
     await click(".btn[name='font_family']");
     await animationFrame();
     await waitFor(".o_font_family_selector_menu");
-    const items = document.querySelectorAll(".o_font_family_selector_menu .o-dropdown-item");
+    const items = document.querySelectorAll(
+        ".o_font_family_selector_menu .o-dropdown-item"
+    );
     expect(items.length).toBe(6);
     for (let i = 0; i < items.length; i++) {
         expect(items[i].textContent).toBe(

@@ -1,9 +1,9 @@
-import { TRACK } from "@website_event/website_builder/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {TRACK} from "@website_event/website_builder/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class EventTrackPageOptionTopbar extends BaseOptionComponent {
     static template = "website_event_track.eventTrackPageOptionTopbar";
@@ -31,4 +31,6 @@ class EventTrackPageOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(EventTrackPageOptionPlugin.id, EventTrackPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(EventTrackPageOptionPlugin.id, EventTrackPageOptionPlugin);

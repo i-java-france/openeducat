@@ -1,8 +1,8 @@
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { URL_REGEX, cleanZWChars } from "./utils";
-import { isImageUrl } from "@html_editor/utils/url";
-import { Plugin } from "@html_editor/plugin";
-import { childNodeIndex } from "@html_editor/utils/position";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {URL_REGEX, cleanZWChars} from "./utils";
+import {isImageUrl} from "@html_editor/utils/url";
+import {Plugin} from "@html_editor/plugin";
+import {childNodeIndex} from "@html_editor/utils/position";
 
 /**
  * @typedef {((text: string, url: string) => void | true)[]} paste_url_overrides

@@ -1,4 +1,4 @@
-import { PyDate, PyDateTime, PyRelativeDelta, PyTime, PyTimeDelta } from "./py_date";
+import {PyDate, PyDateTime, PyRelativeDelta, PyTime, PyTimeDelta} from "./py_date";
 
 export class EvaluationError extends Error {}
 
@@ -12,7 +12,11 @@ export function execOnIterable(iterable, func) {
         // is not in Python
         throw new EvaluationError(`value not iterable`);
     }
-    if (typeof iterable === "object" && !Array.isArray(iterable) && !(iterable instanceof Set)) {
+    if (
+        typeof iterable === "object" &&
+        !Array.isArray(iterable) &&
+        !(iterable instanceof Set)
+    ) {
         // dicts are considered as iterable in Python
         iterable = Object.keys(iterable);
     }

@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 
-import { dynamicSpreadsheetTranslate } from "@spreadsheet/o_spreadsheet/translation";
+import {dynamicSpreadsheetTranslate} from "@spreadsheet/o_spreadsheet/translation";
 
-const { urlRegistry } = spreadsheet.registries;
+const {urlRegistry} = spreadsheet.registries;
 
 export const dashboardMenuTranslateService = {
     dependencies: ["spreadsheet_dashboard_loader", "spreadsheetLinkMenuCell"],
@@ -18,7 +18,10 @@ export const dashboardMenuTranslateService = {
                 createLink(url, label) {
                     const dashboard = dashboardLoader.getActiveDashboard();
                     const translatedLabel = dashboard
-                        ? dynamicSpreadsheetTranslate(dashboard.translationNamespace, label)
+                        ? dynamicSpreadsheetTranslate(
+                              dashboard.translationNamespace,
+                              label
+                          )
                         : label;
                     return linkSpec.createLink(url, translatedLabel);
                 },

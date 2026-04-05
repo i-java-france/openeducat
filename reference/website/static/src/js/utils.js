@@ -1,11 +1,11 @@
-import { intersection } from "@web/core/utils/arrays";
-import { _t, appTranslateFn } from "@web/core/l10n/translation";
-import { renderToElement } from "@web/core/utils/render";
-import { App, Component } from "@odoo/owl";
-import { getTemplate } from "@web/core/templates";
-import { UrlAutoComplete } from "@website/components/autocomplete_with_pages/url_autocomplete";
+import {intersection} from "@web/core/utils/arrays";
+import {_t, appTranslateFn} from "@web/core/l10n/translation";
+import {renderToElement} from "@web/core/utils/render";
+import {App, Component} from "@odoo/owl";
+import {getTemplate} from "@web/core/templates";
+import {UrlAutoComplete} from "@website/components/autocomplete_with_pages/url_autocomplete";
 import * as urlUtils from "@html_editor/utils/url";
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * Allows to load anchors from a page.
@@ -78,7 +78,12 @@ function autocompleteWithPages(input, options = {}, env = undefined) {
     });
 
     const container = document.createElement("div");
-    container.classList.add("ui-widget", "ui-autocomplete", "ui-widget-content", "border-0");
+    container.classList.add(
+        "ui-widget",
+        "ui-autocomplete",
+        "ui-widget-content",
+        "border-0"
+    );
     document.body.appendChild(container);
     owlApp.mount(container);
     return () => {
@@ -93,7 +98,10 @@ function autocompleteWithPages(input, options = {}, env = undefined) {
  */
 function onceAllImagesLoaded($element, $excluded) {
     var defs = Array.from($element.find("img").addBack("img")).map((img) => {
-        if (img.complete || ($excluded && ($excluded.is(img) || $excluded.has(img).length))) {
+        if (
+            img.complete ||
+            ($excluded && ($excluded.is(img) || $excluded.has(img).length))
+        ) {
             return; // Already loaded
         }
         var def = new Promise(function (resolve, reject) {
@@ -173,7 +181,10 @@ function prompt(options, _qweb) {
             if (field.is("select")) {
                 var select = field[0];
                 data.forEach(function (item) {
-                    select.options[select.options.length] = new window.Option(item[1], item[0]);
+                    select.options[select.options.length] = new window.Option(
+                        item[1],
+                        item[0]
+                    );
                 });
             } else {
                 field.val(data);
@@ -188,7 +199,7 @@ function prompt(options, _qweb) {
             field.focus();
             dialog.on("click", ".btn-primary", function () {
                 var backdrop = $(".modal-backdrop");
-                resolve({ val: field.val(), field: field, dialog: dialog });
+                resolve({val: field.val(), field: field, dialog: dialog});
                 dialog.modal("hide").remove();
                 backdrop.remove();
             });
@@ -479,7 +490,9 @@ export function cloneContentEls(content, keepScripts = false) {
         copyFragment.append(...els);
     }
     if (!keepScripts) {
-        copyFragment.querySelectorAll("script").forEach((scriptEl) => scriptEl.remove());
+        copyFragment
+            .querySelectorAll("script")
+            .forEach((scriptEl) => scriptEl.remove());
     }
     return copyFragment;
 }

@@ -1,15 +1,15 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { getCellValue, getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { defineSpreadsheetAccountModels } from "@spreadsheet_account/../tests/accounting_test_data";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {describe, expect, test} from "@odoo/hoot";
+import {setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {getCellValue, getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {defineSpreadsheetAccountModels} from "@spreadsheet_account/../tests/accounting_test_data";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 describe.current.tags("headless");
 defineSpreadsheetAccountModels();
 
 test("Basic evaluation", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_partner_balance") {
                 expect.step("spreadsheet_fetch_partner_balance");
@@ -25,7 +25,7 @@ test("Basic evaluation", async () => {
                         include_unposted: false,
                     },
                 ]);
-                return [{ balance: 26 }];
+                return [{balance: 26}];
             }
         },
     });
@@ -36,7 +36,7 @@ test("Basic evaluation", async () => {
 });
 
 test("with wrong date format", async () => {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(
         model,
         "A1",
@@ -49,7 +49,7 @@ test("with wrong date format", async () => {
 });
 
 test("with no date", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_partner_balance") {
                 expect.step("spreadsheet_fetch_partner_balance");
@@ -65,7 +65,7 @@ test("with no date", async () => {
                         include_unposted: false,
                     },
                 ]);
-                return [{ balance: 26 }];
+                return [{balance: 26}];
             }
         },
     });

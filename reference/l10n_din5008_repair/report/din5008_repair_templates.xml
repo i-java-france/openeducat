@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="report_repairorder" inherit_id="repair.report_repairorder">
         <xpath expr="//t[@t-set='o']" position="after">
@@ -7,15 +7,24 @@
                     <table>
                         <tr t-if="o.product_id">
                             <td>Product to Repair:</td>
-                            <td><t t-out="o.product_id.name"/></td>
+                            <td>
+                                <t t-out="o.product_id.name" />
+                            </td>
                         </tr>
                         <tr t-if="o.lot_id">
                             <td>Lot/Serial Number:</td>
-                            <td><t t-out="o.lot_id.name"/></td>
+                            <td>
+                                <t t-out="o.lot_id.name" />
+                            </td>
                         </tr>
                         <tr>
                             <td>Printing Date:</td>
-                            <td><t t-out="o.l10n_din5008_printing_date" t-options="{'widget': 'date'}"/></td>
+                            <td>
+                                <t
+                                    t-out="o.l10n_din5008_printing_date"
+                                    t-options="{'widget': 'date'}"
+                                />
+                            </td>
                         </tr>
                     </table>
                 </div>

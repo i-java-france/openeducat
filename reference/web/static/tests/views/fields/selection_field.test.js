@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, queryAllTexts, queryFirst, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, queryAllTexts, queryFirst, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -13,10 +13,10 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    display_name = fields.Char({ string: "Displayed name" });
-    int_field = fields.Integer({ string: "int_field" });
-    trululu = fields.Many2one({ string: "Trululu", relation: "partner" });
-    product_id = fields.Many2one({ string: "Product", relation: "product" });
+    display_name = fields.Char({string: "Displayed name"});
+    int_field = fields.Integer({string: "int_field"});
+    trululu = fields.Many2one({string: "Trululu", relation: "partner"});
+    product_id = fields.Many2one({string: "Product", relation: "product"});
     color = fields.Selection({
         selection: [
             ["red", "Red"],
@@ -47,7 +47,7 @@ class Partner extends models.Model {
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
+    name = fields.Char({string: "Product Name"});
     _records = [
         {
             id: 37,
@@ -80,10 +80,12 @@ test("SelectionField in a list view", async () => {
     await click(".o_data_cell");
     await animationFrame();
     const td = queryFirst("tbody tr.o_selected_row td:not(.o_list_record_selector)");
-    expect(queryOne(".o_select_menu input", { root: td })).toHaveCount(1, {
+    expect(queryOne(".o_select_menu input", {root: td})).toHaveCount(1, {
         message: "td should have a child 'select'",
     });
-    expect(td.children).toHaveCount(1, { message: "select tag should be only child of td" });
+    expect(td.children).toHaveCount(1, {
+        message: "select tag should be only child of td",
+    });
 });
 
 test.tags("desktop");
@@ -95,19 +97,19 @@ test("SelectionField in a list view with multi_edit", async () => {
         resModel: "partner",
         arch: '<list string="Colors" multi_edit="1"><field name="color"/></list>',
     });
-    // select two records and edit them
+    // Select two records and edit them
     await click(".o_data_row:eq(0) .o_list_record_selector input:first");
     await animationFrame();
     await click(".o_data_row:eq(1) .o_list_record_selector input:first");
     await animationFrame();
 
     await contains(".o_field_cell[name='color']").click();
-    await editSelectMenu(".o_field_widget[name='color'] input", { value: "" });
+    await editSelectMenu(".o_field_widget[name='color'] input", {value: ""});
     await contains(".o_dialog footer button").click();
     expect(queryAllTexts(".o_field_cell")).toEqual(["", "", "Red"]);
 
     await contains(".o_field_cell[name='color']").click();
-    await editSelectMenu(".o_field_widget[name='color'] input", { value: "Black" });
+    await editSelectMenu(".o_field_widget[name='color'] input", {value: "Black"});
     await contains(".o_dialog footer button").click();
     expect(queryAllTexts(".o_field_cell")).toEqual(["Black", "Black", "Red"]);
 });
@@ -116,7 +118,7 @@ test("SelectionField, edition and on many2one field", async () => {
     Partner._onChanges.product_id = () => {};
     Partner._records[0].product_id = 37;
     Partner._records[0].trululu = false;
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
     await mountView({
         type: "form",
         resModel: "partner",
@@ -133,9 +135,15 @@ test("SelectionField, edition and on many2one field", async () => {
     expect(queryAllTexts(".o_select_menu_item")).toEqual(["xphone", "xpad"]);
     expect(".o_field_widget[name='product_id'] input").toHaveValue("xphone");
     expect(".o_field_widget[name='trululu'] input").toHaveValue("");
-    await editSelectMenu(".o_field_widget[name='product_id'] input", { value: "xpad" });
+    await editSelectMenu(".o_field_widget[name='product_id'] input", {value: "xpad"});
     expect(".o_field_widget[name='color'] input").toHaveValue("Red");
-    expect.verifySteps(["get_views", "web_read", "name_search", "name_search", "onchange"]);
+    expect.verifySteps([
+        "get_views",
+        "web_read",
+        "name_search",
+        "name_search",
+        "onchange",
+    ]);
 });
 
 test("unset selection field with 0 as key", async () => {
@@ -182,7 +190,9 @@ test("unset selection field with string keys", async () => {
         arch: /* xml */ '<form edit="0"><field name="selection" /></form>',
     });
 
-    expect(".o_field_widget").toHaveText("", { message: "there should be no displayed value" });
+    expect(".o_field_widget").toHaveText("", {
+        message: "there should be no displayed value",
+    });
     expect(".o_field_widget").toHaveClass("o_field_empty", {
         message: "should have class o_field_empty",
     });
@@ -190,7 +200,7 @@ test("unset selection field with string keys", async () => {
 
 test("unset selection on a many2one field", async () => {
     expect.assertions(1);
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].trululu).toBe(false, {
             message: "should send 'false' as trululu value",
         });
@@ -202,14 +212,14 @@ test("unset selection on a many2one field", async () => {
         arch: /* xml */ '<form><field name="trululu" widget="selection" /></form>',
     });
 
-    await editSelectMenu(".o_field_widget[name='trululu'] input", { value: "" });
+    await editSelectMenu(".o_field_widget[name='trululu'] input", {value: ""});
     await animationFrame();
     await clickSave();
     await animationFrame();
 });
 
 test("field selection with many2ones and special characters", async () => {
-    // edit the partner with id=4
+    // Edit the partner with id=4
     Partner._records[2].display_name = "<span>hey</span>";
 
     await mountView({
@@ -247,8 +257,10 @@ test("required selection widget should not have blank option", async () => {
     await contains(".o_field_widget[name='feedback_value'] input").click();
     expect(queryAllTexts(".o_select_menu_item")).toEqual(["Good", "Bad"]);
 
-    // change value to update widget modifier values
-    await editSelectMenu(".o_field_widget[name='feedback_value'] input", { value: "Bad" });
+    // Change value to update widget modifier values
+    await editSelectMenu(".o_field_widget[name='feedback_value'] input", {
+        value: "Bad",
+    });
     await contains(".o_field_widget[name='color'] input").click();
     expect(queryAllTexts(".o_select_menu_item")).toEqual(["Red", "Black"]);
 });
@@ -260,7 +272,10 @@ test("selection field with placeholder", async () => {
         arch: /* xml */ `<form><field name="trululu" widget="selection" placeholder="Placeholder"/></form>`,
     });
 
-    expect(`.o_field_widget[name='trululu'] input`).toHaveAttribute("placeholder", "Placeholder");
+    expect(`.o_field_widget[name='trululu'] input`).toHaveAttribute(
+        "placeholder",
+        "Placeholder"
+    );
 });
 
 test("placeholder_field shows as placeholder", async () => {
@@ -304,7 +319,7 @@ test("SelectionField in kanban view", async () => {
 });
 
 test("SelectionField - auto save record in kanban view", async () => {
-    onRpc("web_save", ({ method }) => expect.step(method));
+    onRpc("web_save", ({method}) => expect.step(method));
     await mountView({
         type: "kanban",
         resModel: "partner",
@@ -318,7 +333,7 @@ test("SelectionField - auto save record in kanban view", async () => {
                 </kanban>`,
         domain: [["id", "=", 1]],
     });
-    await editSelectMenu(".o_field_widget[name='color'] input", { value: "Black" });
+    await editSelectMenu(".o_field_widget[name='color'] input", {value: "Black"});
     expect.verifySteps(["web_save"]);
 });
 

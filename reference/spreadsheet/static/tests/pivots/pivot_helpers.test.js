@@ -1,8 +1,11 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
 
-import { getFirstListFunction, getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
-import { constants, tokenize, helpers } from "@odoo/o-spreadsheet";
-import { allowTranslations } from "@web/../tests/web_test_helpers";
+import {
+    getFirstListFunction,
+    getNumberOfListFormulas,
+} from "@spreadsheet/list/list_helpers";
+import {constants, helpers, tokenize} from "@odoo/o-spreadsheet";
+import {allowTranslations} from "@web/../tests/web_test_helpers";
 const {
     getFirstPivotFunction,
     getNumberOfPivotFunctions,
@@ -10,7 +13,7 @@ const {
     toNormalizedPivotValue,
     toNumber,
 } = helpers;
-const { DEFAULT_LOCALE } = constants;
+const {DEFAULT_LOCALE} = constants;
 
 function stringArg(value, tokenIndex) {
     return {
@@ -32,12 +35,12 @@ test("Basic formula extractor", async function () {
     const tokens = tokenize(formula);
     let functionName;
     let args;
-    ({ functionName, args } = getFirstPivotFunction(tokens));
+    ({functionName, args} = getFirstPivotFunction(tokens));
     expect(functionName).toBe("PIVOT.VALUE");
     expect(args.length).toBe(2);
     expect(args[0]).toEqual(stringArg("1", 3));
     expect(args[1]).toEqual(stringArg("test", 6));
-    ({ functionName, args } = getFirstListFunction(tokens));
+    ({functionName, args} = getFirstListFunction(tokens));
     expect(functionName).toBe("ODOO.LIST");
     expect(args.length).toBe(3);
     expect(args[0]).toEqual(stringArg("2", 13));
@@ -48,7 +51,7 @@ test("Basic formula extractor", async function () {
 test("Extraction with two PIVOT formulas", async function () {
     const formula = `=PIVOT.VALUE("1", "test") + PIVOT.VALUE("2", "hello", "bla")`;
     const tokens = tokenize(formula);
-    const { functionName, args } = getFirstPivotFunction(tokens);
+    const {functionName, args} = getFirstPivotFunction(tokens);
     expect(functionName).toBe("PIVOT.VALUE");
     expect(args.length).toBe(2);
     expect(args[0]).toEqual(stringArg("1", 3));
@@ -135,18 +138,21 @@ describe("toNormalizedPivotValue", () => {
             expect(() => toNormalizedPivotValue(dimension, "won")).toThrow();
 
             dimension.granularity = "quarter";
-            // special quarter syntax:
+            // Special quarter syntax:
             expect(toNormalizedPivotValue(dimension, "1/2020")).toBe("1/2020");
             expect(toNormalizedPivotValue(dimension, "2/2020")).toBe("2/2020");
             expect(toNormalizedPivotValue(dimension, "3/2020")).toBe("3/2020");
             expect(toNormalizedPivotValue(dimension, "4/2020")).toBe("4/2020");
 
-            // falls back on regular date parsing:
+            // Falls back on regular date parsing:
             expect(toNormalizedPivotValue(dimension, "5/2020")).toBe("2/2020");
             expect(toNormalizedPivotValue(dimension, "01/01/2020")).toBe("1/2020");
-            expect(toNormalizedPivotValue(dimension, toNumber("01/01/2020", DEFAULT_LOCALE))).toBe(
-                "1/2020"
-            );
+            expect(
+                toNormalizedPivotValue(
+                    dimension,
+                    toNumber("01/01/2020", DEFAULT_LOCALE)
+                )
+            ).toBe("1/2020");
             expect(() => toNormalizedPivotValue(dimension, "hello")).toThrow();
 
             dimension.granularity = "year";
@@ -176,14 +182,20 @@ describe("toNormalizedPivotValue", () => {
     });
 
     test("parse values of numeric fields", () => {
-        for (const fieldType of ["float", "integer", "monetary", "many2one", "many2many"]) {
+        for (const fieldType of [
+            "float",
+            "integer",
+            "monetary",
+            "many2one",
+            "many2many",
+        ]) {
             const dimension = {
                 type: fieldType,
                 displayName: "A field",
                 name: "my_field_name",
             };
             expect(toNormalizedPivotValue(dimension, "2020")).toBe(2020);
-            expect(toNormalizedPivotValue(dimension, "01/11/2020")).toBe(43841); // a date is actually a number in a spreadsheet
+            expect(toNormalizedPivotValue(dimension, "01/11/2020")).toBe(43841); // A date is actually a number in a spreadsheet
             expect(toNormalizedPivotValue(dimension, "11/2020")).toBe(44136); // 1st of november 2020
             expect(toNormalizedPivotValue(dimension, "1")).toBe(1);
             expect(toNormalizedPivotValue(dimension, 1)).toBe(1);
@@ -235,7 +247,9 @@ describe("pivot time adapters formatted value", () => {
 
     test("Week adapter", () => {
         const adapter = pivotTimeAdapter("week");
-        expect(adapter.toValueAndFormat("5/2024", DEFAULT_LOCALE)).toEqual({ value: "W5 2024" });
+        expect(adapter.toValueAndFormat("5/2024", DEFAULT_LOCALE)).toEqual({
+            value: "W5 2024",
+        });
         expect(adapter.toValueAndFormat("51/2020", DEFAULT_LOCALE)).toEqual({
             value: "W51 2020",
         });
@@ -255,8 +269,12 @@ describe("pivot time adapters formatted value", () => {
 
     test("Quarter adapter", () => {
         const adapter = pivotTimeAdapter("quarter");
-        expect(adapter.toValueAndFormat("1/2022", DEFAULT_LOCALE)).toEqual({ value: "Q1 2022" });
-        expect(adapter.toValueAndFormat("3/1998", DEFAULT_LOCALE)).toEqual({ value: "Q3 1998" });
+        expect(adapter.toValueAndFormat("1/2022", DEFAULT_LOCALE)).toEqual({
+            value: "Q1 2022",
+        });
+        expect(adapter.toValueAndFormat("3/1998", DEFAULT_LOCALE)).toEqual({
+            value: "Q3 1998",
+        });
     });
 
     test("Year adapter", () => {

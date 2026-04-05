@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { Plugin } from "../plugin";
-import { closestBlock } from "../utils/blocks";
-import { closestElement } from "../utils/dom_traversal";
-import { isContentEditable, isTextNode } from "@html_editor/utils/dom_info";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {_t} from "@web/core/l10n/translation";
+import {Plugin} from "../plugin";
+import {closestBlock} from "../utils/blocks";
+import {closestElement} from "../utils/dom_traversal";
+import {isContentEditable, isTextNode} from "@html_editor/utils/dom_info";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 export class TextDirectionPlugin extends Plugin {
     static id = "textDirection";
@@ -40,7 +40,9 @@ export class TextDirectionPlugin extends Plugin {
         const targetedTextNodes = [
             selection.anchorNode,
             ...this.dependencies.selection.getTargetedNodes(),
-        ].filter((n) => isTextNode(n) && isContentEditable(n) && n.nodeValue.trim().length);
+        ].filter(
+            (n) => isTextNode(n) && isContentEditable(n) && n.nodeValue.trim().length
+        );
         const blocks = new Set(
             targetedTextNodes.map(
                 (textNode) =>
@@ -50,7 +52,8 @@ export class TextDirectionPlugin extends Plugin {
             )
         );
 
-        const shouldApplyStyle = !this.dependencies.format.isSelectionFormat("switchDirection");
+        const shouldApplyStyle =
+            !this.dependencies.format.isSelectionFormat("switchDirection");
 
         for (const block of blocks) {
             for (const node of block.querySelectorAll("ul,ol")) {

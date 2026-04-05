@@ -3,10 +3,10 @@
  * view. On each view, click on each filter.
  */
 
-import { App, reactive } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { rpcBus } from "@web/core/network/rpc";
-import { getPopoverForTarget } from "@web/core/popover/popover";
+import {App, reactive} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {rpcBus} from "@web/core/network/rpc";
+import {getPopoverForTarget} from "@web/core/popover/popover";
 
 export const SUCCESS_SIGNAL = "clickbot test succeeded";
 
@@ -74,14 +74,14 @@ function setup(light, currentState) {
     errorRPC = undefined;
 }
 
-function onRPCRequest({ detail }) {
+function onRPCRequest({detail}) {
     calledRPC[detail.data.id] = detail.url;
 }
 
-function onRPCResponse({ detail }) {
+function onRPCResponse({detail}) {
     delete calledRPC[detail.data.id];
     if (detail.error) {
-        errorRPC = { ...detail };
+        errorRPC = {...detail};
     }
 }
 
@@ -124,7 +124,11 @@ async function triggerClick(target, elDescription) {
         throw new Error(`No element "${elDescription}" found.`);
     }
     MOUSE_EVENTS.forEach((type) => {
-        const event = new MouseEvent(type, { bubbles: true, cancelable: true, view: window });
+        const event = new MouseEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+        });
         target.dispatchEvent(event);
     });
     await waitForNextAnimationFrame();
@@ -160,7 +164,8 @@ async function waitForCondition(stopCondition) {
                 );
             }
             throw new Error(
-                "Error dialog detected" + document.querySelector(".o_error_dialog").innerHTML
+                "Error dialog detected" +
+                    document.querySelector(".o_error_dialog").innerHTML
             );
         }
         return false;
@@ -220,7 +225,9 @@ async function ensureAppsMenu() {
     if (!apps || !apps.length) {
         const toggler = document.querySelector(".o_navbar_apps_menu .dropdown-toggle");
         await triggerClick(toggler, "apps menu toggle button");
-        await waitForCondition(() => document.querySelector(".o-dropdown--menu .o_app"));
+        await waitForCondition(() =>
+            document.querySelector(".o-dropdown--menu .o_app")
+        );
     }
 }
 
@@ -321,16 +328,21 @@ async function testFilters() {
     }
     // Open the search bar menu dropdown
     await triggerClick(searchBarMenu);
-    const filterMenuButton = document.querySelector(".o_dropdown_container.o_filter_menu");
+    const filterMenuButton = document.querySelector(
+        ".o_dropdown_container.o_filter_menu"
+    );
     // Is there a filter menu in the search bar
     if (!filterMenuButton) {
         return;
     }
 
     // Avoid the "Custom Filter" menu item (it don't have the class .o_menu_item)
-    const simpleFilterSel = ".o_filter_menu > .dropdown-item.o_menu_item:not(.o_add_custom_filter)";
+    const simpleFilterSel =
+        ".o_filter_menu > .dropdown-item.o_menu_item:not(.o_add_custom_filter)";
     const dateFilterSel = ".o_filter_menu > .o_accordion";
-    const filterMenuItems = document.querySelectorAll(`${simpleFilterSel},${dateFilterSel}`);
+    const filterMenuItems = document.querySelectorAll(
+        `${simpleFilterSel},${dateFilterSel}`
+    );
     browser.console.log(`Testing ${filterMenuItems.length} filters`);
     state.testedFilters += filterMenuItems.length;
     for (const filter of filterMenuItems) {
@@ -348,7 +360,10 @@ async function testFilters() {
                 ".o_accordion > .o_accordion_values > .dropdown-item"
             );
             if (firstOption) {
-                await triggerClick(firstOption, `filter option "${firstOption.innerText.trim()}"`);
+                await triggerClick(
+                    firstOption,
+                    `filter option "${firstOption.innerText.trim()}"`
+                );
                 await waitForCondition(() => true);
             }
         } else {
@@ -387,7 +402,9 @@ async function testViews() {
             }
         }, 250);
         await waitForCondition(() => {
-            return document.querySelector(`.o_switch_view.o_${viewType}.active`) !== null;
+            return (
+                document.querySelector(`.o_switch_view.o_${viewType}.active`) !== null
+            );
         });
         await testStudio();
         await testFilters();
@@ -455,7 +472,9 @@ async function testApp() {
     if (!state.testedApps.includes(state.app)) {
         if (isEnterprise) {
             await ensureHomeMenu();
-            element = document.querySelector(`a.o_app.o_menuitem[data-menu-xmlid="${state.app}"]`);
+            element = document.querySelector(
+                `a.o_app.o_menuitem[data-menu-xmlid="${state.app}"]`
+            );
         } else {
             await ensureAppsMenu();
             element = document.querySelector(
@@ -515,7 +534,9 @@ async function _clickEverywhere(xmlId, light, currentState) {
         browser.console.log(`Successfully tested ${state.testedModals} modals`);
         browser.console.log(`Successfully tested ${state.testedFilters} filters`);
         if (state.studioCount > 0) {
-            browser.console.log(`Successfully tested ${state.studioCount} views in Studio`);
+            browser.console.log(
+                `Successfully tested ${state.studioCount} views in Studio`
+            );
         }
         browser.console.log(SUCCESS_SIGNAL);
     } catch (err) {

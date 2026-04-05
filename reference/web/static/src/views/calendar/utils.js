@@ -1,9 +1,14 @@
 export function convertRecordToEvent(record, forceAllDay = false) {
     const allDay =
-        forceAllDay || record.isAllDay || record.end.diff(record.start, "hours").hours >= 24;
+        forceAllDay ||
+        record.isAllDay ||
+        record.end.diff(record.start, "hours").hours >= 24;
     let end = record.end;
-    if (record.isAllDay || (allDay && end.toMillis() !== end.startOf("day").toMillis())) {
-        end = end.plus({ days: 1 });
+    if (
+        record.isAllDay ||
+        (allDay && end.toMillis() !== end.startOf("day").toMillis())
+    ) {
+        end = end.plus({days: 1});
     }
     return {
         id: record.id,

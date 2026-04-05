@@ -1,6 +1,5 @@
 from odoo import api, fields, models
 
-
 CLASSIFICATION_MAP = {
     '1.1': {
         'category1_1': ('E3_561_001', 'E3_561_002', 'E3_561_007'),

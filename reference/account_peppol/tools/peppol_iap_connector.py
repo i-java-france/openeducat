@@ -1,4 +1,5 @@
 import logging
+
 import requests
 
 from odoo.exceptions import UserError

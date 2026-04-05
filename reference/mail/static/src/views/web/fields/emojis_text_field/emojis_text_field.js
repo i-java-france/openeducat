@@ -1,14 +1,14 @@
-import { EmojisFieldCommon } from "@mail/views/web/fields/emojis_field_common/emojis_field_common";
+import {EmojisFieldCommon} from "@mail/views/web/fields/emojis_field_common/emojis_field_common";
 
-import { registry } from "@web/core/registry";
-import { TextField, textField } from "@web/views/fields/text/text_field";
+import {registry} from "@web/core/registry";
+import {TextField, textField} from "@web/views/fields/text/text_field";
 
 /**
  * Extension of the FieldText that will add emojis support
  */
 export class EmojisTextField extends EmojisFieldCommon(TextField) {
     static template = "mail.EmojisTextField";
-    static components = { ...TextField.components };
+    static components = {...TextField.components};
     setup() {
         super.setup();
         this.targetEditElement = this.textareaRef;

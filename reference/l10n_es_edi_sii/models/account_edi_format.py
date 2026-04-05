@@ -468,7 +468,7 @@ class AccountEdiFormat(models.Model):
                     res = serv.SuministroLRFacturasEmitidas(header, info_list)
                 else:
                     res = serv.SuministroLRFacturasRecibidas(header, info_list)
-        except requests.exceptions.SSLError as error:
+        except requests.exceptions.SSLError:
             error_msg = _("The SSL certificate could not be validated.")
         except (zeep.exceptions.Error, requests.exceptions.ConnectionError) as error:
             error_msg = _("Networking error:\n%s", error)

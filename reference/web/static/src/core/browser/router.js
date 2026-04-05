@@ -1,10 +1,10 @@
-import { EventBus } from "@odoo/owl";
-import { omit, pick } from "../utils/objects";
-import { compareUrls, objectToUrlEncodedString } from "../utils/urls";
-import { browser } from "./browser";
-import { isDisplayStandalone } from "@web/core/browser/feature_detection";
-import { slidingWindow } from "@web/core/utils/arrays";
-import { isNumeric } from "@web/core/utils/strings";
+import {EventBus} from "@odoo/owl";
+import {omit, pick} from "../utils/objects";
+import {compareUrls, objectToUrlEncodedString} from "../utils/urls";
+import {browser} from "./browser";
+import {isDisplayStandalone} from "@web/core/browser/feature_detection";
+import {slidingWindow} from "@web/core/utils/arrays";
+import {isNumeric} from "@web/core/utils/strings";
 
 // Keys that are serialized in the URL as path segments instead of query string
 export const PATH_KEYS = ["resId", "action", "active_id", "model"];
@@ -47,7 +47,7 @@ function parseString(str) {
  * @returns {object} the next state of the router
  */
 function computeNextState(values, replace) {
-    const nextState = replace ? pick(state, ..._lockedKeys) : { ...state };
+    const nextState = replace ? pick(state, ..._lockedKeys) : {...state};
     Object.assign(nextState, values);
     // Update last entry in the actionStack
     if (nextState.actionStack?.length) {
@@ -90,7 +90,7 @@ export function parseSearchQuery(search) {
 
 function pathFromActionState(state) {
     const path = [];
-    const { action, model, active_id, resId } = state;
+    const {action, model, active_id, resId} = state;
     if (active_id && typeof active_id === "number") {
         path.push(active_id);
     }
@@ -126,17 +126,25 @@ export function startUrl() {
 function stateToUrl(state) {
     let path = "";
     const pathKeysToOmit = [..._hiddenKeysFromUrl];
-    const actionStack = (state.actionStack || [state]).map((a) => ({ ...a }));
+    const actionStack = (state.actionStack || [state]).map((a) => ({...a}));
     if (actionStack.at(-1)?.action !== "menu") {
         for (const [prevAct, currentAct] of slidingWindow(actionStack, 2).reverse()) {
-            const { action: prevAction, resId: prevResId, active_id: prevActiveId } = prevAct;
-            const { action: currentAction, active_id: currentActiveId } = currentAct;
+            const {
+                action: prevAction,
+                resId: prevResId,
+                active_id: prevActiveId,
+            } = prevAct;
+            const {action: currentAction, active_id: currentActiveId} = currentAct;
             // actions would typically map to a path like `active_id/action/res_id`
             if (currentActiveId === prevResId) {
                 // avoid doubling up when the active_id is the same as the previous action's res_id
                 delete currentAct.active_id;
             }
-            if (prevAction === currentAction && !prevResId && currentActiveId === prevActiveId) {
+            if (
+                prevAction === currentAction &&
+                !prevResId &&
+                currentActiveId === prevActiveId
+            ) {
                 //avoid doubling up the action and the active_id when a single-record action is preceded by a multi-record action
                 delete currentAct.action;
                 delete currentAct.active_id;
@@ -159,7 +167,7 @@ function stateToUrl(state) {
 }
 
 function urlToState(urlObj) {
-    const { pathname, hash, search } = urlObj;
+    const {pathname, hash, search} = urlObj;
     const state = parseSearchQuery(search);
 
     // ** url-retrocompatibility **
@@ -276,7 +284,7 @@ browser.addEventListener("popstate", (ev) => {
     if (!ev.state) {
         // We are coming from a click on an anchor.
         // Add the current state to the history entry so that a future loadstate behaves as expected.
-        browser.history.replaceState({ nextState: state }, "", browser.location.href);
+        browser.history.replaceState({nextState: state}, "", browser.location.href);
         return;
     }
     state = ev.state?.nextState || router.urlToState(new URL(browser.location));
@@ -323,7 +331,8 @@ browser.addEventListener("click", (ev) => {
         if (
             browser.location.host === url.host &&
             browser.location.pathname.startsWith("/odoo") &&
-            (["/web", "/odoo"].includes(url.pathname) || url.pathname.startsWith("/odoo/")) &&
+            (["/web", "/odoo"].includes(url.pathname) ||
+                url.pathname.startsWith("/odoo/")) &&
             a.target !== "_blank"
         ) {
             ev.preventDefault();
@@ -331,7 +340,9 @@ browser.addEventListener("click", (ev) => {
             if (url.pathname.startsWith("/odoo") && url.hash) {
                 browser.history.pushState({}, "", url.href);
             }
-            new Promise((res) => setTimeout(res, 0)).then(() => routerBus.trigger("ROUTE_CHANGE"));
+            new Promise((res) => setTimeout(res, 0)).then(() =>
+                routerBus.trigger("ROUTE_CHANGE")
+            );
         }
     }
 });
@@ -353,14 +364,14 @@ function makeDebouncedPush(mode) {
                 // then restore the title to what it's supposed to be
                 const originalTitle = document.title;
                 document.title = pushArgs.title;
-                browser.history.pushState({ nextState }, "", url);
+                browser.history.pushState({nextState}, "", url);
                 document.title = originalTitle;
             } else {
-                browser.history.replaceState({ nextState }, "", url);
+                browser.history.replaceState({nextState}, "", url);
             }
         } else {
             // URL didn't change but state might have, update it in place
-            browser.history.replaceState({ nextState }, "", browser.location.href);
+            browser.history.replaceState({nextState}, "", browser.location.href);
         }
         state = nextState;
         if (pushArgs.reload) {

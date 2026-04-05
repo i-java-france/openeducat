@@ -1,9 +1,9 @@
-import { Discuss } from "@mail/core/public_web/discuss";
+import {Discuss} from "@mail/core/public_web/discuss";
 
-import { onWillStart, onWillUpdateProps, useEffect, useState } from "@odoo/owl";
+import {onWillStart, onWillUpdateProps, useEffect, useState} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
-import { FormRenderer } from "@web/views/form/form_renderer";
+import {useService} from "@web/core/utils/hooks";
+import {FormRenderer} from "@web/views/form/form_renderer";
 
 export class LivechatSessionFormRenderer extends FormRenderer {
     static template = "im_livechat.LivechatDiscuss";

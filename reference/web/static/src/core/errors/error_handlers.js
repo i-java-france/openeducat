@@ -1,16 +1,20 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "../browser/browser";
-import { ConnectionLostError, RPCError, rpc } from "../network/rpc";
-import { registry } from "../registry";
-import { session } from "@web/session";
-import { user } from "@web/core/user";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "../browser/browser";
+import {ConnectionLostError, RPCError, rpc} from "../network/rpc";
+import {registry} from "../registry";
+import {session} from "@web/session";
+import {user} from "@web/core/user";
 import {
     ClientErrorDialog,
     ErrorDialog,
     NetworkErrorDialog,
     RPCErrorDialog,
 } from "./error_dialogs";
-import { UncaughtClientError, ThirdPartyScriptError, UncaughtPromiseError } from "./error_service";
+import {
+    UncaughtClientError,
+    ThirdPartyScriptError,
+    UncaughtPromiseError,
+} from "./error_service";
 
 /**
  * @typedef {import("../../env").OdooEnv} OdooEnv
@@ -49,7 +53,10 @@ export function rpcErrorHandler(env, error, originalError) {
         if (!ErrorComponent && exceptionName) {
             if (errorNotificationRegistry.contains(exceptionName)) {
                 const notif = errorNotificationRegistry.get(exceptionName);
-                env.services.notification.add(notif.message || originalError.data.message, notif);
+                env.services.notification.add(
+                    notif.message || originalError.data.message,
+                    notif
+                );
                 return true;
             }
             if (errorDialogRegistry.contains(exceptionName)) {
@@ -79,7 +86,7 @@ export function rpcErrorHandler(env, error, originalError) {
     }
 }
 
-errorHandlerRegistry.add("rpcErrorHandler", rpcErrorHandler, { sequence: 97 });
+errorHandlerRegistry.add("rpcErrorHandler", rpcErrorHandler, {sequence: 97});
 
 // -----------------------------------------------------------------------------
 // Lost connection errors
@@ -104,7 +111,7 @@ export function lostConnectionHandler(env, error, originalError) {
         }
         connectionLostNotifRemove = env.services.notification.add(
             _t("Connection lost. Trying to reconnect..."),
-            { sticky: true }
+            {sticky: true}
         );
         let delay = 2000;
         browser.setTimeout(function checkConnection() {
@@ -114,9 +121,12 @@ export function lostConnectionHandler(env, error, originalError) {
                         connectionLostNotifRemove();
                         connectionLostNotifRemove = null;
                     }
-                    env.services.notification.add(_t("Connection restored. You are back online."), {
-                        type: "info",
-                    });
+                    env.services.notification.add(
+                        _t("Connection restored. You are back online."),
+                        {
+                            type: "info",
+                        }
+                    );
                 })
                 .catch(() => {
                     // exponential backoff, with some jitter
@@ -127,7 +137,9 @@ export function lostConnectionHandler(env, error, originalError) {
         return true;
     }
 }
-errorHandlerRegistry.add("lostConnectionHandler", lostConnectionHandler, { sequence: 98 });
+errorHandlerRegistry.add("lostConnectionHandler", lostConnectionHandler, {
+    sequence: 98,
+});
 
 // -----------------------------------------------------------------------------
 // Default handler
@@ -157,7 +169,7 @@ export function defaultHandler(env, error) {
     });
     return true;
 }
-errorHandlerRegistry.add("defaultHandler", defaultHandler, { sequence: 100 });
+errorHandlerRegistry.add("defaultHandler", defaultHandler, {sequence: 100});
 
 // -----------------------------------------------------------------------------
 // Frontend visitors errors
@@ -182,5 +194,7 @@ if (user.isInternalUser === undefined) {
         );
     }
 } else {
-    registry.category("error_handlers").add("swallowAllVisitorErrors", swallowAllVisitorErrors, { sequence: 0 });
+    registry
+        .category("error_handlers")
+        .add("swallowAllVisitorErrors", swallowAllVisitorErrors, {sequence: 0});
 }

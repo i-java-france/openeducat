@@ -1,8 +1,8 @@
-import { reactive } from "@odoo/owl";
-import { AssetsLoadingError, getBundle } from "@web/core/assets";
-import { memoize } from "@web/core/utils/functions";
-import { rpc } from "@web/core/network/rpc";
-import { effect } from "@web/core/utils/reactive";
+import {reactive} from "@odoo/owl";
+import {AssetsLoadingError, getBundle} from "@web/core/assets";
+import {memoize} from "@web/core/utils/functions";
+import {rpc} from "@web/core/network/rpc";
+import {effect} from "@web/core/utils/reactive";
 
 export function assignDefined(obj, data, keys = Object.keys(data)) {
     for (const key of keys) {
@@ -192,20 +192,25 @@ export function parseVersion(v) {
  * @param {string} url
  */
 export function convertToEmbedURL(url) {
-    const ytRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|live\/|watch\?v=|&v=)([^#&?]*).*/;
+    const ytRegex =
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|live\/|watch\?v=|&v=)([^#&?]*).*/;
     const ytMatch = url.match(ytRegex);
     if (ytMatch?.length === 3) {
         const youtubeURL = new URL(`/embed/${ytMatch[2]}`, "https://www.youtube.com");
         youtubeURL.searchParams.set("autoplay", "1");
-        return { url: youtubeURL.toString(), provider: "youtube" };
+        return {url: youtubeURL.toString(), provider: "youtube"};
     }
-    const gdriveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=))([^/?&]+)/;
+    const gdriveRegex =
+        /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=))([^/?&]+)/;
     const gdriveMatch = url.match(gdriveRegex);
     if (gdriveMatch?.length === 2) {
-        const gdriveURL = new URL(`/file/d/${gdriveMatch[1]}/preview`, "https://drive.google.com");
-        return { url: gdriveURL.toString(), provider: "google-drive" };
+        const gdriveURL = new URL(
+            `/file/d/${gdriveMatch[1]}/preview`,
+            "https://drive.google.com"
+        );
+        return {url: gdriveURL.toString(), provider: "google-drive"};
     }
-    return { url: null, provider: null };
+    return {url: null, provider: null};
 }
 
 /**
@@ -247,7 +252,7 @@ export const hasHardwareAcceleration = memoize(() => {
  *        values to track. The effect is called only if these values change.
  * @param {[...T]} options.reactiveTargets Objects that the effect depends on.
  */
-export function effectWithCleanup({ effect: effectFn, dependencies, reactiveTargets }) {
+export function effectWithCleanup({effect: effectFn, dependencies, reactiveTargets}) {
     let cleanup;
     let prevDependencies;
     effect((...deps) => {
@@ -262,11 +267,11 @@ export function effectWithCleanup({ effect: effectFn, dependencies, reactiveTarg
         if (changed) {
             prevDependencies = Array.isArray(nextDependencies)
                 ? [...nextDependencies]
-                : { ...nextDependencies };
+                : {...nextDependencies};
             cleanup?.();
             cleanup = Array.isArray(nextDependencies)
                 ? effectFn(...nextDependencies)
-                : effectFn({ ...nextDependencies });
+                : effectFn({...nextDependencies});
         }
     }, reactiveTargets);
 }
@@ -306,7 +311,7 @@ export function effectWithDebouncedCleanup({
     let cleanup;
     effectWithCleanup({
         effect(ctx) {
-            const { predicate, ...deps } = ctx;
+            const {predicate, ...deps} = ctx;
             if (!predicate) {
                 return;
             }

@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools.sql import create_column, column_exists
+from odoo.tools.sql import column_exists, create_column
 
 
 class PosOrder(models.Model):

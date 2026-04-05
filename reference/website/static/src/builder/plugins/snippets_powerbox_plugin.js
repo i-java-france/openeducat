@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 class SnippetsPowerboxPlugin extends Plugin {
     static id = "alert";
@@ -140,11 +140,16 @@ class SnippetsPowerboxPlugin extends Plugin {
     };
 
     insertSnippet(name) {
-        const snippet = this.config.snippetModel.getSnippetByName("snippet_content", name);
+        const snippet = this.config.snippetModel.getSnippetByName(
+            "snippet_content",
+            name
+        );
         const content = snippet.content.cloneNode(true);
         this.dependencies.dom.insert(content);
         this.dependencies.history.addStep();
     }
 }
 
-registry.category("website-plugins").add(SnippetsPowerboxPlugin.id, SnippetsPowerboxPlugin);
+registry
+    .category("website-plugins")
+    .add(SnippetsPowerboxPlugin.id, SnippetsPowerboxPlugin);

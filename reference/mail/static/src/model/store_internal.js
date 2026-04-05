@@ -1,10 +1,10 @@
 /** @typedef {import("./record").Record} Record */
 /** @typedef {import("./record_list").RecordList} RecordList */
 
-import { htmlEscape, markup, toRaw } from "@odoo/owl";
-import { RecordInternal } from "./record_internal";
-import { deserializeDate, deserializeDateTime } from "@web/core/l10n/dates";
-import { IS_DELETED_SYM, IS_DELETING_SYM, isCommand, isMany } from "./misc";
+import {htmlEscape, markup, toRaw} from "@odoo/owl";
+import {RecordInternal} from "./record_internal";
+import {deserializeDate, deserializeDateTime} from "@web/core/l10n/dates";
+import {IS_DELETED_SYM, IS_DELETING_SYM, isCommand, isMany} from "./misc";
 
 const Markup = markup().constructor;
 
@@ -139,7 +139,9 @@ export class StoreInternal extends RecordInternal {
             recordListFullProxy._store.recordByLocalId.get(localId)
         );
         recordsFullProxy.sort(func);
-        const data = recordsFullProxy.map((recordFullProxy) => toRaw(recordFullProxy)._raw.localId);
+        const data = recordsFullProxy.map(
+            (recordFullProxy) => toRaw(recordFullProxy)._raw.localId
+        );
         const hasChanged = recordList.data.some((localId, i) => localId !== data[i]);
         if (hasChanged) {
             recordListFullProxy.data = data;
@@ -177,8 +179,8 @@ export class StoreInternal extends RecordInternal {
                         ? markup(value[1])
                         : ""
                     : value
-                    ? htmlEscape(value)
-                    : "";
+                      ? htmlEscape(value)
+                      : "";
             shouldChange =
                 record[fieldName]?.toString() !== newValue?.toString() ||
                 record[fieldName] instanceof Markup != newValue instanceof Markup;
@@ -198,7 +200,10 @@ export class StoreInternal extends RecordInternal {
             Object.getOwnPropertySymbols(vals).map((sym) => [sym, vals[sym]])
         );
         for (const [fieldName, value] of fieldEntries) {
-            if (!record.Model._.fields.get(fieldName) || record.Model._.fieldsAttr.get(fieldName)) {
+            if (
+                !record.Model._.fields.get(fieldName) ||
+                record.Model._.fieldsAttr.get(fieldName)
+            ) {
                 this.updateAttr(record, fieldName, value);
             } else {
                 this.updateRelation(record, fieldName, value);

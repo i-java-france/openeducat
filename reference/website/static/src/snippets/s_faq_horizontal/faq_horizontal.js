@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class FaqHorizontal extends Interaction {
     static selector = ".s_faq_horizontal";
@@ -19,13 +19,17 @@ export class FaqHorizontal extends Interaction {
     start() {
         this.updateTitlesPosition();
         this.registerCleanup(
-            this.services.website_menus.registerCallback(this.updateTitlesPosition.bind(this))
+            this.services.website_menus.registerCallback(
+                this.updateTitlesPosition.bind(this)
+            )
         );
     }
 
     updateTitlesPosition() {
         let offset = 16; // Add 1rem equivalent in px to provide a visual gap by default
-        for (const el of this.el.ownerDocument.querySelectorAll(".o_top_fixed_element")) {
+        for (const el of this.el.ownerDocument.querySelectorAll(
+            ".o_top_fixed_element"
+        )) {
             offset += el.getBoundingClientRect().bottom;
         }
         this.offset = offset;

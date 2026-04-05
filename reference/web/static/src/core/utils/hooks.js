@@ -1,6 +1,14 @@
-import { hasTouch, isMobileOS } from "@web/core/browser/feature_detection";
+import {hasTouch, isMobileOS} from "@web/core/browser/feature_detection";
 
-import { status, useComponent, useEffect, useRef, onWillUnmount, useState, toRaw } from "@odoo/owl";
+import {
+    status,
+    useComponent,
+    useEffect,
+    useRef,
+    onWillUnmount,
+    useState,
+    toRaw,
+} from "@odoo/owl";
 
 /**
  * This file contains various custom hooks.
@@ -35,7 +43,7 @@ import { status, useComponent, useEffect, useRef, onWillUnmount, useState, toRaw
  * @param {boolean} [params.mobile] if true, will force autofocus on touch devices.
  * @returns {Ref} the element reference
  */
-export function useAutofocus({ refName, selectAll, mobile } = {}) {
+export function useAutofocus({refName, selectAll, mobile} = {}) {
     const ref = useRef(refName || "autofocus");
     const uiService = useService("ui");
 
@@ -55,14 +63,20 @@ export function useAutofocus({ refName, selectAll, mobile } = {}) {
             return true;
         }
         const rootNode = el.getRootNode();
-        return rootNode instanceof ShadowRoot && uiService.activeElement.contains(rootNode.host);
+        return (
+            rootNode instanceof ShadowRoot &&
+            uiService.activeElement.contains(rootNode.host)
+        );
     }
     // LEGACY
     useEffect(
         (el) => {
             if (isFocusable(el)) {
                 el.focus();
-                if (["INPUT", "TEXTAREA"].includes(el.tagName) && el.type !== "number") {
+                if (
+                    ["INPUT", "TEXTAREA"].includes(el.tagName) &&
+                    el.type !== "number"
+                ) {
                     el.selectionEnd = el.value.length;
                     el.selectionStart = selectAll ? 0 : el.value.length;
                 }
@@ -141,7 +155,7 @@ export const SERVICES_METADATA = {};
  */
 export function useService(serviceName) {
     const component = useComponent();
-    const { services } = component.env;
+    const {services} = component.env;
     if (!(serviceName in services)) {
         throw new Error(`Service ${serviceName} is not available`);
     }
@@ -173,7 +187,7 @@ export function useService(serviceName) {
  * longer in focus. We only add this attribute when needed. To disable this
  * behavior, use the spellcheck attribute on the element.
  */
-export function useSpellCheck({ refName } = {}) {
+export function useSpellCheck({refName} = {}) {
     const elements = [];
     const ref = useRef(refName || "spellcheck");
     function toggleSpellcheck(ev) {
@@ -185,7 +199,9 @@ export function useSpellCheck({ refName } = {}) {
                 const inputs =
                     ["INPUT", "TEXTAREA"].includes(el.nodeName) || el.isContentEditable
                         ? [el]
-                        : el.querySelectorAll("input, textarea, [contenteditable=true]");
+                        : el.querySelectorAll(
+                              "input, textarea, [contenteditable=true]"
+                          );
                 inputs.forEach((input) => {
                     if (input.spellcheck !== false) {
                         elements.push(input);

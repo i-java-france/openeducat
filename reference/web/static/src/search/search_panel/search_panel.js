@@ -1,5 +1,5 @@
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useBus } from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useBus} from "@web/core/utils/hooks";
 
 import {
     Component,
@@ -11,9 +11,9 @@ import {
     useRef,
     useState,
 } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { useSetupAction } from "@web/search/action_hook";
+import {browser} from "@web/core/browser/browser";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {useSetupAction} from "@web/search/action_hook";
 
 //-------------------------------------------------------------------------
 // Helpers
@@ -71,7 +71,9 @@ export class SearchPanel extends Component {
         this.width = "10px";
 
         this.importState(this.env.searchPanelState);
-        const sidebarExpandedPreference = browser.localStorage.getItem(this.keyExpandSidebar);
+        const sidebarExpandedPreference = browser.localStorage.getItem(
+            this.keyExpandSidebar
+        );
         if (sidebarExpandedPreference !== null) {
             this.state.sidebarExpanded = exprToBoolean(sidebarExpandedPreference);
         }
@@ -86,7 +88,7 @@ export class SearchPanel extends Component {
             (el) => {
                 if (el && this.hasImportedState) {
                     el.style["min-width"] = this.width;
-                    el.scroll({ top: this.scrollTop });
+                    el.scroll({top: this.scrollTop});
                 }
             },
             () => [this.root.el]
@@ -170,11 +172,16 @@ export class SearchPanel extends Component {
         if (this.hasImportedState) {
             return;
         }
-        const categories = this.env.searchModel.getSections((s) => s.type === "category");
+        const categories = this.env.searchModel.getSections(
+            (s) => s.type === "category"
+        );
         for (const category of categories) {
             this.state.expanded[category.id] = {};
             if (category.activeValueId) {
-                const ancestorIds = this.getAncestorValueIds(category, category.activeValueId);
+                const ancestorIds = this.getAncestorValueIds(
+                    category,
+                    category.activeValueId
+                );
                 for (const ancestorId of ancestorIds) {
                     this.state.expanded[category.id][ancestorId] = true;
                 }
@@ -186,7 +193,9 @@ export class SearchPanel extends Component {
         if (this.hasImportedState) {
             return;
         }
-        const categories = this.env.searchModel.getSections((s) => s.type === "category");
+        const categories = this.env.searchModel.getSections(
+            (s) => s.type === "category"
+        );
         for (const category of categories) {
             if (category.depth === 0) {
                 continue;
@@ -198,7 +207,7 @@ export class SearchPanel extends Component {
                     return;
                 }
                 this.state.expanded[category.id][id] = true;
-                const { childrenIds } = category.values.get(id);
+                const {childrenIds} = category.values.get(id);
                 level -= 1;
                 for (const childId of childrenIds) {
                     expand(childId, level);
@@ -218,8 +227,10 @@ export class SearchPanel extends Component {
      *   the given category.
      */
     getAncestorValueIds(category, categoryValueId) {
-        const { parentId } = category.values.get(categoryValueId);
-        return parentId ? [...this.getAncestorValueIds(category, parentId), parentId] : [];
+        const {parentId} = category.values.get(categoryValueId);
+        return parentId
+            ? [...this.getAncestorValueIds(category, parentId), parentId]
+            : [];
     }
 
     /**
@@ -231,7 +242,10 @@ export class SearchPanel extends Component {
         const activeCategories = this.env.searchModel.getSections(isActiveCategory);
         const selection = [];
         for (const category of activeCategories) {
-            const parentIds = this.getAncestorValueIds(category, category.activeValueId);
+            const parentIds = this.getAncestorValueIds(
+                category,
+                category.activeValueId
+            );
             const orderedCategoryNames = [...parentIds, category.activeValueId].map(
                 (valueId) => category.values.get(valueId).display_name
             );
@@ -252,7 +266,7 @@ export class SearchPanel extends Component {
     getFilterSelection() {
         const filters = this.env.searchModel.getSections(isFilter);
         const selection = [];
-        for (const { groups, values, icon, color } of filters) {
+        for (const {groups, values, icon, color} of filters) {
             let filterValues;
             if (groups) {
                 filterValues = Object.keys(groups)
@@ -262,7 +276,7 @@ export class SearchPanel extends Component {
                 filterValues = nameOfCheckedValues(values);
             }
             if (filterValues.length) {
-                selection.push({ values: filterValues, icon, color });
+                selection.push({values: filterValues, icon, color});
             }
         }
         return selection;
@@ -290,7 +304,9 @@ export class SearchPanel extends Component {
      * @param {Number} sectionId
      */
     clearSelection(sectionId = 0) {
-        const sectionIds = sectionId ? [sectionId] : Object.keys(this.state.active).map(Number);
+        const sectionIds = sectionId
+            ? [sectionId]
+            : Object.keys(this.state.active).map(Number);
         this.env.searchModel.clearSections(sectionIds);
     }
 
@@ -325,12 +341,12 @@ export class SearchPanel extends Component {
      * @param {number} filterId
      * @param {{ values: Map<Object> }} group
      */
-    toggleFilterGroup(filterId, { values }) {
+    toggleFilterGroup(filterId, {values}) {
         const valueIds = [];
         const checked = [...values.values()].every(
             (value) => this.state.active[filterId][value.id]
         );
-        values.forEach(({ id }) => {
+        values.forEach(({id}) => {
             valueIds.push(id);
             this.state.active[filterId][id] = !checked;
         });
@@ -343,7 +359,7 @@ export class SearchPanel extends Component {
      * @param {number} valueId
      * @param {MouseEvent} ev
      */
-    toggleFilterValue(filterId, valueId, { currentTarget }) {
+    toggleFilterValue(filterId, valueId, {currentTarget}) {
         this.state.active[filterId][valueId] = currentTarget.checked;
         this.updateGroupHeadersChecked();
         this.env.searchModel.toggleFilterValues(filterId, [valueId]);
@@ -381,8 +397,12 @@ export class SearchPanel extends Component {
     updateGroupHeadersChecked() {
         const groups = document.querySelectorAll(".o_search_panel_filter_group");
         for (const group of groups) {
-            const header = group.querySelector(":scope .o_search_panel_group_header input");
-            const vals = [...group.querySelectorAll(":scope .o_search_panel_filter_value input")];
+            const header = group.querySelector(
+                ":scope .o_search_panel_group_header input"
+            );
+            const vals = [
+                ...group.querySelectorAll(":scope .o_search_panel_filter_value input"),
+            ];
             header.checked = false;
             header.indeterminate = false;
             if (vals.every((v) => v.checked)) {

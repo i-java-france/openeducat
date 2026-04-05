@@ -1,6 +1,6 @@
-import { BurgerUserMenu } from "@web/webclient/burger_menu/burger_user_menu/burger_user_menu";
-import { preferencesItem } from "@web/webclient/user_menu/user_menu_items";
-import { registry } from "@web/core/registry";
+import {BurgerUserMenu} from "@web/webclient/burger_menu/burger_user_menu/burger_user_menu";
+import {preferencesItem} from "@web/webclient/user_menu/user_menu_items";
+import {registry} from "@web/core/registry";
 
 import {
     clearRegistry,
@@ -8,9 +8,9 @@ import {
     mountWithCleanup,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, queryAll, queryAllTexts } from "@odoo/hoot-dom";
-import { markup } from "@odoo/owl";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, queryAll, queryAllTexts} from "@odoo/hoot-dom";
+import {markup} from "@odoo/owl";
 
 const userMenuRegistry = registry.category("user_menuitems");
 
@@ -80,7 +80,13 @@ test("can be rendered", async () => {
     expect("a").toHaveCount(4);
     expect(".form-switch input.form-check-input").toHaveCount(1);
     expect("hr").toHaveCount(1);
-    expect(queryAllTexts("a, .form-switch")).toEqual(["Ring", "Bad", "Frodo", "HTML", "Eye"]);
+    expect(queryAllTexts("a, .form-switch")).toEqual([
+        "Ring",
+        "Bad",
+        "Frodo",
+        "HTML",
+        "Eye",
+    ]);
     for (const item of queryAll("a, .form-switch")) {
         await click(item);
     }

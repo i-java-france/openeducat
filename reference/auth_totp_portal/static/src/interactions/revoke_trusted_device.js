@@ -1,20 +1,26 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { handleCheckIdentity } from "@portal/interactions/portal_security";
+import {handleCheckIdentity} from "@portal/interactions/portal_security";
 
 export class RevokeTrustedDevice extends Interaction {
     static selector = "#totp_wizard_view + * .fa.fa-trash.text-danger";
     dynamicContent = {
-        _root: { "t-on-click.prevent": this.onClick },
+        _root: {"t-on-click.prevent": this.onClick},
     };
 
     async onClick() {
-        await this.waitFor(handleCheckIdentity(
-            this.waitFor(this.services.orm.call("auth_totp.device", "remove", [parseInt(this.el.id)])),
-            this.services.orm,
-            this.services.dialog,
-        ));
+        await this.waitFor(
+            handleCheckIdentity(
+                this.waitFor(
+                    this.services.orm.call("auth_totp.device", "remove", [
+                        parseInt(this.el.id),
+                    ])
+                ),
+                this.services.orm,
+                this.services.dialog
+            )
+        );
         location.reload();
     }
 }

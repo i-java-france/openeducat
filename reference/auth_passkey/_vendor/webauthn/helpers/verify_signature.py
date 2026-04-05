@@ -1,13 +1,12 @@
-from typing import Union
 
 from cryptography.hazmat.primitives.asymmetric.dsa import DSAPublicKey
 from cryptography.hazmat.primitives.asymmetric.ec import EllipticCurvePublicKey
 from cryptography.hazmat.primitives.asymmetric.ed448 import Ed448PublicKey
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
-from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PublicKey
-from cryptography.hazmat.primitives.asymmetric.x448 import X448PublicKey
 from cryptography.hazmat.primitives.asymmetric.padding import MGF1, PSS, PKCS1v15
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
+from cryptography.hazmat.primitives.asymmetric.x448 import X448PublicKey
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PublicKey
 
 from .algorithms import (
     get_ec2_sig_alg,
@@ -22,15 +21,7 @@ from .exceptions import UnsupportedAlgorithm, UnsupportedPublicKey
 
 def verify_signature(
     *,
-    public_key: Union[
-        EllipticCurvePublicKey,
-        RSAPublicKey,
-        Ed25519PublicKey,
-        DSAPublicKey,
-        Ed448PublicKey,
-        X25519PublicKey,
-        X448PublicKey,
-    ],
+    public_key: EllipticCurvePublicKey | RSAPublicKey | Ed25519PublicKey | DSAPublicKey | Ed448PublicKey | X25519PublicKey | X448PublicKey,
     signature_alg: COSEAlgorithmIdentifier,
     signature: bytes,
     data: bytes,

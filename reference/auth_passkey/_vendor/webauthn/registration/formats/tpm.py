@@ -1,16 +1,14 @@
-from typing import List
 
-import cbor2
 from cryptography import x509
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509 import (
+    BasicConstraints,
     ExtendedKeyUsage,
     GeneralName,
     Name,
     SubjectAlternativeName,
     Version,
-    BasicConstraints,
 )
 from cryptography.x509.extensions import ExtensionNotFound
 from cryptography.x509.oid import ExtensionOID
@@ -47,7 +45,7 @@ def verify_tpm(
     attestation_object: bytes,
     client_data_json: bytes,
     credential_public_key: bytes,
-    pem_root_certs_bytes: List[bytes],
+    pem_root_certs_bytes: list[bytes],
 ) -> bool:
     """Verify a "tpm" attestation statement
 
@@ -144,7 +142,7 @@ def verify_tpm(
     # Verify that magic is set to TPM_GENERATED_VALUE.
     # a.k.a. 0xff544347
     magic_int = int.from_bytes(cert_info.magic, "big")
-    if magic_int != int(0xFF544347):
+    if magic_int != 0xFF544347:
         raise InvalidRegistrationResponse(
             f'CertInfo magic "{magic_int}" was not TPM_GENERATED_VALUE 4283712327 (0xff544347) (TPM)'
         )

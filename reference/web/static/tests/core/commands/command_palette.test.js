@@ -1,4 +1,4 @@
-import { expect, getFixture, test } from "@odoo/hoot";
+import {expect, getFixture, test} from "@odoo/hoot";
 import {
     Deferred,
     advanceTime,
@@ -19,10 +19,10 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { Component, xml } from "@odoo/owl";
+import {Component, xml} from "@odoo/owl";
 
-import { CommandPalette } from "@web/core/commands/command_palette";
-import { MainComponentsContainer } from "@web/core/main_components_container";
+import {CommandPalette} from "@web/core/commands/command_palette";
+import {MainComponentsContainer} from "@web/core/main_components_container";
 
 class FooterComponent extends Component {
     static template = xml`<span>My footer</span>`;
@@ -42,7 +42,10 @@ test("empty providers", async () => {
     expect(".o_command").toHaveCount(0);
     expect(".o_command_palette_listbox_empty").toHaveCount(1);
     expect(".o_command_palette_listbox_empty").toHaveText("No result found");
-    expect(".o_command_palette_search input").toHaveAttribute("placeholder", "Search...");
+    expect(".o_command_palette_search input").toHaveAttribute(
+        "placeholder",
+        "Search..."
+    );
     expect(".o_command_palette_footer").toHaveCount(0);
 });
 
@@ -61,8 +64,8 @@ test("custom empty message", async () => {
     };
     const provide = () => [];
     const providers = [
-        { namespace: "@", provide },
-        { namespace: "#", provide },
+        {namespace: "@", provide},
+        {namespace: "#", provide},
     ];
     const config = {
         configByNamespace,
@@ -76,19 +79,23 @@ test("custom empty message", async () => {
     expect(".o_command").toHaveCount(0);
     expect(".o_command_palette_listbox_empty").toHaveCount(1);
     expect(".o_command_palette_listbox_empty").toHaveText(
-        configByNamespace["default"].emptyMessage
+        configByNamespace.default.emptyMessage
     );
 
     await click(".o_command_palette_search input");
     await edit("@");
     await runAllTimers();
     expect(".o_command_palette_listbox_empty").toHaveCount(1);
-    expect(".o_command_palette_listbox_empty").toHaveText(configByNamespace["@"].emptyMessage);
+    expect(".o_command_palette_listbox_empty").toHaveText(
+        configByNamespace["@"].emptyMessage
+    );
 
     await edit("#");
     await runAllTimers();
     expect(".o_command_palette_listbox_empty").toHaveCount(1);
-    expect(".o_command_palette_listbox_empty").toHaveText(configByNamespace["#"].emptyMessage);
+    expect(".o_command_palette_listbox_empty").toHaveText(
+        configByNamespace["#"].emptyMessage
+    );
 });
 
 test("custom debounce delay", async () => {
@@ -113,8 +120,8 @@ test("custom debounce delay", async () => {
         },
     ];
     const providers = [
-        { namespace: "@", provide },
-        { namespace: "#", provide },
+        {namespace: "@", provide},
+        {namespace: "#", provide},
     ];
     const config = {
         configByNamespace,
@@ -229,12 +236,18 @@ test("custom placeholder", async () => {
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command").toHaveCount(0);
     expect(".o_command_palette_listbox_empty").toHaveCount(1);
-    expect(".o_command_palette_search input").toHaveAttribute("placeholder", "default placeholder");
+    expect(".o_command_palette_search input").toHaveAttribute(
+        "placeholder",
+        "default placeholder"
+    );
 
     await click(".o_command_palette_search input");
     await edit("@");
     await runAllTimers();
-    expect(".o_command_palette_search input").toHaveAttribute("placeholder", "@ placeholder");
+    expect(".o_command_palette_search input").toHaveAttribute(
+        "placeholder",
+        "@ placeholder"
+    );
 });
 
 test("add a footer", async () => {
@@ -438,7 +451,12 @@ test("multi provider with the same namespace", async () => {
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command").toHaveCount(4);
-    expect(queryAllTexts(".o_command")).toEqual(["Command1", "Command2", "Command3", "Command4"]);
+    expect(queryAllTexts(".o_command")).toEqual([
+        "Command1",
+        "Command2",
+        "Command3",
+        "Command4",
+    ]);
 });
 
 test("check the concurrency during a research", async () => {
@@ -463,7 +481,7 @@ test("check the concurrency during a research", async () => {
             },
         ];
     };
-    const providers = [{ namespace: "default", provide }];
+    const providers = [{namespace: "default", provide}];
     const config = {
         providers,
     };
@@ -564,12 +582,12 @@ test("command palette keeps the same top position when its content changes", asy
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command").toHaveCount(4);
-    expect(".o_command_palette").toHaveRect({ top: 120 });
+    expect(".o_command_palette").toHaveRect({top: 120});
     await click(".o_command_palette_search input");
     await edit("z");
     await runAllTimers();
     expect(".o_command").toHaveCount(0);
-    expect(".o_command_palette").toHaveRect({ top: 120 });
+    expect(".o_command_palette").toHaveRect({top: 120});
 });
 
 test("open the command palette with a namespace already in the searchbar", async () => {
@@ -773,29 +791,46 @@ test("multi provider with categories", async () => {
     expect(queryAllTexts(".o_command")).toEqual(["Command1", "Command2", "Command3"]);
     expect(".o_command_category").toHaveCount(3);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command1"]);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command2"]);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(3) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(3) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command3"]);
 
     await click(".o_command_palette_search input");
     await edit("@");
     await runAllTimers();
     expect(".o_command").toHaveCount(4);
-    expect(queryAllTexts(".o_command")).toEqual(["Command6", "Command7", "Command5", "Command4"]);
+    expect(queryAllTexts(".o_command")).toEqual([
+        "Command6",
+        "Command7",
+        "Command5",
+        "Command4",
+    ]);
     expect(".o_command_category").toHaveCount(3);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command6", "Command7"]);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command5"]);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(3) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(3) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command4"]);
 });
 
@@ -847,7 +882,9 @@ test("don't display by categories if there is a search value", async () => {
     expect(queryAllTexts(".o_command")).toEqual(["Command1", "Command2", "Command3"]);
 
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Command1", "Command2", "Command3"]);
 });
 
@@ -931,10 +968,10 @@ test("press enter on command", async () => {
 test("keyboard navigation scroll", async () => {
     await mountWithCleanup(MainComponentsContainer);
     const commands = [
-        { name: "Command1" },
-        { name: "Command2" },
-        { name: "Command3" },
-        { name: "Command4" },
+        {name: "Command1"},
+        {name: "Command2"},
+        {name: "Command3"},
+        {name: "Command4"},
     ];
     const providers = [
         {
@@ -951,14 +988,21 @@ test("keyboard navigation scroll", async () => {
     const isVisible = (el) => {
         // Returns the visibility of the element in the scrollable element
         const elementRect = queryOne(el).getBoundingClientRect();
-        const scrollableRect = queryOne(".o_command_palette_listbox").getBoundingClientRect();
-        return elementRect.bottom <= scrollableRect.bottom && elementRect.top >= scrollableRect.top;
+        const scrollableRect = queryOne(
+            ".o_command_palette_listbox"
+        ).getBoundingClientRect();
+        return (
+            elementRect.bottom <= scrollableRect.bottom &&
+            elementRect.top >= scrollableRect.top
+        );
     };
 
     const getFocusedCommandBorderState = () => {
         // Returns the state of the element in relation to the borders
         const elementRect = queryOne(".o_command.focused").getBoundingClientRect();
-        const scrollableRect = queryOne(".o_command_palette_listbox").getBoundingClientRect();
+        const scrollableRect = queryOne(
+            ".o_command_palette_listbox"
+        ).getBoundingClientRect();
         return {
             top: elementRect.top === scrollableRect.top,
             bottom: elementRect.bottom === scrollableRect.bottom,
@@ -985,7 +1029,7 @@ test("keyboard navigation scroll", async () => {
             top: true,
             bottom: false,
         },
-        { message: "the focus is at the top border" }
+        {message: "the focus is at the top border"}
     );
 
     await press("arrowdown");
@@ -999,7 +1043,7 @@ test("keyboard navigation scroll", async () => {
             top: false,
             bottom: false,
         },
-        { message: "the focus does not reach a border" }
+        {message: "the focus does not reach a border"}
     );
 
     await press("arrowdown");
@@ -1013,7 +1057,7 @@ test("keyboard navigation scroll", async () => {
             top: false,
             bottom: true,
         },
-        { message: "the focus has reached the bottom border" }
+        {message: "the focus has reached the bottom border"}
     );
 
     await press("arrowdown");
@@ -1027,7 +1071,7 @@ test("keyboard navigation scroll", async () => {
             top: false,
             bottom: true,
         },
-        { message: "the focus is still at the bottom border" }
+        {message: "the focus is still at the bottom border"}
     );
 
     await press("arrowup");
@@ -1041,7 +1085,7 @@ test("keyboard navigation scroll", async () => {
             top: false,
             bottom: false,
         },
-        { message: "the focus does not reach a border" }
+        {message: "the focus does not reach a border"}
     );
 
     await press("arrowup");
@@ -1055,7 +1099,7 @@ test("keyboard navigation scroll", async () => {
             top: true,
             bottom: false,
         },
-        { message: "the focus has reached the top border" }
+        {message: "the focus has reached the top border"}
     );
 
     await press("arrowup");
@@ -1069,7 +1113,7 @@ test("keyboard navigation scroll", async () => {
             top: true,
             bottom: false,
         },
-        { message: "the focus is still at the top border" }
+        {message: "the focus is still at the top border"}
     );
 });
 
@@ -1085,7 +1129,9 @@ test("multi level command", async () => {
         {
             name: "Command1",
             action: () => ({
-                providers: [{ provide: () => [{ name: "Command lvl2", action: () => {} }] }],
+                providers: [
+                    {provide: () => [{name: "Command lvl2", action: () => {}}]},
+                ],
             }),
         },
     ];
@@ -1108,7 +1154,10 @@ test("multi level command", async () => {
     await edit("empty");
     await runAllTimers();
     expect(".o_command_palette_listbox_empty").toHaveText("Empty Default");
-    expect(".o_command_palette_search input").toHaveAttribute("placeholder", "placeholder test");
+    expect(".o_command_palette_search input").toHaveAttribute(
+        "placeholder",
+        "placeholder test"
+    );
     expect(".o_command_palette_footer").toHaveCount(1);
     expect(".o_command_palette_footer").toHaveText("My footer");
 
@@ -1122,11 +1171,14 @@ test("multi level command", async () => {
     expect(".o_command").toHaveCount(1);
     expect(queryAllTexts(".o_command")).toEqual(["Command lvl2"]);
 
-    // check that the configuration has been correctly cleaned
+    // Check that the configuration has been correctly cleaned
     await edit("empty");
     await runAllTimers();
     expect(".o_command_palette_listbox_empty").toHaveText("No result found");
-    expect(".o_command_palette_search input").toHaveAttribute("placeholder", "Search...");
+    expect(".o_command_palette_search input").toHaveAttribute(
+        "placeholder",
+        "Search..."
+    );
     expect(".o_command_palette_footer").toHaveCount(0);
 });
 
@@ -1281,7 +1333,7 @@ test("bold the searchValue on the commands", async () => {
     expect(".o_command").toHaveCount(5);
     expect(
         queryAll(".o_command").map((command) =>
-            queryAllTexts(".o_command_name .fw-bolder", { root: command })
+            queryAllTexts(".o_command_name .fw-bolder", {root: command})
         )
     ).toEqual([["Test"], ["test"], ["test"], ["Test"], ["TeSt", "Test", "TEST"]]);
 });
@@ -1323,7 +1375,7 @@ test("bold the searchValue on the commands with special char", async () => {
     expect(".o_command").toHaveCount(2);
     expect(
         queryAll(".o_command").map((command) =>
-            queryAllTexts(".o_command_name .fw-bolder", { root: command })
+            queryAllTexts(".o_command_name .fw-bolder", {root: command})
         )
     ).toEqual([[], ["a"]]);
 
@@ -1333,7 +1385,7 @@ test("bold the searchValue on the commands with special char", async () => {
     expect(".o_command").toHaveCount(2);
     expect(
         queryAll(".o_command").map((command) =>
-            queryAllTexts(".o_command_name .fw-bolder", { root: command })
+            queryAllTexts(".o_command_name .fw-bolder", {root: command})
         )
     ).toEqual([["&"], ["&"]]);
 });
@@ -1389,7 +1441,7 @@ test("remove namespace with backspace", async () => {
     await runAllTimers();
     expect(".o_command_palette .o_namespace").toHaveText("@");
 
-    // remove namespace "@" because the input is empty
+    // Remove namespace "@" because the input is empty
     await press("backspace");
     await animationFrame();
     expect(".o_command_palette .o_namespace").toHaveCount(0);
@@ -1411,7 +1463,7 @@ test("remove namespace with backspace", async () => {
 
     // Does not remove the namespace if the backspace is repeatedly applied.
     // You don't want to remove the namespace by pressing the "backspace" key
-    await press("backspace", { repeat: true });
+    await press("backspace", {repeat: true});
     expect(".o_command_palette .o_namespace").toHaveText("@");
 });
 
@@ -1423,7 +1475,7 @@ test("generate new session id when opened", async () => {
     await mountWithCleanup(MainComponentsContainer);
     const providers = [
         {
-            provide: (env, { sessionId }) => {
+            provide: (env, {sessionId}) => {
                 lastSessionId = sessionId;
                 return [];
             },
@@ -1475,7 +1527,7 @@ test("checks that href is correctly used", async () => {
             ],
         },
     ];
-    const config = { providers };
+    const config = {providers};
     getService("dialog").add(CommandPalette, {
         config,
     });
@@ -1489,7 +1541,10 @@ test("checks that href is correctly used", async () => {
     await edit("@");
     await runAllTimers();
     // Check that command has link inside it
-    expect(".o_command_palette .o_command:eq(0) a").toHaveAttribute("href", "https://www.odoo.com");
+    expect(".o_command_palette .o_command:eq(0) a").toHaveAttribute(
+        "href",
+        "https://www.odoo.com"
+    );
     // Check that we get url when doing ctrl+enter on a command having a link inside it
     await press("control+enter");
     await animationFrame();
@@ -1508,7 +1563,7 @@ test("searchValue must not change without edition", async () => {
     await mountWithCleanup(MainComponentsContainer);
     const providers = [
         {
-            provide: async (env, { searchValue }) => {
+            provide: async (env, {searchValue}) => {
                 if (searchValue === "abc") {
                     await provideDef;
                 }
@@ -1552,7 +1607,7 @@ test("display spinner while loading results from providers", async () => {
             providers: [
                 {
                     namespace: "?",
-                    provide: async (env, { searchValue }) => {
+                    provide: async (env, {searchValue}) => {
                         await provideDef;
                         return [];
                     },

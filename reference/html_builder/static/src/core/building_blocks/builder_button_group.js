@@ -1,19 +1,19 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 import {
     basicContainerBuilderComponentProps,
     useVisibilityObserver,
     useApplyVisibility,
     useSelectableComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderButtonGroup extends Component {
     static template = "html_builder.BuilderButtonGroup";
     static props = {
         ...basicContainerBuilderComponentProps,
-        slots: { type: Object, optional: true },
+        slots: {type: Object, optional: true},
     };
-    static components = { BuilderComponent };
+    static components = {BuilderComponent};
 
     setup() {
         useVisibilityObserver("root", useApplyVisibility("root"));

@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 from contextlib import contextmanager
 from unittest.mock import patch
 
-from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo import SUPERUSER_ID
 from odoo.http import request
 from odoo.tests.common import HttpCase
-from odoo import SUPERUSER_ID
+
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 @contextmanager
@@ -31,7 +31,7 @@ def mock_auth_method_outlook(login):
 
 class TestMailPluginControllerCommon(HttpCase):
     def setUp(self):
-        super(TestMailPluginControllerCommon, self).setUp()
+        super().setUp()
         self.user_test = mail_new_test_user(
             self.env,
             login="employee",

@@ -1,4 +1,4 @@
-import { FontSizeSelector } from "@html_editor/main/font/font_size_selector";
+import {FontSizeSelector} from "@html_editor/main/font/font_size_selector";
 
 export class BuilderFontSizeSelector extends FontSizeSelector {
     static template = "html_builder.FontSizeSelector";

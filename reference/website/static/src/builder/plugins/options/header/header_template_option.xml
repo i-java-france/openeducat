@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="website.HeaderTemplateOption">
         <BuilderRow label.translate="Template">
@@ -15,8 +15,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);' }" src="'/website/static/src/img/snippets_options/header_template_default.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);' }"
+                        src="'/website/static/src/img/snippets_options/header_template_default.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_hamburger_opt'"
@@ -30,8 +34,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);' }" src="'/website/static/src/img/snippets_options/header_template_hamburger.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);' }"
+                        src="'/website/static/src/img/snippets_options/header_template_hamburger.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_boxed_opt'"
@@ -45,8 +53,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style:' width: calc(100% - 0.5rem);' }" src="'/website/static/src/img/snippets_options/header_template_boxed.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style:' width: calc(100% - 0.5rem);' }"
+                        src="'/website/static/src/img/snippets_options/header_template_boxed.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_stretch_opt'"
@@ -60,8 +72,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);' }" src="'/website/static/src/img/snippets_options/header_template_stretch.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);' }"
+                        src="'/website/static/src/img/snippets_options/header_template_stretch.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_vertical_opt'"
@@ -75,8 +91,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_vertical.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_vertical.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_search_opt'"
@@ -90,8 +110,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_search.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_search.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_sales_one_opt'"
@@ -105,8 +129,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_sales_one.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_sales_one.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_sales_two_opt'"
@@ -120,8 +148,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_sales_two.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_sales_two.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_sales_three_opt'"
@@ -135,8 +167,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_sales_three.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_sales_three.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_sales_four_opt'"
@@ -150,8 +186,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_sales_four.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_sales_four.svg'"
+                    />
                 </BuilderSelectItem>
                 <BuilderSelectItem
                     id="'header_sidebar_opt'"
@@ -165,8 +205,12 @@
                                 checkVars: false,
                             }
                         }
-                    ]">
-                    <Img attrs="{ style: 'width: calc(100% - 0.5rem);'}" src="'/website/static/src/img/snippets_options/header_template_sidebar.svg'"/>
+                    ]"
+                >
+                    <Img
+                        attrs="{ style: 'width: calc(100% - 0.5rem);'}"
+                        src="'/website/static/src/img/snippets_options/header_template_sidebar.svg'"
+                    />
                 </BuilderSelectItem>
             </BuilderSelect>
         </BuilderRow>
@@ -182,8 +226,10 @@
                     gradientColor: 'menu-gradient',
                     combinationColor: 'menu',
                     nullValue: 'NULL',
-                }"/>
-            <BuilderColorPicker t-if="isActiveItem('header_sales_one_opt')"
+                }"
+            />
+            <BuilderColorPicker
+                t-if="isActiveItem('header_sales_one_opt')"
                 enabledTabs="['theme', 'custom', 'gradient']"
                 preview="false"
                 defaultColor="''"
@@ -193,8 +239,10 @@
                     gradientColor: 'menu-secondary-gradient',
                     combinationColor: 'header-sales_one',
                     nullValue: 'NULL',
-                }"/>
-            <BuilderColorPicker t-if="isActiveItem('header_sales_two_opt')"
+                }"
+            />
+            <BuilderColorPicker
+                t-if="isActiveItem('header_sales_two_opt')"
                 enabledTabs="['theme', 'custom', 'gradient']"
                 preview="false"
                 defaultColor="''"
@@ -204,8 +252,10 @@
                     gradientColor: 'menu-secondary-gradient',
                     combinationColor: 'header-sales_two',
                     nullValue: 'NULL',
-                }"/>
-            <BuilderColorPicker t-if="isActiveItem('header_sales_three_opt')"
+                }"
+            />
+            <BuilderColorPicker
+                t-if="isActiveItem('header_sales_three_opt')"
                 enabledTabs="['theme', 'custom', 'gradient']"
                 preview="false"
                 defaultColor="''"
@@ -215,8 +265,10 @@
                     gradientColor: 'menu-secondary-gradient',
                     combinationColor: 'header-sales_three',
                     nullValue: 'NULL',
-                }"/>
-            <BuilderColorPicker t-if="isActiveItem('header_sales_four_opt')"
+                }"
+            />
+            <BuilderColorPicker
+                t-if="isActiveItem('header_sales_four_opt')"
                 enabledTabs="['theme', 'custom', 'gradient']"
                 preview="false"
                 defaultColor="''"
@@ -226,45 +278,70 @@
                     gradientColor: 'menu-secondary-gradient',
                     combinationColor: 'header-sales_four',
                     nullValue: 'NULL',
-                }"/>
+                }"
+            />
         </BuilderRow>
 
-        <t t-set="noPreviewOptionsContentWidth" t-value="[
+        <t
+            t-set="noPreviewOptionsContentWidth"
+            t-value="[
             'header_search_opt',
             'header_sales_one_opt',
             'header_sales_two_opt',
             'header_sales_three_opt',
             'header_sales_four_opt',
-        ]"/>
-        <BuilderRow t-if="!isActiveItem('header_sidebar_opt')" label.translate="Content Width" level="1">
-            <BuilderButtonGroup applyTo="'#o_main_nav'"
-                    action="hasSomeOptions(noPreviewOptionsContentWidth) and 'websiteConfig' or 'previewableWebsiteConfig'">
+        ]"
+        />
+        <BuilderRow
+            t-if="!isActiveItem('header_sidebar_opt')"
+            label.translate="Content Width"
+            level="1"
+        >
+            <BuilderButtonGroup
+                applyTo="'#o_main_nav'"
+                action="hasSomeOptions(noPreviewOptionsContentWidth) and 'websiteConfig' or 'previewableWebsiteConfig'"
+            >
                 <BuilderButton
                     title.translate="Small"
                     iconImg="'/website/static/src/img/snippets_options/content_width_small.svg'"
-                    actionParam="{ views: ['website.header_width_small'], previewClass: `o_container_small`}"/>
+                    actionParam="{ views: ['website.header_width_small'], previewClass: `o_container_small`}"
+                />
                 <BuilderButton
                     title.translate="Regular"
                     iconImg="'/website/static/src/img/snippets_options/content_width_normal.svg'"
-                    actionParam="{ views: [], previewClass: `container`}"/>
+                    actionParam="{ views: [], previewClass: `container`}"
+                />
                 <BuilderButton
                     title.translate="Full"
                     iconImg="'/website/static/src/img/snippets_options/content_width_full.svg'"
-                    actionParam="{ views: ['website.header_width_full'], previewClass: `container-fluid`}"/>
+                    actionParam="{ views: ['website.header_width_full'], previewClass: `container-fluid`}"
+                />
             </BuilderButtonGroup>
         </BuilderRow>
 
-        <BuilderRow t-if="isActiveItem('header_sidebar_opt')" label.translate="Width" level="1">
+        <BuilderRow
+            t-if="isActiveItem('header_sidebar_opt')"
+            label.translate="Width"
+            level="1"
+        >
             <BuilderNumberInput
                 action="'customizeWebsiteVariable'"
                 actionParam="'sidebar-width'"
                 default="null"
                 unit="'px'"
-                saveUnit="'rem'"/>
+                saveUnit="'rem'"
+            />
         </BuilderRow>
 
-        <BuilderRow label.translate="Scroll Effect" t-if="!this.isActiveItem('header_sidebar_opt')" level="1">
-            <BuilderSelect action="'websiteConfig'" className="'o_scroll_effects_selector'">
+        <BuilderRow
+            label.translate="Scroll Effect"
+            t-if="!this.isActiveItem('header_sidebar_opt')"
+            level="1"
+        >
+            <BuilderSelect
+                action="'websiteConfig'"
+                className="'o_scroll_effects_selector'"
+            >
                 <BuilderSelectItem
                     id="'header_visibility_standard_opt'"
                     label.translate="Standard"
@@ -272,7 +349,10 @@
                     classAction="'o_header_standard'"
                     className="'o_we_img_animate'"
                 >
-                    <Img src="'/website/static/src/img/snippets_options/header_effect_standard.png'" attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_standard.gif';`}"/>
+                    <Img
+                        src="'/website/static/src/img/snippets_options/header_effect_standard.png'"
+                        attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_standard.gif';`}"
+                    />
                     <span>Standard</span>
                 </BuilderSelectItem>
                 <BuilderSelectItem
@@ -282,7 +362,10 @@
                     classAction="''"
                     className="'o_we_img_animate'"
                 >
-                    <Img src="'/website/static/src/img/snippets_options/header_effect_scroll.png'" attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_scroll.gif';`}"/>
+                    <Img
+                        src="'/website/static/src/img/snippets_options/header_effect_scroll.png'"
+                        attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_scroll.gif';`}"
+                    />
                     <span>Scroll</span>
                 </BuilderSelectItem>
                 <BuilderSelectItem
@@ -292,7 +375,10 @@
                     classAction="'o_header_fixed'"
                     className="'o_we_img_animate'"
                 >
-                    <Img src="'/website/static/src/img/snippets_options/header_effect_fixed.png'" attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_fixed.gif';`}"/>
+                    <Img
+                        src="'/website/static/src/img/snippets_options/header_effect_fixed.png'"
+                        attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_fixed.gif';`}"
+                    />
                     <span>Fixed</span>
                 </BuilderSelectItem>
                 <BuilderSelectItem
@@ -302,7 +388,10 @@
                     classAction="'o_header_disappears'"
                     className="'o_we_img_animate'"
                 >
-                    <Img src="'/website/static/src/img/snippets_options/header_effect_disappears.png'" attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_disappears.gif';`}"/>
+                    <Img
+                        src="'/website/static/src/img/snippets_options/header_effect_disappears.png'"
+                        attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_disappears.gif';`}"
+                    />
                     <span>Disappears</span>
                 </BuilderSelectItem>
                 <BuilderSelectItem
@@ -312,7 +401,10 @@
                     classAction="'o_header_fade_out'"
                     className="'o_we_img_animate'"
                 >
-                    <Img src="'/website/static/src/img/snippets_options/header_effect_fade_out.png'" attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_fade_out.gif';`}"/>
+                    <Img
+                        src="'/website/static/src/img/snippets_options/header_effect_fade_out.png'"
+                        attrs="{style:`--animate-src: '/website/static/src/img/snippets_options/header_effect_fade_out.gif';`}"
+                    />
                     <span>Fade Out</span>
                 </BuilderSelectItem>
             </BuilderSelect>

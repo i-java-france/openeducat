@@ -1,13 +1,16 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { selectionField, SelectionField } from "@web/views/fields/selection/selection_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {
+    selectionField,
+    SelectionField,
+} from "@web/views/fields/selection/selection_field";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class TimePeriodSelectionField extends SelectionField {
     static props = {
         ...SelectionField.props,
-        onChange: { type: Function, optional: true },
+        onChange: {type: Function, optional: true},
     };
 
     onChange(ev) {
@@ -22,9 +25,9 @@ export class TimePeriodSelectionField extends SelectionField {
         // the current month, the next month and the after next month for the
         // last year. For instance, if the current date is 12 January 2025,
         // the options will be "January 2024", "February 2024" and "March 2024".
-        const date1 = DateTime.now().set({ day: 1 }).minus({ years: 1 });
-        const date2 = date1.plus({ months: 1 });
-        const date3 = date1.plus({ months: 2 });
+        const date1 = DateTime.now().set({day: 1}).minus({years: 1});
+        const date2 = date1.plus({months: 1});
+        const date3 = date1.plus({months: 2});
         const options = [];
         for (const option of this.props.record.fields[this.props.name].selection) {
             if (option[0] === "last_year") {

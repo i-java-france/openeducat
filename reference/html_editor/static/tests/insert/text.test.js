@@ -1,10 +1,10 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { deleteBackward, insertText } from "../_helpers/user_actions";
-import { getContent } from "../_helpers/selection";
-import { execCommand } from "../_helpers/userCommands";
-import { press } from "@odoo/hoot-dom";
-import { unformat } from "../_helpers/format";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {deleteBackward, insertText} from "../_helpers/user_actions";
+import {getContent} from "../_helpers/selection";
+import {execCommand} from "../_helpers/userCommands";
+import {press} from "@odoo/hoot-dom";
+import {unformat} from "../_helpers/format";
 
 describe("collapsed selection", () => {
     test("should insert a char into an empty span without removing the zws", async () => {
@@ -29,7 +29,8 @@ describe("collapsed selection", () => {
 
     test("should insert a char into a data-oe-zws-empty-inline span removing the zws and data-oe-zws-empty-inline", async () => {
         await testEditor({
-            contentBefore: '<p>ab<span data-oe-zws-empty-inline="">[]\u200B</span>cd</p>',
+            contentBefore:
+                '<p>ab<span data-oe-zws-empty-inline="">[]\u200B</span>cd</p>',
             stepFunction: async (editor) => {
                 await insertText(editor, "x");
             },
@@ -39,7 +40,8 @@ describe("collapsed selection", () => {
 
     test("should insert a char into a data-oe-zws-empty-inline span surrounded by space without removing the zws and data-oe-zws-empty-inline", async () => {
         await testEditor({
-            contentBefore: '<p>ab<span data-oe-zws-empty-inline="">[]\u200B</span>cd</p>',
+            contentBefore:
+                '<p>ab<span data-oe-zws-empty-inline="">[]\u200B</span>cd</p>',
             stepFunction: async (editor) => {
                 await insertText(editor, "x");
             },
@@ -101,7 +103,8 @@ describe("not collapsed selection", () => {
             contentBefore:
                 '<h1><font style="background-color: red;">[abc]</font><br></h1><p>def</p>',
             stepFunction: async (editor) => await insertText(editor, "g"),
-            contentAfter: '<h1><font style="background-color: red;">g[]</font><br></h1><p>def</p>',
+            contentAfter:
+                '<h1><font style="background-color: red;">g[]</font><br></h1><p>def</p>',
         });
     });
 
@@ -113,7 +116,8 @@ describe("not collapsed selection", () => {
                 deleteBackward(editor);
                 await insertText(editor, "g");
             },
-            contentAfter: '<h1><font style="background-color: red;">g[]</font><br></h1><p>def</p>',
+            contentAfter:
+                '<h1><font style="background-color: red;">g[]</font><br></h1><p>def</p>',
         });
     });
 
@@ -128,7 +132,7 @@ describe("not collapsed selection", () => {
     });
 
     test("should replace text and be a undoable step", async () => {
-        const { editor, el } = await setupEditor("<p>[abc]def</p>");
+        const {editor, el} = await setupEditor("<p>[abc]def</p>");
         await insertText(editor, "x");
         expect(getContent(el)).toBe("<p>x[]def</p>");
         execCommand(editor, "historyUndo");

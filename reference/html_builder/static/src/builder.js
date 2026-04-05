@@ -1,4 +1,4 @@
-import { Editor } from "@html_editor/editor";
+import {Editor} from "@html_editor/editor";
 import {
     Component,
     EventBus,
@@ -12,19 +12,19 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { _t } from "@web/core/l10n/translation";
-import { SIZES, MEDIAS_BREAKPOINTS } from "@web/core/ui/ui_service";
-import { useService } from "@web/core/utils/hooks";
-import { addLoadingEffect as addButtonLoadingEffect } from "@web/core/utils/ui";
-import { InvisibleElementsPanel } from "@html_builder/sidebar/invisible_elements_panel";
-import { BlockTab } from "@html_builder/sidebar/block_tab";
-import { CustomizeTab } from "@html_builder/sidebar/customize_tab";
-import { useSnippets } from "@html_builder/snippets/snippet_service";
-import { setBuilderCSSVariables } from "@html_builder/utils/utils_css";
-import { withSequence } from "@html_editor/utils/resource";
-import { getHtmlStyle } from "@html_editor/utils/formatting";
-import { isVisible } from "@html_builder/utils/utils";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {_t} from "@web/core/l10n/translation";
+import {SIZES, MEDIAS_BREAKPOINTS} from "@web/core/ui/ui_service";
+import {useService} from "@web/core/utils/hooks";
+import {addLoadingEffect as addButtonLoadingEffect} from "@web/core/utils/ui";
+import {InvisibleElementsPanel} from "@html_builder/sidebar/invisible_elements_panel";
+import {BlockTab} from "@html_builder/sidebar/block_tab";
+import {CustomizeTab} from "@html_builder/sidebar/customize_tab";
+import {useSnippets} from "@html_builder/snippets/snippet_service";
+import {setBuilderCSSVariables} from "@html_builder/utils/utils_css";
+import {withSequence} from "@html_editor/utils/resource";
+import {getHtmlStyle} from "@html_editor/utils/formatting";
+import {isVisible} from "@html_builder/utils/utils";
 
 /**
  * @typedef {(() => void)[]} on_mobile_preview_clicked
@@ -34,24 +34,24 @@ import { isVisible } from "@html_builder/utils/utils";
 
 export class Builder extends Component {
     static template = "html_builder.Builder";
-    static components = { BlockTab, CustomizeTab };
+    static components = {BlockTab, CustomizeTab};
     static props = {
-        closeEditor: { type: Function, optional: true },
-        reloadEditor: { type: Function, optional: true },
-        onEditorLoad: { type: Function, optional: true },
-        installSnippetModule: { type: Function, optional: true },
-        snippetsName: { type: String },
-        toggleMobile: { type: Function },
-        overlayRef: { type: Function },
-        iframeLoaded: { type: Object },
-        isMobile: { type: Boolean },
-        Plugins: { type: Array, optional: true },
-        config: { type: Object, optional: true },
-        getThemeTab: { type: Function, optional: true },
-        editableSelector: { type: String },
-        themeTabDisplayName: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        getCustomizeTranslationTab: { type: Function, optional: true },
+        closeEditor: {type: Function, optional: true},
+        reloadEditor: {type: Function, optional: true},
+        onEditorLoad: {type: Function, optional: true},
+        installSnippetModule: {type: Function, optional: true},
+        snippetsName: {type: String},
+        toggleMobile: {type: Function},
+        overlayRef: {type: Function},
+        iframeLoaded: {type: Object},
+        isMobile: {type: Boolean},
+        Plugins: {type: Array, optional: true},
+        config: {type: Object, optional: true},
+        getThemeTab: {type: Function, optional: true},
+        editableSelector: {type: String},
+        themeTabDisplayName: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        getCustomizeTranslationTab: {type: Function, optional: true},
     };
     static defaultProps = {
         config: {},
@@ -98,13 +98,14 @@ export class Builder extends Component {
                 mobileBreakpoint,
                 isMobileView: (targetEl) => {
                     const mobileViewThreshold =
-                        MEDIAS_BREAKPOINTS[SIZES[mobileBreakpoint.toUpperCase()]].minWidth;
+                        MEDIAS_BREAKPOINTS[SIZES[mobileBreakpoint.toUpperCase()]]
+                            .minWidth;
                     const clientWidth =
                         targetEl.ownerDocument.defaultView?.frameElement?.clientWidth ||
                         targetEl.ownerDocument.documentElement.clientWidth;
                     return !!clientWidth && clientWidth < mobileViewThreshold;
                 },
-                onChange: ({ isPreviewing }) => {
+                onChange: ({isPreviewing}) => {
                     if (!isPreviewing) {
                         this.state.canUndo = this.editor.shared.history.canUndo();
                         this.state.canRedo = this.editor.shared.history.canRedo();
@@ -123,7 +124,8 @@ export class Builder extends Component {
                 closeEditor: async () => {
                     await this.props.closeEditor?.();
                 },
-                installSnippetModule: (snippet) => this.props.installSnippetModule?.(snippet),
+                installSnippetModule: (snippet) =>
+                    this.props.installSnippetModule?.(snippet),
                 /** @type {import("plugins").BuilderResources} */
                 resources: {
                     trigger_dom_updated: () => {
@@ -134,7 +136,8 @@ export class Builder extends Component {
                     }),
                     before_save_handlers: () => {
                         const snippetMenuEl = this.builder_sidebarRef.el;
-                        const saveButton = snippetMenuEl.querySelector("[data-action='save']");
+                        const saveButton =
+                            snippetMenuEl.querySelector("[data-action='save']");
                         delete this.removeLoadingEffect;
                         if (saveButton) {
                             // Add a loading effect on the save button and disable the other actions
@@ -142,7 +145,8 @@ export class Builder extends Component {
                                 snippetMenuEl.querySelector("[data-action='save']")
                             );
                         }
-                        this.actionButtonEls = snippetMenuEl.querySelectorAll("[data-action]");
+                        this.actionButtonEls =
+                            snippetMenuEl.querySelectorAll("[data-action]");
                         for (const actionButtonEl of this.actionButtonEls) {
                             actionButtonEl.disabled = true;
                         }
@@ -156,7 +160,9 @@ export class Builder extends Component {
                     on_snippet_dropped_handlers: () => {
                         this.activeTargetEl = null;
                     },
-                    change_current_options_containers_listeners: (currentOptionsContainers) => {
+                    change_current_options_containers_listeners: (
+                        currentOptionsContainers
+                    ) => {
                         this.state.currentOptionsContainers = currentOptionsContainers;
                         if (!currentOptionsContainers.length) {
                             // If there is no option, fallback on the current
@@ -178,7 +184,11 @@ export class Builder extends Component {
                     key: this.env.localOverlayContainerKey,
                     ref: this.props.overlayRef,
                 },
-                saveSnippet: (snippetEl, cleanForSaveHandlers, wrapWithSaveSnippetHandlers) =>
+                saveSnippet: (
+                    snippetEl,
+                    cleanForSaveHandlers,
+                    wrapWithSaveSnippetHandlers
+                ) =>
                     this.snippetModel.saveSnippet(
                         snippetEl,
                         cleanForSaveHandlers,
@@ -189,7 +199,10 @@ export class Builder extends Component {
                 allowCustomStyle: true,
                 allowTargetBlank: true,
                 dropImageAsAttachment: true,
-                getAnimateTextConfig: () => ({ editor: this.editor, editorBus: this.editorBus }),
+                getAnimateTextConfig: () => ({
+                    editor: this.editor,
+                    editorBus: this.editorBus,
+                }),
                 baseContainers: ["P"],
                 cleanEmptyStructuralContainers: false,
                 isEditableRTL: false,
@@ -250,9 +263,8 @@ export class Builder extends Component {
         onWillUpdateProps((nextProps) => {
             if (nextProps.isMobile !== this.props.isMobile) {
                 this.updateInvisibleEls(nextProps.isMobile);
-                this.invisibleElementsPanelState.invisibleSelector = this.getInvisibleSelector(
-                    nextProps.isMobile
-                );
+                this.invisibleElementsPanelState.invisibleSelector =
+                    this.getInvisibleSelector(nextProps.isMobile);
             }
         });
         // Fallback tab when no option is active.
@@ -262,8 +274,8 @@ export class Builder extends Component {
         this.lastTrigerUpdateId++;
         const currentTriggerId = this.lastTrigerUpdateId;
         const getStatePromises = [];
-        const { promise: updatePromise, resolve } = Promise.withResolvers();
-        this.editorBus.trigger("DOM_UPDATED", { getStatePromises, updatePromise });
+        const {promise: updatePromise, resolve} = Promise.withResolvers();
+        this.editorBus.trigger("DOM_UPDATED", {getStatePromises, updatePromise});
         await Promise.all(getStatePromises);
         const isLastTriggerId = this.lastTrigerUpdateId === currentTriggerId;
         resolve(isLastTriggerId);
@@ -322,12 +334,16 @@ export class Builder extends Component {
 
     onMobilePreviewClick() {
         this.props.toggleMobile();
-        this.editor.resources["on_mobile_preview_clicked"].forEach((handler) => handler());
+        this.editor.resources["on_mobile_preview_clicked"].forEach((handler) =>
+            handler()
+        );
     }
 
     updateInvisibleEls(isMobile = this.props.isMobile) {
         this.invisibleElementsPanelState.invisibleEls = [
-            ...this.editor.editable.querySelectorAll(this.getInvisibleSelector(isMobile)),
+            ...this.editor.editable.querySelectorAll(
+                this.getInvisibleSelector(isMobile)
+            ),
         ];
     }
 

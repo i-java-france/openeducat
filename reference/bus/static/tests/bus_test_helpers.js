@@ -1,5 +1,5 @@
-import { after, expect, registerDebugInfo } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
+import {after, expect, registerDebugInfo} from "@odoo/hoot";
+import {Deferred} from "@odoo/hoot-mock";
 import {
     MockServer,
     asyncStep,
@@ -10,16 +10,16 @@ import {
     patchWithCleanup,
     webModels,
 } from "@web/../tests/web_test_helpers";
-import { BusBus } from "./mock_server/mock_models/bus_bus";
-import { IrWebSocket } from "./mock_server/mock_models/ir_websocket";
-import { getWebSocketWorker, onWebsocketEvent } from "./mock_websocket";
+import {BusBus} from "./mock_server/mock_models/bus_bus";
+import {IrWebSocket} from "./mock_server/mock_models/ir_websocket";
+import {getWebSocketWorker, onWebsocketEvent} from "./mock_websocket";
 
-import { busService } from "@bus/services/bus_service";
-import { WEBSOCKET_CLOSE_CODES } from "@bus/workers/websocket_worker";
-import { on, runAllTimers, waitUntil } from "@odoo/hoot-dom";
-import { registry } from "@web/core/registry";
-import { deepEqual } from "@web/core/utils/objects";
-import { patch } from "@web/core/utils/patch";
+import {busService} from "@bus/services/bus_service";
+import {WEBSOCKET_CLOSE_CODES} from "@bus/workers/websocket_worker";
+import {on, runAllTimers, waitUntil} from "@odoo/hoot-dom";
+import {registry} from "@web/core/registry";
+import {deepEqual} from "@web/core/utils/objects";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * @typedef {[
@@ -49,7 +49,7 @@ patch(busService, {
         if (type in busMessageHandlers) {
             busMessageHandlers[type](env, id, payload);
         } else {
-            registerDebugInfo("bus message", { id, type, payload });
+            registerDebugInfo("bus message", {id, type, payload});
         }
 
         // Notifications
@@ -57,7 +57,7 @@ patch(busService, {
             busNotifications.set(env, []);
             after(() => busNotifications.clear());
         }
-        busNotifications.get(env).push({ id, type, payload });
+        busNotifications.get(env).push({id, type, payload});
     },
 });
 
@@ -81,9 +81,9 @@ const expectNotification = ([env, type, payload, options], crashOnFail) => {
         }received.`;
     if (found) {
         envNotifications.splice(envNotifications.indexOf(found), 1);
-        expect(payload).toEqual(payload, { message });
+        expect(payload).toEqual(payload, {message});
     } else if (!shouldHaveReceived) {
-        expect(shouldHaveReceived).toBe(false, { message });
+        expect(shouldHaveReceived).toBe(false, {message});
     } else {
         if (crashOnFail) {
             throw new Error(message(false, String.raw).join(" "));
@@ -126,7 +126,9 @@ viewsRegistry.category("activity").add(
     `
 );
 viewsRegistry.category("form").add("default", /* xml */ `<form />`);
-viewsRegistry.category("kanban").add("default", /* xml */ `<kanban><templates /></kanban>`);
+viewsRegistry
+    .category("kanban")
+    .add("default", /* xml */ `<kanban><templates /></kanban>`);
 viewsRegistry.category("list").add("default", /* xml */ `<list />`);
 viewsRegistry.category("search").add("default", /* xml */ `<search />`);
 
@@ -175,7 +177,7 @@ export function addBusServiceListeners(...listeners) {
 }
 
 export function defineBusModels() {
-    return defineModels({ ...webModels, ...busModels });
+    return defineModels({...webModels, ...busModels});
 }
 
 /**
@@ -194,7 +196,7 @@ export function waitUntilSubscribe() {
         const message = success
             ? "Websocket subscription received."
             : "Websocket subscription not received.";
-        expect(success).toBe(true, { message });
+        expect(success).toBe(true, {message});
         if (success) {
             def.resolve();
         } else {
@@ -214,8 +216,8 @@ export function waitUntilSubscribe() {
  * @param {"add" | "delete"} [options.operation="add"]
  * @returns {Promise<void>}
  */
-export async function waitForChannels(channels, { operation = "add" } = {}) {
-    const { env } = MockServer;
+export async function waitForChannels(channels, {operation = "add"} = {}) {
+    const {env} = MockServer;
     const def = new Deferred();
     let done = false;
     let failTimeout;
@@ -242,7 +244,7 @@ export async function waitForChannels(channels, { operation = "add" } = {}) {
                 : `Waited ${TIMEOUT}ms for ${channels} to be ${
                       operation === "add" ? `added` : `deleted`
                   }`;
-        expect(success).toBe(true, { message });
+        expect(success).toBe(true, {message});
         if (success) {
             def.resolve();
         } else {
@@ -281,7 +283,7 @@ export async function waitNotifications(...expectedNotifications) {
             }
             return remaining.size === 0;
         },
-        { timeout: TIMEOUT }
+        {timeout: TIMEOUT}
     )
         .then(() => busNotifications.clear())
         .catch(() => {
@@ -299,7 +301,7 @@ export async function waitNotifications(...expectedNotifications) {
  */
 export function stepWorkerActions(targetActions) {
     patchWithCleanup(getWebSocketWorker(), {
-        _onClientMessage(_, { action }) {
+        _onClientMessage(_, {action}) {
             if (targetActions.includes(action)) {
                 asyncStep(action);
             }
@@ -313,7 +315,7 @@ export function stepWorkerActions(targetActions) {
  * to simulate server being unavailable.
  */
 export function lockWebsocketConnect() {
-    return patchWithCleanup(window, { WebSocket: LockedWebSocket });
+    return patchWithCleanup(window, {WebSocket: LockedWebSocket});
 }
 
 /**
@@ -325,4 +327,4 @@ export async function startBusService(env) {
     await runAllTimers();
 }
 
-export const busModels = { BusBus, IrWebSocket };
+export const busModels = {BusBus, IrWebSocket};

@@ -26,11 +26,13 @@ div#total {
             border-bottom: $border-width solid $o-gray-900;
         }
 
-        th:first-child, td:first-child {
+        th:first-child,
+        td:first-child {
             padding-left: 0;
         }
 
-        th:last-child, td:last-child {
+        th:last-child,
+        td:last-child {
             padding-right: 0;
         }
     }
@@ -60,7 +62,8 @@ div#total {
     }
 
     .o_total_table:not(.o_ignore_layout_styling) {
-        & .o_total, & .o_price_total {
+        & .o_total,
+        & .o_price_total {
             border-top: $border-width solid $gray-200;
         }
     }
@@ -74,7 +77,8 @@ div#total {
         }
 
         tbody tr {
-            &:first-child, &.o_line_section {
+            &:first-child,
+            &.o_line_section {
                 border-top: $border-width solid $gray-400;
             }
 
@@ -83,7 +87,7 @@ div#total {
             }
 
             &:nth-child(odd) td {
-                background-color: rgba($gray-200, .5);
+                background-color: rgba($gray-200, 0.5);
             }
 
             &.is-subtotal {
@@ -98,18 +102,19 @@ div#total {
         }
 
         tr:nth-child(odd) td {
-            background-color: rgba($gray-200, .5);
+            background-color: rgba($gray-200, 0.5);
         }
     }
 }
 
-.o_table_boxed, .o_table_boxed-rounded {
+.o_table_boxed,
+.o_table_boxed-rounded {
     table:not(.o_ignore_layout_styling) {
         position: relative;
 
         &::before {
             // Avoid inner borders overlapping the table borders
-            content: '';
+            content: "";
             // Position absolute will place the pseudo-element
             // above the table. We need to prevent events on this pseudo-element
             // to avoid messing up eventual user interaction with the table itself (report editor)
@@ -147,11 +152,12 @@ div#total {
             }
 
             &.o_line_section td {
-                background-color: rgba($gray-200, .5);
+                background-color: rgba($gray-200, 0.5);
             }
 
-            td.o_price_total, .o_taxes td {
-                background-color: rgba($gray-200, .5);
+            td.o_price_total,
+            .o_taxes td {
+                background-color: rgba($gray-200, 0.5);
             }
         }
     }
@@ -180,7 +186,7 @@ div#total {
         }
 
         &.o_has_total_table::before {
-            border-radius: $border-radius-lg $border-radius-lg 0 $border-radius-lg ;
+            border-radius: $border-radius-lg $border-radius-lg 0 $border-radius-lg;
         }
 
         th:first-child {

@@ -1,10 +1,10 @@
-import { tourState } from "@web_tour/js/tour_state";
+import {tourState} from "@web_tour/js/tour_state";
 import * as hoot from "@odoo/hoot-dom";
-import { serializeChanges, serializeMutation } from "@web_tour/js/utils/tour_utils";
-import { TourHelpers } from "@web_tour/js/tour_automatic/tour_helpers";
-import { TourStep } from "@web_tour/js/tour_step";
-import { getTag } from "@web/core/utils/xml";
-import { MacroMutationObserver } from "@web/core/macro";
+import {serializeChanges, serializeMutation} from "@web_tour/js/utils/tour_utils";
+import {TourHelpers} from "@web_tour/js/tour_automatic/tour_helpers";
+import {TourStep} from "@web_tour/js/tour_step";
+import {getTag} from "@web/core/utils/xml";
+import {MacroMutationObserver} from "@web/core/macro";
 
 async function waitForMutations(target = document, timeout = 1000 / 16) {
     return new Promise((resolve) => {
@@ -106,7 +106,7 @@ export class TourStepAutomatic extends TourStep {
         }
         const actionHelper = new TourHelpers(this.element);
         if (typeof this.run === "function") {
-            return await this.run.call({ anchor: this.element }, actionHelper);
+            return await this.run.call({anchor: this.element}, actionHelper);
         } else if (typeof this.run === "string") {
             let lastResult = null;
             for (const todo of this.run.split("&&")) {
@@ -130,7 +130,7 @@ export class TourStepAutomatic extends TourStep {
             return true;
         }
         const visible = !/:(hidden|visible)\b/.test(this.trigger);
-        this.element = hoot.queryFirst(this.trigger, { visible });
+        this.element = hoot.queryFirst(this.trigger, {visible});
         if (this.element) {
             return !this.isUIBlocked &&
                 this.elementIsEnabled &&

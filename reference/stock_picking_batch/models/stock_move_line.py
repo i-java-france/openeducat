@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 
-from odoo import _, Command, fields, models
+from odoo import Command, _, fields, models
 from odoo.fields import Domain
 from odoo.tools.misc import OrderedSet
 
@@ -383,7 +383,7 @@ class StockMoveLine(models.Model):
                 'picking_type_id': picking_type.id,
                 'description': remaining_line._get_auto_wave_description(nearest_parent_locations[remaining_line]),
             } for remaining_line in remaining_lines])
-            for (line, wave) in zip(remaining_lines, remaining_waves):
+            for (line, wave) in zip(remaining_lines, remaining_waves, strict=False):
                 line._add_to_wave(wave)
 
     def _get_auto_wave_description(self, nearest_parent_location=False):

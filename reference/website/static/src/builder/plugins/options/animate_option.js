@@ -1,5 +1,5 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { isImageSupportedForStyle } from "@html_builder/plugins/image/replace_media_option";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {isImageSupportedForStyle} from "@html_builder/plugins/image/replace_media_option";
 
 /**
  * @typedef {((el: HTMLElement) => Promise<boolean>)[]} hover_effect_allowed_predicates
@@ -12,18 +12,19 @@ export class AnimateOption extends BaseOptionComponent {
     static exclude =
         "[data-oe-xpath], .o_not-animable, .s_col_no_resize.row > div, .s_col_no_resize, .s_website_form_submit";
     static props = {
-        dropdownClass: { type: String, optional: true, default: "o-hb-select-dropdown" },
-        requireAnimation: { type: Boolean, optional: true },
-        slots: { type: Object, optional: true },
+        dropdownClass: {type: String, optional: true, default: "o-hb-select-dropdown"},
+        requireAnimation: {type: Boolean, optional: true},
+        slots: {type: Object, optional: true},
     };
-    static defaultProps = { requireAnimation: false };
+    static defaultProps = {requireAnimation: false};
 
     setup() {
         super.setup();
         this.state = useDomState(async (editingElement) => {
             const hasAnimateClass = editingElement.classList.contains("o_animate");
-            this.getDirectionsItems = this.dependencies.animateOption.getDirectionsItems;
-            const { getEffectsItems } = this.dependencies.animateOption;
+            this.getDirectionsItems =
+                this.dependencies.animateOption.getDirectionsItems;
+            const {getEffectsItems} = this.dependencies.animateOption;
 
             return {
                 isOptionActive: this.isOptionActive(editingElement),
@@ -32,7 +33,10 @@ export class AnimateOption extends BaseOptionComponent {
                 isLimitedEffect: this.limitedEffects.some((className) =>
                     editingElement.classList.contains(className)
                 ),
-                showIntensity: this.shouldShowIntensity(editingElement, hasAnimateClass),
+                showIntensity: this.shouldShowIntensity(
+                    editingElement,
+                    hasAnimateClass
+                ),
                 effectItems: getEffectsItems(this.isActiveItem),
                 directionItems: this.getDirectionsItems(editingElement).filter(
                     (i) => !i.check || i.check(editingElement)
@@ -79,7 +83,9 @@ export class AnimateOption extends BaseOptionComponent {
         return hasDirection;
     }
     async canHaveHoverEffect(el) {
-        const proms = this.getResource("hover_effect_allowed_predicates").map((p) => p(el));
+        const proms = this.getResource("hover_effect_allowed_predicates").map((p) =>
+            p(el)
+        );
         const settledProms = await Promise.all(proms);
         return settledProms.length && settledProms.every(Boolean);
     }

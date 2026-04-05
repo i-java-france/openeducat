@@ -1,6 +1,7 @@
 import base64
-import pytz
 from datetime import date, datetime
+
+import pytz
 
 from odoo import _, api, exceptions, fields, models, modules
 
@@ -176,7 +177,7 @@ class CardCampaign(models.Model):
         return super().create([{
             **vals,
             'link_tracker_id': link_tracker_id,
-        } for vals, link_tracker_id in zip(vals_list, link_trackers.ids)])
+        } for vals, link_tracker_id in zip(vals_list, link_trackers.ids, strict=False)])
 
     def write(self, vals):
         link_tracker_vals = {}
@@ -194,7 +195,7 @@ class CardCampaign(models.Model):
 
         updated_model_campaigns = self.env['card.campaign'].browse([
             campaign.id for campaign, new_model, old_model
-            in zip(self, self.mapped('res_model'), original_models)
+            in zip(self, self.mapped('res_model'), original_models, strict=False)
             if new_model != old_model
         ])
         for campaign in updated_model_campaigns:

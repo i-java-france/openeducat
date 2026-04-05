@@ -2,8 +2,8 @@
 
 from serial.tools.list_ports import comports
 
-from odoo.addons.iot_drivers.tools.system import IS_WINDOWS
 from odoo.addons.iot_drivers.interface import Interface
+from odoo.addons.iot_drivers.tools.system import IS_WINDOWS
 
 
 class SerialInterface(Interface):

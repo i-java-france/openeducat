@@ -1,6 +1,6 @@
-from freezegun import freeze_time
-from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 from odoo.tests import tagged
+
+from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 
 
 @tagged("post_install_l10n", "post_install", "-at_install")

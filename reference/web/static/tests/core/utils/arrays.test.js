@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
 import {
     cartesian,
@@ -32,7 +32,7 @@ describe("groupby", () => {
     });
 
     test("groupBy (no criterion)", () => {
-        // criterion = default
+        // Criterion = default
         expect(groupBy(["a", "b", 1, true])).toEqual({
             1: [1],
             a: ["a"],
@@ -42,9 +42,9 @@ describe("groupby", () => {
     });
 
     test("groupBy by property", () => {
-        expect(groupBy([{ x: "a" }, { x: "a" }, { x: "b" }], "x")).toEqual({
-            a: [{ x: "a" }, { x: "a" }],
-            b: [{ x: "b" }],
+        expect(groupBy([{x: "a"}, {x: "a"}, {x: "b"}], "x")).toEqual({
+            a: [{x: "a"}, {x: "a"}],
+            b: [{x: "b"}],
         });
     });
 
@@ -86,16 +86,16 @@ describe("sortby", () => {
         expect(sortBy([2, 1, 5])).toEqual([1, 2, 5]);
         expect(sortBy([true, false, true])).toEqual([false, true, true]);
         expect(sortBy(["b", "a", "z"])).toEqual(["a", "b", "z"]);
-        expect(sortBy([{ x: true }, { x: false }, { x: true }])).toEqual([
-            { x: true },
-            { x: false },
-            { x: true },
+        expect(sortBy([{x: true}, {x: false}, {x: true}])).toEqual([
+            {x: true},
+            {x: false},
+            {x: true},
         ]);
-        expect(sortBy([{ x: 2 }, { x: 1 }, { x: 5 }])).toEqual([{ x: 2 }, { x: 1 }, { x: 5 }]);
-        expect(sortBy([{ x: "b" }, { x: "a" }, { x: "z" }])).toEqual([
-            { x: "b" },
-            { x: "a" },
-            { x: "z" },
+        expect(sortBy([{x: 2}, {x: 1}, {x: 5}])).toEqual([{x: 2}, {x: 1}, {x: 5}]);
+        expect(sortBy([{x: "b"}, {x: "a"}, {x: "z"}])).toEqual([
+            {x: "b"},
+            {x: "a"},
+            {x: "z"},
         ]);
     });
 
@@ -104,16 +104,16 @@ describe("sortby", () => {
         expect(sortBy([2, 1, 5], "x")).toEqual([2, 1, 5]);
         expect(sortBy([true, false, true], "x")).toEqual([true, false, true]);
         expect(sortBy(["b", "a", "z"], "x")).toEqual(["b", "a", "z"]);
-        expect(sortBy([{ x: true }, { x: false }, { x: true }], "x")).toEqual([
-            { x: false },
-            { x: true },
-            { x: true },
+        expect(sortBy([{x: true}, {x: false}, {x: true}], "x")).toEqual([
+            {x: false},
+            {x: true},
+            {x: true},
         ]);
-        expect(sortBy([{ x: 2 }, { x: 1 }, { x: 5 }], "x")).toEqual([{ x: 1 }, { x: 2 }, { x: 5 }]);
-        expect(sortBy([{ x: "b" }, { x: "a" }, { x: "z" }], "x")).toEqual([
-            { x: "a" },
-            { x: "b" },
-            { x: "z" },
+        expect(sortBy([{x: 2}, {x: 1}, {x: 5}], "x")).toEqual([{x: 1}, {x: 2}, {x: 5}]);
+        expect(sortBy([{x: "b"}, {x: "a"}, {x: "z"}], "x")).toEqual([
+            {x: "a"},
+            {x: "b"},
+            {x: "z"},
         ]);
     });
 
@@ -123,29 +123,29 @@ describe("sortby", () => {
         expect(sortBy([2, 1, 5], getter)).toEqual([2, 1, 5]);
         expect(sortBy([true, false, true], getter)).toEqual([true, false, true]);
         expect(sortBy(["b", "a", "z"], getter)).toEqual(["b", "a", "z"]);
-        expect(sortBy([{ x: true }, { x: false }, { x: true }], getter)).toEqual([
-            { x: false },
-            { x: true },
-            { x: true },
+        expect(sortBy([{x: true}, {x: false}, {x: true}], getter)).toEqual([
+            {x: false},
+            {x: true},
+            {x: true},
         ]);
-        expect(sortBy([{ x: 2 }, { x: 1 }, { x: 5 }], getter)).toEqual([
-            { x: 1 },
-            { x: 2 },
-            { x: 5 },
+        expect(sortBy([{x: 2}, {x: 1}, {x: 5}], getter)).toEqual([
+            {x: 1},
+            {x: 2},
+            {x: 5},
         ]);
-        expect(sortBy([{ x: "b" }, { x: "a" }, { x: "z" }], getter)).toEqual([
-            { x: "a" },
-            { x: "b" },
-            { x: "z" },
+        expect(sortBy([{x: "b"}, {x: "a"}, {x: "z"}], getter)).toEqual([
+            {x: "a"},
+            {x: "b"},
+            {x: "z"},
         ]);
     });
 
     test("sortBy descending order", () => {
         expect(sortBy([2, 1, 5], null, "desc")).toEqual([5, 2, 1]);
-        expect(sortBy([{ x: "b" }, { x: "a" }, { x: "z" }], "x", "desc")).toEqual([
-            { x: "z" },
-            { x: "b" },
-            { x: "a" },
+        expect(sortBy([{x: "b"}, {x: "a"}, {x: "z"}], "x", "desc")).toEqual([
+            {x: "z"},
+            {x: "b"},
+            {x: "a"},
         ]);
     });
 });
@@ -169,7 +169,9 @@ describe("cartesian", () => {
 
     test("cartesian product of a single array", () => {
         expect(cartesian([])).toEqual([]);
-        expect(cartesian([1])).toEqual([1], { message: "we don't want unecessary brackets" });
+        expect(cartesian([1])).toEqual([1], {
+            message: "we don't want unecessary brackets",
+        });
         expect(cartesian([1, 2])).toEqual([1, 2]);
         expect(cartesian([[1, 2]])).toEqual([[1, 2]], {
             message: "the internal structure of elements should be preserved",
@@ -184,7 +186,7 @@ describe("cartesian", () => {
                 [1, 2],
                 [3, [2]],
             ],
-            { message: "the internal structure of elements should be preserved" }
+            {message: "the internal structure of elements should be preserved"}
         );
     });
 
@@ -203,7 +205,7 @@ describe("cartesian", () => {
                 [4, 2],
                 [4, [3]],
             ],
-            { message: "the internal structure of elements should be preserved" }
+            {message: "the internal structure of elements should be preserved"}
         );
     });
 
@@ -211,14 +213,15 @@ describe("cartesian", () => {
         expect(cartesian([], [], [])).toEqual([]);
         expect(cartesian([1], [], [2, 5])).toEqual([]);
         expect(cartesian([1], [2], [3])).toEqual([[1, 2, 3]], {
-            message: "we should have no unecessary brackets, we want elements to be 'triples'",
+            message:
+                "we should have no unecessary brackets, we want elements to be 'triples'",
         });
         expect(cartesian([[1], 2], [3], [4])).toEqual(
             [
                 [[1], 3, 4],
                 [2, 3, 4],
             ],
-            { message: "the internal structure of elements should be preserved" }
+            {message: "the internal structure of elements should be preserved"}
         );
     });
 
@@ -236,7 +239,7 @@ describe("ensureArray", () => {
         expect(ensureArray([])).toEqual([]);
         expect(ensureArray()).toEqual([undefined]);
         expect(ensureArray(null)).toEqual([null]);
-        expect(ensureArray({ a: 1 })).toEqual([{ a: 1 }]);
+        expect(ensureArray({a: 1})).toEqual([{a: 1}]);
         expect(ensureArray("foo")).toEqual(["foo"]);
         expect(ensureArray([1, 2, "3"])).toEqual([1, 2, "3"]);
         expect(ensureArray(new Set([1, 2, 3]))).toEqual([1, 2, 3]);
@@ -264,9 +267,9 @@ describe("shallowEqual", () => {
     });
 
     test("arrays with non primitive values", () => {
-        const obj = { b: 3 };
+        const obj = {b: 3};
         expect(shallowEqual([obj], [obj])).toBe(true);
-        expect(shallowEqual([{ b: 3 }], [{ b: 3 }])).not.toBe(true);
+        expect(shallowEqual([{b: 3}], [{b: 3}])).not.toBe(true);
 
         const arr = ["x", "y", "z"];
         expect(shallowEqual([arr], [arr])).toBe(true);
@@ -291,7 +294,7 @@ describe("zip", () => {
 
 describe("zipWith", () => {
     test("zipWith", () => {
-        expect(zipWith([{ a: 1 }, { b: 2 }], ["a", "b"], (o, k) => o[k])).toEqual([1, 2]);
+        expect(zipWith([{a: 1}, {b: 2}], ["a", "b"], (o, k) => o[k])).toEqual([1, 2]);
     });
 });
 

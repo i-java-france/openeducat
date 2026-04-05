@@ -1,13 +1,13 @@
-import { MessagingMenu } from "@mail/core/public_web/messaging_menu";
-import { onExternalClick } from "@mail/utils/common/hooks";
-import { useEffect } from "@odoo/owl";
+import {MessagingMenu} from "@mail/core/public_web/messaging_menu";
+import {onExternalClick} from "@mail/utils/common/hooks";
+import {useEffect} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { MessagingMenuQuickSearch } from "@mail/core/web/messaging_menu_quick_search";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {MessagingMenuQuickSearch} from "@mail/core/web/messaging_menu_quick_search";
 
-Object.assign(MessagingMenu.components, { MessagingMenuQuickSearch });
+Object.assign(MessagingMenu.components, {MessagingMenuQuickSearch});
 
 patch(MessagingMenu.prototype, {
     setup() {
@@ -19,7 +19,7 @@ patch(MessagingMenu.prototype, {
             searchOpen: false,
         });
 
-        onExternalClick("selector", () => Object.assign(this.state, { adding: false }));
+        onExternalClick("selector", () => Object.assign(this.state, {adding: false}));
         useEffect(
             () => {
                 if (
@@ -65,8 +65,10 @@ patch(MessagingMenu.prototype, {
         return (
             this.threads.length > 0 ||
             this.visibleStandaloneMessages.length > 0 ||
-            (this.store.failures.length > 0 && this.store.discuss.activeTab === "notification") ||
-            (this.shouldAskPushPermission && this.store.discuss.activeTab === "notification") ||
+            (this.store.failures.length > 0 &&
+                this.store.discuss.activeTab === "notification") ||
+            (this.shouldAskPushPermission &&
+                this.store.discuss.activeTab === "notification") ||
             (this.canPromptToInstall && this.store.discuss.activeTab === "notification")
         );
     },
@@ -79,7 +81,9 @@ patch(MessagingMenu.prototype, {
             },
             iconSrc: this.store.odoobot.avatarUrl,
             partner: this.store.odoobot,
-            isShown: this.store.discuss.activeTab === "notification" && this.canPromptToInstall,
+            isShown:
+                this.store.discuss.activeTab === "notification" &&
+                this.canPromptToInstall,
         };
     },
     get notificationRequest() {
@@ -89,7 +93,8 @@ patch(MessagingMenu.prototype, {
             iconSrc: this.store.odoobot.avatarUrl,
             partner: this.store.odoobot,
             isShown:
-                this.store.discuss.activeTab === "notification" && this.shouldAskPushPermission,
+                this.store.discuss.activeTab === "notification" &&
+                this.shouldAskPushPermission,
         };
     },
     get _tabs() {
@@ -111,7 +116,8 @@ patch(MessagingMenu.prototype, {
                         ? "fa fa-inbox"
                         : "fa fa-star-o",
                 activeIcon:
-                    this.store.self.main_user_id?.notification_type !== "inbox" && "fa fa-star",
+                    this.store.self.main_user_id?.notification_type !== "inbox" &&
+                    "fa fa-star",
                 id:
                     this.store.self.main_user_id?.notification_type === "inbox"
                         ? "inbox"
@@ -128,7 +134,7 @@ patch(MessagingMenu.prototype, {
     /** @param {import("models").Failure} failure */
     onClickFailure(failure) {
         const threadIds = new Set(
-            failure.notifications.map(({ mail_message_id: message }) => message.thread.id)
+            failure.notifications.map(({mail_message_id: message}) => message.thread.id)
         );
         if (threadIds.size === 1) {
             const message = failure.notifications[0].mail_message_id;
@@ -139,7 +145,7 @@ patch(MessagingMenu.prototype, {
         }
     },
     async openThread(thread) {
-        thread.open({ focus: true, fromMessagingMenu: true });
+        thread.open({focus: true, fromMessagingMenu: true});
         this.dropdown.close();
     },
     openFailureView(failure) {
@@ -158,13 +164,18 @@ patch(MessagingMenu.prototype, {
             target: "current",
             res_model: failure.resModel,
             domain: [["message_has_error", "=", true]],
-            context: { create: false },
+            context: {create: false},
         });
     },
     cancelNotifications(failure) {
-        return this.env.services.orm.call(failure.resModel, "notify_cancel_by_type", [], {
-            notification_type: failure.type,
-        });
+        return this.env.services.orm.call(
+            failure.resModel,
+            "notify_cancel_by_type",
+            [],
+            {
+                notification_type: failure.type,
+            }
+        );
     },
     toggleSearch() {
         this.store.discuss.searchTerm = "";
@@ -173,7 +184,10 @@ patch(MessagingMenu.prototype, {
     get counter() {
         let value =
             this.store.globalCounter +
-            this.store.failures.reduce((acc, f) => acc + parseInt(f.notifications.length), 0);
+            this.store.failures.reduce(
+                (acc, f) => acc + parseInt(f.notifications.length),
+                0
+            );
         if (this.canPromptToInstall) {
             value++;
         }
@@ -190,8 +204,8 @@ patch(MessagingMenu.prototype, {
     },
     getFailureNotificationName(failure) {
         if (failure.type === "email") {
-            return _t("Email Failure: %(modelName)s", { modelName: failure.modelName });
+            return _t("Email Failure: %(modelName)s", {modelName: failure.modelName});
         }
-        return _t("Failure: %(modelName)s", { modelName: failure.modelName });
+        return _t("Failure: %(modelName)s", {modelName: failure.modelName});
     },
 });

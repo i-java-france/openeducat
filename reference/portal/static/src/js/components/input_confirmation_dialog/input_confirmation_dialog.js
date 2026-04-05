@@ -1,10 +1,10 @@
-import { useEffect } from "@odoo/owl";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {useEffect} from "@odoo/owl";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class InputConfirmationDialog extends ConfirmationDialog {
     static props = {
         ...ConfirmationDialog.props,
-        onInput: { type: Function, optional: true },
+        onInput: {type: Function, optional: true},
     };
     static template = "portal.InputConfirmationDialog";
 
@@ -13,7 +13,7 @@ export class InputConfirmationDialog extends ConfirmationDialog {
 
         const onInput = () => {
             if (this.props.onInput) {
-                this.props.onInput({ inputEl: this.inputEl });
+                this.props.onInput({inputEl: this.inputEl});
             }
         };
         const onKeydown = (ev) => {
@@ -40,6 +40,6 @@ export class InputConfirmationDialog extends ConfirmationDialog {
     }
 
     _confirm() {
-        this.execButton(() => this.props.confirm({ inputEl: this.inputEl }));
+        this.execButton(() => this.props.confirm({inputEl: this.inputEl}));
     }
 }

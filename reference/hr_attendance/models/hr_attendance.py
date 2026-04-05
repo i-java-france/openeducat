@@ -1,24 +1,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
-
 from calendar import monthrange
 from collections import defaultdict
-from datetime import datetime, timedelta, time
-from dateutil.rrule import rrule, DAILY
-from dateutil.relativedelta import relativedelta, MO, SU
+from datetime import datetime, time, timedelta
 from itertools import chain
-from operator import itemgetter
-from pytz import timezone, utc
 from random import randint
 
-from odoo import models, fields, api, exceptions, _
+import pytz
+from dateutil.relativedelta import MO, SU, relativedelta
+from dateutil.rrule import DAILY, rrule
+from pytz import timezone, utc
+
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import convert, format_duration, format_time, format_datetime
+from odoo.tools import convert, format_datetime, format_duration, format_time
 from odoo.tools.date_utils import sum_intervals
 from odoo.tools.intervals import Intervals
+
 
 def get_google_maps_url(latitude, longitude):
     return "https://maps.google.com?q=%s,%s" % (latitude, longitude)

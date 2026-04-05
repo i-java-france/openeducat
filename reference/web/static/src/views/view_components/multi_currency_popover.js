@@ -1,8 +1,8 @@
-import { Component, onWillStart, useExternalListener, useState } from "@odoo/owl";
-import { getCurrency, getCurrencyRates } from "@web/core/currency";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { formatMonetary } from "../fields/formatters";
+import {Component, onWillStart, useExternalListener, useState} from "@odoo/owl";
+import {getCurrency, getCurrencyRates} from "@web/core/currency";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {formatMonetary} from "../fields/formatters";
 
 export class MultiCurrencyPopover extends Component {
     static template = "web.MultiCurrencyPopover";
@@ -16,7 +16,7 @@ export class MultiCurrencyPopover extends Component {
     setup() {
         this.orm = useService("orm");
         this.defaultCurrency = user.activeCompany.currency_id;
-        this.state = useState({ rates: null });
+        this.state = useState({rates: null});
         onWillStart(async () => {
             this.state.rates = await getCurrencyRates();
         });
@@ -42,6 +42,6 @@ export class MultiCurrencyPopover extends Component {
     }
 
     formatedValue(value, currencyId) {
-        return formatMonetary(value, { currencyId });
+        return formatMonetary(value, {currencyId});
     }
 }

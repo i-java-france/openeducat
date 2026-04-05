@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -42,7 +41,7 @@ class StockStorageCategory(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", category.name)) for category, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", category.name)) for category, vals in zip(self, vals_list, strict=False)]
 
 
 class StockStorageCategoryCapacity(models.Model):

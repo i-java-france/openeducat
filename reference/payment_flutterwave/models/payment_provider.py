@@ -1,13 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.tools.urls import urljoin as url_join
 
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment.const import REPORT_REASONS_MAPPING
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_flutterwave import const
-
 
 _logger = get_payment_logger(__name__)
 

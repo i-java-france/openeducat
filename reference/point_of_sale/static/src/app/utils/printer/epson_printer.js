@@ -1,7 +1,7 @@
-import { BasePrinter } from "@point_of_sale/app/utils/printer/base_printer";
-import { _t } from "@web/core/l10n/translation";
-import { getTemplate } from "@web/core/templates";
-import { createElement, append, createTextNode } from "@web/core/utils/xml";
+import {BasePrinter} from "@point_of_sale/app/utils/printer/base_printer";
+import {_t} from "@web/core/l10n/translation";
+import {getTemplate} from "@web/core/templates";
+import {createElement, append, createTextNode} from "@web/core/utils/xml";
 
 const STATUS_ROLL_PAPER_HAS_RUN_OUT = 0x00080000;
 const STATUS_ROLL_PAPER_HAS_ALMOST_RUN_OUT = 0x00020000;
@@ -24,7 +24,7 @@ function ePOSPrint(children) {
  * Sends print request to ePos printer that is directly connected to the local network.
  */
 export class EpsonPrinter extends BasePrinter {
-    setup({ ip }) {
+    setup({ip}) {
         super.setup(...arguments);
 
         const protocol = odoo.use_lna ? "http:" : window.location.protocol;
@@ -49,7 +49,7 @@ export class EpsonPrinter extends BasePrinter {
                 },
                 [createTextNode(encodedData)]
             ),
-            createElement("cut", { type: "feed" }),
+            createElement("cut", {type: "feed"}),
         ]);
     }
 
@@ -101,7 +101,9 @@ export class EpsonPrinter extends BasePrinter {
      * We will use Floyd-Steinberg dithering.
      */
     canvasToRaster(canvas) {
-        const imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+        const imageData = canvas
+            .getContext("2d")
+            .getImageData(0, 0, canvas.width, canvas.height);
         const pixels = imageData.data;
         const width = imageData.width;
         const height = imageData.height;
@@ -116,7 +118,10 @@ export class EpsonPrinter extends BasePrinter {
                 // as R, G and B have different impacts on the darkness
                 // perception (e.g. pure blue is darker than red or green).
                 const idx = (y * width + x) * 4;
-                oldColor = pixels[idx] * 0.299 + pixels[idx + 1] * 0.587 + pixels[idx + 2] * 0.114;
+                oldColor =
+                    pixels[idx] * 0.299 +
+                    pixels[idx + 1] * 0.587 +
+                    pixels[idx + 2] * 0.114;
 
                 // Propagate the error from neighbor pixels
                 oldColor += errors[x][y];

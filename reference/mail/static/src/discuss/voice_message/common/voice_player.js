@@ -7,9 +7,9 @@ import {
     useRef,
     status,
 } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { useService } from "@web/core/utils/hooks";
-import { url } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {useService} from "@web/core/utils/hooks";
+import {url} from "@web/core/utils/urls";
 
 const WAVE_COLOR = "#7775";
 
@@ -161,7 +161,7 @@ export class VoicePlayer extends Component {
         this.voiceMessageService.activePlayer = this;
         this.state.repeat = false;
         this.createSource();
-        const { start, end } = this.seekToElapsed();
+        const {start, end} = this.seekToElapsed();
         this.scheduledPause = end;
         this.source.start(0, start);
         this.state.playing = true;
@@ -244,7 +244,7 @@ export class VoicePlayer extends Component {
         }
         this.startPosition = start;
         this.lastPlaytime = this.audioCtx.currentTime;
-        return { start, end };
+        return {start, end};
     }
 
     onProgress(progress) {
@@ -257,7 +257,7 @@ export class VoicePlayer extends Component {
 
     seekTo(progress) {
         if (this.state.playing) {
-            this.pause({ continue: true });
+            this.pause({continue: true});
         }
         this.state.repeat = false;
         const elapsedTime = progress * this.buffer.duration;
@@ -299,7 +299,7 @@ export class VoicePlayer extends Component {
         }
         const time = this.getCurrentTime();
         if (time >= this.scheduledPause && this.state.playing) {
-            this.pause({ end: true });
+            this.pause({end: true});
         } else if (this.state.playing) {
             this.state.visualTime = this.generateTime(Math.floor(time));
             const playedPercents = this.getCurrentTime() / this.buffer.duration;
@@ -312,14 +312,18 @@ export class VoicePlayer extends Component {
         const second = timeInSecond % 60;
         const minute = Math.floor(timeInSecond / 60);
         return (
-            (minute < 10 ? "0" + minute : minute) + " : " + (second < 10 ? "0" + second : second)
+            (minute < 10 ? "0" + minute : minute) +
+            " : " +
+            (second < 10 ? "0" + second : second)
         );
     }
 
     initElements() {
         this.wrapper = this.wrapperRef.el;
         this.progressWave = this.drawerRef.el;
-        this.progressColor = getComputedStyle(this.wrapper).getPropertyValue("--primary");
+        this.progressColor = getComputedStyle(this.wrapper).getPropertyValue(
+            "--primary"
+        );
         this.width = this.wrapper.clientWidth;
         this.height = this.wrapper.clientHeight;
 

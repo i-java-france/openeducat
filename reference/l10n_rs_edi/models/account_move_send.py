@@ -1,4 +1,4 @@
-from odoo import _, api, models, SUPERUSER_ID
+from odoo import SUPERUSER_ID, _, api, models
 
 
 class AccountMoveSend(models.AbstractModel):

@@ -1,10 +1,10 @@
 // @ts-check
 
-import { astToFormula, helpers } from "@odoo/o-spreadsheet";
-import { getFirstListFunction, getNumberOfListFormulas } from "./list_helpers";
-import { navigateTo } from "../actions/helpers";
+import {astToFormula, helpers} from "@odoo/o-spreadsheet";
+import {getFirstListFunction, getNumberOfListFormulas} from "./list_helpers";
+import {navigateTo} from "../actions/helpers";
 
-const { isMatrix } = helpers;
+const {isMatrix} = helpers;
 
 /**
  * @param {import("@odoo/o-spreadsheet").CellPosition} position
@@ -19,12 +19,12 @@ export const SEE_RECORD_LIST = async (position, env, newWindow) => {
     if (!cell || !cell.isFormula) {
         return;
     }
-    const { args } = getFirstListFunction(cell.compiledFormula.tokens);
+    const {args} = getFirstListFunction(cell.compiledFormula.tokens);
     const evaluatedArgs = args
         .map(astToFormula)
         .map((arg) => env.model.getters.evaluateFormula(sheetId, arg));
     const listId = env.model.getters.getListIdFromPosition(position);
-    const { model, actionXmlId, context } = env.model.getters.getListDefinition(listId);
+    const {model, actionXmlId, context} = env.model.getters.getListDefinition(listId);
     const dataSource = await env.model.getters.getAsyncListDataSource(listId);
     let index = evaluatedArgs[1];
     if (isMatrix(index)) {
@@ -51,7 +51,7 @@ export const SEE_RECORD_LIST = async (position, env, newWindow) => {
             views: [[false, "form"]],
             context,
         },
-        { viewType: "form", newWindow }
+        {viewType: "form", newWindow}
     );
 };
 

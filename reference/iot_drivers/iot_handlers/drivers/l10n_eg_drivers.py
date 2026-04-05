@@ -2,12 +2,13 @@
 import base64
 import json
 import logging
-import PyKCS11
 
+import PyKCS11
 from passlib.context import CryptContext
 
 from odoo import http
 from odoo.tools.config import config
+
 from odoo.addons.iot_drivers.tools import route
 from odoo.addons.iot_drivers.tools.system import IOT_SYSTEM, IS_RPI, IS_WINDOWS
 

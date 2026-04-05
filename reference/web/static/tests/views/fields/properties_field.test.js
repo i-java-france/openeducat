@@ -1,9 +1,9 @@
-import { PropertiesField } from "@web/views/fields/properties/properties_field";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { WebClient } from "@web/webclient/webclient";
+import {PropertiesField} from "@web/views/fields/properties/properties_field";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {WebClient} from "@web/webclient/webclient";
 
-import { expect, getFixture, test } from "@odoo/hoot";
+import {expect, getFixture, test} from "@odoo/hoot";
 import {
     click,
     edit,
@@ -15,8 +15,11 @@ import {
     queryFirst,
     waitFor,
 } from "@odoo/hoot-dom";
-import { animationFrame, mockDate, runAllTimers } from "@odoo/hoot-mock";
-import { editTime, getPickerCell } from "@web/../tests/core/datetime/datetime_test_helpers";
+import {animationFrame, mockDate, runAllTimers} from "@odoo/hoot-mock";
+import {
+    editTime,
+    getPickerCell,
+} from "@web/../tests/core/datetime/datetime_test_helpers";
 import {
     clickCancel,
     clickSave,
@@ -56,7 +59,7 @@ async function changeType(propertyType) {
         "tags",
         "many2one",
         "many2many",
-        "separator"
+        "separator",
     ];
     const propertyTypeIndex = TYPES.indexOf(propertyType);
     await click(".o_field_property_definition_type input");
@@ -73,7 +76,7 @@ async function changeType(propertyType) {
  * @param {boolean[]} propertySpecs
  */
 async function makePropertiesGroupView(propertySpecs) {
-    // mock random function to have predictable auto generated properties names
+    // Mock random function to have predictable auto generated properties names
     let counter = 1;
     patchWithCleanup(PropertiesField.prototype, {
         generatePropertyName: (propertyType) => {
@@ -85,7 +88,7 @@ async function makePropertiesGroupView(propertySpecs) {
 
     onRpc("has_access", () => true);
 
-    const { properties } = Partner._records[1];
+    const {properties} = Partner._records[1];
     const definitions = propertySpecs.map((isSeparator, i) => {
         const property = {
             name: `property_${i + 1}`,
@@ -116,11 +119,13 @@ async function makePropertiesGroupView(propertySpecs) {
 }
 
 async function toggleSeparator(separatorName, isSeparator) {
-    await click(`[property-name="${separatorName}"] > * > .o_field_property_open_popover`);
+    await click(
+        `[property-name="${separatorName}"] > * > .o_field_property_open_popover`
+    );
     await animationFrame();
     await changeType(isSeparator ? "separator" : "char");
     if (isSeparator) {
-        // set unfold by default when switching to a separator
+        // Set unfold by default when switching to a separator
         await click(`.o_field_property_definition_fold .o_form_label:eq(0)`);
     }
     await closePopover();
@@ -130,13 +135,12 @@ function getGroups() {
     const groups = queryAll(".o_field_properties .row:first-child .o_property_group");
     return groups.map((group) => [
         [
-            queryFirst(".o_field_property_group_label", { root: group })?.innerText || "",
+            queryFirst(".o_field_property_group_label", {root: group})?.innerText || "",
             group.getAttribute("property-name"),
         ],
-        ...queryAll("[property-name]:not(.o_property_folded)", { root: group }).map((property) => [
-            property.innerText,
-            property.getAttribute("property-name"),
-        ]),
+        ...queryAll("[property-name]:not(.o_property_folded)", {root: group}).map(
+            (property) => [property.innerText, property.getAttribute("property-name")]
+        ),
     ]);
 }
 
@@ -198,7 +202,7 @@ class Partner extends models.Model {
 
 class ResCompany extends models.Model {
     _name = "res.company";
-    name = fields.Char({ string: "Name" });
+    name = fields.Char({string: "Name"});
     definitions = fields.PropertiesDefinition();
     _records = [
         {
@@ -243,7 +247,7 @@ class ResCompany extends models.Model {
 class User extends models.Model {
     _name = "res.users";
 
-    name = fields.Char({ string: "Name" });
+    name = fields.Char({string: "Name"});
 
     _records = [
         {
@@ -269,13 +273,11 @@ class ResCurrency extends models.Model {
     name = fields.Char();
     symbol = fields.Char();
 
-    _records = Object.entries(serverState.currencies).map(
-        ([id, { name, symbol }]) => ({
-            id: Number(id) + 1,
-            name,
-            symbol,
-        })
-    );
+    _records = Object.entries(serverState.currencies).map(([id, {name, symbol}]) => ({
+        id: Number(id) + 1,
+        name,
+        symbol,
+    }));
 }
 
 defineModels([Partner, ResCompany, User, ResCurrency]);
@@ -310,19 +312,23 @@ test("properties: no access to parent", async () => {
         },
     });
 
-    expect(".o_field_properties").toHaveCount(1, { message: "The field must be in the view" });
+    expect(".o_field_properties").toHaveCount(1, {
+        message: "The field must be in the view",
+    });
 
     await toggleActionMenu();
     expect(".o-dropdown--menu span:contains(Edit Properties)").toHaveCount(1, {
         message: "The 'Edit Properties' btn should be in the cog menu",
     });
     await toggleMenuItem("Edit Properties"); // Start the edition mode
-    expect(".o_field_properties:first-child .o_field_property_open_popover").toHaveCount(0, {
+    expect(
+        ".o_field_properties:first-child .o_field_property_open_popover"
+    ).toHaveCount(0, {
         message: "The edit definition button must not be in the view",
     });
-    expect(".o_field_properties:first-child .o_property_field_value input:first").toHaveValue(
-        "char value"
-    );
+    expect(
+        ".o_field_properties:first-child .o_property_field_value input:first"
+    ).toHaveValue("char value");
 });
 
 /**
@@ -348,7 +354,9 @@ test("properties: access to parent", async () => {
         actionMenus: {},
     });
 
-    expect(".o_field_properties").toHaveCount(1, { message: "The field must be in the view" });
+    expect(".o_field_properties").toHaveCount(1, {
+        message: "The field must be in the view",
+    });
 
     await toggleActionMenu();
     expect(".o-dropdown--menu span:contains(Edit Properties)").toHaveCount(1, {
@@ -356,13 +364,15 @@ test("properties: access to parent", async () => {
     });
     await toggleMenuItem("Edit Properties"); // Start the edition mode
 
-    expect(".o_field_properties:first-child .o_field_property_open_popover").not.toBeEmpty({
+    expect(
+        ".o_field_properties:first-child .o_field_property_open_popover"
+    ).not.toBeEmpty({
         message: "The edit definition button must be in the view",
     });
 
-    expect(".o_field_properties:first-child .o_property_field_value input:first").toHaveValue(
-        "char value"
-    );
+    expect(
+        ".o_field_properties:first-child .o_property_field_value input:first"
+    ).toHaveValue("char value");
 
     // Open the definition popover
     await click(
@@ -380,10 +390,9 @@ test("properties: access to parent", async () => {
     // Change the property type to "Date & Time"
     await contains(".o_field_property_definition_header").edit("My Datetime");
     await changeType("datetime");
-    expect(".o_property_field_popover .o_field_property_definition_type input").toHaveValue(
-        "Date & Time",
-        { message: "Should have changed the property type" }
-    );
+    expect(
+        ".o_property_field_popover .o_field_property_definition_type input"
+    ).toHaveValue("Date & Time", {message: "Should have changed the property type"});
 
     // Choosing a date in the date picker should not close the definition popover
     await click(".o_field_property_definition_value .o_datetime_input");
@@ -411,10 +420,11 @@ test("properties: access to parent", async () => {
     // Discard the form view and check that the properties take its old values
     await clickCancel();
     await animationFrame();
-    expect(".o_property_field:first-child .o_property_field_value input:first").toHaveValue(
-        "char value",
-        { message: "Discarding the form view should reset the old values" }
-    );
+    expect(
+        ".o_property_field:first-child .o_property_field_value input:first"
+    ).toHaveValue("char value", {
+        message: "Discarding the form view should reset the old values",
+    });
 });
 
 /**
@@ -521,20 +531,22 @@ test("properties: selection", async () => {
     expect(
         ".o_property_field_popover .o_field_property_selection_option:nth-child(3) .fa-star"
     ).toHaveCount(1);
-    expect(".o_property_field_popover .o_field_property_definition_type input").toHaveValue(
-        "Selection"
-    );
+    expect(
+        ".o_property_field_popover .o_field_property_definition_type input"
+    ).toHaveValue("Selection");
 
     const getOptions = () =>
         queryAll(".o_property_field_popover .o_field_property_selection_option");
     const getOptionsValues = () =>
-        queryAllValues(".o_property_field_popover .o_field_property_selection_option input");
+        queryAllValues(
+            ".o_property_field_popover .o_field_property_selection_option input"
+        );
 
     // Create a new selection option
     await click(".o_field_property_selection .fa-plus");
     await animationFrame();
-    expect(getOptions()).toHaveCount(4, { message: "Should have added the new option" });
-    expect(queryFirst("input", { root: getOptions()[3] })).toBeFocused({
+    expect(getOptions()).toHaveCount(4, {message: "Should have added the new option"});
+    expect(queryFirst("input", {root: getOptions()[3]})).toBeFocused({
         message: "Should focus the new option",
     });
     await edit("New option");
@@ -542,8 +554,10 @@ test("properties: selection", async () => {
     // Press enter to add a second new option
     await press("Enter");
     await runAllTimers();
-    expect(getOptions()).toHaveCount(5, { message: "Should have added the new option on Enter" });
-    expect(queryFirst("input", { root: getOptions()[4] })).toBeFocused({
+    expect(getOptions()).toHaveCount(5, {
+        message: "Should have added the new option on Enter",
+    });
+    expect(queryFirst("input", {root: getOptions()[4]})).toBeFocused({
         message: "Should focus the new option",
     });
     // Up arrow should give the focus to the previous option
@@ -554,7 +568,7 @@ test("properties: selection", async () => {
     expect(getOptions()).toHaveCount(4, {
         message: "Should have remove the option because it is empty and lost focus",
     });
-    expect(queryFirst("input", { root: getOptions()[3] })).toBeFocused({
+    expect(queryFirst("input", {root: getOptions()[3]})).toBeFocused({
         message: "Should focus the previous option",
     });
 
@@ -563,8 +577,8 @@ test("properties: selection", async () => {
     await animationFrame();
     await runAllTimers();
 
-    expect(getOptions()).toHaveCount(4, { message: "Should not remove any options" });
-    expect(queryFirst("input", { root: getOptions()[2] })).toBeFocused();
+    expect(getOptions()).toHaveCount(4, {message: "Should not remove any options"});
+    expect(queryFirst("input", {root: getOptions()[2]})).toBeFocused();
 
     // Remove the second option
     await click(".o_field_property_selection_option:nth-child(2) .fa-trash-o");
@@ -574,7 +588,7 @@ test("properties: selection", async () => {
     });
     await click(".o_field_property_selection_option:nth-child(2) input");
     await animationFrame();
-    // test that pressing 'Enter' inserts a new option after the one currently focused (and not last).
+    // Test that pressing 'Enter' inserts a new option after the one currently focused (and not last).
     await press("Enter");
     await animationFrame();
     await click(".o_field_property_selection_option:nth-child(3) input");
@@ -592,17 +606,23 @@ test("properties: selection", async () => {
             }) .o_field_property_selection_drag`
         );
 
-    await contains(getOptionDraggableElement(0)).dragAndDrop(getOptionDraggableElement(2));
+    await contains(getOptionDraggableElement(0)).dragAndDrop(
+        getOptionDraggableElement(2)
+    );
     expect(getOptionsValues()).toEqual(["C", "New option 2", "A", "New option"]);
 
-    await contains(getOptionDraggableElement(3)).dragAndDrop(getOptionDraggableElement(0));
+    await contains(getOptionDraggableElement(3)).dragAndDrop(
+        getOptionDraggableElement(0)
+    );
     expect(getOptionsValues()).toEqual(["New option", "C", "New option 2", "A"]);
 
-    // create an empty option and move it
+    // Create an empty option and move it
     await click(".o_field_property_selection > div > .btn-link");
     await animationFrame();
     expect(getOptionsValues()).toEqual(["New option", "C", "New option 2", "A", ""]);
-    await contains(getOptionDraggableElement(4)).dragAndDrop(getOptionDraggableElement(1));
+    await contains(getOptionDraggableElement(4)).dragAndDrop(
+        getOptionDraggableElement(1)
+    );
     expect(getOptionsValues()).toEqual(["New option", "", "C", "New option 2", "A"]);
 });
 
@@ -640,23 +660,32 @@ test("properties: float and integer", async () => {
     await closePopover();
 
     const editValue = async (newValue, expected, message) => {
-        await contains(".o_property_field:nth-child(2) .o_field_property_input").edit(newValue);
-        // click away
+        await contains(".o_property_field:nth-child(2) .o_field_property_input").edit(
+            newValue
+        );
+        // Click away
         await click(".o_form_sheet_bg");
         await animationFrame();
-        expect(".o_property_field:nth-child(2) .o_field_property_input").toHaveValue(expected, {
-            message,
-        });
+        expect(".o_property_field:nth-child(2) .o_field_property_input").toHaveValue(
+            expected,
+            {
+                message,
+            }
+        );
     };
 
     await editValue("0", "0.00");
     await editValue("2", "2.00");
     await editValue("2.11", "2.11");
     await editValue("2.1234567", "2.12", "Decimal precision is 2");
-    await editValue("azerty", "0.00", "Wrong float value should be interpreted as 0.00");
+    await editValue(
+        "azerty",
+        "0.00",
+        "Wrong float value should be interpreted as 0.00"
+    );
     await editValue("1,2,3,4,5,6.1,2,3,5", "123,456.12");
 
-    // change type to integer
+    // Change type to integer
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await animationFrame();
     await changeType("integer");
@@ -741,7 +770,9 @@ test("properties: move properties", async () => {
         actionMenus: {},
     });
 
-    expect(".o_field_properties").toHaveCount(1, { message: "The field must be in the view" });
+    expect(".o_field_properties").toHaveCount(1, {
+        message: "The field must be in the view",
+    });
 
     await toggleActionMenu();
     await toggleMenuItem("Edit Properties"); // Start the edition mode
@@ -750,18 +781,23 @@ test("properties: move properties", async () => {
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await waitFor(".o_property_field_popover");
     const popover = queryFirst(".o_property_field_popover");
-    expect(popover).toHaveCount(1, { message: "Should have opened the definition popover" });
+    expect(popover).toHaveCount(1, {
+        message: "Should have opened the definition popover",
+    });
     // Move the property up
-    await contains(queryFirst(".oi-chevron-up", { root: popover })).click();
+    await contains(queryFirst(".oi-chevron-up", {root: popover})).click();
     expect(queryAllTexts(".o_field_properties .o_field_property_label")).toEqual([
         "My Selection",
         "My Char",
         "My Char 3",
         "My Char 4",
     ]);
-    expect(".o_property_field:nth-child(1) .o_property_field_highlight").toHaveCount(1, {
-        message: "Should highlight the moved property",
-    });
+    expect(".o_property_field:nth-child(1) .o_property_field_highlight").toHaveCount(
+        1,
+        {
+            message: "Should highlight the moved property",
+        }
+    );
 
     // Move the property up again, should have no effect
     await click(popover, ".oi-chevron-up");
@@ -772,7 +808,7 @@ test("properties: move properties", async () => {
         "My Char 4",
     ]);
     // Move the property down
-    await contains(queryFirst(".oi-chevron-down", { root: popover })).click();
+    await contains(queryFirst(".oi-chevron-down", {root: popover})).click();
 
     expect(queryAllTexts(".o_field_properties .o_field_property_label")).toEqual([
         "My Char",
@@ -782,8 +818,8 @@ test("properties: move properties", async () => {
     ]);
 
     // Move the property at the bottom
-    await contains(queryFirst(".oi-chevron-down", { root: popover })).click();
-    await contains(queryFirst(".oi-chevron-down", { root: popover })).click();
+    await contains(queryFirst(".oi-chevron-down", {root: popover})).click();
+    await contains(queryFirst(".oi-chevron-down", {root: popover})).click();
     expect(queryAllTexts(".o_field_properties .o_field_property_label")).toEqual([
         "My Char",
         "My Char 3",
@@ -792,9 +828,12 @@ test("properties: move properties", async () => {
     ]);
 
     await closePopover();
-    expect(".o_property_field:nth-child(2) .o_property_field_highlight").toHaveCount(0, {
-        message: "Should have removed the highlight",
-    });
+    expect(".o_property_field:nth-child(2) .o_property_field_highlight").toHaveCount(
+        0,
+        {
+            message: "Should have removed the highlight",
+        }
+    );
 });
 
 /**
@@ -836,7 +875,8 @@ test("properties: tags", async () => {
     await changeType("tags");
 
     // Create 3 tags
-    const tagsInputSelector = ".o_property_field_popover .o_field_property_dropdown_menu input";
+    const tagsInputSelector =
+        ".o_property_field_popover .o_field_property_dropdown_menu input";
     await createNewTag(tagsInputSelector, "A");
     await createNewTag(tagsInputSelector, "B");
     await createNewTag(tagsInputSelector, "C");
@@ -848,7 +888,8 @@ test("properties: tags", async () => {
     await click(".o_property_field_value .o_input_dropdown input");
     await animationFrame();
     // Check that he newly created tags are available
-    const dropdownItemsSelector = ".o_property_field_value .o_input_dropdown .dropdown-item";
+    const dropdownItemsSelector =
+        ".o_property_field_value .o_input_dropdown .dropdown-item";
     expect(queryAllTexts(dropdownItemsSelector)).toEqual(["A", "B", "C"], {
         message: "Should be able to selected the created tags",
     });
@@ -867,11 +908,15 @@ test("properties: tags", async () => {
     await animationFrame();
 
     expect(queryAllTexts(dropdownItemsSelector)).toEqual(["A", "C"], {
-        message: "The tag B is already selected and should not be visible in the dropdown",
+        message:
+            "The tag B is already selected and should not be visible in the dropdown",
     });
 
     // Create a new tag from the property value component
-    await createNewTag(".o_property_field_value .o_field_property_dropdown_menu input", "D");
+    await createNewTag(
+        ".o_property_field_value .o_field_property_dropdown_menu input",
+        "D"
+    );
     expect(queryAllTexts(".o_property_field_value .o_tag")).toEqual(["B", "D"], {
         message: "Should have created and selected the tag D",
     });
@@ -880,22 +925,28 @@ test("properties: tags", async () => {
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await animationFrame();
     const popover = queryFirst(".o_property_field_popover");
-    expect(queryAllTexts(".o_tag", { root: popover })).toEqual(["A", "B", "C", "D"]);
+    expect(queryAllTexts(".o_tag", {root: popover})).toEqual(["A", "B", "C", "D"]);
 
     // Change the tag color
-    await click(".o_tag:nth-child(2)", { root: popover });
+    await click(".o_tag:nth-child(2)", {root: popover});
     await animationFrame();
     await click(".o_tag_popover .o_colorlist_item_color_11");
     await animationFrame();
-    expect(queryFirst(".o_tag:nth-child(2)", { root: popover })).toHaveClass("o_tag_color_11", {
-        message: "Should have changed the tag color",
-    });
+    expect(queryFirst(".o_tag:nth-child(2)", {root: popover})).toHaveClass(
+        "o_tag_color_11",
+        {
+            message: "Should have changed the tag color",
+        }
+    );
 
     // Check that the new B color has been propagated in the form view
     await closePopover();
-    expect(queryFirst(".o_property_field_value .o_tag:first-child")).toHaveClass("o_tag_color_11", {
-        message: "Should have changed the tag color",
-    });
+    expect(queryFirst(".o_property_field_value .o_tag:first-child")).toHaveClass(
+        "o_tag_color_11",
+        {
+            message: "Should have changed the tag color",
+        }
+    );
 
     // Open the popover and remove B from the definition
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
@@ -920,13 +971,13 @@ test("properties: tags", async () => {
  */
 test.tags("desktop");
 test("properties: many2one", async () => {
-    onRpc(({ method, model, args }) => {
+    onRpc(({method, model, args}) => {
         if (method === "has_access") {
             return true;
         } else if (method === "get_available_models" && model === "ir.model") {
             return [
-                { model: "res.partner", display_name: "Partner" },
-                { model: "res.users", display_name: "User" },
+                {model: "res.partner", display_name: "Partner"},
+                {model: "res.users", display_name: "User"},
             ];
         } else if (method === "name_search" && model === "res.users") {
             return [
@@ -940,8 +991,8 @@ test("properties: many2one", async () => {
             return [1234, "Created:" + args[0]];
         } else if (method === "fields_get" && model === "res.users") {
             return {
-                name: { searchable: true, string: "Name", type: "char" },
-                login: { searchable: true, string: "Name", type: "char" },
+                name: {searchable: true, string: "Name", type: "char"},
+                login: {searchable: true, string: "Name", type: "char"},
             };
         } else if (method === "search_count" && model === "res.users") {
             return 5;
@@ -974,22 +1025,26 @@ test("properties: many2one", async () => {
     await changeType("many2one");
 
     // Choose the "User" model
-    await click(".o_field_property_definition_model input", { root: popover });
+    await click(".o_field_property_definition_model input", {root: popover});
     await animationFrame();
     expect(queryAllTexts(".o_field_property_definition_model .ui-menu-item")).toEqual([
         "Partner",
         "User",
     ]);
-    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", { root: popover });
+    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", {
+        root: popover,
+    });
     await animationFrame();
     expect(".o_field_property_definition_model input").toHaveValue("User", {
         message: "Should have selected the User model",
     });
 
     // Choose a many2one value
-    await click(".o_field_property_definition_value input", { root: popover });
+    await click(".o_field_property_definition_value input", {root: popover});
     await animationFrame();
-    await click(".o_field_property_definition_value .ui-menu-item:nth-child(3)", { root: popover });
+    await click(".o_field_property_definition_value .ui-menu-item:nth-child(3)", {
+        root: popover,
+    });
     await animationFrame();
     expect(".o_field_property_definition_value input").toHaveValue("Eve", {
         message: "Should have selected the third user",
@@ -1002,11 +1057,13 @@ test("properties: many2one", async () => {
     await animationFrame();
     await edit("New User");
     await runAllTimers();
-    await click(".o_property_field:nth-child(2) .o_m2o_dropdown_option_create .dropdown-item");
+    await click(
+        ".o_property_field:nth-child(2) .o_m2o_dropdown_option_create .dropdown-item"
+    );
     await animationFrame();
     expect(".o_property_field:nth-child(2) .o_property_field_value input").toHaveValue(
         "Created:New User",
-        { message: "Should have created a new user" }
+        {message: "Should have created a new user"}
     );
 });
 
@@ -1015,20 +1072,20 @@ test("properties: many2one", async () => {
  */
 test.tags("desktop");
 test("properties: many2many", async () => {
-    onRpc(({ method, model, args }) => {
+    onRpc(({method, model, args}) => {
         if (method === "has_access") {
             return true;
         } else if (method === "get_available_models" && model === "ir.model") {
             return [
-                { model: "res.partner", display_name: "Partner" },
-                { model: "res.users", display_name: "User" },
+                {model: "res.partner", display_name: "Partner"},
+                {model: "res.users", display_name: "User"},
             ];
         } else if (
             method === "display_name_for" &&
             model === "ir.model" &&
             args[0][0] === "res.users"
         ) {
-            return [{ display_name: "User", model: "res.users" }];
+            return [{display_name: "User", model: "res.users"}];
         } else if (method === "name_create" && model === "res.users") {
             // Add a prefix to check that "name_create"
             // has been called with the right parameters
@@ -1054,7 +1111,8 @@ test("properties: many2many", async () => {
         actionMenus: {},
     });
 
-    const getSelectedUsers = () => queryAllTexts(".o_property_field_value .o_tag_badge_text");
+    const getSelectedUsers = () =>
+        queryAllTexts(".o_property_field_value .o_tag_badge_text");
 
     await toggleActionMenu();
     await toggleMenuItem("Edit Properties"); // Start the edition mode
@@ -1066,14 +1124,16 @@ test("properties: many2many", async () => {
     await changeType("many2many");
 
     // Choose the "User" model
-    await click(".o_field_property_definition_model input", { root: popover });
+    await click(".o_field_property_definition_model input", {root: popover});
     await animationFrame();
     expect(queryAllTexts(".o_field_property_definition_model .ui-menu-item")).toEqual([
         "Partner",
         "User",
     ]);
 
-    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", { root: popover });
+    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", {
+        root: popover,
+    });
     await animationFrame();
     expect(".o_field_property_definition_model input").toHaveValue("User", {
         message: "Should have selected the User model",
@@ -1086,7 +1146,9 @@ test("properties: many2many", async () => {
     await animationFrame();
     await click(".o_property_field:nth-child(2) .ui-menu-item:nth-child(3)");
     await animationFrame();
-    expect(getSelectedUsers()).toEqual(["Eve"], { message: "Should have selected the third user" });
+    expect(getSelectedUsers()).toEqual(["Eve"], {
+        message: "Should have selected the third user",
+    });
 
     // Add Bob in the list
     await click(".o_property_field:nth-child(2) input");
@@ -1124,18 +1186,18 @@ test("properties: many2many", async () => {
  */
 test.tags("desktop");
 test("properties: many2one 'Search more...' +  internal link save keeps data", async () => {
-    onRpc(({ method, model }) => {
+    onRpc(({method, model}) => {
         if (["has_access", "has_group"].includes(method)) {
             return true;
         } else if (method === "display_name_for" && model === "ir.model") {
             return [
-                { model: "partner", display_name: "Partner" },
-                { model: "res.users", display_name: "User" },
+                {model: "partner", display_name: "Partner"},
+                {model: "res.users", display_name: "User"},
             ];
         } else if (method === "get_available_models" && model === "ir.model") {
             return [
-                { model: "partner", display_name: "Partner" },
-                { model: "res.users", display_name: "User" },
+                {model: "partner", display_name: "Partner"},
+                {model: "res.users", display_name: "User"},
             ];
         } else if (method === "get_formview_id") {
             return false;
@@ -1222,9 +1284,9 @@ test("properties: many2one 'Search more...' +  internal link save keeps data", a
     const popover = queryFirst(".o_property_field_popover");
 
     // Opening the "Search more..." modal
-    await click(".o_field_property_definition_value input", { root: popover });
+    await click(".o_field_property_definition_value input", {root: popover});
     await animationFrame();
-    await click(".o_m2o_dropdown_option_search_more", { root: popover });
+    await click(".o_m2o_dropdown_option_search_more", {root: popover});
     await animationFrame();
 
     // Checking the model loaded
@@ -1235,15 +1297,17 @@ test("properties: many2one 'Search more...' +  internal link save keeps data", a
     await animationFrame();
 
     // Switching the co-model of the property field
-    await click(".o_field_property_definition_model input", { root: popover });
+    await click(".o_field_property_definition_model input", {root: popover});
     await animationFrame();
-    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", { root: popover });
+    await click(".o_field_property_definition_model .ui-menu-item:nth-child(2)", {
+        root: popover,
+    });
     await animationFrame();
 
     // Opening the "Search more..." modal
-    await click(".o_field_property_definition_value input", { root: popover });
+    await click(".o_field_property_definition_value input", {root: popover});
     await animationFrame();
-    await click(".o_m2o_dropdown_option_search_more", { root: popover });
+    await click(".o_m2o_dropdown_option_search_more", {root: popover});
     await animationFrame();
     // Checking the model loaded
     expect.verifySteps(["res.users"]);
@@ -1286,7 +1350,7 @@ test("properties: date(time) property manipulations", async () => {
             type: "datetime",
         },
     ];
-    onRpc(({ method, args }) => {
+    onRpc(({method, args}) => {
         expect.step(method);
         if (method === "has_access") {
             return true;
@@ -1316,13 +1380,15 @@ test("properties: date(time) property manipulations", async () => {
     });
     expect.verifySteps(["get_views", "web_read"]);
 
-    // check initial properties
-    expect("[property-name=property_1] .o_property_field_value input").toHaveValue("01/01/2019");
+    // Check initial properties
+    expect("[property-name=property_1] .o_property_field_value input").toHaveValue(
+        "01/01/2019"
+    );
     expect("[property-name=property_2] .o_property_field_value input").toHaveValue(
         "01/01/2019 11:00:00"
     );
 
-    // edit date property
+    // Edit date property
     await click(".o_property_field[property-name=property_1] input");
     await animationFrame();
     await click(".o_datetime_picker .o_previous");
@@ -1330,7 +1396,7 @@ test("properties: date(time) property manipulations", async () => {
     await click(getPickerCell("31"));
     expect("[property-name=property_1] input").toHaveValue("12/31/2018");
 
-    // edit date time property
+    // Edit date time property
     await click(".o_property_field[property-name=property_2] input");
     await animationFrame();
     await click(".o_datetime_picker .o_previous");
@@ -1340,7 +1406,7 @@ test("properties: date(time) property manipulations", async () => {
     await editTime("12:05");
     expect("[property-name=property_2] input").toHaveValue("12/31/2018 12:05:00");
 
-    // save
+    // Save
     expect.verifySteps([]);
     await clickSave();
     expect.verifySteps(["web_save"]);
@@ -1354,18 +1420,18 @@ test("properties: date(time) property manipulations", async () => {
  */
 test.tags("desktop");
 test("properties: name reset", async () => {
-    onRpc(({ method, model }) => {
+    onRpc(({method, model}) => {
         if (method === "has_access") {
             return true;
         } else if (method === "get_available_models" && model === "ir.model") {
             return [
-                { model: "res.partner", display_name: "Partner" },
-                { model: "res.users", display_name: "User" },
+                {model: "res.partner", display_name: "Partner"},
+                {model: "res.users", display_name: "User"},
             ];
         } else if (method === "display_name_for" && model === "ir.model") {
             return [
-                { display_name: "User", model: "res.users" },
-                { display_name: "Partner", model: "res.partner" },
+                {display_name: "User", model: "res.users"},
+                {display_name: "Partner", model: "res.partner"},
             ];
         } else if (method === "search_count") {
             return 5;
@@ -1396,56 +1462,81 @@ test("properties: name reset", async () => {
     // open the definition popover
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await animationFrame();
-    // change the type to "many2one"
+    // Change the type to "many2one"
     await changeType("many2one");
 
-    // select the "User" model
+    // Select the "User" model
     await click(".o_field_property_definition_model input");
-    await contains(".o_field_property_definition_model .ui-menu-item:nth-child(2)").click();
+    await contains(
+        ".o_field_property_definition_model .ui-menu-item:nth-child(2)"
+    ).click();
     await animationFrame();
     await closePopover();
 
-    // check that the name has been regenerated
-    expect(".o_property_field:nth-child(2)").not.toHaveAttribute("property-name", "property_2", {
-        message: "Name must have been regenerated",
-    });
+    // Check that the name has been regenerated
+    expect(".o_property_field:nth-child(2)").not.toHaveAttribute(
+        "property-name",
+        "property_2",
+        {
+            message: "Name must have been regenerated",
+        }
+    );
 
-    // change back to "Selection" and verify that the original name is restored
+    // Change back to "Selection" and verify that the original name is restored
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await animationFrame();
     await changeType("selection");
     await closePopover();
     await animationFrame();
-    expect(".o_property_field:nth-child(2)").toHaveAttribute("property-name", "property_2", {
-        message: "Name must have been restored",
-    });
+    expect(".o_property_field:nth-child(2)").toHaveAttribute(
+        "property-name",
+        "property_2",
+        {
+            message: "Name must have been restored",
+        }
+    );
 
-    // re-select many2one user
+    // Re-select many2one user
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await animationFrame();
     await changeType("many2one");
     await click(".o_field_property_definition_model input");
-    await contains(".o_field_property_definition_model .ui-menu-item:nth-child(2)").click();
+    await contains(
+        ".o_field_property_definition_model .ui-menu-item:nth-child(2)"
+    ).click();
     await animationFrame();
-    const propertyName = queryAttribute(".o_property_field:nth-child(2)", "property-name");
+    const propertyName = queryAttribute(
+        ".o_property_field:nth-child(2)",
+        "property-name"
+    );
     expect(propertyName.endsWith("_html")).toEqual(false);
 
-    // save (if we do not save, the name will be the same even if
+    // Save (if we do not save, the name will be the same even if
     // we change the model, because it would be useless to regenerate it again)
     await closePopover();
 
-    // restore the model "User", and check that the name has been restored
-    await contains(".o_property_field:nth-child(2) .o_field_property_open_popover").click();
+    // Restore the model "User", and check that the name has been restored
+    await contains(
+        ".o_property_field:nth-child(2) .o_field_property_open_popover"
+    ).click();
     await contains(".o_field_property_definition_model input").click();
-    await contains(".o_field_property_definition_model .ui-menu-item:nth-child(2)").click();
+    await contains(
+        ".o_field_property_definition_model .ui-menu-item:nth-child(2)"
+    ).click();
     await closePopover();
-    expect(".o_property_field:nth-child(2)").toHaveAttribute("property-name", propertyName);
+    expect(".o_property_field:nth-child(2)").toHaveAttribute(
+        "property-name",
+        propertyName
+    );
 
     // Change the definition and check that the name stay the same
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
     await contains(".o_field_property_definition_kanban input").click();
     await closePopover();
-    expect(".o_property_field:nth-child(2)").toHaveAttribute("property-name", propertyName);
+    expect(".o_property_field:nth-child(2)").toHaveAttribute(
+        "property-name",
+        propertyName
+    );
 
     // Change the type to "HTML" and verify that the suffix is added
     await click(".o_property_field:nth-child(2) .o_field_property_open_popover");
@@ -1453,7 +1544,10 @@ test("properties: name reset", async () => {
     await changeType("html");
     await closePopover();
     await animationFrame();
-    const htmlPropertyName = queryAttribute(".o_property_field:nth-child(2)", "property-name");
+    const htmlPropertyName = queryAttribute(
+        ".o_property_field:nth-child(2)",
+        "property-name"
+    );
     expect(htmlPropertyName.endsWith("_html")).toEqual(true);
 
     // Restore the selection type, the name should be restored
@@ -1462,9 +1556,13 @@ test("properties: name reset", async () => {
     await changeType("selection");
     await closePopover();
     await animationFrame();
-    expect(".o_property_field:nth-child(2)").toHaveAttribute("property-name", "property_2", {
-        message: "Name must have been restored",
-    });
+    expect(".o_property_field:nth-child(2)").toHaveAttribute(
+        "property-name",
+        "property_2",
+        {
+            message: "Name must have been restored",
+        }
+    );
 });
 
 /**
@@ -1486,18 +1584,18 @@ test("properties: kanban view", async () => {
             </kanban>`,
     });
 
-    // check second card
-    expect(".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(3)").toHaveText(
-        "char value 4"
-    );
-    expect(".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(1)").toHaveText(
-        "char value\nsuffix"
-    );
-    expect(".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(2)").toHaveText(
-        "C"
-    );
+    // Check second card
+    expect(
+        ".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(3)"
+    ).toHaveText("char value 4");
+    expect(
+        ".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(1)"
+    ).toHaveText("char value\nsuffix");
+    expect(
+        ".o_kanban_record:nth-child(2) .o_card_property_field:nth-child(2)"
+    ).toHaveText("C");
 
-    // check first card
+    // Check first card
     expect(".o_kanban_record:nth-child(1) .o_card_property_field").toHaveCount(2);
 });
 
@@ -1543,13 +1641,13 @@ test("properties: kanban view with date and datetime property fields", async () 
             </kanban>`,
     });
 
-    // check fifth card
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(1) span").toHaveText(
-        "01/01/2019"
-    );
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(2) span").toHaveText(
-        "01/01/2019 11:00:00"
-    );
+    // Check fifth card
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(1) span"
+    ).toHaveText("01/01/2019");
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(2) span"
+    ).toHaveText("01/01/2019 11:00:00");
 });
 
 test("properties: kanban view with multiple sources of properties definitions", async () => {
@@ -1664,24 +1762,24 @@ test("properties: kanban view with label and border", async () => {
                 </kanban>`,
     });
 
-    // check for label in integer, float, date and datetime field
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(1) label").toHaveText(
-        "My Integer"
-    );
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(2) label").toHaveText(
-        "My Float"
-    );
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(3) label").toHaveText(
-        "My Date"
-    );
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(4) label").toHaveText(
-        "My Datetime"
-    );
+    // Check for label in integer, float, date and datetime field
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(1) label"
+    ).toHaveText("My Integer");
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(2) label"
+    ).toHaveText("My Float");
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(3) label"
+    ).toHaveText("My Date");
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(4) label"
+    ).toHaveText("My Datetime");
 
-    //check that label and border class is present for checkbox field
-    expect(".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(5) .border").toHaveCount(
-        1
-    );
+    // Check that label and border class is present for checkbox field
+    expect(
+        ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(5) .border"
+    ).toHaveCount(1);
     expect(
         ".o_kanban_record:nth-child(5) .o_card_property_field:nth-child(5) label:eq(0)"
     ).toHaveText("My Checkbox");
@@ -1817,26 +1915,26 @@ test("properties: default value", async () => {
     await click(".o_field_property_add button");
     await waitFor(".o_property_field_popover");
 
-    // edit the default value and close the popover definition
+    // Edit the default value and close the popover definition
     // because we just created the property, the default value should be propagated
     await click(".o_field_property_definition_value input");
-    await edit("First Default Value", { confirm: "Enter" });
+    await edit("First Default Value", {confirm: "Enter"});
     await animationFrame();
     await closePopover();
 
-    expect(".o_field_properties .o_property_field:last .o_property_field_value input").toHaveValue(
-        "First Default Value"
-    );
+    expect(
+        ".o_field_properties .o_property_field:last .o_property_field_value input"
+    ).toHaveValue("First Default Value");
 
-    // empty the new / existing property value, and re-open the property we created and change the default value
+    // Empty the new / existing property value, and re-open the property we created and change the default value
     // it shouldn't be propagated because it's the second time we open the definition
     const checkProperty = async (property) => {
-        await click(".o_property_field_value input", { root: property });
+        await click(".o_property_field_value input", {root: property});
         await edit("");
         await runAllTimers();
         await animationFrame();
 
-        await click(".o_field_property_open_popover", { root: property });
+        await click(".o_field_property_open_popover", {root: property});
         await runAllTimers();
         await animationFrame();
 
@@ -1847,10 +1945,14 @@ test("properties: default value", async () => {
 
         await closePopover();
 
-        expect(queryFirst(".o_property_field_value input", { root: property })).toHaveValue("");
+        expect(
+            queryFirst(".o_property_field_value input", {root: property})
+        ).toHaveValue("");
     };
     await checkProperty(".o_field_properties .o_property_field:last");
-    const existingProperty = queryFirst(".o_field_properties .o_property_field:nth-child(1)");
+    const existingProperty = queryFirst(
+        ".o_field_properties .o_property_field:nth-child(1)"
+    );
     await checkProperty(existingProperty);
 });
 
@@ -1872,7 +1974,9 @@ test("properties: default value date", async () => {
                 </form>`,
         actionMenus: {},
     });
-    expect(".o_field_properties").toHaveCount(1, { message: "The field must be in the view" });
+    expect(".o_field_properties").toHaveCount(1, {
+        message: "The field must be in the view",
+    });
 
     await toggleActionMenu();
     await toggleMenuItem("Edit Properties"); // Start the edition mode
@@ -1881,11 +1985,10 @@ test("properties: default value date", async () => {
     await click(".o_field_property_add button");
     await waitFor(".o_property_field_popover");
     await changeType("date");
-    expect(".o_property_field_popover .o_field_property_definition_type input").toHaveValue(
-        "Date",
-        { message: "Should have changed the property type" }
-    );
-    // choose a default value and check that it is propagated on the property field
+    expect(
+        ".o_property_field_popover .o_field_property_definition_type input"
+    ).toHaveValue("Date", {message: "Should have changed the property type"});
+    // Choose a default value and check that it is propagated on the property field
     await click(".o_field_property_definition_value .o_datetime_input");
     await animationFrame();
     expect(".o_date_picker").toHaveCount(1);
@@ -1895,14 +1998,14 @@ test("properties: default value date", async () => {
     expect(".o_datetime_input").toHaveValue("01/03/2022", {
         message: "The default date value should have been propagated",
     });
-    // save the form and check that the default value is not reset
+    // Save the form and check that the default value is not reset
     await click(".o_form_button_save");
     await animationFrame();
     await click(".o_property_field:nth-last-child(2) .o_field_property_open_popover");
     await animationFrame();
-    expect(".o_property_field_popover .o_field_property_definition_value input").toHaveValue(
-        "01/03/2022"
-    );
+    expect(
+        ".o_property_field_popover .o_field_property_definition_value input"
+    ).toHaveValue("01/03/2022");
 });
 
 test("properties: suffix", async () => {
@@ -1933,17 +2036,17 @@ test("properties: suffix", async () => {
     await waitFor(".o_property_field_popover");
 
     await click(".o_field_property_definition_suffix input");
-    await edit("kg", { confirm: "Enter" });
+    await edit("kg", {confirm: "Enter"});
     await animationFrame();
     await closePopover();
 
-    expect(".o_field_properties .o_property_field:last .o_property_field_value_suffix").toHaveText(
-        "kg"
-    );
+    expect(
+        ".o_field_properties .o_property_field:last .o_property_field_value_suffix"
+    ).toHaveText("kg");
 });
 
 /**
- * check if property field popover closes when clicking on delete property icon.
+ * Check if property field popover closes when clicking on delete property icon.
  */
 test("properties: close property popover once clicked on delete icon", async () => {
     onRpc("has_access", () => true);
@@ -2012,7 +2115,7 @@ test("properties: form view and falsy domain, properties are not empty", async (
 
     expect(".o_test_properties_not_empty").toHaveCount(1);
 
-    // delete a property, 2 properties left
+    // Delete a property, 2 properties left
     await click(".o_property_field:first-child .o_field_property_open_popover");
     await animationFrame();
     await click(".o_field_property_definition_delete");
@@ -2021,7 +2124,7 @@ test("properties: form view and falsy domain, properties are not empty", async (
     await animationFrame();
     expect(".o_test_properties_not_empty").toHaveCount(1);
 
-    // delete a property, 1 property left
+    // Delete a property, 1 property left
     await click(".o_property_field:first-child .o_field_property_open_popover");
     await animationFrame();
     await click(".o_field_property_definition_delete");
@@ -2030,7 +2133,7 @@ test("properties: form view and falsy domain, properties are not empty", async (
     await animationFrame();
     expect(".o_test_properties_not_empty").toHaveCount(1);
 
-    // delete a property, no property left
+    // Delete a property, no property left
 
     await click(".o_property_field:first-child .o_field_property_open_popover");
     await animationFrame();
@@ -2070,7 +2173,7 @@ test("properties: form view and falsy domain, properties are empty", async () =>
     });
     expect(".o_test_properties_not_empty").toHaveCount(0);
 
-    // create the first property
+    // Create the first property
     await toggleActionMenu();
     await click(".o-dropdown--menu span .fa-cogs");
     await animationFrame();
@@ -2113,13 +2216,13 @@ test("properties: separators layout", async () => {
             ["Property 3", "property_3"],
         ],
         [
-            // invisible separator to fill the space
+            // Invisible separator to fill the space
             ["", ""],
             ["Property 4", "property_4"],
         ],
     ]);
 
-    // fold the group
+    // Fold the group
     await click(
         ".o_field_properties .o_property_group[property-name='property_gen_2']:first-child .o_field_property_group_label"
     );
@@ -2147,8 +2250,10 @@ test("properties: separators layout", async () => {
         ],
     ]);
 
-    // fold the left group
-    await click(".o_property_group[property-name='property_gen_2'] .o_field_property_group_label");
+    // Fold the left group
+    await click(
+        ".o_property_group[property-name='property_gen_2'] .o_field_property_group_label"
+    );
     await animationFrame();
     expect(getGroups()).toEqual([
         [["PROPERTY 1", "property_gen_2"]],
@@ -2157,9 +2262,11 @@ test("properties: separators layout", async () => {
             ["Property 4", "property_4"],
         ],
     ]);
-    await click(".o_property_group[property-name='property_gen_2'] .o_field_property_group_label");
+    await click(
+        ".o_property_group[property-name='property_gen_2'] .o_field_property_group_label"
+    );
     await animationFrame();
-    // create 3 new properties
+    // Create 3 new properties
     await click(".o_field_property_add button");
     await animationFrame();
     await click(".o_field_property_add button");
@@ -2191,7 +2298,7 @@ test("properties: separators layout", async () => {
             ["Property 4", "property_4"],
         ],
         [
-            // invisible separator to fill the space
+            // Invisible separator to fill the space
             ["", ""],
             ["Property 5", "property_gen_4"],
             ["Property 6", "property_gen_5"],
@@ -2222,12 +2329,17 @@ test("properties: separators layout", async () => {
 test("properties: open section by default", async () => {
     onRpc("has_access", () => true);
     ResCompany._records[0].definitions = [
-        { name: "property_1", string: "Separator 1", type: "separator", fold_by_default: false },
-        { name: "property_2", string: "Property 2", type: "char" },
-        { name: "property_3", string: "Separator 3", type: "separator" },
-        { name: "property_4", string: "Property 4", type: "char" },
+        {
+            name: "property_1",
+            string: "Separator 1",
+            type: "separator",
+            fold_by_default: false,
+        },
+        {name: "property_2", string: "Property 2", type: "char"},
+        {name: "property_3", string: "Separator 3", type: "separator"},
+        {name: "property_4", string: "Property 4", type: "char"},
     ];
-    delete Partner._records[1].properties.property_1; // remove char value
+    delete Partner._records[1].properties.property_1; // Remove char value
 
     await mountView({
         type: "form",
@@ -2264,7 +2376,7 @@ test("properties: open section by default", async () => {
 
 test.tags("desktop");
 test("properties: save separator folded state", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect.step(args[1].properties.map((p) => [p.name, p.value]));
     });
 
@@ -2276,9 +2388,11 @@ test("properties: save separator folded state", async () => {
         [["SEPARATOR 4", "property_4"]],
     ]);
 
-    // return true if the given separator is folded
+    // Return true if the given separator is folded
     const foldState = (separatorName) =>
-        !queryFirst(`div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`);
+        !queryFirst(
+            `div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`
+        );
 
     const assertFolded = (values) => {
         expect(values.length).toBe(4);
@@ -2301,12 +2415,14 @@ test("properties: save separator folded state", async () => {
     assertFolded([true, false, true, false]);
 
     await clickSave();
-    expect.verifySteps([[
-        ["property_1", true],
-        ["property_2", false],
-        ["property_3", true],
-        ["property_4", false],
-    ]]);
+    expect.verifySteps([
+        [
+            ["property_1", true],
+            ["property_2", false],
+            ["property_3", true],
+            ["property_4", false],
+        ],
+    ]);
 });
 
 /**
@@ -2316,9 +2432,11 @@ test.tags("desktop");
 test("properties: separators move properties", async () => {
     await makePropertiesGroupView([false, true, true, false, true, true, false]);
 
-    // return true if the given separator is folded
+    // Return true if the given separator is folded
     const foldState = (separatorName) =>
-        !queryFirst(`div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`);
+        !queryFirst(
+            `div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`
+        );
 
     const assertFolded = (values) => {
         expect(values.length).toBe(4);
@@ -2328,7 +2446,7 @@ test("properties: separators move properties", async () => {
         expect(foldState("property_6")).toBe(values[3]);
     };
 
-    // fold all groups
+    // Fold all groups
     assertFolded([false, false, false, false]);
 
     await click("div[property-name='property_2'] .o_field_property_group_label");
@@ -2413,7 +2531,7 @@ test("properties: separators move properties", async () => {
     ]);
     assertFolded([false, false, false, true]);
 
-    // fold property 2 and 3
+    // Fold property 2 and 3
     await closePopover();
     await click("div[property-name='property_2'] .o_field_property_group_label");
     await animationFrame();
@@ -2421,7 +2539,7 @@ test("properties: separators move properties", async () => {
     await animationFrame();
     assertFolded([true, true, false, true]);
 
-    // move the property up
+    // Move the property up
     await click("[property-name='property_1'] .o_field_property_open_popover");
     await animationFrame();
     await click(".o_field_property_definition .oi-chevron-up");
@@ -2456,7 +2574,7 @@ test("properties: separators move properties", async () => {
     ]);
     assertFolded([false, false, false, true]);
 
-    // now, create a new property, it must unfold the last group
+    // Now, create a new property, it must unfold the last group
     await click(".o_field_property_add button");
     await animationFrame();
     expect(getGroups()).toEqual([
@@ -2520,13 +2638,13 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    // but if we move a property in a different column, we need to generate the group
+    // But if we move a property in a different column, we need to generate the group
     await contains(getPropertyHandleElement("property_3")).dragAndDrop(
         getPropertyHandleElement("property_4")
     );
     expect(getGroups()).toEqual([
         [
-            // should have generated new separator
+            // Should have generated new separator
             // to keep the column separation
             ["GROUP 1", "property_gen_2"],
             ["Property 2", "property_2"],
@@ -2540,14 +2658,14 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    // fold the first group
+    // Fold the first group
     await click("div[property-name='property_gen_2'] .o_field_property_group_label");
 
-    // drag and drop the firth property in the folded group
+    // Drag and drop the firth property in the folded group
     await contains(getPropertyHandleElement("property_5")).dragAndDrop(
         getPropertyHandleElement("property_gen_2")
     );
-    // should unfold automatically
+    // Should unfold automatically
     expect(getGroups()).toEqual([
         [
             ["GROUP 1", "property_gen_2"],
@@ -2562,7 +2680,7 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    // drag and drop the first group at the second position
+    // Drag and drop the first group at the second position
     await contains(getPropertyHandleElement("property_gen_2")).dragAndDrop(
         getPropertyHandleElement("property_gen_3")
     );
@@ -2580,7 +2698,7 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    // move property 3 at the last position of the other group
+    // Move property 3 at the last position of the other group
     await contains(getPropertyHandleElement("property_3")).dragAndDrop(
         getPropertyHandleElement("property_gen_2")
     );
@@ -2598,7 +2716,7 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    // move property 3 at the first position of its group
+    // Move property 3 at the first position of its group
     await contains(getPropertyHandleElement("property_3")).dragAndDrop(
         getPropertyHandleElement("property_2")
     );
@@ -2758,15 +2876,15 @@ test("property many2one, change property type from many2one to integer", async (
         },
     ];
 
-    onRpc(({ method, model, args }) => {
+    onRpc(({method, model, args}) => {
         if (["has_access", "has_group"].includes(method)) {
             return true;
         } else if (method === "display_name_for" && model === "ir.model") {
-            return [{ model: "partner", display_name: "Partner" }];
+            return [{model: "partner", display_name: "Partner"}];
         } else if (method === "get_available_models" && model === "ir.model") {
-            return [{ model: "partner", display_name: "Partner" }];
+            return [{model: "partner", display_name: "Partner"}];
         } else if (method === "web_save") {
-            const { name, ...propertiesWithoutName } = args[1].properties[0];
+            const {name, ...propertiesWithoutName} = args[1].properties[0];
             expect(name).not.toEqual("many_2_one");
             expect(propertiesWithoutName).toEqual({
                 string: "My Many-2-one",
@@ -2798,7 +2916,7 @@ test("property many2one, change property type from many2one to integer", async (
     await contains(".o_property_field .o_field_property_open_popover").click();
     await changeType("integer");
 
-    // save
+    // Save
     await clickSave();
 });
 
@@ -2807,7 +2925,9 @@ test("properties: moving single property to 2nd group in auto split mode", async
     await makePropertiesGroupView([false]);
     await toggleActionMenu();
     await toggleMenuItem("Edit Properties"); // Start the edition mode
-    const { moveTo, drop } = await contains(getPropertyHandleElement("property_1")).drag();
+    const {moveTo, drop} = await contains(
+        getPropertyHandleElement("property_1")
+    ).drag();
     const secondGroup = queryFirst(".o_property_group:last-of-type");
     await moveTo(secondGroup, "bottom");
     await drop();
@@ -2902,7 +3022,7 @@ test("properties: do not write undefined value", async () => {
             type: "char",
         },
     ];
-    onRpc(({ method, args }) => {
+    onRpc(({method, args}) => {
         if (method === "has_access") {
             return true;
         }
@@ -2966,11 +3086,19 @@ test("properties: monetary without currency_field", async () => {
 
     await click(".o_field_property_definition_type input");
     await animationFrame();
-    expect(`.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div.text-muted`).toHaveAttribute("data-tooltip", "Not possible to create monetary field because there is no currency on current model.");
+    expect(
+        `.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div.text-muted`
+    ).toHaveAttribute(
+        "data-tooltip",
+        "Not possible to create monetary field because there is no currency on current model."
+    );
 });
 
 test("properties: monetary with currency_id", async () => {
-    Partner._fields.currency_id = fields.Many2one({ relation: "res.currency", default: 1 });
+    Partner._fields.currency_id = fields.Many2one({
+        relation: "res.currency",
+        default: 1,
+    });
 
     onRpc("has_access", () => true);
 
@@ -3000,22 +3128,38 @@ test("properties: monetary with currency_id", async () => {
 
     await click(".o_field_property_definition_type input");
     await animationFrame();
-    expect(`.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div:not(.text-muted)`).toHaveCount(1);
+    expect(
+        `.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div:not(.text-muted)`
+    ).toHaveCount(1);
 
-    await contains(`.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary)`).click();
+    await contains(
+        `.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary)`
+    ).click();
     expect(`.o_field_property_definition_currency_field select`).toHaveText("Currency");
-    expect(`.o_field_property_definition_currency_field select`).toHaveValue("currency_id");
+    expect(`.o_field_property_definition_currency_field select`).toHaveValue(
+        "currency_id"
+    );
     expect(".o_field_property_definition_value .o_input > span:eq(0)").toHaveText("$");
     expect(`.o_field_property_definition_value input`).toHaveValue("0.00");
 
     await closePopover();
-    expect(".o_property_field:nth-child(2) .o_property_field_value .o_input > span:eq(0)").toHaveText("$");
-    expect(`.o_property_field:nth-child(2) .o_property_field_value input`).toHaveValue("0.00");
+    expect(
+        ".o_property_field:nth-child(2) .o_property_field_value .o_input > span:eq(0)"
+    ).toHaveText("$");
+    expect(`.o_property_field:nth-child(2) .o_property_field_value input`).toHaveValue(
+        "0.00"
+    );
 });
 
 test("properties: monetary with multiple currency field", async () => {
-    Partner._fields.another_currency_id = fields.Many2one({ relation: "res.currency", default: 2 });
-    Partner._fields.currency_id = fields.Many2one({ relation: "res.currency", default: 1 });
+    Partner._fields.another_currency_id = fields.Many2one({
+        relation: "res.currency",
+        default: 2,
+    });
+    Partner._fields.currency_id = fields.Many2one({
+        relation: "res.currency",
+        default: 1,
+    });
 
     onRpc("has_access", () => true);
 
@@ -3046,18 +3190,34 @@ test("properties: monetary with multiple currency field", async () => {
 
     await click(".o_field_property_definition_type input");
     await animationFrame();
-    expect(`.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div:not(.text-muted)`).toHaveCount(1);
+    expect(
+        `.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary) > div:not(.text-muted)`
+    ).toHaveCount(1);
 
-    await contains(`.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary)`).click();
-    expect(`.o_field_property_definition_currency_field select`).toHaveText("Currency\nAnother currency");
-    expect(`.o_field_property_definition_currency_field select`).toHaveValue("currency_id");
+    await contains(
+        `.o_field_property_definition_type_menu .o-dropdown-item:contains(Monetary)`
+    ).click();
+    expect(`.o_field_property_definition_currency_field select`).toHaveText(
+        "Currency\nAnother currency"
+    );
+    expect(`.o_field_property_definition_currency_field select`).toHaveValue(
+        "currency_id"
+    );
 
-    await contains(".o_field_property_definition_currency_field select").select("another_currency_id");
-    expect(`.o_field_property_definition_currency_field select`).toHaveValue("another_currency_id");
+    await contains(".o_field_property_definition_currency_field select").select(
+        "another_currency_id"
+    );
+    expect(`.o_field_property_definition_currency_field select`).toHaveValue(
+        "another_currency_id"
+    );
     expect(".o_field_property_definition_value .o_input > span:eq(1)").toHaveText("€");
     expect(`.o_field_property_definition_value input`).toHaveValue("0.00");
 
     await closePopover();
-    expect(".o_property_field:nth-child(2) .o_property_field_value .o_input > span:eq(1)").toHaveText("€");
-    expect(`.o_property_field:nth-child(2) .o_property_field_value input`).toHaveValue("0.00");
+    expect(
+        ".o_property_field:nth-child(2) .o_property_field_value .o_input > span:eq(1)"
+    ).toHaveText("€");
+    expect(`.o_property_field:nth-child(2) .o_property_field_value input`).toHaveValue(
+        "0.00"
+    );
 });

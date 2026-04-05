@@ -1,10 +1,13 @@
-import { EVENT_PAGE, EVENT_PAGE_MAIN } from "@website_event/website_builder/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {
+    EVENT_PAGE,
+    EVENT_PAGE_MAIN,
+} from "@website_event/website_builder/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class EventPageOption extends BaseOptionComponent {
     static template = "website_event.EventPageOption";
@@ -43,11 +46,14 @@ export class DisplaySubMenuAction extends BuilderAction {
         this.eventId = this.getEventObjectId();
         this.reload = {
             getReloadUrl: () => this.eventData["website_url"],
-        }
+        };
     }
 
     async toggleWebsiteMenu(value) {
-        await this.orm.call("event.event", "toggle_website_menu", [[this.eventId], value]);
+        await this.orm.call("event.event", "toggle_website_menu", [
+            [this.eventId],
+            value,
+        ]);
     }
 
     async loadEventData() {
@@ -55,7 +61,11 @@ export class DisplaySubMenuAction extends BuilderAction {
             return;
         }
         this.eventData = (
-            await this.orm.read("event.event", [this.eventId], ["website_menu", "website_url"])
+            await this.orm.read(
+                "event.event",
+                [this.eventId],
+                ["website_menu", "website_url"]
+            )
         )[0];
     }
 
@@ -74,7 +84,7 @@ export class DisplaySubMenuAction extends BuilderAction {
 
     async apply() {
         await this.toggleWebsiteMenu("true");
-        return { reloadUrl: this.eventData["website_url"] };
+        return {reloadUrl: this.eventData["website_url"]};
     }
 
     async clean() {
@@ -86,4 +96,6 @@ export class DisplaySubMenuAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(EventPageOptionPlugin.id, EventPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(EventPageOptionPlugin.id, EventPageOptionPlugin);

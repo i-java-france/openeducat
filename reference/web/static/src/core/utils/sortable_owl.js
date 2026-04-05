@@ -1,6 +1,6 @@
-import { onWillUnmount, reactive, useEffect, useExternalListener } from "@odoo/owl";
-import { useThrottleForAnimation } from "./timing";
-import { useSortable as nativeUseSortable } from "@web/core/utils/sortable";
+import {onWillUnmount, reactive, useEffect, useExternalListener} from "@odoo/owl";
+import {useThrottleForAnimation} from "./timing";
+import {useSortable as nativeUseSortable} from "@web/core/utils/sortable";
 
 /**
  * Set of default `useSortable` setup hooks that makes use of Owl lifecycle

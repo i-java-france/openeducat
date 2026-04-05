@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from io import BytesIO
+from unittest.mock import patch
 from zipfile import ZipFile
 
 from lxml import etree
-from unittest.mock import patch
-from odoo import fields, Command
+
+from odoo import Command, fields
 from odoo.tests import HttpCase, tagged
 from odoo.tools import file_open, misc
 from odoo.tools.safe_eval import datetime
@@ -674,7 +674,7 @@ comment-->1000.0</TaxExclusiveAmount></xpath>"""
             invoice.action_post()
             xml = self.env['account.edi.xml.ubl_bis3']._export_invoice(invoice)[0]
             root = etree.fromstring(xml)
-            for tax, node in zip(taxes, root.findall('.//{*}TaxTotal/{*}TaxSubtotal/{*}TaxCategory')):
+            for tax, node in zip(taxes, root.findall('.//{*}TaxTotal/{*}TaxSubtotal/{*}TaxCategory'), strict=False):
                 self.assertEqual(node.findtext('.//{*}ID') or False, tax.ubl_cii_tax_category_code)
                 self.assertEqual(node.findtext('.//{*}TaxExemptionReasonCode') or False, tax.ubl_cii_tax_exemption_reason_code)
 

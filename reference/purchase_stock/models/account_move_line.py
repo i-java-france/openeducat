@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
-from odoo.tools.float_utils import float_is_zero
-from collections import defaultdict
+
+from odoo import models
 
 
 class AccountMoveLine(models.Model):

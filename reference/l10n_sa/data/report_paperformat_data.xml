@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
         <record id="paperformat_l10n_sa_a4" model="report.paperformat">
@@ -13,9 +13,12 @@
     </data>
     <data>
         <function model="res.company" name="write">
-            <value model="res.company" search="[
-                ('partner_id.country_id', '=', ref('base.sa'))]"/>
-            <value eval="{'paperformat_id': ref('l10n_sa.paperformat_l10n_sa_a4')}"/>
+            <value
+                model="res.company"
+                search="[
+                ('partner_id.country_id', '=', ref('base.sa'))]"
+            />
+            <value eval="{'paperformat_id': ref('l10n_sa.paperformat_l10n_sa_a4')}" />
         </function>
     </data>
 </odoo>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.CalendarYearPopover">
@@ -40,7 +40,11 @@
 
     <t t-name="web.CalendarYearPopover.footer">
         <t t-if="props.model.canCreate">
-            <a href="#" class="btn-link o_cw_popover_create" t-on-click.prevent="onCreateButtonClick">
+            <a
+                href="#"
+                class="btn-link o_cw_popover_create"
+                t-on-click.prevent="onCreateButtonClick"
+            >
                 <i class="fa fa-plus" />
                 Create
             </a>
@@ -61,8 +65,10 @@
             t-att-data-id="record.id"
             t-att-data-title="record.title"
         >
-            <span t-if="record.startHour"><t t-out="record.startHour" /></span>
-            <span t-esc="record.title"/>
+            <span t-if="record.startHour">
+                <t t-out="record.startHour" />
+            </span>
+            <span t-esc="record.title" />
         </a>
     </t>
 

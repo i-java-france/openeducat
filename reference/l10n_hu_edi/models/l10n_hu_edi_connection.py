@@ -1,21 +1,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from base64 import b64decode, b64encode
 import binascii
-from datetime import datetime, timedelta, timezone
 import hashlib
 import logging
 import secrets
+from base64 import b64decode, b64encode
+from datetime import datetime, timedelta, timezone
 
+import dateutil.parser
+import requests
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-import dateutil.parser
 from lxml import etree
-import requests
 
 from odoo import _, release
 from odoo.tools import cleanup_xml_node
-
 
 _logger = logging.getLogger(__name__)
 

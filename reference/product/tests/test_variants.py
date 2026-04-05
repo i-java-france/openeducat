@@ -3,7 +3,6 @@
 import base64
 import io
 import unittest.mock
-
 from collections import OrderedDict
 from datetime import timedelta
 from unittest.mock import patch
@@ -96,7 +95,7 @@ class TestVariants(ProductVariantsCommon):
             'product_tmpl_id': self.product_template_sofa.id,
             'product_id': product.id,
             'product_code': code,
-        } for product, code in zip(self.product_template_sofa.product_variant_ids, codes)])
+        } for product, code in zip(self.product_template_sofa.product_variant_ids, codes, strict=False)])
         variants = self.product_template_sofa.product_variant_ids.with_context(partner_id=vendor.id)
         self.assertEqual(variants[0].code, codes[0], "sofa red should have code bidou-red")
         self.assertEqual(variants[1].code, codes[1], "sofa green should have code bidou-green")

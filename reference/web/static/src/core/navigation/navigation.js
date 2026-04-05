@@ -1,9 +1,9 @@
-import { onWillUnmount, useEffect, useExternalListener, useRef } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { deepMerge } from "@web/core/utils/objects";
-import { scrollTo } from "@web/core/utils/scrolling";
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { browser } from "@web/core/browser/browser";
+import {onWillUnmount, useEffect, useExternalListener, useRef} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {deepMerge} from "@web/core/utils/objects";
+import {scrollTo} from "@web/core/utils/scrolling";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {browser} from "@web/core/browser/browser";
 
 export const ACTIVE_ELEMENT_CLASS = "focus";
 const throttledFocus = throttleForAnimation((el) => el?.focus());
@@ -26,7 +26,7 @@ class NavigationItem {
      */
     target = undefined;
 
-    constructor({ index, el, options, navigator }) {
+    constructor({index, el, options, navigator}) {
         this.index = index;
 
         /**@private */
@@ -40,7 +40,9 @@ class NavigationItem {
 
         this.el = el;
         if (this._options.shouldFocusChildInput) {
-            const subInput = el.querySelector(":scope input, :scope button, :scope textarea");
+            const subInput = el.querySelector(
+                ":scope input, :scope button, :scope textarea"
+            );
             this.target = subInput || el;
         } else {
             this.target = el;
@@ -125,8 +127,9 @@ export class Navigator {
         /**@private*/
         this._options = deepMerge(
             {
-                isNavigationAvailable: ({ target }) =>
-                    this.contains(target) && (this.isFocused || this._options.virtualFocus),
+                isNavigationAvailable: ({target}) =>
+                    this.contains(target) &&
+                    (this.isFocused || this._options.virtualFocus),
                 shouldFocusChildInput: true,
                 shouldFocusFirstItem: false,
                 shouldRegisterHotkeys: true,
@@ -151,7 +154,7 @@ export class Navigator {
                         bypassEditableProtection: true,
                     },
                     enter: {
-                        isAvailable: ({ navigator }) => Boolean(navigator.activeItem),
+                        isAvailable: ({navigator}) => Boolean(navigator.activeItem),
                         callback: () => {
                             const item = this.activeItem || this.items[0];
                             item?.select();
@@ -239,7 +242,9 @@ export class Navigator {
                 oldActiveItem && oldActiveItem.el.isConnected
                     ? this.items.findIndex((item) => item.el === oldActiveItem.el)
                     : -1;
-            const focusedElementIndex = this.items.findIndex((item) => item.el === document.activeElement);
+            const focusedElementIndex = this.items.findIndex(
+                (item) => item.el === document.activeElement
+            );
             if (activeItemIndex > -1) {
                 this._updateActiveItemIndex(activeItemIndex);
             } else if (this.activeItemIndex >= 0) {
@@ -277,13 +282,15 @@ export class Navigator {
                 continue;
             }
 
-            const callback = typeof hotkeyInfo == "function" ? hotkeyInfo : hotkeyInfo.callback;
+            const callback =
+                typeof hotkeyInfo == "function" ? hotkeyInfo : hotkeyInfo.callback;
             if (!callback) {
                 continue;
             }
 
             const isAvailable = hotkeyInfo?.isAvailable ?? (() => true);
-            const bypassEditableProtection = hotkeyInfo?.bypassEditableProtection ?? false;
+            const bypassEditableProtection =
+                hotkeyInfo?.bypassEditableProtection ?? false;
             const allowRepeat = hotkeyInfo?.allowRepeat ?? true;
 
             this._hotkeyRemoves.push(
@@ -292,7 +299,7 @@ export class Navigator {
                     allowRepeat,
                     isAvailable: (target) =>
                         this._isNavigationAvailable(target) &&
-                        isAvailable({ navigator: this, target }),
+                        isAvailable({navigator: this, target}),
                     bypassEditableProtection,
                 })
             );
@@ -347,7 +354,7 @@ export class Navigator {
      * @private
      */
     _isNavigationAvailable(target) {
-        return this._options.isNavigationAvailable({ navigator: this, target });
+        return this._options.isNavigationAvailable({navigator: this, target});
     }
 
     /**
@@ -423,11 +430,13 @@ export class Navigator {
  * @returns {Navigator}
  */
 export function useNavigation(containerRef, options = {}) {
-    containerRef = typeof containerRef === "string" ? useRef(containerRef) : containerRef;
+    containerRef =
+        typeof containerRef === "string" ? useRef(containerRef) : containerRef;
 
-    const newOptions = { ...options };
+    const newOptions = {...options};
     if (!newOptions.getItems) {
-        newOptions.getItems = () => containerRef.el?.querySelectorAll(":scope .o-navigable") ?? [];
+        newOptions.getItems = () =>
+            containerRef.el?.querySelectorAll(":scope .o-navigable") ?? [];
     }
 
     const hotkeyService = useService("hotkey");
@@ -448,7 +457,12 @@ export function useNavigation(containerRef, options = {}) {
         () => [containerRef.el]
     );
 
-    useExternalListener(browser, "focus", ({ target }) => navigator._checkFocus(target), true);
+    useExternalListener(
+        browser,
+        "focus",
+        ({target}) => navigator._checkFocus(target),
+        true
+    );
     onWillUnmount(() => navigator._destroy());
 
     return navigator;

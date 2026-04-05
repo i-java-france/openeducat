@@ -1,11 +1,14 @@
 import logging
-
-from random import randint
 from datetime import datetime
+from random import randint
+
 from odoo import fields, tools
 from odoo.fields import Command
 from odoo.tests import Form
-from odoo.addons.stock_account.tests.test_anglo_saxon_valuation_reconciliation_common import ValuationReconciliationTestCommon
+
+from odoo.addons.stock_account.tests.test_anglo_saxon_valuation_reconciliation_common import (
+    ValuationReconciliationTestCommon,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -825,7 +828,7 @@ class TestPoSCommon(ValuationReconciliationTestCommon):
     def adjust_inventory(cls, products, quantities):
         """ Adjust inventory of the given products
         """
-        for product, qty in zip(products, quantities):
+        for product, qty in zip(products, quantities, strict=False):
             cls.env['stock.quant'].with_context(inventory_mode=True).create({
                 'product_id': product.id,
                 'inventory_quantity': qty,
@@ -968,7 +971,7 @@ class TestPoSCommon(ValuationReconciliationTestCommon):
             self.assertRecordValues(account_move, [expected_account_move_vals])
 
             # Check reconciliation status
-            for line, reconciliation_status in zip(account_move_line_ids, reconciliation_statuses):
+            for line, reconciliation_status in zip(account_move_line_ids, reconciliation_statuses, strict=False):
                 # See 'account_move_line._compute_amount_residual'  for more explanation
                 if reconciliation_status == 'fully_reconciled':
                     if line.matching_number:

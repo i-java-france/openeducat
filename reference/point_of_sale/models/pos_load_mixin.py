@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, models
-from odoo.fields import Domain
 from odoo.exceptions import AccessError
+from odoo.fields import Domain
 
 
 class PosLoadMixin(models.AbstractModel):

@@ -1,5 +1,5 @@
-import { DynamicSnippet } from "@website/snippets/s_dynamic_snippet/dynamic_snippet";
-import { registry } from "@web/core/registry";
+import {DynamicSnippet} from "@website/snippets/s_dynamic_snippet/dynamic_snippet";
+import {registry} from "@web/core/registry";
 
 export class BlogPosts extends DynamicSnippet {
     static selector = ".s_dynamic_snippet_blog_posts";

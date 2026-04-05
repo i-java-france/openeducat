@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_hr_job_form" model="ir.ui.view">
         <field name="name">hr.job.view.form.inherit.hr.skills</field>
         <field name="model">hr.job</field>
-        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="inherit_id" ref="hr.view_hr_job_form" />
         <field name="arch" type="xml">
             <page name="recruitment_page" position="attributes">
                 <attribute name="invisible">0</attribute>
@@ -29,10 +29,12 @@
                     string="Expected Skills"
                 >
                     <list>
-                        <field name="skill_id"/> <!--This is needed for the UI to update smoothly -->
-                        <field name="skill_level_id"/> <!--This is needed for the UI to update smoothly -->
-                        <field name="display_name"/>
-                        <field name="color"/>
+                        <field name="skill_id" />
+                        <!--This is needed for the UI to update smoothly -->
+                        <field name="skill_level_id" />
+                        <!--This is needed for the UI to update smoothly -->
+                        <field name="display_name" />
+                        <field name="color" />
                     </list>
                 </field>
             </div>

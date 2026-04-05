@@ -1,7 +1,7 @@
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { Deferred } from "@web/core/utils/concurrency";
-import { session } from "@web/session";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {Deferred} from "@web/core/utils/concurrency";
+import {session} from "@web/session";
 
 export const WORKER_STATE = Object.freeze({
     UNINITIALIZED: "UNINITIALIZED",
@@ -30,9 +30,13 @@ export class WorkerService {
             const source = `importScripts("${workerURL}");`;
             workerURL = "data:application/javascript;base64," + window.btoa(source);
         }
-        const workerClass = this.isUsingSharedWorker ? browser.SharedWorker : browser.Worker;
+        const workerClass = this.isUsingSharedWorker
+            ? browser.SharedWorker
+            : browser.Worker;
         this.worker = new workerClass(workerURL, {
-            name: this.isUsingSharedWorker ? "odoo:bus_shared_worker" : "odoo:bus_worker",
+            name: this.isUsingSharedWorker
+                ? "odoo:bus_shared_worker"
+                : "odoo:bus_worker",
         });
         this.worker.onerror = (e) => this.onInitError(e);
         this._registerHandler((ev) => {
@@ -77,7 +81,7 @@ export class WorkerService {
     }
 
     _send(action, data) {
-        const message = { action, data };
+        const message = {action, data};
         if (this.isUsingSharedWorker) {
             this.worker.port.postMessage(message);
         } else {
@@ -116,7 +120,9 @@ export class WorkerService {
         }
         await this.connectionInitializedDeferred;
         if (this._state === WORKER_STATE.FAILED) {
-            console.warn("Worker service failed to initialize, cannot register handler.");
+            console.warn(
+                "Worker service failed to initialize, cannot register handler."
+            );
         }
         this._registerHandler(handler);
     }

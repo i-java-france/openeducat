@@ -1,10 +1,10 @@
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { useEffect } from "@odoo/owl";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {useEffect} from "@odoo/owl";
 
 export class AutoCompleteWithPages extends AutoComplete {
     static props = {
         ...AutoComplete.props,
-        targetDropdown: { type: HTMLElement },
+        targetDropdown: {type: HTMLElement},
     };
     static template = "website.AutoCompleteWithPages";
 

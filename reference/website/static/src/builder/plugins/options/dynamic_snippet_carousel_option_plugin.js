@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { DynamicSnippetCarouselOption } from "./dynamic_snippet_carousel_option";
-import { DYNAMIC_SNIPPET, setDatasetIfUndefined } from "./dynamic_snippet_option_plugin";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {DynamicSnippetCarouselOption} from "./dynamic_snippet_carousel_option";
+import {DYNAMIC_SNIPPET, setDatasetIfUndefined} from "./dynamic_snippet_option_plugin";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 /**
  * @typedef { Object } DynamicSnippetCarouselOptionShared
@@ -28,14 +28,17 @@ class DynamicSnippetCarouselOptionPlugin extends Plugin {
         builder_actions: {
             SetCarouselSliderSpeedAction,
         },
-        builder_options: withSequence(DYNAMIC_SNIPPET_CAROUSEL, DynamicSnippetCarouselOption),
+        builder_options: withSequence(
+            DYNAMIC_SNIPPET_CAROUSEL,
+            DynamicSnippetCarouselOption
+        ),
         dynamic_snippet_template_updated: this.onTemplateUpdated.bind(this),
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
     };
     getModelNameFilter() {
         return this.modelNameFilter;
     }
-    onTemplateUpdated({ el, template }) {
+    onTemplateUpdated({el, template}) {
         if (el.matches(DynamicSnippetCarouselOption.selector)) {
             this.updateTemplateSnippetCarousel(el, template);
         }
@@ -52,12 +55,16 @@ class DynamicSnippetCarouselOptionPlugin extends Plugin {
             delete el.dataset.arrowPosition;
         }
     }
-    async onSnippetDropped({ snippetEl }) {
+    async onSnippetDropped({snippetEl}) {
         if (snippetEl.matches(DynamicSnippetCarouselOption.selector)) {
             await this.setOptionsDefaultValues(snippetEl, this.modelNameFilter);
         }
     }
-    async setOptionsDefaultValues(snippetEl, modelNameFilter, contextualFilterDomain = []) {
+    async setOptionsDefaultValues(
+        snippetEl,
+        modelNameFilter,
+        contextualFilterDomain = []
+    ) {
         await this.dependencies.dynamicSnippetOption.setOptionsDefaultValues(
             snippetEl,
             modelNameFilter,
@@ -69,10 +76,10 @@ class DynamicSnippetCarouselOptionPlugin extends Plugin {
 
 export class SetCarouselSliderSpeedAction extends BuilderAction {
     static id = "setCarouselSliderSpeed";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.carouselInterval = value * 1000;
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.carouselInterval === undefined
             ? undefined
             : editingElement.dataset.carouselInterval / 1000;

@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from base64 import b64encode
 import uuid
+from base64 import b64encode
 
 from odoo.tools.misc import file_open
 

@@ -1,11 +1,11 @@
-import { Component, useExternalListener, useRef } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
+import {Component, useExternalListener, useRef} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
 
 class MessageSeenIndicatorDialog extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static template = "mail.MessageSeenIndicatorDialog";
     static props = ["message", "close?"];
 
@@ -46,7 +46,9 @@ export class MessageSeenIndicator extends Component {
                 this.props.thread.correspondent &&
                 this.props.thread.channel_member_ids.length === 2
             ) {
-                return _t("Seen by %(user)s", { user: this.props.thread.correspondent.name });
+                return _t("Seen by %(user)s", {
+                    user: this.props.thread.correspondent.name,
+                });
             }
             return _t("Seen by everyone");
         }
@@ -56,11 +58,15 @@ export class MessageSeenIndicator extends Component {
             case 0:
                 return _t("Sent");
             case 1:
-                return _t("Seen by %(user)s", { user: user1 });
+                return _t("Seen by %(user)s", {user: user1});
             case 2:
-                return _t("Seen by %(user1)s and %(user2)s", { user1, user2 });
+                return _t("Seen by %(user1)s and %(user2)s", {user1, user2});
             case 3:
-                return _t("Seen by %(user1)s, %(user2)s and %(user3)s", { user1, user2, user3 });
+                return _t("Seen by %(user1)s, %(user2)s and %(user3)s", {
+                    user1,
+                    user2,
+                    user3,
+                });
             case 4:
                 return _t("Seen by %(user1)s, %(user2)s, %(user3)s and 1 other", {
                     user1,
@@ -68,12 +74,15 @@ export class MessageSeenIndicator extends Component {
                     user3,
                 });
             default:
-                return _t("Seen by %(user1)s, %(user2)s, %(user3)s and %(count)s others", {
-                    user1,
-                    user2,
-                    user3,
-                    count: seenMembers.length - 3,
-                });
+                return _t(
+                    "Seen by %(user1)s, %(user2)s, %(user3)s and %(count)s others",
+                    {
+                        user1,
+                        user2,
+                        user3,
+                        count: seenMembers.length - 3,
+                    }
+                );
         }
     }
 
@@ -81,6 +90,6 @@ export class MessageSeenIndicator extends Component {
         if (this.props.message.channelMemberHaveSeen.length === 0) {
             return;
         }
-        this.dialog.add(MessageSeenIndicatorDialog, { message: this.props.message });
+        this.dialog.add(MessageSeenIndicatorDialog, {message: this.props.message});
     }
 }

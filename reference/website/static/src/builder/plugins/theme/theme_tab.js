@@ -1,13 +1,13 @@
-import { Component, useState, useSubEnv } from "@odoo/owl";
-import { OptionsContainer } from "@html_builder/sidebar/option_container";
-import { useOptionsSubEnv } from "@html_builder/utils/utils";
+import {Component, useState, useSubEnv} from "@odoo/owl";
+import {OptionsContainer} from "@html_builder/sidebar/option_container";
+import {useOptionsSubEnv} from "@html_builder/utils/utils";
 
 export class ThemeTab extends Component {
     static template = "website.ThemeTab";
-    static components = { OptionsContainer };
+    static components = {OptionsContainer};
     static props = {
         // optionsContainers: { type: Array, optional: true },
-        colorPresetToShow: { type: Number | null, optional: true },
+        colorPresetToShow: {type: Number | null, optional: true},
     };
     static defaultProps = {
         // optionsContainers: [],

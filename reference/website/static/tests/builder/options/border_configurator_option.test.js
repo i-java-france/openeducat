@@ -1,8 +1,8 @@
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { expect, test } from "@odoo/hoot";
-import { waitFor, waitForNone, click, queryOne } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {expect, test} from "@odoo/hoot";
+import {click, queryOne, waitFor, waitForNone} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
 import {
     addOption,
     defineWebsiteModels,
@@ -26,7 +26,7 @@ test("empty border input is treated as 0", async () => {
             expect(styleActionValue).toBe(expectBorder ? expectBorder : "0px");
             const hasBorder = super.hasBorder(editingElement);
             expect.step("hasBorder");
-            expect(hasBorder).toBe(!!expectBorder);
+            expect(hasBorder).toBe(Boolean(expectBorder));
             return hasBorder;
         },
     });
@@ -34,9 +34,12 @@ test("empty border input is treated as 0", async () => {
         selector: ".test-options-target",
         template: xml`<BorderConfigurator label="'Border'"/>`,
     });
-    await setupWebsiteBuilder(`<section class="test-options-target">Bordered block</section>`, {
-        loadIframeBundles: true,
-    });
+    await setupWebsiteBuilder(
+        `<section class="test-options-target">Bordered block</section>`,
+        {
+            loadIframeBundles: true,
+        }
+    );
     const borderOptionInputSelector = ".options-container [data-label=Border] input";
 
     expectBorder = false;
@@ -64,13 +67,18 @@ test("hasBorder is true when multiple-value border starts by 0", async () => {
         selector: ".test-options-target",
         template: xml`<BorderConfigurator label="'Border'"/>`,
     });
-    await setupWebsiteBuilder(`<section class="test-options-target">Bordered block</section>`, {
-        loadIframeBundles: true,
-    });
+    await setupWebsiteBuilder(
+        `<section class="test-options-target">Bordered block</section>`,
+        {
+            loadIframeBundles: true,
+        }
+    );
     await contains(":iframe section").click();
     await waitFor(".options-container [data-label=Border]");
     expect(".options-container [data-label=Border] input").toHaveValue("0");
-    expect(".options-container [data-label=Border] .o_we_color_preview").not.toHaveCount();
+    expect(
+        ".options-container [data-label=Border] .o_we_color_preview"
+    ).not.toHaveCount();
     await contains(".options-container [data-label=Border] input").edit("0 3 4 4", {
         confirm: "enter",
     });
@@ -101,22 +109,22 @@ test("Elements with withBSClass = false don't reset their style when width is ch
         }
     );
 
-    // click on separator
+    // Click on separator
     await click(queryOne(":iframe .s_hr"));
     await waitFor(".we-bg-options-container");
 
-    // set color to white
+    // Set color to white
     await click(queryOne("[data-label='Border'] .o_we_color_preview"));
     await waitFor(".o_popover");
     await click(queryOne("[data-color='#FFFFFF']"));
     await waitForNone(".o_popover");
 
-    // set style to dotted
+    // Set style to dotted
     await click(queryOne("[data-label='Border'] .o-hb-select-toggle"));
-    await waitFor("[data-label='Border'] .o-hb-select-toggle.show", { timeout: 500 });
+    await waitFor("[data-label='Border'] .o-hb-select-toggle.show", {timeout: 500});
     await click(queryOne(".o_popover [data-action-value='dotted']"));
 
-    // edit width and check that color and style have been kept
+    // Edit width and check that color and style have been kept
     await contains("[data-label='Border'] input").edit("10");
     expect(":iframe .s_hr hr").toHaveStyle({
         "border-top": "10px dotted rgb(255, 255, 255)",

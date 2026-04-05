@@ -1,19 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="ImportAction">
         <div t-ref="root" class="h-100 d-flex flex-column">
-            <Layout className="'o_import_action d-flex h-100 overflow-auto'" display="display">
+            <Layout
+                className="'o_import_action d-flex h-100 overflow-auto'"
+                display="display"
+            >
                 <t t-set-slot="control-panel-create-button">
                     <t t-if="isPreviewing">
                         <t t-if="!state.isTested">
-                            <button type="button" class="btn btn-primary" t-on-click="() => this.handleImport(true)">Test</button>
-                            <button t-if="!state.isPaused" type="button" class="btn btn-secondary" t-on-click="() => this.handleImport(false)">Import</button>
-                            <button t-else="" type="button" class="btn btn-secondary" t-on-click="() => this.handleImport(false)">Resume</button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                t-on-click="() => this.handleImport(true)"
+                            >Test</button>
+                            <button
+                                t-if="!state.isPaused"
+                                type="button"
+                                class="btn btn-secondary"
+                                t-on-click="() => this.handleImport(false)"
+                            >Import</button>
+                            <button
+                                t-else=""
+                                type="button"
+                                class="btn btn-secondary"
+                                t-on-click="() => this.handleImport(false)"
+                            >Resume</button>
                         </t>
                         <t t-else="">
-                            <button t-if="!state.isPaused" type="button" class="btn btn-primary" t-on-click="() => this.handleImport(false)">Import</button>
-                            <button t-else="" type="button" class="btn btn-primary" t-on-click="() => this.handleImport(false)">Resume</button>
-                            <button type="button" class="btn btn-secondary" t-on-click="() => this.handleImport(true)">Test</button>
+                            <button
+                                t-if="!state.isPaused"
+                                type="button"
+                                class="btn btn-primary"
+                                t-on-click="() => this.handleImport(false)"
+                            >Import</button>
+                            <button
+                                t-else=""
+                                type="button"
+                                class="btn btn-primary"
+                                t-on-click="() => this.handleImport(false)"
+                            >Resume</button>
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                t-on-click="() => this.handleImport(true)"
+                            >Test</button>
                         </t>
                     </t>
                     <FileInput
@@ -23,10 +54,22 @@
                         resModel="this.resModel"
                         route="this.uploadFilesRoute"
                     >
-                        <button t-if="isPreviewing" type="button" class="btn btn-secondary">Load Data File</button>
-                        <button t-else="" type="button" class="btn btn-primary o_import_file">Upload Data File</button>
+                        <button
+                            t-if="isPreviewing"
+                            type="button"
+                            class="btn btn-secondary"
+                        >Load Data File</button>
+                        <button
+                            t-else=""
+                            type="button"
+                            class="btn btn-primary o_import_file"
+                        >Upload Data File</button>
                     </FileInput>
-                    <button t-on-click="cancel" type="button" class="btn btn-secondary">Cancel</button>
+                    <button
+                        t-on-click="cancel"
+                        type="button"
+                        class="btn btn-secondary"
+                    >Cancel</button>
                 </t>
                 <t t-if="isPreviewing">
                     <ImportDataSidepanel
@@ -57,15 +100,31 @@
                             Drop or upload a file to import
                         </p>
                         <p>
-                            Excel files are recommended as formatting is automatic.<br/>
+                            Excel files are recommended as formatting is automatic.<br
+                        />
                             But, you can also use .csv files
                         </p>
                         <div class="mt16 mb4">
-                            Need Help? <DocumentationLink path="'/applications/general/export_import_data.html'" label.translate="Import FAQ"/>
+                            Need Help? <DocumentationLink
+                            path="'/applications/general/export_import_data.html'"
+                            label.translate="Import FAQ"
+                        />
                         </div>
-                        <div t-foreach="importTemplates" t-as="template" t-key="template.template">
-                            <a class="btn btn-outline-primary my8" t-att-href="template.template" aria-label="Download" data-tooltip="Download">
-                                <i class="fa fa-download"/> <span><t t-esc="template.label"/></span>
+                        <div
+                            t-foreach="importTemplates"
+                            t-as="template"
+                            t-key="template.template"
+                        >
+                            <a
+                                class="btn btn-outline-primary my8"
+                                t-att-href="template.template"
+                                aria-label="Download"
+                                data-tooltip="Download"
+                            >
+                                <i class="fa fa-download" />
+                                <span>
+                                    <t t-esc="template.label" />
+                                </span>
                             </a>
                         </div>
                     </div>

@@ -5,11 +5,12 @@ import unittest
 import zipfile
 from base64 import b64decode
 
-from odoo.addons.base.tests.common import TransactionCaseWithUserPortal
 from odoo.exceptions import AccessError
 from odoo.fields import Command
 from odoo.tests.common import HttpCase, tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.base.tests.common import TransactionCaseWithUserPortal
 
 _logger = logging.getLogger(__name__)
 

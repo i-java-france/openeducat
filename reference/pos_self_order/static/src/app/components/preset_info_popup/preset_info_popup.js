@@ -1,14 +1,14 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { rpc } from "@web/core/network/rpc";
-import { localization } from "@web/core/l10n/localization";
-import { isValidEmail } from "@point_of_sale/utils";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {rpc} from "@web/core/network/rpc";
+import {localization} from "@web/core/l10n/localization";
+import {isValidEmail} from "@point_of_sale/utils";
+import {useService} from "@web/core/utils/hooks";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 export class PresetInfoPopup extends Component {
     static template = "pos_self_order.PresetInfoPopup";
-    static props = { callback: Function };
+    static props = {callback: Function};
 
     setup() {
         this.notification = useService("notification");
@@ -22,7 +22,8 @@ export class PresetInfoPopup extends Component {
             phoneError: "",
             street: "",
             countryId: this.selfOrder.config.company_id.country_id.id,
-            stateId: this.selfOrder.config.company_id.country_id.state_ids[0]?.id || null,
+            stateId:
+                this.selfOrder.config.company_id.country_id.state_ids[0]?.id || null,
             city: "",
             zip: "",
         });
@@ -58,7 +59,9 @@ export class PresetInfoPopup extends Component {
         }
 
         if (this.preset.needsSlot && this.state.selectedSlot) {
-            this.selfOrder.currentOrder.preset_time = DateTime.fromSQL(this.state.selectedSlot)
+            this.selfOrder.currentOrder.preset_time = DateTime.fromSQL(
+                this.state.selectedSlot
+            )
                 .toUTC()
                 .toFormat("yyyy-MM-dd HH:mm:ss");
         }
@@ -119,7 +122,8 @@ export class PresetInfoPopup extends Component {
             (this.state.stateId || !this.states.length) &&
             this.state.zip;
         return (
-            (!this.preset.needsSlot || DateTime.fromSQL(this.state.selectedSlot).isValid) &&
+            (!this.preset.needsSlot ||
+                DateTime.fromSQL(this.state.selectedSlot).isValid) &&
             (!this.preset.needsName || this.state.name) &&
             (!this.preset.needsEmail || isValidEmail(this.state.email)) &&
             (!this.preset.needsPartner || partnerInfo) &&

@@ -1,11 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
 
-import { makeMockEnv } from "@web/../tests/web_test_helpers";
+import {makeMockEnv} from "@web/../tests/web_test_helpers";
 
-import { Domain } from "@web/core/domain";
-import { condition, connector, expression } from "@web/core/tree_editor/condition_tree";
-import { constructDomainFromTree } from "@web/core/tree_editor/construct_domain_from_tree";
+import {Domain} from "@web/core/domain";
+import {condition, connector, expression} from "@web/core/tree_editor/condition_tree";
+import {constructDomainFromTree} from "@web/core/tree_editor/construct_domain_from_tree";
 import {
     eliminateVirtualOperators,
     introduceVirtualOperators,
@@ -16,19 +16,23 @@ describe.current.tags("headless");
 const options = {
     getFieldDef: (name) => {
         if (name === "m2o") {
-            return { type: "man2one" };
+            return {type: "man2one"};
         }
         if (name === "m2o.date_2" || name === "date_1" || name === "date_3") {
-            return { type: "date" };
+            return {type: "date"};
         }
-        if (name === "m2o.datetime_2" || name === "datetime_1" || name === "datetime_3") {
-            return { type: "datetime" };
+        if (
+            name === "m2o.datetime_2" ||
+            name === "datetime_1" ||
+            name === "datetime_3"
+        ) {
+            return {type: "datetime"};
         }
         return null;
     },
 };
 
-const fullOptions = { ...options, generateSmartDates: false };
+const fullOptions = {...options, generateSmartDates: false};
 
 test(`"in range" operator: no introduction for complex paths (generateSmartDates=false)`, async () => {
     const toTest = [
@@ -77,7 +81,7 @@ test(`"in range" operator: no introduction for complex paths (generateSmartDates
             ]),
         },
     ];
-    for (const { tree_py } of toTest) {
+    for (const {tree_py} of toTest) {
         expect(introduceVirtualOperators(tree_py, fullOptions)).toEqual(tree_py);
     }
 });
@@ -209,7 +213,7 @@ test(`"in range" operator: no introduction if condition negated or "|" or differ
             ]),
         },
     ];
-    for (const { tree_py } of toTest) {
+    for (const {tree_py} of toTest) {
         expect(introduceVirtualOperators(tree_py, fullOptions)).toEqual(tree_py);
     }
 });
@@ -252,7 +256,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "today", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "today",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2025-07-02 23:00:00"],
@@ -276,7 +285,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 7 days", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 7 days",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2025-06-25 23:00:00"],
@@ -300,7 +314,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 30 days", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 30 days",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2025-06-02 23:00:00"],
@@ -324,7 +343,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "month to date", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "month to date",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2025-06-30 23:00:00"],
@@ -348,7 +372,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last month", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last month",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2025-05-31 23:00:00"],
@@ -372,7 +401,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "year to date", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "year to date",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2024-12-31 23:00:00"],
@@ -396,7 +430,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "year to date", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "year to date",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2024-12-31 23:00:00"],
@@ -420,7 +459,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
                     )
                 ),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 12 months", false, false]),
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 12 months",
+                false,
+                false,
+            ]),
             domain: [
                 "&",
                 ["datetime_1", ">=", "2024-06-30 23:00:00"],
@@ -439,7 +483,12 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
             tree: condition(
                 "datetime_1",
                 "in range",
-                ["datetime", "custom range", "2025-07-02 00:00:00", "2025-07-03 00:00:00"],
+                [
+                    "datetime",
+                    "custom range",
+                    "2025-07-02 00:00:00",
+                    "2025-07-03 00:00:00",
+                ],
                 true
             ),
             domain: [
@@ -511,12 +560,18 @@ test(`"in range" operator: introduction/elimination for datetime fields (generat
             ],
         },
     ];
-    for (const { tree_py, tree } of toTest) {
-        expect(introduceVirtualOperators(tree_py, fullOptions)).toEqual(tree || tree_py);
-        expect(eliminateVirtualOperators(tree || tree_py, fullOptions)).toEqual(tree_py);
+    for (const {tree_py, tree} of toTest) {
+        expect(introduceVirtualOperators(tree_py, fullOptions)).toEqual(
+            tree || tree_py
+        );
+        expect(eliminateVirtualOperators(tree || tree_py, fullOptions)).toEqual(
+            tree_py
+        );
     }
-    for (const { tree_py, domain } of toTest) {
-        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(domain || []);
+    for (const {tree_py, domain} of toTest) {
+        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(
+            domain || []
+        );
     }
 });
 
@@ -543,55 +598,108 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
         },
         {
             tree_py: connector("&", [
-                condition("date_1", ">=", expression(`context_today().strftime("%Y-%m-%d")`)),
+                condition(
+                    "date_1",
+                    ">=",
+                    expression(`context_today().strftime("%Y-%m-%d")`)
+                ),
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`
+                    )
                 ),
             ]),
             tree: condition("date_1", "in range", ["date", "today", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-07-03"], ["date_1", "<", "2025-07-04"]],
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-07-03"],
+                ["date_1", "<", "2025-07-04"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition(
                     "date_1",
                     ">=",
-                    expression(`(context_today() + relativedelta(days = -7)).strftime('%Y-%m-%d')`)
-                ),
-                condition("date_1", "<", expression(`context_today().strftime("%Y-%m-%d")`)),
-            ]),
-            tree: condition("date_1", "in range", ["date", "last 7 days", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-06-26"], ["date_1", "<", "2025-07-03"]],
-        },
-        {
-            tree_py: connector("&", [
-                condition(
-                    "date_1",
-                    ">=",
-                    expression(`(context_today() + relativedelta(days = -30)).strftime('%Y-%m-%d')`)
-                ),
-                condition("date_1", "<", expression(`context_today().strftime("%Y-%m-%d")`)),
-            ]),
-            tree: condition("date_1", "in range", ["date", "last 30 days", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-06-03"], ["date_1", "<", "2025-07-03"]],
-        },
-        {
-            tree_py: connector("&", [
-                condition(
-                    "date_1",
-                    ">=",
-                    expression(`(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(days = -7)).strftime('%Y-%m-%d')`
+                    )
                 ),
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`)
+                    expression(`context_today().strftime("%Y-%m-%d")`)
                 ),
             ]),
-            tree: condition("date_1", "in range", ["date", "month to date", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-07-01"], ["date_1", "<", "2025-07-04"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 7 days",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-06-26"],
+                ["date_1", "<", "2025-07-03"],
+            ],
+        },
+        {
+            tree_py: connector("&", [
+                condition(
+                    "date_1",
+                    ">=",
+                    expression(
+                        `(context_today() + relativedelta(days = -30)).strftime('%Y-%m-%d')`
+                    )
+                ),
+                condition(
+                    "date_1",
+                    "<",
+                    expression(`context_today().strftime("%Y-%m-%d")`)
+                ),
+            ]),
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 30 days",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-06-03"],
+                ["date_1", "<", "2025-07-03"],
+            ],
+        },
+        {
+            tree_py: connector("&", [
+                condition(
+                    "date_1",
+                    ">=",
+                    expression(
+                        `(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`
+                    )
+                ),
+                condition(
+                    "date_1",
+                    "<",
+                    expression(
+                        `(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`
+                    )
+                ),
+            ]),
+            tree: condition("date_1", "in range", [
+                "date",
+                "month to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-07-01"],
+                ["date_1", "<", "2025-07-04"],
+            ],
         },
         {
             tree_py: connector("&", [
@@ -605,11 +713,17 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`
+                    )
                 ),
             ]),
             tree: condition("date_1", "in range", ["date", "last month", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-06-01"], ["date_1", "<", "2025-07-01"]],
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-06-01"],
+                ["date_1", "<", "2025-07-01"],
+            ],
         },
         {
             tree_py: connector("&", [
@@ -623,11 +737,22 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`
+                    )
                 ),
             ]),
-            tree: condition("date_1", "in range", ["date", "year to date", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-01-01"], ["date_1", "<", "2025-07-04"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "year to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-01-01"],
+                ["date_1", "<", "2025-07-04"],
+            ],
         },
         {
             tree_py: connector("&", [
@@ -641,11 +766,22 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(days = 1)).strftime('%Y-%m-%d')`
+                    )
                 ),
             ]),
-            tree: condition("date_1", "in range", ["date", "year to date", false, false]),
-            domain: ["&", ["date_1", ">=", "2025-01-01"], ["date_1", "<", "2025-07-04"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "year to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2025-01-01"],
+                ["date_1", "<", "2025-07-04"],
+            ],
         },
         {
             tree_py: connector("&", [
@@ -659,11 +795,22 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
                 condition(
                     "date_1",
                     "<",
-                    expression(`(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`)
+                    expression(
+                        `(context_today() + relativedelta(day = 1)).strftime('%Y-%m-%d')`
+                    )
                 ),
             ]),
-            tree: condition("date_1", "in range", ["date", "last 12 months", false, false]),
-            domain: ["&", ["date_1", ">=", "2024-07-01"], ["date_1", "<", "2025-07-01"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 12 months",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "2024-07-01"],
+                ["date_1", "<", "2025-07-01"],
+            ],
         },
         {
             tree_py: connector(
@@ -749,12 +896,14 @@ test(`"in range" operator: introduction/elimination for date fields (generateSma
             ],
         },
     ];
-    for (const { tree_py, tree } of toTest) {
+    for (const {tree_py, tree} of toTest) {
         expect(introduceVirtualOperators(tree_py, fullOptions)).toEqual(tree);
         expect(eliminateVirtualOperators(tree, fullOptions)).toEqual(tree_py);
     }
-    for (const { tree_py, domain } of toTest) {
-        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(domain || []);
+    for (const {tree_py, domain} of toTest) {
+        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(
+            domain || []
+        );
     }
 });
 
@@ -805,7 +954,7 @@ test(`"in range" operator: no introduction for complex paths`, async () => {
             ]),
         },
     ];
-    for (const { tree_py } of toTest) {
+    for (const {tree_py} of toTest) {
         expect(introduceVirtualOperators(tree_py, options)).toEqual(tree_py);
     }
 });
@@ -873,7 +1022,7 @@ test(`"in range" operator: no introduction if condition negated or "|" or differ
             ]),
         },
     ];
-    for (const { tree_py } of toTest) {
+    for (const {tree_py} of toTest) {
         expect(introduceVirtualOperators(tree_py, options)).toEqual(tree_py);
     }
 });
@@ -903,64 +1052,136 @@ test(`"in range" operator: introduction/elimination for datetime fields`, async 
                 condition("datetime_1", ">=", "today"),
                 condition("datetime_1", "<", "today +1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "today", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today"], ["datetime_1", "<", "today +1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "today",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today"],
+                ["datetime_1", "<", "today +1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today -7d"),
                 condition("datetime_1", "<", "today"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 7 days", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today -7d"], ["datetime_1", "<", "today"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 7 days",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today -7d"],
+                ["datetime_1", "<", "today"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today -30d"),
                 condition("datetime_1", "<", "today"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 30 days", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today -30d"], ["datetime_1", "<", "today"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 30 days",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today -30d"],
+                ["datetime_1", "<", "today"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today =1d"),
                 condition("datetime_1", "<", "today +1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "month to date", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today =1d"], ["datetime_1", "<", "today +1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "month to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today =1d"],
+                ["datetime_1", "<", "today +1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today =1d -1m"),
                 condition("datetime_1", "<", "today =1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last month", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today =1d -1m"], ["datetime_1", "<", "today =1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last month",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today =1d -1m"],
+                ["datetime_1", "<", "today =1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today =1m =1d"),
                 condition("datetime_1", "<", "today +1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "year to date", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today =1m =1d"], ["datetime_1", "<", "today +1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "year to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today =1m =1d"],
+                ["datetime_1", "<", "today +1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today =1m =1d"),
                 condition("datetime_1", "<", "today +1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "year to date", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today =1m =1d"], ["datetime_1", "<", "today +1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "year to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today =1m =1d"],
+                ["datetime_1", "<", "today +1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("datetime_1", ">=", "today =1d -12m"),
                 condition("datetime_1", "<", "today =1d"),
             ]),
-            tree: condition("datetime_1", "in range", ["datetime", "last 12 months", false, false]),
-            domain: ["&", ["datetime_1", ">=", "today =1d -12m"], ["datetime_1", "<", "today =1d"]],
+            tree: condition("datetime_1", "in range", [
+                "datetime",
+                "last 12 months",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["datetime_1", ">=", "today =1d -12m"],
+                ["datetime_1", "<", "today =1d"],
+            ],
         },
         {
             tree_py: connector(
@@ -974,7 +1195,12 @@ test(`"in range" operator: introduction/elimination for datetime fields`, async 
             tree: condition(
                 "datetime_1",
                 "in range",
-                ["datetime", "custom range", "2025-07-02 00:00:00", "2025-07-03 00:00:00"],
+                [
+                    "datetime",
+                    "custom range",
+                    "2025-07-02 00:00:00",
+                    "2025-07-03 00:00:00",
+                ],
                 true
             ),
             domain: [
@@ -1046,12 +1272,14 @@ test(`"in range" operator: introduction/elimination for datetime fields`, async 
             ],
         },
     ];
-    for (const { tree_py, tree } of toTest) {
+    for (const {tree_py, tree} of toTest) {
         expect(introduceVirtualOperators(tree_py, options)).toEqual(tree || tree_py);
         expect(eliminateVirtualOperators(tree || tree_py)).toEqual(tree_py);
     }
-    for (const { tree_py, domain } of toTest) {
-        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(domain || []);
+    for (const {tree_py, domain} of toTest) {
+        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(
+            domain || []
+        );
     }
 });
 
@@ -1088,7 +1316,12 @@ test(`"in range" operator: introduction/elimination for date fields`, async () =
                 condition("date_1", ">=", "today -7d"),
                 condition("date_1", "<", "today"),
             ]),
-            tree: condition("date_1", "in range", ["date", "last 7 days", false, false]),
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 7 days",
+                false,
+                false,
+            ]),
             domain: ["&", ["date_1", ">=", "today -7d"], ["date_1", "<", "today"]],
         },
         {
@@ -1096,7 +1329,12 @@ test(`"in range" operator: introduction/elimination for date fields`, async () =
                 condition("date_1", ">=", "today -30d"),
                 condition("date_1", "<", "today"),
             ]),
-            tree: condition("date_1", "in range", ["date", "last 30 days", false, false]),
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 30 days",
+                false,
+                false,
+            ]),
             domain: ["&", ["date_1", ">=", "today -30d"], ["date_1", "<", "today"]],
         },
         {
@@ -1104,7 +1342,12 @@ test(`"in range" operator: introduction/elimination for date fields`, async () =
                 condition("date_1", ">=", "today =1d"),
                 condition("date_1", "<", "today +1d"),
             ]),
-            tree: condition("date_1", "in range", ["date", "month to date", false, false]),
+            tree: condition("date_1", "in range", [
+                "date",
+                "month to date",
+                false,
+                false,
+            ]),
             domain: ["&", ["date_1", ">=", "today =1d"], ["date_1", "<", "today +1d"]],
         },
         {
@@ -1113,23 +1356,45 @@ test(`"in range" operator: introduction/elimination for date fields`, async () =
                 condition("date_1", "<", "today =1d"),
             ]),
             tree: condition("date_1", "in range", ["date", "last month", false, false]),
-            domain: ["&", ["date_1", ">=", "today =1d -1m"], ["date_1", "<", "today =1d"]],
+            domain: [
+                "&",
+                ["date_1", ">=", "today =1d -1m"],
+                ["date_1", "<", "today =1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("date_1", ">=", "today =1m =1d"),
                 condition("date_1", "<", "today +1d"),
             ]),
-            tree: condition("date_1", "in range", ["date", "year to date", false, false]),
-            domain: ["&", ["date_1", ">=", "today =1m =1d"], ["date_1", "<", "today +1d"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "year to date",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "today =1m =1d"],
+                ["date_1", "<", "today +1d"],
+            ],
         },
         {
             tree_py: connector("&", [
                 condition("date_1", ">=", "today =1d -12m"),
                 condition("date_1", "<", "today =1d"),
             ]),
-            tree: condition("date_1", "in range", ["date", "last 12 months", false, false]),
-            domain: ["&", ["date_1", ">=", "today =1d -12m"], ["date_1", "<", "today =1d"]],
+            tree: condition("date_1", "in range", [
+                "date",
+                "last 12 months",
+                false,
+                false,
+            ]),
+            domain: [
+                "&",
+                ["date_1", ">=", "today =1d -12m"],
+                ["date_1", "<", "today =1d"],
+            ],
         },
         {
             tree_py: connector(
@@ -1215,11 +1480,13 @@ test(`"in range" operator: introduction/elimination for date fields`, async () =
             ],
         },
     ];
-    for (const { tree_py, tree } of toTest) {
+    for (const {tree_py, tree} of toTest) {
         expect(introduceVirtualOperators(tree_py, options)).toEqual(tree);
         expect(eliminateVirtualOperators(tree)).toEqual(tree_py);
     }
-    for (const { tree_py, domain } of toTest) {
-        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(domain || []);
+    for (const {tree_py, domain} of toTest) {
+        expect(new Domain(constructDomainFromTree(tree_py)).toList()).toEqual(
+            domain || []
+        );
     }
 });

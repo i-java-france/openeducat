@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import http
+from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, new_test_user, tagged
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
-from odoo.tests.common import get_db_name, HOST, HttpCase, new_test_user, Opener, tagged
 
 
 class TestWebLoginCommon(HttpCase):

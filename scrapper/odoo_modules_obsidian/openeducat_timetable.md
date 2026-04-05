@@ -1,0 +1,1354 @@
+---
+title: "OpenEduCat Timetable"
+module: "openeducat_timetable"
+state: "installed"
+version: "19.0.1.0"
+author: "OpenEduCat Inc"
+maintainer: "N/A"
+website: "https://www.openeducat.org"
+license: "LGPL-3"
+category: "Education"
+application: true
+auto_install: false
+tags: [odoo/module, odoo/state/installed, odoo/category/_________, odoo/app]
+---
+
+# 🟢 OpenEduCat Timetable
+
+> **Module:** `openeducat_timetable` | **Version:** `19.0.1.0` **Category:** Education |
+> **License:** `LGPL-3` **Author:** OpenEduCat Inc **Website:**
+> https://www.openeducat.org
+
+## 🔗 Dependencies
+
+[[openeducat_classroom]]
+
+## 📖 Description
+
+![](/openeducat_timetable/static/description/students-icon.svg)
+
+### Student Information Management
+
+A centralized system for managing student data, including profiles, activities, health
+information, and parental details, to facilitate informed decision-making.
+
+![](/openeducat_timetable/static/description/faculties-icon.svg)
+
+### Faculty Management
+
+Streamlines faculty information, skills, degrees, and employment history, while
+integrating with HR management and payroll systems.
+
+![](/openeducat_timetable/static/description/courses-icon%201.svg)
+
+### Course Management
+
+Efficiently organizes courses, subjects, and sessions, including curriculum, lesson
+plans, and timetables.
+
+![](/openeducat_timetable/static/description/openeducat_admission.svg)
+
+### Admission Management
+
+Simplifies the enrollment process with online applications, planned admissions, and
+integrated communication tools.
+
+![](/openeducat_timetable/static/description/openeducat_exam.svg)
+
+### Examination Management
+
+Facilitates exam scheduling using various evaluation methods, supports online exams, and
+generates automated report cards.
+
+![](/openeducat_timetable/static/description/openeducat_account_financial_reports.svg)
+
+### Financial Management
+
+Manages financial activities with flexible payment systems, automated fee reminders, and
+detailed financial reports.
+
+![](/openeducat_timetable/static/description/openeducat_attendance.svg)
+
+### Attendance Management
+
+Tracks attendance and manages class schedules efficiently to ensure smooth academic
+operations.
+
+![](/openeducat_timetable/static/description/openeducat_library.svg)
+
+### Library Management
+
+Handles book lending, cataloging, and member management to support educational
+resources.
+
+![](/openeducat_timetable/static/description/lms-icon.svg)
+
+### Learning Management System
+
+Enhances collaboration with integrated messaging and notifications to keep stakeholders
+informed.
+
+![](/openeducat_timetable/static/description/openeducat_classroom.svg)
+
+### Classroom Management
+
+Generates insightful reports for data-driven decision-making, helping institutions
+optimize their operations.
+
+### Highlights
+
+![Icon](/openeducat_timetable/static/description/openeducat_assignment.svg)
+
+Assignment Allocation
+
+![Icon](/openeducat_timetable/static/description/openeducat_exam.svg)
+
+Exam Management
+
+![Icon](/openeducat_timetable/static/description/fees.svg)
+
+Fees Management
+
+![](/openeducat_timetable/static/description/inventory.svg)
+
+Inventory Management
+
+![Icon](/openeducat_timetable/static/description/campus-icon.svg)
+
+Campus Management
+
+![Icon](/openeducat_timetable/static/description/notice-board-icon.svg)
+
+Notice Board Enterprise
+
+![Icon](/openeducat_timetable/static/description/grade-book-icon.svg)
+
+Gradebook Management Enterprise
+
+![Icon](/openeducat_timetable/static/description/assignment-annotation-icon.png)
+
+Assignment Annotation Enterprise
+
+![Icon](/openeducat_timetable/static/description/openeducat_alumni_enterprise.svg)
+
+Alumni Management Enterprise
+
+![Icon](/openeducat_timetable/static/description/transportation-icon.svg)
+
+Transpotation Management Enterprise
+
+![Icon](/openeducat_timetable/static/description/kpi-dashboard-icon.svg)
+
+KPI Dashboards Enterprise
+
+![](/openeducat_timetable/static/description/news.svg)
+
+News Portal Enterprise
+
+# OpenEduCat vs other odoo educational modules and applications
+
+Below is a concise side-by-side comparison table highlighting why OpenEduCat stands out
+from other Odoo-based education management modules:
+
+| Criteria                        | OpenEduCat                                                                                                                             | Other Odoo Educational Modules                                                                                 |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 1. History & Expertise          | - First specialized solution in the Odoo ecosystem - Deep expertise in both ERP and education - Decades of combined industry knowledge | - Often smaller scale or a byproduct of broader Odoo offerings - Typically less domain-focused and less proven |
+| 2. Track Record                 | - 3M+ users and 50,000+ institutes worldwide - Global community of educators and administrators                                        | - Limited user base and references - Less recognized in global education circles                               |
+| 3. Core Product Focus           | - Maintained as a flagship product at OpenEduCat, Inc. - Continuous investments in enhancements and new features                       | - Generally one of the many modules a developer might offer, leading to divided attention                      |
+| 4. Reviews & Reputation         | - Highly rated on G2 and SourceForge - Consistent positive customer feedback and testimonials                                          | - Fewer or less visible third-party reviews                                                                    |
+| 5. Active Development           | - Frequent releases and timely updates - Dedicated roadmap for education-related improvements                                          | - Irregular or slow updates - May not keep pace with evolving education technology                             |
+| 6. Open Source & Enterprise     | - Fully open source with an optional Enterprise Edition - Flexible, cost-effective solutions for institutions of all sizes             | - Some may offer only limited versions or features, requiring more customization                               |
+| 7. Customer Support & Community | - Extensive documentation, tutorials, and an active community - Professional support from experts in both ERP and education            | - Limited or ad-hoc support - Smaller community and less specialized resources                                 |
+| 8. Scalability & Reliability    | - Proven performance in large-scale deployments - Designed to handle complex workflows and multiple campuses                           | - Often suitable only for smaller environments                                                                 |
+| 9. Integration & Customization  | - Native Odoo integration plus easy compatibility with third-party tools - Customizable for unique academic workflows                  | - May require extra effort or third-party help to integrate                                                    |
+| 10. Overall Value & ROI         | - High-quality features and ongoing innovation - A trusted, long-term solution backed by a large user base and active development      | - Uncertain support or updates, risking higher long-term costs                                                 |
+
+### Why OpenEduCat Matters
+
+- Institutional Longevity : OpenEduCat's unwavering commitment to education ensures a
+  future-proof solution, providing your institution with long-term stability and
+  reliability.
+- Cost-Effective Investment Leveraging a robust open-source foundation coupled with
+  optional enterprise support, OpenEduCat minimizes your total cost of ownership by
+  eliminating hidden maintenance and upgrade expenses.
+- Proven Industry Expertise Our extensive experience in both ERP systems and the
+  education sector guarantees a mature, high-performance solution capable of addressing
+  complex institutional requirements.
+- Scalable Solutions for All "Choosing OpenEduCat isn't merely implementing another
+  module—it's an investment in a global leader in education management, purpose-built
+  for the Odoo platform. From small institutions to large universities, OpenEduCat
+  seamlessly scales to meet your evolving needs."
+- Tailored for Education As a specialized solution for the education sector, OpenEduCat
+  offers features and functionalities specifically designed to enhance academic
+  operations and student management.
+- Data Security and Compliance With increasing focus on data protection in education,
+  OpenEduCat prioritizes security measures and compliance with educational data
+  regulations.
+
+> When you choose **OpenEduCat** you are not just installing another module you are
+> investing in a **global leader** in education management built specifically for the
+> Odoo platform. Whether you are a small institution or a large university OpenEduCat
+> scales seamlessly to meet your needs
+
+### Badges & Awards
+
+![](/openeducat_timetable/static/description/g2-img.svg)
+
+![](/openeducat_timetable/static/description/sourceforge-img.svg)
+
+# Need Any Help?
+
+- #### Website : openeducat.org
+- #### Contact Us : openeducat.org/contactus
+- #### Try for Free : openeducat.org/demo
+- #### Talk to Expert : openeducat.org/booking
+
+## 🖥️ UI Components
+
+### Menus
+
+- `Time Table`
+- `Time Table/Configuration`
+- `Time Table/Configuration/Settings`
+- `Time Table/Reporting`
+- `Time Table/Reporting/Generate Timetable Report`
+- `Time Table/Timetable`
+- `Time Table/Timetable/Generate Timetable`
+- `Time Table/Timetable/Sessions`
+
+### Views
+
+- `* INHERIT op.faculty.form.session.inherit (form)`
+- `* INHERIT res.config.settings.view.form.timetable (form)`
+- `gen.time.table.line.form (form)`
+- `gen.time.table.line.list (list)`
+- `generate.time.table.form (form)`
+- `op.session.calendar (calendar)`
+- `op.session.form (form)`
+- `op.session.list (list)`
+- `op.session.pivot (pivot)`
+- `op.session.search (search)`
+- `op.timing.form (form)`
+- `op.timing.list (list)`
+- `op.timing.search (search)`
+- `report_timetable_student_generate (qweb)`
+- `report_timetable_teacher_generate (qweb)`
+- `session.confirmation.form (form)`
+- `session.kanban (kanban)`
+- `time.table.report.form (form)`
+
+### Reports
+
+- `TimeTable for Faculties`
+- `TimeTable for Students`
+
+## 🛠️ Technical Documentation
+
+**10 model(s) defined by this module:**
+
+### 🗃️ `op.faculty` — OpenEduCat Faculty
+
+> 📧 Mail Thread
+
+Main super-class for regular database-persisted Odoo models.
+
+    Odoo models are created by inheriting from this class::
+
+        class ResUsers(Model):
+            ...
+
+    The system will later instantiate the class once per database (on
+    which the class' module is installed).
+
+**Fields:**
+
+| Field                                       | Label                                               | Type         | Req | Store | Relation                    |
+| ------------------------------------------- | --------------------------------------------------- | ------------ | --- | ----- | --------------------------- |
+| `account_move_count`                        | Account Move Count                                  | `integer`    |     |       |                             |
+| `active`                                    | Active                                              | `boolean`    |     | ✅    |                             |
+| `active_lang_count`                         | Active Lang Count                                   | `integer`    |     |       |                             |
+| `activity_calendar_event_id`                | Next Activity Calendar Event                        | `many2one`   |     |       | calendar.event              |
+| `activity_date_deadline`                    | Next Activity Deadline                              | `date`       |     |       |                             |
+| `activity_exception_decoration`             | Activity Exception Decoration                       | `selection`  |     |       |                             |
+| `activity_exception_icon`                   | Icon                                                | `char`       |     |       |                             |
+| `activity_ids`                              | Activities                                          | `one2many`   |     | ✅    | mail.activity               |
+| `activity_state`                            | Activity State                                      | `selection`  |     |       |                             |
+| `activity_summary`                          | Next Activity Summary                               | `char`       |     |       |                             |
+| `activity_type_icon`                        | Activity Type Icon                                  | `char`       |     |       |                             |
+| `activity_type_id`                          | Next Activity Type                                  | `many2one`   |     |       | mail.activity.type          |
+| `activity_user_id`                          | Responsible User                                    | `many2one`   |     |       | res.users                   |
+| `allowed_department_ids`                    | Allowed Department                                  | `many2many`  |     | ✅    | op.department               |
+| `applicant_ids`                             | Applicants                                          | `one2many`   |     |       | hr.applicant                |
+| `application_count`                         | Applications                                        | `integer`    |     |       |                             |
+| `application_statistics`                    | Stats                                               | `json`       |     |       |                             |
+| `assignment_count`                          | Assignment Count                                    | `integer`    |     |       |                             |
+| `autopost_bills`                            | Auto-post bills                                     | `selection`  | ✅  |       |                             |
+| `available_invoice_template_pdf_report_ids` | Available Invoice Template Pdf Report               | `one2many`   |     |       | ir.actions.report           |
+| `available_peppol_eas`                      | Available Peppol Eas                                | `json`       |     |       |                             |
+| `avatar_1024`                               | Avatar 1024                                         | `binary`     |     |       |                             |
+| `avatar_128`                                | Avatar 128                                          | `binary`     |     |       |                             |
+| `avatar_1920`                               | Avatar                                              | `binary`     |     |       |                             |
+| `avatar_256`                                | Avatar 256                                          | `binary`     |     |       |                             |
+| `avatar_512`                                | Avatar 512                                          | `binary`     |     |       |                             |
+| `bank_account_count`                        | Bank                                                | `integer`    |     |       |                             |
+| `bank_ids`                                  | Banks                                               | `one2many`   |     |       | res.partner.bank            |
+| `barcode`                                   | Barcode                                             | `char`       |     |       |                             |
+| `bio_data`                                  | Bio Data                                            | `html`       |     | ✅    |                             |
+| `birth_date`                                | Birth Date                                          | `date`       | ✅  | ✅    |                             |
+| `blood_group`                               | Blood Group                                         | `selection`  |     | ✅    |                             |
+| `buyer_id`                                  | Buyer                                               | `many2one`   |     |       | res.users                   |
+| `calendar_last_notif_ack`                   | Last notification marked as read from base Calendar | `datetime`   |     |       |                             |
+| `can_publish`                               | Can Publish                                         | `boolean`    |     |       |                             |
+| `category_id`                               | Tags                                                | `many2many`  |     |       | res.partner.category        |
+| `certifications_company_count`              | Company Certifications Count                        | `integer`    |     |       |                             |
+| `certifications_count`                      | Certifications Count                                | `integer`    |     |       |                             |
+| `channel_ids`                               | Channels                                            | `many2many`  |     |       | discuss.channel             |
+| `channel_member_ids`                        | Channel Member                                      | `one2many`   |     |       | discuss.channel.member      |
+| `chatbot_script_ids`                        | Chatbot Script                                      | `one2many`   |     |       | chatbot.script              |
+| `child_ids`                                 | Contact                                             | `one2many`   |     |       | res.partner                 |
+| `city`                                      | City                                                | `char`       |     |       |                             |
+| `code`                                      | Company Code                                        | `char`       |     |       |                             |
+| `color`                                     | Color Index                                         | `integer`    |     |       |                             |
+| `comment`                                   | Notes                                               | `html`       |     |       |                             |
+| `commercial_company_name`                   | Company Name Entity                                 | `char`       |     |       |                             |
+| `commercial_partner_id`                     | Commercial Entity                                   | `many2one`   |     |       | res.partner                 |
+| `company_id`                                | Company                                             | `many2one`   |     | ✅    | res.company                 |
+| `company_name`                              | Company Name                                        | `char`       |     |       |                             |
+| `company_registry`                          | Company ID                                          | `char`       |     |       |                             |
+| `company_registry_label`                    | Company ID Label                                    | `char`       |     |       |                             |
+| `company_registry_placeholder`              | Company Registry Placeholder                        | `char`       |     |       |                             |
+| `company_type`                              | Company Type                                        | `selection`  |     |       |                             |
+| `complete_name`                             | Complete Name                                       | `char`       |     |       |                             |
+| `contact_address`                           | Complete Address                                    | `char`       |     |       |                             |
+| `contact_address_inline`                    | Inlined Complete Address                            | `char`       |     |       |                             |
+| `contract_ids`                              | Partner Contracts                                   | `one2many`   |     |       | account.analytic.account    |
+| `country_code`                              | Country Code                                        | `char`       |     |       |                             |
+| `country_id`                                | Country                                             | `many2one`   |     |       | res.country                 |
+| `course_count`                              | Course Count                                        | `integer`    |     |       |                             |
+| `create_date`                               | Created on                                          | `datetime`   |     | ✅    |                             |
+| `create_uid`                                | Created by                                          | `many2one`   |     | ✅    | res.users                   |
+| `credit`                                    | Total Receivable                                    | `monetary`   |     |       |                             |
+| `credit_limit`                              | Credit Limit                                        | `float`      |     |       |                             |
+| `credit_to_invoice`                         | Credit To Invoice                                   | `monetary`   |     |       |                             |
+| `currency_id`                               | Currency                                            | `many2one`   |     |       | res.currency                |
+| `customer_rank`                             | Customer Rank                                       | `integer`    |     |       |                             |
+| `days_sales_outstanding`                    | Days Sales Outstanding (DSO)                        | `float`      |     |       |                             |
+| `debit`                                     | Total Payable                                       | `monetary`   |     |       |                             |
+| `designation`                               | Designation                                         | `char`       |     | ✅    |                             |
+| `display_invoice_edi_format`                | Display Invoice Edi Format                          | `boolean`    |     |       |                             |
+| `display_invoice_template_pdf_report_id`    | Display Invoice Template Pdf Report                 | `boolean`    |     |       |                             |
+| `display_name`                              | Display Name                                        | `char`       |     |       |                             |
+| `duplicate_bank_partner_ids`                | Duplicate Bank Partner                              | `many2many`  |     |       | res.partner                 |
+| `email`                                     | Email                                               | `char`       |     |       |                             |
+| `email_formatted`                           | Formatted Email                                     | `char`       |     |       |                             |
+| `email_normalized`                          | Normalized Email                                    | `char`       |     |       |                             |
+| `emergency_contact`                         | Emergency Contact                                   | `many2one`   |     | ✅    | res.partner                 |
+| `emp_id`                                    | HR Employee                                         | `many2one`   |     | ✅    | hr.employee                 |
+| `employee`                                  | Employee                                            | `boolean`    |     |       |                             |
+| `employee_ids`                              | Employees                                           | `one2many`   |     |       | hr.employee                 |
+| `employees_count`                           | Employees Count                                     | `integer`    |     |       |                             |
+| `event_count`                               | # Events                                            | `integer`    |     |       |                             |
+| `faculty_subject_ids`                       | Subject(s)                                          | `many2many`  |     | ✅    | op.subject                  |
+| `first_name`                                | First Name                                          | `char`       | ✅  | ✅    |                             |
+| `fiscal_country_codes`                      | Fiscal Country Codes                                | `char`       |     |       |                             |
+| `fiscal_country_group_codes`                | Fiscal Country Group Codes                          | `json`       |     |       |                             |
+| `function`                                  | Job Position                                        | `char`       |     |       |                             |
+| `gender`                                    | Gender                                              | `selection`  | ✅  | ✅    |                             |
+| `global_location_number`                    | GLN                                                 | `char`       |     |       |                             |
+| `group_on`                                  | Week Day                                            | `selection`  | ✅  |       |                             |
+| `group_rfq`                                 | Group RFQ                                           | `selection`  | ✅  |       |                             |
+| `has_message`                               | Has Message                                         | `boolean`    |     |       |                             |
+| `head_office`                               | Head Office                                         | `char`       |     |       |                             |
+| `health_faculty_count`                      | Health Faculty Count                                | `integer`    |     |       |                             |
+| `health_faculty_lines`                      | Health Detail                                       | `one2many`   |     | ✅    | op.health                   |
+| `hr_contact`                                | HR Contact                                          | `char`       |     |       |                             |
+| `hr_email`                                  | HR Email                                            | `char`       |     |       |                             |
+| `hr_name`                                   | HR Name                                             | `char`       |     |       |                             |
+| `id`                                        | ID                                                  | `integer`    |     | ✅    |                             |
+| `id_number`                                 | ID Card Number                                      | `char`       |     | ✅    |                             |
+| `ignore_abnormal_invoice_amount`            | Ignore Abnormal Invoice Amount                      | `boolean`    |     |       |                             |
+| `ignore_abnormal_invoice_date`              | Ignore Abnormal Invoice Date                        | `boolean`    |     |       |                             |
+| `image_1024`                                | Image 1024                                          | `binary`     |     |       |                             |
+| `image_128`                                 | Image 128                                           | `binary`     |     |       |                             |
+| `image_1920`                                | Image                                               | `binary`     |     |       |                             |
+| `image_256`                                 | Image 256                                           | `binary`     |     |       |                             |
+| `image_512`                                 | Image 512                                           | `binary`     |     |       |                             |
+| `im_status`                                 | IM Status                                           | `char`       |     |       |                             |
+| `industry_id`                               | Industry                                            | `many2one`   |     |       | res.partner.industry        |
+| `invoice_edi_format`                        | eInvoice format                                     | `selection`  |     |       |                             |
+| `invoice_edi_format_store`                  | Invoice Edi Format Store                            | `char`       |     |       |                             |
+| `invoice_ids`                               | Invoices                                            | `one2many`   |     |       | account.move                |
+| `invoice_sending_method`                    | Invoice sending                                     | `selection`  |     |       |                             |
+| `invoice_template_pdf_report_id`            | Invoice report                                      | `many2one`   |     |       | ir.actions.report           |
+| `is_blacklisted`                            | Blacklist                                           | `boolean`    |     |       |                             |
+| `is_company`                                | Is a Company                                        | `boolean`    |     |       |                             |
+| `is_in_call`                                | Is In Call                                          | `boolean`    |     |       |                             |
+| `is_parent`                                 | Is a Parent                                         | `boolean`    |     |       |                             |
+| `is_peppol_edi_format`                      | Is Peppol Edi Format                                | `boolean`    |     |       |                             |
+| `is_pickup_location`                        | Is Pickup Location                                  | `boolean`    |     |       |                             |
+| `is_public`                                 | Is Public                                           | `boolean`    |     |       |                             |
+| `is_published`                              | Is Published                                        | `boolean`    |     |       |                             |
+| `is_seo_optimized`                          | SEO optimized                                       | `boolean`    |     |       |                             |
+| `is_student`                                | Is a Student                                        | `boolean`    |     |       |                             |
+| `is_ubl_format`                             | Is Ubl Format                                       | `boolean`    |     |       |                             |
+| `is_venue`                                  | Venue                                               | `boolean`    |     |       |                             |
+| `lang`                                      | Language                                            | `selection`  |     |       |                             |
+| `last_login`                                | Latest Connection                                   | `datetime`   |     |       |                             |
+| `last_name`                                 | Last Name                                           | `char`       | ✅  | ✅    |                             |
+| `leave_date_to`                             | Leave Date To                                       | `date`       |     |       |                             |
+| `library_card_id`                           | Library Card                                        | `many2one`   |     | ✅    | op.library.card             |
+| `livechat_channel_count`                    | Livechat Channel Count                              | `integer`    |     |       |                             |
+| `login`                                     | Login                                               | `char`       |     |       |                             |
+| `main_department_id`                        | Main Department                                     | `many2one`   |     | ✅    | op.department               |
+| `main_user_id`                              | Main User                                           | `many2one`   |     |       | res.users                   |
+| `media_movement_lines`                      | Movements                                           | `one2many`   |     | ✅    | op.media.movement           |
+| `media_movement_lines_count`                | Media Movement Lines Count                          | `integer`    |     |       |                             |
+| `meeting_count`                             | # Meetings                                          | `integer`    |     |       |                             |
+| `meeting_ids`                               | Meetings                                            | `many2many`  |     |       | calendar.event              |
+| `message_attachment_count`                  | Attachment Count                                    | `integer`    |     |       |                             |
+| `message_bounce`                            | Bounce                                              | `integer`    |     |       |                             |
+| `message_follower_ids`                      | Followers                                           | `one2many`   |     | ✅    | mail.followers              |
+| `message_has_error`                         | Message Delivery error                              | `boolean`    |     |       |                             |
+| `message_has_error_counter`                 | Number of errors                                    | `integer`    |     |       |                             |
+| `message_has_sms_error`                     | SMS Delivery error                                  | `boolean`    |     |       |                             |
+| `message_ids`                               | Messages                                            | `one2many`   |     | ✅    | mail.message                |
+| `message_is_follower`                       | Is Follower                                         | `boolean`    |     |       |                             |
+| `message_needaction`                        | Action Needed                                       | `boolean`    |     |       |                             |
+| `message_needaction_counter`                | Number of Actions                                   | `integer`    |     |       |                             |
+| `message_partner_ids`                       | Followers (Partners)                                | `many2many`  |     |       | res.partner                 |
+| `middle_name`                               | Middle Name                                         | `char`       |     | ✅    |                             |
+| `my_activity_date_deadline`                 | My Activity Deadline                                | `date`       |     |       |                             |
+| `name`                                      | Name                                                | `char`       |     |       |                             |
+| `nationality`                               | Nationality                                         | `many2one`   |     | ✅    | res.country                 |
+| `offline_since`                             | Offline since                                       | `datetime`   |     |       |                             |
+| `on_time_rate`                              | On-Time Delivery Rate                               | `float`      |     |       |                             |
+| `opportunity_count`                         | Opportunity Count                                   | `integer`    |     |       |                             |
+| `opportunity_ids`                           | Opportunities                                       | `one2many`   |     |       | crm.lead                    |
+| `parent_id`                                 | Related Company                                     | `many2one`   |     |       | res.partner                 |
+| `parent_name`                               | Parent name                                         | `char`       |     |       |                             |
+| `partner_company_registry_placeholder`      | Partner Company Registry Placeholder                | `char`       |     |       |                             |
+| `partner_id`                                | Partner                                             | `many2one`   | ✅  | ✅    | res.partner                 |
+| `partner_latitude`                          | Geo Latitude                                        | `float`      |     |       |                             |
+| `partner_longitude`                         | Geo Longitude                                       | `float`      |     |       |                             |
+| `partner_share`                             | Share Partner                                       | `boolean`    |     |       |                             |
+| `partner_vat_placeholder`                   | Partner Vat Placeholder                             | `char`       |     |       |                             |
+| `payment_token_count`                       | Payment Token Count                                 | `integer`    |     |       |                             |
+| `payment_token_ids`                         | Payment Tokens                                      | `one2many`   |     |       | payment.token               |
+| `peppol_eas`                                | Peppol e-address (EAS)                              | `selection`  |     |       |                             |
+| `peppol_endpoint`                           | Peppol Endpoint                                     | `char`       |     |       |                             |
+| `phone`                                     | Phone                                               | `char`       |     |       |                             |
+| `phone_blacklisted`                         | Blacklisted Phone is Phone                          | `boolean`    |     |       |                             |
+| `phone_mobile_search`                       | Phone Number                                        | `char`       |     |       |                             |
+| `phone_sanitized`                           | Sanitized Number                                    | `char`       |     |       |                             |
+| `phone_sanitized_blacklisted`               | Phone Blacklisted                                   | `boolean`    |     |       |                             |
+| `picking_warn_msg`                          | Message for Stock Picking                           | `text`       |     |       |                             |
+| `properties`                                | Properties                                          | `properties` |     |       |                             |
+| `properties_base_definition_id`             | Properties Base Definition                          | `many2one`   |     |       | properties.base.definition  |
+| `property_account_payable_id`               | Account Payable                                     | `many2one`   |     |       | account.account             |
+| `property_account_position_id`              | Fiscal Position                                     | `many2one`   |     |       | account.fiscal.position     |
+| `property_account_receivable_id`            | Account Receivable                                  | `many2one`   |     |       | account.account             |
+| `property_delivery_carrier_id`              | Delivery Method                                     | `many2one`   |     |       | delivery.carrier            |
+| `property_inbound_payment_method_line_id`   | Property Inbound Payment Method Line                | `many2one`   |     |       | account.payment.method.line |
+| `property_outbound_payment_method_line_id`  | Property Outbound Payment Method Line               | `many2one`   |     |       | account.payment.method.line |
+| `property_payment_term_id`                  | Customer Payment Terms                              | `many2one`   |     |       | account.payment.term        |
+| `property_product_pricelist`                | Pricelist                                           | `many2one`   |     |       | product.pricelist           |
+| `property_purchase_currency_id`             | Supplier Currency                                   | `many2one`   |     |       | res.currency                |
+| `property_stock_customer`                   | Customer Location                                   | `many2one`   |     |       | stock.location              |
+| `property_stock_supplier`                   | Vendor Location                                     | `many2one`   |     |       | stock.location              |
+| `property_supplier_payment_term_id`         | Vendor Payment Terms                                | `many2one`   |     |       | account.payment.term        |
+| `purchase_line_ids`                         | Purchase Lines                                      | `one2many`   |     |       | purchase.order.line         |
+| `purchase_order_count`                      | Purchase Order Count                                | `integer`    |     |       |                             |
+| `purchase_warn_msg`                         | Message for Purchase Order                          | `text`       |     |       |                             |
+| `rating_ids`                                | Ratings                                             | `one2many`   |     | ✅    | rating.rating               |
+| `receipt_reminder_email`                    | Receipt Reminder                                    | `boolean`    |     |       |                             |
+| `ref`                                       | Reference                                           | `char`       |     |       |                             |
+| `ref_company_ids`                           | Companies that refers to partner                    | `one2many`   |     |       | res.company                 |
+| `reminder_date_before_receipt`              | Days Before Receipt                                 | `integer`    |     |       |                             |
+| `rtc_session_ids`                           | Rtc Session                                         | `one2many`   |     |       | discuss.channel.rtc.session |
+| `sale_order_count`                          | Sale Order Count                                    | `integer`    |     |       |                             |
+| `sale_order_ids`                            | Sales Order                                         | `one2many`   |     |       | sale.order                  |
+| `sale_warn_msg`                             | Message for Sales Order                             | `text`       |     |       |                             |
+| `same_company_registry_partner_id`          | Partner with same Company Registry                  | `many2one`   |     |       | res.partner                 |
+| `same_vat_partner_id`                       | Partner with same Tax ID                            | `many2one`   |     |       | res.partner                 |
+| `self`                                      | Self                                                | `many2one`   |     |       | res.partner                 |
+| `seo_name`                                  | Seo name                                            | `char`       |     |       |                             |
+| `session_count`                             | Session Count                                       | `integer`    |     |       |                             |
+| `session_ids`                               | Sessions                                            | `one2many`   |     | ✅    | op.session                  |
+| `show_credit_limit`                         | Show Credit Limit                                   | `boolean`    |     |       |                             |
+| `signup_type`                               | Signup Token Type                                   | `char`       |     |       |                             |
+| `specific_property_product_pricelist`       | Specific Property Product Pricelist                 | `many2one`   |     |       | product.pricelist           |
+| `state_id`                                  | State                                               | `many2one`   |     |       | res.country.state           |
+| `static_map_url`                            | Static Map Url                                      | `char`       |     |       |                             |
+| `static_map_url_is_valid`                   | Static Map Url Is Valid                             | `boolean`    |     |       |                             |
+| `street`                                    | Street                                              | `char`       |     |       |                             |
+| `street2`                                   | Street2                                             | `char`       |     |       |                             |
+| `subject_cost_ids`                          | Subject Cost                                        | `one2many`   |     | ✅    | op.subject.cost             |
+| `subject_count`                             | Subject Count                                       | `integer`    |     |       |                             |
+| `suggest_based_on`                          | Suggest Based On                                    | `char`       |     |       |                             |
+| `suggest_days`                              | Suggest Days                                        | `integer`    |     |       |                             |
+| `suggest_percent`                           | Suggest Percent                                     | `integer`    |     |       |                             |
+| `supplier_invoice_count`                    | # Vendor Bills                                      | `integer`    |     |       |                             |
+| `supplier_rank`                             | Supplier Rank                                       | `integer`    |     |       |                             |
+| `ticket_count`                              | Ticket Count                                        | `integer`    |     |       |                             |
+| `timetable_count`                           | Timetable Count                                     | `integer`    |     |       |                             |
+| `title`                                     | Title                                               | `many2one`   |     |       | res.partner.title           |
+| `total_invoiced`                            | Total Invoiced                                      | `monetary`   |     |       |                             |
+| `trust`                                     | Degree of trust you have in this debtor             | `selection`  |     |       |                             |
+| `type`                                      | Address Type                                        | `selection`  |     |       |                             |
+| `type_address_label`                        | Address Type Description                            | `char`       |     |       |                             |
+| `tz`                                        | Timezone                                            | `selection`  |     |       |                             |
+| `tz_offset`                                 | Timezone offset                                     | `char`       |     |       |                             |
+| `use_partner_credit_limit`                  | Partner Limit                                       | `boolean`    |     |       |                             |
+| `user_id`                                   | Salesperson                                         | `many2one`   |     |       | res.users                   |
+| `user_ids`                                  | Users                                               | `one2many`   |     |       | res.users                   |
+| `user_livechat_username`                    | User Livechat Username                              | `char`       |     |       |                             |
+| `vat`                                       | Tax ID                                              | `char`       |     |       |                             |
+| `vat_label`                                 | Tax ID Label                                        | `char`       |     |       |                             |
+| `visa_info`                                 | Visa Info                                           | `char`       |     | ✅    |                             |
+| `visitor_ids`                               | Visitors                                            | `one2many`   |     |       | website.visitor             |
+| `website`                                   | Website Link                                        | `char`       |     |       |                             |
+| `website_absolute_url`                      | Website Absolute URL                                | `char`       |     |       |                             |
+| `website_description`                       | Website Partner Full Description                    | `html`       |     |       |                             |
+| `website_id`                                | Website                                             | `many2one`   |     |       | website                     |
+| `website_message_ids`                       | Website Messages                                    | `one2many`   |     | ✅    | mail.message                |
+| `website_meta_description`                  | Website meta description                            | `text`       |     |       |                             |
+| `website_meta_keywords`                     | Website meta keywords                               | `char`       |     |       |                             |
+| `website_meta_og_img`                       | Website opengraph image                             | `char`       |     |       |                             |
+| `website_meta_title`                        | Website meta title                                  | `char`       |     |       |                             |
+| `website_published`                         | Visible on current website                          | `boolean`    |     |       |                             |
+| `website_short_description`                 | Website Partner Short Description                   | `text`       |     |       |                             |
+| `website_url`                               | Website URL                                         | `char`       |     |       |                             |
+| `wishlist_ids`                              | Wishlist                                            | `one2many`   |     |       | product.wishlist            |
+| `write_date`                                | Last Updated on                                     | `datetime`   |     | ✅    |                             |
+| `write_uid`                                 | Last Updated by                                     | `many2one`   |     | ✅    | res.users                   |
+| `zip`                                       | Zip                                                 | `char`       |     |       |                             |
+
+**Access Rights:**
+
+| Name                              | Group                | Perms     |
+| --------------------------------- | -------------------- | --------- |
+| name_op_faculty_back_office_admin | OpenEduCat / Manager | `R/W/C/D` |
+| op_faculty_faculty                | OpenEduCat / User    | `R`       |
+| name_op_faculty_library           | Library / Manager    | `R`       |
+| op_faculty_parent                 | Role / Portal        | `R`       |
+
+**Record Rules:**
+
+- **Faculty Login rule** (92) `R/W/C/D`
+  - Domain: `['|',('user_id','=',user.id),('emp_id.user_id','=',user.id)]`
+- **View Faculties** (93) `R/W/C/D`
+  - Domain: `[(1,'=',1)]`
+- **Faculty multi-company** (Global) `R/W/C/D`
+  - Domain:
+    `['|',('company_id','=',False),'&',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]`
+- **Faculty multi-department** (Global) `R/W/C/D`
+  - Domain:
+    `['|','|','|','|',('user_id','=',user.id),('emp_id.user_id','=',user.id),('main_department_id','=',False),('main_department_id','child_of',[user.dept_id.id]),('main_department_id','in',user.department_ids.ids)]`
+- **Gradebook Faculty Login rule** (182) `R/W/C/D`
+  - Domain: `[(1,'=',1)]`
+
+### 🗃️ `op.session` — Sessions
+
+> 📧 Mail Thread
+
+Main super-class for regular database-persisted Odoo models.
+
+    Odoo models are created by inheriting from this class::
+
+        class ResUsers(Model):
+            ...
+
+    The system will later instantiate the class once per database (on
+    which the class' module is installed).
+
+**Fields:**
+
+| Field                        | Label                  | Type        | Req | Store | Relation            |
+| ---------------------------- | ---------------------- | ----------- | --- | ----- | ------------------- |
+| `academic_plan_id`           | Academic Plan          | `many2one`  |     | ✅    | op.academic.plan    |
+| `active`                     | Active                 | `boolean`   |     | ✅    |                     |
+| `attendance_sheet`           | Session                | `one2many`  |     | ✅    | op.attendance.sheet |
+| `batch_id`                   | Batch                  | `many2one`  |     | ✅    | op.batch            |
+| `classroom_id`               | Classroom              | `many2one`  |     | ✅    | op.classroom        |
+| `color`                      | Color Index            | `integer`   |     | ✅    |                     |
+| `company_id`                 | Company                | `many2one`  |     | ✅    | res.company         |
+| `course_id`                  | Course                 | `many2one`  |     | ✅    | op.course           |
+| `create_date`                | Created on             | `datetime`  |     | ✅    |                     |
+| `create_uid`                 | Created by             | `many2one`  |     | ✅    | res.users           |
+| `days`                       | Days                   | `selection` |     | ✅    |                     |
+| `display_name`               | Display Name           | `char`      |     |       |                     |
+| `end_datetime`               | End Time               | `datetime`  | ✅  | ✅    |                     |
+| `faculty_id`                 | Faculty                | `many2one`  | ✅  | ✅    | op.faculty          |
+| `has_message`                | Has Message            | `boolean`   |     |       |                     |
+| `id`                         | ID                     | `integer`   |     | ✅    |                     |
+| `lesson_ids`                 | Lesson                 | `many2many` |     | ✅    | op.lesson           |
+| `meeting_count`              | Meeting Count          | `integer`   |     |       |                     |
+| `message_attachment_count`   | Attachment Count       | `integer`   |     |       |                     |
+| `message_follower_ids`       | Followers              | `one2many`  |     | ✅    | mail.followers      |
+| `message_has_error`          | Message Delivery error | `boolean`   |     |       |                     |
+| `message_has_error_counter`  | Number of errors       | `integer`   |     |       |                     |
+| `message_has_sms_error`      | SMS Delivery error     | `boolean`   |     |       |                     |
+| `message_ids`                | Messages               | `one2many`  |     | ✅    | mail.message        |
+| `message_is_follower`        | Is Follower            | `boolean`   |     |       |                     |
+| `message_needaction`         | Action Needed          | `boolean`   |     |       |                     |
+| `message_needaction_counter` | Number of Actions      | `integer`   |     |       |                     |
+| `message_partner_ids`        | Followers (Partners)   | `many2many` |     |       | res.partner         |
+| `name`                       | Name                   | `char`      |     | ✅    |                     |
+| `rating_ids`                 | Ratings                | `one2many`  |     | ✅    | rating.rating       |
+| `required_field`             | Required Field         | `boolean`   |     | ✅    |                     |
+| `section_ids`                | Section                | `many2many` |     | ✅    | op.section          |
+| `start_datetime`             | Start Time             | `datetime`  | ✅  | ✅    |                     |
+| `state`                      | Status                 | `selection` |     | ✅    |                     |
+| `student_count`              | Student Count          | `integer`   |     |       |                     |
+| `subject_id`                 | Subject                | `many2one`  | ✅  | ✅    | op.subject          |
+| `timing`                     | Session timing         | `char`      |     |       |                     |
+| `timing_id`                  | Timing                 | `many2one`  |     | ✅    | op.timing           |
+| `type`                       | Day                    | `char`      |     | ✅    |                     |
+| `user_id`                    | User                   | `many2one`  |     | ✅    | res.users           |
+| `user_ids`                   | Users                  | `many2many` |     | ✅    | res.users           |
+| `website_message_ids`        | Website Messages       | `one2many`  |     | ✅    | mail.message        |
+| `write_date`                 | Last Updated on        | `datetime`  |     | ✅    |                     |
+| `write_uid`                  | Last Updated by        | `many2one`  |     | ✅    | res.users           |
+
+**Access Rights:**
+
+| Name                           | Group               | Perms     |
+| ------------------------------ | ------------------- | --------- |
+| name_op_session_student        | Timetable / Manager | `R/W/C/D` |
+| name_op_session_timetable_user | Timetable / User    | `R/W/C`   |
+
+**Record Rules:**
+
+- **Student Session rule** (160) `R/W/C/D`
+  - Domain: `['|', ('user_ids','in',user.id), ('user_ids','in',user.child_ids.ids)]`
+- **Manager Session Rule** (161) `R/W/C/D`
+  - Domain: `[(1,'=',1)]`
+- **User Session Rule** (160) `R/W/C/D`
+  - Domain: `[('faculty_id.user_id','=',user.id)]`
+- **Timetable multi-company** (Global) `R/W/C/D`
+  - Domain:
+    `['|',('company_id','=',False),'&',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]`
+
+### 🗃️ `res.config.settings` — Config Settings
+
+> ✳️ Transient (Wizard)
+
+Enhanced configuration interface for exchange rate management
+
+**Fields:**
+
+| Field                                                | Label                                                                                           | Type        | Req | Store | Relation                         |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------- | --- | ----- | -------------------------------- |
+| `access_token`                                       | Access Token                                                                                    | `char`      |     | ✅    |                                  |
+| `account_cash_basis_base_account_id`                 | Base Tax Received Account                                                                       | `many2one`  |     |       | account.account                  |
+| `account_default_credit_limit`                       | Default Credit Limit                                                                            | `monetary`  |     |       |                                  |
+| `account_discount_expense_allocation_id`             | Customer Invoices Discounts Account                                                             | `many2one`  |     |       | account.account                  |
+| `account_discount_income_allocation_id`              | Vendor Bills Discounts Account                                                                  | `many2one`  |     |       | account.account                  |
+| `account_fiscal_country_id`                          | Fiscal Country Code                                                                             | `many2one`  |     |       | res.country                      |
+| `account_journal_early_pay_discount_gain_account_id` | Early Discount Gain                                                                             | `many2one`  |     |       | account.account                  |
+| `account_journal_early_pay_discount_loss_account_id` | Early Discount Loss                                                                             | `many2one`  |     |       | account.account                  |
+| `account_journal_suspense_account_id`                | Bank Suspense                                                                                   | `many2one`  |     |       | account.account                  |
+| `account_on_checkout`                                | Customer Accounts                                                                               | `selection` | ✅  |       |                                  |
+| `account_price_include`                              | Default Sales Price Include                                                                     | `selection` | ✅  |       |                                  |
+| `account_storno`                                     | Storno accounting                                                                               | `boolean`   |     |       |                                  |
+| `account_use_credit_limit`                           | Sales Credit Limit                                                                              | `boolean`   |     |       |                                  |
+| `active_provider_id`                                 | Active Provider                                                                                 | `many2one`  |     |       | payment.provider                 |
+| `active_user_count`                                  | Number of Active Users                                                                          | `integer`   |     |       |                                  |
+| `add_to_cart_action`                                 | Add To Cart Action                                                                              | `selection` |     |       |                                  |
+| `alias_domain_id`                                    | Alias Domain                                                                                    | `many2one`  |     |       | mail.alias.domain                |
+| `anglo_saxon_accounting`                             | Use anglo-saxon accounting                                                                      | `boolean`   |     |       |                                  |
+| `annual_inventory_day`                               | Day of the month                                                                                | `integer`   |     |       |                                  |
+| `annual_inventory_month`                             | Annual Inventory Month                                                                          | `selection` |     |       |                                  |
+| `app_login_details_show`                             | Replace Login URL                                                                               | `boolean`   |     | ✅    |                                  |
+| `app_login_name`                                     | Login Page Name                                                                                 | `char`      |     | ✅    |                                  |
+| `app_login_url`                                      | Login Page URL                                                                                  | `char`      |     | ✅    |                                  |
+| `app_ribbon_name`                                    | Show Demo Ribbon                                                                                | `char`      |     | ✅    |                                  |
+| `app_ribbon_name_show`                               | Show Ribbon                                                                                     | `boolean`   |     | ✅    |                                  |
+| `app_show_lang`                                      | Show Quick Language Switcher                                                                    | `boolean`   |     | ✅    |                                  |
+| `app_system_name`                                    | System Name                                                                                     | `char`      |     | ✅    |                                  |
+| `attendance_subject_generic`                         | Attendance Subject Generic                                                                      | `selection` |     | ✅    |                                  |
+| `auth_signup_reset_password`                         | Enable password reset from Login page                                                           | `boolean`   |     | ✅    |                                  |
+| `auth_signup_template_user_id`                       | Template user for new users created through signup                                              | `many2one`  |     | ✅    | res.users                        |
+| `auth_signup_uninvited`                              | Customer Account                                                                                | `selection` |     |       |                                  |
+| `auth_totp_enforce`                                  | Enforce two-factor authentication                                                               | `boolean`   |     | ✅    |                                  |
+| `auth_totp_policy`                                   | Two-factor authentication enforcing policy                                                      | `selection` |     | ✅    |                                  |
+| `automatic_email`                                    | Automatic Email                                                                                 | `boolean`   |     | ✅    |                                  |
+| `automatic_invoice`                                  | Automatic Invoice                                                                               | `boolean`   |     | ✅    |                                  |
+| `autopost_bills`                                     | Auto-validate bills                                                                             | `boolean`   |     |       |                                  |
+| `barcode_nomenclature_id`                            | Nomenclature                                                                                    | `many2one`  |     |       | barcode.nomenclature             |
+| `barcode_separator`                                  | Separator                                                                                       | `char`      |     | ✅    |                                  |
+| `cart_abandoned_delay`                               | Abandoned Delay                                                                                 | `float`     |     |       |                                  |
+| `cart_recovery_mail_template`                        | Cart Recovery Email                                                                             | `many2one`  |     |       | mail.template                    |
+| `cdn_activated`                                      | Content Delivery Network (CDN)                                                                  | `boolean`   |     |       |                                  |
+| `cdn_filters`                                        | CDN Filters                                                                                     | `text`      |     |       |                                  |
+| `cdn_url`                                            | CDN Base URL                                                                                    | `char`      |     |       |                                  |
+| `channel_id`                                         | Website Live Channel                                                                            | `many2one`  |     |       | im_livechat.channel              |
+| `chart_template`                                     | Chart Template                                                                                  | `selection` |     | ✅    |                                  |
+| `client_id`                                          | Client ID                                                                                       | `char`      |     | ✅    |                                  |
+| `client_secret`                                      | Client Secret                                                                                   | `char`      |     | ✅    |                                  |
+| `company_count`                                      | Number of Companies                                                                             | `integer`   |     |       |                                  |
+| `company_country_code`                               | Company Country Code                                                                            | `char`      |     |       |                                  |
+| `company_country_group_codes`                        | Country Group Codes                                                                             | `json`      |     |       |                                  |
+| `company_currency_id`                                | Company Currency                                                                                | `many2one`  |     |       | res.currency                     |
+| `company_expense_allowed_payment_method_line_ids`    | Payment methods available for expenses paid by company                                          | `many2many` |     |       | account.payment.method.line      |
+| `company_id`                                         | Company                                                                                         | `many2one`  | ✅  | ✅    | res.company                      |
+| `company_informations`                               | Company Informations                                                                            | `text`      |     |       |                                  |
+| `company_name`                                       | Company Name                                                                                    | `char`      |     |       |                                  |
+| `company_so_template_id`                             | Default Template                                                                                | `many2one`  |     |       | sale.order.template              |
+| `confirmation_email_template_id`                     | Confirmation Email Template                                                                     | `many2one`  |     |       | mail.template                    |
+| `contract_expiration_notice_period`                  | Contract Expiry Notice Period                                                                   | `integer`   |     |       |                                  |
+| `country_code`                                       | Country Code                                                                                    | `char`      |     |       |                                  |
+| `create_date`                                        | Created on                                                                                      | `datetime`  |     | ✅    |                                  |
+| `create_uid`                                         | Created by                                                                                      | `many2one`  |     | ✅    | res.users                        |
+| `crm_auto_assignment_action`                         | Auto Assignment Action                                                                          | `selection` |     | ✅    |                                  |
+| `crm_auto_assignment_interval_number`                | Repeat every                                                                                    | `integer`   |     | ✅    |                                  |
+| `crm_auto_assignment_interval_type`                  | Auto Assignment Interval Unit                                                                   | `selection` |     | ✅    |                                  |
+| `crm_auto_assignment_run_datetime`                   | Auto Assignment Next Execution Date                                                             | `datetime`  |     | ✅    |                                  |
+| `crm_use_auto_assignment`                            | Rule-Based Assignment                                                                           | `boolean`   |     | ✅    |                                  |
+| `currency_exchange_journal_id`                       | Currency Exchange Journal                                                                       | `many2one`  |     |       | account.journal                  |
+| `currency_id`                                        | Currency                                                                                        | `many2one`  | ✅  |       | res.currency                     |
+| `days_to_purchase`                                   | Days to Purchase                                                                                | `float`     |     |       |                                  |
+| `default_allow_out_of_stock_order`                   | Continue selling when out-of-stock                                                              | `boolean`   |     | ✅    |                                  |
+| `default_available_threshold`                        | Show Threshold                                                                                  | `float`     |     | ✅    |                                  |
+| `default_invoice_policy`                             | Invoicing Policy                                                                                | `selection` |     | ✅    |                                  |
+| `default_picking_policy`                             | Picking Policy                                                                                  | `selection` | ✅  | ✅    |                                  |
+| `default_show_availability`                          | Show availability Qty                                                                           | `boolean`   |     | ✅    |                                  |
+| `delay_alert_contract`                               | Delay alert contract outdated                                                                   | `integer`   |     | ✅    |                                  |
+| `digest_emails`                                      | Digest Emails                                                                                   | `boolean`   |     | ✅    |                                  |
+| `digest_id`                                          | Digest Email                                                                                    | `many2one`  |     | ✅    | digest.digest                    |
+| `display_account_storno`                             | Display Account Storno                                                                          | `boolean`   |     |       |                                  |
+| `display_invoice_amount_total_words`                 | Total amount of invoice in letters                                                              | `boolean`   |     |       |                                  |
+| `display_invoice_tax_company_currency`               | Taxes in company currency                                                                       | `boolean`   |     |       |                                  |
+| `display_name`                                       | Display Name                                                                                    | `char`      |     |       |                                  |
+| `documents_binary_max_size`                          | Size                                                                                            | `integer`   |     | ✅    |                                  |
+| `documents_forbidden_extensions`                     | Extensions                                                                                      | `char`      |     | ✅    |                                  |
+| `downpayment_account_id`                             | Downpayment Account                                                                             | `many2one`  |     |       | account.account                  |
+| `ecommerce_access`                                   | Ecommerce Access                                                                                | `selection` |     |       |                                  |
+| `email_primary_color`                                | Email Button Text                                                                               | `char`      |     |       |                                  |
+| `email_secondary_color`                              | Email Button Color                                                                              | `char`      |     |       |                                  |
+| `enable_academic_plan`                               | Academic Plan                                                                                   | `boolean`   |     | ✅    |                                  |
+| `enable_create_student_user`                         | Create Student User                                                                             | `boolean`   |     | ✅    |                                  |
+| `enable_exchange_rate_module`                        | Enable Exchange Rate Synchronization                                                            | `boolean`   |     | ✅    |                                  |
+| `enable_recaptcha`                                   | Enable reCAPTCHA                                                                                | `boolean`   |     | ✅    |                                  |
+| `expense_account_id`                                 | Expense Account                                                                                 | `many2one`  |     |       | account.account                  |
+| `expense_currency_exchange_account_id`               | Loss Exchange Rate Account                                                                      | `many2one`  |     |       | account.account                  |
+| `expense_journal_id`                                 | Default Expense Journal                                                                         | `many2one`  |     |       | account.journal                  |
+| `external_email_server_default`                      | Use Custom Email Servers                                                                        | `boolean`   |     | ✅    |                                  |
+| `external_report_layout_id`                          | Document Template                                                                               | `many2one`  |     |       | ir.ui.view                       |
+| `fail_counter`                                       | Fail Mail                                                                                       | `integer`   |     |       |                                  |
+| `favicon`                                            | Favicon                                                                                         | `binary`    |     |       |                                  |
+| `fiscalyear_last_day`                                | Fiscalyear Last Day                                                                             | `integer`   |     |       |                                  |
+| `fiscalyear_last_month`                              | Fiscalyear Last Month                                                                           | `selection` |     |       |                                  |
+| `fiscalyear_lock_date`                               | Global Lock Date                                                                                | `date`      |     |       |                                  |
+| `force_restrictive_audit_trail`                      | Forced Audit Trail                                                                              | `boolean`   |     |       |                                  |
+| `global_calendar_user_id`                            | Calendar User                                                                                   | `many2one`  |     | ✅    | res.users                        |
+| `google_analytics_key`                               | Google Analytics Key                                                                            | `char`      |     |       |                                  |
+| `google_gmail_client_identifier`                     | Gmail Client Id                                                                                 | `char`      |     | ✅    |                                  |
+| `google_gmail_client_secret`                         | Gmail Client Secret                                                                             | `char`      |     | ✅    |                                  |
+| `google_maps_static_api_key`                         | Google Maps API key                                                                             | `char`      |     | ✅    |                                  |
+| `google_maps_static_api_secret`                      | Google Maps API secret                                                                          | `char`      |     | ✅    |                                  |
+| `google_search_console`                              | Google Search Console Key                                                                       | `char`      |     |       |                                  |
+| `google_translate_api_key`                           | Message Translation API Key                                                                     | `char`      |     | ✅    |                                  |
+| `group_analytic_accounting`                          | Analytic Accounting                                                                             | `boolean`   |     | ✅    |                                  |
+| `group_auto_done_setting`                            | Lock Confirmed Sales                                                                            | `boolean`   |     | ✅    |                                  |
+| `group_cash_rounding`                                | Cash Rounding                                                                                   | `boolean`   |     | ✅    |                                  |
+| `group_discount_per_so_line`                         | Discounts                                                                                       | `boolean`   |     | ✅    |                                  |
+| `group_fiscal_year`                                  | Fiscal Years                                                                                    | `boolean`   |     | ✅    |                                  |
+| `group_gmc_feed`                                     | Google Merchant Center                                                                          | `boolean`   |     |       |                                  |
+| `group_lot_on_delivery_slip`                         | Display Lots & Serial Numbers on Delivery Slips                                                 | `boolean`   |     | ✅    |                                  |
+| `group_lot_on_invoice`                               | Display Lots & Serial Numbers on Invoices                                                       | `boolean`   |     | ✅    |                                  |
+| `group_mass_mailing_campaign`                        | Mailing Campaigns                                                                               | `boolean`   |     | ✅    |                                  |
+| `group_multi_currency`                               | Multi-Currencies                                                                                | `boolean`   |     | ✅    |                                  |
+| `group_multi_website`                                | Multi-website                                                                                   | `boolean`   |     | ✅    |                                  |
+| `group_product_price_comparison`                     | Comparison Price                                                                                | `boolean`   |     | ✅    |                                  |
+| `group_product_pricelist`                            | Pricelists                                                                                      | `boolean`   |     | ✅    |                                  |
+| `group_product_variant`                              | Variants                                                                                        | `boolean`   |     | ✅    |                                  |
+| `group_proforma_sales`                               | Pro-Forma Invoice                                                                               | `boolean`   |     | ✅    |                                  |
+| `group_sale_delivery_address`                        | Customer Addresses                                                                              | `boolean`   |     | ✅    |                                  |
+| `group_sale_order_template`                          | Quotation Templates                                                                             | `boolean`   |     | ✅    |                                  |
+| `group_send_reminder`                                | Receipt Reminder                                                                                | `boolean`   |     | ✅    |                                  |
+| `group_show_uom_price`                               | Base Unit Price                                                                                 | `boolean`   |     | ✅    |                                  |
+| `group_stock_adv_location`                           | Multi-Step Routes                                                                               | `boolean`   |     | ✅    |                                  |
+| `group_stock_lot_print_gs1`                          | Print GS1 Barcodes for Lots & Serial Numbers                                                    | `boolean`   |     | ✅    |                                  |
+| `group_stock_multi_locations`                        | Storage Locations                                                                               | `boolean`   |     | ✅    |                                  |
+| `group_stock_production_lot`                         | Lots & Serial Numbers                                                                           | `boolean`   |     | ✅    |                                  |
+| `group_stock_reception_report`                       | Reception Report                                                                                | `boolean`   |     | ✅    |                                  |
+| `group_stock_sign_delivery`                          | Signature                                                                                       | `boolean`   |     | ✅    |                                  |
+| `group_stock_tracking_lot`                           | Packages                                                                                        | `boolean`   |     | ✅    |                                  |
+| `group_stock_tracking_owner`                         | Consignment                                                                                     | `boolean`   |     | ✅    |                                  |
+| `group_uom`                                          | Units of Measure & Packagings                                                                   | `boolean`   |     | ✅    |                                  |
+| `group_use_lead`                                     | Leads                                                                                           | `boolean`   |     | ✅    |                                  |
+| `group_use_recurring_revenues`                       | Recurring Revenues                                                                              | `boolean`   |     | ✅    |                                  |
+| `group_warning_purchase`                             | Purchase Warnings                                                                               | `boolean`   |     | ✅    |                                  |
+| `group_warning_sale`                                 | Sale Order Warnings                                                                             | `boolean`   |     | ✅    |                                  |
+| `group_warning_stock`                                | Warnings for Stock                                                                              | `boolean`   |     | ✅    |                                  |
+| `hard_lock_date`                                     | Hard Lock Date                                                                                  | `date`      |     |       |                                  |
+| `has_accounting_entries`                             | Has Accounting Entries                                                                          | `boolean`   |     |       |                                  |
+| `has_chart_of_accounts`                              | Company has a chart of accounts                                                                 | `boolean`   |     |       |                                  |
+| `has_default_share_image`                            | Use a image by default for sharing                                                              | `boolean`   |     |       |                                  |
+| `has_enabled_provider`                               | Has Enabled Provider                                                                            | `boolean`   |     |       |                                  |
+| `has_google_analytics`                               | Google Analytics                                                                                | `boolean`   |     |       |                                  |
+| `has_google_search_console`                          | Google Search Console                                                                           | `boolean`   |     |       |                                  |
+| `has_plausible_shared_key`                           | Plausible Analytics                                                                             | `boolean`   |     |       |                                  |
+| `horizon_days`                                       | Replenishment Horizon                                                                           | `float`     |     |       |                                  |
+| `hr_expense_alias_domain_id`                         | Hr Expense Alias Domain                                                                         | `many2one`  |     |       | mail.alias.domain                |
+| `hr_expense_alias_prefix`                            | Default Alias Name for Expenses                                                                 | `char`      |     | ✅    |                                  |
+| `hr_expense_use_mailgateway`                         | Let your employees record expenses by email                                                     | `boolean`   |     | ✅    |                                  |
+| `hr_presence_control_email`                          | Based on number of emails sent                                                                  | `boolean`   |     |       |                                  |
+| `hr_presence_control_email_amount`                   | # emails to send                                                                                | `integer`   |     |       |                                  |
+| `hr_presence_control_ip`                             | Based on IP Address                                                                             | `boolean`   |     |       |                                  |
+| `hr_presence_control_ip_list`                        | Valid IP addresses                                                                              | `char`      |     |       |                                  |
+| `hr_presence_control_login`                          | Based on user status in system                                                                  | `boolean`   |     |       |                                  |
+| `id`                                                 | ID                                                                                              | `integer`   |     | ✅    |                                  |
+| `income_account_id`                                  | Income Account                                                                                  | `many2one`  |     |       | account.account                  |
+| `income_currency_exchange_account_id`                | Gain Exchange Rate Account                                                                      | `many2one`  |     |       | account.account                  |
+| `incoterm_id`                                        | Default incoterm                                                                                | `many2one`  |     |       | account.incoterms                |
+| `invoice_mail_template_id`                           | Email Template                                                                                  | `many2one`  |     | ✅    | mail.template                    |
+| `invoice_terms`                                      | Terms & Conditions                                                                              | `html`      |     |       |                                  |
+| `invoice_terms_html`                                 | Terms & Conditions as a Web page                                                                | `html`      |     |       |                                  |
+| `is_account_peppol_eligible`                         | PEPPOL eligible                                                                                 | `boolean`   |     |       |                                  |
+| `is_batch_and_subject_constraint`                    | Batch and Subject Constraint                                                                    | `boolean`   |     | ✅    |                                  |
+| `is_batch_constraint`                                | Batch Constraint                                                                                | `boolean`   |     | ✅    |                                  |
+| `is_classroom_constraint`                            | Classroom Constraint                                                                            | `boolean`   |     | ✅    |                                  |
+| `is_faculty_constraint`                              | Faculty Constraint                                                                              | `boolean`   |     | ✅    |                                  |
+| `is_hash_verified`                                   | Is Hash Verified                                                                                | `boolean`   |     |       |                                  |
+| `is_installed_sale`                                  | Is the Sale Module Installed                                                                    | `boolean`   |     | ✅    |                                  |
+| `is_mail_sent`                                       | Is Mail Sent                                                                                    | `boolean`   |     |       |                                  |
+| `is_membership_multi`                                | Multi Teams                                                                                     | `boolean`   |     | ✅    |                                  |
+| `is_newsletter_enabled`                              | Is Newsletter Enabled                                                                           | `boolean`   |     | ✅    |                                  |
+| `is_root_company`                                    | Is Root Company                                                                                 | `boolean`   |     |       |                                  |
+| `language_count`                                     | Number of Languages                                                                             | `integer`   |     |       |                                  |
+| `language_ids`                                       | Languages                                                                                       | `many2many` |     |       | res.lang                         |
+| `lead_enrich_auto`                                   | Enrich lead automatically                                                                       | `selection` |     | ✅    |                                  |
+| `lead_mining_in_pipeline`                            | Create a lead mining request directly from the opportunity pipeline.                            | `boolean`   |     | ✅    |                                  |
+| `link_qr_code`                                       | Display Link QR-code                                                                            | `boolean`   |     |       |                                  |
+| `lock_confirmed_po`                                  | Lock Confirmed Orders                                                                           | `boolean`   |     | ✅    |                                  |
+| `mass_mailing_mail_server_id`                        | Mail Server                                                                                     | `many2one`  |     | ✅    | ir.mail_server                   |
+| `mass_mailing_outgoing_mail_server`                  | Dedicated Server                                                                                | `boolean`   |     | ✅    |                                  |
+| `mass_mailing_reports`                               | 24H Stat Mailing Reports                                                                        | `boolean`   |     | ✅    |                                  |
+| `mass_mailing_split_contact_name`                    | Split First and Last Name                                                                       | `boolean`   |     | ✅    |                                  |
+| `menu_bg_image`                                      | Apps Menu Footer Image                                                                          | `binary`    |     |       |                                  |
+| `microsoft_outlook_client_identifier`                | Outlook Client Id                                                                               | `char`      |     | ✅    |                                  |
+| `microsoft_outlook_client_secret`                    | Outlook Client Secret                                                                           | `char`      |     | ✅    |                                  |
+| `module_account_3way_match`                          | 3-way matching: purchases, receptions and bills                                                 | `boolean`   |     | ✅    |                                  |
+| `module_account_accountant`                          | Accounting                                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_account_bank_statement_extract`              | Bank Statement Digitization                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_account_bank_statement_import_qif`           | Import .qif files                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_account_batch_payment`                       | Use batch payments                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_account_budget`                              | Budget Management                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_account_check_printing`                      | Allow check printing and deposits                                                               | `boolean`   |     | ✅    |                                  |
+| `module_account_extract`                             | Document Digitization                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_account_inter_company_rules`                 | Manage Inter Company                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_account_intrastat`                           | Intrastat                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_account_invoice_extract`                     | Invoice Digitization                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_account_iso20022`                            | SEPA Credit Transfer / ISO20022                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_account_payment`                             | Invoice Online Payment                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_account_peppol`                              | PEPPOL Invoicing                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_account_reports`                             | Dynamic Reports                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_account_sepa_direct_debit`                   | Use SEPA Direct Debit                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_auth_ldap`                                   | LDAP Authentication                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_auth_oauth`                                  | Use external authentication providers (OAuth)                                                   | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup`                        | Database Backup to Local Server                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup_dropbox`                | Database Backup to Dropbox                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup_ftp`                    | Database Backup to Remote FTP Server                                                            | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup_google_drive`           | Database Backup to Google Drive                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup_onedrive`               | Database Backup to Onedrive                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_auto_database_backup_sftp`                   | Database Backup to Remote SFTP Server                                                           | `boolean`   |     | ✅    |                                  |
+| `module_backend_theme`                               | Backend Theme                                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_base_geolocalize`                            | GeoLocalize                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_base_import`                                 | Allow users to import data from CSV/XLS/XLSX/ODS files                                          | `boolean`   |     | ✅    |                                  |
+| `module_bigbluebutton`                               | Bigbluebutton Enterprise                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_crm_iap_enrich`                              | Enrich your leads automatically with company data based on their email address.                 | `boolean`   |     | ✅    |                                  |
+| `module_crm_iap_mine`                                | Generate new leads based on their country, industries, size, etc.                               | `boolean`   |     | ✅    |                                  |
+| `module_currency_rate_live`                          | Automatic Currency Rates                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_delivery`                                    | Delivery Methods                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_delivery_bpost`                              | bpost Connector                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_delivery_dhl`                                | DHL Express Connector                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_delivery_easypost`                           | Easypost Connector                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_delivery_envia`                              | Envia.com Connector                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_delivery_fedex_rest`                         | FedEx Connector                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_delivery_sendcloud`                          | Sendcloud Connector                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_delivery_shiprocket`                         | Shiprocket Connector                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_delivery_starshipit`                         | Starshipit Connector                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_delivery_ups_rest`                           | UPS Connector                                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_delivery_usps_rest`                          | USPS Connector                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_event_booth`                                 | Booth Management                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_event_sale`                                  | Tickets with Sale                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_google_address_autocomplete`                 | Google Address Autocomplete                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_google_calendar`                             | Allow the users to synchronize their calendar with Google Calendar                              | `boolean`   |     | ✅    |                                  |
+| `module_google_gmail`                                | Support Gmail Authentication                                                                    | `boolean`   |     | ✅    |                                  |
+| `module_googlemeet`                                  | Google Meet                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_google_recaptcha`                            | reCAPTCHA                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_helpdesk_elearning`                          | E-Learning                                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_helpdesk_forum`                              | Helpdesk Forum                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_helpdesk_project_ext`                        | Helpdesk project                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_hr_attendance`                               | Based on attendances                                                                            | `boolean`   |     |       |                                  |
+| `module_hr_expense_extract`                          | Send bills to OCR to generate expenses                                                          | `boolean`   |     | ✅    |                                  |
+| `module_hr_expense_stripe`                           | Link your stripe issuing account to manage company credit cards for your employees through Odoo | `boolean`   |     | ✅    |                                  |
+| `module_hr_payroll_expense`                          | Reimburse Expenses in Payslip                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_hr_presence`                                 | Advanced Presence Control                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_hr_recruitment_extract`                      | Send CV to OCR to fill applications                                                             | `boolean`   |     | ✅    |                                  |
+| `module_hr_recruitment_survey`                       | Interview Forms                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_hr_skills`                                   | Skills Management                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_loyalty`                                     | Promotions, Coupons, Gift Card & Loyalty Program                                                | `boolean`   |     | ✅    |                                  |
+| `module_mail_plugin`                                 | Allow integration with the mail plugins                                                         | `boolean`   |     | ✅    |                                  |
+| `module_microsoft_calendar`                          | Allow the users to synchronize their calendar with Outlook Calendar                             | `boolean`   |     | ✅    |                                  |
+| `module_microsoft_outlook`                           | Support Outlook Authentication                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_online_appointment`                          | Online Appointment Enterprise                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_achievement_enterprise`           | Achievement Enterprise                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_activity`                         | Activity                                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_activity_enterprise`              | Activity Enterprise                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_admission`                        | Admission                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_admission_enterprise`             | Admission Enterprise                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_admission_grading_bridge`         | Admission Grading Bridge                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_alumni_blog_enterprise`           | Alumni Blog Enterprise                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_alumni_enterprise`                | Alumni Enterprise                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_alumni_event_enterprise`          | Alumni Event Enterprise                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_alumni_job_enterprise`            | Alumni Job Enterprise                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_asset_request_enterprise`         | Asset Request Enterprise                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_assignment`                       | Assignment                                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_assignment_enterprise`            | Assignment Enterprise                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_assignment_grading_bridge`        | Assignment Gradebook Bridge                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_assignment_grading_enterprise`    | Assignment Grading Enterprise                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_assignment_rubrics`               | Assignment Rubrics                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_attendance`                       | Attendance                                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_attendance_enterprise`            | Attendance Enterprise                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_attendance_face_recognition`      | Attendance Face Recognition                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_attendance_report_xlsx`           | Attendance Xlsx Report                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_campus_enterprise`                | Campus Enterprise                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_classroom`                        | Classroom                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_classroom_enterprise`             | Classroom Enterprise                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_convocation`                      | Convocation                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_crm_enterprise`                   | CRM Enterprise                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_dashboard_kpi`                    | Dashboard KPI                                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_digital_library`                  | Digital Library                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_discipline`                       | Discipline Enterprise                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_dynamic_admission`                | Dynamic Admission                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_event_enterprise`                 | Event Enterprise                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_exam`                             | Exam                                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_exam_enterprise`                  | Exam Enterprise                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_exam_gpa_enterprise`              | Exam GPA Enterprise                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_exam_grading_bridge`              | Exam Grading Bridge                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_exam_migration_bridge`            | Student Migration Exam Bridge                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_facility`                         | Facility                                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_facility_enterprise`              | Facility Enterprise                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_fees`                             | Fees                                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_fees_parent_bridge`               | Fees Parent Bridge                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_fees_plan`                        | Fees Plan                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_grading`                          | Grading                                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_grading_migration_bridge`         | Student Migration Grading Bridge                                                                | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_grievance_enterprise`             | Grievance                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_health_enterprise`                | Health Enterprise                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_jitsi_enterprise`                 | Jitsi Enterprise                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_job_enterprise`                   | Job Enterprise                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lesson`                           | Lesson Enterprise                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_library`                          | Library                                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_library_barcode`                  | Library Barcode Enterprise                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_library_enterprise`               | Library Enterprise                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_live`                             | Live Meeting                                                                                    | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_live_assignment`                  | Live Meeting Assignment                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_live_attendance`                  | Live Meeting Attendance                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_live_attentiveness`               | Live Meeting Attentiveness                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms`                              | LMS Enterprise                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_admission`                    | LMS Admission                                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_blog`                         | LMS Blog Enterprise                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_forum`                        | LMS Forum Enterprise                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_gamification`                 | LMS Gamification Enterprise                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_h5p`                          | LMS H5P Enterprise                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_sale`                         | LMS Sale Enterprise                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_lms_survey`                       | LMS Survey Enterprise                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_mass_subject_registration`        | Mass Subject Registration                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_meeting_enterprise`               | Meeting Enterprise                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_notice_board_enterprise`          | Notice Board Enterprise                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_omr`                              | OMR                                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_parent`                           | Parent                                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_parent_enterprise`                | Parent Enterprise                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_placement_enterprise`             | Placement Enterprise                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_placement_job_enterprise`         | Placement Job Enterprise                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_quiz`                             | Quiz Enterprise                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_quiz_anti_cheating`               | Quiz Anti Cheating                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_scholarship_enterprise`           | Scholarship Enterprise                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_secure`                           | Secure QR                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_skill_enterprise`                 | Skill Enterprise                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_skypemeet`                        | Skype Meet                                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_attendance_enterprise`    | Student Attendance Kiosk                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_feedback_management`      | Student Feedback                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_leave_enterprise`         | Student Leave                                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_mentor`                   | Student Mentor                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_progress_enterprise`      | Student Progress Enterprise                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_skill_assessment`         | Skill Assessment Enterprise                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_student_withdrawal_mgmt`          | Student Withdrawal Management                                                                   | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_subject_material_allocation`      | Subject Material Allocation                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_thesis`                           | Thesis                                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_timetable`                        | Timetable                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_timetable_enterprise`             | Timetable Enterprise                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_openeducat_transportation_enterprise`        | Transportation Enterprise                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_partner_autocomplete`                        | Partner Autocomplete                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_partnership`                                 | Membership / Partnership                                                                        | `boolean`   |     | ✅    |                                  |
+| `module_pos_event`                                   | Tickets with PoS                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_product_email_template`                      | Specific Email                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_product_expiry`                              | Expiration Dates                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_product_margin`                              | Allow Product Margin                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_purchase_product_matrix`                     | Purchase Grid Entry                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_purchase_requisition`                        | Purchase Agreements                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_quality_control`                             | Quality                                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_quality_control_worksheet`                   | Quality Worksheet                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_sale_amazon`                                 | Amazon Sync                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_sale_commission`                             | Commissions                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_sale_gelato`                                 | Gelato                                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_sale_loyalty`                                | Coupons & Loyalty                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_sale_margin`                                 | Margins                                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_sale_pdf_quote_builder`                      | PDF Quote builder                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_sale_product_matrix`                         | Sales Grid Entry                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_sale_shopee`                                 | Shopee Sync                                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_sms`                                         | SMS                                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_snailmail_account`                           | Snailmail                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_stock_barcode`                               | Barcode Scanner                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_stock_barcode_barcodelookup`                 | Stock Barcode Database                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_stock_dropshipping`                          | Dropshipping                                                                                    | `boolean`   |     | ✅    |                                  |
+| `module_stock_fleet`                                 | Dispatch Management System                                                                      | `boolean`   |     | ✅    |                                  |
+| `module_stock_landed_costs`                          | Landed Costs                                                                                    | `boolean`   |     | ✅    |                                  |
+| `module_stock_picking_batch`                         | Batch, Wave & Cluster Transfers                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_stock_sms`                                   | SMS Confirmation                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_teams`                                       | Teams                                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_voip`                                        | Phone                                                                                           | `boolean`   |     | ✅    |                                  |
+| `module_website_cf_turnstile`                        | Cloudflare Turnstile                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_website_crm_iap_reveal`                      | Create Leads/Opportunities from your website's traffic                                          | `boolean`   |     | ✅    |                                  |
+| `module_website_event_exhibitor`                     | Advanced Sponsors                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_website_event_sale`                          | Online Ticketing                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_website_event_track`                         | Tracks and Agenda                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_website_event_track_live`                    | Live Mode                                                                                       | `boolean`   |     | ✅    |                                  |
+| `module_website_event_track_quiz`                    | Quiz on Tracks                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_website_helpdesk_mgmt`                       | Helpdesk Website                                                                                | `boolean`   |     | ✅    |                                  |
+| `module_website_hr_recruitment`                      | Online Posting                                                                                  | `boolean`   |     | ✅    |                                  |
+| `module_website_livechat`                            | Module Website Livechat                                                                         | `boolean`   |     | ✅    |                                  |
+| `module_website_sale_autocomplete`                   | Address Autocomplete                                                                            | `boolean`   |     | ✅    |                                  |
+| `module_website_sale_collect`                        | Click & Collect                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_web_unsplash`                                | Unsplash Image Library                                                                          | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_account_templates`                  | Account Templates                                                                               | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_ecommerce_templates`                | Whatsapp Ecommerce Templates                                                                    | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_education_templates`                | Education Templates                                                                             | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_other_templates`                    | Other Templates                                                                                 | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_services_templates`                 | Services Templates                                                                              | `boolean`   |     | ✅    |                                  |
+| `module_whatsapp_special_occasions_template`         | Special Occasions Templates                                                                     | `boolean`   |     | ✅    |                                  |
+| `module_zoom`                                        | Zoom                                                                                            | `boolean`   |     | ✅    |                                  |
+| `newsletter_id`                                      | Newsletter List                                                                                 | `many2one`  |     |       | mailing.list                     |
+| `next_execution_timestamp`                           | Next Execution Time                                                                             | `datetime`  |     |       |                                  |
+| `onboarding_payment_module`                          | Onboarding Payment Module                                                                       | `selection` |     |       |                                  |
+| `openeducat_instance_hash_key`                       | OpenEducat Instance Hash Key                                                                    | `char`      |     |       |                                  |
+| `openeducat_instance_hash_msg`                       | Instance Hash Key Message                                                                       | `char`      |     |       |                                  |
+| `openeducat_instance_key`                            | OpenEducat Instance Key                                                                         | `char`      |     |       |                                  |
+| `parent_qrcode`                                      | QR Code                                                                                         | `boolean`   |     | ✅    |                                  |
+| `partner_autocomplete_insufficient_credit`           | Insufficient credit                                                                             | `boolean`   |     |       |                                  |
+| `pay_invoices_online`                                | Pay Invoices Online                                                                             | `boolean`   |     | ✅    |                                  |
+| `plausible_shared_key`                               | Plausible auth Key                                                                              | `char`      |     |       |                                  |
+| `plausible_site`                                     | Plausible Site (e.g. domain.com)                                                                | `char`      |     |       |                                  |
+| `po_double_validation`                               | Levels of Approvals \*                                                                          | `selection` |     |       |                                  |
+| `po_double_validation_amount`                        | Minimum Amount                                                                                  | `monetary`  |     |       |                                  |
+| `po_lock`                                            | Purchase Order Modification \*                                                                  | `selection` |     |       |                                  |
+| `po_order_approval`                                  | Purchase Order Approval                                                                         | `boolean`   |     | ✅    |                                  |
+| `portal_allow_api_keys`                              | Customer API Keys                                                                               | `boolean`   |     |       |                                  |
+| `portal_confirmation_pay`                            | Online Payment                                                                                  | `boolean`   |     |       |                                  |
+| `portal_confirmation_sign`                           | Online Signature                                                                                | `boolean`   |     |       |                                  |
+| `predictive_lead_scoring_field_labels`               | Predictive Lead Scoring Field Labels                                                            | `char`      |     |       |                                  |
+| `predictive_lead_scoring_fields`                     | Lead Scoring Frequency Fields                                                                   | `many2many` |     |       | crm.lead.scoring.frequency.field |
+| `predictive_lead_scoring_fields_str`                 | Lead Scoring Frequency Fields in String                                                         | `char`      |     | ✅    |                                  |
+| `predictive_lead_scoring_start_date`                 | Lead Scoring Starting Date                                                                      | `date`      |     |       |                                  |
+| `predictive_lead_scoring_start_date_str`             | Lead Scoring Starting Date in String                                                            | `char`      |     | ✅    |                                  |
+| `prepayment_percent`                                 | Prepayment percentage                                                                           | `float`     |     |       |                                  |
+| `preview_ready`                                      | Display preview button                                                                          | `boolean`   |     |       |                                  |
+| `product_volume_volume_in_cubic_feet`                | Volume unit of measure                                                                          | `selection` |     | ✅    |                                  |
+| `product_weight_in_lbs`                              | Weight unit of measure                                                                          | `selection` |     | ✅    |                                  |
+| `profiling_enabled_until`                            | Profiling enabled until                                                                         | `datetime`  |     | ✅    |                                  |
+| `purchase_lock_date`                                 | Purchases Lock Date                                                                             | `date`      |     |       |                                  |
+| `purchase_tax_id`                                    | Default Purchase Tax                                                                            | `many2one`  |     |       | account.tax                      |
+| `qr_code`                                            | Display SEPA QR-code                                                                            | `boolean`   |     |       |                                  |
+| `quick_edit_mode`                                    | Quick encoding                                                                                  | `selection` |     |       |                                  |
+| `quotation_validity_days`                            | Default Quotation Validity                                                                      | `integer`   |     |       |                                  |
+| `rate_provider_selection`                            | Exchange Rate Provider                                                                          | `selection` |     |       |                                  |
+| `recaptcha_min_score`                                | Minimum score                                                                                   | `float`     |     | ✅    |                                  |
+| `recaptcha_private_key`                              | Secret Key                                                                                      | `char`      |     | ✅    |                                  |
+| `recaptcha_public_key`                               | Site Key                                                                                        | `char`      |     | ✅    |                                  |
+| `refresh_token`                                      | Refresh Token                                                                                   | `char`      |     | ✅    |                                  |
+| `replenish_on_order`                                 | Replenish on Order (MTO)                                                                        | `boolean`   |     |       |                                  |
+| `report_footer`                                      | Custom Report Footer                                                                            | `html`      |     |       |                                  |
+| `resource_calendar_id`                               | Company Working Hours                                                                           | `many2one`  |     |       | resource.calendar                |
+| `restrictive_audit_trail`                            | Restricted Audit Trail                                                                          | `boolean`   |     |       |                                  |
+| `restrict_template_rendering`                        | Restrict Template Rendering                                                                     | `boolean`   |     | ✅    |                                  |
+| `sale_lock_date`                                     | Sales Lock Date                                                                                 | `date`      |     |       |                                  |
+| `salesperson_id`                                     | Salesperson                                                                                     | `many2one`  |     |       | res.users                        |
+| `salesteam_id`                                       | Sales Team                                                                                      | `many2one`  |     |       | crm.team                         |
+| `sale_tax_id`                                        | Default Sale Tax                                                                                | `many2one`  |     |       | account.tax                      |
+| `secure_qr_code`                                     | Secure Qr Code                                                                                  | `selection` |     | ✅    |                                  |
+| `security_lead`                                      | Security Lead Time                                                                              | `float`     |     |       |                                  |
+| `send_abandoned_cart_email`                          | Abandoned Email                                                                                 | `boolean`   |     |       |                                  |
+| `sfu_server_key`                                     | SFU Server key                                                                                  | `char`      |     | ✅    |                                  |
+| `sfu_server_url`                                     | SFU Server URL                                                                                  | `char`      |     | ✅    |                                  |
+| `shared_user_account`                                | Shared Customer Accounts                                                                        | `boolean`   |     |       |                                  |
+| `show_blacklist_buttons`                             | Blacklist Option when Unsubscribing                                                             | `boolean`   |     | ✅    |                                  |
+| `show_branding_in_footer`                            | Show Branding In Footer                                                                         | `boolean`   |     | ✅    |                                  |
+| `show_effect`                                        | Show Effect                                                                                     | `boolean`   |     | ✅    |                                  |
+| `show_line_subtotals_tax_selection`                  | Line Subtotals Tax Display                                                                      | `selection` |     |       |                                  |
+| `show_sale_receipts`                                 | Sale Receipt                                                                                    | `boolean`   |     | ✅    |                                  |
+| `snailmail_color`                                    | Print In Color                                                                                  | `boolean`   |     |       |                                  |
+| `snailmail_cover`                                    | Add a Cover Page                                                                                | `boolean`   |     |       |                                  |
+| `snailmail_cover_readonly`                           | Snailmail Cover Readonly                                                                        | `boolean`   |     |       |                                  |
+| `snailmail_duplex`                                   | Print Both sides                                                                                | `boolean`   |     |       |                                  |
+| `social_default_image`                               | Default Social Share Image                                                                      | `binary`    |     |       |                                  |
+| `stock_confirmation_type`                            | Stock Text Validation type                                                                      | `selection` |     |       |                                  |
+| `stock_move_email_validation`                        | Email Confirmation picking                                                                      | `boolean`   |     |       |                                  |
+| `stock_sms_confirmation_template_id`                 | SMS Template                                                                                    | `many2one`  |     |       | sms.template                     |
+| `stock_text_confirmation`                            | Stock Text Validation with stock move                                                           | `boolean`   |     |       |                                  |
+| `synchronization_batch_size`                         | Batch Size                                                                                      | `integer`   |     |       |                                  |
+| `synchronization_frequency`                          | Synchronization Frequency                                                                       | `selection` |     |       |                                  |
+| `tax_calculation_rounding_method`                    | Tax calculation rounding method                                                                 | `selection` |     |       |                                  |
+| `tax_cash_basis_journal_id`                          | Tax Cash Basis Journal                                                                          | `many2one`  |     |       | account.journal                  |
+| `tax_exigibility`                                    | Cash Basis                                                                                      | `boolean`   |     |       |                                  |
+| `tax_lock_date`                                      | Tax Lock Date                                                                                   | `date`      |     |       |                                  |
+| `tenor_api_key`                                      | Tenor API key                                                                                   | `char`      |     | ✅    |                                  |
+| `terms_type`                                         | Terms & Conditions format                                                                       | `selection` |     |       |                                  |
+| `transfer_account_id`                                | Internal Transfer                                                                               | `many2one`  |     |       | account.account                  |
+| `twilio_account_sid`                                 | Account SID                                                                                     | `char`      |     | ✅    |                                  |
+| `twilio_account_token`                               | Account Auth Token                                                                              | `char`      |     | ✅    |                                  |
+| `unsplash_access_key`                                | Access Key                                                                                      | `char`      |     | ✅    |                                  |
+| `unsplash_app_id`                                    | Application ID                                                                                  | `char`      |     | ✅    |                                  |
+| `use_event_barcode`                                  | Use Event Barcode                                                                               | `boolean`   |     | ✅    |                                  |
+| `use_google_maps_static_api`                         | Google Maps static API                                                                          | `boolean`   |     | ✅    |                                  |
+| `use_invoice_terms`                                  | Default Terms & Conditions                                                                      | `boolean`   |     | ✅    |                                  |
+| `use_project`                                        | Use Projects                                                                                    | `boolean`   |     | ✅    |                                  |
+| `use_security_lead`                                  | Security Lead Time for Sales                                                                    | `boolean`   |     | ✅    |                                  |
+| `use_sfu_server`                                     | Use SFU server                                                                                  | `boolean`   |     | ✅    |                                  |
+| `use_twilio_rtc_servers`                             | Use Twilio ICE servers                                                                          | `boolean`   |     | ✅    |                                  |
+| `use_website_form`                                   | Website Form                                                                                    | `boolean`   |     | ✅    |                                  |
+| `verify_date`                                        | Verify Date                                                                                     | `char`      |     |       |                                  |
+| `web_app_name`                                       | Web App Name                                                                                    | `char`      |     | ✅    |                                  |
+| `website_block_third_party_domains`                  | Block 3rd-party domains                                                                         | `boolean`   |     |       |                                  |
+| `website_company_id`                                 | Website Company                                                                                 | `many2one`  |     |       | res.company                      |
+| `website_cookies_bar`                                | Cookies Bar                                                                                     | `boolean`   |     |       |                                  |
+| `website_default_lang_code`                          | Default language code                                                                           | `char`      |     |       |                                  |
+| `website_default_lang_id`                            | Default language                                                                                | `many2one`  |     |       | res.lang                         |
+| `website_domain`                                     | Website Domain                                                                                  | `char`      |     |       |                                  |
+| `website_homepage_url`                               | Homepage Url                                                                                    | `char`      |     |       |                                  |
+| `website_id`                                         | website                                                                                         | `many2one`  |     | ✅    | website                          |
+| `website_language_count`                             | Number of languages                                                                             | `integer`   |     |       |                                  |
+| `website_logo`                                       | Website Logo                                                                                    | `binary`    |     |       |                                  |
+| `website_name`                                       | Website Name                                                                                    | `char`      |     |       |                                  |
+| `website_sale_contact_us_button_url`                 | Button Url                                                                                      | `char`      |     |       |                                  |
+| `website_sale_prevent_zero_price_sale`               | Prevent Sale of Zero Priced Product                                                             | `boolean`   |     |       |                                  |
+| `website_warehouse_id`                               | Warehouse                                                                                       | `many2one`  |     |       | stock.warehouse                  |
+| `whatsapp_business_id`                               | Business Account                                                                                | `many2one`  |     | ✅    | whatsapp.business                |
+| `work_permit_expiration_notice_period`               | Work Permit Expiry Notice Period                                                                | `integer`   |     |       |                                  |
+| `write_date`                                         | Last Updated on                                                                                 | `datetime`  |     | ✅    |                                  |
+| `write_uid`                                          | Last Updated by                                                                                 | `many2one`  |     | ✅    | res.users                        |
+
+**Access Rights:**
+
+| Name                       | Group                | Perms   |
+| -------------------------- | -------------------- | ------- |
+| access.res.config.settings | Role / Administrator | `R/W/C` |
+
+### 🗃️ `generate.time.table` — Generate Sessions
+
+> ✳️ Transient (Wizard)
+
+Model super-class for transient records, meant to be temporarily persistent, and
+regularly vacuum-cleaned.
+
+    A TransientModel has a simplified access rights management, all users can
+    create new records, and may only access the records they created. The
+    superuser has unrestricted access to all TransientModel records.
+
+**Fields:**
+
+| Field                | Label             | Type       | Req | Store | Relation            |
+| -------------------- | ----------------- | ---------- | --- | ----- | ------------------- |
+| `batch_id`           | Batch             | `many2one` | ✅  | ✅    | op.batch            |
+| `course_id`          | Course            | `many2one` | ✅  | ✅    | op.course           |
+| `create_date`        | Created on        | `datetime` |     | ✅    |                     |
+| `create_uid`         | Created by        | `many2one` |     | ✅    | res.users           |
+| `display_name`       | Display Name      | `char`     |     |       |                     |
+| `end_date`           | End Date          | `date`     | ✅  | ✅    |                     |
+| `id`                 | ID                | `integer`  |     | ✅    |                     |
+| `name`               | name              | `char`     |     | ✅    |                     |
+| `start_date`         | Start Date        | `date`     | ✅  | ✅    |                     |
+| `time_table_lines`   | Time Table Lines  | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_1` | Time Table Lines1 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_2` | Time Table Lines2 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_3` | Time Table Lines3 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_4` | Time Table Lines4 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_5` | Time Table Lines5 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_6` | Time Table Lines6 | `one2many` |     | ✅    | gen.time.table.line |
+| `time_table_lines_7` | Time Table Lines7 | `one2many` |     | ✅    | gen.time.table.line |
+| `write_date`         | Last Updated on   | `datetime` |     | ✅    |                     |
+| `write_uid`          | Last Updated by   | `many2one` |     | ✅    | res.users           |
+
+**Access Rights:**
+
+| Name                          | Group               | Perms     |
+| ----------------------------- | ------------------- | --------- |
+| name_generate_time_table      | Timetable / Manager | `R/W/C/D` |
+| name_generate_time_table_user | Timetable / User    | `R/W/C`   |
+
+### 🗃️ `gen.time.table.line` — Generate Time Table Lines
+
+> ✳️ Transient (Wizard)
+
+Model super-class for transient records, meant to be temporarily persistent, and
+regularly vacuum-cleaned.
+
+    A TransientModel has a simplified access rights management, all users can
+    create new records, and may only access the records they created. The
+    superuser has unrestricted access to all TransientModel records.
+
+**Fields:**
+
+| Field                | Label           | Type        | Req | Store | Relation            |
+| -------------------- | --------------- | ----------- | --- | ----- | ------------------- |
+| `classroom_id`       | Classroom       | `many2one`  |     | ✅    | op.classroom        |
+| `create_date`        | Created on      | `datetime`  |     | ✅    |                     |
+| `create_uid`         | Created by      | `many2one`  |     | ✅    | res.users           |
+| `day`                | Day             | `selection` | ✅  | ✅    |                     |
+| `display_name`       | Display Name    | `char`      |     |       |                     |
+| `faculty_id`         | Faculty         | `many2one`  | ✅  | ✅    | op.faculty          |
+| `gen_time_table`     | Time Table      | `many2one`  |     | ✅    | generate.time.table |
+| `id`                 | ID              | `integer`   |     | ✅    |                     |
+| `session_end_time`   | End Time        | `float`     |     | ✅    |                     |
+| `session_start_time` | Start Time      | `float`     |     | ✅    |                     |
+| `subject_id`         | Subject         | `many2one`  | ✅  | ✅    | op.subject          |
+| `timing_id`          | Timing          | `many2one`  |     | ✅    | op.timing           |
+| `write_date`         | Last Updated on | `datetime`  |     | ✅    |                     |
+| `write_uid`          | Last Updated by | `many2one`  |     | ✅    | res.users           |
+
+**Access Rights:**
+
+| Name                          | Group               | Perms     |
+| ----------------------------- | ------------------- | --------- |
+| name_gen_time_table_line      | Timetable / Manager | `R/W/C/D` |
+| name_gen_time_table_line_user | Timetable / User    | `R/W/C`   |
+
+### 🗃️ `time.table.report` — Generate Time Table Report
+
+> ✳️ Transient (Wizard)
+
+Model super-class for transient records, meant to be temporarily persistent, and
+regularly vacuum-cleaned.
+
+    A TransientModel has a simplified access rights management, all users can
+    create new records, and may only access the records they created. The
+    superuser has unrestricted access to all TransientModel records.
+
+**Fields:**
+
+| Field          | Label           | Type        | Req | Store | Relation   |
+| -------------- | --------------- | ----------- | --- | ----- | ---------- |
+| `batch_id`     | Batch           | `many2one`  |     | ✅    | op.batch   |
+| `course_id`    | Course          | `many2one`  |     | ✅    | op.course  |
+| `create_date`  | Created on      | `datetime`  |     | ✅    |            |
+| `create_uid`   | Created by      | `many2one`  |     | ✅    | res.users  |
+| `display_name` | Display Name    | `char`      |     |       |            |
+| `end_date`     | End Date        | `date`      | ✅  | ✅    |            |
+| `faculty_id`   | Faculty         | `many2one`  |     | ✅    | op.faculty |
+| `id`           | ID              | `integer`   |     | ✅    |            |
+| `start_date`   | Start Date      | `date`      | ✅  | ✅    |            |
+| `state`        | Select          | `selection` | ✅  | ✅    |            |
+| `write_date`   | Last Updated on | `datetime`  |     | ✅    |            |
+| `write_uid`    | Last Updated by | `many2one`  |     | ✅    | res.users  |
+
+**Access Rights:**
+
+| Name                   | Group               | Perms     |
+| ---------------------- | ------------------- | --------- |
+| name_time_table_report | Timetable / Manager | `R/W/C/D` |
+
+### 🗃️ `op.timing` — Period
+
+Main super-class for regular database-persisted Odoo models.
+
+    Odoo models are created by inheriting from this class::
+
+        class ResUsers(Model):
+            ...
+
+    The system will later instantiate the class once per database (on
+    which the class' module is installed).
+
+**Fields:**
+
+| Field          | Label           | Type        | Req | Store | Relation    |
+| -------------- | --------------- | ----------- | --- | ----- | ----------- |
+| `am_pm`        | AM/PM           | `selection` | ✅  | ✅    |             |
+| `company_id`   | Company         | `many2one`  |     | ✅    | res.company |
+| `create_date`  | Created on      | `datetime`  |     | ✅    |             |
+| `create_uid`   | Created by      | `many2one`  |     | ✅    | res.users   |
+| `display_name` | Display Name    | `char`      |     |       |             |
+| `duration`     | Duration        | `float`     |     | ✅    |             |
+| `hour`         | Hours           | `selection` | ✅  | ✅    |             |
+| `id`           | ID              | `integer`   |     | ✅    |             |
+| `minute`       | Minute          | `selection` | ✅  | ✅    |             |
+| `name`         | Name            | `char`      | ✅  | ✅    |             |
+| `sequence`     | Sequence        | `integer`   |     | ✅    |             |
+| `write_date`   | Last Updated on | `datetime`  |     | ✅    |             |
+| `write_uid`    | Last Updated by | `many2one`  |     | ✅    | res.users   |
+
+**Access Rights:**
+
+| Name                             | Group               | Perms     |
+| -------------------------------- | ------------------- | --------- |
+| name_op_timing_timetable_manager | Timetable / Manager | `R/W/C/D` |
+| name_op_timing_timetable_user    | Timetable / User    | `R/W`     |
+
+**Record Rules:**
+
+- **Period multi-company** (Global) `R/W/C/D`
+  - Domain:
+    `['|',('company_id','=',False),'&',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]`
+
+### 🗃️ `report.openeducat_timetable.report_timetable_student_generate` — Timetable Student Report
+
+The base model, which is implicitly inherited by all models.
+
+**Fields:**
+
+| Field          | Label        | Type      | Req | Store | Relation |
+| -------------- | ------------ | --------- | --- | ----- | -------- |
+| `display_name` | Display Name | `char`    |     |       |          |
+| `id`           | ID           | `integer` |     | ✅    |          |
+
+### 🗃️ `report.openeducat_timetable.report_timetable_teacher_generate` — Timetable Teacher Report
+
+The base model, which is implicitly inherited by all models.
+
+**Fields:**
+
+| Field          | Label        | Type      | Req | Store | Relation |
+| -------------- | ------------ | --------- | --- | ----- | -------- |
+| `display_name` | Display Name | `char`    |     |       |          |
+| `id`           | ID           | `integer` |     | ✅    |          |
+
+### 🗃️ `session.confirmation` — Wizard for Multiple Session Confirmation
+
+> ✳️ Transient (Wizard)
+
+Model super-class for transient records, meant to be temporarily persistent, and
+regularly vacuum-cleaned.
+
+    A TransientModel has a simplified access rights management, all users can
+    create new records, and may only access the records they created. The
+    superuser has unrestricted access to all TransientModel records.
+
+**Fields:**
+
+| Field          | Label           | Type       | Req | Store | Relation  |
+| -------------- | --------------- | ---------- | --- | ----- | --------- |
+| `create_date`  | Created on      | `datetime` |     | ✅    |           |
+| `create_uid`   | Created by      | `many2one` |     | ✅    | res.users |
+| `display_name` | Display Name    | `char`     |     |       |           |
+| `id`           | ID              | `integer`  |     | ✅    |           |
+| `write_date`   | Last Updated on | `datetime` |     | ✅    |           |
+| `write_uid`    | Last Updated by | `many2one` |     | ✅    | res.users |
+
+**Access Rights:**
+
+| Name                      | Group               | Perms     |
+| ------------------------- | ------------------- | --------- |
+| name_session_confirmation | Timetable / Manager | `R/W/C/D` |

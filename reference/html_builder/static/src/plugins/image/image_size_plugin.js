@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { ImageSize } from "./image_size";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {ImageSize} from "./image_size";
 
 class ImageSizePlugin extends Plugin {
     static id = "imageSize";

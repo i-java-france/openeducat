@@ -1,4 +1,5 @@
-from odoo import models, Command, api, _
+from odoo import Command, _, api, models
+
 from odoo.addons.account.models.chart_template import template
 
 

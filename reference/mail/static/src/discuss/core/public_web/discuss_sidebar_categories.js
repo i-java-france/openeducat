@@ -1,18 +1,18 @@
-import { CountryFlag } from "@mail/core/common/country_flag";
-import { ImStatus } from "@mail/core/common/im_status";
-import { ThreadIcon } from "@mail/core/common/thread_icon";
-import { discussSidebarItemsRegistry } from "@mail/core/public_web/discuss_sidebar";
-import { DiscussSidebarChannelActions } from "@mail/discuss/core/public_web/discuss_sidebar_channel_actions";
-import { useHover, UseHoverOverlay } from "@mail/utils/common/hooks";
+import {CountryFlag} from "@mail/core/common/country_flag";
+import {ImStatus} from "@mail/core/common/im_status";
+import {ThreadIcon} from "@mail/core/common/thread_icon";
+import {discussSidebarItemsRegistry} from "@mail/core/public_web/discuss_sidebar";
+import {DiscussSidebarChannelActions} from "@mail/discuss/core/public_web/discuss_sidebar_channel_actions";
+import {useHover, UseHoverOverlay} from "@mail/utils/common/hooks";
 
-import { Component, useSubEnv } from "@odoo/owl";
+import {Component, useSubEnv} from "@odoo/owl";
 
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { markEventHandled } from "@web/core/utils/misc";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {markEventHandled} from "@web/core/utils/misc";
 
 export const discussSidebarChannelIndicatorsRegistry = registry.category(
     "mail.discuss_sidebar_channel_indicators"
@@ -21,7 +21,7 @@ export const discussSidebarChannelIndicatorsRegistry = registry.category(
 export class DiscussSidebarSubchannel extends Component {
     static template = "mail.DiscussSidebarSubchannel";
     static props = ["thread", "isFirst?"];
-    static components = { DiscussSidebarChannelActions, Dropdown, UseHoverOverlay };
+    static components = {DiscussSidebarChannelActions, Dropdown, UseHoverOverlay};
 
     setup() {
         super.setup();
@@ -170,7 +170,10 @@ export class DiscussSidebarChannel extends Component {
         }
         return (
             this.isSelfOrThreadActive &&
-            !(this.thread.self_member_id?.mute_until_dt && sub.self_member_id?.mute_until_dt)
+            !(
+                this.thread.self_member_id?.mute_until_dt &&
+                sub.self_member_id?.mute_until_dt
+            )
         );
     }
 
@@ -191,7 +194,7 @@ export class DiscussSidebarChannel extends Component {
 export class DiscussSidebarCategory extends Component {
     static template = "mail.DiscussSidebarCategory";
     static props = ["category"];
-    static components = { Dropdown };
+    static components = {Dropdown};
 
     setup() {
         super.setup();
@@ -262,4 +265,4 @@ export class DiscussSidebarCategories extends Component {
     }
 }
 
-discussSidebarItemsRegistry.add("channels", DiscussSidebarCategories, { sequence: 30 });
+discussSidebarItemsRegistry.add("channels", DiscussSidebarCategories, {sequence: 30});

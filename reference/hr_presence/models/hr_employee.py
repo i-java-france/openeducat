@@ -2,8 +2,7 @@
 
 import logging
 
-from ast import literal_eval
-from odoo import fields, models, _, api
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Datetime
 

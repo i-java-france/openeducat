@@ -1,21 +1,21 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     defineSpreadsheetActions,
     defineSpreadsheetModels,
 } from "@spreadsheet/../tests/helpers/data";
 
-import { setCellContent, updatePivot } from "@spreadsheet/../tests/helpers/commands";
-import { getCellValue, getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
-import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/helpers/pivot";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {setCellContent, updatePivot} from "@spreadsheet/../tests/helpers/commands";
+import {getCellValue, getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
+import {createSpreadsheetWithPivot} from "@spreadsheet/../tests/helpers/pivot";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 defineSpreadsheetActions();
 
 test("Can have positional args in pivot formula", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
 
     // Columns
     setCellContent(model, "H1", `=PIVOT.VALUE(1,"probability:avg","#foo", 1)`);
@@ -39,14 +39,18 @@ test("Can have positional args in pivot formula", async function () {
 });
 
 test("Can have positional args in pivot headers formula", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     // Columns
     setCellContent(model, "H1", `=PIVOT.HEADER(1,"#foo",1)`);
     setCellContent(model, "H2", `=PIVOT.HEADER(1,"#foo",2)`);
     setCellContent(model, "H3", `=PIVOT.HEADER(1,"#foo",3)`);
     setCellContent(model, "H4", `=PIVOT.HEADER(1,"#foo",4)`);
     setCellContent(model, "H5", `=PIVOT.HEADER(1,"#foo",5)`);
-    setCellContent(model, "H6", `=PIVOT.HEADER(1,"#foo",5, "measure", "probability:avg")`);
+    setCellContent(
+        model,
+        "H6",
+        `=PIVOT.HEADER(1,"#foo",5, "measure", "probability:avg")`
+    );
     expect(getCellValue(model, "H1")).toBe(1);
     expect(getCellValue(model, "H2")).toBe(2);
     expect(getCellValue(model, "H3")).toBe(12);
@@ -58,7 +62,11 @@ test("Can have positional args in pivot headers formula", async function () {
     setCellContent(model, "I1", `=PIVOT.HEADER(1,"#bar",1)`);
     setCellContent(model, "I2", `=PIVOT.HEADER(1,"#bar",2)`);
     setCellContent(model, "I3", `=PIVOT.HEADER(1,"#bar",3)`);
-    setCellContent(model, "I4", `=PIVOT.HEADER(1,"#bar",3, "measure", "probability:avg")`);
+    setCellContent(
+        model,
+        "I4",
+        `=PIVOT.HEADER(1,"#bar",3, "measure", "probability:avg")`
+    );
     expect(getCellValue(model, "I1")).toBe("No");
     expect(getCellValue(model, "I2")).toBe("Yes");
     expect(getCellValue(model, "I3")).toBe("");
@@ -66,8 +74,8 @@ test("Can have positional args in pivot headers formula", async function () {
 });
 
 test("pivot positional with two levels of group bys in rows", async () => {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="bar" type="row"/>
                     <field name="product_id" type="row"/>
@@ -103,7 +111,7 @@ test("pivot positional with two levels of group bys in rows", async () => {
 });
 
 test("Positional argument without a number should crash", async () => {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     setCellContent(model, "A10", `=PIVOT.HEADER(1,"#bar","this is not a number")`);
     expect(getCellValue(model, "A10")).toBe("#ERROR");
     expect(getEvaluatedCell(model, "A10").message).toBe(
@@ -116,20 +124,26 @@ test("sort first pivot column (ascending)", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
-                rows: [{ fieldName: "bar" }],
+                columns: [{fieldName: "foo"}],
+                rows: [{fieldName: "bar"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 sortedColumn: {
-                    domain: [{ field: "foo", type: "integer", value: 1 }],
+                    domain: [{field: "foo", type: "integer", value: 1}],
                     measure: "probability:sum",
                     order: "asc",
                 },
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#bar",1)`);
     setCellContent(model, "A2", `=PIVOT.HEADER(1,"#bar",2)`);
     setCellContent(model, "B1", `=PIVOT.VALUE(1,"probability:sum","#bar",1,"#foo",1)`);
@@ -154,20 +168,26 @@ test("sort first pivot column (descending)", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
-                rows: [{ fieldName: "bar" }],
+                columns: [{fieldName: "foo"}],
+                rows: [{fieldName: "bar"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 sortedColumn: {
-                    domain: [{ field: "foo", type: "integer", value: 1 }],
+                    domain: [{field: "foo", type: "integer", value: 1}],
                     measure: "probability:sum",
                     order: "desc",
                 },
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#bar",1)`);
     setCellContent(model, "A2", `=PIVOT.HEADER(1,"#bar",2)`);
     setCellContent(model, "B1", `=PIVOT.VALUE(1,"probability:sum","#bar",1,"#foo",1)`);
@@ -192,21 +212,27 @@ test("sort second pivot column (ascending)", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
                 name: "Partners by Foo",
                 sortedColumn: {
-                    domain: [{ field: "foo", type: "integer", value: 2 }],
+                    domain: [{field: "foo", type: "integer", value: 2}],
                     measure: "probability:sum",
                     order: "asc",
                 },
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#bar",1)`);
     setCellContent(model, "A2", `=PIVOT.HEADER(1,"#bar",2)`);
     setCellContent(model, "B1", `=PIVOT.VALUE(1,"probability:sum","#bar",1,"#foo",1)`);
@@ -231,21 +257,27 @@ test("sort second pivot column (descending)", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
                 name: "Partners by Foo",
                 sortedColumn: {
-                    domain: [{ field: "foo", type: "integer", value: 2 }],
+                    domain: [{field: "foo", type: "integer", value: 2}],
                     measure: "probability:sum",
                     order: "desc",
                 },
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#bar",1)`);
     setCellContent(model, "A2", `=PIVOT.HEADER(1,"#bar",2)`);
     setCellContent(model, "B1", `=PIVOT.VALUE(1,"probability:sum","#bar",1,"#foo",1)`);
@@ -270,12 +302,16 @@ test("sort second pivot measure (ascending)", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                rows: [{ fieldName: "product_id" }],
+                rows: [{fieldName: "product_id"}],
                 columns: [],
                 domain: [],
                 measures: [
-                    { id: "probability:sum", fieldName: "probability", aggregator: "sum" },
-                    { id: "foo:sum", fieldName: "foo", aggregator: "sum" },
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                    {id: "foo:sum", fieldName: "foo", aggregator: "sum"},
                 ],
                 model: "partner",
                 sortedColumn: {
@@ -286,7 +322,7 @@ test("sort second pivot measure (ascending)", async () => {
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A10", `=PIVOT.HEADER(1,"#product_id",1)`);
     setCellContent(model, "A11", `=PIVOT.HEADER(1,"#product_id",2)`);
     setCellContent(model, "B10", `=PIVOT.VALUE(1,"probability:sum","#product_id",1)`);
@@ -310,11 +346,15 @@ test("sort second pivot measure (descending)", async () => {
                 columns: [],
                 domain: [],
                 measures: [
-                    { id: "probability:sum", fieldName: "probability", aggregator: "sum" },
-                    { id: "foo:sum", fieldName: "foo", aggregator: "sum" },
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                    {id: "foo:sum", fieldName: "foo", aggregator: "sum"},
                 ],
                 model: "partner",
-                rows: [{ fieldName: "product_id" }],
+                rows: [{fieldName: "product_id"}],
                 sortedColumn: {
                     domain: [],
                     measure: "foo:sum",
@@ -323,7 +363,7 @@ test("sort second pivot measure (descending)", async () => {
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A10", `=PIVOT.HEADER(1,"#product_id",1)`);
     setCellContent(model, "A11", `=PIVOT.HEADER(1,"#product_id",2)`);
     setCellContent(model, "B10", `=PIVOT.VALUE(1,"probability:sum","#product_id",1)`);
@@ -340,8 +380,8 @@ test("sort second pivot measure (descending)", async () => {
 });
 
 test("Formatting a pivot positional preserves the interval", async () => {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="date:day" type="row"/>
                     <field name="probability" type="measure"/>
@@ -352,8 +392,8 @@ test("Formatting a pivot positional preserves the interval", async () => {
 });
 
 test("pivot positional formula with collapsed pivot", async () => {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="date" interval="year" type="row"/>
                     <field name="date" interval="month" type="row"/>
@@ -363,7 +403,7 @@ test("pivot positional formula with collapsed pivot", async () => {
     const pivotId = model.getters.getPivotIds()[0];
     updatePivot(model, pivotId, {
         collapsedDomains: {
-            ROW: [[{ field: "date:year", value: 2016, type: "date" }]],
+            ROW: [[{field: "date:year", value: 2016, type: "date"}]],
             COL: [],
         },
     });

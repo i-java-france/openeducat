@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { MEDIAS_BREAKPOINTS, SIZES } from "@web/core/ui/ui_service";
+import {MEDIAS_BREAKPOINTS, SIZES} from "@web/core/ui/ui_service";
 
 export class CookiesApproval extends Interaction {
     static selector = "[data-need-cookies-approval]";
@@ -12,7 +12,8 @@ export class CookiesApproval extends Interaction {
     };
 
     setup() {
-        this.iframeEl = this.el.tagName === "IFRAME" ? this.el : this.el.querySelector("iframe");
+        this.iframeEl =
+            this.el.tagName === "IFRAME" ? this.el : this.el.querySelector("iframe");
     }
 
     start() {
@@ -22,7 +23,9 @@ export class CookiesApproval extends Interaction {
     }
 
     getCookiesWarningEl() {
-        if (this.iframeEl.nextElementSibling?.classList.contains("o_no_optional_cookie")) {
+        if (
+            this.iframeEl.nextElementSibling?.classList.contains("o_no_optional_cookie")
+        ) {
             return this.iframeEl.nextElementSibling;
         }
         return null;
@@ -32,11 +35,14 @@ export class CookiesApproval extends Interaction {
         this.renderAt(
             "website.cookiesWarning",
             {
-                extraStyle: this.iframeEl.parentElement.classList.contains("media_iframe_video")
+                extraStyle: this.iframeEl.parentElement.classList.contains(
+                    "media_iframe_video"
+                )
                     ? `aspect-ratio: 16/9; max-width: ${MEDIAS_BREAKPOINTS[SIZES.SM].maxWidth}px;`
                     : "",
                 extraClasses:
-                    getComputedStyle(this.iframeEl.parentElement).position === "absolute"
+                    getComputedStyle(this.iframeEl.parentElement).position ===
+                    "absolute"
                         ? ""
                         : "my-3",
             },
@@ -54,4 +60,6 @@ export class CookiesApproval extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.cookies_approval", CookiesApproval);
+registry
+    .category("public.interactions")
+    .add("website.cookies_approval", CookiesApproval);

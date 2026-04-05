@@ -1,5 +1,5 @@
-import { onWillDestroy, useRef } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {onWillDestroy, useRef} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {import("./datetimepicker_service").DateTimePickerServiceParams & {

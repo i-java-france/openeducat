@@ -1,22 +1,25 @@
-import { cropperDataFieldsWithAspectRatio, loadImage } from "@html_editor/utils/image_processing";
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { ImageToolOption } from "./image_tool_option";
-import { isImageCorsProtected } from "@html_editor/utils/image";
-import { withSequence } from "@html_editor/utils/resource";
+import {
+    cropperDataFieldsWithAspectRatio,
+    loadImage,
+} from "@html_editor/utils/image_processing";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {ImageToolOption} from "./image_tool_option";
+import {isImageCorsProtected} from "@html_editor/utils/image";
+import {withSequence} from "@html_editor/utils/resource";
 import {
     REPLACE_MEDIA,
     IMAGE_TOOL,
     ALIGNMENT_STYLE_PADDING,
 } from "@html_builder/utils/option_sequence";
-import { ReplaceMediaOption, searchSupportedParentLinkEl } from "./replace_media_option";
-import { computeMaxDisplayWidth } from "@html_builder/plugins/image/image_format_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { ClassAction } from "@html_builder/core/core_builder_action_plugin";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { isCSSColor } from "@web/core/utils/colors";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {ReplaceMediaOption, searchSupportedParentLinkEl} from "./replace_media_option";
+import {computeMaxDisplayWidth} from "@html_builder/plugins/image/image_format_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {ClassAction} from "@html_builder/core/core_builder_action_plugin";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {isCSSColor} from "@web/core/utils/colors";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 const IMAGE_LINK_ALIGN_CLASSES = ["mx-auto", "ms-auto", "me-auto"];
 
@@ -54,14 +57,15 @@ class ImageToolOptionPlugin extends Plugin {
             SetNewWindowAction,
             AltAction,
         },
-        on_media_dialog_saved_handlers: async (elements, { node }) => {
+        on_media_dialog_saved_handlers: async (elements, {node}) => {
             for (const image of elements) {
                 if (image && image.tagName === "IMG") {
                     const updateImageAttributes =
                         await this.dependencies.imagePostProcess.processImage({
                             img: image,
                             newDataset: {
-                                formatMimetype: this.config.defaultImageMimetype ?? "image/webp",
+                                formatMimetype:
+                                    this.config.defaultImageMimetype ?? "image/webp",
                             },
                             // TODO Using a callback is currently needed to avoid
                             // the extra RPC that would occur if loadImageInfo was
@@ -141,20 +145,27 @@ class ImageToolOptionPlugin extends Plugin {
 export class CropImageAction extends BuilderAction {
     static id = "cropImage";
     static dependencies = ["imageCrop", "imagePostProcess"];
-    isApplied({ editingElement }) {
-        return cropperDataFieldsWithAspectRatio.some((field) => editingElement.dataset[field]);
+    isApplied({editingElement}) {
+        return cropperDataFieldsWithAspectRatio.some(
+            (field) => editingElement.dataset[field]
+        );
     }
-    load({ editingElement: img }) {
+    load({editingElement: img}) {
         return new Promise((resolve) => {
             this.dependencies.imageCrop.openCropImage(img, {
                 onClose: resolve,
                 onSave: async (newDataset) => {
-                    resolve(this.dependencies.imagePostProcess.processImage({ img, newDataset }));
+                    resolve(
+                        this.dependencies.imagePostProcess.processImage({
+                            img,
+                            newDataset,
+                        })
+                    );
                 },
             });
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes?.();
     }
 }
@@ -162,13 +173,13 @@ export class CropImageAction extends BuilderAction {
 export class ResetCropAction extends BuilderAction {
     static id = "resetCrop";
     static dependencies = ["imagePostProcess"];
-    async load({ editingElement: img }) {
+    async load({editingElement: img}) {
         const newDataset = Object.fromEntries(
             cropperDataFieldsWithAspectRatio.map((field) => [field, undefined])
         );
-        return this.dependencies.imagePostProcess.processImage({ img, newDataset });
+        return this.dependencies.imagePostProcess.processImage({img, newDataset});
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
@@ -181,7 +192,7 @@ export class ReplaceMediaAction extends BuilderAction {
         this.canTimeout = false;
     }
 
-    async apply({ editingElement: mediaEl }) {
+    async apply({editingElement: mediaEl}) {
         await this.dependencies.media_website.replaceMedia(mediaEl);
     }
 }
@@ -190,7 +201,7 @@ export class SetLinkAction extends BuilderAction {
     setup() {
         this.preview = false;
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const parentEl = searchSupportedParentLinkEl(editingElement);
         if (parentEl.tagName !== "A") {
             const wrapperEl = document.createElement("a");
@@ -210,7 +221,7 @@ export class SetLinkAction extends BuilderAction {
             parentEl.replaceWith(fragment);
         }
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         const parentEl = searchSupportedParentLinkEl(editingElement);
         return parentEl.tagName === "A";
     }
@@ -249,7 +260,7 @@ export class SetUrlAction extends BuilderAction {
     setup() {
         this.preview = false;
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const linkEl = searchSupportedParentLinkEl(editingElement);
         let url = value;
         if (!url) {
@@ -257,14 +268,18 @@ export class SetUrlAction extends BuilderAction {
             linkEl.removeAttribute("href");
             return;
         }
-        if (!url.startsWith("/") && !url.startsWith("#") && !/^([a-zA-Z]*.):.+$/gm.test(url)) {
+        if (
+            !url.startsWith("/") &&
+            !url.startsWith("#") &&
+            !/^([a-zA-Z]*.):.+$/gm.test(url)
+        ) {
             // We permit every protocol (http:, https:, ftp:, mailto:,...).
             // If none is explicitly specified, we assume it is a http.
             url = "http://" + url;
         }
         linkEl.setAttribute("href", url);
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         const linkEl = searchSupportedParentLinkEl(editingElement);
         return linkEl.getAttribute("href");
     }
@@ -275,15 +290,15 @@ export class SetNewWindowAction extends BuilderAction {
     setup() {
         this.preview = false;
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const linkEl = searchSupportedParentLinkEl(editingElement);
         linkEl.setAttribute("target", "_blank");
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         const linkEl = searchSupportedParentLinkEl(editingElement);
         linkEl.removeAttribute("target");
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         const linkEl = searchSupportedParentLinkEl(editingElement);
         return linkEl.getAttribute("target") === "_blank";
     }
@@ -291,10 +306,10 @@ export class SetNewWindowAction extends BuilderAction {
 
 export class AltAction extends BuilderAction {
     static id = "alt";
-    getValue({ editingElement: imgEl }) {
+    getValue({editingElement: imgEl}) {
         return imgEl.alt;
     }
-    apply({ editingElement: imgEl, value }) {
+    apply({editingElement: imgEl, value}) {
         const trimmedValue = value.trim();
         if (trimmedValue) {
             imgEl.alt = trimmedValue;
@@ -307,4 +322,6 @@ export class AltAction extends BuilderAction {
     }
 }
 
-registry.category("builder-plugins").add(ImageToolOptionPlugin.id, ImageToolOptionPlugin);
+registry
+    .category("builder-plugins")
+    .add(ImageToolOptionPlugin.id, ImageToolOptionPlugin);

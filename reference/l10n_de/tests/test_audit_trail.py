@@ -1,6 +1,10 @@
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon, AccountTestInvoicingHttpCommon
 from odoo.exceptions import UserError
 from odoo.tests.common import tagged
+
+from odoo.addons.account.tests.common import (
+    AccountTestInvoicingCommon,
+    AccountTestInvoicingHttpCommon,
+)
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

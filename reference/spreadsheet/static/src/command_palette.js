@@ -1,8 +1,8 @@
-import { Spreadsheet, components } from "@odoo/o-spreadsheet";
-import { patch } from "@web/core/utils/patch";
-import { useSpreadsheetCommandPalette } from "./command_provider";
+import {Spreadsheet, components} from "@odoo/o-spreadsheet";
+import {patch} from "@web/core/utils/patch";
+import {useSpreadsheetCommandPalette} from "./command_provider";
 
-const { Grid } = components;
+const {Grid} = components;
 
 patch(Spreadsheet.prototype, {
     setup() {

@@ -1,23 +1,23 @@
 import {
-    addBuilderOption,
     addBuilderAction,
+    addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Operation } from "@html_builder/core/operation";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { HistoryPlugin } from "@html_editor/core/history_plugin";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { advanceTime, Deferred, delay, hover, press, tick } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Operation} from "@html_builder/core/operation";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {HistoryPlugin} from "@html_editor/core/history_plugin";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {Deferred, advanceTime, delay, hover, press, tick} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
 describe("OperationMutex", () => {
     test("skips queued actions until emptied after clearQueue", async () => {
         const operation = new Operation();
-        const { mutex } = operation;
+        const {mutex} = operation;
         const firstStarted = Promise.withResolvers();
         const firstDone = Promise.withResolvers();
 
@@ -64,7 +64,7 @@ test("handle 3 concurrent cancellable operations (with delay)", async () => {
             expect.step(`apply ${data}`);
         }
 
-        operation.next(apply, { load, cancellable: true });
+        operation.next(apply, {load, cancellable: true});
         return {
             resolve,
         };
@@ -104,7 +104,7 @@ test("handle 3 concurrent cancellable operations (without delay)", async () => {
             expect.step(`apply ${data}`);
         }
 
-        operation.next(apply, { load, cancellable: true });
+        operation.next(apply, {load, cancellable: true});
         return {
             resolve,
         };
@@ -128,7 +128,7 @@ describe("Block editable", () => {
                 load() {
                     return customActionDef;
                 }
-                apply({ editingElement }) {
+                apply({editingElement}) {
                     editingElement.classList.add("custom-action");
                 }
             },
@@ -146,8 +146,8 @@ describe("Block editable", () => {
         await contains(":iframe .test-options-target").click();
         await contains("[data-action-id='customAction']").click();
         expect(":iframe .o_loading_screen:not(.o_we_ui_loading)").toHaveCount(1);
-        await advanceTime(50); // cancelTime=50 trigger by the preview
-        await advanceTime(500); // setTimeout in addLoadingElement
+        await advanceTime(50); // CancelTime=50 trigger by the preview
+        await advanceTime(500); // SetTimeout in addLoadingElement
         expect(":iframe .o_loading_screen.o_we_ui_loading").toHaveCount(1);
 
         customActionDef.resolve();
@@ -177,7 +177,7 @@ describe("Async operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                async apply({ editingElement, value }) {
+                async apply({editingElement, value}) {
                     await new Promise((resolve) => setTimeout(resolve, applyDelay));
                     editingElement.classList.add(value);
                     expect.step("apply first");
@@ -185,7 +185,7 @@ describe("Async operations", () => {
             },
             customAction2: class extends BuilderAction {
                 static id = "customAction2";
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.classList.add(value);
                     expect.step("apply second");
                 }
@@ -207,7 +207,9 @@ describe("Async operations", () => {
 
         await setupHTMLBuilder(`<div class="test-options-target">TEST</div>`);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container [data-label='Type'] .btn-secondary ").click();
+        await contains(
+            ".options-container [data-label='Type'] .btn-secondary "
+        ).click();
         await hover(".popover [data-action-value='first']");
         await hover(".popover [data-action-value='second']");
         await advanceTime(applyDelay + 50);
@@ -225,9 +227,11 @@ describe("Async operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                async apply({ editingElement }) {
+                async apply({editingElement}) {
                     let color =
-                        getComputedStyle(editingElement).getPropertyValue("background-color");
+                        getComputedStyle(editingElement).getPropertyValue(
+                            "background-color"
+                        );
                     if (color === "rgb(255, 0, 0)") {
                         color = "red";
                         await new Promise((resolve) => setTimeout(resolve, applyDelay));
@@ -270,7 +274,7 @@ describe("Operation that will fail", () => {
         expect.errors(1);
         class TestAction extends BuilderAction {
             static id = "testAction";
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 editingElement.classList.add("fail");
                 throw new Error("This action should crash");
             }
@@ -300,7 +304,7 @@ describe("Operation that will fail", () => {
         expect.errors(2);
         class TestAction extends BuilderAction {
             static id = "testAction";
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 editingElement.classList.add("fail");
                 throw new Error("This action should crash");
             }
@@ -323,7 +327,7 @@ describe("Operation that will fail", () => {
         expect(":iframe .test-options-target").toHaveOuterHTML(
             '<div class="test-options-target test">b</div>'
         );
-        // preview + commit
+        // Preview + commit
         expect.verifyErrors(["This action should crash", "This action should crash"]);
     });
 });

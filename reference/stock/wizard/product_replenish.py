@@ -50,7 +50,7 @@ class ProductReplenish(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(ProductReplenish, self).default_get(fields)
+        res = super().default_get(fields)
         product_tmpl_id = self.env['product.template']
         if self.env.context.get('default_product_id'):
             product_id = self.env['product.product'].browse(self.env.context['default_product_id'])

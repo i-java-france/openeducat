@@ -1,17 +1,17 @@
-import { formView } from "@web/views/form/form_view";
-import { registry } from "@web/core/registry";
-import { EventBus, toRaw, useEffect, useRef, useSubEnv } from "@odoo/owl";
-import { useCustomDropzone } from "@web/core/dropzone/dropzone_hook";
-import { useService } from "@web/core/utils/hooks";
-import { useX2ManyCrud } from "@web/views/fields/relational_utils";
-import { MailAttachmentDropzone } from "@mail/core/common/mail_attachment_dropzone";
+import {formView} from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
+import {EventBus, toRaw, useEffect, useRef, useSubEnv} from "@odoo/owl";
+import {useCustomDropzone} from "@web/core/dropzone/dropzone_hook";
+import {useService} from "@web/core/utils/hooks";
+import {useX2ManyCrud} from "@web/views/fields/relational_utils";
+import {MailAttachmentDropzone} from "@mail/core/common/mail_attachment_dropzone";
 
 export class MailComposerFormController extends formView.Controller {
     static props = {
         ...formView.Controller.props,
-        fullComposerBus: { type: EventBus, optional: true },
+        fullComposerBus: {type: EventBus, optional: true},
     };
-    static defaultProps = { fullComposerBus: new EventBus() };
+    static defaultProps = {fullComposerBus: new EventBus()};
     setup() {
         super.setup();
         toRaw(this.env.dialogData).model = "mail.compose.message";
@@ -55,7 +55,10 @@ export class MailComposerFormRenderer extends formView.Renderer {
 
         // Add file dropzone on full mail composer:
         this.attachmentUploadService = useService("mail.attachment_upload");
-        this.operations = useX2ManyCrud(() => this.props.record.data["attachment_ids"], true);
+        this.operations = useX2ManyCrud(
+            () => this.props.record.data["attachment_ids"],
+            true
+        );
 
         useCustomDropzone(this.root, MailAttachmentDropzone, {
             /** @param {Event} event */
@@ -92,7 +95,8 @@ export class MailComposerFormRenderer extends formView.Renderer {
              */
             const updateRecipientWithCorrespondingPartner = (recipient) => {
                 const partner = selectedPartners.find(
-                    (partner) => partner.id === recipient.id || partner.email === recipient.email
+                    (partner) =>
+                        partner.id === recipient.id || partner.email === recipient.email
                 );
                 if (partner) {
                     return {
@@ -136,7 +140,11 @@ export class MailComposerFormRenderer extends formView.Renderer {
                         ...thread.suggestedRecipients,
                         ...thread.additionalRecipients,
                     ];
-                    if (!allRecipients.some((recipient) => recipient.partner_id === partner.id)) {
+                    if (
+                        !allRecipients.some(
+                            (recipient) => recipient.partner_id === partner.id
+                        )
+                    ) {
                         thread.additionalRecipients.push({
                             display_name: partner.display_name,
                             email: partner.email,

@@ -1,6 +1,7 @@
 from odoo import Command
-from odoo.addons.account.tests.common import TestTaxCommon
 from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import TestTaxCommon
 
 
 @tagged('post_install', '-at_install', 'post_install_l10n')
@@ -69,7 +70,7 @@ class TestL10nInHSNSummary(TestTaxCommon):
             {k: len(v) if k == 'items' else v for k, v in expected_values.items()},
         )
         self.assertEqual(len(results['hsn']['items']), len(expected_values['items']))
-        for item, expected_item in zip(results['hsn']['items'], expected_values['items']):
+        for item, expected_item in zip(results['hsn']['items'], expected_values['items'], strict=False):
             self.assertDictEqual(item, expected_item)
 
     def _create_py_sub_test_l10n_in_hsn_summary(self, document, display_uom):

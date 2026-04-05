@@ -1,4 +1,4 @@
-import { Component, onWillUpdateProps } from "@odoo/owl";
+import {Component, onWillUpdateProps} from "@odoo/owl";
 import {
     dateFilterValueToString,
     getDateRange,
@@ -6,10 +6,10 @@ import {
     getPreviousDateFilterValue,
     RELATIVE_PERIODS,
 } from "@spreadsheet/global_filters/helpers";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-const { DateTime } = luxon;
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+const {DateTime} = luxon;
 
 const DATE_OPTIONS = [
     {
@@ -95,16 +95,18 @@ const DATE_OPTIONS = [
  */
 export class DateFilterDropdown extends Component {
     static template = "spreadsheet.DateFilterDropdown";
-    static components = { DropdownItem, DateTimeInput };
+    static components = {DropdownItem, DateTimeInput};
     static props = {
-        value: { type: Object, optional: true },
+        value: {type: Object, optional: true},
         update: Function,
     };
 
     setup() {
         this._computeDefaultSelectedValues();
         this._applyCurrentValueToSelectedValues(this.props.value);
-        onWillUpdateProps((nextProps) => this._applyCurrentValueToSelectedValues(nextProps.value));
+        onWillUpdateProps((nextProps) =>
+            this._applyCurrentValueToSelectedValues(nextProps.value)
+        );
     }
 
     /**
@@ -113,10 +115,14 @@ export class DateFilterDropdown extends Component {
     _computeDefaultSelectedValues() {
         const now = DateTime.local();
         this.selectedValues = {
-            month: { month: now.month, year: now.year, type: "month" },
-            quarter: { quarter: Math.ceil(now.month / 3), year: now.year, type: "quarter" },
-            year: { year: now.year, type: "year" },
-            range: { from: "", to: "", type: "range" },
+            month: {month: now.month, year: now.year, type: "month"},
+            quarter: {
+                quarter: Math.ceil(now.month / 3),
+                year: now.year,
+                type: "quarter",
+            },
+            year: {year: now.year, type: "year"},
+            range: {from: "", to: "", type: "range"},
         };
     }
 
@@ -142,7 +148,7 @@ export class DateFilterDropdown extends Component {
                 };
                 break;
             case "year":
-                this.selectedValues.year = { type: "year", year: value.year };
+                this.selectedValues.year = {type: "year", year: value.year};
                 break;
             case "range":
                 this.selectedValues.range = {
@@ -155,7 +161,7 @@ export class DateFilterDropdown extends Component {
     }
 
     _setRangeToCurrentValue(value) {
-        const { from, to } = getDateRange(value);
+        const {from, to} = getDateRange(value);
         const now = DateTime.local();
         this.selectedValues.range = {
             type: "range",
@@ -185,7 +191,7 @@ export class DateFilterDropdown extends Component {
     update(value) {
         switch (value.type) {
             case "relative":
-                this.props.update({ type: "relative", period: value.id });
+                this.props.update({type: "relative", period: value.id});
                 break;
             case "month":
                 this.props.update(this.selectedValues.month);
@@ -197,7 +203,7 @@ export class DateFilterDropdown extends Component {
                 this.props.update(this.selectedValues.year);
                 break;
             case "range": {
-                const { from, to } = this.selectedValues.range;
+                const {from, to} = this.selectedValues.range;
                 if (from && to) {
                     // Ensure 'to' is after 'from'
                     if (DateTime.fromISO(from) > DateTime.fromISO(to)) {
@@ -239,7 +245,9 @@ export class DateFilterDropdown extends Component {
     }
 
     selectPrevious(type) {
-        this.selectedValues[type] = getPreviousDateFilterValue(this.selectedValues[type]);
+        this.selectedValues[type] = getPreviousDateFilterValue(
+            this.selectedValues[type]
+        );
     }
 
     selectNext(type) {

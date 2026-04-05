@@ -667,7 +667,7 @@ class PurchaseOrderLine(models.Model):
 
     @api.model
     def _date_in_the_past(self):
-        if not 'accrual_entry_date' in self.env.context:
+        if 'accrual_entry_date' not in self.env.context:
             return False
         accrual_date = fields.Date.from_string(self.env.context['accrual_entry_date'])
         return accrual_date < fields.Date.today()

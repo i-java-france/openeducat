@@ -1,5 +1,4 @@
 from odoo import models
-from odoo.addons.phone_validation.tools import phone_validation
 
 
 class BaseModel(models.AbstractModel):
@@ -96,7 +95,7 @@ class BaseModel(models.AbstractModel):
                 # did not find any sanitized number -> take first set value as fallback;
                 # if none, just assign False to the first available number field
                 value, fname = next(
-                    ((value, fname) for value, fname in zip(all_numbers, tocheck_fields) if value),
+                    ((value, fname) for value, fname in zip(all_numbers, tocheck_fields, strict=False) if value),
                     (False, tocheck_fields[0] if tocheck_fields else False)
                 )
                 result[record.id] = {

@@ -1,18 +1,18 @@
-import { browser } from "@web/core/browser/browser";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { useOwnDebugContext } from "@web/core/debug/debug_context";
-import { ActionContainer } from "@web/webclient/actions/action_container";
-import { Component, onMounted, useExternalListener, useState } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {useOwnDebugContext} from "@web/core/debug/debug_context";
+import {ActionContainer} from "@web/webclient/actions/action_container";
+import {Component, onMounted, useExternalListener, useState} from "@odoo/owl";
 
 export class ProjectSharingWebClient extends Component {
     static props = {};
-    static components = { ActionContainer, MainComponentsContainer };
+    static components = {ActionContainer, MainComponentsContainer};
     static template = "project.ProjectSharingWebClient";
 
     setup() {
         this.actionService = useService("action");
-        useOwnDebugContext({ categories: ["default"] });
+        useOwnDebugContext({categories: ["default"]});
         this.state = useState({
             fullscreen: false,
         });
@@ -27,7 +27,7 @@ export class ProjectSharingWebClient extends Component {
             // order to initialize themselves:
             this.env.bus.trigger("WEB_CLIENT_READY");
         });
-        useExternalListener(window, "click", this.onGlobalClick, { capture: true });
+        useExternalListener(window, "click", this.onGlobalClick, {capture: true});
     }
 
     async loadRouterState() {
@@ -60,7 +60,8 @@ export class ProjectSharingWebClient extends Component {
             (ev.ctrlKey || ev.metaKey) &&
             !ev.target.isContentEditable &&
             ((ev.target instanceof HTMLAnchorElement && ev.target.href) ||
-                (ev.target instanceof HTMLElement && ev.target.closest("a[href]:not([href=''])")))
+                (ev.target instanceof HTMLElement &&
+                    ev.target.closest("a[href]:not([href=''])")))
         ) {
             ev.stopImmediatePropagation();
             return;

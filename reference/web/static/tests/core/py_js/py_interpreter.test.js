@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { evaluateBooleanExpr, evaluateExpr } from "@web/core/py_js/py";
+import {evaluateBooleanExpr, evaluateExpr} from "@web/core/py_js/py";
 
 describe.current.tags("headless");
 
@@ -77,7 +77,7 @@ describe("number properties", () => {
         expect(evaluateExpr("2 / 1")).toBe(2);
         expect(evaluateExpr("42 % 5")).toBe(2);
         expect(evaluateExpr("2 ** 3")).toBe(8);
-        expect(evaluateExpr("a + b", { a: 1, b: 41 })).toBe(42);
+        expect(evaluateExpr("a + b", {a: 1, b: 41})).toBe(42);
     });
 
     test("// operator", () => {
@@ -95,7 +95,7 @@ describe("boolean properties", () => {
         expect(evaluateExpr("True and (False or True)")).toBe(true);
         expect(evaluateExpr("not True")).toBe(false);
         expect(evaluateExpr("not False")).toBe(true);
-        expect(evaluateExpr("not foo", { foo: false })).toBe(true);
+        expect(evaluateExpr("not foo", {foo: false})).toBe(true);
         expect(evaluateExpr("not None")).toBe(true);
         expect(evaluateExpr("not []")).toBe(true);
         expect(evaluateExpr("True == False or True == True")).toBe(true);
@@ -103,17 +103,19 @@ describe("boolean properties", () => {
     });
 
     test("get value from context", () => {
-        expect(evaluateExpr("foo == 'foo' or foo == 'bar'", { foo: "bar" })).toBe(true);
-        expect(evaluateExpr("foo == 'foo' and bar == 'bar'", { foo: "foo", bar: "bar" })).toBe(
-            true
-        );
+        expect(evaluateExpr("foo == 'foo' or foo == 'bar'", {foo: "bar"})).toBe(true);
+        expect(
+            evaluateExpr("foo == 'foo' and bar == 'bar'", {foo: "foo", bar: "bar"})
+        ).toBe(true);
     });
 
     test("should be lazy", () => {
-        // second clause should nameerror if evaluated
-        expect(() => evaluateExpr("foo == 'foo' and bar == 'bar'", { foo: "foo" })).toThrow();
-        expect(evaluateExpr("foo == 'foo' and bar == 'bar'", { foo: "bar" })).toBe(false);
-        expect(evaluateExpr("foo == 'foo' or bar == 'bar'", { foo: "foo" })).toBe(true);
+        // Second clause should nameerror if evaluated
+        expect(() =>
+            evaluateExpr("foo == 'foo' and bar == 'bar'", {foo: "foo"})
+        ).toThrow();
+        expect(evaluateExpr("foo == 'foo' and bar == 'bar'", {foo: "bar"})).toBe(false);
+        expect(evaluateExpr("foo == 'foo' or bar == 'bar'", {foo: "foo"})).toBe(true);
     });
 
     test("should return the actual object", () => {
@@ -127,18 +129,18 @@ describe("boolean properties", () => {
 
 describe("values from context", () => {
     test("free variable", () => {
-        expect(evaluateExpr("a", { a: 3 })).toBe(3);
-        expect(evaluateExpr("a + b", { a: 3, b: 5 })).toBe(8);
-        expect(evaluateExpr("a", { a: true })).toBe(true);
-        expect(evaluateExpr("a", { a: false })).toBe(false);
-        expect(evaluateExpr("a", { a: null })).toBe(null);
-        expect(evaluateExpr("a", { a: "bar" })).toBe("bar");
-        expect(evaluateExpr("foo", { foo: [1, 2, 3] })).toEqual([1, 2, 3]);
+        expect(evaluateExpr("a", {a: 3})).toBe(3);
+        expect(evaluateExpr("a + b", {a: 3, b: 5})).toBe(8);
+        expect(evaluateExpr("a", {a: true})).toBe(true);
+        expect(evaluateExpr("a", {a: false})).toBe(false);
+        expect(evaluateExpr("a", {a: null})).toBe(null);
+        expect(evaluateExpr("a", {a: "bar"})).toBe("bar");
+        expect(evaluateExpr("foo", {foo: [1, 2, 3]})).toEqual([1, 2, 3]);
     });
 
     test("special case for context: the eval context can be accessed as 'context'", () => {
-        expect(evaluateExpr("context.get('b', 54)", { b: 3 })).toBe(3);
-        expect(evaluateExpr("context.get('c', 54)", { b: 3 })).toBe(54);
+        expect(evaluateExpr("context.get('b', 54)", {b: 3})).toBe(3);
+        expect(evaluateExpr("context.get('c', 54)", {b: 3})).toBe(54);
     });
 
     test("true and false available in context", () => {
@@ -167,9 +169,9 @@ describe("comparisons", () => {
     });
 
     test("equality should work with free variables", () => {
-        expect(evaluateExpr("1 == a", { a: 1 })).toBe(true);
-        expect(evaluateExpr('foo == "bar"', { foo: "bar" })).toBe(true);
-        expect(evaluateExpr('foo == "bar"', { foo: "qux" })).toBe(false);
+        expect(evaluateExpr("1 == a", {a: 1})).toBe(true);
+        expect(evaluateExpr('foo == "bar"', {foo: "bar"})).toBe(true);
+        expect(evaluateExpr('foo == "bar"', {foo: "qux"})).toBe(false);
     });
 
     test("inequality", () => {
@@ -179,10 +181,10 @@ describe("comparisons", () => {
     });
 
     test("inequality should work with free variables", () => {
-        expect(evaluateExpr("1 != a", { a: 42 })).toBe(true);
-        expect(evaluateExpr('foo != "bar"', { foo: "bar" })).toBe(false);
-        expect(evaluateExpr('foo != "bar"', { foo: "qux" })).toBe(true);
-        expect(evaluateExpr("foo != bar", { foo: "qux", bar: "quux" })).toBe(true);
+        expect(evaluateExpr("1 != a", {a: 42})).toBe(true);
+        expect(evaluateExpr('foo != "bar"', {foo: "bar"})).toBe(false);
+        expect(evaluateExpr('foo != "bar"', {foo: "qux"})).toBe(true);
+        expect(evaluateExpr("foo != bar", {foo: "qux", bar: "quux"})).toBe(true);
     });
 
     test("should accept deprecated form", () => {
@@ -208,11 +210,11 @@ describe("comparisons", () => {
     });
 
     test("should compare strings", () => {
-        expect(evaluateExpr("date >= current", { date: "2010-06-08", current: "2010-06-05" })).toBe(
-            true
-        );
-        expect(evaluateExpr('state >= "cancel"', { state: "cancel" })).toBe(true);
-        expect(evaluateExpr('state >= "cancel"', { state: "open" })).toBe(true);
+        expect(
+            evaluateExpr("date >= current", {date: "2010-06-08", current: "2010-06-05"})
+        ).toBe(true);
+        expect(evaluateExpr('state >= "cancel"', {state: "cancel"})).toBe(true);
+        expect(evaluateExpr('state >= "cancel"', {state: "open"})).toBe(true);
     });
 
     test("mixed types comparisons", () => {
@@ -268,7 +270,7 @@ describe("containment", () => {
         expect(evaluateExpr("'bar' in ['foo', 'qux']")).toBe(false);
         expect(evaluateExpr("3  in [1,2,3]")).toBe(true);
         expect(evaluateExpr("None  in [1,'foo',None]")).toBe(true);
-        expect(evaluateExpr("not a in b", { a: 3, b: [1, 2, 4, 8] })).toBe(true);
+        expect(evaluateExpr("not a in b", {a: 3, b: [1, 2, 4, 8]})).toBe(true);
     });
 
     test("not in", () => {
@@ -283,15 +285,15 @@ describe("conversions", () => {
     test("to bool", () => {
         expect(evaluateExpr("bool('')")).toBe(false);
         expect(evaluateExpr("bool('foo')")).toBe(true);
-        expect(evaluateExpr("bool(date_deadline)", { date_deadline: "2008" })).toBe(true);
-        expect(evaluateExpr("bool(s)", { s: "" })).toBe(false);
+        expect(evaluateExpr("bool(date_deadline)", {date_deadline: "2008"})).toBe(true);
+        expect(evaluateExpr("bool(s)", {s: ""})).toBe(false);
     });
 });
 
 describe("callables", () => {
     test("should not call function from context", () => {
-        expect(() => evaluateExpr("foo()", { foo: () => 3 })).toThrow();
-        expect(() => evaluateExpr("1 + foo()", { foo: () => 3 })).toThrow();
+        expect(() => evaluateExpr("foo()", {foo: () => 3})).toThrow();
+        expect(() => evaluateExpr("1 + foo()", {foo: () => 3})).toThrow();
     });
     test("min/max", () => {
         expect(evaluateExpr("max(3, 5)")).toBe(5);
@@ -302,8 +304,8 @@ describe("callables", () => {
 describe("dicts", () => {
     test("dict", () => {
         expect(evaluateExpr("{}")).toEqual({});
-        expect(evaluateExpr("{'foo': 1 + 2}")).toEqual({ foo: 3 });
-        expect(evaluateExpr("{'foo': 1, 'bar': 4}")).toEqual({ foo: 1, bar: 4 });
+        expect(evaluateExpr("{'foo': 1 + 2}")).toEqual({foo: 3});
+        expect(evaluateExpr("{'foo': 1, 'bar': 4}")).toEqual({foo: 1, bar: 4});
     });
 
     test("lookup and definition", () => {
@@ -318,8 +320,8 @@ describe("dicts", () => {
     });
 
     test("can get values from values 'context'", () => {
-        expect(evaluateExpr("context.get('a')", { context: { a: 123 } })).toBe(123);
-        const values = { context: { a: { b: { c: 321 } } } };
+        expect(evaluateExpr("context.get('a')", {context: {a: 123}})).toBe(123);
+        const values = {context: {a: {b: {c: 321}}}};
         expect(evaluateExpr("context.get('a').b.c", values)).toBe(321);
         expect(evaluateExpr("context.get('a', {'e': 5}).b.c", values)).toBe(321);
         expect(evaluateExpr("context.get('d', 3)", values)).toBe(3);
@@ -327,21 +329,21 @@ describe("dicts", () => {
     });
 
     test("can check if a key is in the 'context'", () => {
-        expect(evaluateExpr("'a' in context", { context: { a: 123 } })).toBe(true);
-        expect(evaluateExpr("'a' in context", { context: { b: 123 } })).toBe(false);
-        expect(evaluateExpr("'a' not in context", { context: { a: 123 } })).toBe(false);
-        expect(evaluateExpr("'a' not in context", { context: { b: 123 } })).toBe(true);
+        expect(evaluateExpr("'a' in context", {context: {a: 123}})).toBe(true);
+        expect(evaluateExpr("'a' in context", {context: {b: 123}})).toBe(false);
+        expect(evaluateExpr("'a' not in context", {context: {a: 123}})).toBe(false);
+        expect(evaluateExpr("'a' not in context", {context: {b: 123}})).toBe(true);
     });
 });
 
 describe("objects", () => {
     test("can read values from object", () => {
-        expect(evaluateExpr("obj.a", { obj: { a: 123 } })).toBe(123);
-        expect(evaluateExpr("obj.a.b.c", { obj: { a: { b: { c: 321 } } } })).toBe(321);
+        expect(evaluateExpr("obj.a", {obj: {a: 123}})).toBe(123);
+        expect(evaluateExpr("obj.a.b.c", {obj: {a: {b: {c: 321}}}})).toBe(321);
     });
 
     test("cannot call function in object", () => {
-        expect(() => evaluateExpr("obj.f(3)", { obj: { f: (n) => n + 1 } })).toThrow();
+        expect(() => evaluateExpr("obj.f(3)", {obj: {f: (n) => n + 1}})).toThrow();
     });
 });
 
@@ -352,7 +354,7 @@ describe("if expressions", () => {
     });
 
     test("only evaluate proper branch", () => {
-        // will throw if evaluate wrong branch => name error
+        // Will throw if evaluate wrong branch => name error
         expect(evaluateExpr("1 if True else boom")).toBe(1);
         expect(evaluateExpr("boom if False else 222")).toBe(222);
     });
@@ -376,28 +378,28 @@ describe("evaluate to boolean", () => {
     });
 
     test("use contextual values", () => {
-        expect(evaluateBooleanExpr("a", { a: 12 })).toBe(true);
-        expect(evaluateBooleanExpr("a", { a: 0 })).toBe(false);
-        expect(evaluateBooleanExpr("0 + 3 - a", { a: 1 })).toBe(true);
-        expect(evaluateBooleanExpr("0 + 3 - a - 2", { a: 1 })).toBe(false);
-        expect(evaluateBooleanExpr("0 + 3 - a - b", { a: 1, b: 2 })).toBe(false);
-        expect(evaluateBooleanExpr("a", { a: "foo" })).toBe(true);
-        expect(evaluateBooleanExpr("a", { a: [1] })).toBe(true);
-        expect(evaluateBooleanExpr("a", { a: [] })).toBe(false);
+        expect(evaluateBooleanExpr("a", {a: 12})).toBe(true);
+        expect(evaluateBooleanExpr("a", {a: 0})).toBe(false);
+        expect(evaluateBooleanExpr("0 + 3 - a", {a: 1})).toBe(true);
+        expect(evaluateBooleanExpr("0 + 3 - a - 2", {a: 1})).toBe(false);
+        expect(evaluateBooleanExpr("0 + 3 - a - b", {a: 1, b: 2})).toBe(false);
+        expect(evaluateBooleanExpr("a", {a: "foo"})).toBe(true);
+        expect(evaluateBooleanExpr("a", {a: [1]})).toBe(true);
+        expect(evaluateBooleanExpr("a", {a: []})).toBe(false);
     });
 
     test("throw if has missing value", () => {
-        expect(() => evaluateBooleanExpr("a", { b: 0 })).toThrow();
-        expect(evaluateBooleanExpr("1 or a")).toBe(true); // do not throw (lazy value)
+        expect(() => evaluateBooleanExpr("a", {b: 0})).toThrow();
+        expect(evaluateBooleanExpr("1 or a")).toBe(true); // Do not throw (lazy value)
         expect(() => evaluateBooleanExpr("0 or a")).toThrow();
-        expect(() => evaluateBooleanExpr("a or b", { b: true })).toThrow();
-        expect(() => evaluateBooleanExpr("a and b", { b: true })).toThrow();
+        expect(() => evaluateBooleanExpr("a or b", {b: true})).toThrow();
+        expect(() => evaluateBooleanExpr("a and b", {b: true})).toThrow();
         expect(() => evaluateBooleanExpr("a()")).toThrow();
         expect(() => evaluateBooleanExpr("a[0]")).toThrow();
         expect(() => evaluateBooleanExpr("a.b")).toThrow();
-        expect(() => evaluateBooleanExpr("0 + 3 - a", { b: 1 })).toThrow();
-        expect(() => evaluateBooleanExpr("0 + 3 - a - 2", { b: 1 })).toThrow();
-        expect(() => evaluateBooleanExpr("0 + 3 - a - b", { b: 2 })).toThrow();
+        expect(() => evaluateBooleanExpr("0 + 3 - a", {b: 1})).toThrow();
+        expect(() => evaluateBooleanExpr("0 + 3 - a - 2", {b: 1})).toThrow();
+        expect(() => evaluateBooleanExpr("0 + 3 - a - b", {b: 2})).toThrow();
     });
 });
 
@@ -426,84 +428,104 @@ describe("sets", () => {
         expect(() => evaluateExpr("set(true)")).toThrow();
         expect(() => evaluateExpr("set(1, 2)")).toThrow();
 
-        expect(() => evaluateExpr("set(expr)", { expr: undefined })).toThrow();
-        expect(() => evaluateExpr("set(expr)", { expr: null })).toThrow();
+        expect(() => evaluateExpr("set(expr)", {expr: undefined})).toThrow();
+        expect(() => evaluateExpr("set(expr)", {expr: null})).toThrow();
 
-        expect(() => evaluateExpr("set([], [])")).toThrow(); // valid but not supported by py_js
-        expect(() => evaluateExpr("set({ 'a' })")).toThrow(); // valid but not supported by py_js
+        expect(() => evaluateExpr("set([], [])")).toThrow(); // Valid but not supported by py_js
+        expect(() => evaluateExpr("set({ 'a' })")).toThrow(); // Valid but not supported by py_js
     });
 
     test("set intersection", () => {
         expect(evaluateExpr("set([1,2,3]).intersection()")).toEqual(new Set([1, 2, 3]));
-        expect(evaluateExpr("set([1,2,3]).intersection(set([2,3]))")).toEqual(new Set([2, 3]));
-        expect(evaluateExpr("set([1,2,3]).intersection([2,3])")).toEqual(new Set([2, 3]));
-        expect(evaluateExpr("set([1,2,3]).intersection(r)", { r: [2, 3] })).toEqual(
+        expect(evaluateExpr("set([1,2,3]).intersection(set([2,3]))")).toEqual(
             new Set([2, 3])
         );
-        expect(evaluateExpr("r.intersection([2,3])", { r: new Set([1, 2, 3, 2]) })).toEqual(
+        expect(evaluateExpr("set([1,2,3]).intersection([2,3])")).toEqual(
             new Set([2, 3])
         );
+        expect(evaluateExpr("set([1,2,3]).intersection(r)", {r: [2, 3]})).toEqual(
+            new Set([2, 3])
+        );
+        expect(
+            evaluateExpr("r.intersection([2,3])", {r: new Set([1, 2, 3, 2])})
+        ).toEqual(new Set([2, 3]));
 
-        expect(evaluateExpr("set(foo_ids).intersection([2,3])", { foo_ids: [1, 2] })).toEqual(
-            new Set([2])
-        );
-        expect(evaluateExpr("set(foo_ids).intersection([2,3])", { foo_ids: [1] })).toEqual(
+        expect(
+            evaluateExpr("set(foo_ids).intersection([2,3])", {foo_ids: [1, 2]})
+        ).toEqual(new Set([2]));
+        expect(
+            evaluateExpr("set(foo_ids).intersection([2,3])", {foo_ids: [1]})
+        ).toEqual(new Set());
+        expect(evaluateExpr("set([foo_id]).intersection([2,3])", {foo_id: 1})).toEqual(
             new Set()
         );
-        expect(evaluateExpr("set([foo_id]).intersection([2,3])", { foo_id: 1 })).toEqual(new Set());
-        expect(evaluateExpr("set([foo_id]).intersection([2,3])", { foo_id: 2 })).toEqual(
+        expect(evaluateExpr("set([foo_id]).intersection([2,3])", {foo_id: 2})).toEqual(
             new Set([2])
         );
 
-        expect(() => evaluateExpr("set([]).intersection([], [])")).toThrow(); // valid but not supported by py_js
-        expect(() => evaluateExpr("set([]).intersection([], [], [])")).toThrow(); // valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).intersection([], [])")).toThrow(); // Valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).intersection([], [], [])")).toThrow(); // Valid but not supported by py_js
     });
 
     test("set difference", () => {
         expect(evaluateExpr("set([1,2,3]).difference()")).toEqual(new Set([1, 2, 3]));
-        expect(evaluateExpr("set([1,2,3]).difference(set([2,3]))")).toEqual(new Set([1]));
+        expect(evaluateExpr("set([1,2,3]).difference(set([2,3]))")).toEqual(
+            new Set([1])
+        );
         expect(evaluateExpr("set([1,2,3]).difference([2,3])")).toEqual(new Set([1]));
-        expect(evaluateExpr("set([1,2,3]).difference(r)", { r: [2, 3] })).toEqual(new Set([1]));
-        expect(evaluateExpr("r.difference([2,3])", { r: new Set([1, 2, 3, 2, 4]) })).toEqual(
-            new Set([1, 4])
+        expect(evaluateExpr("set([1,2,3]).difference(r)", {r: [2, 3]})).toEqual(
+            new Set([1])
+        );
+        expect(
+            evaluateExpr("r.difference([2,3])", {r: new Set([1, 2, 3, 2, 4])})
+        ).toEqual(new Set([1, 4]));
+
+        expect(
+            evaluateExpr("set(foo_ids).difference([2,3])", {foo_ids: [1, 2]})
+        ).toEqual(new Set([1]));
+        expect(evaluateExpr("set(foo_ids).difference([2,3])", {foo_ids: [1]})).toEqual(
+            new Set([1])
+        );
+        expect(evaluateExpr("set([foo_id]).difference([2,3])", {foo_id: 1})).toEqual(
+            new Set([1])
+        );
+        expect(evaluateExpr("set([foo_id]).difference([2,3])", {foo_id: 2})).toEqual(
+            new Set()
         );
 
-        expect(evaluateExpr("set(foo_ids).difference([2,3])", { foo_ids: [1, 2] })).toEqual(
-            new Set([1])
-        );
-        expect(evaluateExpr("set(foo_ids).difference([2,3])", { foo_ids: [1] })).toEqual(
-            new Set([1])
-        );
-        expect(evaluateExpr("set([foo_id]).difference([2,3])", { foo_id: 1 })).toEqual(
-            new Set([1])
-        );
-        expect(evaluateExpr("set([foo_id]).difference([2,3])", { foo_id: 2 })).toEqual(new Set());
-
-        expect(() => evaluateExpr("set([]).difference([], [])")).toThrow(); // valid but not supported by py_js
-        expect(() => evaluateExpr("set([]).difference([], [], [])")).toThrow(); // valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).difference([], [])")).toThrow(); // Valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).difference([], [], [])")).toThrow(); // Valid but not supported by py_js
     });
 
     test("set union", () => {
         expect(evaluateExpr("set([1,2,3]).union()")).toEqual(new Set([1, 2, 3]));
-        expect(evaluateExpr("set([1,2,3]).union(set([2,3,4]))")).toEqual(new Set([1, 2, 3, 4]));
-        expect(evaluateExpr("set([1,2,3]).union([2,4])")).toEqual(new Set([1, 2, 3, 4]));
-        expect(evaluateExpr("set([1,2,3]).union(r)", { r: [2, 4] })).toEqual(new Set([1, 2, 3, 4]));
-        expect(evaluateExpr("r.union([2,3])", { r: new Set([1, 2, 2, 4]) })).toEqual(
+        expect(evaluateExpr("set([1,2,3]).union(set([2,3,4]))")).toEqual(
+            new Set([1, 2, 3, 4])
+        );
+        expect(evaluateExpr("set([1,2,3]).union([2,4])")).toEqual(
+            new Set([1, 2, 3, 4])
+        );
+        expect(evaluateExpr("set([1,2,3]).union(r)", {r: [2, 4]})).toEqual(
+            new Set([1, 2, 3, 4])
+        );
+        expect(evaluateExpr("r.union([2,3])", {r: new Set([1, 2, 2, 4])})).toEqual(
             new Set([1, 2, 4, 3])
         );
 
-        expect(evaluateExpr("set(foo_ids).union([2,3])", { foo_ids: [1, 2] })).toEqual(
+        expect(evaluateExpr("set(foo_ids).union([2,3])", {foo_ids: [1, 2]})).toEqual(
             new Set([1, 2, 3])
         );
-        expect(evaluateExpr("set(foo_ids).union([2,3])", { foo_ids: [1] })).toEqual(
+        expect(evaluateExpr("set(foo_ids).union([2,3])", {foo_ids: [1]})).toEqual(
             new Set([1, 2, 3])
         );
-        expect(evaluateExpr("set([foo_id]).union([2,3])", { foo_id: 1 })).toEqual(
+        expect(evaluateExpr("set([foo_id]).union([2,3])", {foo_id: 1})).toEqual(
             new Set([1, 2, 3])
         );
-        expect(evaluateExpr("set([foo_id]).union([2,3])", { foo_id: 2 })).toEqual(new Set([2, 3]));
+        expect(evaluateExpr("set([foo_id]).union([2,3])", {foo_id: 2})).toEqual(
+            new Set([2, 3])
+        );
 
-        expect(() => evaluateExpr("set([]).union([], [])")).toThrow(); // valid but not supported by py_js
-        expect(() => evaluateExpr("set([]).union([], [], [])")).toThrow(); // valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).union([], [])")).toThrow(); // Valid but not supported by py_js
+        expect(() => evaluateExpr("set([]).union([], [], [])")).toThrow(); // Valid but not supported by py_js
     });
 });

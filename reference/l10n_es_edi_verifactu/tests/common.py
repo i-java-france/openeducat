@@ -1,11 +1,12 @@
 import base64
 import json
-import requests
-
 from unittest import mock
 
-from odoo import _, release, Command
+import requests
+
+from odoo import Command, _, release
 from odoo.tools import file_open, html_sanitize, misc, zeep
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

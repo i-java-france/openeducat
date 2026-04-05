@@ -1,6 +1,6 @@
-import { describe, expect, getFixture, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { Deferred, animationFrame, mockTouch } from "@odoo/hoot-mock";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {Deferred, animationFrame, mockTouch} from "@odoo/hoot-mock";
 import {
     contains,
     getService,
@@ -9,10 +9,10 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { Component, onMounted, reactive, useState, xml } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { CommandPalette } from "@web/core/commands/command_palette";
-import { registry } from "@web/core/registry";
+import {Component, onMounted, reactive, useState, xml} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {CommandPalette} from "@web/core/commands/command_palette";
+import {registry} from "@web/core/registry";
 import {
     useAutofocus,
     useBus,
@@ -26,7 +26,7 @@ import {
 describe("useAutofocus", () => {
     test.tags("desktop");
     test("simple usecase", async () => {
-        const state = reactive({ text: "" });
+        const state = reactive({text: ""});
 
         class MyComponent extends Component {
             static props = ["*"];
@@ -54,7 +54,7 @@ describe("useAutofocus", () => {
 
     test.tags("desktop");
     test("simple usecase when input type is number", async () => {
-        const state = reactive({ counter: 0 });
+        const state = reactive({counter: 0});
 
         class MyComponent extends Component {
             static props = ["*"];
@@ -82,7 +82,7 @@ describe("useAutofocus", () => {
 
     test.tags("desktop");
     test("conditional autofocus", async () => {
-        const state = reactive({ showInput: true });
+        const state = reactive({showInput: true});
 
         class MyComponent extends Component {
             static props = ["*"];
@@ -146,14 +146,14 @@ describe("useAutofocus", () => {
                 </span>
             `;
             setup() {
-                useAutofocus({ mobile: true });
+                useAutofocus({mobile: true});
             }
         }
 
         patchWithCleanup(browser, {
             matchMedia: (media) => {
                 if (media === "(pointer:coarse)") {
-                    return { matches: true };
+                    return {matches: true};
                 }
                 this._super();
             },
@@ -166,7 +166,7 @@ describe("useAutofocus", () => {
 
     test.tags("desktop");
     test("supports different ref names", async () => {
-        const state = reactive({ showSecond: true });
+        const state = reactive({showSecond: true});
 
         class MyComponent extends Component {
             static props = ["*"];
@@ -177,8 +177,8 @@ describe("useAutofocus", () => {
                 </span>
             `;
             setup() {
-                useAutofocus({ refName: "second" });
-                useAutofocus({ refName: "first" }); // test requires this at second position
+                useAutofocus({refName: "second"});
+                useAutofocus({refName: "first"}); // Test requires this at second position
 
                 this.state = useState(state);
             }
@@ -211,7 +211,7 @@ describe("useAutofocus", () => {
                 </span>
             `;
             setup() {
-                useAutofocus({ selectAll: true });
+                useAutofocus({selectAll: true});
             }
         }
 
@@ -248,7 +248,7 @@ describe("useAutofocus", () => {
         expect("input:first").toBeFocused();
 
         getService("dialog").add(CommandPalette, {
-            config: { providers: [] },
+            config: {providers: []},
         });
         await animationFrame();
 
@@ -264,7 +264,7 @@ describe("useAutofocus", () => {
 
 describe("useBus", () => {
     test("simple usecase", async () => {
-        const state = reactive({ child: true });
+        const state = reactive({child: true});
 
         class MyComponent extends Component {
             static props = ["*"];
@@ -278,7 +278,7 @@ describe("useBus", () => {
         }
 
         class Parent extends Component {
-            static components = { MyComponent };
+            static components = {MyComponent};
             static props = ["*"];
             static template = xml`<MyComponent t-if="state.child" />`;
 
@@ -287,7 +287,7 @@ describe("useBus", () => {
             }
         }
 
-        const { bus } = await makeMockEnv();
+        const {bus} = await makeMockEnv();
         await mountWithCleanup(Parent);
 
         bus.trigger("test-event");
@@ -338,7 +338,7 @@ describe("useService", () => {
 
     test("async service with protected methods", async () => {
         useServiceProtectMethodHandling.fn = useServiceProtectMethodHandling.original;
-        const state = reactive({ child: true });
+        const state = reactive({child: true});
         let nbCalls = 0;
         let def = new Deferred();
         let objectService;
@@ -355,7 +355,7 @@ describe("useService", () => {
         }
 
         class Parent extends Component {
-            static components = { MyComponent };
+            static components = {MyComponent};
             static props = ["*"];
             static template = xml`<MyComponent t-if="state.child" />`;
 
@@ -395,7 +395,9 @@ describe("useService", () => {
         // Functions and methods have the correct this
         def.resolve();
         await expect(objectService.asyncMethod()).resolves.toBe(objectService);
-        await expect(objectService.asyncMethod.call("boundThis")).resolves.toBe("boundThis");
+        await expect(objectService.asyncMethod.call("boundThis")).resolves.toBe(
+            "boundThis"
+        );
         await expect(functionService()).resolves.toBe(undefined);
         await expect(functionService.call("boundThis")).resolves.toBe("boundThis");
         expect(nbCalls).toBe(4);
@@ -414,12 +416,16 @@ describe("useService", () => {
         expect.verifySteps([]);
 
         // Calling the functions after the destruction rejects the promise
-        await expect(objectService.asyncMethod()).rejects.toThrow("Component is destroyed");
+        await expect(objectService.asyncMethod()).rejects.toThrow(
+            "Component is destroyed"
+        );
         await expect(objectService.asyncMethod.call("boundThis")).rejects.toThrow(
             "Component is destroyed"
         );
         await expect(functionService()).rejects.toThrow("Component is destroyed");
-        await expect(functionService.call("boundThis")).rejects.toThrow("Component is destroyed");
+        await expect(functionService.call("boundThis")).rejects.toThrow(
+            "Component is destroyed"
+        );
         expect(nbCalls).toBe(8);
         useServiceProtectMethodHandling.fn = useServiceProtectMethodHandling.mocked;
     });
@@ -463,7 +469,7 @@ describe("useSpellCheck", () => {
             static props = ["*"];
             static template = xml`<div><textarea t-ref="myreference" class="textArea"/></div>`;
             setup() {
-                useSpellCheck({ refName: "myreference" });
+                useSpellCheck({refName: "myreference"});
             }
         }
 
@@ -626,7 +632,7 @@ describe("useChildRef and useForwardRefToParent", () => {
         class Parent extends Component {
             static props = ["*"];
             static template = xml`<div><Child someRef="someRef"/></div>`;
-            static components = { Child };
+            static components = {Child};
             setup() {
                 this.someRef = useChildRef();
                 parentRef = this.someRef;
@@ -650,10 +656,10 @@ describe("useChildRef and useForwardRefToParent", () => {
         class Parent extends Component {
             static props = ["*"];
             static template = xml`<div><Child t-if="state.hasChild" someRef="someRef"/></div>`;
-            static components = { Child };
+            static components = {Child};
             setup() {
                 this.someRef = useChildRef();
-                this.state = useState({ hasChild: true });
+                this.state = useState({hasChild: true});
             }
         }
 

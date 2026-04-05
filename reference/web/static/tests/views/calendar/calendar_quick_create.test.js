@@ -1,15 +1,15 @@
-import { expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
 import {
     contains,
     getService,
     mountWithCleanup,
     preloadBundle,
 } from "@web/../tests/web_test_helpers";
-import { FAKE_MODEL } from "./calendar_test_helpers";
+import {FAKE_MODEL} from "./calendar_test_helpers";
 
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { CalendarQuickCreate } from "@web/views/calendar/quick_create/calendar_quick_create";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {CalendarQuickCreate} from "@web/views/calendar/quick_create/calendar_quick_create";
 
 const FAKE_PROPS = {
     model: FAKE_MODEL,
@@ -27,7 +27,7 @@ async function start(params = {}) {
     await mountWithCleanup(MainComponentsContainer);
     getService("dialog").add(
         CalendarQuickCreate,
-        { ...FAKE_PROPS, ...params.props },
+        {...FAKE_PROPS, ...params.props},
         params.dialogOptions
     );
     await waitFor(`.o_dialog`);
@@ -50,9 +50,9 @@ test(`mount a CalendarQuickCreate`, async () => {
 test(`click on create button`, async () => {
     await start({
         props: {
-            model: { ...FAKE_MODEL, createRecord: () => expect.step("create") },
+            model: {...FAKE_MODEL, createRecord: () => expect.step("create")},
         },
-        dialogOptions: { onClose: () => expect.step("close") },
+        dialogOptions: {onClose: () => expect.step("close")},
     });
     await contains(`.o-calendar-quick-create--create-btn`).click();
     expect.verifySteps([]);
@@ -70,17 +70,17 @@ test(`click on create button (with name)`, async () => {
                 },
             },
         },
-        dialogOptions: { onClose: () => expect.step("close") },
+        dialogOptions: {onClose: () => expect.step("close")},
     });
-    await contains(`.o-calendar-quick-create--input`).edit("TEST", { confirm: "blur" });
+    await contains(`.o-calendar-quick-create--input`).edit("TEST", {confirm: "blur"});
     await contains(`.o-calendar-quick-create--create-btn`).click();
     expect.verifySteps(["create", "close"]);
 });
 
 test(`click on edit button`, async () => {
     await start({
-        props: { editRecord: () => expect.step("edit") },
-        dialogOptions: { onClose: () => expect.step("close") },
+        props: {editRecord: () => expect.step("edit")},
+        dialogOptions: {onClose: () => expect.step("close")},
     });
     await contains(`.o-calendar-quick-create--edit-btn`).click();
     expect.verifySteps(["edit", "close"]);
@@ -94,16 +94,16 @@ test(`click on edit button (with name)`, async () => {
                 expect(record.title).toBe("TEST");
             },
         },
-        dialogOptions: { onClose: () => expect.step("close") },
+        dialogOptions: {onClose: () => expect.step("close")},
     });
-    await contains(`.o-calendar-quick-create--input`).edit("TEST", { confirm: "blur" });
+    await contains(`.o-calendar-quick-create--input`).edit("TEST", {confirm: "blur"});
     await contains(`.o-calendar-quick-create--edit-btn`).click();
     expect.verifySteps(["edit", "close"]);
 });
 
 test(`click on cancel button`, async () => {
     await start({
-        dialogOptions: { onClose: () => expect.step("close") },
+        dialogOptions: {onClose: () => expect.step("close")},
     });
     await contains(`.o-calendar-quick-create--cancel-btn`).click();
     expect.verifySteps(["close"]);
@@ -111,7 +111,7 @@ test(`click on cancel button`, async () => {
 
 test(`check default title`, async () => {
     await start({
-        props: { title: "Example Title" },
+        props: {title: "Example Title"},
     });
     expect(`.o-calendar-quick-create--input`).toHaveValue("Example Title");
 });

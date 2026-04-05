@@ -6,29 +6,30 @@ import math
 import uuid
 from datetime import datetime, timedelta
 from itertools import repeat
-from markupsafe import Markup
 
 import pytz
+from markupsafe import Markup
 from werkzeug.urls import url_parse
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
+from odoo.tools import html2plaintext, html_sanitize, is_html_empty, single_email_re
+from odoo.tools.intervals import intervals_overlap
+from odoo.tools.misc import get_lang
+from odoo.tools.translate import _
+
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.calendar.models.calendar_attendee import CalendarAttendee
 from odoo.addons.calendar.models.calendar_recurrence import (
-    weekday_to_field,
-    RRULE_TYPE_SELECTION,
+    BYDAY_SELECTION,
     END_TYPE_SELECTION,
     MONTH_BY_SELECTION,
+    RRULE_TYPE_SELECTION,
     WEEKDAY_SELECTION,
-    BYDAY_SELECTION
+    weekday_to_field,
 )
 from odoo.addons.calendar.models.utils import interval_from_events
-from odoo.tools.intervals import intervals_overlap
-from odoo.tools.translate import _
-from odoo.tools.misc import get_lang
-from odoo.tools import html2plaintext, html_sanitize, is_html_empty, single_email_re
-from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -686,7 +687,7 @@ class CalendarEvent(models.Model):
             organizers = self.env['res.users'].browse(organizer_ids).with_prefetch(organizer_ids)
             partners = self.env['res.partner'].browse(partner_ids).with_prefetch(partner_ids)
 
-            for vals, vals_partner_ids in zip(vals_list, vals_partner_list):
+            for vals, vals_partner_ids in zip(vals_list, vals_partner_list, strict=False):
                 contact_description = self._get_contact_details_description(
                     organizers.browse(vals.get('user_id', False)),
                     partners.browse(vals_partner_ids),
@@ -705,7 +706,7 @@ class CalendarEvent(models.Model):
         recurring_events = super().create(recurring_vals)
         events += recurring_events
 
-        for event, vals in zip(recurring_events, recurring_vals):
+        for event, vals in zip(recurring_events, recurring_vals, strict=False):
             recurrence_values = {field: vals.pop(field) for field in recurrence_fields if field in vals}
             if vals.get('recurrency'):
                 detached_events = event.with_context(skip_contact_description=True)._apply_recurrence_values(recurrence_values)
@@ -717,14 +718,14 @@ class CalendarEvent(models.Model):
         # above manually. Heuristic: a new command (0, 0, vals) is considered as
         # complete
         to_sync_activities = self.browse()
-        for event, event_values in zip(events, vals_list):
+        for event, event_values in zip(events, vals_list, strict=False):
             if any(command[0] != 0 for command in event_values.get('activity_ids') or []):
                 to_sync_activities += event
         to_sync_activities._sync_activities(fields={f for vals in vals_list for f in vals})
 
         if not self.env.context.get('dont_notify'):
             alarm_events = self.env['calendar.event']
-            for event, values in zip(events, vals_list):
+            for event, values in zip(events, vals_list, strict=False):
                 if values.get('allday'):
                     # All day events will trigger the _inverse_date method which will create the trigger.
                     continue
@@ -963,7 +964,7 @@ class CalendarEvent(models.Model):
         # The copy should not have the same attendee status than the original event
         default.update(partner_ids=[Command.set([])], attendee_ids=[Command.set([])])
         new_events = super(CalendarEvent, self.with_context(skip_contact_description=True)).copy(default)
-        for old_event, new_event in zip(self, new_events):
+        for old_event, new_event in zip(self, new_events, strict=False):
             new_event.write({'partner_ids': [(Command.set(old_event.partner_ids.ids))]})
         return new_events
 
@@ -1632,15 +1633,15 @@ class CalendarEvent(models.Model):
                     elif interval == 'minutes':
                         delta = timedelta(minutes=duration)
                     trigger.value = delta
-                    valarm.add('DESCRIPTION').value = alarm.name or u'Odoo'
+                    valarm.add('DESCRIPTION').value = alarm.name or 'Odoo'
             for attendee in meeting.attendee_ids:
                 attendee_add = event.add('attendee')
-                attendee_add.value = u'MAILTO:' + (attendee.email or u'')
+                attendee_add.value = 'MAILTO:' + (attendee.email or '')
 
             # Add "organizer" field if email available
             if meeting.partner_id.email:
                 organizer = event.add('organizer')
-                organizer.value = u'MAILTO:' + meeting.partner_id.email
+                organizer.value = 'MAILTO:' + meeting.partner_id.email
                 if meeting.partner_id.name:
                     organizer.params['CN'] = [meeting.partner_id.display_name.replace('\"', '\'')]
 
@@ -1717,7 +1718,7 @@ class CalendarEvent(models.Model):
             duration = date + timedelta(minutes=round(zduration*60))
             duration_time = duration.strftime(format_time)
             display_time = _(
-                u"%(day)s at (%(start)s To %(end)s) (%(timezone)s)",
+                "%(day)s at (%(start)s To %(end)s) (%(timezone)s)",
                 day=date_str,
                 start=time_str,
                 end=duration_time,
@@ -1727,7 +1728,7 @@ class CalendarEvent(models.Model):
             dd_date = date_deadline.strftime(format_date)
             dd_time = date_deadline.strftime(format_time)
             display_time = _(
-                u"%(date_start)s at %(time_start)s To\n %(date_end)s at %(time_end)s (%(timezone)s)",
+                "%(date_start)s at %(time_start)s To\n %(date_end)s at %(time_end)s (%(timezone)s)",
                 date_start=date_str,
                 time_start=time_str,
                 date_end=dd_date,

@@ -1,12 +1,18 @@
-import { VideoPlugin } from "@html_editor/main/media/video_plugin";
-import { EmbeddedVideoSelector } from "./video_selector_dialog/embedded_video_selector";
+import {VideoPlugin} from "@html_editor/main/media/video_plugin";
+import {EmbeddedVideoSelector} from "./video_selector_dialog/embedded_video_selector";
 
 /**
  * This plugin is meant to replace the Video plugin.
  */
 export class EmbeddedVideoPlugin extends VideoPlugin {
     static id = "embeddedVideo";
-    static dependencies = ["embeddedComponents", "selection", "history", "overlay", "media"];
+    static dependencies = [
+        "embeddedComponents",
+        "selection",
+        "history",
+        "overlay",
+        "media",
+    ];
 
     // Extends the base class resources
     /** @type {import("plugins").EditorResources} */
@@ -23,7 +29,7 @@ export class EmbeddedVideoPlugin extends VideoPlugin {
     /**
      * @param {Object} props
      */
-    extendEmbeddedVideoProps({ name, props }) {
+    extendEmbeddedVideoProps({name, props}) {
         if (name === "video") {
             Object.assign(props, {
                 createOverlay: (Component, props = {}, options) =>

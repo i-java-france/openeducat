@@ -1,4 +1,4 @@
-import { DynamicList } from "./dynamic_list";
+import {DynamicList} from "./dynamic_list";
 
 /**
  * @typedef {import("./record").Record} RelationalRecord
@@ -43,7 +43,7 @@ export class DynamicRecordList extends DynamicList {
     addExistingRecord(resId, atFirstPosition) {
         return this.model.mutex.exec(async () => {
             const record = this._createRecordDatapoint({});
-            await record._load({ resId });
+            await record._load({resId});
             this._addRecord(record, atFirstPosition ? 0 : this.records.length);
             return record;
         });
@@ -91,7 +91,12 @@ export class DynamicRecordList extends DynamicList {
     async resequence(movedRecordId, targetRecordId) {
         return this.model.mutex.exec(
             async () =>
-                await this._resequence(this.records, this.resModel, movedRecordId, targetRecordId)
+                await this._resequence(
+                    this.records,
+                    this.resModel,
+                    movedRecordId,
+                    targetRecordId
+                )
         );
     }
 
@@ -112,7 +117,11 @@ export class DynamicRecordList extends DynamicList {
     }
 
     _addRecord(record, index) {
-        this.records.splice(Number.isInteger(index) ? index : this.records.length, 0, record);
+        this.records.splice(
+            Number.isInteger(index) ? index : this.records.length,
+            0,
+            record
+        );
         this.count++;
     }
 
@@ -130,7 +139,7 @@ export class DynamicRecordList extends DynamicList {
                 mode,
             },
             data,
-            { manuallyAdded: !data.id }
+            {manuallyAdded: !data.id}
         );
     }
 
@@ -145,8 +154,8 @@ export class DynamicRecordList extends DynamicList {
     async _load(offset, limit, orderBy, domain) {
         await this.model._updateConfig(
             this.config,
-            { offset, limit, orderBy, domain },
-            { commit: this._setData.bind(this) }
+            {offset, limit, orderBy, domain},
+            {commit: this._setData.bind(this)}
         );
     }
 
@@ -157,7 +166,7 @@ export class DynamicRecordList extends DynamicList {
         if (this.offset && !this.records.length) {
             // we weren't on the first page, and we removed all records of the current page
             const offset = Math.max(this.offset - this.limit, 0);
-            this.model._updateConfig(this.config, { offset }, { reload: false });
+            this.model._updateConfig(this.config, {offset}, {reload: false});
         }
     }
 

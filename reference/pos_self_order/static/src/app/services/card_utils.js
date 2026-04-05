@@ -1,6 +1,6 @@
-import { PosOrderline } from "@point_of_sale/app/models/pos_order_line";
-import { STORE_SYMBOL } from "@point_of_sale/app/models/related_models/utils";
-import { computeComboItems } from "@point_of_sale/app/models/utils/compute_combo_items";
+import {PosOrderline} from "@point_of_sale/app/models/pos_order_line";
+import {STORE_SYMBOL} from "@point_of_sale/app/models/related_models/utils";
+import {computeComboItems} from "@point_of_sale/app/models/utils/compute_combo_items";
 
 export function computeTotalComboPrice(selfOrder, productTemplate, comboValues, qty) {
     if (!comboValues || !comboValues.length) {
@@ -30,11 +30,17 @@ export function computeTotalComboPrice(selfOrder, productTemplate, comboValues, 
         });
     });
 
-    const taxDetails = order.getPriceWithOptions({ lines: transientLines }).taxDetails;
-    return selfOrder.isTaxesIncludedInPrice() ? taxDetails.total_amount : taxDetails.base_amount;
+    const taxDetails = order.getPriceWithOptions({lines: transientLines}).taxDetails;
+    return selfOrder.isTaxesIncludedInPrice()
+        ? taxDetails.total_amount
+        : taxDetails.base_amount;
 }
 
-export function getProductVariantByAttributes(models, productTemplate, selectedAttributes) {
+export function getProductVariantByAttributes(
+    models,
+    productTemplate,
+    selectedAttributes
+) {
     return models["product.product"].find(
         (prd) =>
             prd.product_tmpl_id.id === productTemplate.id &&
@@ -48,11 +54,13 @@ export function getProductVariantByAttributes(models, productTemplate, selectedA
 export function getAttributeValues(selectedValues, models) {
     return Object.entries(selectedValues).reduce((acc, [, options]) => {
         const optionEntries = Object.entries(
-            typeof options === "object" ? options : { [options]: true }
+            typeof options === "object" ? options : {[options]: true}
         ).filter(([, isSelected]) => isSelected); // Only true values
 
         optionEntries.forEach(([optionId]) => {
-            const attrVal = models["product.template.attribute.value"].get(Number(optionId));
+            const attrVal = models["product.template.attribute.value"].get(
+                Number(optionId)
+            );
             acc.push(attrVal);
         });
         return acc;
@@ -79,7 +87,7 @@ export function getOrderLineValues(
 ) {
     const product = productTemplate.product_variant_ids[0];
     const productPrice = selfOrder.getProductPriceInfo(productTemplate, product);
-    const { models, currentOrder } = selfOrder;
+    const {models, currentOrder} = selfOrder;
 
     const values = {
         order_id: currentOrder,
@@ -148,12 +156,12 @@ export function getOrderLineValues(
                 const extraQty = item.qty - freeQty;
 
                 if (freeQty > 0) {
-                    freeItems.push({ ...item, qty: freeQty });
+                    freeItems.push({...item, qty: freeQty});
                     freeCount += freeQty;
                 }
 
                 if (extraQty > 0) {
-                    extraItems.push({ ...item, qty: extraQty });
+                    extraItems.push({...item, qty: extraQty});
                 }
             }
         }
@@ -184,9 +192,9 @@ export function getOrderLineValues(
                 attribute_value_ids: comboItem.attribute_value_ids
                     ? [...comboItem.attribute_value_ids]
                     : [],
-                custom_attribute_value_ids: Object.entries(comboItem.attribute_custom_values).map(
-                    ([id, cus]) => ["create", cus]
-                ),
+                custom_attribute_value_ids: Object.entries(
+                    comboItem.attribute_custom_values
+                ).map(([id, cus]) => ["create", cus]),
             },
         ]);
     }

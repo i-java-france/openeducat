@@ -1,8 +1,8 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { after, VERTICAL_ALIGNMENT } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {after, VERTICAL_ALIGNMENT} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class HorizontalPaddingOption extends BaseOptionComponent {
     static template = "mass_mailing.HorizontalPaddingOption";
@@ -21,7 +21,9 @@ class PaddingOptionPlugin extends Plugin {
     static id = "horizontalPaddingOption";
     selector = HorizontalPaddingOption.selector;
     resources = {
-        mark_color_level_selector_params: [{ selector: HorizontalPaddingOption.selector }],
+        mark_color_level_selector_params: [
+            {selector: HorizontalPaddingOption.selector},
+        ],
         builder_options: [
             withSequence(after(VERTICAL_ALIGNMENT), HorizontalPaddingOption),
             withSequence(after(VERTICAL_ALIGNMENT), VerticalPaddingOption),
@@ -29,4 +31,6 @@ class PaddingOptionPlugin extends Plugin {
     };
 }
 
-registry.category("mass_mailing-plugins").add(PaddingOptionPlugin.id, PaddingOptionPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(PaddingOptionPlugin.id, PaddingOptionPlugin);

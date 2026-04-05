@@ -1,7 +1,6 @@
-from typing import Union
 
 
-def byteslike_to_bytes(val: Union[bytes, memoryview]) -> bytes:
+def byteslike_to_bytes(val: bytes | memoryview) -> bytes:
     """
     Massage bytes subclasses into bytes for ease of concatenation, comparison, etc...
     """

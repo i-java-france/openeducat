@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
@@ -6,11 +5,12 @@ import base64
 import datetime
 import json
 
-from odoo import _, api, fields, models, Command, tools
+from odoo import Command, _, api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
-from odoo.tools.mail import is_html_empty, email_normalize, email_split_and_format
+from odoo.tools.mail import email_normalize, email_split_and_format, is_html_empty
 from odoo.tools.misc import clean_context
+
 from odoo.addons.mail.tools.parser import parse_res_ids
 
 
@@ -862,7 +862,7 @@ class MailComposeMessage(models.TransientModel):
             return []
 
         create_vals_all = []
-        for mail, notif_base_values in zip(mails, mails._get_notification_values()):
+        for mail, notif_base_values in zip(mails, mails._get_notification_values(), strict=False):
             emails = set(tools.mail.email_split_and_format_normalize(f'{mail.email_to or ""}, {mail.email_cc or ""}'))
             emails = emails or ([mail.email_to] if mail.email_to else "")
 
@@ -893,7 +893,7 @@ class MailComposeMessage(models.TransientModel):
     def create_mail_template(self):
         """ creates a mail template with the current mail composer's fields """
         self.ensure_one()
-        if not self.model or not self.model in self.env:
+        if not self.model or self.model not in self.env:
             raise UserError(_('Template creation from composer requires a valid model.'))
         model_id = self.env['ir.model']._get_id(self.model)
         values = {

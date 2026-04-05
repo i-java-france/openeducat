@@ -1,11 +1,10 @@
-import { EventRegistrationSummaryDialog } from "@event/client_action/event_registration_summary_dialog";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { listView } from "@web/views/list/list_view";
-import { ListController } from "@web/views/list/list_controller";
+import {EventRegistrationSummaryDialog} from "@event/client_action/event_registration_summary_dialog";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {listView} from "@web/views/list/list_view";
+import {ListController} from "@web/views/list/list_controller";
 
 export class EventRegistrationListController extends ListController {
-
     setup() {
         super.setup();
         this.dialog = useService("dialog");
@@ -17,18 +16,20 @@ export class EventRegistrationListController extends ListController {
             const barcode = record.data.barcode;
             const eventId = record.data.event_id.id;
 
-            const result = await this.orm.call("event.registration", "register_attendee", [], {
-                barcode: barcode,
-                event_id: eventId,
-            });
-
-            this.dialog.add(
-                EventRegistrationSummaryDialog,
+            const result = await this.orm.call(
+                "event.registration",
+                "register_attendee",
+                [],
                 {
-                    model: this.model,
-                    registration: result
+                    barcode: barcode,
+                    event_id: eventId,
                 }
             );
+
+            this.dialog.add(EventRegistrationSummaryDialog, {
+                model: this.model,
+                registration: result,
+            });
         } else {
             return super.openRecord(record);
         }
@@ -37,7 +38,9 @@ export class EventRegistrationListController extends ListController {
 
 export const EventRegistrationListView = {
     ...listView,
-   Controller: EventRegistrationListController,
-}
+    Controller: EventRegistrationListController,
+};
 
-registry.category("views").add("registration_summary_dialog_list", EventRegistrationListView);
+registry
+    .category("views")
+    .add("registration_summary_dialog_list", EventRegistrationListView);

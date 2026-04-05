@@ -1,4 +1,4 @@
-import { BUILTINS, EvaluationError, execOnIterable } from "./py_builtin";
+import {BUILTINS, EvaluationError, execOnIterable} from "./py_builtin";
 import {
     NotSupportedError,
     PyDate,
@@ -7,8 +7,8 @@ import {
     PyTime,
     PyTimeDelta,
 } from "./py_date";
-import { PY_DICT, toPyDict } from "./py_utils";
-import { parseArgs } from "./py_parser";
+import {PY_DICT, toPyDict} from "./py_utils";
+import {parseArgs} from "./py_parser";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -248,7 +248,7 @@ function applyBinaryOp(ast, context) {
 
 const DICT = {
     get(...args) {
-        const { key, defValue } = parseArgs(args, ["key", "defValue"]);
+        const {key, defValue} = parseArgs(args, ["key", "defValue"]);
         if (key in this) {
             return this[key];
         } else if (defValue) {
@@ -315,7 +315,12 @@ const SET = {
         );
     },
     union(...args) {
-        return applyFunc("union", (iterable) => new Set([...this, ...iterable]), this, ...args);
+        return applyFunc(
+            "union",
+            (iterable) => new Set([...this, ...iterable]),
+            this,
+            ...args
+        );
     },
 };
 
@@ -329,7 +334,9 @@ const SET = {
  *  including the constructor
  */
 function methods(_class) {
-    return Object.getOwnPropertyNames(_class.prototype).map((prop) => _class.prototype[prop]);
+    return Object.getOwnPropertyNames(_class.prototype).map(
+        (prop) => _class.prototype[prop]
+    );
 }
 
 const allowedFns = new Set([
@@ -475,7 +482,11 @@ export function evaluate(ast, context = {}) {
      */
     function _evaluate(ast) {
         const val = _innerEvaluate(ast);
-        if (typeof val === "function" && !allowedFns.has(val) && !allowedFns.has(val[unboundFn])) {
+        if (
+            typeof val === "function" &&
+            !allowedFns.has(val) &&
+            !allowedFns.has(val[unboundFn])
+        ) {
             throw new Error("Invalid Function Call");
         }
         return val;

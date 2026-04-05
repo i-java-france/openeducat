@@ -1,8 +1,8 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { getCellValue } from "@spreadsheet/../tests/helpers/getters";
-import { makeSpreadsheetMockEnv } from "@spreadsheet/../tests/helpers/model";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {getCellValue} from "@spreadsheet/../tests/helpers/getters";
+import {makeSpreadsheetMockEnv} from "@spreadsheet/../tests/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 import {
     defineSpreadsheetDashboardModels,
     getDashboardServerData,
@@ -11,15 +11,15 @@ import {
     DashboardLoader,
     Status,
 } from "@spreadsheet_dashboard/bundle/dashboard_action/dashboard_loader_service";
-import { onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { RPCError } from "@web/core/network/rpc";
+import {onRpc, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {RPCError} from "@web/core/network/rpc";
 
 defineSpreadsheetDashboardModels();
 
 /**
- * @param {object} [params]
- * @param {object} [params.serverData]
- * @param {function} [params.mockRPC]
+ * @param {Object} [params]
+ * @param {Object} [params.serverData]
+ * @param {Function} [params.mockRPC]
  * @returns {Promise<DashboardLoader>}
  */
 async function createDashboardLoader(params = {}) {
@@ -33,7 +33,7 @@ async function createDashboardLoader(params = {}) {
             [dashboardId],
             ["spreadsheet_data"]
         );
-        return { data: JSON.parse(record.spreadsheet_data), revisions: [] };
+        return {data: JSON.parse(record.spreadsheet_data), revisions: []};
     });
 }
 
@@ -85,9 +85,13 @@ test("load all dashboards of all containers", async () => {
 test("load twice does not duplicate spreadsheets", async () => {
     const loader = await createDashboardLoader();
     await loader.load();
-    expect(loader.getDashboardGroups()[1].dashboards).toMatchObject([{ status: Status.NotLoaded }]);
+    expect(loader.getDashboardGroups()[1].dashboards).toMatchObject([
+        {status: Status.NotLoaded},
+    ]);
     await loader.load();
-    expect(loader.getDashboardGroups()[1].dashboards).toMatchObject([{ status: Status.NotLoaded }]);
+    expect(loader.getDashboardGroups()[1].dashboards).toMatchObject([
+        {status: Status.NotLoaded},
+    ]);
 });
 
 test("load spreadsheet data", async () => {
@@ -105,7 +109,7 @@ test("load spreadsheet data only once", async () => {
     const loader = await createDashboardLoader({
         mockRPC: function (route, args) {
             if (args.model === "spreadsheet.dashboard" && args.method === "read") {
-                // read names
+                // Read names
                 expect.step(`spreadsheet ${args.args[0]} loaded`);
             }
         },
@@ -124,14 +128,17 @@ test("load spreadsheet data only once", async () => {
 test("don't return empty dashboard group", async () => {
     const loader = await createDashboardLoader({
         mockRPC: async function (route, args) {
-            if (args.method === "web_search_read" && args.model === "spreadsheet.dashboard.group") {
+            if (
+                args.method === "web_search_read" &&
+                args.model === "spreadsheet.dashboard.group"
+            ) {
                 return {
                     length: 2,
                     records: [
                         {
                             id: 45,
                             name: "Group A",
-                            published_dashboard_ids: [{ id: 1, name: "Dashboard CRM 1" }],
+                            published_dashboard_ids: [{id: 1, name: "Dashboard CRM 1"}],
                         },
                         {
                             id: 46,
@@ -150,7 +157,7 @@ test("don't return empty dashboard group", async () => {
             name: "Group A",
             dashboards: [
                 {
-                    data: { id: 1, name: "Dashboard CRM 1" },
+                    data: {id: 1, name: "Dashboard CRM 1"},
                     status: Status.NotLoaded,
                 },
             ],
@@ -163,11 +170,14 @@ test("load multiple spreadsheets", async () => {
     onRpc("/spreadsheet/dashboard/data/2", () => expect.step("spreadsheet 2 loaded"));
     const loader = await createDashboardLoader({
         mockRPC: function (route, args) {
-            if (args.method === "web_search_read" && args.model === "spreadsheet.dashboard.group") {
+            if (
+                args.method === "web_search_read" &&
+                args.model === "spreadsheet.dashboard.group"
+            ) {
                 expect.step("load groups");
             }
             if (args.method === "read" && args.model === "spreadsheet.dashboard") {
-                // read names
+                // Read names
                 expect.step(`spreadsheet ${args.args[0]} loaded`);
             }
         },
@@ -188,7 +198,7 @@ test("load multiple spreadsheets", async () => {
 test("load spreadsheet data with error", async () => {
     onRpc("/spreadsheet/dashboard/data/*", () => {
         const error = new RPCError();
-        error.data = { message: "Bip" };
+        error.data = {message: "Bip"};
         throw error;
     });
     const loader = await createDashboardLoader();
@@ -198,7 +208,7 @@ test("load spreadsheet data with error", async () => {
     await result.promise.catch(() => expect.step("error"));
     expect(result.status).toBe(Status.Error);
     expect(result.error.data.message).toBe("Bip");
-    // error is thrown
+    // Error is thrown
     expect.verifySteps(["error"]);
 });
 
@@ -208,7 +218,7 @@ test("async formulas are correctly evaluated", async () => {
             {
                 id: "sheet1",
                 cells: {
-                    A1: '=ODOO.CURRENCY.RATE("EUR","USD")', // an async formula
+                    A1: '=ODOO.CURRENCY.RATE("EUR","USD")', // An async formula
                 },
             },
         ],
@@ -216,7 +226,7 @@ test("async formulas are correctly evaluated", async () => {
     const serverData = getDashboardServerData();
     const dashboardId = 15;
     serverData.models["spreadsheet.dashboard.group"].records = [
-        { id: 1, name: "Container 1", published_dashboard_ids: [dashboardId] },
+        {id: 1, name: "Container 1", published_dashboard_ids: [dashboardId]},
     ];
     serverData.models["spreadsheet.dashboard"].records = [
         {
@@ -232,14 +242,14 @@ test("async formulas are correctly evaluated", async () => {
         mockRPC: function (route, args) {
             if (args.method === "get_rates_for_spreadsheet") {
                 const info = args.args[0][0];
-                return [{ ...info, rate: 0.9 }];
+                return [{...info, rate: 0.9}];
             }
         },
     });
     await loader.load();
     loader.getDashboard(dashboardId);
     await animationFrame();
-    const { model } = loader.getDashboard(dashboardId);
+    const {model} = loader.getDashboard(dashboardId);
     await waitForDataLoaded(model);
     expect(await getCellValue(model, "A1")).toBe(0.9);
 });
@@ -249,7 +259,7 @@ test("Model is in dashboard mode", async () => {
     await loader.load();
     loader.getDashboard(3);
     await animationFrame();
-    const { model } = loader.getDashboard(3);
+    const {model} = loader.getDashboard(3);
     expect(model.config.mode).toBe("dashboard");
 });
 
@@ -282,6 +292,6 @@ test("default currency format", async () => {
     const result = loader.getDashboard(3);
     expect(result.status).toBe(Status.Loading);
     await animationFrame();
-    const { model } = loader.getDashboard(3);
+    const {model} = loader.getDashboard(3);
     expect(model.getters.getCompanyCurrencyFormat()).toBe("#,##0.00[$θ]");
 });

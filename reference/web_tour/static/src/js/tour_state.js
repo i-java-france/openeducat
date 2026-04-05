@@ -1,4 +1,4 @@
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 const CURRENT_TOUR_LOCAL_STORAGE = "current_tour";
 const CURRENT_TOUR_CONFIG_LOCAL_STORAGE = "current_tour.config";
@@ -17,14 +17,23 @@ export const tourState = {
         browser.localStorage.setItem(CURRENT_TOUR_LOCAL_STORAGE, tourName);
     },
     getCurrentIndex() {
-        const index = browser.localStorage.getItem(CURRENT_TOUR_INDEX_LOCAL_STORAGE, "0");
+        const index = browser.localStorage.getItem(
+            CURRENT_TOUR_INDEX_LOCAL_STORAGE,
+            "0"
+        );
         return parseInt(index, 10);
     },
     setCurrentIndex(index) {
-        browser.localStorage.setItem(CURRENT_TOUR_INDEX_LOCAL_STORAGE, index.toString());
+        browser.localStorage.setItem(
+            CURRENT_TOUR_INDEX_LOCAL_STORAGE,
+            index.toString()
+        );
     },
     getCurrentConfig() {
-        const config = browser.localStorage.getItem(CURRENT_TOUR_CONFIG_LOCAL_STORAGE, "{}");
+        const config = browser.localStorage.getItem(
+            CURRENT_TOUR_CONFIG_LOCAL_STORAGE,
+            "{}"
+        );
         return JSON.parse(config);
     },
     setCurrentConfig(config) {

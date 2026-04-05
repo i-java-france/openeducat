@@ -1,7 +1,7 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 definePosModels();
 
 describe("PoS Discount", () => {
@@ -11,7 +11,7 @@ describe("PoS Discount", () => {
 
         const product = store.models["product.template"].get(5);
 
-        await store.addLineToOrder({ product_tmpl_id: product, qty: 10 }, order);
+        await store.addLineToOrder({product_tmpl_id: product, qty: 10}, order);
         expect(order.priceIncl).toBe(34.5);
         expect(order.priceExcl).toBe(30);
         expect(order.amountTaxes).toBe(4.5);

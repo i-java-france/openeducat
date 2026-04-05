@@ -1,11 +1,11 @@
 import {
     addBuilderAction,
     addBuilderOption,
-    setupHTMLBuilder,
     editBuilderRangeValue,
+    setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { describe, expect, test } from "@odoo/hoot";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     advanceTime,
     animationFrame,
@@ -15,10 +15,10 @@ import {
     freezeTime,
     queryFirst,
 } from "@odoo/hoot-dom";
-import { Deferred } from "@odoo/hoot-mock";
-import { xml } from "@odoo/owl";
-import { contains, defineModels, models } from "@web/../tests/web_test_helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Deferred} from "@odoo/hoot-mock";
+import {xml} from "@odoo/owl";
+import {contains, defineModels, models} from "@web/../tests/web_test_helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 describe.current.tags("desktop");
 
@@ -26,10 +26,10 @@ test("should get the initial value of the input", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.innerHTML;
             }
-            apply({ params }) {
+            apply({params}) {
                 expect.step(`customAction ${params}`);
             }
         },
@@ -70,7 +70,7 @@ test("hide/display base on applyTo", async () => {
         },
     });
 
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><div class="child-target">b</div></div>`
     );
     const editableContent = getEditableContent();
@@ -111,10 +111,10 @@ test("input kept on async action", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
-            async apply({ editingElement, value }) {
+            async apply({editingElement, value}) {
                 await def;
                 editingElement.dataset.test = value;
             }
@@ -126,10 +126,12 @@ test("input kept on async action", async () => {
             static template = xml`<BuilderNumberInput action="'customAction'"/>`;
         }
     );
-    await setupHTMLBuilder(`<div class="test-options-target" data-test="1">Hello</div>`);
+    await setupHTMLBuilder(
+        `<div class="test-options-target" data-test="1">Hello</div>`
+    );
     await contains(":iframe .test-options-target").click();
     await contains(".options-container input").edit("2");
-    await contains(".options-container input").fill(3, { confirm: false });
+    await contains(".options-container input").fill(3, {confirm: false});
     def.resolve();
     await animationFrame();
     expect(".options-container input").toHaveValue("23");
@@ -142,10 +144,10 @@ test("input should remove invalid char", async () => {
             setup() {
                 this.preview = false;
             }
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
-            async apply({ editingElement, value }) {
+            async apply({editingElement, value}) {
                 editingElement.dataset.test = value;
             }
         },
@@ -202,10 +204,10 @@ describe("default value", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ value }) {
+                apply({value}) {
                     expect.step(`customAction ${value}`);
                 }
             },
@@ -229,10 +231,10 @@ describe("default value", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.innerHTML = value;
                 }
             },
@@ -252,7 +254,7 @@ describe("default value", () => {
 
         await clear();
         expect("[data-action-id='customAction'] input").toHaveValue("");
-        expect(":iframe .test-options-target").toHaveInnerHTML("0"); //Check that default value is used during preview
+        expect(":iframe .test-options-target").toHaveInnerHTML("0"); // Check that default value is used during preview
         await click(".options-container");
         expect("[data-action-id='customAction'] input").toHaveValue("0");
         expect(":iframe .test-options-target").toHaveInnerHTML("0");
@@ -261,10 +263,10 @@ describe("default value", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.innerHTML = value;
                 }
             },
@@ -291,10 +293,10 @@ describe("default value", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerText;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.innerText = value;
                     if (value === null) {
                         editingElement.innerText = "10";
@@ -330,10 +332,10 @@ describe("operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -361,10 +363,10 @@ describe("operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -395,10 +397,10 @@ describe("operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -433,10 +435,10 @@ describe("operations", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -465,10 +467,10 @@ describe("keyboard triggers", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -485,12 +487,12 @@ describe("keyboard triggers", () => {
         `);
         await contains(":iframe .test-options-target").click();
 
-        // simulate arrow up
+        // Simulate arrow up
         await contains(".options-container input").keyDown("ArrowUp");
         await advanceTime();
         expect(":iframe .test-options-target").toHaveInnerHTML("12");
 
-        // simulate arrow down
+        // Simulate arrow down
         await contains(".options-container input").keyDown("ArrowDown");
         await advanceTime();
         expect(":iframe .test-options-target").toHaveInnerHTML("10");
@@ -501,10 +503,10 @@ describe("keyboard triggers", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -521,13 +523,13 @@ describe("keyboard triggers", () => {
         `);
         await contains(":iframe .test-options-target").click();
 
-        // simulate arrow up
+        // Simulate arrow up
         await contains(".options-container input").focus();
         await contains(".options-container input").keyDown("ArrowUp");
         await advanceTime();
         expect(":iframe .test-options-target").toHaveInnerHTML("11 5 1");
 
-        // simulate arrow down
+        // Simulate arrow down
         await contains(".options-container input").keyDown("ArrowDown");
         await advanceTime();
         expect(":iframe .test-options-target").toHaveInnerHTML("10 4 0");
@@ -538,10 +540,10 @@ describe("keyboard triggers", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.dataset.number;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.dataset.number = value;
                 }
             },
@@ -566,10 +568,10 @@ describe("keyboard triggers", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.dataset.number;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.dataset.number = value;
                 }
             },
@@ -596,10 +598,10 @@ describe("keyboard triggers", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -636,10 +638,10 @@ describe("unit & saveUnit", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -667,10 +669,10 @@ describe("unit & saveUnit", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -698,7 +700,7 @@ describe("unit & saveUnit", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
             },
@@ -709,7 +711,7 @@ describe("unit & saveUnit", () => {
                 static template = xml`<BuilderNumberInput action="'customAction'" unit="'s'" saveUnit="'ms'"/>`;
             }
         );
-        // note that 5000 has no unit of measure
+        // Note that 5000 has no unit of measure
         await setupHTMLBuilder(`
                     <div class="test-options-target">5000</div>
                 `);
@@ -723,10 +725,10 @@ describe("unit & saveUnit", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerHTML = value;
                 }
@@ -754,10 +756,10 @@ describe("unit & saveUnit", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerText;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.innerText = value;
                 }
@@ -787,10 +789,10 @@ describe("sanitized values", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.innerHTML = value;
                 }
             },
@@ -805,7 +807,7 @@ describe("sanitized values", () => {
             <div class="test-options-target">10</div>
         `);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container input").edit("33 4 0", { instantly: true });
+        await contains(".options-container input").edit("33 4 0", {instantly: true});
         expect(".options-container input").toHaveValue("33");
         expect(":iframe .test-options-target").toHaveInnerHTML("33");
     });
@@ -813,10 +815,10 @@ describe("sanitized values", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ value }) {
+                apply({value}) {
                     expect.step(`customAction ${value}`);
                 }
             },
@@ -831,18 +833,18 @@ describe("sanitized values", () => {
             <div class="test-options-target">10</div>
         `);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container input").edit("-1", { instantly: true });
-        expect.verifySteps(["customAction 0", "customAction 0"]); // input, change
+        await contains(".options-container input").edit("-1", {instantly: true});
+        expect.verifySteps(["customAction 0", "customAction 0"]); // Input, change
         expect(".options-container input").toHaveValue("0");
     });
     test("clamp to min value when pressing down arrow with min > 0", async () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.textContent;
                 }
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     expect.step(`customAction ${value}`);
                     editingElement.textContent = value;
                 }
@@ -873,10 +875,10 @@ describe("sanitized values", () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ value }) {
+                apply({value}) {
                     expect.step(`customAction ${value}`);
                 }
             },
@@ -891,19 +893,19 @@ describe("sanitized values", () => {
             <div class="test-options-target">3</div>
         `);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container input").edit("11", { instantly: true });
+        await contains(".options-container input").edit("11", {instantly: true});
         await animationFrame();
-        expect.verifySteps(["customAction 0", "customAction 10"]); // input, change
+        expect.verifySteps(["customAction 0", "customAction 10"]); // Input, change
         expect(".options-container input").toHaveValue("10");
     });
     test("multi values: trailing space in BuilderNumberInput is ignored", async () => {
         addBuilderAction({
             customAction: class extends BuilderAction {
                 static id = "customAction";
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.innerHTML;
                 }
-                apply({ value }) {
+                apply({value}) {
                     expect.step(`customAction ${value}`);
                 }
             },
@@ -918,8 +920,8 @@ describe("sanitized values", () => {
             <div class="test-options-target">10</div>
         `);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container input").fill("3 4 5 ", { instantly: true });
-        expect.verifySteps(["customAction 3 4 5", "customAction 3 4 5"]); // input, change
+        await contains(".options-container input").fill("3 4 5 ", {instantly: true});
+        expect.verifySteps(["customAction 3 4 5", "customAction 3 4 5"]); // Input, change
         expect(".options-container input").toHaveValue("3 4 5");
     });
     test("after input, displayed value is cleaned to match only numbers", async () => {
@@ -963,7 +965,7 @@ describe("sanitized values", () => {
             <div class="test-options-target" data-number="10">Test</div>
         `);
         await contains(":iframe .test-options-target").click();
-        await contains(".options-container input").edit(" a&$*-3+>", { instantly: true });
+        await contains(".options-container input").edit(" a&$*-3+>", {instantly: true});
         expect(".options-container input").toHaveValue("-3");
         expect(":iframe .test-options-target").toHaveAttribute("data-number", "-3");
     });
@@ -1010,7 +1012,7 @@ describe("sanitized values", () => {
         await contains(":iframe .test-options-target").click();
         await contains(".options-container input").edit("0.2");
         expect(".options-container input").toHaveValue("0.2");
-        // simulate arrow keys
+        // Simulate arrow keys
         await contains(".options-container input").keyDown("ArrowUp");
         await advanceTime();
         expect(".options-container input").toHaveValue("0.3");

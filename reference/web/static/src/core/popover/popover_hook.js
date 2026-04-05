@@ -1,5 +1,5 @@
-import { onWillUnmount, status, useComponent } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {onWillUnmount, status, useComponent} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {import("@web/core/popover/popover_service").PopoverServiceAddFunction} PopoverServiceAddFunction

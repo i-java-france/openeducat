@@ -3,7 +3,7 @@ import re
 import time
 
 from odoo import api, models
-from odoo.http import request, root, SessionExpiredException
+from odoo.http import SessionExpiredException, request, root
 
 
 class CheckIdentityException(SessionExpiredException):

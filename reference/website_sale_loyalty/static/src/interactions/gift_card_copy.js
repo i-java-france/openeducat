@@ -1,12 +1,12 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 export class GiftCardCopy extends Interaction {
     static selector = ".o_purchased_gift_card .copy-to-clipboard";
     dynamicContent = {
-        _root: { "t-on-click": this.onClick },
+        _root: {"t-on-click": this.onClick},
     };
 
     /**

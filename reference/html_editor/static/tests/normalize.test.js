@@ -1,9 +1,9 @@
-import { test } from "@odoo/hoot";
-import { testEditor } from "./_helpers/editor";
-import { unformat } from "./_helpers/format";
+import {test} from "@odoo/hoot";
+import {testEditor} from "./_helpers/editor";
+import {unformat} from "./_helpers/format";
 
 test("should remove empty class attribute", async () => {
-    // content after is compared after cleaning up DOM
+    // Content after is compared after cleaning up DOM
     await testEditor({
         contentBefore: '<div class=""></div>',
         contentAfter: "<div><br></div>",

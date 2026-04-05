@@ -1,8 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, models
-from odoo.tools.float_utils import float_repr, float_compare
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_repr
 
 
 class AccountMoveLine(models.Model):

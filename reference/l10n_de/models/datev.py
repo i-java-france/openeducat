@@ -13,7 +13,7 @@ class ProductTemplate(models.Model):
     def _get_product_accounts(self):
         """ As taxes with a different rate need a different income/expense account, we add this logic in case people only use
          invoicing to not be blocked by the above constraint"""
-        result = super(ProductTemplate, self)._get_product_accounts()
+        result = super()._get_product_accounts()
         company = self.env.company
         if company.account_fiscal_country_id.code == "DE":
             if not self.property_account_income_id:

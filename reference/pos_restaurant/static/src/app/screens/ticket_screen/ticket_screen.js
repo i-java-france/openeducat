@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { TicketScreen } from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { Component, useState } from "@odoo/owl";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
+import {_t} from "@web/core/l10n/translation";
+import {TicketScreen} from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {Component, useState} from "@odoo/owl";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
 
 patch(TicketScreen.prototype, {
     _getScreenToStatusMap() {
@@ -39,7 +39,8 @@ patch(TicketScreen.prototype, {
         return res;
     },
     async setOrder(order) {
-        const shouldBeOverridden = this.pos.config.module_pos_restaurant && order.table_id;
+        const shouldBeOverridden =
+            this.pos.config.module_pos_restaurant && order.table_id;
         if (shouldBeOverridden) {
             const orderTable = order.getTable();
             await this.pos.setTable(orderTable, order.uuid);
@@ -49,7 +50,9 @@ patch(TicketScreen.prototype, {
     async settleTips() {
         const promises = [];
         for (const order of this.getFilteredOrderList()) {
-            const amount = this.env.utils.parseValidFloat(order.uiState.TipScreen.inputTipAmount);
+            const amount = this.env.utils.parseValidFloat(
+                order.uiState.TipScreen.inputTipAmount
+            );
 
             if (!order.isSynced) {
                 logPosMessage(
@@ -64,7 +67,7 @@ patch(TicketScreen.prototype, {
             this.pos.selectedOrderUuid = order.uuid;
             await this.pos.setTip(amount);
             order.state = "paid";
-            order.uiState.screen_data.value = { name: "", props: {} };
+            order.uiState.screen_data.value = {name: "", props: {}};
 
             const serializedTipLine = order.getSelectedOrderline().serializeForORM();
             order.getSelectedOrderline().delete();
@@ -75,10 +78,14 @@ patch(TicketScreen.prototype, {
                         const tipLine = await this.pos.data.create("pos.order.line", [
                             serializedTipLine,
                         ]);
-                        const state = await this.pos.data.ormWrite("pos.order", [order.id], {
-                            is_tipped: true,
-                            tip_amount: tipLine[0].price_unit,
-                        });
+                        const state = await this.pos.data.ormWrite(
+                            "pos.order",
+                            [order.id],
+                            {
+                                is_tipped: true,
+                                tip_amount: tipLine[0].price_unit,
+                            }
+                        );
 
                         if (state) {
                             order.update({
@@ -99,8 +106,8 @@ patch(TicketScreen.prototype, {
         const result = super._getOrderStates(...arguments);
         if (this.pos.config.set_tip_after_payment) {
             result.delete("PAYMENT");
-            result.set("OPEN", { text: _t("Open"), indented: true });
-            result.set("TIPPING", { text: _t("Tipping"), indented: true });
+            result.set("OPEN", {text: _t("Open"), indented: true});
+            result.set("TIPPING", {text: _t("Tipping"), indented: true});
         }
         return result;
     },
@@ -119,7 +126,7 @@ export class TipCell extends Component {
     };
 
     setup() {
-        this.state = useState({ isEditing: false });
+        this.state = useState({isEditing: false});
         this.orderUiState = this.props.order.uiState.TipScreen;
         useAutofocus();
     }
@@ -142,5 +149,5 @@ export class TipCell extends Component {
 }
 
 patch(TicketScreen, {
-    components: { ...TicketScreen.components, TipCell },
+    components: {...TicketScreen.components, TipCell},
 });

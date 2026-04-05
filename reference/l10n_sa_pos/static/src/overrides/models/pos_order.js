@@ -1,6 +1,6 @@
-import { PosOrder } from "@point_of_sale/app/models/pos_order";
-import { patch } from "@web/core/utils/patch";
-import { computeSAQRCode } from "@l10n_sa_pos/app/utils/qr";
+import {PosOrder} from "@point_of_sale/app/models/pos_order";
+import {patch} from "@web/core/utils/patch";
+import {computeSAQRCode} from "@l10n_sa_pos/app/utils/qr";
 
 patch(PosOrder.prototype, {
     isSACompany() {
@@ -31,6 +31,8 @@ patch(PosOrder.prototype, {
         return computeSAQRCode(name, vat, date_isostring, amount_total, amount_tax);
     },
     get isSimplified() {
-        return !this?.partner_id?.is_company && this.company_id.country_id?.code === "SA";
+        return (
+            !this?.partner_id?.is_company && this.company_id.country_id?.code === "SA"
+        );
     },
 });

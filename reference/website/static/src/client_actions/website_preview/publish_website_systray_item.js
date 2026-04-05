@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { useService, useBus } from "@web/core/utils/hooks";
-import { Component, xml, useState } from "@odoo/owl";
-import { OptimizeSEODialog } from "@website/components/dialog/seo";
-import { checkAndNotifySEO } from "@website/js/utils";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {useService, useBus} from "@web/core/utils/hooks";
+import {Component, xml, useState} from "@odoo/owl";
+import {OptimizeSEODialog} from "@website/components/dialog/seo";
+import {checkAndNotifySEO} from "@website/js/utils";
 
 const websiteSystrayRegistry = registry.category("website_systray");
 
@@ -37,7 +37,9 @@ export class PublishSystrayItem extends Component {
         useBus(
             websiteSystrayRegistry,
             "CONTENT-UPDATED",
-            () => (this.state.published = this.website.currentWebsite.metadata.isPublished)
+            () =>
+                (this.state.published =
+                    this.website.currentWebsite.metadata.isPublished)
         );
     }
 
@@ -52,29 +54,34 @@ export class PublishSystrayItem extends Component {
         this.state.processing = true;
         this.state.published = !this.state.published;
         const {
-            metadata: { mainObject },
+            metadata: {mainObject},
         } = this.website.currentWebsite;
-        return this.orm.call(mainObject.model, "website_publish_button", [[mainObject.id]]).then(
-            async (published) => {
-                this.state.published = published;
-                if (published && this.website.currentWebsite.metadata.canOptimizeSeo) {
-                    const seo_data = await rpc("/website/get_seo_data", {
-                        res_id: mainObject.id,
-                        res_model: mainObject.model,
-                    });
-                    checkAndNotifySEO(seo_data, OptimizeSEODialog, {
-                        notification: this.notificationService,
-                        dialog: this.dialogService,
-                    });
+        return this.orm
+            .call(mainObject.model, "website_publish_button", [[mainObject.id]])
+            .then(
+                async (published) => {
+                    this.state.published = published;
+                    if (
+                        published &&
+                        this.website.currentWebsite.metadata.canOptimizeSeo
+                    ) {
+                        const seo_data = await rpc("/website/get_seo_data", {
+                            res_id: mainObject.id,
+                            res_model: mainObject.model,
+                        });
+                        checkAndNotifySEO(seo_data, OptimizeSEODialog, {
+                            notification: this.notificationService,
+                            dialog: this.dialogService,
+                        });
+                    }
+                    this.state.processing = false;
+                    return published;
+                },
+                (err) => {
+                    this.state.published = !this.state.published;
+                    this.state.processing = false;
+                    throw err;
                 }
-                this.state.processing = false;
-                return published;
-            },
-            (err) => {
-                this.state.published = !this.state.published;
-                this.state.processing = false;
-                throw err;
-            }
-        );
+            );
     }
 }

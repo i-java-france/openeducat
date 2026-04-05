@@ -5,8 +5,9 @@ edi_proxy_user cannot be used as a basis as it is too closely tied to Odoo's own
 """
 
 import logging
-import requests
 from json import JSONDecodeError
+
+import requests
 
 from odoo.exceptions import UserError
 

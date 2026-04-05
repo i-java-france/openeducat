@@ -6,7 +6,9 @@ from datetime import timedelta
 from odoo import _, api, fields, models, modules, tools
 from odoo.exceptions import UserError
 
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 from odoo.addons.account_peppol.exceptions import get_peppol_error_message
 from odoo.addons.account_peppol.tools.demo_utils import handle_demo
 from odoo.addons.account_peppol.tools.peppol_iap_connector import PEPPOL_PROXY_URLS

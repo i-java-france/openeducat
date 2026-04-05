@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 /**
  * @typedef {Object} Props
@@ -15,14 +15,18 @@ import { Component } from "@odoo/owl";
 export class AvatarStack extends Component {
     static template = "mail.AvatarStack";
     static props = {
-        containerClass: { type: String, optional: true },
-        direction: { type: String, optional: true, validate: (d) => ["v", "h"].includes(d) },
-        avatarClass: { type: Function, optional: true },
-        max: { type: Number, optional: true },
-        onClick: { type: Function, optional: true },
+        containerClass: {type: String, optional: true},
+        direction: {
+            type: String,
+            optional: true,
+            validate: (d) => ["v", "h"].includes(d),
+        },
+        avatarClass: {type: Function, optional: true},
+        max: {type: Number, optional: true},
+        onClick: {type: Function, optional: true},
         personas: Array,
-        size: { type: Number, optional: true },
-        slots: { optional: true },
+        size: {type: Number, optional: true},
+        slots: {optional: true},
     };
     static defaultProps = {
         avatarClass: () => "",

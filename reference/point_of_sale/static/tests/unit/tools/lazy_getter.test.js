@@ -1,9 +1,9 @@
-import { afterEach, expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-dom";
-import { Component, onWillRender, reactive, useState, xml } from "@odoo/owl";
+import {afterEach, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-dom";
+import {Component, onWillRender, reactive, useState, xml} from "@odoo/owl";
 import {
-    mountWithCleanup,
     allowTranslations,
+    mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
@@ -12,10 +12,10 @@ import {
     clearGettersCache,
     createLazyGetter,
 } from "@point_of_sale/lazy_getter";
-import { zip } from "@web/core/utils/arrays";
+import {zip} from "@web/core/utils/arrays";
 
 /**
- * @param {string} value
+ * @param {String} value
  */
 function unorderedStep(value) {
     unorderedSteps.push(value);
@@ -34,7 +34,8 @@ function verifyUnorderedSteps(expectedSteps, stepOrders = []) {
     for (const stepOrder of stepOrders) {
         expect(
             zip(stepOrder.slice(0, -1), stepOrder.slice(1)).reduce(
-                (acc, [a, b]) => acc && unorderedSteps.indexOf(a) < unorderedSteps.indexOf(b),
+                (acc, [a, b]) =>
+                    acc && unorderedSteps.indexOf(a) < unorderedSteps.indexOf(b),
                 true
             )
         ).toBe(true);
@@ -49,7 +50,7 @@ afterEach(clearGettersCache);
 
 class AppStore extends WithLazyGetterTrap {
     constructor() {
-        super({ traps: {} });
+        super({traps: {}});
         this.a = 0;
         this.b = 0;
         this.c = 0;
@@ -130,7 +131,7 @@ class CD extends WithStore {
 }
 
 class Root extends Component {
-    static components = { A, B, C, D, AB, ABC, BC, CD };
+    static components = {A, B, C, D, AB, ABC, BC, CD};
     static props = {};
     static template = xml`
         <t t-foreach="constructor.components" t-as="key" t-key="key">
@@ -161,7 +162,7 @@ test("each getter should only be called once and only when needed", async () => 
 
     const store = reactive(new AppStore());
     await mountWithCleanup(Root, {
-        env: { store },
+        env: {store},
         noMainContainer: true,
     });
 
@@ -202,7 +203,7 @@ test("only dependent components rerender", async () => {
 
     const store = reactive(new AppStore());
     await mountWithCleanup(Root, {
-        env: { store },
+        env: {store},
         noMainContainer: true,
     });
 
@@ -265,7 +266,10 @@ test("only dependent getters are called and in correct order", () => {
     const store = reactive(new AppStore());
 
     expect(store.y).toBe(0);
-    verifyUnorderedSteps(["ab", "bc", "cd", "abc", "x", "y"], [["ab", "abc", "x", "y"]]);
+    verifyUnorderedSteps(
+        ["ab", "bc", "cd", "abc", "x", "y"],
+        [["ab", "abc", "x", "y"]]
+    );
 
     store.a = 1;
 

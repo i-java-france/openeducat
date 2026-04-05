@@ -1,8 +1,8 @@
-import { Plugin, isValidTargetForDomListener } from "../plugin";
-import { closestBlock } from "@html_editor/utils/blocks";
-import { fillEmpty } from "@html_editor/utils/dom";
-import { leftLeafOnlyNotBlockPath } from "@html_editor/utils/dom_state";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {Plugin, isValidTargetForDomListener} from "../plugin";
+import {closestBlock} from "@html_editor/utils/blocks";
+import {fillEmpty} from "@html_editor/utils/dom";
+import {leftLeafOnlyNotBlockPath} from "@html_editor/utils/dom_state";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 /**
  * @typedef {Object} Shortcut
@@ -50,10 +50,12 @@ export class ShortCutPlugin extends Plugin {
             throw new Error("ShorcutPlugin needs hotkey service to properly work");
         }
         if (document !== this.document) {
-            hotkeyService.registerIframe({ contentWindow: this.window });
+            hotkeyService.registerIframe({contentWindow: this.window});
         }
         for (const shortcut of this.getResource("shortcuts")) {
-            const command = this.dependencies.userCommand.getCommand(shortcut.commandId);
+            const command = this.dependencies.userCommand.getCommand(
+                shortcut.commandId
+            );
             this.addShortcut(
                 shortcut.hotkey,
                 () => {
@@ -67,7 +69,7 @@ export class ShortCutPlugin extends Plugin {
         }
     }
 
-    addShortcut(hotkey, action, { isAvailable, global }) {
+    addShortcut(hotkey, action, {isAvailable, global}) {
         this._cleanups.push(
             this.services.hotkey.add(hotkey, action, {
                 area: () => this.editable,
@@ -75,7 +77,9 @@ export class ShortCutPlugin extends Plugin {
                 allowRepeat: true,
                 isAvailable: (target) =>
                     (!isAvailable ||
-                        isAvailable(this.dependencies.selection.getEditableSelection())) &&
+                        isAvailable(
+                            this.dependencies.selection.getEditableSelection()
+                        )) &&
                     (global || isValidTargetForDomListener(target)),
             })
         );
@@ -98,11 +102,13 @@ export class ShortCutPlugin extends Plugin {
             leftLeaf = leftDOMPath.next().value;
         }
         const precedingText = blockEl.textContent.substring(0, spaceOffset - 1);
-        const matchedShortcut = this.getResource("shorthands").find(({ pattern }) =>
+        const matchedShortcut = this.getResource("shorthands").find(({pattern}) =>
             pattern.test(precedingText)
         );
         if (matchedShortcut) {
-            const command = this.dependencies.userCommand.getCommand(matchedShortcut.commandId);
+            const command = this.dependencies.userCommand.getCommand(
+                matchedShortcut.commandId
+            );
             if (command) {
                 this.dependencies.selection.setSelection({
                     anchorNode: blockEl.firstChild,

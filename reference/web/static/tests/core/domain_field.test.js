@@ -1,8 +1,8 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryAllTexts, scroll } from "@odoo/hoot-dom";
-import { Deferred, animationFrame, mockDate } from "@odoo/hoot-mock";
-import { getPickerCell } from "@web/../tests/core/datetime/datetime_test_helpers";
-import { SELECTORS } from "@web/../tests/core/domain_selector/domain_selector_helpers";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {queryAllTexts, scroll} from "@odoo/hoot-dom";
+import {Deferred, animationFrame, mockDate} from "@odoo/hoot-mock";
+import {getPickerCell} from "@web/../tests/core/datetime/datetime_test_helpers";
+import {SELECTORS} from "@web/../tests/core/domain_selector/domain_selector_helpers";
 import {
     Country,
     Partner,
@@ -31,16 +31,16 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
 
 class PartnerType extends models.Model {
-    name = fields.Char({ string: "Partner Type" });
-    color = fields.Integer({ string: "Color index" });
+    name = fields.Char({string: "Partner Type"});
+    color = fields.Integer({string: "Color index"});
 
     _records = [
-        { id: 12, name: "gold", color: 2 },
-        { id: 14, name: "silver", color: 5 },
+        {id: 12, name: "gold", color: 2},
+        {id: 14, name: "silver", color: 5},
     ];
 }
 
@@ -58,12 +58,12 @@ function replaceNotificationService() {
                 };
             },
         },
-        { force: true }
+        {force: true}
     );
 }
 
 test("The domain editor should not crash the view when given a dynamic filter (allow_expressions=False)", async function () {
-    // dynamic filters (containing variables, such as uid, parent or today)
+    // Dynamic filters (containing variables, such as uid, parent or today)
     // are handled by the domain editor
     Partner._records[0].foo = `[("int", "=", uid)]`;
 
@@ -88,7 +88,7 @@ test("The domain editor should not crash the view when given a dynamic filter (a
 });
 
 test("The domain editor should not crash the view when given a dynamic filter (allow_expressions=False) in a sub domain", async function () {
-    Partner._fields.company_id = fields.Many2one({ relation: "partner" });
+    Partner._fields.company_id = fields.Many2one({relation: "partner"});
     Partner._records[0].foo = "[('company_id', 'any', [('id', '=', uid)])]";
 
     replaceNotificationService();
@@ -125,11 +125,13 @@ test("The domain editor should not crash the view when given a dynamic filter (a
         message: "The widget should show the dynamic filter.",
     });
     expect(".o_field_domain").not.toHaveClass("o_field_invalid");
-    expect.verifySteps(["The domain involves non-literals. Their evaluation might fail."]);
+    expect.verifySteps([
+        "The domain involves non-literals. Their evaluation might fail.",
+    ]);
 });
 
 test("The domain editor should not crash the view when given a dynamic filter ( datetime )", async function () {
-    Partner._fields.datetime = fields.Datetime({ string: "A date" });
+    Partner._fields.datetime = fields.Datetime({string: "A date"});
     Partner._records[0].foo = `[("datetime", "=", context_today())]`;
 
     await mountView({
@@ -212,7 +214,7 @@ test("basic domain field usage is ok", async function () {
 });
 
 test("using binary field in domain widget", async function () {
-    Partner._fields.image = fields.Binary({ string: "Picture" });
+    Partner._fields.image = fields.Binary({string: "Picture"});
     Partner._records[0].foo = "[]";
 
     await mountView({
@@ -231,7 +233,9 @@ test("using binary field in domain widget", async function () {
 
     await addNewRule();
     await contains(".o_model_field_selector").click();
-    await contains(".o_model_field_selector_popover_item[data-name='image'] button").click();
+    await contains(
+        ".o_model_field_selector_popover_item[data-name='image'] button"
+    ).click();
     expect(getCurrentPath()).toBe("Picture");
 });
 
@@ -321,7 +325,7 @@ test("domain field can be reset with a new domain (from onchange)", async functi
         message: "the domain being empty, there should be 3 records",
     });
 
-    // update name to trigger the onchange and reset foo
+    // Update name to trigger the onchange and reset foo
     await contains(".o_field_widget[name='name'] input").edit("new value");
     await animationFrame();
     expect(".o_domain_show_selection_button").toHaveText("1 record(s)", {
@@ -340,8 +344,8 @@ test("domain field: handle false domain as []", async function () {
         },
     ];
 
-    onRpc("search_count", ({ args }) => {
-        expect(args[0]).toEqual([], { message: "should send a valid domain" });
+    onRpc("search_count", ({args}) => {
+        expect(args[0]).toEqual([], {message: "should send a valid domain"});
     });
 
     await mountView({
@@ -388,16 +392,18 @@ test("basic domain field: show the selection", async function () {
         message: "selection should contain 2 records",
     });
 
-    // open the selection
+    // Open the selection
     await contains(".o_domain_show_selection_button").click();
     expect(".modal .o_list_view .o_data_row").toHaveCount(2, {
         message: "should have open a list view with 2 records in a dialog",
     });
 
-    // click on a record -> should not open the record
+    // Click on a record -> should not open the record
     // we don't actually check that it doesn't open the record because even
     // if it tries to, it will crash as we don't define an arch in this test
-    await contains(".modal .o_list_view .o_data_row .o_data_cell[data-tooltip='gold']").click();
+    await contains(
+        ".modal .o_list_view .o_data_row .o_data_cell[data-tooltip='gold']"
+    ).click();
 });
 
 test.tags("desktop");
@@ -445,7 +451,7 @@ test("domain field: manually edit domain with textarea", async function () {
             </form>`,
     };
 
-    onRpc("search_count", ({ args }) => expect.step(args[0]));
+    onRpc("search_count", ({args}) => expect.step(args[0]));
     onRpc("/web/domain/validate", () => true);
     await mountWithCleanup(WebClient);
     await getService("action").doAction({
@@ -460,7 +466,7 @@ test("domain field: manually edit domain with textarea", async function () {
     expect(".o_domain_show_selection_button").toHaveText("2 record(s)");
 
     await contains(SELECTORS.debugArea).edit("[['id', '<', 40]]");
-    // the count should not be re-computed when editing with the textarea
+    // The count should not be re-computed when editing with the textarea
     expect(".o_domain_show_selection_button").toHaveText("2 record(s)");
     expect.verifySteps([]);
 
@@ -490,11 +496,11 @@ test("domain field: manually set an invalid domain with textarea", async functio
     };
 
     onRpc("/web/domain/validate", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         return JSON.stringify(params.domain) === '[["abc","=",1]]';
     });
 
-    onRpc(({ args, method }) => {
+    onRpc(({args, method}) => {
         if (method === "search_count") {
             expect.step(args[0]);
         }
@@ -518,7 +524,7 @@ test("domain field: manually set an invalid domain with textarea", async functio
 
     await contains(SELECTORS.debugArea).edit("[['abc', '=', 1]]");
     await animationFrame();
-    // the count should not be re-computed when editing with the textarea
+    // The count should not be re-computed when editing with the textarea
     expect(".o_domain_show_selection_button").toHaveText("2 record(s)");
     expect.verifySteps([]);
 
@@ -556,7 +562,7 @@ test("domain field: reload count by clicking on the refresh button", async funct
     };
 
     onRpc("/web/domain/validate", () => true);
-    onRpc("search_count", ({ args }) => expect.step(args[0]));
+    onRpc("search_count", ({args}) => expect.step(args[0]));
     await mountWithCleanup(WebClient);
     await getService("action").doAction({
         name: "test",
@@ -571,10 +577,10 @@ test("domain field: reload count by clicking on the refresh button", async funct
     expect(".o_domain_show_selection_button").toHaveText("2 record(s)");
 
     await contains(SELECTORS.debugArea).edit("[['id', '<', 40]]");
-    // the count should not be re-computed when editing with the textarea
+    // The count should not be re-computed when editing with the textarea
     expect(".o_domain_show_selection_button").toHaveText("2 record(s)");
 
-    // click on the refresh button
+    // Click on the refresh button
     await contains(".o_refresh_count").click();
     expect(".o_domain_show_selection_button").toHaveText("1 record(s)");
     expect.verifySteps([[["id", "<", 40]]]);
@@ -632,7 +638,7 @@ test("domain field: have a default count limit of 10000", async function () {
                 </form>`,
     };
 
-    onRpc("search_count", ({ kwargs }) => {
+    onRpc("search_count", ({kwargs}) => {
         expect.step(kwargs.limit);
         return 99999;
     });
@@ -667,7 +673,7 @@ test("domain field: foldable and count limit reached", async function () {
                 </form>`,
     };
 
-    onRpc("search_count", ({ kwargs }) => {
+    onRpc("search_count", ({kwargs}) => {
         expect.step(kwargs.limit);
         return 99999;
     });
@@ -702,7 +708,7 @@ test("domain field: configurable count limit", async function () {
                 </form>`,
     };
 
-    onRpc("search_count", ({ kwargs }) => {
+    onRpc("search_count", ({kwargs}) => {
         expect.step(kwargs.limit);
         return 99999;
     });
@@ -741,7 +747,7 @@ test("domain field: edit domain with dynamic content", async function () {
             </form>`,
     };
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].foo).toBe(rawDomain);
     });
     onRpc("/web/domain/validate", () => true);
@@ -784,7 +790,7 @@ test("domain field: edit through selector (dynamic content)", async function () 
             </form>`,
     };
 
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
 
     await mountWithCleanup(WebClient);
     await getService("action").doAction({
@@ -801,13 +807,15 @@ test("domain field: edit through selector (dynamic content)", async function () 
 
     await clearNotSupported();
     rawDomain = `[("date", ">=", "2020-09-05")]`;
-    expect(".o_datetime_input").toHaveCount(1, { message: "there should be a datepicker" });
+    expect(".o_datetime_input").toHaveCount(1, {
+        message: "there should be a datepicker",
+    });
     expect.verifySteps(["search_count"]);
 
     // Open and close the datepicker
     await contains(".o_datetime_input").click();
     expect(".o_datetime_picker").toHaveCount(1);
-    await scroll(getFixture(), { top: 10 }, { scrollable: false });
+    await scroll(getFixture(), {top: 10}, {scrollable: false});
     expect(".o_datetime_picker").toHaveCount(1);
     expect(SELECTORS.debugArea).toHaveValue(rawDomain);
     expect.verifySteps([]);
@@ -825,9 +833,9 @@ test("domain field: edit through selector (dynamic content)", async function () 
 });
 
 test("domain field without model", async function () {
-    Partner._fields.model_name = fields.Char({ string: "Model name" });
+    Partner._fields.model_name = fields.Char({string: "Model name"});
 
-    onRpc("search_count", ({ model }) => {
+    onRpc("search_count", ({model}) => {
         expect.step(model);
     });
     await mountView({
@@ -840,14 +848,19 @@ test("domain field without model", async function () {
             </form>`,
     });
 
-    expect('.o_field_widget[name="name"]').toHaveText("Select a model to add a filter.", {
-        message: "should contain an error message saying the model is missing",
-    });
+    expect('.o_field_widget[name="name"]').toHaveText(
+        "Select a model to add a filter.",
+        {
+            message: "should contain an error message saying the model is missing",
+        }
+    );
     expect.verifySteps([]);
 
     await contains(".o_field_widget[name=model_name] input").edit("partner");
     await animationFrame();
-    expect('.o_field_widget[name="name"] .o_field_domain_panel').toHaveText("3 record(s)");
+    expect('.o_field_widget[name="name"] .o_field_domain_panel').toHaveText(
+        "3 record(s)"
+    );
     expect.verifySteps(["partner"]);
 });
 
@@ -928,7 +941,9 @@ test("invalid value in domain field with 'inDialog' options", async function () 
     await contains(`.modal ${SELECTORS.addNewRule}`).click();
     await contains(SELECTORS.debugArea).edit("[(0, '=', expr)]");
     await contains(".modal-footer .btn-primary").click();
-    expect(".modal").toHaveCount(1, { message: "the domain is invalid: the dialog is not closed" });
+    expect(".modal").toHaveCount(1, {
+        message: "the domain is invalid: the dialog is not closed",
+    });
 });
 
 test("edit domain button is available even while loading records count", async function () {
@@ -971,7 +986,7 @@ test("debug input editing sets the field as dirty even without a focus out", asy
             </form>`,
     });
     await contains(".o_form_button_save").click();
-    await contains(SELECTORS.debugArea).edit("[['id', '=', False]]", { confirm: false });
+    await contains(SELECTORS.debugArea).edit("[['id', '=', False]]", {confirm: false});
     expect(".o_form_button_save").toHaveCount(1);
     await contains(".o_form_button_save").click();
     expect.verifySteps(["validate domain"]);
@@ -989,10 +1004,10 @@ test("debug input corrections don't need a focus out to be saved", async functio
             </form>`,
     });
     await contains(".o_form_button_save").click();
-    await contains(SELECTORS.debugArea).edit("[", { confirm: false });
+    await contains(SELECTORS.debugArea).edit("[", {confirm: false});
     await contains(".o_form_button_save").click();
     expect(".o_field_domain").toHaveClass("o_field_invalid");
-    await contains(SELECTORS.debugArea).edit("[('id', '=', 1)]", { confirm: false });
+    await contains(SELECTORS.debugArea).edit("[('id', '=', 1)]", {confirm: false});
     expect(".o_form_status_indicator span i.fa-warning").toHaveCount(0);
     expect(".o_form_button_save[disabled]").toHaveCount(0);
     expect(".o_form_button_save").toHaveCount(1);
@@ -1000,9 +1015,9 @@ test("debug input corrections don't need a focus out to be saved", async functio
 
 test("quick check on save if domain has been edited via the debug input", async function () {
     serverState.debug = "1";
-    Partner._fields.name = fields.Char({ default: "[['id', '=', False]]" });
+    Partner._fields.name = fields.Char({default: "[['id', '=', False]]"});
     onRpc("/web/domain/validate", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("validate model");
         expect(params).toEqual({
             domain: [["id", "!=", false]],
@@ -1084,7 +1099,9 @@ test("domain field can be foldable", async function () {
     // Fold domain selector
     await contains(".o_field_domain a i").click();
 
-    expect(".o_field_domain .o_facet_values:contains('Color index = 2')").toHaveCount(1);
+    expect(".o_field_domain .o_facet_values:contains('Color index = 2')").toHaveCount(
+        1
+    );
 });
 
 test("add condition in empty foldable domain", async function () {
@@ -1142,13 +1159,15 @@ test("foldable domain field unfolds and hides caret when domain is invalid", asy
     });
     expect(".o_field_domain span").toHaveText("Invalid domain");
     expect(".fa-caret-down").toHaveCount(0);
-    expect(".o_domain_selector_row").toHaveText("This domain is not supported.\nReset domain");
+    expect(".o_domain_selector_row").toHaveText(
+        "This domain is not supported.\nReset domain"
+    );
     await contains(".o_domain_selector_row button").click();
     expect(".o_field_domain span:first").toHaveText("Match all records");
 });
 
 test("folded domain field with any operator", async function () {
-    Partner._fields.company_id = fields.Many2one({ relation: "partner" });
+    Partner._fields.company_id = fields.Many2one({relation: "partner"});
     Partner._records[0].foo = "[('company_id', 'any', [('id', '=', 1)])]";
     await mountView({
         type: "form",
@@ -1195,7 +1214,7 @@ test("foldable domain, search_count delayed", async function () {
 });
 
 test(`folded domain field with "in range" operator`, async function () {
-    Partner._fields.company_id = fields.Many2one({ relation: "partner" });
+    Partner._fields.company_id = fields.Many2one({relation: "partner"});
     Partner._records[0].foo = `["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`;
     await mountView({
         type: "form",
@@ -1210,7 +1229,9 @@ test(`folded domain field with "in range" operator`, async function () {
                 </sheet>
             </form>`,
     });
-    expect(`.o_field_domain .o_facet_values`).toHaveText(`Datetime ${label("in range")} Today`);
+    expect(`.o_field_domain .o_facet_values`).toHaveText(
+        `Datetime ${label("in range")} Today`
+    );
 });
 
 test("allow_expressions = true", async function () {
@@ -1233,20 +1254,24 @@ test("allow_expressions = true", async function () {
                         </group>
                     </sheet>
                 </form>`,
-        context: { path: "name", name: "name" },
+        context: {path: "name", name: "name"},
     });
 
     await contains(SELECTORS.debugArea).edit(`[("name", "=", [name])]`);
     await animationFrame();
     expect(".o_field_domain").not.toHaveClass("o_field_invalid");
-    expect.verifySteps(["The domain involves non-literals. Their evaluation might fail."]);
+    expect.verifySteps([
+        "The domain involves non-literals. Their evaluation might fail.",
+    ]);
 
     await contains(SELECTORS.debugArea).edit(
         `["&", ("name", "=", "name"), (path, "=", "other name")]`
     );
     await animationFrame();
     expect(".o_field_domain").not.toHaveClass("o_field_invalid");
-    expect.verifySteps(["The domain involves non-literals. Their evaluation might fail."]);
+    expect.verifySteps([
+        "The domain involves non-literals. Their evaluation might fail.",
+    ]);
 });
 
 test("allow_expressions = false (default)", async function () {
@@ -1267,7 +1292,7 @@ test("allow_expressions = false (default)", async function () {
                         </group>
                     </sheet>
                 </form>`,
-        context: { path: "name", name: "name" },
+        context: {path: "name", name: "name"},
     });
 
     await contains(SELECTORS.debugArea).edit(`[("name", "=", [name])]`);

@@ -1,10 +1,10 @@
-import { defineCalendarModels } from "@calendar/../tests/calendar_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
+import {defineCalendarModels} from "@calendar/../tests/calendar_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
 import {
+    MockServer,
     contains,
     makeMockServer,
-    MockServer,
     mountView,
     onRpc,
     preloadBundle,
@@ -23,7 +23,7 @@ preloadBundle("web.fullcalendar_lib");
 
 const serverData = {};
 
-const arch = /*xml*/ `
+const arch = /* xml*/ `
     <calendar js_class="attendee_calendar"
         event_open_popup="1"
         date_start="start"
@@ -62,22 +62,25 @@ async function selectTimeStart(startDateTime) {
 
 beforeEach(async () => {
     mockDate("2016-12-12 08:00:00", 0);
-    const { env: pyEnv } = await makeMockServer();
+    const {env: pyEnv} = await makeMockServer();
     const [partnerId_1, partnerId_2] = pyEnv["res.partner"].create([
-        { name: "Partner 1" },
-        { name: "Partner 2" },
+        {name: "Partner 1"},
+        {name: "Partner 2"},
     ]);
     serverData.partnerId_1 = partnerId_1;
     serverData.partnerId_2 = partnerId_2;
-    serverData.userId = pyEnv["res.users"].create({ name: "User 1", partner_id: partnerId_1 });
+    serverData.userId = pyEnv["res.users"].create({
+        name: "User 1",
+        partner_id: partnerId_1,
+    });
     serverData.attendeeIds = pyEnv["calendar.attendee"].create([
-        { partner_id: serverState.partnerId },
-        { partner_id: partnerId_1 },
-        { partner_id: partnerId_2 },
+        {partner_id: serverState.partnerId},
+        {partner_id: partnerId_1},
+        {partner_id: partnerId_2},
     ]);
     pyEnv["calendar.filters"].create([
-        { partner_id: partnerId_1, partner_checked: true, user_id: serverState.userId },
-        { partner_id: partnerId_2, partner_checked: true, user_id: serverData.userId },
+        {partner_id: partnerId_1, partner_checked: true, user_id: serverState.userId},
+        {partner_id: partnerId_2, partner_checked: true, user_id: serverData.userId},
     ]);
     pyEnv["calendar.event"].create([
         {
@@ -103,7 +106,7 @@ test("Linked record rendering", async () => {
     onRpc("res.users", "check_synchronization_status", () => ({}));
     onRpc("res.partner", "get_attendee_detail", () => []);
     onRpc("/calendar/check_credentials", () => ({}));
-    const { id: modelId, display_name } = pyEnv["ir.model"].search_read(
+    const {id: modelId, display_name} = pyEnv["ir.model"].search_read(
         [["model", "=", "res.partner"]],
         ["display_name"]
     )[0];
@@ -113,15 +116,19 @@ test("Linked record rendering", async () => {
         start: "2016-12-11 09:00:00",
         stop: "2016-12-11 10:00:00",
         attendee_ids: serverData.attendeeIds,
-        partner_ids: [serverState.partnerId, serverData.partnerId_1, serverData.partnerId_2],
+        partner_ids: [
+            serverState.partnerId,
+            serverData.partnerId_1,
+            serverData.partnerId_2,
+        ],
         res_model_id: modelId,
     });
-    await mountView({ type: "calendar", resModel: "calendar.event", arch });
+    await mountView({type: "calendar", resModel: "calendar.event", arch});
     expect(".o_calendar_renderer .fc-view").toHaveCount(1);
 
     await changeScale("week");
     await clickEvent(eventId);
-    expect(".fa-link").toHaveCount(1, { message: "A link icon should be present" });
+    expect(".fa-link").toHaveCount(1, {message: "A link icon should be present"});
     expect("li a[href='#']").toHaveText(display_name);
 });
 
@@ -130,7 +137,7 @@ test("Default duration rendering", async () => {
     onRpc("res.users", "check_synchronization_status", () => ({}));
     onRpc("res.partner", "get_attendee_detail", () => []);
     onRpc("/calendar/check_credentials", () => ({}));
-    await mountView({ type: "calendar", resModel: "calendar.event", arch });
+    await mountView({type: "calendar", resModel: "calendar.event", arch});
     expandCalendarView();
     await changeScale("week");
     await selectTimeStart("2016-12-15 15:00:00");

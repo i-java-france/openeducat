@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { queryRect } from "@odoo/hoot-dom";
-import { animationFrame, mockTouch } from "@odoo/hoot-mock";
-import { Component, reactive, useRef, useState, xml } from "@odoo/owl";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryRect} from "@odoo/hoot-dom";
+import {animationFrame, mockTouch} from "@odoo/hoot-mock";
+import {Component, reactive, useRef, useState, xml} from "@odoo/owl";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { useDraggable } from "@web/core/utils/draggable";
+import {useDraggable} from "@web/core/utils/draggable";
 
 test("Parameters error handling", async () => {
     expect.assertions(2);
@@ -36,7 +36,9 @@ test("Parameters error handling", async () => {
             useDraggable({
                 elements: ".item",
             })
-        ).toThrow(`Error in hook useDraggable: missing required property "ref" in parameter`);
+        ).toThrow(
+            `Error in hook useDraggable: missing required property "ref" in parameter`
+        );
     });
 
     // Correct params
@@ -75,17 +77,17 @@ test("Simple dragging in single group", async () => {
             useDraggable({
                 ref: useRef("root"),
                 elements: ".item",
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveText("1");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveText("1");
                     expect(".item").toHaveCount(3);
                     expect(".item.o_dragged").toHaveCount(1);
                 },
-                onDrop({ element }) {
+                onDrop({element}) {
                     expect.step("drop");
                     expect(element).toHaveText("1");
                 },
@@ -110,7 +112,7 @@ test("Simple dragging in single group", async () => {
 test("Dynamically disable draggable feature", async () => {
     expect.assertions(3);
 
-    const state = reactive({ enableDrag: true });
+    const state = reactive({enableDrag: true});
     class List extends Component {
         static template = xml`
             <div t-ref="root" class="root">
@@ -202,7 +204,7 @@ test("Ignore specific elements in a nested draggable", async () => {
     expect.assertions(5);
 
     class List extends Component {
-        static components = { List };
+        static components = {List};
         static template = xml`
             <div t-ref="root" class="root">
                 <ul class="list">
@@ -275,7 +277,7 @@ test("Dragging element with touch event", async () => {
             useDraggable({
                 ref: useRef("root"),
                 elements: ".item",
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(".item.o_dragged").toHaveCount(1);
                 },
@@ -363,11 +365,11 @@ test("Elements are confined within their container and keep their initial width 
     await mountWithCleanup(List);
 
     const containerRect = queryRect(".root");
-    const { width: initialWidth, height: initialHeight } = queryRect(".item:first");
+    const {width: initialWidth, height: initialHeight} = queryRect(".item:first");
 
-    const { moveTo, drop } = await contains(".item:first").drag({
+    const {moveTo, drop} = await contains(".item:first").drag({
         initialPointerMoveDistance: 0,
-        position: { x: 0, y: 0 },
+        position: {x: 0, y: 0},
     });
 
     expect(".item:first").toHaveRect({
@@ -377,7 +379,7 @@ test("Elements are confined within their container and keep their initial width 
     });
 
     await moveTo(".item:last-child", {
-        position: { x: 0, y: 9999 },
+        position: {x: 0, y: 9999},
     });
 
     expect(".item:first").toHaveRect({
@@ -391,7 +393,7 @@ test("Elements are confined within their container and keep their initial width 
     });
 
     await moveTo(".item:last-child", {
-        position: { x: 9999, y: 9999 },
+        position: {x: 9999, y: 9999},
     });
 
     expect(".item:first").toHaveRect({
@@ -400,7 +402,7 @@ test("Elements are confined within their container and keep their initial width 
     });
 
     await moveTo(".item:last-child", {
-        position: { x: -9999, y: -9999 },
+        position: {x: -9999, y: -9999},
     });
 
     expect(".item:first").toHaveRect({
@@ -445,7 +447,7 @@ test("allowDisconnected option", async () => {
             </div>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ hasHandle: true });
+            this.state = useState({hasHandle: true});
             useDraggable({
                 ref: useRef("root"),
                 elements: ".handle",
@@ -455,13 +457,13 @@ test("allowDisconnected option", async () => {
                     this.state.hasHandle = false;
                 },
                 onDragEnd: () => expect.step("end"),
-                onDrop: () => expect.step("drop"), // should be called as allowDisconnected
+                onDrop: () => expect.step("drop"), // Should be called as allowDisconnected
             });
         }
     }
 
     await mountWithCleanup(List);
-    const { moveTo, drop } = await contains(".handle").drag();
+    const {moveTo, drop} = await contains(".handle").drag();
     expect.verifySteps(["start"]);
     await animationFrame();
     expect(".handle").toHaveCount(0);

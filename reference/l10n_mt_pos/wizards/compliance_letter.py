@@ -1,6 +1,8 @@
-from odoo import models, fields, release, tools, _
 from datetime import datetime
+
+from odoo import _, fields, models, release, tools
 from odoo.exceptions import UserError
+
 
 class ComplianceLetter(models.TransientModel):
     _name = 'compliance.letter.wizard'

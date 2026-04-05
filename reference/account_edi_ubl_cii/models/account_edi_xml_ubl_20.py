@@ -1,12 +1,12 @@
 from lxml import etree
 
-from odoo import _, models, Command
+from odoo import Command, _, models
 from odoo.tools import html2plaintext
 from odoo.tools.float_utils import float_is_zero, float_round
+
 from odoo.addons.account.tools import dict_to_xml
 from odoo.addons.account_edi_ubl_cii.models.account_edi_common import FloatFmt
-from odoo.addons.account_edi_ubl_cii.tools import Invoice, CreditNote, DebitNote
-
+from odoo.addons.account_edi_ubl_cii.tools import CreditNote, DebitNote, Invoice
 
 UBL_NAMESPACES = {
     'cbc': "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2",

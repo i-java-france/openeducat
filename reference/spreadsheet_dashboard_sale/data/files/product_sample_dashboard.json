@@ -7,29 +7,29 @@
       "colNumber": 7,
       "rowNumber": 60,
       "rows": {
-        "6": { "size": 40 },
-        "26": { "size": 40 },
-        "46": { "size": 40 },
-        "47": { "size": 40 },
-        "48": { "size": 29 },
-        "49": { "size": 29 },
-        "50": { "size": 29 },
-        "51": { "size": 29 },
-        "52": { "size": 29 },
-        "53": { "size": 29 },
-        "54": { "size": 29 },
-        "55": { "size": 29 },
-        "56": { "size": 29 },
-        "57": { "size": 29 }
+        "6": {"size": 40},
+        "26": {"size": 40},
+        "46": {"size": 40},
+        "47": {"size": 40},
+        "48": {"size": 29},
+        "49": {"size": 29},
+        "50": {"size": 29},
+        "51": {"size": 29},
+        "52": {"size": 29},
+        "53": {"size": 29},
+        "54": {"size": 29},
+        "55": {"size": 29},
+        "56": {"size": 29},
+        "57": {"size": 29}
       },
       "cols": {
-        "0": { "size": 275 },
-        "1": { "size": 100 },
-        "2": { "size": 100 },
-        "3": { "size": 50 },
-        "4": { "size": 275 },
-        "5": { "size": 100 },
-        "6": { "size": 100 }
+        "0": {"size": 275},
+        "1": {"size": 100},
+        "2": {"size": 100},
+        "3": {"size": 50},
+        "4": {"size": 275},
+        "5": {"size": 100},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -83,15 +83,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "text",
-            "title": { "text": "Best Seller", "color": "#434343", "bold": true },
+            "title": {"text": "Best Seller", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!C2",
-            "baselineDescr": { "text": "sold" },
+            "baselineDescr": {"text": "sold"},
             "keyValue": "Data!B2",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 12 },
+          "offset": {"x": 0, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -104,15 +104,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "text",
-            "title": { "text": "Best Category", "color": "#434343", "bold": true },
+            "title": {"text": "Best Category", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!C3",
-            "baselineDescr": { "text": "sold" },
+            "baselineDescr": {"text": "sold"},
             "keyValue": "Data!B3",
             "humanize": false
           },
-          "offset": { "x": 459, "y": 12 },
+          "offset": {"x": 459, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -124,16 +124,14 @@
           "data": {
             "type": "bar",
             "dataSetsHaveTitle": false,
-            "dataSets": [
-              { "dataRange": "Data!B7:B26", "yAxisId": "y" }
-            ],
+            "dataSets": [{"dataRange": "Data!B7:B26", "yAxisId": "y"}],
             "legendPosition": "none",
             "labelRange": "Data!A7:A26",
             "title": {},
             "stacked": false,
             "aggregated": false
           },
-          "offset": { "x": 0, "y": 178.05078125 },
+          "offset": {"x": 0, "y": 178.05078125},
           "col": 0,
           "row": 0
         },
@@ -145,16 +143,14 @@
           "data": {
             "type": "bar",
             "dataSetsHaveTitle": false,
-            "dataSets": [
-              { "dataRange": "Data!B29:B48", "yAxisId": "y" }
-            ],
+            "dataSets": [{"dataRange": "Data!B29:B48", "yAxisId": "y"}],
             "legendPosition": "none",
             "labelRange": "Data!A29:A48",
             "title": {},
             "stacked": false,
             "aggregated": false
           },
-          "offset": { "x": 0, "y": 655 },
+          "offset": {"x": 0, "y": 655},
           "col": 0,
           "row": 0
         }
@@ -271,7 +267,7 @@
         "D3": "311155"
       },
       "styles": {},
-      "formats": { "B7:B26": 1, "D2:D3": 1 },
+      "formats": {"B7:B26": 1, "D2:D3": 1},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -284,16 +280,14 @@
           "data": {
             "type": "bar",
             "dataSetsHaveTitle": false,
-            "dataSets": [
-              { "dataRange": "B29:B48", "yAxisId": "y" }
-            ],
+            "dataSets": [{"dataRange": "B29:B48", "yAxisId": "y"}],
             "legendPosition": "none",
             "labelRange": "A29:A48",
             "title": {},
             "stacked": false,
             "aggregated": false
           },
-          "offset": { "x": 660, "y": 376.5 },
+          "offset": {"x": 660, "y": 376.5},
           "col": 0,
           "row": 0
         }
@@ -309,8 +303,8 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
-    "2": { "textColor": "#434343", "fontSize": 11, "bold": true },
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
+    "2": {"textColor": "#434343", "fontSize": 11, "bold": true},
     "3": {
       "textColor": "#434343",
       "fontSize": 11,
@@ -318,23 +312,23 @@
       "align": "center"
     }
   },
-  "formats": { "1": "[$$]#,##0" },
+  "formats": {"1": "[$$]#,##0"},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thin", "color": "#FFFFFF" },
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"},
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",

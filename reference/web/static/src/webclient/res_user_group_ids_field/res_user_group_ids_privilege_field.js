@@ -1,12 +1,12 @@
-import { registry } from "@web/core/registry";
-import { BooleanField } from "@web/views/fields/boolean/boolean_field";
-import { SelectionField } from "@web/views/fields/selection/selection_field";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {BooleanField} from "@web/views/fields/boolean/boolean_field";
+import {SelectionField} from "@web/views/fields/selection/selection_field";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { ResUserGroupIdsPopover } from "./res_user_group_ids_popover";
+import {ResUserGroupIdsPopover} from "./res_user_group_ids_popover";
 
-import { Component } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
+import {Component} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
 
 /**
  * /!\ This widget is not meant to be used anywhere else than inside form view
@@ -15,8 +15,8 @@ import { usePopover } from "@web/core/popover/popover_hook";
 
 class ResUserGroupIdsPrivilegeField extends Component {
     static template = "web.ResUserGroupIdsPrivilegeField";
-    static components = { BooleanField, SelectionField };
-    static props = { ...standardFieldProps };
+    static components = {BooleanField, SelectionField};
+    static props = {...standardFieldProps};
 
     setup() {
         this.isDebug = odoo.debug;
@@ -36,11 +36,16 @@ class ResUserGroupIdsPrivilegeField extends Component {
 
     get impliedGroup() {
         const groups = this.groups;
-        return groups[this.findGroupId((gid) => groups[gid].impliedByIds.length > 0)] || false;
+        return (
+            groups[this.findGroupId((gid) => groups[gid].impliedByIds.length > 0)] ||
+            false
+        );
     }
 
     get impliedGroupDisplayName() {
-        return !this.isSet && this.impliedGroup ? this.groups[this.impliedGroup.id].name : "";
+        return !this.isSet && this.impliedGroup
+            ? this.groups[this.impliedGroup.id].name
+            : "";
     }
 
     get infoButtonClassnames() {
@@ -81,7 +86,8 @@ class ResUserGroupIdsPrivilegeField extends Component {
             const option = options.findLast((o) => o[0] && predicate(o[0]));
             return option ? option[0] : false;
         } else {
-            const groupId = this.env.resUserGroupsInfo.booleanFieldToGroupId[this.props.name];
+            const groupId =
+                this.env.resUserGroupsInfo.booleanFieldToGroupId[this.props.name];
             return predicate(groupId) ? groupId : false;
         }
     }
@@ -103,4 +109,6 @@ const resUserGroupIdsPrivilegeField = {
     component: ResUserGroupIdsPrivilegeField,
 };
 
-registry.category("fields").add("res_user_group_ids_privilege", resUserGroupIdsPrivilegeField);
+registry
+    .category("fields")
+    .add("res_user_group_ids_privilege", resUserGroupIdsPrivilegeField);

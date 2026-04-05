@@ -3,16 +3,16 @@ import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as NumberPopup from "@point_of_sale/../tests/generic_helpers/number_popup_util";
 import * as ChromePos from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as ChromeRestaurant from "@pos_restaurant/../tests/tours/utils/chrome";
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
+const Chrome = {...ChromePos, ...ChromeRestaurant};
 import * as ProductScreenPos from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as ProductScreenResto from "@pos_restaurant/../tests/tours/utils/product_screen_util";
 import * as Utils from "@point_of_sale/../tests/generic_helpers/utils";
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
-import { registry } from "@web/core/registry";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
+import {registry} from "@web/core/registry";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
 
 registry.category("web_tour.tours").add("FloorScreenTour", {
     steps: () =>
@@ -121,7 +121,7 @@ registry.category("web_tour.tours").add("FloorScreenTour", {
             NumberPopup.enterValue("9"),
             NumberPopup.isShown("9"),
             Dialog.confirm(),
-            FloorScreen.table({ name: "4" }),
+            FloorScreen.table({name: "4"}),
 
             // change number of seat when the input is already selected
             FloorScreen.selectedTableIs("4"),
@@ -129,14 +129,14 @@ registry.category("web_tour.tours").add("FloorScreenTour", {
             NumberPopup.enterValue("15"),
             NumberPopup.isShown("15"),
             Dialog.confirm(),
-            FloorScreen.table({ name: "4" }),
+            FloorScreen.table({name: "4"}),
 
             // change shape
             FloorScreen.clickEditButton("Make Round"),
 
             // Opening product screen in main floor should go back to main floor
             FloorScreen.clickSaveEditButton(),
-            FloorScreen.table({ name: "4", withoutClass: ".selected" }),
+            FloorScreen.table({name: "4", withoutClass: ".selected"}),
             FloorScreen.clickTable("4"),
             ProductScreen.isShown(),
             Chrome.clickPlanButton(),

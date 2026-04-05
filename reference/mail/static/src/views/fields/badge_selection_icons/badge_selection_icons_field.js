@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { useSpecialData } from "@web/views/fields/relational_utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {useSpecialData} from "@web/views/fields/relational_utils";
 import {
     badgeSelectionField,
     BadgeSelectionField,
@@ -20,8 +20,8 @@ import {
 export class BadgeSelectionWithIconsField extends BadgeSelectionField {
     static props = {
         ...BadgeSelectionField.props,
-        iconField: { type: String },
-        defaultIcon: { type: String, optional: true, default: "fa-check" },
+        iconField: {type: String},
+        defaultIcon: {type: String, optional: true, default: "fa-check"},
     };
     static template = "mail.BadgeSelectionIconsField";
 
@@ -34,7 +34,7 @@ export class BadgeSelectionWithIconsField extends BadgeSelectionField {
         this.type = this.props.record.fields[this.props.name].type;
         this.specialData = useSpecialData(async (orm, props) => {
             const domain = getFieldDomain(props.record, props.name, props.domain);
-            const { relation } = props.record.fields[props.name];
+            const {relation} = props.record.fields[props.name];
             const ret = await orm.call(relation, "search_read", [], {
                 domain: domain,
                 fields: ["id", "name", props.iconField],

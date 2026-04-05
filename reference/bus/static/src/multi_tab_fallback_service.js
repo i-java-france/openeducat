@@ -1,5 +1,5 @@
-import { browser } from "@web/core/browser/browser";
-import { EventBus } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {EventBus} from "@odoo/owl";
 
 let multiTabId = 0;
 /**
@@ -42,7 +42,9 @@ export const multiTabFallbackService = {
             // Check who's next.
             const now = new Date().getTime();
             const lastPresenceByTab =
-                JSON.parse(localStorage.getItem("multi_tab_service.lastPresenceByTab")) ?? {};
+                JSON.parse(
+                    localStorage.getItem("multi_tab_service.lastPresenceByTab")
+                ) ?? {};
             const heartbeatKillOld = now - HEARTBEAT_KILL_OLD_PERIOD;
             let newMain;
             for (const [tab, lastPresence] of Object.entries(lastPresenceByTab)) {
@@ -71,13 +73,19 @@ export const multiTabFallbackService = {
 
         function heartbeat() {
             const now = new Date().getTime();
-            let heartbeatValue = parseInt(localStorage.getItem("multi_tab_service.heartbeat") ?? 0);
+            let heartbeatValue = parseInt(
+                localStorage.getItem("multi_tab_service.heartbeat") ?? 0
+            );
             const lastPresenceByTab =
-                JSON.parse(localStorage.getItem("multi_tab_service.lastPresenceByTab")) ?? {};
+                JSON.parse(
+                    localStorage.getItem("multi_tab_service.lastPresenceByTab")
+                ) ?? {};
             if (heartbeatValue + HEARTBEAT_OUT_OF_DATE_PERIOD < now) {
                 // Heartbeat is out of date. Electing new main.
                 startElection();
-                heartbeatValue = parseInt(localStorage.getItem("multi_tab_service.heartbeat") ?? 0);
+                heartbeatValue = parseInt(
+                    localStorage.getItem("multi_tab_service.heartbeat") ?? 0
+                );
             }
             if (_isOnMainTab) {
                 // Walk through all tabs and kill old ones.
@@ -114,11 +122,13 @@ export const multiTabFallbackService = {
                     JSON.stringify(lastPresenceByTab)
                 );
             }
-            const hbPeriod = _isOnMainTab ? MAIN_TAB_HEARTBEAT_PERIOD : TAB_HEARTBEAT_PERIOD;
+            const hbPeriod = _isOnMainTab
+                ? MAIN_TAB_HEARTBEAT_PERIOD
+                : TAB_HEARTBEAT_PERIOD;
             heartbeatTimeout = browser.setTimeout(heartbeat, hbPeriod);
         }
 
-        function onStorage({ key, newValue }) {
+        function onStorage({key, newValue}) {
             if (key === "multi_tab_service.main" && !newValue) {
                 // Main was unloaded.
                 startElection();
@@ -132,7 +142,9 @@ export const multiTabFallbackService = {
         function unregister() {
             clearTimeout(heartbeatTimeout);
             const lastPresenceByTab =
-                JSON.parse(localStorage.getItem("multi_tab_service.lastPresenceByTab")) ?? {};
+                JSON.parse(
+                    localStorage.getItem("multi_tab_service.lastPresenceByTab")
+                ) ?? {};
             delete lastPresenceByTab[tabId];
             localStorage.setItem(
                 "multi_tab_service.lastPresenceByTab",
@@ -152,7 +164,8 @@ export const multiTabFallbackService = {
 
         // REGISTER THIS TAB
         const lastPresenceByTab =
-            JSON.parse(localStorage.getItem("multi_tab_service.lastPresenceByTab")) ?? {};
+            JSON.parse(localStorage.getItem("multi_tab_service.lastPresenceByTab")) ??
+            {};
         lastPresenceByTab[tabId] = now;
         localStorage.setItem(
             "multi_tab_service.lastPresenceByTab",

@@ -1,6 +1,6 @@
-import { onWillUnmount, reactive, useEffect, useExternalListener } from "@odoo/owl";
-import { useThrottleForAnimation } from "./timing";
-import { makeDraggableHook as nativeMakeDraggableHook } from "./draggable_hook_builder";
+import {onWillUnmount, reactive, useEffect, useExternalListener} from "@odoo/owl";
+import {useThrottleForAnimation} from "./timing";
+import {makeDraggableHook as nativeMakeDraggableHook} from "./draggable_hook_builder";
 
 /**
  * Set of default `makeDraggableHook` setup hooks that makes use of Owl lifecycle

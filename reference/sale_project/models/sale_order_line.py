@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, Command, fields, models, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 
 
@@ -167,7 +167,7 @@ class SaleOrderLine(models.Model):
 
     def copy_data(self, default=None):
         data = super().copy_data(default)
-        for origin, datum in zip(self, data):
+        for origin, datum in zip(self, data, strict=False):
             if origin.analytic_distribution == origin.order_id.project_id.sudo()._get_analytic_distribution():
                 datum['analytic_distribution'] = False
         return data

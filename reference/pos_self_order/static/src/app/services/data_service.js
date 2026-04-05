@@ -1,7 +1,7 @@
-import { PosData } from "@point_of_sale/app/services/data_service";
-import { patch } from "@web/core/utils/patch";
-import { session } from "@web/session";
-import { rpc } from "@web/core/network/rpc";
+import {PosData} from "@point_of_sale/app/services/data_service";
+import {patch} from "@web/core/utils/patch";
+import {session} from "@web/session";
+import {rpc} from "@web/core/network/rpc";
 
 export const unpatchSelf = patch(PosData.prototype, {
     async loadInitialData() {

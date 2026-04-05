@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
 import {
     click,
@@ -10,7 +10,7 @@ import {
     startServer,
     triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
-import { advanceTime, mockDate } from "@odoo/hoot-mock";
+import {advanceTime, mockDate} from "@odoo/hoot-mock";
 import {
     asyncStep,
     mockService,
@@ -18,8 +18,8 @@ import {
     serverState,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { deserializeDateTime, serializeDate, today } from "@web/core/l10n/dates";
-import { getOrigin } from "@web/core/utils/urls";
+import {deserializeDateTime, serializeDate, today} from "@web/core/l10n/dates";
+import {getOrigin} from "@web/core/utils/urls";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -27,7 +27,9 @@ defineMailModels();
 test("activity upload document is available", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityType = pyEnv["mail.activity.type"].find((r) => r.name === "Upload Document");
+    const activityType = pyEnv["mail.activity.type"].find(
+        (r) => r.name === "Upload Document"
+    );
     pyEnv["mail.activity"].create({
         activity_category: "upload_file",
         activity_type_id: activityType.id,
@@ -37,7 +39,7 @@ test("activity upload document is available", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity .btn", { text: "Upload Document" });
+    await contains(".o-mail-Activity .btn", {text: "Upload Document"});
     await contains(".btn .fa-upload");
     await contains(".o-mail-Activity .o_input_file");
 });
@@ -45,7 +47,9 @@ test("activity upload document is available", async () => {
 test("activity can upload a document", async () => {
     const pyEnv = await startServer();
     const fakeId = pyEnv["res.partner"].create({});
-    const activityType = pyEnv["mail.activity.type"].find((r) => r.name === "Upload Document");
+    const activityType = pyEnv["mail.activity.type"].find(
+        (r) => r.name === "Upload Document"
+    );
     pyEnv["mail.activity"].create({
         activity_category: "upload_file",
         activity_type_id: activityType.id,
@@ -61,8 +65,8 @@ test("activity can upload a document", async () => {
                 <chatter/>
             </form>`,
     });
-    await contains(".o-mail-Activity .btn", { text: "Upload Document" });
-    const file = new File(["hello, world"], "text.txt", { type: "text/plain" });
+    await contains(".o-mail-Activity .btn", {text: "Upload Document"});
+    const file = new File(["hello, world"], "text.txt", {type: "text/plain"});
     await inputFiles(".o-mail-Activity .o_input_file", [file]);
 });
 
@@ -78,13 +82,13 @@ test("activity simplest layout", async () => {
     await contains(".o-mail-Activity");
     await contains(".o-mail-Activity-sidebar");
     await contains(".o-mail-Activity-user");
-    await contains(".o-mail-Activity-note", { count: 0 });
-    await contains(".o-mail-Activity-details", { count: 0 });
-    await contains(".o-mail-Activity-mailTemplates", { count: 0 });
-    await contains(".btn", { count: 0, text: "Edit" });
-    await contains(".o-mail-Activity .btn", { count: 0, text: "Cancel" });
-    await contains(".btn", { count: 0, text: "Mark Done" });
-    await contains(".o-mail-Activity .btn", { count: 0, text: "Upload Document" });
+    await contains(".o-mail-Activity-note", {count: 0});
+    await contains(".o-mail-Activity-details", {count: 0});
+    await contains(".o-mail-Activity-mailTemplates", {count: 0});
+    await contains(".btn", {count: 0, text: "Edit"});
+    await contains(".o-mail-Activity .btn", {count: 0, text: "Cancel"});
+    await contains(".btn", {count: 0, text: "Mark Done"});
+    await contains(".o-mail-Activity .btn", {count: 0, text: "Upload Document"});
 });
 
 test("activity with note layout", async () => {
@@ -98,7 +102,7 @@ test("activity with note layout", async () => {
     await start();
     await openFormView("res.partner", partnerId);
     await contains(".o-mail-Activity");
-    await contains(".o-mail-Activity-note", { text: "There is no good or bad note" });
+    await contains(".o-mail-Activity-note", {text: "There is no good or bad note"});
 });
 
 test("activity info layout when planned after tomorrow", async () => {
@@ -106,19 +110,19 @@ test("activity info layout when planned after tomorrow", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
-        date_deadline: serializeDate(today().plus({ days: 5 })),
+        date_deadline: serializeDate(today().plus({days: 5})),
         res_id: partnerId,
         res_model: "res.partner",
         state: "planned",
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-success", { text: "Due in 5 days:" });
+    await contains(".o-mail-Activity span.text-success", {text: "Due in 5 days:"});
 });
 
 test("activity info layout when planned tomorrow", async () => {
     mockDate("2023-01-11 12:00:00");
-    const tomorrow = today().plus({ days: 1 });
+    const tomorrow = today().plus({days: 1});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
@@ -129,7 +133,7 @@ test("activity info layout when planned tomorrow", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-success", { text: "Tomorrow:" });
+    await contains(".o-mail-Activity span.text-success", {text: "Tomorrow:"});
 });
 
 test("activity info layout when planned today", async () => {
@@ -144,12 +148,12 @@ test("activity info layout when planned today", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-warning", { text: "Today:" });
+    await contains(".o-mail-Activity span.text-warning", {text: "Today:"});
 });
 
 test("activity info layout when planned yesterday", async () => {
     mockDate("2023-01-11 12:00:00");
-    const yesterday = today().plus({ days: -1 });
+    const yesterday = today().plus({days: -1});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
@@ -160,7 +164,7 @@ test("activity info layout when planned yesterday", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-danger", { text: "Yesterday:" });
+    await contains(".o-mail-Activity span.text-danger", {text: "Yesterday:"});
 });
 
 test("activity info layout when planned before yesterday", async () => {
@@ -168,20 +172,20 @@ test("activity info layout when planned before yesterday", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
-        date_deadline: serializeDate(today().plus({ days: -5 })),
+        date_deadline: serializeDate(today().plus({days: -5})),
         res_id: partnerId,
         res_model: "res.partner",
         state: "overdue",
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-danger", { text: "5 days overdue:" });
+    await contains(".o-mail-Activity span.text-danger", {text: "5 days overdue:"});
 });
 
 test.skip("activity info layout change at midnight", async () => {
-    // skip: does not work consistently both locally and on runbot at the same time (tz issue?)
+    // Skip: does not work consistently both locally and on runbot at the same time (tz issue?)
     mockDate("2023-12-07 23:59:59", 0);
-    const tomorrow = today().plus({ days: 1 });
+    const tomorrow = today().plus({days: 1});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
@@ -192,10 +196,10 @@ test.skip("activity info layout change at midnight", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity span.text-success", { text: "Tomorrow:" });
+    await contains(".o-mail-Activity span.text-success", {text: "Tomorrow:"});
     mockDate("2023-12-08 00:00:01");
     await advanceTime(2000);
-    await contains(".o-mail-Activity span.text-warning", { text: "Today:" });
+    await contains(".o-mail-Activity span.text-warning", {text: "Today:"});
 });
 
 test("activity with a summary layout", async () => {
@@ -208,7 +212,7 @@ test("activity with a summary layout", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity", { text: "“test summary”" });
+    await contains(".o-mail-Activity", {text: "“test summary”"});
 });
 
 test("activity without summary layout", async () => {
@@ -221,15 +225,15 @@ test("activity without summary layout", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Activity", { text: "Email" });
+    await contains(".o-mail-Activity", {text: "Email"});
 });
 
 test("activity details toggle", async () => {
     mockDate("2023-01-11 12:00:00");
-    const tomorrow = today().plus({ days: 1 });
+    const tomorrow = today().plus({days: 1});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const userId = pyEnv["res.users"].create({ partner_id: partnerId });
+    const userId = pyEnv["res.users"].create({partner_id: partnerId});
     pyEnv["mail.activity"].create({
         create_uid: userId,
         date_deadline: serializeDate(tomorrow),
@@ -239,20 +243,22 @@ test("activity details toggle", async () => {
     await start();
     await openFormView("res.partner", partnerId);
     await contains(".o-mail-Activity");
-    await contains(".o-mail-Activity-details", { count: 0 });
+    await contains(".o-mail-Activity-details", {count: 0});
     await contains(".o-mail-Activity i[aria-label='Info']");
     await click(".o-mail-Activity i[aria-label='Info']");
     await contains(".o-mail-Activity-details");
     await click(".o-mail-Activity i[aria-label='Info']");
-    await contains(".o-mail-Activity-details", { count: 0 });
+    await contains(".o-mail-Activity-details", {count: 0});
 });
 
 test("activity with mail template layout", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const mailTemplateId = pyEnv["mail.template"].create({ name: "Dummy mail template" });
+    const mailTemplateId = pyEnv["mail.template"].create({name: "Dummy mail template"});
     const activityType = pyEnv["mail.activity.type"].find((r) => r.name === "Email");
-    pyEnv["mail.activity.type"].write(activityType.id, { mail_template_ids: [mailTemplateId] });
+    pyEnv["mail.activity.type"].write(activityType.id, {
+        mail_template_ids: [mailTemplateId],
+    });
     pyEnv["mail.activity"].create({
         activity_type_id: activityType.id,
         res_id: partnerId,
@@ -263,7 +269,7 @@ test("activity with mail template layout", async () => {
     await contains(".o-mail-Activity");
     await contains(".o-mail-Activity-sidebar");
     await contains(".o-mail-Activity-mailTemplates");
-    await contains(".o-mail-ActivityMailTemplate-name", { text: "Dummy mail template" });
+    await contains(".o-mail-ActivityMailTemplate-name", {text: "Dummy mail template"});
     await contains(".o-mail-ActivityMailTemplate-preview");
     await contains(".o-mail-ActivityMailTemplate-send");
 });
@@ -271,9 +277,11 @@ test("activity with mail template layout", async () => {
 test("activity with mail template: preview mail", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const mailTemplateId = pyEnv["mail.template"].create({ name: "Dummy mail template" });
+    const mailTemplateId = pyEnv["mail.template"].create({name: "Dummy mail template"});
     const activityType = pyEnv["mail.activity.type"].find((r) => r.name === "Email");
-    pyEnv["mail.activity.type"].write(activityType.id, { mail_template_ids: [mailTemplateId] });
+    pyEnv["mail.activity.type"].write(activityType.id, {
+        mail_template_ids: [mailTemplateId],
+    });
     pyEnv["mail.activity"].create({
         activity_type_id: activityType.id,
         res_id: partnerId,
@@ -304,20 +312,22 @@ test("activity with mail template: preview mail", async () => {
 test("activity with mail template: send mail", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const mailTemplateId = pyEnv["mail.template"].create({ name: "Dummy mail template" });
+    const mailTemplateId = pyEnv["mail.template"].create({name: "Dummy mail template"});
     const activityType = pyEnv["mail.activity.type"].find((r) => r.name === "Email");
-    pyEnv["mail.activity.type"].write(activityType.id, { mail_template_ids: [mailTemplateId] });
+    pyEnv["mail.activity.type"].write(activityType.id, {
+        mail_template_ids: [mailTemplateId],
+    });
     pyEnv["mail.activity"].create({
         activity_type_id: activityType.id,
         res_id: partnerId,
         res_model: "res.partner",
     });
-    onRpc("res.partner", "activity_send_mail", ({ args, method }) => {
+    onRpc("res.partner", "activity_send_mail", ({args, method}) => {
         asyncStep(method);
         expect(args[0]).toHaveLength(1);
         expect(args[0][0]).toBe(partnerId);
         expect(args[1]).toBe(mailTemplateId);
-        // random value returned in order for the mock server to know that this route is implemented.
+        // Random value returned in order for the mock server to know that this route is implemented.
         return true;
     });
     await start();
@@ -331,7 +341,9 @@ test("activity with mail template: send mail", async () => {
 test("activity click on mark as done", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     pyEnv["mail.activity"].create({
         activity_category: "default",
         activity_type_id: activityTypeId,
@@ -342,17 +354,19 @@ test("activity click on mark as done", async () => {
     await start();
     await openFormView("res.partner", partnerId);
     await contains(".o-mail-Activity");
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await contains(".o-mail-ActivityMarkAsDone");
-    await click(".btn", { text: "Mark Done" });
-    await contains(".o-mail-ActivityMarkAsDone", { count: 0 });
+    await click(".btn", {text: "Mark Done"});
+    await contains(".o-mail-ActivityMarkAsDone", {count: 0});
 });
 
 test.tags("focus required");
 test("activity mark as done popover should focus feedback input on open", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     pyEnv["mail.activity"].create({
         activity_category: "default",
         activity_type_id: activityTypeId,
@@ -363,15 +377,19 @@ test("activity mark as done popover should focus feedback input on open", async 
     await start();
     await openFormView("res.partner", partnerId);
     await contains(".o-mail-Activity");
-    await click(".btn", { text: "Mark Done" });
-    await contains(".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']:focus");
+    await click(".btn", {text: "Mark Done"});
+    await contains(
+        ".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']:focus"
+    );
 });
 
 test("activity click on edit", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const mailTemplateId = pyEnv["mail.template"].create({ name: "Dummy mail template" });
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const mailTemplateId = pyEnv["mail.template"].create({name: "Dummy mail template"});
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     const activityId = pyEnv["mail.activity"].create({
         activity_type_id: activityTypeId,
         can_write: true,
@@ -392,15 +410,17 @@ test("activity click on edit", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".o-mail-Activity .btn", { text: "Edit" });
+    await click(".o-mail-Activity .btn", {text: "Edit"});
     await waitForSteps(["do_action"]);
 });
 
 test("activity click on edit should pass correct context", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const mailTemplateId = pyEnv["mail.template"].create({ name: "Dummy mail template" });
-    const [activityTypeId] = pyEnv["mail.activity.type"].search([["name", "=", "Email"]]);
+    const mailTemplateId = pyEnv["mail.template"].create({name: "Dummy mail template"});
+    const [activityTypeId] = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ]);
     const activityId = pyEnv["mail.activity"].create({
         activity_type_id: activityTypeId,
         can_write: true,
@@ -424,36 +444,40 @@ test("activity click on edit should pass correct context", async () => {
             return super.doAction(...arguments);
         },
     });
-    await click(".o-mail-Activity .btn", { text: "Edit" });
+    await click(".o-mail-Activity .btn", {text: "Edit"});
     await waitForSteps(["do_action"]);
 });
 
 test("activity click on cancel", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     const activityId = pyEnv["mail.activity"].create({
         activity_type_id: activityTypeId,
         can_write: true,
         res_id: partnerId,
         res_model: "res.partner",
     });
-    onRpc("mail.activity", "unlink", ({ args, method }) => {
+    onRpc("mail.activity", "unlink", ({args, method}) => {
         asyncStep(method);
         expect(args[0]).toHaveLength(1);
         expect(args[0][0]).toBe(activityId);
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".o-mail-Activity .btn", { text: "Cancel" });
-    await contains(".o-mail-Activity", { count: 0 });
+    await click(".o-mail-Activity .btn", {text: "Cancel"});
+    await contains(".o-mail-Activity", {count: 0});
     await waitForSteps(["unlink"]);
 });
 
 test("activity mark done popover close on ESCAPE", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     pyEnv["mail.activity"].create({
         activity_category: "default",
         activity_type_id: activityTypeId,
@@ -463,16 +487,18 @@ test("activity mark done popover close on ESCAPE", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await contains(".o-mail-ActivityMarkAsDone");
     triggerHotkey("Escape");
-    await contains(".o-mail-ActivityMarkAsDone", { count: 0 });
+    await contains(".o-mail-ActivityMarkAsDone", {count: 0});
 });
 
 test("activity mark done popover click on discard", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const activityTypeId = pyEnv["mail.activity.type"].search([["name", "=", "Email"]])[0];
+    const activityTypeId = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ])[0];
     pyEnv["mail.activity"].create({
         activity_category: "default",
         activity_type_id: activityTypeId,
@@ -482,15 +508,15 @@ test("activity mark done popover click on discard", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
-    await click(".o-mail-ActivityMarkAsDone button", { text: "Discard" });
-    await contains(".o-mail-ActivityMarkAsDone", { count: 0 });
+    await click(".btn", {text: "Mark Done"});
+    await click(".o-mail-ActivityMarkAsDone button", {text: "Discard"});
+    await contains(".o-mail-ActivityMarkAsDone", {count: 0});
 });
 
 test("Activity are sorted by deadline", async () => {
     mockDate("2023-01-11 12:00:00");
-    const dateBefore = today().plus({ days: -5 });
-    const dateAfter = today().plus({ days: 4 });
+    const dateBefore = today().plus({days: -5});
+    const dateAfter = today().plus({days: 4});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     pyEnv["mail.activity"].create({
@@ -513,9 +539,9 @@ test("Activity are sorted by deadline", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(":nth-child(1 of .o-mail-Activity)", { text: "5 days overdue:" });
-    await contains(":nth-child(2 of .o-mail-Activity)", { text: "Today:" });
-    await contains(":nth-child(3 of .o-mail-Activity)", { text: "Due in 4 days:" });
+    await contains(":nth-child(1 of .o-mail-Activity)", {text: "5 days overdue:"});
+    await contains(":nth-child(2 of .o-mail-Activity)", {text: "Today:"});
+    await contains(":nth-child(3 of .o-mail-Activity)", {text: "Due in 4 days:"});
 });
 
 test("chatter 'activity' button open the activity schedule wizard", async () => {
@@ -554,7 +580,7 @@ test("chatter 'activity' button open the activity schedule wizard", async () => 
                 <chatter/>
             </form>`,
     });
-    await click("button", { text: "Activity" });
+    await click("button", {text: "Activity"});
     await waitForSteps(["doAction"]);
 });
 
@@ -566,7 +592,9 @@ test("Activity avatar should have a unique timestamp", async () => {
         res_model: "res.partner",
     });
     await start();
-    const partner = pyEnv["res.partner"].search_read([["id", "=", serverState.partnerId]])[0];
+    const partner = pyEnv["res.partner"].search_read([
+        ["id", "=", serverState.partnerId],
+    ])[0];
     await openFormView("res.partner", partnerId);
     await contains(".o-mail-Activity");
     await contains(
@@ -578,8 +606,8 @@ test("Activity avatar should have a unique timestamp", async () => {
 
 test("activity with a link to a record", async () => {
     const pyEnv = await startServer();
-    const partnerId1 = pyEnv["res.partner"].create({ name: "Partner 1" });
-    const partnerId2 = pyEnv["res.partner"].create({ name: "Partner 2" });
+    const partnerId1 = pyEnv["res.partner"].create({name: "Partner 1"});
+    const partnerId2 = pyEnv["res.partner"].create({name: "Partner 2"});
     pyEnv["mail.activity"].create({
         note: `<p>Activity with a link to a <a href="#" data-oe-model="res.partner" data-oe-id="${partnerId2}">record</a></p>`,
         res_id: partnerId1,
@@ -587,15 +615,15 @@ test("activity with a link to a record", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId1);
-    await click(".o-mail-Activity-note a", { text: "record" });
-    await contains(".o_form_view input", { value: "Partner 2" });
+    await click(".o-mail-Activity-note a", {text: "record"});
+    await contains(".o_form_view input", {value: "Partner 2"});
 });
 
 test("activity with a user mention", async () => {
     const pyEnv = await startServer();
-    const partnerId1 = pyEnv["res.partner"].create({ name: "Partner 1" });
-    const partnerId2 = pyEnv["res.partner"].create({ name: "Partner 2" });
-    pyEnv["res.users"].create({ partner_id: partnerId2 });
+    const partnerId1 = pyEnv["res.partner"].create({name: "Partner 1"});
+    const partnerId2 = pyEnv["res.partner"].create({name: "Partner 2"});
+    pyEnv["res.users"].create({partner_id: partnerId2});
     pyEnv["mail.activity"].create({
         note: `<p>How are you, <a class="o_mail_redirect" href="#" data-oe-model="res.partner" data-oe-id="${partnerId2}">@Partner 2</a>?</p>`,
         res_id: partnerId1,
@@ -603,14 +631,17 @@ test("activity with a user mention", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId1);
-    await click(".o-mail-Activity-note a", { text: "@Partner 2" });
+    await click(".o-mail-Activity-note a", {text: "@Partner 2"});
     await contains(".o_avatar_card:contains('Partner 2')");
 });
 
 test("activity with a channel mention", async () => {
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Partner" });
-    const channelId = pyEnv["discuss.channel"].create({ name: "Channel", channel_type: "channel" });
+    const partnerId = pyEnv["res.partner"].create({name: "Partner"});
+    const channelId = pyEnv["discuss.channel"].create({
+        name: "Channel",
+        channel_type: "channel",
+    });
     pyEnv["mail.activity"].create({
         note: `<p><a class="o_channel_redirect" href="#" data-oe-model="discuss.channel" data-oe-id="${channelId}">#Channel</a></p>`,
         res_id: partnerId,
@@ -618,6 +649,6 @@ test("activity with a channel mention", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".o-mail-Activity-note a", { text: "#Channel" });
-    await contains(".o-mail-ChatWindow-header", { text: "Channel" });
+    await click(".o-mail-Activity-note a", {text: "#Channel"});
+    await contains(".o-mail-ChatWindow-header", {text: "Channel"});
 });

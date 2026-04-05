@@ -1,10 +1,10 @@
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { Deferred } from "@web/core/utils/concurrency";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
-import { EventBus, reactive } from "@odoo/owl";
-import { user } from "@web/core/user";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {Deferred} from "@web/core/utils/concurrency";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
+import {EventBus, reactive} from "@odoo/owl";
+import {user} from "@web/core/user";
 
 // List of worker events that should not be broadcasted.
 const INTERNAL_EVENTS = new Set([
@@ -50,7 +50,7 @@ export const busService = {
         const notificationBus = new EventBus();
         const subscribeFnToWrapper = new Map();
         let backOnlineTimeout;
-        const startedAt = luxon.DateTime.now().set({ milliseconds: 0 });
+        const startedAt = luxon.DateTime.now().set({milliseconds: 0});
         let connectionInitializedDeferred;
 
         /**
@@ -61,7 +61,7 @@ export const busService = {
          * @param {{type: WorkerEvent, data: any}[]}  messageEv.data
          */
         function handleMessage(messageEv) {
-            const { type, data } = messageEv.data;
+            const {type, data} = messageEv.data;
             switch (type) {
                 case "BUS:PROVIDE_LOGS": {
                     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -78,11 +78,17 @@ export const busService = {
                     break;
                 }
                 case "BUS:NOTIFICATION": {
-                    const notifications = data.map(({ id, message }) => ({ id, ...message }));
+                    const notifications = data.map(({id, message}) => ({
+                        id,
+                        ...message,
+                    }));
                     state.lastNotificationId = notifications.at(-1).id;
-                    legacyMultiTab.setSharedValue("last_notification_id", state.lastNotificationId);
-                    for (const { id, type, payload } of notifications) {
-                        notificationBus.trigger(type, { id, payload });
+                    legacyMultiTab.setSharedValue(
+                        "last_notification_id",
+                        state.lastNotificationId
+                    );
+                    for (const {id, type, payload} of notifications) {
+                        notificationBus.trigger(type, {id, payload});
                         busService._onMessage(env, id, type, payload);
                     }
                     break;
@@ -129,7 +135,9 @@ export const busService = {
         async function ensureWorkerStarted() {
             if (!connectionInitializedDeferred) {
                 connectionInitializedDeferred = new Deferred();
-                let uid = Array.isArray(session.user_id) ? session.user_id[0] : user.userId;
+                let uid = Array.isArray(session.user_id)
+                    ? session.user_id[0]
+                    : user.userId;
                 if (!uid && uid !== undefined) {
                     uid = false;
                 }
@@ -141,7 +149,10 @@ export const busService = {
                     }`,
                     db: session.db,
                     debug: odoo.debug,
-                    lastNotificationId: legacyMultiTab.getSharedValue("last_notification_id", 0),
+                    lastNotificationId: legacyMultiTab.getSharedValue(
+                        "last_notification_id",
+                        0
+                    ),
                     uid,
                     startTs: startedAt.valueOf(),
                 });
@@ -149,7 +160,7 @@ export const busService = {
             await connectionInitializedDeferred;
         }
 
-        browser.addEventListener("pagehide", ({ persisted }) => {
+        browser.addEventListener("pagehide", ({persisted}) => {
             if (!persisted) {
                 // Page is gonna be unloaded, disconnect this client
                 // from the worker.
@@ -165,7 +176,7 @@ export const busService = {
                     }
                 }, BACK_ONLINE_RECONNECT_DELAY);
             },
-            { capture: true }
+            {capture: true}
         );
         browser.addEventListener(
             "offline",
@@ -195,7 +206,7 @@ export const busService = {
             trigger: bus.trigger.bind(bus),
             removeEventListener: bus.removeEventListener.bind(bus),
             send: (eventName, data) =>
-                workerService.send("BUS:SEND", { event_name: eventName, data }),
+                workerService.send("BUS:SEND", {event_name: eventName, data}),
             start: async () => {
                 await ensureWorkerStarted();
                 workerService.send("BUS:START");
@@ -213,9 +224,9 @@ export const busService = {
              * @param {function} callback
              */
             subscribe(notificationType, callback) {
-                const wrapper = ({ detail }) => {
-                    const { id, payload } = detail;
-                    callback(JSON.parse(JSON.stringify(payload)), { id });
+                const wrapper = ({detail}) => {
+                    const {id, payload} = detail;
+                    callback(JSON.parse(JSON.stringify(payload)), {id});
                 };
                 subscribeFnToWrapper.set(callback, wrapper);
                 notificationBus.addEventListener(notificationType, wrapper);

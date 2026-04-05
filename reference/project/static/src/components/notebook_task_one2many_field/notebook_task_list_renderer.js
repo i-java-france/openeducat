@@ -1,15 +1,15 @@
-import { useState } from "@odoo/owl";
+import {useState} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
-import { TaskListRenderer } from "../task_list_renderer";
+import {TaskListRenderer} from "../task_list_renderer";
 
 export class NotebookTaskListRenderer extends TaskListRenderer {
     static rowsTemplate = "project.NotebookTaskListRenderer.Rows";
     setup() {
         super.setup();
         this.hideState = useState({
-            hide: localStorage.getItem(this._getStorageKey) === 'true',
+            hide: localStorage.getItem(this._getStorageKey) === "true",
         });
     }
 
@@ -30,7 +30,9 @@ export class NotebookTaskListRenderer extends TaskListRenderer {
     }
 
     get openLabel() {
-        return typeof this.closedX2MCount === "undefined" ? _t("Show closed tasks") : _t("%s closed tasks", this.closedX2MCount);
+        return typeof this.closedX2MCount === "undefined"
+            ? _t("Show closed tasks")
+            : _t("%s closed tasks", this.closedX2MCount);
     }
 
     get closeLabel() {

@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -13,12 +13,12 @@ import {
 defineWebsiteModels();
 
 test("Drag & drop a 'Button' snippet in a <div> should put it inside a <p>", async () => {
-    const { getEditableContent } = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
+    const {getEditableContent} = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
     const contentEl = getEditableContent();
     expect(contentEl).toHaveInnerHTML(`<div><p>Text</p></div>`);
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -38,7 +38,7 @@ test("Drag & drop a 'Button' snippet in a <div> should put it inside a <p>", asy
 });
 
 test("Drag & drop a 'Button' snippet should align the button style with the button before it", async () => {
-    const { getEditableContent } = await setupWebsiteBuilder(
+    const {getEditableContent} = await setupWebsiteBuilder(
         `<div><a href="http://test.com" class="btn btn-fill-secondary" style="line-height: 50px;">ButtonStyled</a></div>`
     );
     const contentEl = getEditableContent();
@@ -47,7 +47,7 @@ test("Drag & drop a 'Button' snippet should align the button style with the butt
     );
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -67,7 +67,7 @@ test("Drag & drop a 'Button' snippet should align the button style with the butt
 });
 
 test("Drag & drop a 'Button' snippet over a dropzone should preview it correctly", async () => {
-    const { getEditableContent } = await setupWebsiteBuilder(
+    const {getEditableContent} = await setupWebsiteBuilder(
         `<div><a href="http://test.com" class="btn btn-fill-secondary">ButtonStyled</a>
          <p style="padding-bottom: 50px;"><a href="http://test.com" class="btn btn-fill-secondary">ButtonStyled in a p</a></p></div>`
     );
@@ -78,7 +78,7 @@ test("Drag & drop a 'Button' snippet over a dropzone should preview it correctly
     );
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone").toHaveCount(5);
@@ -90,7 +90,9 @@ test("Drag & drop a 'Button' snippet over a dropzone should preview it correctly
 
     await moveTo(":iframe .oe_drop_zone:last");
     expect(":iframe .oe_drop_zone.invisible:last").toHaveCount(1);
-    expect(":iframe [data-snippet='s_button']").not.toHaveClass("mb-2 btn-fill-secondary");
+    expect(":iframe [data-snippet='s_button']").not.toHaveClass(
+        "mb-2 btn-fill-secondary"
+    );
     expect(":iframe [data-snippet='s_button']").toHaveClass("btn-primary");
 
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
@@ -120,13 +122,15 @@ test("Custom button is not wrapped in <p> when dropped near sibling button", asy
         ],
     };
 
-    const { getEditableContent } = await setupWebsiteBuilder(
+    const {getEditableContent} = await setupWebsiteBuilder(
         `<section><a class="btn btn-primary" href="#">Button</a></section>`,
-        { snippets }
+        {snippets}
     );
-    expect(".o-snippets-menu #snippet_custom_content div[name='Custom Button']").toHaveCount(1);
+    expect(
+        ".o-snippets-menu #snippet_custom_content div[name='Custom Button']"
+    ).toHaveCount(1);
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-snippets-menu div[name='Custom Button'] .o_snippet_thumbnail"
     ).drag();
     await moveTo(":iframe .oe_drop_zone");

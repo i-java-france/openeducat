@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import werkzeug
 from collections import OrderedDict
 
-from odoo import http, _
-from odoo.http import request
+import werkzeug
+
+from odoo import _, http
 from odoo.exceptions import AccessError, MissingError
+from odoo.http import request
+
 from odoo.addons.portal.controllers import portal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 

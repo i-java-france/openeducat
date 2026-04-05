@@ -1,9 +1,9 @@
-import { ActivityArchParser } from "@mail/views/web/activity/activity_arch_parser";
-import { ActivityController } from "@mail/views/web/activity/activity_controller";
-import { ActivityModel } from "@mail/views/web/activity/activity_model";
-import { ActivityRenderer } from "@mail/views/web/activity/activity_renderer";
+import {ActivityArchParser} from "@mail/views/web/activity/activity_arch_parser";
+import {ActivityController} from "@mail/views/web/activity/activity_controller";
+import {ActivityModel} from "@mail/views/web/activity/activity_model";
+import {ActivityRenderer} from "@mail/views/web/activity/activity_renderer";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export const activityView = {
     type: "activity",
@@ -13,7 +13,7 @@ export const activityView = {
     ArchParser: ActivityArchParser,
     Model: ActivityModel,
     props: (genericProps, view) => {
-        const { arch, relatedModels, resModel } = genericProps;
+        const {arch, relatedModels, resModel} = genericProps;
         const archInfo = new view.ArchParser().parse(arch, relatedModels, resModel);
         return {
             ...genericProps,

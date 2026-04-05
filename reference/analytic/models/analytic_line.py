@@ -2,8 +2,7 @@
 from dateutil.relativedelta import relativedelta
 from lxml.builder import E
 
-from odoo import api, fields, models, _
-from odoo.tools import date_utils
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 

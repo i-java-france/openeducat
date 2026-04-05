@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import api, fields, models
+
 from odoo.addons.l10n_ec.models.res_partner import PartnerIdTypeEc
-from odoo import fields, models, api
 
 _DOCUMENTS_MAPPING = {
     "01": [
@@ -178,7 +178,7 @@ class AccountMove(models.Model):
         return super()._get_starting_sequence()
 
     def _get_last_sequence_domain(self, relaxed=False):
-        where_string, param = super(AccountMove, self)._get_last_sequence_domain(relaxed)
+        where_string, param = super()._get_last_sequence_domain(relaxed)
         if self.country_code == "EC" and self.l10n_latam_use_documents:
             internal_type = self.l10n_latam_document_type_id.internal_type
             document_types = self.env['l10n_latam.document.type'].search([

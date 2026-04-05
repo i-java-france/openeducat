@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { useDropdownCloser } from "@web/core/dropdown/dropdown_hooks";
+import {Component} from "@odoo/owl";
+import {useDropdownCloser} from "@web/core/dropdown/dropdown_hooks";
 
 const ClosingMode = {
     None: "none",
@@ -30,7 +30,7 @@ export class DropdownItem extends Component {
             type: Object,
             optional: true,
         },
-        slots: { Object, optional: true },
+        slots: {Object, optional: true},
     };
     static defaultProps = {
         closingMode: ClosingMode.AllParents,

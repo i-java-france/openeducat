@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from freezegun.api import freeze_time
 
 from odoo import Command, fields
+
 from .common import PurchaseTestCommon
 
 

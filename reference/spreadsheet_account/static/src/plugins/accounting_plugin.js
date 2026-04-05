@@ -1,10 +1,10 @@
 // @ts-check
 
-import { EvaluationError } from "@odoo/o-spreadsheet";
-import { OdooUIPlugin } from "@spreadsheet/plugins";
-import { _t } from "@web/core/l10n/translation";
-import { deepCopy } from "@web/core/utils/objects";
-import { camelToSnakeObject, toServerDateString } from "@spreadsheet/helpers/helpers";
+import {EvaluationError} from "@odoo/o-spreadsheet";
+import {OdooUIPlugin} from "@spreadsheet/plugins";
+import {_t} from "@web/core/l10n/translation";
+import {deepCopy} from "@web/core/utils/objects";
+import {camelToSnakeObject, toServerDateString} from "@spreadsheet/helpers/helpers";
 
 /**
  * @typedef {import("../accounting_functions").DateRange} DateRange
@@ -50,7 +50,13 @@ export class AccountingPlugin extends OdooUIPlugin {
      * @returns {number}
      */
     getAccountPrefixCredit(codes, dateRange, offset, companyId, includeUnposted) {
-        const data = this._fetchAccountData(codes, dateRange, offset, companyId, includeUnposted);
+        const data = this._fetchAccountData(
+            codes,
+            dateRange,
+            offset,
+            companyId,
+            includeUnposted
+        );
         return data.credit;
     }
 
@@ -64,7 +70,13 @@ export class AccountingPlugin extends OdooUIPlugin {
      * @returns {number}
      */
     getAccountPrefixDebit(codes, dateRange, offset, companyId, includeUnposted) {
-        const data = this._fetchAccountData(codes, dateRange, offset, companyId, includeUnposted);
+        const data = this._fetchAccountData(
+            codes,
+            dateRange,
+            offset,
+            companyId,
+            includeUnposted
+        );
         return data.debit;
     }
 
@@ -91,7 +103,11 @@ export class AccountingPlugin extends OdooUIPlugin {
      * @returns {string[]}
      */
     getAccountGroupCodes(accountType) {
-        return this.serverData.batch.get("account.account", "get_account_group", accountType);
+        return this.serverData.batch.get(
+            "account.account",
+            "get_account_group",
+            accountType
+        );
     }
 
     /**
@@ -117,7 +133,7 @@ export class AccountingPlugin extends OdooUIPlugin {
         return this.serverData.batch.get(
             "account.account",
             "spreadsheet_fetch_debit_credit",
-            camelToSnakeObject({ dateRange, codes, companyId, includeUnposted })
+            camelToSnakeObject({dateRange, codes, companyId, includeUnposted})
         );
     }
 
@@ -135,7 +151,9 @@ export class AccountingPlugin extends OdooUIPlugin {
             company_id: companyId,
         });
         if (result === false) {
-            throw new EvaluationError(_t("The company fiscal year could not be found."));
+            throw new EvaluationError(
+                _t("The company fiscal year could not be found.")
+            );
         }
         return result;
     }
@@ -162,10 +180,12 @@ export class AccountingPlugin extends OdooUIPlugin {
         const result = this.serverData.batch.get(
             "account.account",
             "spreadsheet_fetch_residual_amount",
-            camelToSnakeObject({ codes, dateRange, companyId, includeUnposted })
+            camelToSnakeObject({codes, dateRange, companyId, includeUnposted})
         );
         if (result === false) {
-            throw new EvaluationError(_t("The residual amount for given accounts could not be computed."));
+            throw new EvaluationError(
+                _t("The residual amount for given accounts could not be computed.")
+            );
         }
         return result.amount_residual;
     }
@@ -181,7 +201,14 @@ export class AccountingPlugin extends OdooUIPlugin {
      * @param {number[]} partnerIds ids of the partners
      * @returns {number | undefined}
      */
-    getAccountPartnerData(codes, dateRange, offset, companyId, includeUnposted, partnerIds) {
+    getAccountPartnerData(
+        codes,
+        dateRange,
+        offset,
+        companyId,
+        includeUnposted,
+        partnerIds
+    ) {
         dateRange = deepCopy(dateRange);
         dateRange.year += offset;
         // Excel dates start at 1899-12-30, we should not support date ranges
@@ -194,10 +221,18 @@ export class AccountingPlugin extends OdooUIPlugin {
         const result = this.serverData.batch.get(
             "account.account",
             "spreadsheet_fetch_partner_balance",
-            camelToSnakeObject({ dateRange, codes, companyId, includeUnposted, partnerIds })
+            camelToSnakeObject({
+                dateRange,
+                codes,
+                companyId,
+                includeUnposted,
+                partnerIds,
+            })
         );
         if (result === false) {
-            throw new EvaluationError(_t("The balance for given partners could not be computed."));
+            throw new EvaluationError(
+                _t("The balance for given partners could not be computed.")
+            );
         }
         return result.balance;
     }
@@ -225,10 +260,12 @@ export class AccountingPlugin extends OdooUIPlugin {
         const result = this.serverData.batch.get(
             "account.account",
             "spreadsheet_fetch_balance_tag",
-            camelToSnakeObject({ accountTagIds, dateRange, companyId, includeUnposted })
+            camelToSnakeObject({accountTagIds, dateRange, companyId, includeUnposted})
         );
         if (result === false) {
-            throw new EvaluationError(_t("The balance for given account tag could not be computed."));
+            throw new EvaluationError(
+                _t("The balance for given account tag could not be computed.")
+            );
         }
         return result.balance;
     }

@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { hootPosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { models } from "@web/../tests/web_test_helpers";
+import {patch} from "@web/core/utils/patch";
+import {hootPosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class SaleOrder extends models.ServerModel {
     _name = "sale.order";
@@ -49,7 +49,9 @@ export class SaleOrder extends models.ServerModel {
         const orderLines = this.env["sale.order.line"].filter((line) =>
             order.order_line.includes(line.id)
         );
-        const partner = this.env["res.partner"].find((partner) => partner.id === order.partner_id);
+        const partner = this.env["res.partner"].find(
+            (partner) => partner.id === order.partner_id
+        );
         const productProducts = this.env["product.product"].filter((product) =>
             orderLines.map((line) => line.product_id).includes(product.id)
         );

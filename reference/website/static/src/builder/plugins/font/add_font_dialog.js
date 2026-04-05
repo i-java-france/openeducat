@@ -1,10 +1,10 @@
-import { rpc } from "@web/core/network/rpc";
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { Dialog } from "@web/core/dialog/dialog";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {rpc} from "@web/core/network/rpc";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {Dialog} from "@web/core/dialog/dialog";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 class GoogleFontAutoComplete extends AutoComplete {
     setup() {
@@ -36,7 +36,7 @@ class GoogleFontAutoComplete extends AutoComplete {
 
 export class AddFontDialog extends Component {
     static template = "website.dialog.addFont";
-    static components = { GoogleFontAutoComplete, Dialog };
+    static components = {GoogleFontAutoComplete, Dialog};
     static props = {
         close: Function,
         allFonts: Array,
@@ -111,7 +111,7 @@ export class AddFontDialog extends Component {
                 `https://fonts.googleapis.com/css?family=${encodeURIComponent(
                     fontFamily
                 )}:300,300i,400,400i,700,700i`,
-                { method: "HEAD" }
+                {method: "HEAD"}
             );
             // Google fonts server returns a 400 status code if family is not valid.
             if (result.ok) {
@@ -166,14 +166,23 @@ export class AddFontDialog extends Component {
         // Add candidate tags to fonts.
         let shortestNamedFont;
         for (const font of this.state.uploadedFonts) {
-            if (!shortestNamedFont || font.name.length < shortestNamedFont.name.length) {
+            if (
+                !shortestNamedFont ||
+                font.name.length < shortestNamedFont.name.length
+            ) {
                 shortestNamedFont = font;
             }
             font.isItalic = /italic/i.test(font.name);
             font.isLight = /light|300/i.test(font.name);
             font.isBold = /bold|700/i.test(font.name);
             font.isRegular = /regular|400/i.test(font.name);
-            font.weight = font.isRegular ? 400 : font.isLight ? 300 : font.isBold ? 700 : undefined;
+            font.weight = font.isRegular
+                ? 400
+                : font.isLight
+                  ? 300
+                  : font.isBold
+                    ? 700
+                    : undefined;
             if (font.isItalic && !font.weight) {
                 if (!/00|thin|medium|black|condense|extrude/i.test(font.name)) {
                     font.isRegular = true;
@@ -269,7 +278,7 @@ export class AddFontDialog extends Component {
                     "https://fonts.googleapis.com/css?family=" +
                         encodeURIComponent(font) +
                         ":300,300i,400,400i,700,700i",
-                    { method: "HEAD" }
+                    {method: "HEAD"}
                 );
                 // Google fonts server returns a 400 status code if family is not valid.
                 if (result.ok) {
@@ -314,12 +323,14 @@ export class AddFontDialog extends Component {
             }
         }
         await this.props.customize({
-            values: { [this.props.variable]: `'${font}'` },
+            values: {[this.props.variable]: `'${font}'`},
             googleFonts: this.props.googleFonts,
             googleLocalFonts: this.props.googleLocalFonts,
             uploadedLocalFonts: this.props.uploadedLocalFonts,
         });
-        const styleEl = document.head.querySelector(`[id='WebsiteThemeFontPreview-${font}']`);
+        const styleEl = document.head.querySelector(
+            `[id='WebsiteThemeFontPreview-${font}']`
+        );
         if (styleEl) {
             delete styleEl.dataset.fontPreview;
         }
@@ -328,7 +339,13 @@ export class AddFontDialog extends Component {
     }
 }
 
-export function showAddFontDialog(dialog, fontsData, variable, customize, reloadEditor) {
+export function showAddFontDialog(
+    dialog,
+    fontsData,
+    variable,
+    customize,
+    reloadEditor
+) {
     dialog.add(
         AddFontDialog,
         {
@@ -342,7 +359,9 @@ export function showAddFontDialog(dialog, fontsData, variable, customize, reload
         },
         {
             onClose: () => {
-                for (const el of document.head.querySelectorAll("[data-font-preview]")) {
+                for (const el of document.head.querySelectorAll(
+                    "[data-font-preview]"
+                )) {
                     el.remove();
                 }
             },

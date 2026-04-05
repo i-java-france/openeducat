@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.addons.project.tests.test_access_rights import TestProjectPortalCommon
 from odoo.exceptions import AccessError
 from odoo.tests import HttpCase
 from odoo.tools import mute_logger
+
+from odoo.addons.project.tests.test_access_rights import TestProjectPortalCommon
 
 
 class TestPortalProject(TestProjectPortalCommon, HttpCase):

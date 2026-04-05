@@ -1,4 +1,4 @@
 export const standardWidgetProps = {
-    readonly: { type: Boolean, optional: true },
-    record: { type: Object },
+    readonly: {type: Boolean, optional: true},
+    record: {type: Object},
 };

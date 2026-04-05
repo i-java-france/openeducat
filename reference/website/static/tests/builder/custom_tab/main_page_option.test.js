@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     addOption,
     defineWebsiteModels,

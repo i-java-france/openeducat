@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import base64
+
 from lxml import etree
 
 from odoo import tools
 from odoo.tests import tagged
 from odoo.tools.misc import file_open
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

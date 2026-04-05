@@ -1,17 +1,21 @@
-import { Component, onMounted, useState, xml } from "@odoo/owl";
-import { ACTIVE_ELEMENT_CLASS, Navigator, useNavigation } from "@web/core/navigation/navigation";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { describe, destroy, expect, test } from "@odoo/hoot";
+import {Component, onMounted, useState, xml} from "@odoo/owl";
 import {
-    hover,
-    press,
+    ACTIVE_ELEMENT_CLASS,
+    Navigator,
+    useNavigation,
+} from "@web/core/navigation/navigation";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {describe, destroy, expect, test} from "@odoo/hoot";
+import {
     click,
+    hover,
+    manuallyDispatchProgrammaticEvent,
+    press,
     queryAllTexts,
     queryOne,
-    manuallyDispatchProgrammaticEvent,
 } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {animationFrame} from "@odoo/hoot-mock";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 class BasicHookParent extends Component {
     static props = [];
@@ -30,7 +34,7 @@ class BasicHookParent extends Component {
     `;
 
     setup() {
-        useAutofocus({ refName: "outsideRef" });
+        useAutofocus({refName: "outsideRef"});
         this.navigation = useNavigation("containerRef", this.navOptions);
         onMounted(() => this.navigation.items[0]?.setActive());
     }
@@ -229,7 +233,7 @@ test("insert item before current", async () => {
 
         setup() {
             this.navigation = useNavigation("containerRef");
-            this.state = useState({ items: [1, 2, 3] });
+            this.state = useState({items: [1, 2, 3]});
             onMounted(() => this.navigation.items[0].setActive());
         }
     }
@@ -259,7 +263,7 @@ test("items are focused only on mousemove, not on mouseenter", async () => {
 
     manuallyDispatchProgrammaticEvent(queryOne(".two"), "mouseenter");
     await animationFrame();
-    // mouseenter should be ignored
+    // Mouseenter should be ignored
     expect(".two").not.toHaveClass("focus");
 
     await press("arrowdown");
@@ -268,7 +272,7 @@ test("items are focused only on mousemove, not on mouseenter", async () => {
 
     manuallyDispatchProgrammaticEvent(queryOne(".three"), "mousemove");
     await animationFrame();
-    // mousemove should not be ignored
+    // Mousemove should not be ignored
     expect(".three").toHaveClass("focus");
     expect(".two").not.toHaveClass("focus");
 
@@ -296,7 +300,7 @@ test("non-navigable dom update does NOT cause re-focus", async () => {
         setup() {
             this.navigation = useNavigation("containerRef");
             onMounted(() => this.navigation.items[0]?.setActive());
-            this.state = useState({ show: false });
+            this.state = useState({show: false});
         }
     }
 

@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dialog } from "@web/core/dialog/dialog";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { Component } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dialog} from "@web/core/dialog/dialog";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {Component} from "@odoo/owl";
 
 export class ProductInfoPopup extends Component {
     static template = "point_of_sale.ProductInfoPopup";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = ["info", "productTemplate", "close"];
 
     setup() {

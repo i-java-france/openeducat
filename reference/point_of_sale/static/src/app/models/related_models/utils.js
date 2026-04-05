@@ -44,7 +44,9 @@ export function convertRawToDateTime(model, value, prop) {
     }
     const datetime = deserializeDateTime(value);
     if (!datetime.isValid) {
-        throw new Error(`Invalid date: ${value} for model ${model.model} in field ${prop}`);
+        throw new Error(
+            `Invalid date: ${value} for model ${model.model} in field ${prop}`
+        );
     }
     return datetime;
 }
@@ -66,7 +68,9 @@ export function convertRawToDate(model, value, prop) {
     }
     const date = deserializeDate(value);
     if (!date.isValid) {
-        throw new Error(`Invalid date: ${value} for model ${model.model} in field ${prop}`);
+        throw new Error(
+            `Invalid date: ${value} for model ${model.model} in field ${prop}`
+        );
     }
     return date;
 }
@@ -100,7 +104,9 @@ export function deepImmutable(obj, errorMsg) {
                 return true;
             }
             const value = Reflect.get(target, prop, receiver);
-            return value && typeof value === "object" ? deepImmutable(value, errorMsg) : value;
+            return value && typeof value === "object"
+                ? deepImmutable(value, errorMsg)
+                : value;
         },
         set() {
             throw new Error(errorMsg);
@@ -138,10 +144,13 @@ export class AggregatedUpdates {
      * @param {string[]} [opts.silentModels=[]] - List of model names to exclude from triggering update events.
      */
     fireEventAndDirty(opts = {}) {
-        const { silentModels = [] } = opts;
+        const {silentModels = []} = opts;
         for (const [record, fields] of this.updates) {
             if (!silentModels.includes(record.model.name)) {
-                record.model.triggerEvents("update", { id: record.id, fields: [...fields] });
+                record.model.triggerEvents("update", {
+                    id: record.id,
+                    fields: [...fields],
+                });
             }
             record._markDirty();
         }

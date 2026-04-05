@@ -1,7 +1,7 @@
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 patch(OrderPaymentValidation.prototype, {
     async validateOrder(isForceValidate) {
@@ -31,7 +31,7 @@ patch(OrderPaymentValidation.prototype, {
         // No need to do an rpc if no existing coupon is being used.
         if (Object.keys(pointChanges || {}).length > 0 || newCodes.length) {
             try {
-                const { successful, payload } = await this.pos.data.call(
+                const {successful, payload} = await this.pos.data.call(
                     "pos.order",
                     "validate_coupon_programs",
                     [[], pointChanges, newCodes]
@@ -39,7 +39,9 @@ patch(OrderPaymentValidation.prototype, {
                 // Payload may contain the points of the concerned coupons to be updated in case of error. (So that rewards can be corrected)
                 if (payload && payload.updated_points) {
                     for (const pointChange of Object.entries(payload.updated_points)) {
-                        const coupon = this.pos.models["loyalty.card"].get(pointChange[0]);
+                        const coupon = this.pos.models["loyalty.card"].get(
+                            pointChange[0]
+                        );
                         if (coupon) {
                             coupon.points = pointChange[1];
                         }

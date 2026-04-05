@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="pos_self_order.UnavailableProductsDialog">
         <Dialog>
@@ -7,10 +7,10 @@
             </t>
             <div class="modal-body">
                 <p>
-                    It seems that 
+                    It seems that
                     <strong class="text-danger">
-                        <t t-esc="props.productNames.join(', ')"/>
-                    </strong> 
+                    <t t-esc="props.productNames.join(', ')" />
+                </strong>
                     <t t-if="props.productNames.length > 1"> are</t>
                     <t t-else=""> is</t>
                     no longer available. Please go back and edit your order.

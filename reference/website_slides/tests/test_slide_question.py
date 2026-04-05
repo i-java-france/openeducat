@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import Command
+from odoo.tests.common import users
 
 from odoo.addons.website_slides.tests import common as slides_common
-from odoo.tests.common import users
+
 
 class TestSlideQuestionManagement(slides_common.SlidesCase):
 

@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineModels, fields, models, mountView} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
     is_raining_outside = fields.Boolean();
@@ -23,7 +23,8 @@ class Partner extends models.Model {
 
     _onChanges = {
         is_raining_outside(record) {
-            record.allowed_moods = ["happy"] + (record.is_raining_outside ? ["sad"] : []);
+            record.allowed_moods =
+                ["happy"] + (record.is_raining_outside ? ["sad"] : []);
         },
         color(record) {
             record.allowed_moods =
@@ -129,7 +130,7 @@ test("badge selection field with filter, synchronize with other field", async ()
             </form>
         `,
     });
-    // not raining outside => sad should be invisible
+    // Not raining outside => sad should be invisible
     expect("[name='is_raining_outside'] input").not.toBeChecked();
     expect("div[name='mood'] .o_selection_badge").toHaveCount(1);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -138,7 +139,7 @@ test("badge selection field with filter, synchronize with other field", async ()
     await click("[name='is_raining_outside'] input");
     await animationFrame();
 
-    // raining outside => sad should be visible
+    // Raining outside => sad should be visible
     expect("[name='is_raining_outside'] input").toBeChecked();
     expect("div[name='mood'] .o_selection_badge").toHaveCount(2);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -147,7 +148,7 @@ test("badge selection field with filter, synchronize with other field", async ()
     await click("[name='is_raining_outside'] input");
     await animationFrame();
 
-    // not raining outside => sad should be invisible
+    // Not raining outside => sad should be invisible
     expect("[name='is_raining_outside'] input").not.toBeChecked();
     expect("div[name='mood'] .o_selection_badge").toHaveCount(1);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -164,7 +165,7 @@ test("badge selection field with filter, cross badge synchronization", async () 
                 <group>
                     <field name="allowed_moods"/>
                     <field name="allowed_colors"/>
-                    <field name="mood" widget="selection_badge_with_filter" 
+                    <field name="mood" widget="selection_badge_with_filter"
                         options="{'allowed_selection_field': 'allowed_moods'}"/>
                     <field name="color" widget="selection_badge_with_filter"
                         options="{'allowed_selection_field': 'allowed_colors'}"/>
@@ -173,7 +174,7 @@ test("badge selection field with filter, cross badge synchronization", async () 
         `,
     });
 
-    // happy and white by default, sad and black should be invisible
+    // Happy and white by default, sad and black should be invisible
     expect("div[name='mood'] .o_selection_badge").toHaveCount(1);
     expect("div[name='color'] .o_selection_badge").toHaveCount(2);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -185,7 +186,7 @@ test("badge selection field with filter, cross badge synchronization", async () 
     await click(".o_selection_badge[value='\"grey\"']");
     await animationFrame();
 
-    // happy and grey, sad should be revealed
+    // Happy and grey, sad should be revealed
     expect("div[name='mood'] .o_selection_badge").toHaveCount(2);
     expect("div[name='color'] .o_selection_badge").toHaveCount(2);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -197,7 +198,7 @@ test("badge selection field with filter, cross badge synchronization", async () 
     await click(".o_selection_badge[value='\"sad\"']");
     await animationFrame();
 
-    // sad and grey, white should disappear and black should appear
+    // Sad and grey, white should disappear and black should appear
     expect("div[name='mood'] .o_selection_badge").toHaveCount(2);
     expect("div[name='color'] .o_selection_badge").toHaveCount(2);
     expect(".o_selection_badge[value='\"happy\"']").toBeVisible();
@@ -209,7 +210,7 @@ test("badge selection field with filter, cross badge synchronization", async () 
     await click(".o_selection_badge[value='\"black\"']");
     await animationFrame();
 
-    // sad and black, happy should disappear
+    // Sad and black, happy should disappear
     expect("div[name='mood'] .o_selection_badge").toHaveCount(1);
     expect("div[name='color'] .o_selection_badge").toHaveCount(2);
     expect(".o_selection_badge[value='\"happy\"']").toHaveCount(0);

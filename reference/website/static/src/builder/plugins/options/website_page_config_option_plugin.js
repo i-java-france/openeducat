@@ -1,13 +1,13 @@
-import { after } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { rgbaToHex } from "@web/core/utils/colors";
-import { withSequence } from "@html_editor/utils/resource";
-import { FOOTER_COPYRIGHT } from "./footer_option_plugin";
-import { HEADER_TEMPLATE } from "./header/header_option_plugin";
-import { TopMenuVisibilityOption } from "./website_page_config_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {after} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {rgbaToHex} from "@web/core/utils/colors";
+import {withSequence} from "@html_editor/utils/resource";
+import {FOOTER_COPYRIGHT} from "./footer_option_plugin";
+import {HEADER_TEMPLATE} from "./header/header_option_plugin";
+import {TopMenuVisibilityOption} from "./website_page_config_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef { Object } WebsitePageConfigOptionShared
@@ -73,7 +73,9 @@ class WebsitePageConfigOptionPlugin extends Plugin {
 
     getColorValue(attribute, classPrefix) {
         const headerEl = this.document.querySelector("#wrapwrap > header");
-        const matchingClass = [...headerEl.classList].find((cls) => cls.startsWith(classPrefix));
+        const matchingClass = [...headerEl.classList].find((cls) =>
+            cls.startsWith(classPrefix)
+        );
         return matchingClass || rgbaToHex(headerEl.style.getPropertyValue(attribute));
     }
 
@@ -111,7 +113,9 @@ class WebsitePageConfigOptionPlugin extends Plugin {
         }
 
         const mainObject = this.services.website.currentWebsite.metadata.mainObject;
-        return Promise.all([this.services.orm.write(mainObject.model, [mainObject.id], args)]);
+        return Promise.all([
+            this.services.orm.write(mainObject.model, [mainObject.id], args),
+        ]);
     }
 
     doesPageOptionExist(pageOptionName) {
@@ -171,7 +175,9 @@ export class BaseWebsitePageConfigAction extends BuilderAction {
     }
 
     setHeaderOverlay(shouldApply) {
-        this.document.getElementById("wrapwrap").classList.toggle("o_header_overlay", shouldApply);
+        this.document
+            .getElementById("wrapwrap")
+            .classList.toggle("o_header_overlay", shouldApply);
     }
 
     setHeaderVisible(shouldApply) {
@@ -203,7 +209,7 @@ export class BaseWebsitePageConfigAction extends BuilderAction {
 }
 export class SetWebsiteHeaderVisibilityAction extends BaseWebsitePageConfigAction {
     static id = "setWebsiteHeaderVisibility";
-    apply({ editingElement, value: headerPositionValue, isPreviewing }) {
+    apply({editingElement, value: headerPositionValue, isPreviewing}) {
         const lastValue = this.websitePageConfig.getVisibilityItem();
         this.history.applyCustomMutation({
             apply: () => this.visibilityHandlers[headerPositionValue](),
@@ -212,20 +218,20 @@ export class SetWebsiteHeaderVisibilityAction extends BaseWebsitePageConfigActio
 
         this.websitePageConfig.setDirty(isPreviewing);
     }
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return this.websitePageConfig.getVisibilityItem() === value;
     }
 }
 export class SetWebsiteFooterVisibleAction extends BaseWebsitePageConfigAction {
     static id = "setWebsiteFooterVisible";
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return !this.websitePageConfig.getFooterVisibility();
     }
-    apply({ editingElement, isPreviewing }) {
+    apply({editingElement, isPreviewing}) {
         this.websitePageConfig.setFooterVisible(true);
         this.websitePageConfig.setDirty(isPreviewing);
     }
-    clean({ editingElement, isPreviewing }) {
+    clean({editingElement, isPreviewing}) {
         this.websitePageConfig.setFooterVisible(false);
         this.websitePageConfig.setDirty(isPreviewing);
     }
@@ -233,7 +239,7 @@ export class SetWebsiteFooterVisibleAction extends BaseWebsitePageConfigAction {
 
 export class SetPageWebsiteDirtyAction extends BaseWebsitePageConfigAction {
     static id = "setPageWebsiteDirty";
-    apply({ editingElement, isPreviewing }) {
+    apply({editingElement, isPreviewing}) {
         this.websitePageConfig.setDirty(isPreviewing);
     }
 }

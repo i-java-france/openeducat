@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 def convert_field(cr, model, field, target_model):
     table = model.replace('.', '_')
@@ -28,7 +27,7 @@ def convert_field(cr, model, field, target_model):
                              AND res_id=CONCAT('{model},', t.id))
     """.format(**locals()), locals())
 
-    cr.execute('ALTER TABLE "{0}" DROP COLUMN "{1}" CASCADE'.format(table, field))
+    cr.execute(f'ALTER TABLE "{table}" DROP COLUMN "{field}" CASCADE')
 
 def migrate(cr, version):
     convert_field(cr, 'res.partner', 'property_purchase_currency_id', 'res.currency')

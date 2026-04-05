@@ -1,6 +1,6 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { fadeIn, fadeOut } from "@survey/utils";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {fadeIn, fadeOut} from "@survey/utils";
 
 export class SurveyImageZoomer extends Interaction {
     static selector = ".o_survey_img_zoom_modal";
@@ -76,7 +76,11 @@ export class SurveyImageZoomer extends Interaction {
             // Prevent the user from de-zooming too much
             return;
         }
-        if (zoomStepNumber > 0 && (imageWidth * newZoomImageScale > bodyWidth || imageHeight * newZoomImageScale > bodyHeight)) {
+        if (
+            zoomStepNumber > 0 &&
+            (imageWidth * newZoomImageScale > bodyWidth ||
+                imageHeight * newZoomImageScale > bodyHeight)
+        ) {
             // Prevent to user to further zoom in as the new image would becomes too large or too high for the screen.
             // Dezooming is still allowed to bring back image into frame (use case: resizing screen).
             return;
@@ -85,4 +89,6 @@ export class SurveyImageZoomer extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("survey.SurveyImageZoomer", SurveyImageZoomer);
+registry
+    .category("public.interactions")
+    .add("survey.SurveyImageZoomer", SurveyImageZoomer);

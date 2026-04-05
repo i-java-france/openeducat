@@ -2,25 +2,25 @@
 
 import ast
 import calendar
+import logging
+import os
+import re
 from collections import Counter, defaultdict
 from contextlib import ExitStack, contextmanager, nullcontext
 from datetime import date, timedelta
-from dateutil.relativedelta import relativedelta
 from hashlib import sha256
 from json import dumps
-import logging
-from markupsafe import Markup
-import re
-import os
 from textwrap import shorten
 
-from odoo import api, fields, models, _, modules
-from odoo.tools.sql import column_exists, create_column
-from odoo.addons.account.tools import format_structured_reference_iso
-from odoo.exceptions import UserError, ValidationError, AccessError, RedirectWarning
+from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
+
+from odoo import _, api, fields, models, modules
+from odoo.exceptions import AccessError, RedirectWarning, UserError, ValidationError
 from odoo.fields import Command, Domain
-from odoo.tools.misc import clean_context
 from odoo.tools import (
+    SQL,
+    OrderedSet,
     date_utils,
     float_compare,
     float_is_zero,
@@ -32,13 +32,18 @@ from odoo.tools import (
     frozendict,
     get_lang,
     groupby,
-    OrderedSet,
-    SQL,
 )
-from odoo.tools.mail import email_re, email_split, is_html_empty, generate_tracking_message_id
-from odoo.tools.misc import StackMap
+from odoo.tools.mail import (
+    email_re,
+    email_split,
+    generate_tracking_message_id,
+    is_html_empty,
+)
+from odoo.tools.misc import StackMap, clean_context
 from odoo.tools.safe_eval import safe_eval
+from odoo.tools.sql import column_exists, create_column
 
+from odoo.addons.account.tools import format_structured_reference_iso
 
 _logger = logging.getLogger(__name__)
 
@@ -3761,7 +3766,7 @@ class AccountMove(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default)
         default_date = fields.Date.to_date(default.get('date'))
-        for move, vals in zip(self, vals_list):
+        for move, vals in zip(self, vals_list, strict=False):
             if move.move_type in ('out_invoice', 'in_invoice'):
                 vals['line_ids'] = [
                     (command, _id, line_vals)
@@ -3782,7 +3787,7 @@ class AccountMove(models.Model):
         default = dict(default or {})
         new_moves = super().copy(default)
         bodies = {}
-        for old_move, new_move in zip(self, new_moves):
+        for old_move, new_move in zip(self, new_moves, strict=False):
             message_origin = '' if not new_move.auto_post_origin_id else \
                 (Markup('<br/>') + _('This recurring entry originated from %s', new_move.auto_post_origin_id._get_html_link()))
             message_content = old_move._get_copy_message_content(default)
@@ -3846,9 +3851,9 @@ class AccountMove(models.Model):
                     self._sanitize_vals(vals)
                 stolen_moves = self.browse(set(move for vals in vals_list for move in self._stolen_move(vals)))
                 moves = super().create(vals_list)
-                exit_stack.enter_context(self.env.protecting([protected for vals, move in zip(vals_list, moves) for protected in self._get_protected_vals(vals, move)]))
+                exit_stack.enter_context(self.env.protecting([protected for vals, move in zip(vals_list, moves, strict=False) for protected in self._get_protected_vals(vals, move)]))
                 container['records'] = moves | stolen_moves
-            for move, vals in zip(moves, vals_list):
+            for move, vals in zip(moves, vals_list, strict=False):
                 if 'tax_totals' in vals:
                     move.tax_totals = vals['tax_totals']
             moves.is_manually_modified = False
@@ -5385,7 +5390,7 @@ class AccountMove(models.Model):
         :param reverse_moves:       An account.move recordset, reverse of the current self.
         :return:                    An account.move recordset, reverse of the current self.
         '''
-        for move, reverse_move in zip(self, reverse_moves):
+        for move, reverse_move in zip(self, reverse_moves, strict=False):
             group = (move.line_ids + reverse_move.line_ids) \
                 .filtered(lambda l: not l.reconciled) \
                 .sorted(lambda l: l.account_type not in ('asset_receivable', 'liability_payable')) \
@@ -5417,7 +5422,7 @@ class AccountMove(models.Model):
                 lines.remove_move_reconcile()
 
         reverse_moves = self.env['account.move']
-        for move, default_values in zip(self, default_values_list):
+        for move, default_values in zip(self, default_values_list, strict=False):
             default_values.update({
                 'move_type': TYPE_REVERSE_MAP[move.move_type],
                 'reversed_entry_id': move.id,
@@ -6944,7 +6949,7 @@ class AccountMove(models.Model):
                 create_vals = (len(file_data_groups) - 1) * self.copy_data()
                 invoices |= self.with_context(skip_is_manually_modified=True).create(create_vals)
 
-            for invoice, file_data_group in zip(invoices, file_data_groups):
+            for invoice, file_data_group in zip(invoices, file_data_groups, strict=False):
                 attachment_records = self._from_files_data(file_data_group)
                 if invoice == self:
                     attachment_records |= self._from_files_data(extra_files_data)
@@ -6964,7 +6969,7 @@ class AccountMove(models.Model):
                     super(AccountMove, invoice)._message_post_after_hook(sub_new_message, sub_message_values)
                 invoice._fix_attachments_on_record(attachment_records)
 
-            for invoice, file_data_group in zip(invoices, file_data_groups):
+            for invoice, file_data_group in zip(invoices, file_data_groups, strict=False):
                 if file_data_group:
                     invoice._extend_with_attachments(file_data_group, new=True)
 

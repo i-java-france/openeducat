@@ -12,13 +12,13 @@ import {
     xml,
 } from "@odoo/owl";
 
-import { monitorAudio } from "@mail/utils/common/media_monitoring";
-import { browser } from "@web/core/browser/browser";
-import { OVERLAY_SYMBOL } from "@web/core/overlay/overlay_container";
-import { Deferred } from "@web/core/utils/concurrency";
-import { makeDraggableHook } from "@web/core/utils/draggable_hook_builder_owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {monitorAudio} from "@mail/utils/common/media_monitoring";
+import {browser} from "@web/core/browser/browser";
+import {OVERLAY_SYMBOL} from "@web/core/overlay/overlay_container";
+import {Deferred} from "@web/core/utils/concurrency";
+import {makeDraggableHook} from "@web/core/utils/draggable_hook_builder_owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export function useLazyExternalListener(target, eventName, handler, eventParams) {
     const boundHandler = handler.bind(useComponent());
@@ -55,7 +55,7 @@ export function onExternalClick(refName, cb) {
     const ref = useRef(refName);
     function onClick(ev) {
         if (ref.el && !ref.el.contains(ev.composedPath()[0])) {
-            cb(ev, { downTarget, upTarget });
+            cb(ev, {downTarget, upTarget});
             upTarget = downTarget = null;
         }
     }
@@ -95,7 +95,7 @@ export function onExternalClick(refName, cb) {
  *   are removed from DOM, to properly mark the hovered target as non-hovered.
  * @returns {({ isHover: boolean })}
  */
-export function useHover(refNames, { onHover, onAway, stateObserver, onHovering } = {}) {
+export function useHover(refNames, {onHover, onAway, stateObserver, onHovering} = {}) {
     refNames = Array.isArray(refNames) ? refNames : [refNames];
     const targets = [];
     let wasHovering = false;
@@ -105,10 +105,10 @@ export function useHover(refNames, { onHover, onAway, stateObserver, onHovering 
     for (const refName of refNames) {
         if (typeof refName === "function") {
             // Special case: useChildRef support
-            targets.push({ ref: refName });
+            targets.push({ref: refName});
             continue;
         }
-        targets.push({ ref: useRef(refName) });
+        targets.push({ref: useRef(refName)});
     }
     const state = useState({
         set isHover(newIsHover) {
@@ -250,7 +250,7 @@ export class UseHoverOverlay extends Component {
         onMounted(() => {
             this.props.hover._contains.push(overlayContains);
             removeTarget = this.props.hover.addTarget({
-                ref: { el: this.root.el.closest(".o-overlay-item") },
+                ref: {el: this.root.el.closest(".o-overlay-item")},
             });
         });
         onWillUnmount(() => {
@@ -274,7 +274,10 @@ export class UseHoverOverlay extends Component {
 export function useOnBottomScrolled(refName, callback, threshold = 1) {
     const ref = useRef(refName);
     function onScroll() {
-        if (Math.abs(ref.el.scrollTop + ref.el.clientHeight - ref.el.scrollHeight) < threshold) {
+        if (
+            Math.abs(ref.el.scrollTop + ref.el.clientHeight - ref.el.scrollHeight) <
+            threshold
+        ) {
             callback();
         }
     }
@@ -290,7 +293,7 @@ export function useOnBottomScrolled(refName, callback, threshold = 1) {
  * @param {string} refName
  * @param {function} [cb]
  */
-export function useVisible(refName, cb, { ready = true } = {}) {
+export function useVisible(refName, cb, {ready = true} = {}) {
     const ref = useRef(refName);
     const state = useState({
         isVisible: undefined,
@@ -343,7 +346,8 @@ export function useMessageScrolling(duration = 2000) {
             state.initiated = true;
             let messageScrollDirection;
             if (message.notIn(thread.messages)) {
-                messageScrollDirection = message.id < thread.messages[0]?.id ? "top" : "bottom";
+                messageScrollDirection =
+                    message.id < thread.messages[0]?.id ? "top" : "bottom";
                 await thread.loadAround(message.id);
             }
             const lastHighlightedMessageId = state.highlightedMessageId;
@@ -389,7 +393,7 @@ export function useMessageScrolling(duration = 2000) {
                 // To remove when safari will support the "scrollend" event.
                 setTimeout(scrollPromise.resolve, 250);
             }
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.scrollIntoView({behavior: "smooth", block: "center"});
             return scrollPromise;
         },
         highlightedMessageId: null,
@@ -433,7 +437,7 @@ export function useMicrophoneVolume() {
                     _t('"%(hostname)s" requires microphone access', {
                         hostname: browser.location.host,
                     }),
-                    { type: "warning" }
+                    {type: "warning"}
                 );
                 return;
             }
@@ -462,7 +466,11 @@ export function useMicrophoneVolume() {
     return state;
 }
 
-export function useSelection({ refName, model, preserveOnClickAwayPredicate = () => false }) {
+export function useSelection({
+    refName,
+    model,
+    preserveOnClickAwayPredicate = () => false,
+}) {
     const ui = useService("ui");
     const ref = useRef(refName);
     function onSelectionChange() {
@@ -570,7 +578,7 @@ export function useDiscussSystray() {
 
 export const useMovable = makeDraggableHook({
     name: "useMovable",
-    onWillStartDrag({ ctx, addCleanup, addStyle, getRect }) {
+    onWillStartDrag({ctx, addCleanup, addStyle, getRect}) {
         ctx.current.container = document.createElement("div");
         addStyle(ctx.current.container, {
             position: "fixed",
@@ -584,9 +592,9 @@ export const useMovable = makeDraggableHook({
     },
     onDragStart: () => true,
     onDragEnd: () => true,
-    onDrop({ ctx, getRect }) {
-        const { top, left } = getRect(ctx.current.element);
-        return { top, left };
+    onDrop({ctx, getRect}) {
+        const {top, left} = getRect(ctx.current.element);
+        return {top, left};
     },
 });
 
@@ -601,7 +609,7 @@ export const LONG_PRESS_DELAY = 400;
  * @param {() => void} [options.action] Function called when a long press is detected.
  * @param {() => boolean} [options.predicate] Optional function to enable long press detection.
  */
-export function useLongPress(refName, { action, predicate = () => true } = {}) {
+export function useLongPress(refName, {action, predicate = () => true} = {}) {
     const MOVE_TRESHOLD = 10;
     const ref = useRef(refName);
     let timer = null;

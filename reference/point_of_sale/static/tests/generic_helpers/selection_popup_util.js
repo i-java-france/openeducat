@@ -1,4 +1,4 @@
-export function has(item, { run = () => {} } = {}) {
+export function has(item, {run = () => {}} = {}) {
     return [
         {
             content: `selection popup has '${item}'`,

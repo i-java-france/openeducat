@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     clickSave,
     contains,
@@ -12,14 +12,14 @@ import {
 class Partner extends models.Model {
     qux = fields.Float();
 
-    _records = [{ id: 5, qux: 9.1 }];
+    _records = [{id: 5, qux: 9.1}];
 }
 
 defineModels([Partner]);
 
 test("FloatTimeField in form view", async () => {
     expect.assertions(4);
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         // 48 / 60 = 0.8
         expect(args[1].qux).toBe(-11.8, {
             message: "the correct float value should be saved",
@@ -56,7 +56,7 @@ test("FloatTimeField in form view", async () => {
 
 test("FloatTimeField value formatted on blur", async () => {
     expect.assertions(4);
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         expect(args[1].qux).toBe(9.5, {
             message: "the correct float value should be saved",
         });

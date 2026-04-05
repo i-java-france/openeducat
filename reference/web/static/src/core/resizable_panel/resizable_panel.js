@@ -17,7 +17,8 @@ function useResizable({
     onResize = () => {},
     getResizeSide = () => "end",
 }) {
-    containerRef = typeof containerRef == "string" ? useRef(containerRef) : containerRef;
+    containerRef =
+        typeof containerRef == "string" ? useRef(containerRef) : containerRef;
     handleRef = typeof handleRef == "string" ? useRef(handleRef) : handleRef;
     const props = useComponent().props;
 
@@ -125,11 +126,11 @@ export class ResizablePanel extends Component {
 
     static components = {};
     static props = {
-        onResize: { type: Function, optional: true },
-        initialWidth: { type: Number, optional: true },
-        minWidth: { type: Number, optional: true },
-        class: { type: String, optional: true },
-        slots: { type: Object },
+        onResize: {type: Function, optional: true},
+        initialWidth: {type: Number, optional: true},
+        minWidth: {type: Number, optional: true},
+        class: {type: String, optional: true},
+        slots: {type: Object},
         handleSide: {
             validate: (val) => ["start", "end"].includes(val),
             optional: true,

@@ -1,21 +1,20 @@
-# -*- coding: utf-8 -*-
 
 import ast
 import csv
-from collections import defaultdict
-from functools import wraps
-from inspect import getmembers
-from copy import deepcopy
-
 import logging
 import re
+from collections import defaultdict
+from copy import deepcopy
+from functools import wraps
+from inspect import getmembers
 
 from odoo import Command, api, models
-from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 from odoo.exceptions import AccessError, UserError
 from odoo.modules import get_resource_from_path
-from odoo.tools import file_open, float_compare, get_lang, groupby, SQL
-from odoo.tools.translate import _, code_translations, TranslationImporter
+from odoo.tools import SQL, file_open, float_compare, get_lang
+from odoo.tools.translate import TranslationImporter, _, code_translations
+
+from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 _logger = logging.getLogger(__name__)
 
@@ -477,7 +476,7 @@ class AccountChartTemplate(models.AbstractModel):
                         rec = self.ref(xmlid, raise_if_not_found=False)
                     if rec:
                         for fname in x2manyfields:
-                            for i, (line, (command, _id, vals)) in enumerate(zip(rec[fname], values[fname])):
+                            for i, (line, (command, _id, vals)) in enumerate(zip(rec[fname], values[fname], strict=False)):
                                 if command == Command.CREATE:  # converts ORM command `create` into `update`
                                     values[fname][i] = Command.update(line.id, vals)
 
@@ -906,7 +905,7 @@ class AccountChartTemplate(models.AbstractModel):
                 }
                 for xml_id, values in accounts_data.items()
             ])
-            for company_attr_name, account in zip(accounts_data.keys(), accounts):
+            for company_attr_name, account in zip(accounts_data.keys(), accounts, strict=False):
                 company[company_attr_name] = account
 
         # No fields on company

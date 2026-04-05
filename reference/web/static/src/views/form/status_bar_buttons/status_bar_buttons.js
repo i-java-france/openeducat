@@ -1,7 +1,7 @@
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class StatusBarButtons extends Component {
     static template = "web.StatusBarButtons";
@@ -10,7 +10,7 @@ export class StatusBarButtons extends Component {
         DropdownItem,
     };
     static props = {
-        slots: { type: Object, optional: 1 },
+        slots: {type: Object, optional: 1},
     };
 
     get visibleSlotNames() {

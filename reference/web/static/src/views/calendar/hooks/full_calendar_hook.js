@@ -1,6 +1,13 @@
-import { loadBundle } from "@web/core/assets";
+import {loadBundle} from "@web/core/assets";
 
-import { onMounted, onPatched, onWillStart, onWillUnmount, useComponent, useRef } from "@odoo/owl";
+import {
+    onMounted,
+    onPatched,
+    onWillStart,
+    onWillUnmount,
+    useComponent,
+    useRef,
+} from "@odoo/owl";
 
 export function useFullCalendar(refName, params) {
     const component = useComponent();
@@ -11,7 +18,8 @@ export function useFullCalendar(refName, params) {
         const newParams = {};
         for (const key in params) {
             const value = params[key];
-            newParams[key] = typeof value === "function" ? value.bind(component) : value;
+            newParams[key] =
+                typeof value === "function" ? value.bind(component) : value;
         }
         return newParams;
     }

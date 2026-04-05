@@ -1,11 +1,12 @@
 import logging
-
-from markupsafe import Markup
-from hashlib import sha256
 from base64 import b64decode, b64encode
-from lxml import etree
 from datetime import datetime
-from odoo import models, fields, _, api
+from hashlib import sha256
+
+from lxml import etree
+from markupsafe import Markup
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)

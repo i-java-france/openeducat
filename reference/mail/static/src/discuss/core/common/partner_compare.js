@@ -1,10 +1,11 @@
-import { partnerCompareRegistry } from "@mail/core/common/partner_compare";
+import {partnerCompareRegistry} from "@mail/core/common/partner_compare";
 
 partnerCompareRegistry.add(
     "discuss.recent-chats",
-    (p1, p2, { env, context }) => {
+    (p1, p2, {env, context}) => {
         const recentChatPartnerIds =
-            context.recentChatPartnerIds || env.services["mail.store"].getRecentChatPartnerIds();
+            context.recentChatPartnerIds ||
+            env.services["mail.store"].getRecentChatPartnerIds();
         const recentChatIndex_p1 = recentChatPartnerIds.findIndex(
             (partnerId) => partnerId === p1.id
         );
@@ -21,12 +22,12 @@ partnerCompareRegistry.add(
             return 1;
         }
     },
-    { sequence: 45 }
+    {sequence: 45}
 );
 
 partnerCompareRegistry.add(
     "discuss.members",
-    (p1, p2, { thread, context: { memberPartnerIds } }) => {
+    (p1, p2, {thread, context: {memberPartnerIds}}) => {
         if (thread?.model === "discuss.channel") {
             const isMember1 = memberPartnerIds.has(p1.id);
             const isMember2 = memberPartnerIds.has(p2.id);
@@ -38,5 +39,5 @@ partnerCompareRegistry.add(
             }
         }
     },
-    { sequence: 40 }
+    {sequence: 40}
 );

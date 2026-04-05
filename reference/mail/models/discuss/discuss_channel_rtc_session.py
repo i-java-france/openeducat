@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import requests
-
 from collections import defaultdict
+
+import requests
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 from odoo import api, fields, models
+
 from odoo.addons.mail.tools import discuss, jwt
 from odoo.addons.mail.tools.discuss import Store
 

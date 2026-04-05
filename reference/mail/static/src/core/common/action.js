@@ -1,8 +1,8 @@
-import { isRecord, STORE_SYM } from "@mail/model/misc";
-import { Component, toRaw } from "@odoo/owl";
-import { DropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { useService } from "@web/core/utils/hooks";
-import { Reactive } from "@web/core/utils/reactive";
+import {isRecord, STORE_SYM} from "@mail/model/misc";
+import {Component, toRaw} from "@odoo/owl";
+import {DropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {useService} from "@web/core/utils/hooks";
+import {Reactive} from "@web/core/utils/reactive";
 
 export const ACTION_TAGS = Object.freeze({
     DANGER: "DANGER",
@@ -60,7 +60,7 @@ export class Action {
     store;
 
     /** param `store` is required for actions made with new Action() by hand in components and outside component.setup() */
-    constructor({ owner, id, definition, store }) {
+    constructor({owner, id, definition, store}) {
         this.definition = definition;
         this.id = id;
         this.owner = owner;
@@ -70,12 +70,12 @@ export class Action {
             (rawOwner[STORE_SYM]
                 ? owner
                 : isRecord(owner)
-                ? owner.store
-                : useService("mail.store"));
+                  ? owner.store
+                  : useService("mail.store"));
     }
 
     get params() {
-        return { action: this, store: this.store, owner: this.owner };
+        return {action: this, store: this.store, owner: this.owner};
     }
 
     /** @param {Action} action @returns {boolean|undefined} */
@@ -151,7 +151,7 @@ export class Action {
             this._componentCondition(this.params) ??
             (typeof this.definition.componentCondition === "function"
                 ? this.definition.componentCondition.call(this, this.params)
-                : this.definition.componentCondition ?? true)
+                : (this.definition.componentCondition ?? true))
         );
     }
 
@@ -173,7 +173,7 @@ export class Action {
             this._condition(this.params) ??
             (typeof this.definition.condition === "function"
                 ? this.definition.condition.call(this, this.params)
-                : this.definition.condition ?? true)
+                : (this.definition.condition ?? true))
         );
     }
 
@@ -397,7 +397,9 @@ export class Action {
     _setup(action) {}
     /** setup is executed when the owner is being setup. */
     setup() {
-        return this._setup(this.params) ?? this.definition.setup?.call(this, this.params);
+        return (
+            this._setup(this.params) ?? this.definition.setup?.call(this, this.params)
+        );
     }
 
     /** @param {Action} action @returns {string|string[]|undefined} */
@@ -455,7 +457,7 @@ export class UseActions extends Reactive {
                     dropdown: true,
                     dropdownState: new DropdownState(),
                     icon: data?.icon ?? "oi oi-ellipsis-v",
-                    isActive: ({ action }) => action.dropdownState.isOpen,
+                    isActive: ({action}) => action.dropdownState.isOpen,
                     isMoreAction: true,
                     sequence: data.sequence ?? 1000,
                 },
@@ -496,6 +498,6 @@ export class UseActions extends Reactive {
         const other = actions
             .filter((a) => !a.sequenceQuick && !a.sequenceGroup)
             .sort((a1, a2) => a1.sequence - a2.sequence);
-        return { quick, group, other };
+        return {quick, group, other};
     }
 }

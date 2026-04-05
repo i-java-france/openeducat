@@ -1,5 +1,5 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -8,17 +8,17 @@ import {
     mountView,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { serializeDateTime } from "@web/core/l10n/dates";
+import {serializeDateTime} from "@web/core/l10n/dates";
 
 const now = luxon.DateTime.now();
 class Users extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Mario" },
-        { id: 2, name: "Luigi" },
-        { id: 3, name: "Link" },
-        { id: 4, name: "Zelda" },
+        {id: 1, name: "Mario"},
+        {id: 2, name: "Luigi"},
+        {id: 3, name: "Link"},
+        {id: 4, name: "Zelda"},
     ];
 }
 
@@ -26,11 +26,11 @@ class Team extends models.Model {
     _name = "crm.team";
 
     name = fields.Char();
-    member_ids = fields.Many2many({ string: "Members", relation: "users" });
+    member_ids = fields.Many2many({string: "Members", relation: "users"});
 
     _records = [
-        { id: 1, name: "Mushroom Kingdom", member_ids: [1, 2] },
-        { id: 2, name: "Hyrule", member_ids: [3, 4] },
+        {id: 1, name: "Mushroom Kingdom", member_ids: [1, 2]},
+        {id: 2, name: "Hyrule", member_ids: [3, 4]},
     ];
 }
 
@@ -38,12 +38,12 @@ class Stage extends models.Model {
     _name = "crm.stage";
 
     name = fields.Char();
-    is_won = fields.Boolean({ string: "Is won" });
+    is_won = fields.Boolean({string: "Is won"});
 
     _records = [
-        { id: 1, name: "Start" },
-        { id: 2, name: "Middle" },
-        { id: 3, name: "Won", is_won: true },
+        {id: 1, name: "Start"},
+        {id: 2, name: "Middle"},
+        {id: 3, name: "Won", is_won: true},
     ];
 }
 
@@ -51,11 +51,11 @@ class Lead extends models.Model {
     _name = "crm.lead";
 
     name = fields.Char();
-    planned_revenue = fields.Float({ string: "Revenue" });
-    date_closed = fields.Datetime({ string: "Date closed" });
-    stage_id = fields.Many2one({ string: "Stage", relation: "crm.stage" });
-    user_id = fields.Many2one({ string: "Salesperson", relation: "users" });
-    team_id = fields.Many2one({ string: "Sales Team", relation: "crm.team" });
+    planned_revenue = fields.Float({string: "Revenue"});
+    date_closed = fields.Datetime({string: "Date closed"});
+    stage_id = fields.Many2one({string: "Stage", relation: "crm.stage"});
+    user_id = fields.Many2one({string: "Salesperson", relation: "users"});
+    team_id = fields.Many2one({string: "Sales Team", relation: "crm.team"});
 
     _records = [
         {
@@ -81,7 +81,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 1,
             user_id: 1,
-            date_closed: serializeDateTime(now.minus({ days: 5 })),
+            date_closed: serializeDateTime(now.minus({days: 5})),
         },
         {
             id: 4,
@@ -90,7 +90,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 2,
             user_id: 4,
-            date_closed: serializeDateTime(now.minus({ days: 23 })),
+            date_closed: serializeDateTime(now.minus({days: 23})),
         },
         {
             id: 5,
@@ -99,7 +99,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 1,
             user_id: 1,
-            date_closed: serializeDateTime(now.minus({ days: 20 })),
+            date_closed: serializeDateTime(now.minus({days: 20})),
         },
         {
             id: 6,
@@ -116,7 +116,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 2,
             user_id: 3,
-            date_closed: serializeDateTime(now.minus({ days: 23 })),
+            date_closed: serializeDateTime(now.minus({days: 23})),
         },
         {
             id: 8,
@@ -133,7 +133,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 2,
             user_id: 3,
-            date_closed: serializeDateTime(now.minus({ days: 5 })),
+            date_closed: serializeDateTime(now.minus({days: 5})),
         },
         {
             id: 10,
@@ -150,7 +150,7 @@ class Lead extends models.Model {
             stage_id: 3,
             team_id: 2,
             user_id: 4,
-            date_closed: serializeDateTime(now.minus({ days: 5 })),
+            date_closed: serializeDateTime(now.minus({days: 5})),
         },
     ];
 }
@@ -184,7 +184,7 @@ const testKanbanView = {
     groupBy: ["stage_id"],
 };
 
-onRpc("crm.lead", "get_rainbowman_message", ({ parent }) => {
+onRpc("crm.lead", "get_rainbowman_message", ({parent}) => {
     const result = parent();
     expect.step(result || "no rainbowman");
     return result;
@@ -371,7 +371,9 @@ test("first lead won, drag & drop kanban", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 6):eq(0)").dragAndDrop(".o_kanban_group:eq(2)");
+    await contains(".o_kanban_record:contains(Lead 6):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(2)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(1);
     expect.verifySteps(["Go, go, go! Congrats for your first deal."]);
 });
@@ -382,7 +384,9 @@ test("team record 30 days, drag & drop kanban", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 2):eq(0)").dragAndDrop(".o_kanban_group:eq(2)");
+    await contains(".o_kanban_record:contains(Lead 2):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(2)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(1);
     expect.verifySteps(["Boom! Team record for the past 30 days."]);
 });
@@ -393,7 +397,9 @@ test("team record 7 days, drag & drop kanban", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 1):eq(0)").dragAndDrop(".o_kanban_group:eq(2)");
+    await contains(".o_kanban_record:contains(Lead 1):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(2)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(1);
     expect.verifySteps(["Yeah! Best deal out of the last 7 days for the team."]);
 });
@@ -404,7 +410,9 @@ test("user record 30 days, drag & drop kanban", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 8):eq(0)").dragAndDrop(".o_kanban_group:eq(2)");
+    await contains(".o_kanban_record:contains(Lead 8):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(2)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(1);
     expect.verifySteps(["You just beat your personal record for the past 30 days."]);
 });
@@ -415,7 +423,9 @@ test("user record 7 days, drag & drop kanban", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 10):eq(0)").dragAndDrop(".o_kanban_group:eq(2)");
+    await contains(".o_kanban_record:contains(Lead 10):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(2)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(1);
     expect.verifySteps(["You just beat your personal record for the past 7 days."]);
 });
@@ -426,7 +436,9 @@ test("drag & drop record kanban in stage not won", async () => {
         ...testKanbanView,
     });
 
-    await contains(".o_kanban_record:contains(Lead 8):eq(0)").dragAndDrop(".o_kanban_group:eq(1)");
+    await contains(".o_kanban_record:contains(Lead 8):eq(0)").dragAndDrop(
+        ".o_kanban_group:eq(1)"
+    );
     expect(".o_reward svg.o_reward_rainbow_man").toHaveCount(0);
     expect.verifySteps(["no rainbowman"]);
 });

@@ -1,10 +1,10 @@
-import { listView } from "@web/views/list/list_view";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { CaledarListController } from "./calendar_list_controller";
+import {listView} from "@web/views/list/list_view";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {CaledarListController} from "./calendar_list_controller";
 
 export class CalendarListModel extends listView.Model {
-    setup(params, { action, dialog, notification, rpc, user, view, company }) {
+    setup(params, {action, dialog, notification, rpc, user, view, company}) {
         super.setup(...arguments);
     }
 

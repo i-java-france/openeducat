@@ -1,19 +1,19 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { rpc, rpcBus } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { renderToString } from "@web/core/utils/render";
-import { useSortable } from "@web/core/utils/sortable_owl";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { BoardAction } from "./board_action";
-import { blockDom, Component, useState, useRef } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {rpc, rpcBus} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {renderToString} from "@web/core/utils/render";
+import {useSortable} from "@web/core/utils/sortable_owl";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {BoardAction} from "./board_action";
+import {blockDom, Component, useState, useRef} from "@odoo/owl";
 
 export class BoardController extends Component {
     static template = "board.BoardView";
-    static components = { BoardAction, Dropdown, DropdownItem };
+    static components = {BoardAction, Dropdown, DropdownItem};
     static props = {
         ...standardViewProps,
         board: Object,
@@ -33,11 +33,13 @@ export class BoardController extends Component {
                 cursor: "move",
                 groups: ".o-dashboard-column",
                 connectGroups: true,
-                onDrop: ({ element, previous, parent }) => {
+                onDrop: ({element, previous, parent}) => {
                     const fromColIdx = parseInt(element.parentElement.dataset.idx, 10);
                     const fromActionIdx = parseInt(element.dataset.idx, 10);
                     const toColIdx = parseInt(parent.dataset.idx, 10);
-                    const toActionIdx = previous ? parseInt(previous.dataset.idx, 10) + 1 : 0;
+                    const toActionIdx = previous
+                        ? parseInt(previous.dataset.idx, 10) + 1
+                        : 0;
                     if (fromColIdx !== toColIdx) {
                         // to reduce visual flickering
                         element.classList.add("d-none");
@@ -120,7 +122,10 @@ export class BoardController extends Component {
         const root = document.createElement("rendertostring");
         blockDom.mount(bdom, root);
         const result = xmlSerializer.serializeToString(root);
-        const arch = result.slice(result.indexOf("<", 1), result.indexOf("</rendertostring>"));
+        const arch = result.slice(
+            result.indexOf("<", 1),
+            result.indexOf("</rendertostring>")
+        );
 
         rpc("/web/view/edit_custom", {
             custom_id: this.board.customViewId,

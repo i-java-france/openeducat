@@ -1,24 +1,25 @@
 
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
 import re
 import smtplib
-from email import message_from_string
-
 from datetime import datetime, timedelta
+from email import message_from_string
+from socket import gaierror
+from unittest.mock import PropertyMock, call, patch
+
+import pytz
 from freezegun import freeze_time
 from markupsafe import Markup
 from OpenSSL.SSL import Error as SSLError
-from socket import gaierror, timeout
-from unittest.mock import call, patch, PropertyMock
 
-from odoo import api, Command, fields, SUPERUSER_ID
+from odoo import SUPERUSER_ID, Command, api, fields
+from odoo.exceptions import AccessError, LockError
+from odoo.tests import tagged, users
+from odoo.tools import formataddr, mute_logger
+
 from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.exceptions import AccessError, LockError
-from odoo.tests import common, tagged, users
-from odoo.tools import formataddr, mute_logger
 
 
 @tagged('mail_mail')
@@ -26,7 +27,7 @@ class TestMailMail(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailMail, cls).setUpClass()
+        super().setUpClass()
 
         cls.test_record = cls.env['mail.test.gateway'].with_context(cls._test_context).create({
             'name': 'Test',
@@ -295,7 +296,7 @@ class TestMailMail(MailCommon):
                         **mail_values,
                     }).send()
                 # self.assertEqual(len(self.emails), len(exp_smtp))
-                for exp_smtp_to_lst, exp_msg_to_lst, exp_msg_cc_lst in zip(exp_smtp, exp_to, exp_cc):
+                for exp_smtp_to_lst, exp_msg_to_lst, exp_msg_cc_lst in zip(exp_smtp, exp_to, exp_cc, strict=False):
                     self.assertSMTPEmailsSent(
                         msg_from=f'{self.user_root.name} <{self.default_from}@{self.alias_domain}>',
                         smtp_from=f'{self.default_from}@{self.alias_domain}',
@@ -366,14 +367,14 @@ class TestMailMail(MailCommon):
             } for scheduled_datetime in scheduled_datetimes
         ])
 
-        for mail, expected_datetime, scheduled_datetime in zip(mails, expected_datetimes, scheduled_datetimes):
+        for mail, expected_datetime, scheduled_datetime in zip(mails, expected_datetimes, scheduled_datetimes, strict=False):
             self.assertEqual(mail.scheduled_date, expected_datetime,
                              'Scheduled date: %s should be stored as %s, received %s' % (scheduled_datetime, expected_datetime, mail.scheduled_date))
             self.assertEqual(mail.state, 'outgoing')
 
         with freeze_time(now), self.mock_mail_gateway():
             self.env['mail.mail'].process_email_queue()
-            for mail, expected_state in zip(mails, expected_states):
+            for mail, expected_state in zip(mails, expected_states, strict=False):
                 self.assertEqual(mail.state, expected_state)
 
     @mute_logger('odoo.addons.mail.models.mail_mail', 'odoo.tests')
@@ -499,7 +500,7 @@ class TestMailMail(MailCommon):
         # MailServer.send_email(): _prepare_email_message__: invalid To
         for email_to, failure_type in zip(
             self.emails_invalid,
-            ['mail_email_missing', 'mail_email_missing']
+            ['mail_email_missing', 'mail_email_missing'], strict=False
         ):
             with self.subTest(email_to=email_to):
                 self._reset_data()
@@ -723,7 +724,7 @@ class TestMailMail(MailCommon):
                     (smtplib.SMTPException('SMTPException'), 'SMTPException'),
                     (SSLError('SSLError'), 'SSLError'),
                     (gaierror('gaierror'), 'gaierror'),
-                    (timeout('timeout'), 'timeout')]:
+                    (TimeoutError('timeout'), 'timeout')]:
 
                 def _connect(*args, **kwargs):
                     raise error
@@ -1002,7 +1003,7 @@ class TestMailMailServer(MailCommon):
                     (['"Uppercase Partner" <uppercase.partner.youpie@example.gov.uni>'], []),
                     ([], ['"UpCc" <uppercase.customer.cc@example.gov.uni>']),
                 ],
-            ]
+            ], strict=False
         ):
             with self.subTest(values=recipient_values):
                 mail = self.env['mail.mail'].create({

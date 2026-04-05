@@ -1,19 +1,19 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { useInputField } from "../input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {useInputField} from "../input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class EmailField extends Component {
     static template = "web.EmailField";
     static props = {
         ...standardFieldProps,
-        placeholder: { type: String, optional: true },
+        placeholder: {type: String, optional: true},
     };
 
     setup() {
-        useInputField({ getValue: () => this.props.record.data[this.props.name] || "" });
+        useInputField({getValue: () => this.props.record.data[this.props.name] || ""});
     }
 }
 
@@ -29,7 +29,7 @@ export const emailField = {
         },
     ],
     supportedTypes: ["char"],
-    extractProps: ({ placeholder }) => ({
+    extractProps: ({placeholder}) => ({
         placeholder,
     }),
 };

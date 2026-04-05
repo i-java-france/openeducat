@@ -1,17 +1,16 @@
-from collections import defaultdict
-from contextlib import contextmanager, ExitStack
-from datetime import date
 import logging
 import re
+from collections import defaultdict
+from contextlib import ExitStack, contextmanager
+from datetime import date
 
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, UserError, RedirectWarning
+from odoo import _, api, fields, models
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.fields import Command, Domain
-from odoo.tools import frozendict, float_compare, groupby, Query, SQL, OrderedSet
-from odoo.addons.web.controllers.utils import clean_action
+from odoo.tools import SQL, OrderedSet, Query, float_compare, frozendict, groupby
 
 from odoo.addons.account.models.account_move import MAX_HASH_VERSION
-
+from odoo.addons.web.controllers.utils import clean_action
 
 _logger = logging.getLogger(__name__)
 
@@ -1580,7 +1579,7 @@ class AccountMoveLine(models.Model):
 
     def _prepare_create_values(self, vals_list):
         result_vals_list = super()._prepare_create_values(vals_list)
-        for init_vals, res_vals in zip(vals_list, result_vals_list):
+        for init_vals, res_vals in zip(vals_list, result_vals_list, strict=False):
             # Allow computing the balance based on the amount_currency if it wasn't specified in the create vals.
             if (
                 'amount_currency' in init_vals
@@ -1655,7 +1654,7 @@ class AccountMoveLine(models.Model):
              moves._sync_dynamic_lines(move_container),\
              self._sync_invoice(container):
             lines = super().create([self._sanitize_vals(vals) for vals in vals_list])
-            exit_stack.enter_context(self.env.protecting([protected for vals, line in zip(vals_list, lines) for protected in self.env['account.move']._get_protected_vals(vals, line)]))
+            exit_stack.enter_context(self.env.protecting([protected for vals, line in zip(vals_list, lines, strict=False) for protected in self.env['account.move']._get_protected_vals(vals, line)]))
             container['records'] = lines
 
         lines._check_tax_lock_date()
@@ -1937,7 +1936,7 @@ class AccountMoveLine(models.Model):
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
 
-        for line, vals in zip(self, vals_list):
+        for line, vals in zip(self, vals_list, strict=False):
             # Don't copy the name of a payment term line.
             if line.display_type == 'payment_term' and line.move_id.is_invoice(True):
                 del vals['name']
@@ -2726,7 +2725,7 @@ class AccountMoveLine(models.Model):
         if self.env.context.get('add_caba_vals'):
             partials._set_draft_caba_move_vals()
         start_range = 0
-        for plan_results, plan in zip(all_plan_results, plan_list):
+        for plan_results, plan in zip(all_plan_results, plan_list, strict=False):
             size = len(plan_results)
             plan['partials'] = partials[start_range:start_range + size]
             start_range += size
@@ -2886,7 +2885,7 @@ class AccountMoveLine(models.Model):
             'always_tax_exigible': True,
         }
         to_reconcile = []
-        for line, amounts in zip(self, amounts_list):
+        for line, amounts in zip(self, amounts_list, strict=False):
 
             move_vals['date'] = max(move_vals['date'], line.date)
 
@@ -2989,7 +2988,7 @@ class AccountMoveLine(models.Model):
 
         # ==== See if the exchange moves need to be posted or not ====
         exchange_moves_to_post = self.env['account.move']
-        for exchange_move, vals in zip(exchange_moves, exchange_diff_values_list):
+        for exchange_move, vals in zip(exchange_moves, exchange_diff_values_list, strict=False):
             if vals['to_post']:
                 exchange_moves_to_post |= exchange_move
 

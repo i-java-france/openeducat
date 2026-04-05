@@ -8,11 +8,12 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { test, expect } from "@odoo/hoot";
-import { click, setInputFiles, queryOne, waitFor } from "@odoo/hoot-dom";
-import { browser } from "@web/core/browser/browser";
+import {expect, test} from "@odoo/hoot";
+import {click, queryOne, setInputFiles, waitFor} from "@odoo/hoot-dom";
+import {browser} from "@web/core/browser/browser";
 
-const getIframeSrc = () => queryOne(".o_field_widget iframe.o_pdfview_iframe").dataset.src;
+const getIframeSrc = () =>
+    queryOne(".o_field_widget iframe.o_pdfview_iframe").dataset.src;
 
 const getIframeProtocol = () => getIframeSrc().match(/\?file=(\w+)%3A/)[1];
 
@@ -20,7 +21,7 @@ const getIframeViewerParams = () =>
     decodeURIComponent(getIframeSrc().match(/%2Fweb%2Fcontent%3F(.*)#page/)[1]);
 
 class Partner extends models.Model {
-    document = fields.Binary({ string: "Binary" });
+    document = fields.Binary({string: "Binary"});
     _records = [
         {
             document: "coucou==\n",
@@ -60,8 +61,8 @@ test("PdfViewerField: basic rendering", async () => {
 test("PdfViewerField: upload rendering", async () => {
     expect.assertions(4);
 
-    onRpc("web_save", ({ args }) => {
-        expect(args[1]).toEqual({ document: btoa("test") });
+    onRpc("web_save", ({args}) => {
+        expect(args[1]).toEqual({document: btoa("test")});
     });
 
     await mountView({
@@ -71,7 +72,7 @@ test("PdfViewerField: upload rendering", async () => {
     });
 
     expect("iframe.o_pdfview_iframe").toHaveCount(0);
-    const file = new File(["test"], "test.pdf", { type: "application/pdf" });
+    const file = new File(["test"], "test.pdf", {type: "application/pdf"});
     await click(".o_field_pdf_viewer input[type=file]");
     await setInputFiles(file);
     await waitFor("iframe.o_pdfview_iframe");
@@ -88,7 +89,7 @@ test("PdfViewerField: upload file and download it", async () => {
         arch: '<form><field name="document" widget="pdf_viewer"/></form>',
     });
     mockService("action", {
-        doAction({ type }) {
+        doAction({type}) {
             expect.step(type);
             return super.doAction(...arguments);
         },
@@ -99,7 +100,7 @@ test("PdfViewerField: upload file and download it", async () => {
         },
     });
     expect("iframe.o_pdfview_iframe").toHaveCount(1);
-    const file = new File(["test"], "test.pdf", { type: "application/pdf" });
+    const file = new File(["test"], "test.pdf", {type: "application/pdf"});
     await click(".o_field_pdf_viewer input[type=file]");
     await setInputFiles(file);
     await waitFor("iframe.o_pdfview_iframe");

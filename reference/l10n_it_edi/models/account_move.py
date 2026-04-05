@@ -2,20 +2,31 @@
 import logging
 import re
 import uuid
-from base64 import b64encode, b64decode
-from collections import defaultdict
+from base64 import b64decode, b64encode
 from datetime import datetime
 
 from lxml import etree
-from odoo.addons.base.models.ir_qweb_fields import Markup, nl2br, nl2br_enclose
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import LockError, UserError
 from odoo.fields import Domain
-from odoo.tools import cleanup_xml_node, float_compare, float_is_zero, float_repr, float_round, html2plaintext
+from odoo.tools import (
+    cleanup_xml_node,
+    float_compare,
+    float_is_zero,
+    float_repr,
+    float_round,
+    html2plaintext,
+)
 from odoo.tools.sql import column_exists, create_column
 
-from odoo import _, api, Command, fields, models, modules
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
-from odoo.addons.l10n_it_edi.models.account_payment_method_line import L10N_IT_PAYMENT_METHOD_SELECTION
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
+from odoo.addons.base.models.ir_qweb_fields import Markup, nl2br, nl2br_enclose
+from odoo.addons.l10n_it_edi.models.account_payment_method_line import (
+    L10N_IT_PAYMENT_METHOD_SELECTION,
+)
 from odoo.addons.l10n_it_edi.tools.remove_signature import remove_signature
 
 _logger = logging.getLogger(__name__)
@@ -1204,7 +1215,7 @@ class AccountMove(models.Model):
 
             moves = self.with_company(proxy_user.company_id).create([{}] * len(files_data))
 
-            for move, file_data in zip(moves, files_data):
+            for move, file_data in zip(moves, files_data, strict=False):
                 attachment = file_data['attachment']
                 attachment.write({'res_model': 'account.move', 'res_id': move.id, 'res_field': 'l10n_it_edi_attachment_file'})
 
@@ -1215,7 +1226,7 @@ class AccountMove(models.Model):
                 )
 
             # Extend created moves with the related attachments.
-            for move, file_data in zip(moves, files_data):
+            for move, file_data in zip(moves, files_data, strict=False):
                 move._extend_with_attachments([file_data], new=True)
 
         return {"retrigger": retrigger, "proxy_acks": proxy_acks}

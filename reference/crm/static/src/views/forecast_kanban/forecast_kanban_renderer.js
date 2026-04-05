@@ -1,6 +1,6 @@
-import { CrmKanbanRenderer } from "@crm/views/crm_kanban/crm_kanban_renderer";
-import { useService } from "@web/core/utils/hooks";
-import { ForecastKanbanColumnQuickCreate } from "@crm/views/forecast_kanban/forecast_kanban_column_quick_create";
+import {CrmKanbanRenderer} from "@crm/views/crm_kanban/crm_kanban_renderer";
+import {useService} from "@web/core/utils/hooks";
+import {ForecastKanbanColumnQuickCreate} from "@crm/views/forecast_kanban/forecast_kanban_column_quick_create";
 
 export class ForecastKanbanRenderer extends CrmKanbanRenderer {
     static template = "crm.ForecastKanbanRenderer";
@@ -34,7 +34,7 @@ export class ForecastKanbanRenderer extends CrmKanbanRenderer {
     }
 
     async addForecastColumn() {
-        const { name, type, granularity } = this.props.list.groupByField;
+        const {name, type, granularity} = this.props.list.groupByField;
         this.fillTemporalService
             .getFillTemporalPeriod({
                 modelName: this.props.list.resModel,

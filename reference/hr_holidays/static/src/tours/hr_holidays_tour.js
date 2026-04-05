@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { markup } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
+import {_t} from "@web/core/l10n/translation";
+import {markup} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
 
 registry.category("web_tour.tours").add("hr_holidays_tour", {
     url: "/odoo",
@@ -63,13 +63,15 @@ registry.category("web_tour.tours").add("hr_holidays_tour", {
             run: "click",
         },
         {
-            trigger: 'button[data-menu-xmlid="hr_holidays.menu_hr_holidays_management"]',
+            trigger:
+                'button[data-menu-xmlid="hr_holidays.menu_hr_holidays_management"]',
             content: _t("Let's go validate it"),
             tooltipPosition: "bottom",
             run: "click",
         },
         {
-            trigger: 'a[data-menu-xmlid="hr_holidays.menu_open_department_leave_approve"]',
+            trigger:
+                'a[data-menu-xmlid="hr_holidays.menu_open_department_leave_approve"]',
             content: _t("Select Time Off"),
             tooltipPosition: "right",
             run: "click",

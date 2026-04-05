@@ -1,4 +1,4 @@
-import { models, fields } from "@web/../tests/web_test_helpers";
+import {models, fields} from "@web/../tests/web_test_helpers";
 
 export class HrDepartment extends models.ServerModel {
     _name = "hr.department";

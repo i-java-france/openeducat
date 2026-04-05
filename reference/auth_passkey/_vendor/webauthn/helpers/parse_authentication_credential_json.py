@@ -1,9 +1,8 @@
 import json
 from json.decoder import JSONDecodeError
-from typing import Union
 
-from .exceptions import InvalidAuthenticationResponse, InvalidJSONStructure
 from .base64url_to_bytes import base64url_to_bytes
+from .exceptions import InvalidAuthenticationResponse, InvalidJSONStructure
 from .structs import (
     AuthenticationCredential,
     AuthenticatorAssertionResponse,
@@ -12,7 +11,7 @@ from .structs import (
 )
 
 
-def parse_authentication_credential_json(json_val: Union[str, dict]) -> AuthenticationCredential:
+def parse_authentication_credential_json(json_val: str | dict) -> AuthenticationCredential:
     """
     Parse a JSON form of an authentication credential, as either a stringified JSON object or a
     plain dict, into an instance of AuthenticationCredential

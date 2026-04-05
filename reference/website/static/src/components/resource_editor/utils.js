@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 const MAPPING = {
     "{": "}",
@@ -29,7 +29,7 @@ export function checkSCSS(scss) {
                     isValid: false,
                     error: {
                         line,
-                        message: _t("Unexpected %(char)s", { char: scss[i] }),
+                        message: _t("Unexpected %(char)s", {char: scss[i]}),
                     },
                 };
             }
@@ -42,11 +42,11 @@ export function checkSCSS(scss) {
             isValid: false,
             error: {
                 line,
-                message: _t("Expected %(char)s", { char: MAPPING[stack.pop()] }),
+                message: _t("Expected %(char)s", {char: MAPPING[stack.pop()]}),
             },
         };
     }
-    return { isValid: true };
+    return {isValid: true};
 }
 
 /**
@@ -94,7 +94,7 @@ export function checkXML(xml) {
             },
         };
     }
-    return { isValid: true };
+    return {isValid: true};
 }
 
 /**

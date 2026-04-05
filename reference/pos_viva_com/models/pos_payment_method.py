@@ -1,10 +1,10 @@
-# coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
+
 import requests
 
-from odoo import api, fields, models, modules, _
-from odoo.exceptions import UserError, AccessError
+from odoo import _, api, fields, models, modules
+from odoo.exceptions import AccessError, UserError
 
 _logger = logging.getLogger(__name__)
 TIMEOUT = 10
@@ -59,7 +59,7 @@ class PosPaymentMethod(models.Model):
     def _is_write_forbidden(self, fields):
         # Allow the modification of these fields even if a pos_session is open
         whitelisted_fields = {'viva_com_bearer_token', 'viva_com_webhook_verification_key', 'viva_com_latest_response'}
-        return super(PosPaymentMethod, self)._is_write_forbidden(fields - whitelisted_fields)
+        return super()._is_write_forbidden(fields - whitelisted_fields)
 
     def _get_payment_terminal_selection(self):
         return super()._get_payment_terminal_selection() + [('viva_com', 'Viva.com')]

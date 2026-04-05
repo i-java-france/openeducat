@@ -1,13 +1,13 @@
-import { Component, onWillStart, useChildSubEnv, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { download } from "@web/core/network/download";
+import {Component, onWillStart, useChildSubEnv, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {download} from "@web/core/network/download";
 
-import { useSpreadsheetNotificationStore } from "@spreadsheet/hooks";
+import {useSpreadsheetNotificationStore} from "@spreadsheet/hooks";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { Spreadsheet, Model, registries } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { useSpreadsheetPrint } from "../hooks";
+import {Spreadsheet, Model, registries} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {useSpreadsheetPrint} from "../hooks";
 
 registries.topbarMenuRegistry.addChild("download_public_excel", ["file"], {
     name: _t("Download"),
@@ -19,11 +19,11 @@ registries.topbarMenuRegistry.addChild("download_public_excel", ["file"], {
 
 export class PublicReadonlySpreadsheet extends Component {
     static template = "spreadsheet.PublicReadonlySpreadsheet";
-    static components = { Spreadsheet };
+    static components = {Spreadsheet};
     static props = {
         dataUrl: String,
-        downloadExcelUrl: { type: [String, Boolean], optional: true },
-        mode: { type: String, optional: true },
+        downloadExcelUrl: {type: [String, Boolean], optional: true},
+        mode: {type: String, optional: true},
     };
 
     setup() {

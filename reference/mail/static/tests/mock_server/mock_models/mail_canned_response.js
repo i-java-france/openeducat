@@ -1,6 +1,6 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { getKwArgs, makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {getKwArgs, makeKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class MailCannedResponse extends models.ServerModel {
     _name = "mail.canned.response";
@@ -40,7 +40,7 @@ export class MailCannedResponse extends models.ServerModel {
     }
 
     unlink(ids) {
-        this._broadcast(ids, makeKwArgs({ delete: true }));
+        this._broadcast(ids, makeKwArgs({delete: true}));
         return super.unlink(...arguments);
     }
 
@@ -55,7 +55,7 @@ export class MailCannedResponse extends models.ServerModel {
                 "mail.record/insert",
                 new mailDataHelpers.Store(
                     this.browse(cannedResponse.id),
-                    makeKwArgs({ delete: _delete })
+                    makeKwArgs({delete: _delete})
                 ).get_result(),
             ]);
         }

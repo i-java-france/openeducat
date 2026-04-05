@@ -1,22 +1,27 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAll } from "@odoo/hoot-dom";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAll} from "@odoo/hoot-dom";
 
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 class TestDynamicItem extends Interaction {
     static selector = ".s_test_dynamic_item";
     dynamicContent = {
-        _root: { "t-att-data-started": (el) => `*${el.dataset.testParam}*` },
+        _root: {"t-att-data-started": (el) => `*${el.dataset.testParam}*`},
     };
 }
 
 beforeEach(() => {
-    registry.category("public.interactions").add("website.test_dynamic_item", TestDynamicItem);
+    registry
+        .category("public.interactions")
+        .add("website.test_dynamic_item", TestDynamicItem);
 });
 
 setupInteractionWhiteList(["website.dynamic_snippet", "website.test_dynamic_item"]);
@@ -27,7 +32,9 @@ test("dynamic snippet loads items and displays them through template", async () 
     onRpc("/website/snippet/filters", async (args) => {
         const json = JSON.parse(new TextDecoder().decode(await args.arrayBuffer()));
         expect(json.params.filter_id).toBe(1);
-        expect(json.params.template_key).toBe("website.dynamic_filter_template_test_item");
+        expect(json.params.template_key).toBe(
+            "website.dynamic_filter_template_test_item"
+        );
         expect(json.params.limit).toBe(16);
         expect(json.params.search_domain).toEqual([]);
         return [
@@ -35,7 +42,7 @@ test("dynamic snippet loads items and displays them through template", async () 
             `<div class="s_test_dynamic_item" data-test-param="test2">Another test record</div>`,
         ];
     });
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <section data-snippet="s_dynamic_snippet" class="s_dynamic_snippet s_dynamic pt32 pb32 o_colored_level" data-custom-template-data="{}" data-name="Dynamic Snippet"
                     data-filter-id="1"

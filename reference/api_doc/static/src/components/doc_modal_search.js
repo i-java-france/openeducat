@@ -1,13 +1,13 @@
-import { Component, useRef, onMounted, useExternalListener, useState } from "@odoo/owl";
-import { useDebounced } from "@web/core/utils/timing";
-import { search } from "@api_doc/utils/doc_model_search";
+import {Component, useRef, onMounted, useExternalListener, useState} from "@odoo/owl";
+import {useDebounced} from "@web/core/utils/timing";
+import {search} from "@api_doc/utils/doc_model_search";
 
 export class SearchModal extends Component {
     static template = "web.DocSearchModal";
 
     static components = {};
     static props = {
-        close: { type: Function },
+        close: {type: Function},
     };
 
     setup() {
@@ -30,7 +30,11 @@ export class SearchModal extends Component {
         });
 
         this.search = useDebounced((query) => {
-            this.results = search(this.env.modelStore.models, query, this.state.activeFilters);
+            this.results = search(
+                this.env.modelStore.models,
+                query,
+                this.state.activeFilters
+            );
             this.state.resultCount = this.results.length;
             this.scrollRef.el.scrollTop = 0;
             this.onScroll(this.scrollRef.el);

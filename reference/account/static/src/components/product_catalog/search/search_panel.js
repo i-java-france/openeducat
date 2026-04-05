@@ -1,12 +1,11 @@
-import { onWillStart, useState } from '@odoo/owl';
-import { getActiveHotkey } from '@web/core/hotkeys/hotkey_service';
-import { rpc } from '@web/core/network/rpc';
-import { useBus } from '@web/core/utils/hooks';
-import { SearchPanel } from '@web/search/search_panel/search_panel';
-
+import {onWillStart, useState} from "@odoo/owl";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {rpc} from "@web/core/network/rpc";
+import {useBus} from "@web/core/utils/hooks";
+import {SearchPanel} from "@web/search/search_panel/search_panel";
 
 export class AccountProductCatalogSearchPanel extends SearchPanel {
-    static template = 'account.ProductCatalogSearchPanel';
+    static template = "account.ProductCatalogSearchPanel";
 
     setup() {
         super.setup();
@@ -14,11 +13,15 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
         this.state = useState({
             ...this.state,
             sections: new Map(),
-            isAddingSection: '',
+            isAddingSection: "",
             newSectionName: "",
         });
 
-        useBus(this.env.searchModel, 'section-line-count-change', this.updateSectionLineCount);
+        useBus(
+            this.env.searchModel,
+            "section-line-count-change",
+            this.updateSectionLineCount
+        );
 
         onWillStart(async () => await this.loadSections());
     }
@@ -37,7 +40,7 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
     }
 
     onDragStart(sectionId, ev) {
-        ev.dataTransfer.setData('section_id', sectionId);
+        ev.dataTransfer.setData("section_id", sectionId);
     }
 
     onDragOver(ev) {
@@ -46,37 +49,38 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
 
     onDrop(targetSecId, ev) {
         ev.preventDefault();
-        const moveSecId = parseInt(ev.dataTransfer.getData('section_id'));
+        const moveSecId = parseInt(ev.dataTransfer.getData("section_id"));
         if (moveSecId !== targetSecId) this.reorderSections(moveSecId, targetSecId);
     }
 
     enableSectionInput(isAddingSection) {
         this.state.isAddingSection = isAddingSection;
-        setTimeout(() => document.querySelector('.o_section_input')?.focus(), 100);
+        setTimeout(() => document.querySelector(".o_section_input")?.focus(), 100);
     }
 
     onSectionInputKeydown(ev) {
         const hotkey = getActiveHotkey(ev);
-        if (hotkey === 'enter') {
+        if (hotkey === "enter") {
             this.createSection();
-        } else if (hotkey === 'escape') {
+        } else if (hotkey === "escape") {
             Object.assign(this.state, {
-                isAddingSection: '',
+                isAddingSection: "",
                 newSectionName: "",
             });
         }
     }
 
-    setSelectedSection(sectionId=null, filtered=false) {
+    setSelectedSection(sectionId = null, filtered = false) {
         this.env.searchModel.setSelectedSection(sectionId, filtered);
     }
 
     async createSection() {
         const sectionName = this.state.newSectionName.trim();
-        if (!sectionName) return this.state.isAddingSection = '';
+        if (!sectionName) return (this.state.isAddingSection = "");
 
         const position = this.state.isAddingSection;
-        const section = await rpc('/product/catalog/create_section',
+        const section = await rpc(
+            "/product/catalog/create_section",
             this._getSectionInfoParams({
                 name: sectionName,
                 position: position,
@@ -87,7 +91,7 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
             const sections = this.state.sections;
             let newLineCount = 0;
 
-            if (position === 'top') {
+            if (position === "top") {
                 newLineCount = sections.get(false).line_count;
                 sections.delete(false);
             }
@@ -100,14 +104,17 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
             this.setSelectedSection(section.id);
         }
         Object.assign(this.state, {
-            isAddingSection: '',
+            isAddingSection: "",
             newSectionName: "",
         });
     }
 
     async loadSections() {
         if (!this.showSections) return;
-        const sections = await rpc('/product/catalog/get_sections', this._getSectionInfoParams());
+        const sections = await rpc(
+            "/product/catalog/get_sections",
+            this._getSectionInfoParams()
+        );
 
         const sectionMap = new Map();
         for (const {id, name, sequence, line_count} of sections) {
@@ -124,11 +131,12 @@ export class AccountProductCatalogSearchPanel extends SearchPanel {
 
         if (!moveSection || !targetSection) return;
 
-        const updatedSequences = await rpc('/product/catalog/resequence_sections',
+        const updatedSequences = await rpc(
+            "/product/catalog/resequence_sections",
             this._getSectionInfoParams({
                 sections: [
-                    { id: moveId, sequence: moveSection.sequence },
-                    { id: targetId, sequence: targetSection.sequence },
+                    {id: moveId, sequence: moveSection.sequence},
+                    {id: targetId, sequence: targetSection.sequence},
                 ],
             })
         );

@@ -1,8 +1,8 @@
-import { NameAndSignature } from "@web/core/signature/name_and_signature";
+import {NameAndSignature} from "@web/core/signature/name_and_signature";
 
-import { expect, queryOne, test } from "@odoo/hoot";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { click, drag, edit, queryFirst, waitFor } from "@odoo/hoot-dom";
+import {expect, queryOne, test} from "@odoo/hoot";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {click, drag, edit, queryFirst, waitFor} from "@odoo/hoot-dom";
 import {
     clickSave,
     defineModels,
@@ -24,7 +24,7 @@ class Partner extends models.Model {
         string: "Product Name",
         relation: "product",
     });
-    sign = fields.Binary({ string: "Signature" });
+    sign = fields.Binary({string: "Signature"});
     _records = [
         {
             id: 1,
@@ -34,7 +34,7 @@ class Partner extends models.Model {
     ];
 }
 class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
+    name = fields.Char({string: "Product Name"});
     _records = [
         {
             id: 7,
@@ -65,7 +65,7 @@ test("signature can be drawn", async () => {
     expect(".modal .btn.btn-primary:not([disabled])").toHaveCount(0);
 
     // Use a drag&drop simulation to draw a signature
-    const { drop } = await drag(".modal .o_web_sign_signature", {
+    const {drop} = await drag(".modal .o_web_sign_signature", {
         position: {
             x: 1,
             y: 1,
@@ -79,7 +79,7 @@ test("signature can be drawn", async () => {
         },
         relative: true,
     });
-    await animationFrame(); // await owl rendering
+    await animationFrame(); // Await owl rendering
     expect(".modal .btn.btn-primary:not([disabled])").toHaveCount(1);
 
     // Click on "Adopt and Sign" button
@@ -165,8 +165,8 @@ test("Set m2o field in 'full_name' node option", async () => {
 });
 
 test("Set size (width and height) in node option", async () => {
-    Partner._fields.sign2 = fields.Binary({ string: "Signature" });
-    Partner._fields.sign3 = fields.Binary({ string: "Signature" });
+    Partner._fields.sign2 = fields.Binary({string: "Signature"});
+    Partner._fields.sign3 = fields.Binary({string: "Signature"});
     onRpc("/web/sign/get_fonts/", () => ({}));
 
     await mountView({
@@ -206,10 +206,10 @@ test("clicking save manually after changing signature should change the unique o
     rec.sign = "3 kb";
     rec.write_date = "2022-08-05 08:37:00"; // 1659688620000
     const fillSignatureField = async (lineToX, lineToY) => {
-        await click(".o_field_signature img", { visible: false });
+        await click(".o_field_signature img", {visible: false});
         await waitFor(".modal .modal-body");
         expect(".modal canvas").toHaveCount(1);
-        const { drop } = await drag(".modal .o_web_sign_signature", {
+        const {drop} = await drag(".modal .o_web_sign_signature", {
             position: {
                 x: 1,
                 y: 1,
@@ -232,7 +232,7 @@ test("clicking save manually after changing signature should change the unique o
     let index = 0;
 
     onRpc("/web/sign/get_fonts/", () => ({}));
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect.step("web_save");
         args[1].write_date = lastUpdates[index];
         args[1].sign = "4 kb";
@@ -253,7 +253,7 @@ test("clicking save manually after changing signature should change the unique o
 
     await fillSignatureField(0, 2);
     await click(".o_field_widget[name='foo'] input");
-    await edit("grrr", { confirm: "Enter" });
+    await edit("grrr", {confirm: "Enter"});
     await runAllTimers();
     await animationFrame();
     await clickSave();
@@ -282,7 +282,7 @@ test("save record with signature field modified by onchange", async () => {
     // 1659692220000, 1659695820000
     const lastUpdates = ["2022-08-05 09:37:00", "2022-08-05 10:37:00"];
     let index = 0;
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect.step("web_save");
         args[1].write_date = lastUpdates[index];
         args[1].sign = "4 kb";
@@ -300,10 +300,12 @@ test("save record with signature field modified by onchange", async () => {
     });
     expect(getUnique(queryFirst(".o_field_signature img"))).toBe("1659688620000");
     await click("[name='foo'] input");
-    await edit("grrr", { confirm: "Enter" });
+    await edit("grrr", {confirm: "Enter"});
     await runAllTimers();
     await animationFrame();
-    expect(queryFirst("div[name=sign] img").dataset.src).toBe(`data:image/png;base64,${MYB64}`);
+    expect(queryFirst("div[name=sign] img").dataset.src).toBe(
+        `data:image/png;base64,${MYB64}`
+    );
 
     await clickSave();
     expect(getUnique(queryFirst(".o_field_signature img"))).toBe("1659692220000");
@@ -344,10 +346,12 @@ test("signature field should render initials", async () => {
 });
 
 test("error loading url", async () => {
-    Partner._records = [{
-        id: 1,
-        sign: "1 kb",
-    }]
+    Partner._records = [
+        {
+            id: 1,
+            sign: "1 kb",
+        },
+    ];
     await mountView({
         type: "form",
         resModel: "partner",
@@ -359,5 +363,7 @@ test("error loading url", async () => {
     });
     const img = queryOne(".o_field_widget img");
     img.dispatchEvent(new Event("error"));
-    await waitFor(".o_notification:has(.bg-danger):contains(Could not display the selected image)");
+    await waitFor(
+        ".o_notification:has(.bg-danger):contains(Could not display the selected image)"
+    );
 });

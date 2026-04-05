@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { check, click, queryRect } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {check, click, queryRect} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     clickSave,
     defineModels,
@@ -11,10 +11,10 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    bar = fields.Boolean({ default: true });
+    bar = fields.Boolean({default: true});
     int_field = fields.Integer();
-    trululu = fields.Many2one({ relation: "partner" });
-    product_id = fields.Many2one({ relation: "product" });
+    trululu = fields.Many2one({relation: "partner"});
+    product_id = fields.Many2one({relation: "product"});
     color = fields.Selection({
         selection: [
             ["red", "Red"],
@@ -122,10 +122,12 @@ test("radio field on a selection in a new record", async () => {
     });
 
     expect("div.o_radio_item").toHaveCount(2);
-    expect("input.o_radio_input").toHaveCount(2, { message: "should have 2 possible choices" });
+    expect("input.o_radio_input").toHaveCount(2, {
+        message: "should have 2 possible choices",
+    });
     expect(".o_field_radio").toHaveText("Red\nBlack");
 
-    // click on 2nd option
+    // Click on 2nd option
     await click("input.o_radio_input:eq(1)");
     await animationFrame();
 
@@ -137,7 +139,7 @@ test("radio field on a selection in a new record", async () => {
 });
 
 test("two radio field with same selection", async () => {
-    Partner._fields.color_2 = { ...Partner._fields.color };
+    Partner._fields.color_2 = {...Partner._fields.color};
     Partner._records[0].color = "black";
     Partner._records[0].color_2 = "black";
 
@@ -160,7 +162,7 @@ test("two radio field with same selection", async () => {
     expect("[name='color'] input.o_radio_input[data-value=black]").toBeChecked();
     expect("[name='color_2'] input.o_radio_input[data-value=black]").toBeChecked();
 
-    // click on Red
+    // Click on Red
     await click("[name='color_2'] label");
     await animationFrame();
 
@@ -209,7 +211,7 @@ test("radio field with numerical keys encoded as strings", async () => {
         ],
     });
 
-    onRpc("partner", "web_save", ({ args }) => expect.step(args[1].selection));
+    onRpc("partner", "web_save", ({args}) => expect.step(args[1].selection));
 
     await mountView({
         type: "form",

@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
 
 function assertEqual(actual, expected) {
     if (actual !== expected) {
@@ -61,7 +61,8 @@ registry.category("web_tour.tours").add("test_base_automation", {
         },
         {
             content: "Input field name",
-            trigger: ".o_model_field_selector_popover .o_model_field_selector_popover_search input",
+            trigger:
+                ".o_model_field_selector_popover .o_model_field_selector_popover_search input",
             run: "edit Job Position",
         },
         {
@@ -116,9 +117,9 @@ registry.category("web_tour.tours").add("test_base_automation_on_tag_added", {
         {
             trigger: ".o_select_menu_menu",
             run() {
-                const options = [...this.anchor.querySelectorAll(".o_select_menu_item")].map(
-                        (el) => el.textContent
-                    );
+                const options = [
+                    ...this.anchor.querySelectorAll(".o_select_menu_item"),
+                ].map((el) => el.textContent);
 
                 assertEqual(
                     JSON.stringify(options),
@@ -134,7 +135,7 @@ registry.category("web_tour.tours").add("test_base_automation_on_tag_added", {
                         "On create and edit",
                         "On deletion",
                         "On UI change",
-                        "On webhook"
+                        "On webhook",
                     ])
                 );
             },
@@ -265,18 +266,22 @@ registry.category("web_tour.tours").add("test_open_automation_from_grouped_kanba
             run: "click",
         },
         {
-            trigger: ".o_base_automation_kanban_view .o_control_panel button.o-kanban-button-new",
+            trigger:
+                ".o_base_automation_kanban_view .o_control_panel button.o-kanban-button-new",
             run: "click",
         },
         {
             trigger: ".o_form_view",
             run() {
                 assertEqual(
-                    this.anchor.querySelector(".o_field_widget[name='trigger'] input").value,
+                    this.anchor.querySelector(".o_field_widget[name='trigger'] input")
+                        .value,
                     "Tag is added"
                 );
                 assertEqual(
-                    this.anchor.querySelector(".o_field_widget[name='trg_field_ref'] input").value,
+                    this.anchor.querySelector(
+                        ".o_field_widget[name='trg_field_ref'] input"
+                    ).value,
                     "test tag"
                 );
             },
@@ -309,7 +314,8 @@ registry.category("web_tour.tours").add("test_kanban_automation_view_time_trigge
             trigger: ".o_base_automation_kanban_view",
         },
         {
-            trigger: ".o_automation_base_info > div > div > span:nth-child(1):contains(1)",
+            trigger:
+                ".o_automation_base_info > div > div > span:nth-child(1):contains(1)",
         },
         {
             trigger: ".o_automation_base_info .text-lowercase:contains(hours)",
@@ -320,24 +326,27 @@ registry.category("web_tour.tours").add("test_kanban_automation_view_time_trigge
     ],
 });
 
-registry.category("web_tour.tours").add("test_kanban_automation_view_time_updated_trigger", {
-    steps: () => [
-        {
-            trigger: ".o_base_automation_kanban_view",
-        },
-        {
-            trigger: ".o_automation_base_info > div > div > span:nth-child(1):contains(1)",
-            async run() {
-                const lowercaseTexts = document.querySelectorAll(
-                    ".o_automation_base_info .text-lowercase"
-                );
-                assertEqual(lowercaseTexts.length, 2);
-                assertEqual(lowercaseTexts[0].innerText, "hours");
-                assertEqual(lowercaseTexts[1].innerText, "after last update");
+registry
+    .category("web_tour.tours")
+    .add("test_kanban_automation_view_time_updated_trigger", {
+        steps: () => [
+            {
+                trigger: ".o_base_automation_kanban_view",
             },
-        },
-    ],
-});
+            {
+                trigger:
+                    ".o_automation_base_info > div > div > span:nth-child(1):contains(1)",
+                async run() {
+                    const lowercaseTexts = document.querySelectorAll(
+                        ".o_automation_base_info .text-lowercase"
+                    );
+                    assertEqual(lowercaseTexts.length, 2);
+                    assertEqual(lowercaseTexts[0].innerText, "hours");
+                    assertEqual(lowercaseTexts[1].innerText, "after last update");
+                },
+            },
+        ],
+    });
 
 registry.category("web_tour.tours").add("test_kanban_automation_view_create_action", {
     steps: () => [
@@ -345,7 +354,8 @@ registry.category("web_tour.tours").add("test_kanban_automation_view_create_acti
             trigger: ".o_base_automation_kanban_view",
         },
         {
-            trigger: "div[name='action_server_ids']:contains(Create Contact with name NameX)",
+            trigger:
+                "div[name='action_server_ids']:contains(Create Contact with name NameX)",
             async run() {
                 assertEqual(document.querySelectorAll(".fa.fa-plus-square").length, 1);
             },
@@ -418,7 +428,8 @@ registry.category("web_tour.tours").add("test_form_view_resequence_actions", {
             },
         },
         {
-            trigger: ".modal-content .o_form_renderer [name='state'] span[value*='followers']",
+            trigger:
+                ".modal-content .o_form_renderer [name='state'] span[value*='followers']",
             run: "click",
         },
         {
@@ -464,7 +475,7 @@ registry.category("web_tour.tours").add("test_form_view_model_id", {
                         .join(", "),
                     "User is set, Based on date field, After creation, After last update, On create, On create and edit, On deletion, On UI change, On webhook"
                 );
-            }
+            },
         },
         {
             trigger: ".o_field_widget[name='model_id'] input",
@@ -493,7 +504,7 @@ registry.category("web_tour.tours").add("test_form_view_model_id", {
                         .join(", "),
                     "Stage is set to, User is set, Tag is added, Priority is set to, Based on date field, After creation, After last update, On create, On create and edit, On deletion, On UI change, On webhook"
                 );
-            }
+            },
         },
         {
             trigger: ".o_form_button_cancel",
@@ -618,7 +629,7 @@ registry.category("web_tour.tours").add("test_form_view_mail_triggers", {
                         .join(", "),
                     "Values Updated, Email Events, Timing Conditions, Custom, External"
                 );
-            }
+            },
         },
         {
             trigger: "button.o_form_button_cancel",

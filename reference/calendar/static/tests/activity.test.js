@@ -1,4 +1,4 @@
-import { defineCalendarModels } from "@calendar/../tests/calendar_test_helpers";
+import {defineCalendarModels} from "@calendar/../tests/calendar_test_helpers";
 import {
     click,
     contains,
@@ -7,14 +7,14 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { test } from "@odoo/hoot";
-import { preloadBundle } from "@web/../tests/web_test_helpers";
+import {test} from "@odoo/hoot";
+import {preloadBundle} from "@web/../tests/web_test_helpers";
 
 defineCalendarModels();
 preloadBundle("web.fullcalendar_lib");
 
 test("activity click on Reschedule", async () => {
-    registerArchs({ "calendar.event,false,calendar": `<calendar date_start="start"/>` });
+    registerArchs({"calendar.event,false,calendar": `<calendar date_start="start"/>`});
     const pyEnv = await startServer();
     const resPartnerId = pyEnv["res.partner"].create({});
     const meetingActivityTypeId = pyEnv["mail.activity.type"].create({
@@ -40,13 +40,13 @@ test("activity click on Reschedule", async () => {
     });
     await start();
     await openFormView("res.partner", resPartnerId);
-    await click(".btn", { text: "Reschedule" });
+    await click(".btn", {text: "Reschedule"});
     await contains(".o_calendar_view");
 });
 
 test("Can cancel activity linked to an event", async () => {
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Milan Kundera" });
+    const partnerId = pyEnv["res.partner"].create({name: "Milan Kundera"});
     const activityTypeId = pyEnv["mail.activity.type"].create({
         icon: "fa-calendar",
         name: "Meeting",
@@ -70,6 +70,6 @@ test("Can cancel activity linked to an event", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".o-mail-Activity .btn", { text: "Cancel" });
-    await contains(".o-mail-Activity", { count: 0 });
+    await click(".o-mail-Activity .btn", {text: "Cancel"});
+    await contains(".o-mail-Activity", {count: 0});
 });

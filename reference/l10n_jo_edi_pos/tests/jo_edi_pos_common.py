@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_jo_edi.tests.jo_edi_common import JoEdiCommon
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
@@ -40,7 +41,7 @@ class JoEdiPosCommon(JoEdiCommon, TestPoSCommon, TestPointOfSaleHttpCommon):
         order = self._l10n_jo_create_order(order) if isinstance(order, dict) else order
         order_refund = order._refund()
         if 'lines' in refund_vals:
-            for order_line, line_write_vals in zip(order_refund.lines, refund_vals['lines']):
+            for order_line, line_write_vals in zip(order_refund.lines, refund_vals['lines'], strict=False):
                 order_line.write(line_write_vals)
             del refund_vals['lines']
         order_refund.write(refund_vals)

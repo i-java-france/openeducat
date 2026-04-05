@@ -1,10 +1,11 @@
 import time
-
-from requests import Response
 from unittest.mock import patch
 
-from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
+from requests import Response
+
 from odoo.tests.common import tagged
+
+from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
 
 @tagged("post_install_l10n", "post_install", "-at_install")

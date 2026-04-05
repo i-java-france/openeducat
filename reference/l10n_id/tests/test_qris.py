@@ -1,10 +1,12 @@
+from unittest.mock import patch
+
+from freezegun import freeze_time
 from markupsafe import Markup
 
 from odoo.fields import Command
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
-from unittest.mock import patch
-from freezegun import freeze_time
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

@@ -1,9 +1,9 @@
-import { test, animationFrame } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupPosEnv, getFilledOrder, expectFormattedPrice } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { queryOne } from "@odoo/hoot-dom";
-import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import {animationFrame, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {expectFormattedPrice, getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {queryOne} from "@odoo/hoot-dom";
+import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
 
 definePosModels();
 
@@ -13,7 +13,7 @@ test("Change always incl", async () => {
     const firstPm = store.models["pos.payment.method"].getFirst();
     order.config.iface_tax_included = "total";
     const comp = await mountWithCleanup(PaymentScreen, {
-        props: { orderUuid: order.uuid },
+        props: {orderUuid: order.uuid},
     });
     await comp.addNewPaymentLine(firstPm);
     order.payment_ids[0].setAmount(20);

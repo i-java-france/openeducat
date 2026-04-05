@@ -1,5 +1,5 @@
-import { Domain } from "@web/core/domain";
-import { DataPoint } from "./datapoint";
+import {Domain} from "@web/core/domain";
+import {DataPoint} from "./datapoint";
 
 /**
  * @typedef Params
@@ -33,8 +33,12 @@ export class Group extends DataPoint {
         this.list = new List(this.model, config.list, data);
         this._useGroupCountForList();
         if (config.record) {
-            config.record.context = { ...config.record.context, ...config.context };
-            this.record = new this.model.constructor.Record(this.model, config.record, data.values);
+            config.record.context = {...config.record.context, ...config.context};
+            this.record = new this.model.constructor.Record(
+                this.model,
+                config.record,
+                data.values
+            );
         }
     }
 
@@ -81,10 +85,10 @@ export class Group extends DataPoint {
                 domain: Domain.and([this.groupDomain, filter]).toList(),
             });
         } else {
-            await this.list.load({ domain: this.groupDomain });
+            await this.list.load({domain: this.groupDomain});
             this.count = this.list.isGrouped ? this.list.recordCount : this.list.count;
         }
-        this.model._updateConfig(this.config, { extraDomain: filter }, { reload: false });
+        this.model._updateConfig(this.config, {extraDomain: filter}, {reload: false});
     }
 
     deleteRecords(records) {
@@ -98,8 +102,8 @@ export class Group extends DataPoint {
         this._useGroupCountForList();
         this.model._updateConfig(
             this.config,
-            { isFolded: !this.config.isFolded },
-            { reload: false }
+            {isFolded: !this.config.isFolded},
+            {reload: false}
         );
     }
 
@@ -129,7 +133,9 @@ export class Group extends DataPoint {
     }
 
     async _removeRecords(recordIds) {
-        const idsToRemove = recordIds.filter((id) => this.list.records.some((r) => r.id === id));
+        const idsToRemove = recordIds.filter((id) =>
+            this.list.records.some((r) => r.id === id)
+        );
         this.list._removeRecords(idsToRemove);
         this.count -= idsToRemove.length;
     }

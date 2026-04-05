@@ -21,4 +21,15 @@ export const TERM_OPERATORS_NEGATION_EXTENDED = {
     "!=": "==", // override here
 };
 
-export const COMPARATORS = ["<", "<=", ">", ">=", "in", "not in", "==", "is", "!=", "is not"];
+export const COMPARATORS = [
+    "<",
+    "<=",
+    ">",
+    ">=",
+    "in",
+    "not in",
+    "==",
+    "is",
+    "!=",
+    "is not",
+];

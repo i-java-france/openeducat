@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
 import {
     defineModels,
     fields,
@@ -13,13 +13,13 @@ import {
     toggleSearchBarMenu,
 } from "@web/../tests/web_test_helpers";
 
-import { SearchBar } from "@web/search/search_bar/search_bar";
+import {SearchBar} from "@web/search/search_bar/search_bar";
 
 class Foo extends models.Model {
-    bar = fields.Many2one({ relation: "partner", groupable: false });
+    bar = fields.Many2one({relation: "partner", groupable: false});
     birthday = fields.Date();
     date = fields.Date();
-    float = fields.Float({ groupable: false });
+    float = fields.Float({groupable: false});
     foo = fields.Char();
 }
 
@@ -52,13 +52,21 @@ test(`the ID field should not be proposed in "Custom Group" menu`, async () => {
         searchMenuTypes: ["groupBy"],
         searchViewId: false,
         searchViewFields: {
-            foo: { string: "Foo", type: "char", store: true, sortable: true, groupable: true },
-            id: { string: "ID", type: "integer", sortable: true, groupable: true },
+            foo: {
+                string: "Foo",
+                type: "char",
+                store: true,
+                sortable: true,
+                groupable: true,
+            },
+            id: {string: "ID", type: "integer", sortable: true, groupable: true},
         },
     });
 
     await toggleSearchBarMenu();
-    expect(queryAllTexts`.o_add_custom_group_menu option:not([disabled])`).toEqual(["Foo"]);
+    expect(queryAllTexts`.o_add_custom_group_menu option:not([disabled])`).toEqual([
+        "Foo",
+    ]);
 });
 
 test(`stored many2many should be proposed in "Custom Group" menu`, async () => {
@@ -74,7 +82,7 @@ test(`stored many2many should be proposed in "Custom Group" menu`, async () => {
                 sortable: true,
                 groupable: true,
             },
-            m2m_no_stored: { string: "M2M Not Stored", type: "many2many" },
+            m2m_no_stored: {string: "M2M Not Stored", type: "many2many"},
             m2m_stored: {
                 string: "M2M Stored",
                 type: "many2many",
@@ -104,7 +112,7 @@ test(`add a date field in "Custom Group" activate a groupby with global default 
                 sortable: true,
                 groupable: true,
             },
-            id: { sortable: true, string: "ID", type: "integer", groupable: true },
+            id: {sortable: true, string: "ID", type: "integer", groupable: true},
         },
     });
 

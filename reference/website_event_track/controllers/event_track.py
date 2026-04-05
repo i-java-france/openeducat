@@ -1,19 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from ast import literal_eval
-from collections import defaultdict
-from datetime import timedelta
-from pytz import timezone, utc
-from werkzeug.exceptions import Forbidden, NotFound
-
-import babel
-import babel.dates
 import base64
 import json
 import operator
-import pytz
+from ast import literal_eval
+from collections import defaultdict
+from datetime import timedelta
 
-from odoo import http, fields, tools, _
+import babel
+import babel.dates
+import pytz
+from pytz import timezone, utc
+from werkzeug.exceptions import Forbidden, NotFound
+
+from odoo import _, fields, http, tools
 from odoo.fields import Domain
 from odoo.http import content_disposition, request
 from odoo.tools import is_html_empty, plaintext2html

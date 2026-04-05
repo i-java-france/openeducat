@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class CustomGroupByItem extends Component {
     static template = "web.CustomGroupByItem";
@@ -8,7 +8,7 @@ export class CustomGroupByItem extends Component {
     };
 
     get choices() {
-        return this.props.fields.map((f) => ({ label: f.string, value: f.name }));
+        return this.props.fields.map((f) => ({label: f.string, value: f.name}));
     }
 
     onSelected(ev) {

@@ -1,7 +1,7 @@
 /** @odoo-module alias=@web/../tests/search/helpers default=false */
 
-import { Component, xml } from "@odoo/owl";
-import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import {Component, xml} from "@odoo/owl";
+import {makeTestEnv} from "@web/../tests/helpers/mock_env";
 import {
     click,
     editInput,
@@ -11,23 +11,23 @@ import {
     triggerEvent,
     triggerEvents,
 } from "@web/../tests/helpers/utils";
-import { commandService } from "@web/core/commands/command_service";
-import { dialogService } from "@web/core/dialog/dialog_service";
-import { fieldService } from "@web/core/field_service";
-import { treeProcessorService } from "@web/core/tree_editor/tree_processor";
-import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
-import { notificationService } from "@web/core/notifications/notification_service";
-import { ormService } from "@web/core/orm_service";
-import { popoverService } from "@web/core/popover/popover_service";
-import { registry } from "@web/core/registry";
-import { CustomFavoriteItem } from "@web/search/custom_favorite_item/custom_favorite_item";
-import { WithSearch } from "@web/search/with_search/with_search";
-import { getDefaultConfig } from "@web/views/view";
-import { viewService } from "@web/views/view_service";
-import { actionService } from "@web/webclient/actions/action_service";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { nameService } from "@web/core/name_service";
-import { datetimePickerService } from "@web/core/datetime/datetimepicker_service";
+import {commandService} from "@web/core/commands/command_service";
+import {dialogService} from "@web/core/dialog/dialog_service";
+import {fieldService} from "@web/core/field_service";
+import {treeProcessorService} from "@web/core/tree_editor/tree_processor";
+import {hotkeyService} from "@web/core/hotkeys/hotkey_service";
+import {notificationService} from "@web/core/notifications/notification_service";
+import {ormService} from "@web/core/orm_service";
+import {popoverService} from "@web/core/popover/popover_service";
+import {registry} from "@web/core/registry";
+import {CustomFavoriteItem} from "@web/search/custom_favorite_item/custom_favorite_item";
+import {WithSearch} from "@web/search/with_search/with_search";
+import {getDefaultConfig} from "@web/views/view";
+import {viewService} from "@web/views/view_service";
+import {actionService} from "@web/webclient/actions/action_service";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {nameService} from "@web/core/name_service";
+import {datetimePickerService} from "@web/core/datetime/datetimepicker_service";
 
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -50,13 +50,13 @@ export function setupControlPanelServiceRegistry() {
 export function setupControlPanelFavoriteMenuRegistry() {
     favoriteMenuRegistry.add(
         "custom-favorite-item",
-        { Component: CustomFavoriteItem, groupNumber: 3 },
-        { sequence: 0 }
+        {Component: CustomFavoriteItem, groupNumber: 3},
+        {sequence: 0}
     );
 }
 
 export async function makeWithSearch(params) {
-    const props = { ...params };
+    const props = {...params};
 
     const serverData = props.serverData || undefined;
     const mockRPC = props.mockRPC || undefined;
@@ -79,7 +79,11 @@ export async function makeWithSearch(params) {
             </WithSearch>
             <MainComponentsContainer />
         `;
-        static components = { Component: params.Component, WithSearch, MainComponentsContainer };
+        static components = {
+            Component: params.Component,
+            WithSearch,
+            MainComponentsContainer,
+        };
         static props = ["*"];
         setup() {
             this.withSearchProps = props;
@@ -98,9 +102,9 @@ export async function makeWithSearch(params) {
         }
     }
 
-    const env = await makeTestEnv({ serverData, mockRPC });
-    const searchEnv = Object.assign(Object.create(env), { config });
-    const parent = await mount(Parent, getFixture(), { env: searchEnv, props });
+    const env = await makeTestEnv({serverData, mockRPC});
+    const searchEnv = Object.assign(Object.create(env), {config});
+    const parent = await mount(Parent, getFixture(), {env: searchEnv, props});
     const parentNode = parent.__owl__;
     const withSearchNode = getUniqueChild(parentNode);
     const componentNode = getUniqueChild(withSearchNode);
@@ -156,7 +160,9 @@ export function findItem(target, selector, finder = 0) {
     if (Number.isInteger(finder)) {
         return elems[finder];
     }
-    return elems.find((el) => el.innerText.trim().toLowerCase() === String(finder).toLowerCase());
+    return elems.find(
+        (el) => el.innerText.trim().toLowerCase() === String(finder).toLowerCase()
+    );
 }
 
 /** Menu (generic) */
@@ -198,7 +204,9 @@ export function isOptionSelected(el, itemFinder, optionFinder) {
 
 export function getMenuItemTexts(target) {
     const el = getNode(target);
-    return [...el.querySelectorAll(`.dropdown-menu .o_menu_item`)].map((e) => e.innerText.trim());
+    return [...el.querySelectorAll(`.dropdown-menu .o_menu_item`)].map((e) =>
+        e.innerText.trim()
+    );
 }
 
 export function getVisibleButtons(el) {
@@ -251,7 +259,9 @@ export async function editFavoriteName(el, name) {
 }
 
 export async function saveFavorite(el) {
-    await click(findItem(el, `.o_favorite_menu .o_add_favorite + .o_accordion_values button`));
+    await click(
+        findItem(el, `.o_favorite_menu .o_add_favorite + .o_accordion_values button`)
+    );
 }
 
 /** Search bar */
@@ -276,7 +286,7 @@ export async function editSearch(el, value) {
 
 export async function validateSearch(el) {
     const input = findItem(el, `.o_searchview input`);
-    await triggerEvent(input, null, "keydown", { key: "Enter" });
+    await triggerEvent(input, null, "keydown", {key: "Enter"});
 }
 
 /** Switch View */

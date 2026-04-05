@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { GraphModel } from "@web/views/graph/graph_model";
-import { sortBy } from "@web/core/utils/arrays";
+import {_t} from "@web/core/l10n/translation";
+import {GraphModel} from "@web/views/graph/graph_model";
+import {sortBy} from "@web/core/utils/arrays";
 
 export class BurndownChartModel extends GraphModel {
     /**
@@ -28,8 +28,8 @@ export class BurndownChartModel extends GraphModel {
             },
         });
         const stageSeqAndNamePerId = {};
-        for (const { id, name, sequence } of data.records) {
-            stageSeqAndNamePerId[id] = { name, sequence };
+        for (const {id, name, sequence} of data.records) {
+            stageSeqAndNamePerId[id] = {name, sequence};
         }
         return stageSeqAndNamePerId;
     }
@@ -38,7 +38,7 @@ export class BurndownChartModel extends GraphModel {
      * @param {SearchParams} searchParams
      */
     async load(searchParams) {
-        const { context, groupBy } = searchParams;
+        const {context, groupBy} = searchParams;
 
         if (groupBy.includes("stage_id")) {
             if (context.stage_name_and_sequence_per_id && context.default_project_id) {
@@ -58,8 +58,8 @@ export class BurndownChartModel extends GraphModel {
      */
     _prepareData() {
         super._prepareData();
-        const { groupBy } = this.searchParams;
-        const { mode } = this.metaData;
+        const {groupBy} = this.searchParams;
+        const {mode} = this.metaData;
         if (mode === "line" && groupBy.includes("stage_id")) {
             this.data.datasets = sortBy(this.data.datasets, (dataSet) => {
                 const firstIdentifier = [...dataSet.identifiers][0];

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="stock_account.StockValuationReport.FilterWarehouses">
         <Dropdown>
             <button class="btn btn-secondary" disabled="true">
-                <i class="fa fa-filter me-1"/>All Warehouses
+                <i class="fa fa-filter me-1" />All Warehouses
             </button>
 
             <!-- <t t-set-slot="content">

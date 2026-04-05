@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date
+
 from odoo import api, fields, models
-from odoo.fields import Domain
 from odoo.exceptions import ValidationError
+from odoo.fields import Domain
 
 
 class HrVersion(models.Model):
@@ -30,7 +31,7 @@ class HrVersion(models.Model):
         leaves_state = {}
         created_versions = self.env['hr.version']
         for vals in vals_list:
-            if not 'employee_id' in vals or not 'resource_calendar_id' in vals:
+            if 'employee_id' not in vals or 'resource_calendar_id' not in vals:
                 created_versions |= super().create(vals)
                 continue
             leaves = self._get_leaves_from_vals(vals)

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="op_section_multi_comp_rule" model="ir.rule">
+        <field name="name">Section Multi  Company</field>
+        <field name="model_id" ref="Section"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="dep_multi_comp_rule" model="ir.rule">
+        <field name="name">Department multi-company</field>
+        <field name="model_id" ref="OpenEduCat Department"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="assessment_type_multi_comp_rule" model="ir.rule">
+        <field name="name">Assessment Type multi-company</field>
+        <field name="model_id" ref="Assessment Type"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="program_multi_comp_rule" model="ir.rule">
+        <field name="name">Program multi-company</field>
+        <field name="model_id" ref="Thesis Program"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="subject_multi_comp_rule" model="ir.rule">
+        <field name="name">Subject multi-company</field>
+        <field name="model_id" ref="Subject Material Allocation"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="subject_multi_dept_rule" model="ir.rule">
+        <field name="name">Subject multi-department</field>
+        <field name="model_id" ref="Subject Material Allocation"/>
+        <field name="domain_force">['|','|',('department_id','=',False),('department_id','child_of',[user.dept_id.id]),('department_id','in',user.department_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="op_student_course_multi_comp_rule" model="ir.rule">
+        <field name="name">Student Course multi-company</field>
+        <field name="model_id" ref="Student Course Details"/>
+        <field name="domain_force">['|','|',('student_id.company_id','=',False),('student_id.company_id','child_of',[user.company_id.id]),('student_id.company_id','in',user.company_ids.ids),('student_id.company_id','in', company_ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="student_multi_comp_rule" model="ir.rule">
+        <field name="name">Student multi-company</field>
+        <field name="model_id" ref="Student"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="specialization_multi_comp_rule" model="ir.rule">
+        <field name="name">Specialization multi-company</field>
+        <field name="model_id" ref="OpenEduCat Specializations"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="intake_year_multi_comp_rule" model="ir.rule">
+        <field name="name">Intake Year multi-company</field>
+        <field name="model_id" ref="OpenEduCat Intake Year"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="faculty_multi_comp_rule" model="ir.rule">
+        <field name="name">Faculty multi-company</field>
+        <field name="model_id" ref="OpenEduCat Faculty"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="faculty_multi_dept_rule" model="ir.rule">
+        <field name="name">Faculty multi-department</field>
+        <field name="model_id" ref="OpenEduCat Faculty"/>
+        <field name="domain_force">['|','|','|','|',('user_id','=',user.id),('emp_id.user_id','=',user.id),('main_department_id','=',False),('main_department_id','child_of',[user.dept_id.id]),('main_department_id','in',user.department_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="batch_multi_comp_rule" model="ir.rule">
+        <field name="name">Batch multi-company</field>
+        <field name="model_id" ref="OpenEduCat Batch"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="area_multi_comp_rule" model="ir.rule">
+        <field name="name">Area multi-company</field>
+        <field name="model_id" ref="OpenEduCat Area"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="academic_plan_multi_comp_rule" model="ir.rule">
+        <field name="name">Academic Plan multi-company</field>
+        <field name="model_id" ref="OpenEduCat Academic Plan"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="hr_multi_comp_rule" model="ir.rule">
+        <field name="name">HR multi-company</field>
+        <field name="model_id" ref="Employee"/>
+        <field name="domain_force">['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]</field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="course_multi_comp_rule" model="ir.rule">
+        <field name="name">Course multi-company</field>
+        <field name="model_id" ref="Course"/>
+        <field name="domain_force">
+            ['|',('company_id','=',False),'&amp;',('company_id','in',company_ids),'|',('company_id','child_of',[user.company_id.id]),('company_id','in',user.company_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="course_multi_dept_rule" model="ir.rule">
+        <field name="name">Course multi-department</field>
+        <field name="model_id" ref="Course"/>
+        <field name="domain_force">
+            ['|','|',('department_id','=',False),('department_id','child_of',[user.dept_id.id]),('department_id','in',user.department_ids.ids)]
+        </field>
+        <field name="perm_read"   eval="True"/>
+        <field name="perm_write"  eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

@@ -11,7 +11,6 @@ from odoo.tools import consteq
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment.logging import get_payment_logger
 
-
 _logger = get_payment_logger(__name__)
 
 

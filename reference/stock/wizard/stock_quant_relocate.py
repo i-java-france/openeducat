@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from ast import literal_eval
 
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class StockQuantRelocate(models.TransientModel):

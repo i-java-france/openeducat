@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
@@ -65,7 +64,7 @@ class ResUsers(models.Model):
 
         for (user_id, level, count) in self.env.cr.fetchall():
             # levels are gold, silver, bronze but fields have _badge postfix
-            self.browse(user_id)['{}_badge'.format(level)] = count
+            self.browse(user_id)[f'{level}_badge'] = count
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -78,7 +77,7 @@ class ResUsers(models.Model):
                 'origin_ref': f'res.users,{self.env.uid}',
                 'reason': _('User Creation'),
             }
-            for user, vals in zip(res, vals_list)
+            for user, vals in zip(res, vals_list, strict=False)
             if vals.get('karma')
         })
 

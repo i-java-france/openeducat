@@ -66,7 +66,9 @@ export function between(previousPosition, nextPosition) {
 export function after(position) {
     const index = ALL.findIndex((value) => value === position);
     if (index === -1) {
-        throw new Error("Position " + position + " does not exist. Do not use arbitrary numbers.");
+        throw new Error(
+            "Position " + position + " does not exist. Do not use arbitrary numbers."
+        );
     }
     if (index === ALL.length - 1) {
         throw new Error("Cannot place something after END position.");
@@ -84,7 +86,9 @@ export function after(position) {
 export function before(position) {
     const index = ALL.findIndex((value) => value === position);
     if (index === -1) {
-        throw new Error("Position " + position + " does not exist. Do not use arbitrary numbers.");
+        throw new Error(
+            "Position " + position + " does not exist. Do not use arbitrary numbers."
+        );
     }
     if (index === 0) {
         throw new Error("Cannot place something before BEGIN position.");
@@ -121,15 +125,12 @@ if (__DETECT_ERROR_2__.length > 0) {
     console.error("Wrong count in split after default");
 }
 
-const [TEXT_ALIGNMENT, TITLE_LAYOUT_SIZE, WIDTH, BLOCK_ALIGN, ...__DETECT_ERROR_3__] = splitBetween(
-    AFTER_HTML_BUILDER,
-    SNIPPET_SPECIFIC_BEFORE,
-    4
-);
+const [TEXT_ALIGNMENT, TITLE_LAYOUT_SIZE, WIDTH, BLOCK_ALIGN, ...__DETECT_ERROR_3__] =
+    splitBetween(AFTER_HTML_BUILDER, SNIPPET_SPECIFIC_BEFORE, 4);
 if (__DETECT_ERROR_3__.length > 0) {
     console.error("Wrong count in website split before specific");
 }
-export { TEXT_ALIGNMENT, TITLE_LAYOUT_SIZE, WIDTH, BLOCK_ALIGN };
+export {TEXT_ALIGNMENT, TITLE_LAYOUT_SIZE, WIDTH, BLOCK_ALIGN};
 
 export {
     BEGIN,

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 import re
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -192,7 +191,7 @@ class AccountReconcileModel(models.Model):
         vals_list = super().copy_data(default)
         if default.get('name'):
             return vals_list
-        for model, vals in zip(self, vals_list):
+        for model, vals in zip(self, vals_list, strict=False):
             name = _("%s (copy)", model.name)
             while self.env['account.reconcile.model'].search_count([('name', '=', name)], limit=1):
                 name = _("%s (copy)", name)

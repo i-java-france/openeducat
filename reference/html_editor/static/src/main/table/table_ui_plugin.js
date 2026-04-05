@@ -1,10 +1,10 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { TableMenu } from "./table_menu";
-import { TablePicker } from "./table_picker";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {TableMenu} from "./table_menu";
+import {TablePicker} from "./table_picker";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 /**
  * This plugin only contains the table ui feature (table picker, menus, ...).
@@ -40,7 +40,7 @@ export class TableUIPlugin extends Plugin {
                 updatePositionOnResize: false,
                 onPositioned: (picker, position) => {
                     const popperRect = picker.getBoundingClientRect();
-                    const { left } = position;
+                    const {left} = position;
                     if (this.config.direction === "rtl") {
                         // position from the right instead of the left as it is needed
                         // to ensure the expand animation is properly done
@@ -90,7 +90,7 @@ export class TableUIPlugin extends Plugin {
 
     openPickerOrInsertTable() {
         if (this.services.ui.isSmall) {
-            this.dependencies.table.insertTable({ cols: 3, rows: 3 });
+            this.dependencies.table.insertTable({cols: 3, rows: 3});
         } else {
             this.openPicker();
         }
@@ -106,7 +106,10 @@ export class TableUIPlugin extends Plugin {
             target !== this.activeTd &&
             this.editable.contains(target)
         ) {
-            if (ev.target.isContentEditable && closestElement(target, "table").isContentEditable) {
+            if (
+                ev.target.isContentEditable &&
+                closestElement(target, "table").isContentEditable
+            ) {
                 this.setActiveTd(target);
             }
         } else if (this.activeTd) {

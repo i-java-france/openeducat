@@ -1,11 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
 
-from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
-from odoo.addons.mass_mailing.tests.test_mailing_ab_testing import TestMailingABTestingCommon
 from odoo.tests import tagged
+
+from odoo.addons.mass_mailing.tests.test_mailing_ab_testing import (
+    TestMailingABTestingCommon,
+)
+from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
 
 
 @tagged('post_install', '-at_install')

@@ -1,7 +1,7 @@
-import { htmlEscape, markup } from "@odoo/owl";
-import { formatList, normalizedMatches } from "@web/core/l10n/utils";
-import { unique } from "@web/core/utils/arrays";
-import { escapeRegExp, mapSubstitutions, sprintf } from "@web/core/utils/strings";
+import {htmlEscape, markup} from "@odoo/owl";
+import {formatList, normalizedMatches} from "@web/core/l10n/utils";
+import {unique} from "@web/core/utils/arrays";
+import {escapeRegExp, mapSubstitutions, sprintf} from "@web/core/utils/strings";
 
 /**
  * @typedef {ReturnType<markup>} Markup
@@ -16,7 +16,10 @@ const Markup = markup().constructor;
  * @param {string | Markup} content
  */
 export function createDocumentFragmentFromContent(content) {
-    return new document.defaultView.DOMParser().parseFromString(htmlEscape(content), "text/html");
+    return new document.defaultView.DOMParser().parseFromString(
+        htmlEscape(content),
+        "text/html"
+    );
 }
 
 /**
@@ -113,7 +116,9 @@ export function htmlJoin(list, separator = "") {
 export function htmlReplace(content, search, replacer) {
     const isReplacerFn = typeof replacer === "function";
     if (search instanceof RegExp && !isReplacerFn) {
-        throw new TypeError("htmlReplace: replacer must be a function when search is a RegExp.");
+        throw new TypeError(
+            "htmlReplace: replacer must be a function when search is a RegExp."
+        );
     }
     content = htmlEscape(content);
     if (typeof search === "string" || search instanceof String) {
@@ -137,7 +142,9 @@ export function htmlReplace(content, search, replacer) {
 export function htmlReplaceAll(content, search, replacer) {
     const isReplacerFn = typeof replacer === "function";
     if (search instanceof RegExp && !isReplacerFn) {
-        throw new TypeError("htmlReplaceAll: replacer must be a function when search is a RegExp.");
+        throw new TypeError(
+            "htmlReplaceAll: replacer must be a function when search is a RegExp."
+        );
     }
     content = htmlEscape(content);
     if (typeof search === "string" || search instanceof String) {
@@ -159,7 +166,10 @@ export function htmlReplaceAll(content, search, replacer) {
  * @returns {string | Markup}
  */
 export function htmlSprintf(str, ...substitutions) {
-    const replaced = sprintf(htmlEscape(str), ...mapSubstitutions(substitutions, htmlEscape));
+    const replaced = sprintf(
+        htmlEscape(str),
+        ...mapSubstitutions(substitutions, htmlEscape)
+    );
     return markup(replaced);
 }
 
@@ -227,7 +237,10 @@ export function odoomark(text) {
         // Bold
         [/\*\*(.+?)\*\*/g, (_, content) => markup(`<b>${content}</b>`)],
         // Muted
-        [/--(.+?)--/g, (_, content) => markup(`<span class="text-muted">${content}</span>`)],
+        [
+            /--(.+?)--/g,
+            (_, content) => markup(`<span class="text-muted">${content}</span>`),
+        ],
         // Badge
         [
             /&#x60;(.+?)&#x60;/g,

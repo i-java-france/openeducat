@@ -1,8 +1,8 @@
-import { END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {END} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 class VerticalJustifyOptionPlugin extends Plugin {
     static id = "verticalJustifyOption";

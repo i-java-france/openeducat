@@ -2,10 +2,9 @@
 
 import werkzeug.exceptions
 import werkzeug.urls
-
 from werkzeug.urls import url_parse
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.http import request

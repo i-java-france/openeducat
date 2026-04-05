@@ -1,14 +1,14 @@
-import { expect, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {mountView} from "@web/../tests/web_test_helpers";
 
-import { ProjectTask, defineProjectModels } from "./project_models";
+import {ProjectTask, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 
 test("project.task (form): check ProjectTaskPrioritySwitch", async () => {
-    ProjectTask._records = [{ id: 1, priority: "0" }];
+    ProjectTask._records = [{id: 1, priority: "0"}];
 
     await mountView({
         resModel: "project.task",

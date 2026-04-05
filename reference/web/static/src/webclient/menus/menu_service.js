@@ -1,6 +1,6 @@
-import { session } from "@web/session";
-import { browser } from "../../core/browser/browser";
-import { registry } from "../../core/registry";
+import {session} from "@web/session";
+import {browser} from "../../core/browser/browser";
+import {registry} from "../../core/registry";
 
 const loadMenusUrl = `/web/webclient/load_menus`;
 
@@ -14,14 +14,16 @@ export const menuService = {
             if (!reload && odoo.loadMenusPromise) {
                 return odoo.loadMenusPromise;
             }
-            const res = await browser.fetch(loadMenusUrl, { cache: "no-store" });
+            const res = await browser.fetch(loadMenusUrl, {cache: "no-store"});
             if (!res.ok) {
                 throw new Error("Error while fetching menus");
             }
             return res.json();
         };
         const storedMenus = browser.localStorage.getItem("webclient_menus");
-        const storedMenusVersion = browser.localStorage.getItem("webclient_menus_version");
+        const storedMenusVersion = browser.localStorage.getItem(
+            "webclient_menus_version"
+        );
 
         if (storedMenus && storedMenusVersion === session.registry_hash) {
             fetchMenus().then((res) => {
@@ -29,9 +31,15 @@ export const menuService = {
                     const fetchedMenus = JSON.stringify(res);
                     if (fetchedMenus !== storedMenus) {
                         try {
-                            browser.localStorage.setItem("webclient_menus", fetchedMenus);
+                            browser.localStorage.setItem(
+                                "webclient_menus",
+                                fetchedMenus
+                            );
                         } catch (error) {
-                            console.error("Error while storing menus in localStorage", error);
+                            console.error(
+                                "Error while storing menus in localStorage",
+                                error
+                            );
                         }
                         menusData = res;
                         env.bus.trigger("MENUS:APP-CHANGED");
@@ -43,8 +51,14 @@ export const menuService = {
             menusData = await fetchMenus();
             if (menusData) {
                 try {
-                    browser.localStorage.setItem("webclient_menus_version", session.registry_hash);
-                    browser.localStorage.setItem("webclient_menus", JSON.stringify(menusData));
+                    browser.localStorage.setItem(
+                        "webclient_menus_version",
+                        session.registry_hash
+                    );
+                    browser.localStorage.setItem(
+                        "webclient_menus",
+                        JSON.stringify(menusData)
+                    );
                 } catch (error) {
                     console.error("Error while storing menus in localStorage", error);
                 }
@@ -80,7 +94,9 @@ export const menuService = {
             getMenuAsTree(menuID) {
                 const menu = this.getMenu(menuID);
                 if (!menu.childrenTree) {
-                    menu.childrenTree = menu.children.map((mid) => this.getMenuAsTree(mid));
+                    menu.childrenTree = menu.children.map((mid) =>
+                        this.getMenuAsTree(mid)
+                    );
                 }
                 return menu;
             },

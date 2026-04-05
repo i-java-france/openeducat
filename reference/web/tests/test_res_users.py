@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tests import Form, TransactionCase
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.tests.common import tagged
+
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 
 class TestResUsers(TransactionCase):

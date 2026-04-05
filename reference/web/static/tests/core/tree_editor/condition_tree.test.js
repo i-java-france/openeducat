@@ -1,17 +1,17 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { makeMockEnv } from "@web/../tests/web_test_helpers";
+import {makeMockEnv} from "@web/../tests/web_test_helpers";
 
-import { Domain } from "@web/core/domain";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { condition, expression } from "@web/core/tree_editor/condition_tree";
-import { constructDomainFromTree } from "@web/core/tree_editor/construct_domain_from_tree";
-import { constructExpressionFromTree } from "@web/core/tree_editor/construct_expression_from_tree";
-import { constructTreeFromDomain } from "@web/core/tree_editor/construct_tree_from_domain";
-import { constructTreeFromExpression } from "@web/core/tree_editor/construct_tree_from_expression";
-import { domainFromTree } from "@web/core/tree_editor/domain_from_tree";
-import { expressionFromTree } from "@web/core/tree_editor/expression_from_tree";
-import { treeFromExpression } from "@web/core/tree_editor/tree_from_expression";
+import {Domain} from "@web/core/domain";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {condition, expression} from "@web/core/tree_editor/condition_tree";
+import {constructDomainFromTree} from "@web/core/tree_editor/construct_domain_from_tree";
+import {constructExpressionFromTree} from "@web/core/tree_editor/construct_expression_from_tree";
+import {constructTreeFromDomain} from "@web/core/tree_editor/construct_tree_from_domain";
+import {constructTreeFromExpression} from "@web/core/tree_editor/construct_tree_from_expression";
+import {domainFromTree} from "@web/core/tree_editor/domain_from_tree";
+import {expressionFromTree} from "@web/core/tree_editor/expression_from_tree";
+import {treeFromExpression} from "@web/core/tree_editor/tree_from_expression";
 
 function expressionFromDomain(domain, options) {
     const tree = constructTreeFromDomain(domain);
@@ -67,8 +67,10 @@ test("constructDomainFromTree . constructTreeFromDomain", async () => {
             domain: `["!", "|", ("foo", "<", 1), ("foo", ">", uid)]`,
         },
     ];
-    for (const { domain, result } of toTest) {
-        expect(constructDomainFromTree(constructTreeFromDomain(domain))).toBe(result || domain);
+    for (const {domain, result} of toTest) {
+        expect(constructDomainFromTree(constructTreeFromDomain(domain))).toBe(
+            result || domain
+        );
     }
 });
 
@@ -76,10 +78,10 @@ test("domainFromExpression", () => {
     const options = {
         getFieldDef: (name) => {
             if (["foo", "bar"].includes(name)) {
-                return { type: "any" }; // any field
+                return {type: "any"}; // Any field
             }
             if (name === "foo_ids") {
-                return { type: "many2many" };
+                return {type: "many2many"};
             }
             return null;
         },
@@ -220,11 +222,11 @@ test("domainFromExpression", () => {
         {
             expression: `not (A and not B)`,
             result: `["|", (not A, "=", 1), (bool(B), "=", 1)]`,
-            extraOptions: { distributeNot: true },
+            extraOptions: {distributeNot: true},
         },
     ];
-    for (const { expression, result, extraOptions } of toTest) {
-        const o = { ...options, ...extraOptions };
+    for (const {expression, result, extraOptions} of toTest) {
+        const o = {...options, ...extraOptions};
         expect(domainFromExpression(expression, o)).toBe(result);
     }
 });
@@ -233,10 +235,10 @@ test("expressionFromTree . treeFromExpression", () => {
     const options = {
         getFieldDef: (name) => {
             if (["foo", "bar"].includes(name)) {
-                return { type: "any" }; // any field
+                return {type: "any"}; // Any field
             }
             if (name === "foo_ids") {
-                return { type: "many2many" };
+                return {type: "many2many"};
             }
             return null;
         },
@@ -439,8 +441,8 @@ test("expressionFromTree . treeFromExpression", () => {
             result: `foo not in [1, 2]`,
         },
     ];
-    for (const { expression, result, extraOptions } of toTest) {
-        const o = { ...options, ...extraOptions };
+    for (const {expression, result, extraOptions} of toTest) {
+        const o = {...options, ...extraOptions};
         expect(expressionFromTree(treeFromExpression(expression, o), o)).toBe(result);
     }
 });
@@ -472,8 +474,8 @@ test("expressionFromDomain", () => {
         },
     ];
 
-    for (const { domain, result, extraOptions } of toTest) {
-        const o = { ...options, ...extraOptions };
+    for (const {domain, result, extraOptions} of toTest) {
+        const o = {...options, ...extraOptions};
         expect(expressionFromDomain(domain, o)).toBe(result);
     }
 });
@@ -482,16 +484,16 @@ test("evaluation . expressionFromTree = contains . domainFromTree", () => {
     const options = {
         getFieldDef: (name) => {
             if (name === "foo") {
-                return { type: "any" }; // any field
+                return {type: "any"}; // Any field
             }
             if (name === "foo_ids") {
-                return { type: "many2many" };
+                return {type: "many2many"};
             }
             if (name === "date_field") {
-                return { type: "date" };
+                return {type: "date"};
             }
             if (name === "datetime_field") {
-                return { type: "datetime" };
+                return {type: "datetime"};
             }
             return null;
         },

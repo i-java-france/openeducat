@@ -1,7 +1,7 @@
-import { containsAnyInline } from "./dom_info";
-import { wrapInlinesInBlocks } from "./dom";
-import { markup } from "@odoo/owl";
-import { htmlReplace } from "@web/core/utils/html";
+import {containsAnyInline} from "./dom_info";
+import {wrapInlinesInBlocks} from "./dom";
+import {markup} from "@odoo/owl";
+import {htmlReplace} from "@web/core/utils/html";
 
 export function initElementForEdition(element, options = {}) {
     if (

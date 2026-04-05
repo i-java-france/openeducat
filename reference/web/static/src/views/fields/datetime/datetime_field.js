@@ -1,20 +1,27 @@
-import { Component, onWillRender, useEffect, useRef, useState } from "@odoo/owl";
-import { useDateTimePicker } from "@web/core/datetime/datetime_picker_hook";
-import { areDatesEqual, deserializeDate, deserializeDateTime, today } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
-import { ensureArray } from "@web/core/utils/arrays";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { FIELD_WIDTHS } from "@web/views/list/column_width_hook";
-import { formatDate, formatDateTime } from "../formatters";
-import { standardFieldProps } from "../standard_field_props";
+import {Component, onWillRender, useEffect, useRef, useState} from "@odoo/owl";
+import {useDateTimePicker} from "@web/core/datetime/datetime_picker_hook";
+import {
+    areDatesEqual,
+    deserializeDate,
+    deserializeDateTime,
+    today,
+} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
+import {ensureArray} from "@web/core/utils/arrays";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {FIELD_WIDTHS} from "@web/views/list/column_width_hook";
+import {formatDate, formatDateTime} from "../formatters";
+import {standardFieldProps} from "../standard_field_props";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 function getFormattedPlaceholder(value, type, options) {
     if (value instanceof luxon.DateTime) {
-        return type === "date" ? formatDate(value, options) : formatDateTime(value, options);
+        return type === "date"
+            ? formatDate(value, options)
+            : formatDateTime(value, options);
     }
     return value || "";
 }
@@ -45,18 +52,18 @@ function getFormattedPlaceholder(value, type, options) {
 export class DateTimeField extends Component {
     static props = {
         ...standardFieldProps,
-        endDateField: { type: String, optional: true },
-        maxDate: { type: String, optional: true },
-        minDate: { type: String, optional: true },
-        alwaysRange: { type: Boolean, optional: true },
-        placeholder: { type: String, optional: true },
-        required: { type: Boolean, optional: true },
-        rounding: { type: Number, optional: true },
-        startDateField: { type: String, optional: true },
-        numeric: { type: Boolean, optional: true },
-        warnFuture: { type: Boolean, optional: true },
-        showSeconds: { type: Boolean, optional: true },
-        showTime: { type: Boolean, optional: true },
+        endDateField: {type: String, optional: true},
+        maxDate: {type: String, optional: true},
+        minDate: {type: String, optional: true},
+        alwaysRange: {type: Boolean, optional: true},
+        placeholder: {type: String, optional: true},
+        required: {type: Boolean, optional: true},
+        rounding: {type: Number, optional: true},
+        startDateField: {type: String, optional: true},
+        numeric: {type: Boolean, optional: true},
+        warnFuture: {type: Boolean, optional: true},
+        showSeconds: {type: Boolean, optional: true},
+        showTime: {type: Boolean, optional: true},
         minPrecision: {
             type: String,
             optional: true,
@@ -113,7 +120,9 @@ export class DateTimeField extends Component {
                 type: this.field.type,
                 range: this.isRange(value),
                 showRangeToggler:
-                    this.relatedField && !this.props.required && !this.props.alwaysRange,
+                    this.relatedField &&
+                    !this.props.required &&
+                    !this.props.alwaysRange,
                 onToggleRange,
             };
             if (this.props.maxDate) {
@@ -147,8 +156,8 @@ export class DateTimeField extends Component {
                     values = [DateTime.local(), DateTime.local()];
                 }
                 values[optionalFieldIndex] = optionalFieldIndex
-                    ? values[0].plus({ hours: 1 })
-                    : values[1].minus({ hours: 1 });
+                    ? values[0].plus({hours: 1})
+                    : values[1].minus({hours: 1});
 
                 this.state.focusedDateIndex = 0;
                 this.state.value = values;
@@ -177,14 +186,20 @@ export class DateTimeField extends Component {
                 const toUpdate = {};
                 if (Array.isArray(this.state.value)) {
                     // Value is already a range
-                    [toUpdate[this.startDateField], toUpdate[this.endDateField]] = this.state.value;
+                    [toUpdate[this.startDateField], toUpdate[this.endDateField]] =
+                        this.state.value;
                 } else {
                     toUpdate[this.props.name] = this.state.value;
                 }
 
                 // If startDateField or endDateField are not set, delete unchanged fields
                 for (const fieldName in toUpdate) {
-                    if (areDatesEqual(toUpdate[fieldName], this.props.record.data[fieldName])) {
+                    if (
+                        areDatesEqual(
+                            toUpdate[fieldName],
+                            this.props.record.data[fieldName]
+                        )
+                    ) {
                         delete toUpdate[fieldName];
                     }
                 }
@@ -196,7 +211,7 @@ export class DateTimeField extends Component {
         });
         // Subscribes to changes made on the picker state
         this.state = useState(dateTimePicker.state);
-        this.picker = useState({ activeInput: "" });
+        this.picker = useState({activeInput: ""});
         this.openPicker = dateTimePicker.open;
 
         this.startDate = useRef("start-date");
@@ -205,13 +220,19 @@ export class DateTimeField extends Component {
         useEffect(
             () => {
                 [this.startDate, this.endDate].forEach((ref, index) => {
-                    if (ref.el?.getAttribute("data-field") === this.picker.activeInput) {
+                    if (
+                        ref.el?.getAttribute("data-field") === this.picker.activeInput
+                    ) {
                         ref.el.focus();
                         this.openPicker(index);
                     }
                 });
             },
-            () => [this.startDate.el?.tagName, this.endDate.el?.tagName, this.picker.activeInput]
+            () => [
+                this.startDate.el?.tagName,
+                this.endDate.el?.tagName,
+                this.picker.activeInput,
+            ]
         );
 
         onWillRender(() => this.triggerIsDirty());
@@ -234,12 +255,15 @@ export class DateTimeField extends Component {
         if (!value) {
             return "";
         }
-        const { showSeconds, showTime } = this.props;
+        const {showSeconds, showTime} = this.props;
         if (this.field.type === "date") {
-            return formatDate(value, { numeric });
+            return formatDate(value, {numeric});
         } else {
             const showDate =
-                !showTime || valueIndex !== 1 || !values[0] || !values[0].hasSame(value, "day");
+                !showTime ||
+                valueIndex !== 1 ||
+                !values[0] ||
+                !values[0].hasSame(value, "day");
             return formatDateTime(value, {
                 numeric,
                 showSeconds,
@@ -299,7 +323,9 @@ export class DateTimeField extends Component {
         if (value === "today") {
             return value;
         }
-        return this.field.type === "date" ? deserializeDate(value) : deserializeDateTime(value);
+        return this.field.type === "date"
+            ? deserializeDate(value)
+            : deserializeDateTime(value);
     }
 
     /**
@@ -309,11 +335,13 @@ export class DateTimeField extends Component {
         return (
             (this.props.alwaysRange &&
                 (this.props.readonly
-                    ? !this.isEmpty(this.startDateField) || !this.isEmpty(this.endDateField)
+                    ? !this.isEmpty(this.startDateField) ||
+                      !this.isEmpty(this.endDateField)
                     : true)) ||
             (this.state.range &&
                 (this.props.required ||
-                    (!this.isEmpty(this.startDateField) && !this.isEmpty(this.endDateField))))
+                    (!this.isEmpty(this.startDateField) &&
+                        !this.isEmpty(this.endDateField))))
         );
     }
 
@@ -372,10 +400,10 @@ export const dateField = {
                 `Choose which minimal precision (days, months, ...) you want in the datetime picker.`
             ),
             choices: [
-                { label: _t("Days"), value: "days" },
-                { label: _t("Months"), value: "months" },
-                { label: _t("Years"), value: "years" },
-                { label: _t("Decades"), value: "decades" },
+                {label: _t("Days"), value: "days"},
+                {label: _t("Months"), value: "months"},
+                {label: _t("Years"), value: "years"},
+                {label: _t("Decades"), value: "decades"},
             ],
         },
         {
@@ -386,23 +414,26 @@ export const dateField = {
                 `Choose which maximal precision (days, months, ...) you want in the datetime picker.`
             ),
             choices: [
-                { label: _t("Days"), value: "days" },
-                { label: _t("Months"), value: "months" },
-                { label: _t("Years"), value: "years" },
-                { label: _t("Decades"), value: "decades" },
+                {label: _t("Days"), value: "days"},
+                {label: _t("Months"), value: "months"},
+                {label: _t("Years"), value: "years"},
+                {label: _t("Decades"), value: "decades"},
             ],
         },
         {
             label: _t("Date Format"),
             name: "numeric",
             type: "selection",
-            help: _t("Displays the date either in 31/01/%(year)s or in Jan 31, %(year)s", {
-                year: today().year,
-            }),
+            help: _t(
+                "Displays the date either in 31/01/%(year)s or in Jan 31, %(year)s",
+                {
+                    year: today().year,
+                }
+            ),
             placeholder: _t("Jan 31, %s", today().year),
             choices: [
-                { label: _t("Jan 31, %s", today().year), value: false },
-                { label: _t("31/01/%s", today().year), value: true },
+                {label: _t("Jan 31, %s", today().year), value: false},
+                {label: _t("31/01/%s", today().year), value: true},
             ],
         },
         {
@@ -413,12 +444,14 @@ export const dateField = {
         },
     ],
     supportedTypes: ["date"],
-    extractProps: ({ options, placeholder, type }, dynamicInfo) => ({
+    extractProps: ({options, placeholder, type}, dynamicInfo) => ({
         endDateField: options[END_DATE_FIELD_OPTION],
         maxDate: options.max_date,
         minDate: options.min_date,
         alwaysRange: exprToBoolean(options.always_range),
-        placeholder: getFormattedPlaceholder(placeholder, type, { numeric: options.numeric }),
+        placeholder: getFormattedPlaceholder(placeholder, type, {
+            numeric: options.numeric,
+        }),
         required: dynamicInfo.required,
         rounding: options.rounding && parseInt(options.rounding, 10),
         startDateField: options[START_DATE_FIELD_OPTION],
@@ -427,9 +460,9 @@ export const dateField = {
         minPrecision: options.min_precision,
         maxPrecision: options.max_precision,
     }),
-    listViewWidth: ({ options }) =>
+    listViewWidth: ({options}) =>
         options.numeric ? FIELD_WIDTHS.numeric_date : FIELD_WIDTHS.date,
-    fieldDependencies: ({ type, attrs, options }) => {
+    fieldDependencies: ({type, attrs, options}) => {
         const deps = [];
         if (options[START_DATE_FIELD_OPTION]) {
             deps.push({
@@ -492,12 +525,12 @@ export const dateTimeField = {
             availableTypes: ["datetime", "char"],
         },
     ],
-    extractProps: ({ attrs, options, placeholder, type }, dynamicInfo) => {
+    extractProps: ({attrs, options, placeholder, type}, dynamicInfo) => {
         const showSeconds = exprToBoolean(options.show_seconds ?? false);
         const showTime = exprToBoolean(options.show_time ?? true);
         const numeric = exprToBoolean(options.numeric ?? false);
         return {
-            ...dateField.extractProps({ attrs, options, placeholder, type }, dynamicInfo),
+            ...dateField.extractProps({attrs, options, placeholder, type}, dynamicInfo),
             placeholder: getFormattedPlaceholder(placeholder, type, {
                 numeric,
                 showSeconds,
@@ -509,9 +542,9 @@ export const dateTimeField = {
         };
     },
     supportedTypes: ["datetime"],
-    listViewWidth: ({ options }) => {
+    listViewWidth: ({options}) => {
         if (!exprToBoolean(options.show_time ?? true)) {
-            return dateField.listViewWidth({ options });
+            return dateField.listViewWidth({options});
         }
         return options.numeric ? FIELD_WIDTHS.numeric_datetime : FIELD_WIDTHS.datetime;
     },
@@ -551,11 +584,11 @@ export const dateRangeField = {
         },
     ],
     supportedTypes: ["date", "datetime"],
-    listViewWidth: ({ type, options }) => {
+    listViewWidth: ({type, options}) => {
         const width =
             type === "datetime"
-                ? dateTimeField.listViewWidth({ options })
-                : dateField.listViewWidth({ options });
+                ? dateTimeField.listViewWidth({options})
+                : dateField.listViewWidth({options});
         return 2 * width + 30; // 30px for the arrow and the gaps
     },
     isValid: (record, fieldname, fieldInfo) => {
@@ -564,7 +597,8 @@ export const dateRangeField = {
                 !record.data[fieldInfo.options[END_DATE_FIELD_OPTION]] !==
                     !record.data[fieldname] &&
                 evaluateBooleanExpr(
-                    record.activeFields[fieldInfo.options[END_DATE_FIELD_OPTION]]?.required,
+                    record.activeFields[fieldInfo.options[END_DATE_FIELD_OPTION]]
+                        ?.required,
                     record.evalContextWithVirtualIds
                 )
             ) {
@@ -574,7 +608,8 @@ export const dateRangeField = {
                 !record.data[fieldInfo.options[START_DATE_FIELD_OPTION]] !==
                     !record.data[fieldname] &&
                 evaluateBooleanExpr(
-                    record.activeFields[fieldInfo.options[START_DATE_FIELD_OPTION]]?.required,
+                    record.activeFields[fieldInfo.options[START_DATE_FIELD_OPTION]]
+                        ?.required,
                     record.evalContextWithVirtualIds
                 )
             ) {

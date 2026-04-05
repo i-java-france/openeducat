@@ -1,24 +1,24 @@
-import { xml } from "@odoo/owl";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
 import {
+    Deferred,
     advanceTime,
     animationFrame,
     click,
-    Deferred,
     press,
     queryOne,
     waitFor,
 } from "@odoo/hoot-dom";
-import { Plugin } from "@html_editor/plugin";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { expandToolbar } from "@html_editor/../tests/_helpers/toolbar";
+import {Plugin} from "@html_editor/plugin";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {expandToolbar} from "@html_editor/../tests/_helpers/toolbar";
 import {
     addBuilderAction,
     addBuilderOption,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 import {
     contains,
     defineModels,
@@ -27,8 +27,8 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { addPlugin, defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { WebsiteBuilderClientAction } from "@website/client_actions/website_preview/website_builder_action";
+import {addPlugin, defineWebsiteModels, setupWebsiteBuilder} from "./website_helpers";
+import {WebsiteBuilderClientAction} from "@website/client_actions/website_preview/website_builder_action";
 
 beforeEach(defineWebsiteModels);
 
@@ -69,7 +69,7 @@ test("getRecordInfo retrieves the info from the #wrap element", async () => {
                     },
                 },
             ],
-            toolbar_groups: { id: "test_group" },
+            toolbar_groups: {id: "test_group"},
             toolbar_items: [
                 {
                     id: "test_btn",
@@ -82,7 +82,7 @@ test("getRecordInfo retrieves the info from the #wrap element", async () => {
     }
     addPlugin(TestPlugin);
 
-    const { getEditor } = await setupWebsiteBuilder(`<p>plop</p>`);
+    const {getEditor} = await setupWebsiteBuilder(`<p>plop</p>`);
     const editor = getEditor();
     const p = editor.editable.querySelector("p");
     setSelection({
@@ -95,7 +95,9 @@ test("getRecordInfo retrieves the info from the #wrap element", async () => {
     await expandToolbar();
     await click(".o-we-toolbar .btn[name=test_btn]");
 
-    expect.verifySteps(['getRecordInfo {"resModel":"ir.ui.view","resId":"539","field":"arch"}']);
+    expect.verifySteps([
+        'getRecordInfo {"resModel":"ir.ui.view","resId":"539","field":"arch"}',
+    ]);
 });
 
 test("elements within iframe can't be clicked while the builder is being set up", async () => {
@@ -108,7 +110,7 @@ test("elements within iframe can't be clicked while the builder is being set up"
     });
     await setupWebsiteBuilder(
         `<section class="test-section"><button onclick="window.step()">Click me</button></section>`,
-        { openEditor: false }
+        {openEditor: false}
     );
     const iframeEl = queryOne("iframe");
     iframeEl.contentWindow.step = () => expect.step("button clicked");
@@ -134,9 +136,9 @@ describe("BuilderMany2One: exit editor when previewing", () => {
         class Test extends models.Model {
             _name = "test";
             _records = [
-                { id: 1, name: "First" },
-                { id: 2, name: "Second" },
-                { id: 3, name: "Third" },
+                {id: 1, name: "First"},
+                {id: 2, name: "Second"},
+                {id: 3, name: "Third"},
             ];
             name = fields.Char();
         }
@@ -151,11 +153,11 @@ describe("BuilderMany2One: exit editor when previewing", () => {
         addBuilderAction({
             testAction: class extends BuilderAction {
                 static id = "testAction";
-                apply({ editingElement, value }) {
+                apply({editingElement, value}) {
                     editingElement.textContent = JSON.parse(value).name;
                     editingElement.dataset.test = value;
                 }
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.dataset.test;
                 }
             },
@@ -189,7 +191,8 @@ describe("BuilderMany2One: exit editor when previewing", () => {
         await press(["alt", "j"]);
         await waitForEndOfOperation();
         expect(".o_dialog").toHaveCount(0, {
-            message: "There should be no confirmation dialog since we didn't modify anything",
+            message:
+                "There should be no confirmation dialog since we didn't modify anything",
         });
         expect(":iframe .test-options-target").toHaveText("Homepage", {
             message: "The preview should have been reverted",

@@ -1,6 +1,6 @@
-from io import BytesIO
 import logging
 import re
+from io import BytesIO
 
 from odoo import _, api, models
 

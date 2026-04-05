@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
-import { delay } from "@web/core/utils/concurrency";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
+import {delay} from "@web/core/utils/concurrency";
 
 registry.category("web_tour.tours").add("mail_template_dynamic_placeholder_tour", {
     url: "/odoo",
@@ -76,7 +76,8 @@ registry.category("web_tour.tours").add("mail_template_dynamic_placeholder_tour"
         },
         {
             content: "Click on the first entry of the dynamic placeholder",
-            trigger: 'div.o_model_field_selector_popover button:contains("Company Name")',
+            trigger:
+                'div.o_model_field_selector_popover button:contains("Company Name")',
             run: "click",
         },
         {
@@ -138,7 +139,8 @@ registry.category("web_tour.tours").add("mail_template_dynamic_placeholder_tour"
         },
         {
             content: "Click on the first entry of the dynamic placeholder",
-            trigger: 'div.o_model_field_selector_popover button:contains("Company Name")',
+            trigger:
+                'div.o_model_field_selector_popover button:contains("Company Name")',
             run: "click",
         },
         {
@@ -208,7 +210,8 @@ registry.category("web_tour.tours").add("mail_template_dynamic_placeholder_tour"
         },
         {
             content: "Click on the insert button",
-            trigger: "div.o_model_field_selector_popover button:first-child:contains('Insert)",
+            trigger:
+                "div.o_model_field_selector_popover button:first-child:contains('Insert)",
             run: "click",
         },
         {

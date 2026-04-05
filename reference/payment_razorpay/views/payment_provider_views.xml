@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="payment_provider_form_razorpay" model="ir.ui.view">
         <field name="name">Razorpay Provider Form</field>
         <field name="model">payment.provider</field>
-        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="inherit_id" ref="payment.payment_provider_form" />
         <field name="arch" type="xml">
             <group name="provider_credentials" position="before">
                 <div class="text-muted mb-2" invisible="not razorpay_account_id">
@@ -17,9 +16,13 @@
                     invisible="code != 'razorpay'"
                     groups="base.group_no_one"
                 >
-                    <label for="razorpay_account_id"/>
+                    <label for="razorpay_account_id" />
                     <div class="o_row">
-                        <field name="razorpay_account_id" string="Account ID" readonly="True"/>
+                        <field
+                            name="razorpay_account_id"
+                            string="Account ID"
+                            readonly="True"
+                        />
                         <button
                             string="Reset Your Razorpay Account"
                             type="object"
@@ -41,7 +44,7 @@
                         password="True"
                         decoration-muted="razorpay_account_id"
                     />
-                    <label for="razorpay_webhook_secret"/>
+                    <label for="razorpay_webhook_secret" />
                     <div class="o_row">
                         <field
                             name="razorpay_webhook_secret"
@@ -78,7 +81,10 @@
                 </div>
             </group>
             <field name="allow_tokenization" position="after">
-                <div invisible="code != 'razorpay' or not allow_tokenization" colspan="2">
+                <div
+                    invisible="code != 'razorpay' or not allow_tokenization"
+                    colspan="2"
+                >
                     <widget
                         label="Enable recurring payments on Razorpay"
                         name="documentation_link"
@@ -91,5 +97,4 @@
             </field>
         </field>
     </record>
-
 </odoo>

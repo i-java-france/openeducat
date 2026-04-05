@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
@@ -41,7 +40,7 @@ class StockScrap(models.Model):
         return res
 
     def _prepare_move_values(self):
-        vals = super(StockScrap, self)._prepare_move_values()
+        vals = super()._prepare_move_values()
         if self.production_id:
             vals['origin'] = vals['origin'] or self.production_id.name
             if self.product_id in self.production_id.move_finished_ids.mapped('product_id'):

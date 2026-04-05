@@ -1,5 +1,5 @@
-import { MediaVideo } from "./media_video";
-import { registry } from "@web/core/registry";
+import {MediaVideo} from "./media_video";
+import {registry} from "@web/core/registry";
 
 export const MediaVideoEdit = (I) =>
     class extends I {

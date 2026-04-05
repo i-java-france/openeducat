@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 import random
 import re
-import werkzeug
-
 from unittest.mock import patch
 
+import werkzeug
+
+from odoo.sql_db import Cursor
 from odoo.tools import email_normalize, mail
+
 from odoo.addons.link_tracker.tests.common import MockLinkTracker
 from odoo.addons.mail.tests.common import MailCase, MailCommon, mail_new_test_user
-from odoo.sql_db import Cursor
 
 
 class MassMailCase(MailCase, MockLinkTracker):
@@ -106,7 +106,7 @@ class MassMailCase(MailCase, MockLinkTracker):
         # check each traces
         if not mail_links_info:
             mail_links_info = [None] * len(recipients_info)
-        for recipient_info, link_info, record in zip(recipients_info, mail_links_info, records):
+        for recipient_info, link_info, record in zip(recipients_info, mail_links_info, records, strict=False):
             # check input
             invalid = set(recipient_info.keys()) - {
                 'content',
@@ -423,7 +423,7 @@ class MassMailCommon(MailCommon, MassMailCase):
 
     @classmethod
     def setUpClass(cls):
-        super(MassMailCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.user_marketing, cls.user_marketing_1 = [mail_new_test_user(
             cls.env,

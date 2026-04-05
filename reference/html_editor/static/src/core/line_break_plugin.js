@@ -1,11 +1,11 @@
-import { splitTextNode } from "@html_editor/utils/dom";
-import { Plugin } from "../plugin";
-import { CTGROUPS, CTYPES } from "../utils/content_types";
-import { getState, isFakeLineBreak, prepareUpdate } from "../utils/dom_state";
-import { DIRECTIONS, leftPos, rightPos } from "../utils/position";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { closestBlock, isBlock } from "../utils/blocks";
-import { nextLeaf } from "../utils/dom_info";
+import {splitTextNode} from "@html_editor/utils/dom";
+import {Plugin} from "../plugin";
+import {CTGROUPS, CTYPES} from "../utils/content_types";
+import {getState, isFakeLineBreak, prepareUpdate} from "../utils/dom_state";
+import {DIRECTIONS, leftPos, rightPos} from "../utils/position";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {closestBlock, isBlock} from "../utils/blocks";
+import {nextLeaf} from "../utils/dom_info";
 
 /**
  * @typedef { Object } LineBreakShared
@@ -22,7 +22,11 @@ import { nextLeaf } from "../utils/dom_info";
 export class LineBreakPlugin extends Plugin {
     static dependencies = ["selection", "history", "input", "delete"];
     static id = "lineBreak";
-    static shared = ["insertLineBreak", "insertLineBreakNode", "insertLineBreakElement"];
+    static shared = [
+        "insertLineBreak",
+        "insertLineBreakNode",
+        "insertLineBreakElement",
+    ];
     /** @type {import("plugins").EditorResources} */
     resources = {
         beforeinput_handlers: this.onBeforeInput.bind(this),
@@ -37,7 +41,8 @@ export class LineBreakPlugin extends Plugin {
 
     insertLineBreak() {
         this.dispatchTo("before_line_break_handlers");
-        let selection = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        let selection =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         if (!selection.isCollapsed) {
             // @todo @phoenix collapseIfZWS is not tested
             // this.shared.collapseIfZWS();
@@ -50,7 +55,7 @@ export class LineBreakPlugin extends Plugin {
         const targetNode = selection.anchorNode;
         const targetOffset = selection.anchorOffset;
 
-        this.insertLineBreakNode({ targetNode, targetOffset });
+        this.insertLineBreakNode({targetNode, targetOffset});
         this.dependencies.history.addStep();
     }
 
@@ -59,7 +64,7 @@ export class LineBreakPlugin extends Plugin {
      * @param {Node} params.targetNode
      * @param {number} params.targetOffset
      */
-    insertLineBreakNode({ targetNode, targetOffset }) {
+    insertLineBreakNode({targetNode, targetOffset}) {
         const closestEl = closestElement(targetNode);
         if (closestEl && !closestEl.isContentEditable) {
             return;
@@ -69,11 +74,16 @@ export class LineBreakPlugin extends Plugin {
             targetNode = targetNode.parentElement;
         }
 
-        if (this.delegateTo("insert_line_break_element_overrides", { targetNode, targetOffset })) {
+        if (
+            this.delegateTo("insert_line_break_element_overrides", {
+                targetNode,
+                targetOffset,
+            })
+        ) {
             return;
         }
 
-        this.insertLineBreakElement({ targetNode, targetOffset });
+        this.insertLineBreakElement({targetNode, targetOffset});
     }
 
     /**
@@ -81,7 +91,7 @@ export class LineBreakPlugin extends Plugin {
      * @param {HTMLElement} params.targetNode
      * @param {number} params.targetOffset
      */
-    insertLineBreakElement({ targetNode, targetOffset }) {
+    insertLineBreakElement({targetNode, targetOffset}) {
         const closestEl = closestElement(targetNode);
         if (closestEl && !closestEl.isContentEditable) {
             return;
@@ -103,7 +113,10 @@ export class LineBreakPlugin extends Plugin {
         }
         if (
             isFakeLineBreak(brEl) &&
-            !(getState(...leftPos(brEl), DIRECTIONS.LEFT).cType & (CTGROUPS.BLOCK | CTYPES.BR))
+            !(
+                getState(...leftPos(brEl), DIRECTIONS.LEFT).cType &
+                (CTGROUPS.BLOCK | CTYPES.BR)
+            )
         ) {
             const brEl2 = this.document.createElement("br");
             brEl.before(brEl2);

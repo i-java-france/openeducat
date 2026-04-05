@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
+
 from odoo.addons.html_editor.tools import handle_history_divergence
 
 
@@ -85,7 +85,7 @@ class HrJob(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", job.name)) for job, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", job.name)) for job, vals in zip(self, vals_list, strict=False)]
 
     def write(self, vals):
         if len(self) == 1:

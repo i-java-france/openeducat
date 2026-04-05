@@ -1,6 +1,6 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { setupPosEnv, getFilledOrder } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -164,9 +164,9 @@ test("[get prices()] with one price-included and one price-excluded tax", async 
     const data = models.loadConnectedData(rawData);
     const orderLine = data["pos.order.line"][0];
     orderLine.qty = 1;
-    orderLine.price_unit = 115.0; // price includes 15% tax
+    orderLine.price_unit = 115.0; // Price includes 15% tax
     const lineTax = orderLine.prices;
-    // priceWithoutTax: 115 / 1.15 = 100, 25% tax = 25, priceWithTax = 115 + 25 = 140
+    // PriceWithoutTax: 115 / 1.15 = 100, 25% tax = 25, priceWithTax = 115 + 25 = 140
     expect(lineTax.total_excluded).toBe(100.0);
     expect(lineTax.total_included).toBe(140.0);
     expect(lineTax.taxes_data[0].tax_amount).toBe(15.0);
@@ -268,7 +268,7 @@ describe("Test taxes after fiscal position", () => {
         const store = await setupPosEnv();
         const models = store.models;
         const dataDict = getAllPricesData();
-        dataDict["pos.order"][0]["fiscal_position_id"] = 2;
+        dataDict["pos.order"][0].fiscal_position_id = 2;
         const data = models.loadConnectedData(dataDict);
         const orderLine = data["pos.order.line"][0];
         const lineValues = orderLine.prepareBaseLineForTaxesComputationExtraValues();
@@ -278,33 +278,37 @@ describe("Test taxes after fiscal position", () => {
         const store = await setupPosEnv();
         const models = store.models;
         const dataDict = getAllPricesData();
-        dataDict["pos.order"][0]["fiscal_position_id"] = 1;
+        dataDict["pos.order"][0].fiscal_position_id = 1;
         const data = models.loadConnectedData(dataDict);
         // Taxed order line
         const orderLine = data["pos.order.line"][0];
         // Taxed Product
-        const taxedProductLineValues = orderLine.prepareBaseLineForTaxesComputationExtraValues();
+        const taxedProductLineValues =
+            orderLine.prepareBaseLineForTaxesComputationExtraValues();
         expect(taxedProductLineValues.tax_ids.length).toBe(1);
         // Non Taxed Product
         orderLine.product_id.taxes_id = [];
-        const nonTaxedProductlineValues = orderLine.prepareBaseLineForTaxesComputationExtraValues();
+        const nonTaxedProductlineValues =
+            orderLine.prepareBaseLineForTaxesComputationExtraValues();
         expect(nonTaxedProductlineValues.tax_ids.length).toBe(1);
     });
     test("Non-taxed orderline after fiscal position", async () => {
         const store = await setupPosEnv();
         const models = store.models;
         const dataDict = getAllPricesData();
-        dataDict["pos.order"][0]["fiscal_position_id"] = 1;
+        dataDict["pos.order"][0].fiscal_position_id = 1;
         const data = models.loadConnectedData(dataDict);
         const orderLine = data["pos.order.line"][0];
         // Non taxed order line
         orderLine.tax_ids = [];
         // Taxed product
-        const taxedProductLineValues = orderLine.prepareBaseLineForTaxesComputationExtraValues();
+        const taxedProductLineValues =
+            orderLine.prepareBaseLineForTaxesComputationExtraValues();
         expect(taxedProductLineValues.tax_ids.length).toBe(0);
         orderLine.product_id.taxes_id = [];
         // Non Taxed product
-        const nonTaxedProductlineValues = orderLine.prepareBaseLineForTaxesComputationExtraValues();
+        const nonTaxedProductlineValues =
+            orderLine.prepareBaseLineForTaxesComputationExtraValues();
         expect(nonTaxedProductlineValues.tax_ids.length).toBe(0);
     });
 });

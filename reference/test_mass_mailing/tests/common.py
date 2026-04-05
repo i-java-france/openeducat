@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.phone_validation.tools import phone_validation
-
 from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
+from odoo.addons.phone_validation.tools import phone_validation
 
 
 class TestMassMailCommon(MassSMSCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMassMailCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.test_alias = cls.env['mail.alias'].create({
             'alias_name': 'test.alias',
@@ -104,7 +102,7 @@ class TestMassSMSCommon(TestMassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMassSMSCommon, cls).setUpClass()
+        super().setUpClass()
         cls._test_body = 'Mass SMS in your face'
 
         records = cls.env['mail.test.sms']
@@ -153,6 +151,6 @@ class TestMassSMSCommon(TestMassMailCommon):
             'name': f'MassSMSTest_{x}',
             'customer_id': partner.id,
             'phone_nbr': mobile_number
-        } for x, (mobile_number, partner) in enumerate(zip(mobile_numbers, partners))])
+        } for x, (mobile_number, partner) in enumerate(zip(mobile_numbers, partners, strict=False))])
 
         return records

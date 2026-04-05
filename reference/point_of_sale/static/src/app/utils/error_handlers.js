@@ -1,14 +1,14 @@
-import { registry } from "@web/core/registry";
-import { odooExceptionTitleMap, ErrorDialog } from "@web/core/errors/error_dialogs";
-import { ConnectionLostError, RPCError } from "@web/core/network/rpc";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {odooExceptionTitleMap, ErrorDialog} from "@web/core/errors/error_dialogs";
+import {ConnectionLostError, RPCError} from "@web/core/network/rpc";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
 
 export function handleRPCError(error, dialog) {
-    const { data } = error;
+    const {data} = error;
     if (odooExceptionTitleMap.has(error.exceptionName)) {
         const title = odooExceptionTitleMap.get(error.exceptionName).toString();
-        dialog.add(AlertDialog, { title, body: data.message });
+        dialog.add(AlertDialog, {title, body: data.message});
     } else {
         if (odoo.debug === "assets") {
             dialog.add(ErrorDialog, {
@@ -65,4 +65,4 @@ function defaultErrorHandler(env, error, originalError) {
 }
 registry
     .category("error_handlers")
-    .add("pos-defaultErrorHandler", defaultErrorHandler, { sequence: 99 });
+    .add("pos-defaultErrorHandler", defaultErrorHandler, {sequence: 99});

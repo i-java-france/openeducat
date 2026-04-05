@@ -1,7 +1,7 @@
-import { Base } from "../related_models";
-import { accountTaxHelpers } from "@account/helpers/account_tax";
-import { logPosMessage } from "../../utils/pretty_console_log";
-import { formatCurrency } from "@web/core/currency";
+import {Base} from "../related_models";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
+import {logPosMessage} from "../../utils/pretty_console_log";
+import {formatCurrency} from "@web/core/currency";
 
 const CONSOLE_COLOR = "#4EFF4D";
 
@@ -20,7 +20,7 @@ export class PosOrderAccounting extends Base {
             return;
         }
         this._prices.original = this._constructPriceData();
-        this._prices.unit = this._constructPriceData({ baseLineOpts: { quantity: 1 } });
+        this._prices.unit = this._constructPriceData({baseLineOpts: {quantity: 1}});
     }
 
     /**
@@ -79,7 +79,9 @@ export class PosOrderAccounting extends Base {
 
         const amount =
             this.orderIsRounded &&
-            this.config.rounding_method.asymmetricRound(isNegative ? -remaining : remaining) == 0
+            this.config.rounding_method.asymmetricRound(
+                isNegative ? -remaining : remaining
+            ) == 0
                 ? 0
                 : Math.abs(remaining);
         return isNegative ? this.currency.round(-amount) : this.currency.round(amount);
@@ -99,7 +101,9 @@ export class PosOrderAccounting extends Base {
             Math.abs(this.amountPaid) +
             (isNegative ? -roundingSanatizer : roundingSanatizer);
 
-        const amount = isNegative ? -this.currency.round(total) : this.currency.round(total);
+        const amount = isNegative
+            ? -this.currency.round(total)
+            : this.currency.round(total);
         return this.shouldRoundChange
             ? this.config.rounding_method.asymmetricRound(amount)
             : amount;
@@ -117,7 +121,9 @@ export class PosOrderAccounting extends Base {
         const remaining = total - this.amountPaid;
         const amount =
             this.orderIsRounded &&
-            this.config.rounding_method.asymmetricRound(total < 0 ? -remaining : remaining) == 0
+            this.config.rounding_method.asymmetricRound(
+                total < 0 ? -remaining : remaining
+            ) == 0
                 ? Math.abs(remaining)
                 : 0;
         return isNegative ? this.currency.round(amount) : this.currency.round(-amount);
@@ -232,7 +238,10 @@ export class PosOrderAccounting extends Base {
      */
     _constructPriceData(opts = {}) {
         const data = this._computeAllPrices(opts);
-        const noDiscount = this._computeAllPrices({ baseLineOpts: { discount: 0.0 }, ...opts });
+        const noDiscount = this._computeAllPrices({
+            baseLineOpts: {discount: 0.0},
+            ...opts,
+        });
         const currency = this.currency;
 
         for (const key of Object.keys(data.baseLineByLineUuids)) {
@@ -240,7 +249,9 @@ export class PosOrderAccounting extends Base {
             const dData = data.baseLineByLineUuids[key].tax_details;
 
             Object.assign(data.baseLineByLineUuids[key].tax_details, {
-                discount_amount: currency.round(ndData.total_included - dData.total_included),
+                discount_amount: currency.round(
+                    ndData.total_included - dData.total_included
+                ),
                 no_discount_total_excluded: ndData.total_excluded,
                 no_discount_total_included: ndData.total_included,
                 no_discount_total_included_currency: ndData.total_included_currency,
@@ -251,9 +262,13 @@ export class PosOrderAccounting extends Base {
             });
         }
 
-        logPosMessage("Accounting", "_constructPriceData", "Recompute allPrices", CONSOLE_COLOR, [
-            data,
-        ]);
+        logPosMessage(
+            "Accounting",
+            "_constructPriceData",
+            "Recompute allPrices",
+            CONSOLE_COLOR,
+            [data]
+        );
         return data;
     }
 
@@ -281,11 +296,20 @@ export class PosOrderAccounting extends Base {
 
         // Cash rounding is added only if the document needs to be globaly rounded.
         // See cash_rounding and only_round_cash_method config fields.
-        const cashRounding = this.config.cash_rounding ? this.config.rounding_method : null;
-        const data = accountTaxHelpers.get_tax_totals_summary(baseLines, currency, company, {
-            cash_rounding: cashRounding,
-        });
-        const total = data.total_amount_currency - (data.cash_rounding_base_amount_currency || 0.0);
+        const cashRounding = this.config.cash_rounding
+            ? this.config.rounding_method
+            : null;
+        const data = accountTaxHelpers.get_tax_totals_summary(
+            baseLines,
+            currency,
+            company,
+            {
+                cash_rounding: cashRounding,
+            }
+        );
+        const total =
+            data.total_amount_currency -
+            (data.cash_rounding_base_amount_currency || 0.0);
 
         data.order_sign = documentSign;
         data.total_amount_no_rounding = total;
@@ -295,6 +319,10 @@ export class PosOrderAccounting extends Base {
             return acc;
         }, {});
 
-        return { taxDetails: data, baseLines: baseLines, baseLineByLineUuids: baseLineByLineUuids };
+        return {
+            taxDetails: data,
+            baseLines: baseLines,
+            baseLineByLineUuids: baseLineByLineUuids,
+        };
     }
 }

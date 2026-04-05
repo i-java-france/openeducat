@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, press } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, press} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     defineModels,
     fields,
@@ -8,12 +8,12 @@ import {
     models,
     mountView,
 } from "@web/../tests/web_test_helpers";
-import { KanbanController } from "@web/views/kanban/kanban_controller";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
 
 const graph_values = [
-    { value: 300, label: "5-11 Dec" },
-    { value: 500, label: "12-18 Dec" },
-    { value: 100, label: "19-25 Dec" },
+    {value: 300, label: "5-11 Dec"},
+    {value: 500, label: "12-18 Dec"},
+    {value: 100, label: "19-25 Dec"},
 ];
 
 class Partner extends models.Model {
@@ -31,7 +31,7 @@ class Partner extends models.Model {
             ["done", "Done"],
         ],
     });
-    graph_data = fields.Text({ string: "Graph Data" });
+    graph_data = fields.Text({string: "Graph Data"});
     graph_type = fields.Selection({
         string: "Graph Type",
         selection: [
@@ -116,7 +116,7 @@ test("JournalDashboardGraphField is rendered correctly", async () => {
         message: "graph of second record should be a linechart",
     });
 
-    // reload kanban
+    // Reload kanban
     await click("input.o_searchview_input");
     await press("Enter");
     await animationFrame();
@@ -141,11 +141,14 @@ test("rendering of a JournalDashboardGraphField in an updated grouped kanban vie
             </kanban>`,
         domain: [["id", "in", [1, 2]]],
     });
-    const kanban = findComponent(view, (component) => component instanceof KanbanController);
+    const kanban = findComponent(
+        view,
+        (component) => component instanceof KanbanController
+    );
     expect(".o_dashboard_graph canvas").toHaveCount(2, {
         message: "there should be two graph rendered",
     });
-    await reload(kanban, { groupBy: ["selection"], domain: [["int_field", "=", 10]] });
+    await reload(kanban, {groupBy: ["selection"], domain: [["int_field", "=", 10]]});
 
     expect(".o_dashboard_graph canvas").toHaveCount(1, {
         message: "there should be one graph rendered",

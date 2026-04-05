@@ -1,18 +1,18 @@
 import {
+    addBuilderAction,
     addBuilderOption,
     addBuilderPlugin,
-    setupHTMLBuilder,
     dummyBase64Img,
-    addBuilderAction,
+    setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { Plugin } from "@html_editor/plugin";
-import { expect, test, describe } from "@odoo/hoot";
-import { xml } from "@odoo/owl";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {Plugin} from "@html_editor/plugin";
+import {describe, expect, test} from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 test("Do not set contenteditable to true on elements inside o_not_editable", async () => {
     class TestPlugin extends Plugin {
@@ -71,7 +71,7 @@ test("clone of editable media inside not editable area should be editable", asyn
             static template = xml`<BuilderButton classAction="'test'">Test Image</BuilderButton>`;
         }
     );
-    const { waitSidebarUpdated } = await setupHTMLBuilder(`
+    const {waitSidebarUpdated} = await setupHTMLBuilder(`
         <section>
             <div class="o_not_editable">
                 <img class="o_editable_media" src="${dummyBase64Img}"/>
@@ -109,7 +109,7 @@ const setupEditable = async (contentEl) => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 editingElement.querySelector(".target").classList.add("target-extra");
             }
         },

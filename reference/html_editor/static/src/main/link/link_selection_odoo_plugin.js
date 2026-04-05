@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { isBlock } from "@html_editor/utils/blocks";
+import {Plugin} from "@html_editor/plugin";
+import {isBlock} from "@html_editor/utils/blocks";
 
 export class OdooLinkSelectionPlugin extends Plugin {
     static id = "odooLinkSelection";
@@ -12,6 +12,7 @@ export class OdooLinkSelectionPlugin extends Plugin {
                 ),
             (link) => link.matches("a.nav-link"),
         ],
-        ineligible_link_for_selection_indication_predicates: (link) => link.matches(".btn"),
+        ineligible_link_for_selection_indication_predicates: (link) =>
+            link.matches(".btn"),
     };
 }

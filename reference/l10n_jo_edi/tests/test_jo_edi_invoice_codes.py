@@ -2,6 +2,7 @@ from itertools import product
 
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_jo_edi.tests.jo_edi_common import JoEdiCommon
 
 

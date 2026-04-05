@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dialog } from "@web/core/dialog/dialog";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { useDebounced } from "@web/core/utils/timing";
-import { SearchMedia } from "./search_media";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dialog} from "@web/core/dialog/dialog";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {useDebounced} from "@web/core/utils/timing";
+import {SearchMedia} from "./search_media";
 
-import { Component, xml, useState, useRef, onWillStart, useEffect } from "@odoo/owl";
+import {Component, xml, useState, useRef, onWillStart, useEffect} from "@odoo/owl";
 
 export const IMAGE_MIMETYPES = [
     "image/jpg",
@@ -18,7 +18,15 @@ export const IMAGE_MIMETYPES = [
     "image/gif",
     "image/webp",
 ];
-export const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".jpe", ".png", ".svg", ".gif", ".webp"];
+export const IMAGE_EXTENSIONS = [
+    ".jpg",
+    ".jpeg",
+    ".jpe",
+    ".png",
+    ".svg",
+    ".gif",
+    ".webp",
+];
 
 class RemoveButton extends Component {
     static template = xml`<i class="fa fa-trash o_existing_attachment_remove position-absolute top-0 end-0 p-2 bg-white-25 cursor-pointer opacity-0 opacity-100-hover z-1 transition-base" t-att-title="removeTitle" role="img" t-att-aria-label="removeTitle" t-on-click="this.remove"/>`;
@@ -37,7 +45,7 @@ class RemoveButton extends Component {
 }
 
 export class AttachmentError extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static template = "html_editor.AttachmentError";
     static props = ["views", "close"];
     setup() {
@@ -86,19 +94,19 @@ export class FileSelectorControlPanel extends Component {
         changeSearchService: Function,
         changeShowOptimized: Function,
         search: Function,
-        accept: { type: String, optional: true },
-        addText: { type: String, optional: true },
-        multiSelect: { type: true, optional: true },
-        needle: { type: String, optional: true },
-        searchPlaceholder: { type: String, optional: true },
-        searchService: { type: String, optional: true },
-        showOptimized: { type: Boolean, optional: true },
-        showOptimizedOption: { type: String, optional: true },
-        uploadText: { type: String, optional: true },
-        urlPlaceholder: { type: String, optional: true },
-        urlWarningTitle: { type: String, optional: true },
-        useMediaLibrary: { type: Boolean, optional: true },
-        useUnsplash: { type: Boolean, optional: true },
+        accept: {type: String, optional: true},
+        addText: {type: String, optional: true},
+        multiSelect: {type: true, optional: true},
+        needle: {type: String, optional: true},
+        searchPlaceholder: {type: String, optional: true},
+        searchService: {type: String, optional: true},
+        showOptimized: {type: Boolean, optional: true},
+        showOptimizedOption: {type: String, optional: true},
+        uploadText: {type: String, optional: true},
+        urlPlaceholder: {type: String, optional: true},
+        urlWarningTitle: {type: String, optional: true},
+        useMediaLibrary: {type: Boolean, optional: true},
+        useUnsplash: {type: Boolean, optional: true},
     };
     setup() {
         this.state = useState({
@@ -130,7 +138,9 @@ export class FileSelectorControlPanel extends Component {
     get enableUrlUploadClick() {
         return (
             !this.state.showUrlInput ||
-            (this.state.urlInput && this.state.isValidUrl && this.state.isValidFileFormat)
+            (this.state.urlInput &&
+                this.state.isValidUrl &&
+                this.state.isValidFileFormat)
         );
     }
 
@@ -145,7 +155,9 @@ export class FileSelectorControlPanel extends Component {
 
     async onUrlInput(ev) {
         this.state.isValidatingUrl = true;
-        const { isValidUrl, isValidFileFormat } = await this.debouncedValidateUrl(ev.target.value);
+        const {isValidUrl, isValidFileFormat} = await this.debouncedValidateUrl(
+            ev.target.value
+        );
         this.state.isValidFileFormat = isValidFileFormat;
         this.state.isValidUrl = isValidUrl;
         this.state.isValidatingUrl = false;
@@ -243,7 +255,7 @@ export class FileSelector extends Component {
     get selectedAttachmentIds() {
         return this.props.selectedMedia[this.props.id]
             .filter((media) => media.mediaType === "attachment")
-            .map(({ id }) => id);
+            .map(({id}) => id);
     }
 
     get attachmentsDomain() {
@@ -265,7 +277,7 @@ export class FileSelector extends Component {
         const path = url.split("?")[0];
         const isValidUrl = /^.+\..+$/.test(path); // TODO improve
         const isValidFileFormat = true;
-        return { isValidUrl, isValidFileFormat, path };
+        return {isValidUrl, isValidFileFormat, path};
     }
 
     async fetchAttachments(limit, offset) {
@@ -348,7 +360,7 @@ export class FileSelector extends Component {
     async uploadFiles(files) {
         await this.uploadService.uploadFiles(
             files,
-            { resModel: this.props.resModel, resId: this.props.resId },
+            {resModel: this.props.resModel, resId: this.props.resId},
             (attachment) => this.onUploaded(attachment)
         );
     }
@@ -420,7 +432,7 @@ export class FileSelector extends Component {
     }
 
     selectAttachment(attachment) {
-        this.props.selectMedia({ ...attachment, mediaType: "attachment" });
+        this.props.selectMedia({...attachment, mediaType: "attachment"});
     }
 
     selectInitialMedia() {
@@ -450,7 +462,9 @@ export class FileSelector extends Component {
      * @returns {Boolean} true if the attachment is hidden, false otherwise.
      */
     isAttachmentHidden(attachmentEl) {
-        const attachmentBottom = Math.round(attachmentEl.getBoundingClientRect().bottom);
+        const attachmentBottom = Math.round(
+            attachmentEl.getBoundingClientRect().bottom
+        );
         const modalEl = this.props.modalRef.el.querySelector("main.modal-body");
         const modalBottom = modalEl.getBoundingClientRect().bottom;
         return attachmentBottom > modalBottom;
@@ -463,17 +477,26 @@ export class FileSelector extends Component {
     handleScrollAttachments() {
         let scrollToEl = this.loadMoreButtonRef.el;
         const attachmentEls = [
-            ...this.existingAttachmentsRef.el.querySelectorAll(".o_existing_attachment_cell"),
+            ...this.existingAttachmentsRef.el.querySelectorAll(
+                ".o_existing_attachment_cell"
+            ),
         ];
-        const firstHiddenAttachmentEl = attachmentEls.find((el) => this.isAttachmentHidden(el));
+        const firstHiddenAttachmentEl = attachmentEls.find((el) =>
+            this.isAttachmentHidden(el)
+        );
         if (firstHiddenAttachmentEl) {
-            const attachmentBottom = firstHiddenAttachmentEl.getBoundingClientRect().bottom;
+            const attachmentBottom =
+                firstHiddenAttachmentEl.getBoundingClientRect().bottom;
             const attachmentIndex = attachmentEls.indexOf(firstHiddenAttachmentEl);
             const firstNextRowAttachmentEl = attachmentEls
                 .slice(attachmentIndex)
                 .find((el) => el.getBoundingClientRect().bottom > attachmentBottom);
             scrollToEl = firstNextRowAttachmentEl || scrollToEl;
         }
-        scrollToEl.scrollIntoView({ block: "end", inline: "nearest", behavior: "smooth" });
+        scrollToEl.scrollIntoView({
+            block: "end",
+            inline: "nearest",
+            behavior: "smooth",
+        });
     }
 }

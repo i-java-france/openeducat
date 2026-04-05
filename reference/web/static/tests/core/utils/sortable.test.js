@@ -1,10 +1,10 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { queryAllTexts, queryFirst } from "@odoo/hoot-dom";
-import { advanceFrame, animationFrame, disableAnimations } from "@odoo/hoot-mock";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {queryAllTexts, queryFirst} from "@odoo/hoot-dom";
+import {advanceFrame, animationFrame, disableAnimations} from "@odoo/hoot-mock";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { Component, reactive, useRef, useState, xml } from "@odoo/owl";
-import { useSortable } from "@web/core/utils/sortable_owl";
+import {Component, reactive, useRef, useState, xml} from "@odoo/owl";
+import {useSortable} from "@web/core/utils/sortable_owl";
 
 beforeEach(disableAnimations);
 
@@ -37,7 +37,9 @@ test("Parameters error handling", async () => {
             useSortable({
                 elements: ".item",
             })
-        ).toThrow(`Error in hook useSortable: missing required property "ref" in parameter`);
+        ).toThrow(
+            `Error in hook useSortable: missing required property "ref" in parameter`
+        );
     });
     await mountListAndAssert(() => {
         expect(() =>
@@ -45,7 +47,9 @@ test("Parameters error handling", async () => {
                 elements: ".item",
                 groups: ".list",
             })
-        ).toThrow(`Error in hook useSortable: missing required property "ref" in parameter`);
+        ).toThrow(
+            `Error in hook useSortable: missing required property "ref" in parameter`
+        );
     });
 
     // Correct params
@@ -85,23 +89,23 @@ test("Simple sorting in single group", async () => {
             useSortable({
                 ref: useRef("root"),
                 elements: ".item",
-                onDragStart({ element, group }) {
+                onDragStart({element, group}) {
                     expect.step("start");
                     expect(group).toBe(undefined);
                     expect(element).toHaveText("1");
                 },
-                onElementEnter({ element }) {
+                onElementEnter({element}) {
                     expect.step("elemententer");
                     expect(element).toHaveText("2");
                 },
-                onDragEnd({ element, group }) {
+                onDragEnd({element, group}) {
                     expect.step("end");
                     expect(group).toBe(undefined);
                     expect(element).toHaveText("1");
                     expect(".item").toHaveCount(4);
                     expect(".item.o_dragged").toHaveCount(1);
                 },
-                onDrop({ element, group, previous, next, parent }) {
+                onDrop({element, group, previous, next, parent}) {
                     expect.step("drop");
                     expect(group).toBe(undefined);
                     expect(element).toHaveText("1");
@@ -144,21 +148,21 @@ test("Simple sorting in multiple groups", async () => {
                 elements: ".item",
                 groups: ".list",
                 connectGroups: true,
-                onDragStart({ element, group }) {
+                onDragStart({element, group}) {
                     expect.step("start");
                     expect(group).toHaveClass("list2");
                     expect(element).toHaveText("2 1");
                 },
-                onGroupEnter({ group }) {
+                onGroupEnter({group}) {
                     expect.step("groupenter");
                     expect(group).toHaveClass("list1");
                 },
-                onDragEnd({ element, group }) {
+                onDragEnd({element, group}) {
                     expect.step("end");
                     expect(group).toHaveClass("list2");
                     expect(element).toHaveText("2 1");
                 },
-                onDrop({ element, group, previous, next, parent }) {
+                onDrop({element, group, previous, next, parent}) {
                     expect.step("drop");
                     expect(group).toHaveClass("list2");
                     expect(element).toHaveText("2 1");
@@ -170,7 +174,7 @@ test("Simple sorting in multiple groups", async () => {
         }
     }
 
-    await mountWithCleanup(List, { noMainContainer: true });
+    await mountWithCleanup(List, {noMainContainer: true});
 
     expect(".list").toHaveCount(3);
     expect(".item").toHaveCount(9);
@@ -186,13 +190,13 @@ test("Simple sorting in multiple groups", async () => {
 
 test("Sorting in groups with distinct per-axis scrolling", async () => {
     /**
-     * @param {string} selector
+     * @param {String} selector
      * @param {{ x?: number; y?: number }} position
      * @param {() => any} callback
      */
     const dragAndExpect = async (selector, position, callback) => {
-        const { drop, moveTo } = await contains(selector).drag();
-        await moveTo(`${selector}:last`, { position });
+        const {drop, moveTo} = await contains(selector).drag();
+        await moveTo(`${selector}:last`, {position});
         // Wait for the edge scrolling to scroll to the end
         await advanceFrame(50);
 
@@ -230,7 +234,7 @@ test("Sorting in groups with distinct per-axis scrolling", async () => {
                 elements: ".item",
                 groups: ".list",
                 connectGroups: true,
-                edgeScrolling: { speed: 16, threshold: 25 },
+                edgeScrolling: {speed: 16, threshold: 25},
             });
         }
     }
@@ -251,7 +255,7 @@ test("Sorting in groups with distinct per-axis scrolling", async () => {
         message: "Negative horizontal scrolling: scrollTop",
     });
 
-    await dragAndExpect(".item12", { x: 0 }, () => {
+    await dragAndExpect(".item12", {x: 0}, () => {
         expect(".scroll_parent_y").toHaveProperty("scrollTop", 50, {
             message: "Negative horizontal scrolling left - scrollTop",
         });
@@ -272,7 +276,7 @@ test("Sorting in groups with distinct per-axis scrolling", async () => {
         message: "Positive horizontal scrolling - scrollTop",
     });
 
-    await dragAndExpect(".item11", { x: 1000 }, () => {
+    await dragAndExpect(".item11", {x: 1000}, () => {
         expect(".scroll_parent_y").toHaveProperty("scrollTop", 50, {
             message: "Positive horizontal scrolling right - scrollTop",
         });
@@ -294,7 +298,7 @@ test("Sorting in groups with distinct per-axis scrolling", async () => {
         message: "Negative vertical scrolling - scrollTop",
     });
 
-    await dragAndExpect(".item11", { y: 0 }, () => {
+    await dragAndExpect(".item11", {y: 0}, () => {
         expect(".scroll_parent_y").toHaveProperty("scrollTop", 0, {
             message: "Negative vertical scrolling top - scrollTop",
         });
@@ -316,7 +320,7 @@ test("Sorting in groups with distinct per-axis scrolling", async () => {
         message: "Positive vertical scrolling - scrollTop",
     });
 
-    await dragAndExpect(".item21", { y: 1000 }, () => {
+    await dragAndExpect(".item21", {y: 1000}, () => {
         expect(".scroll_parent_y").toHaveProperty("scrollTop", 215, {
             message: "Positive vertical scrolling bottom - scrollTop",
         });
@@ -367,7 +371,7 @@ test("draggable area contains overflowing visible elements", async () => {
     expect(renderer).toHaveProperty("scrollWidth", 900);
     expect(".item.o_dragged").toHaveCount(0);
 
-    const { cancel, moveTo } = await contains(".item11").drag();
+    const {cancel, moveTo} = await contains(".item11").drag();
 
     // Drag first record of first group to the right
     await moveTo(".list3 .item:first");
@@ -378,8 +382,8 @@ test("draggable area contains overflowing visible elements", async () => {
 
     // Verify that the dragged element is allowed to go inside the
     // overflowing part of the draggable container.
-    expect(".item.o_dragged").toHaveRect({ right: 900 });
-    expect(".list3 .item:first").toHaveRect({ right: 900 });
+    expect(".item.o_dragged").toHaveRect({right: 900});
+    expect(".list3 .item:first").toHaveRect({right: 900});
 
     // Cancel drag
     await cancel();
@@ -390,7 +394,7 @@ test("draggable area contains overflowing visible elements", async () => {
 test("Dynamically disable sortable feature", async () => {
     expect.assertions(3);
 
-    const state = reactive({ enableSortable: true });
+    const state = reactive({enableSortable: true});
     class List extends Component {
         static props = ["*"];
         static template = xml`
@@ -458,20 +462,20 @@ test("Drag has a default tolerance of 10 pixels before initiating the dragging",
     await mountWithCleanup(List);
 
     const listItem = queryFirst(".item");
-    const { cancel, moveTo } = await contains(listItem).drag({
+    const {cancel, moveTo} = await contains(listItem).drag({
         initialPointerMoveDistance: 0,
-        position: { x: 0, y: 0 }, // Move the element from only 5 pixels
+        position: {x: 0, y: 0}, // Move the element from only 5 pixels
         relative: true,
     });
     await moveTo(listItem, {
-        position: { x: 0, y: 5 },
+        position: {x: 0, y: 5},
         relative: true,
     });
 
     expect.verifySteps([]);
 
     await moveTo(listItem, {
-        position: { x: 10, y: 10 }, // Move the element from more than 10 pixels
+        position: {x: 10, y: 10}, // Move the element from more than 10 pixels
         relative: true,
     });
 
@@ -545,11 +549,11 @@ test("the classes parameters (placeholderElement, helpElement)", async () => {
                 elements: ".item",
                 placeholderClasses: ["placeholder-t1", "placeholder-t2"],
                 followingElementClasses: ["add-1", "add-2"],
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     dragElement = element;
                     expect(dragElement).toHaveClass("add-1");
                     expect(dragElement).toHaveClass("add-2");
-                    // the placeholder is added in onDragStart after the current element
+                    // The placeholder is added in onDragStart after the current element
                     const children = [...dragElement.parentElement.children];
                     const placeholder = children[children.indexOf(dragElement) + 1];
                     expect(placeholder).toHaveClass("placeholder-t1");
@@ -585,10 +589,18 @@ test("applyChangeOnDrop option", async () => {
                 placeholderClasses: ["placeholder"],
                 applyChangeOnDrop: true,
                 onDragStart() {
-                    expect(queryAllTexts(".item:not(.placeholder)")).toEqual(["1", "2", "3"]);
+                    expect(queryAllTexts(".item:not(.placeholder)")).toEqual([
+                        "1",
+                        "2",
+                        "3",
+                    ]);
                 },
                 onDrop() {
-                    expect(queryAllTexts(".item:not(.placeholder)")).toEqual(["2", "1", "3"]);
+                    expect(queryAllTexts(".item:not(.placeholder)")).toEqual([
+                        "2",
+                        "1",
+                        "3",
+                    ]);
                 },
             });
         }
@@ -652,7 +664,7 @@ test("dragged element is removed from the DOM while being dragged", async () => 
                     expect.step("end");
                 },
                 onDrop() {
-                    expect.step("drop"); // should not be called
+                    expect.step("drop"); // Should not be called
                 },
             });
         }
@@ -664,7 +676,7 @@ test("dragged element is removed from the DOM while being dragged", async () => 
     expect(".o_dragged").toHaveCount(0);
     expect.verifySteps([]);
 
-    const { drop, moveTo } = await contains(".item:first-child").drag();
+    const {drop, moveTo} = await contains(".item:first-child").drag();
     expect(".o_dragged").toHaveCount(1);
     expect.verifySteps(["start"]);
 

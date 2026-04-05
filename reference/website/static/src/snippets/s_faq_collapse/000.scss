@@ -5,19 +5,19 @@
             display: inline-block;
             width: 100%;
             position: relative;
-            padding: .5em 1em;
+            padding: 0.5em 1em;
             padding-left: 2.25em;
             border-radius: 0;
             outline: none;
             &:before {
-                content: '\f056';
-                font-family: 'FontAwesome';
+                content: "\f056";
+                font-family: "FontAwesome";
                 color: $gray-600;
                 position: absolute;
                 margin-left: -1.5em;
             }
             &.collapsed:before {
-                content: '\f055';
+                content: "\f055";
             }
             &:hover,
             &:focus {
@@ -52,10 +52,10 @@
             .card-header {
                 background-color: transparent;
                 &:before {
-                    content:'\f068';
+                    content: "\f068";
                 }
                 &.collapsed:before {
-                    content:'\f067';
+                    content: "\f067";
                 }
             }
             .s_faq_collapse_right_icon {
@@ -74,10 +74,10 @@
                 background-color: transparent;
                 @include font-size($font-size-lg * 1.5);
                 &:before {
-                    content:'\f068';
+                    content: "\f068";
                 }
                 &.collapsed:before {
-                    content:'\f067';
+                    content: "\f067";
                 }
             }
             .s_faq_collapse_right_icon {
@@ -105,7 +105,8 @@
             .card-header.collapsed {
                 background-color: transparent;
             }
-            .collapse.show, .collapsing {
+            .collapse.show,
+            .collapsing {
                 .card-body {
                     background-color: rgba(0, 0, 0, 0.03) !important;
                 }

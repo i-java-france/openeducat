@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { difference } from "@web/polyfills/set";
+import {difference} from "@web/polyfills/set";
 
 describe.current.tags("headless");
 
@@ -22,12 +22,12 @@ test("set difference", () => {
     test(new Set([1, 2, 3]), new Set([5, 6])); // []
     test(new Set([]), new Set([1, 2, 3, 5])); // []
 
-    test(new Set([])); // throws
-    test(new Set([]), []); // throws
-    test(new Set([]), {}); // throws
-    test(new Set([]), 2); // throws
-    test(new Set([1])); // throws
-    test(new Set([1]), []); // throws
-    test(new Set([1]), {}); // throws
-    test(new Set([1]), 2); // throws
+    test(new Set([])); // Throws
+    test(new Set([]), []); // Throws
+    test(new Set([]), {}); // Throws
+    test(new Set([]), 2); // Throws
+    test(new Set([1])); // Throws
+    test(new Set([1]), []); // Throws
+    test(new Set([1]), {}); // Throws
+    test(new Set([1]), 2); // Throws
 });

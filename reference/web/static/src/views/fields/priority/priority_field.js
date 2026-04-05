@@ -1,16 +1,16 @@
-import { useCommand } from "@web/core/commands/command_hook";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { standardFieldProps } from "../standard_field_props";
+import {useCommand} from "@web/core/commands/command_hook";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class PriorityField extends Component {
     static template = "web.PriorityField";
     static props = {
         ...standardFieldProps,
-        withCommand: { type: Boolean, optional: true },
-        autosave: { type: Boolean, optional: true },
+        withCommand: {type: Boolean, optional: true},
+        autosave: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -45,7 +45,7 @@ export class PriorityField extends Component {
                         ],
                     };
                 },
-                { category: "smart_action", hotkey: "alt+r" },
+                {category: "smart_action", hotkey: "alt+r"},
             ],
         ];
     }
@@ -59,7 +59,9 @@ export class PriorityField extends Component {
     get index() {
         return this.state.index > -1
             ? this.state.index
-            : this.options.findIndex((o) => o[0] === this.props.record.data[this.props.name]);
+            : this.options.findIndex(
+                  (o) => o[0] === this.props.record.data[this.props.name]
+              );
     }
 
     getTooltip(value) {
@@ -80,7 +82,10 @@ export class PriorityField extends Component {
     }
 
     async updateRecord(value) {
-        await this.props.record.update({ [this.props.name]: value }, { save: this.props.autosave });
+        await this.props.record.update(
+            {[this.props.name]: value},
+            {save: this.props.autosave}
+        );
     }
 }
 
@@ -99,7 +104,7 @@ export const priorityField = {
         },
     ],
     supportedTypes: ["selection"],
-    extractProps({ options, viewType }, dynamicInfo) {
+    extractProps({options, viewType}, dynamicInfo) {
         return {
             withCommand: viewType === "form",
             readonly: dynamicInfo.readonly,

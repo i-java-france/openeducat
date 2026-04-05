@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import difflib
 import logging
 import time
+
 from markupsafe import Markup
 
-from odoo import api, fields, models, Command, _
+from odoo import Command, _, api, fields, models
 from odoo.tools import OrderedSet
 
 _logger = logging.getLogger(__name__)
@@ -76,7 +76,7 @@ class AccountMove(models.Model):
 
     @api.onchange('partner_id', 'company_id')
     def _onchange_partner_id(self):
-        res = super(AccountMove, self)._onchange_partner_id()
+        res = super()._onchange_partner_id()
 
         currency_id = (
                 self.partner_id.property_purchase_currency_id
@@ -171,7 +171,7 @@ class AccountMove(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         # OVERRIDE
-        moves = super(AccountMove, self).create(vals_list)
+        moves = super().create(vals_list)
         for move in moves:
             if move.reversed_entry_id:
                 continue
@@ -186,7 +186,7 @@ class AccountMove(models.Model):
     def write(self, vals):
         # OVERRIDE
         old_purchases = [move.mapped('line_ids.purchase_line_id.order_id') for move in self]
-        res = super(AccountMove, self).write(vals)
+        res = super().write(vals)
         for i, move in enumerate(self):
             new_purchases = move.mapped('line_ids.purchase_line_id.order_id')
             if not new_purchases:
@@ -529,7 +529,7 @@ class AccountMoveLine(models.Model):
 
     def _copy_data_extend_business_fields(self, values):
         # OVERRIDE to copy the 'purchase_line_id' field as well.
-        super(AccountMoveLine, self)._copy_data_extend_business_fields(values)
+        super()._copy_data_extend_business_fields(values)
         values['purchase_line_id'] = self.purchase_line_id.id
 
     def _prepare_line_values_for_purchase(self):

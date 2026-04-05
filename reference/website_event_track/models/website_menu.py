@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models
@@ -9,7 +8,7 @@ class WebsiteMenu(models.Model):
 
     def unlink(self):
         """ Override to synchronize event configuration fields with menu deletion.
-        This should be cleaned in upcoming versions. """    
+        This should be cleaned in upcoming versions. """
         event_updates = {}
         website_event_menus = self.env['website.event.menu'].search([('menu_id', 'in', self.ids)])
         for event_menu in website_event_menus:
@@ -20,7 +19,7 @@ class WebsiteMenu(models.Model):
                 to_update.append('website_track')
 
         # call super that resumes the unlink of menus entries (including website event menus)
-        res = super(WebsiteMenu, self).unlink()
+        res = super().unlink()
 
         # update events
         for event, to_update in event_updates.items():

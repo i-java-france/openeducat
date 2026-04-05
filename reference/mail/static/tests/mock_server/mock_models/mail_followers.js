@@ -1,6 +1,6 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { getKwArgs, makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {getKwArgs, makeKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class MailFollowers extends models.ServerModel {
     _name = "mail.followers";
@@ -44,7 +44,7 @@ export class MailFollowers extends models.ServerModel {
             mailDataHelpers.Store.attr("thread", (follower) =>
                 mailDataHelpers.Store.one(
                     this.env[follower.res_model].browse(follower.res_id),
-                    makeKwArgs({ as_thread: true, only_id: true })
+                    makeKwArgs({as_thread: true, only_id: true})
                 )
             ),
         ];

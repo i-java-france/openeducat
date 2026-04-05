@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { WIDTH } from "@html_builder/utils/option_sequence";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {WIDTH} from "@html_builder/utils/option_sequence";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 class WidthOptionPlugin extends Plugin {
     static id = "widthOption";

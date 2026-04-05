@@ -1,10 +1,11 @@
 import json
 
-from odoo import fields, models, _
-from odoo.tools import SQL
+from odoo import _, fields, models
 from odoo.exceptions import AccessDenied
+from odoo.tools import SQL
 
 from odoo.addons.base.models.res_users import check_identity
+
 from .._vendor.webauthn.helpers.exceptions import InvalidAuthenticationResponse
 
 

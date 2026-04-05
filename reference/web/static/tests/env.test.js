@@ -1,10 +1,14 @@
-import { after, beforeEach, describe, expect, getFixture, test } from "@odoo/hoot";
-import { Deferred, tick } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
-import { clearRegistry, makeMockEnv, allowTranslations } from "@web/../tests/web_test_helpers";
+import {after, beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
+import {Deferred, tick} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
+import {
+    allowTranslations,
+    clearRegistry,
+    makeMockEnv,
+} from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { makeEnv, mountComponent, startServices } from "@web/env";
+import {registry} from "@web/core/registry";
+import {makeEnv, mountComponent, startServices} from "@web/env";
 
 describe.current.tags("headless");
 
@@ -15,7 +19,7 @@ beforeEach(() => {
 });
 
 /**
- * @param {string} name
+ * @param {String} name
  * @param {string[]} dependencies
  * @param {(env: import("@web/env").OdooEnv, dependencies: Record<string, any>) => any} factory
  */
@@ -56,7 +60,7 @@ test(`can start an asynchronous service`, async () => {
     });
 
     const envCreationPromise = makeMockEnv();
-    await tick(); // wait for startServices
+    await tick(); // Wait for startServices
     expect.verifySteps(["before"]);
 
     deferred.resolve(15);
@@ -76,7 +80,7 @@ test(`can start a service with a dependency`, async () => {
 test(`get an object containing dependencies as second arg`, async () => {
     registerService("aang", ["appa"], (_, dependencies) => {
         expect.step("aang");
-        expect(dependencies).toEqual({ appa: "flying bison" });
+        expect(dependencies).toEqual({appa: "flying bison"});
     });
     registerService("appa", [], () => {
         expect.step("appa");
@@ -163,7 +167,7 @@ test(`startServices: throws if all dependencies are not met in the same microtic
 
     registerService("a", [], () => "a");
     await startServices(env);
-    expect(env.services).toEqual({ a: "a", b: "b" });
+    expect(env.services).toEqual({a: "a", b: "b"});
 });
 
 test(`startServices: waits for all synchronous code before attempting to start services`, async () => {
@@ -176,7 +180,7 @@ test(`startServices: waits for all synchronous code before attempting to start s
     registerService("a", [], () => "a");
 
     await serviceStartingPromise;
-    expect(env.services).toEqual({ a: "a", b: "b" });
+    expect(env.services).toEqual({a: "a", b: "b"});
 });
 
 test(`mountComponent creates an env and sets the application as root when no env is provided`, async () => {
@@ -191,9 +195,9 @@ test(`mountComponent creates an env and sets the application as root when no env
     after(() => {
         delete odoo.__WOWL_DEBUG__;
     });
-    const { env } = app;
-    expect(env.services).toEqual({ my_service: "a" });
-    expect(odoo.__WOWL_DEBUG__).toEqual({ root: app.root.component });
+    const {env} = app;
+    expect(env.services).toEqual({my_service: "a"});
+    expect(odoo.__WOWL_DEBUG__).toEqual({root: app.root.component});
     expect(getFixture()).toHaveText("Root");
 });
 
@@ -214,7 +218,7 @@ test(`mountComponent uses the env when provided and doesn't start the services`,
         static props = ["*"];
     }
 
-    const app = await mountComponent(Root, getFixture(), { env });
+    const app = await mountComponent(Root, getFixture(), {env});
     expect.verifySteps([]);
     expect(app.env.services).toBe(env.services);
     expect(odoo.__WOWL_DEBUG__).toBe(undefined);
@@ -227,7 +231,7 @@ test(`mountComponent: can pass props to the root component`, async () => {
         static props = ["*"];
     }
 
-    await mountComponent(Root, getFixture(), { props: { text: "text from props" } });
+    await mountComponent(Root, getFixture(), {props: {text: "text from props"}});
     after(() => {
         delete odoo.__WOWL_DEBUG__;
     });
@@ -249,7 +253,7 @@ test(`env.isReady is resolved after services are loaded`, async () => {
     });
 
     const envCreationPromise = makeMockEnv();
-    await tick(); // wait for startServices
+    await tick(); // Wait for startServices
     expect.verifySteps(["before"]);
 
     deferred.resolve();

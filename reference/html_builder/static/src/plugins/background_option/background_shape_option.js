@@ -1,7 +1,7 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { toRatio } from "@html_builder/utils/utils";
-import { getBgImageURLFromEl } from "@html_builder/utils/utils_css";
-import { _t } from "@web/core/l10n/translation";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {toRatio} from "@html_builder/utils/utils";
+import {getBgImageURLFromEl} from "@html_builder/utils/utils_css";
+import {_t} from "@web/core/l10n/translation";
 
 export class BackgroundShapeOption extends BaseOptionComponent {
     static template = "html_builder.BackgroundShapeOption";
@@ -12,7 +12,8 @@ export class BackgroundShapeOption extends BaseOptionComponent {
         this.toRatio = toRatio;
         this.state = useDomState((editingElement) => {
             const shapeData = this.backgroundShapePlugin.getShapeData(editingElement);
-            const shapeInfo = this.backgroundShapePlugin.getBackgroundShapes()[shapeData.shape];
+            const shapeInfo =
+                this.backgroundShapePlugin.getBackgroundShapes()[shapeData.shape];
             return {
                 shapeName: shapeInfo?.selectLabel || _t("None"),
                 isAnimated: shapeInfo?.animated,
@@ -44,7 +45,8 @@ export function getDefaultColors(editingElement) {
     // Needs to be in document for bg-image class to take effect
     editingElement.ownerDocument.body.appendChild(shapeContainerClonedEl);
     shapeContainerClonedEl.style.setProperty("background-image", "");
-    const shapeSrc = shapeContainerClonedEl && getBgImageURLFromEl(shapeContainerClonedEl);
+    const shapeSrc =
+        shapeContainerClonedEl && getBgImageURLFromEl(shapeContainerClonedEl);
     shapeContainerClonedEl.remove();
     if (!shapeSrc) {
         return {};

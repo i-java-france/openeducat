@@ -1,10 +1,10 @@
-import { Component, useEffect, useRef } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { toolbarButtonProps } from "@html_editor/main/toolbar/toolbar";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
+import {Component, useEffect, useRef} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {toolbarButtonProps} from "@html_editor/main/toolbar/toolbar";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
 
 export class ImageDescription extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         ...toolbarButtonProps,
         openImageDescriptionPopover: Function,

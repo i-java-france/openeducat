@@ -1,11 +1,11 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { localization } from "@web/core/l10n/localization";
-import { registry } from "@web/core/registry";
-import { after, before, SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { WEBSITE_BACKGROUND_OPTIONS } from "@website/builder/option_sequence";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {localization} from "@web/core/l10n/localization";
+import {registry} from "@web/core/registry";
+import {after, before, SNIPPET_SPECIFIC_END} from "@html_builder/utils/option_sequence";
+import {WEBSITE_BACKGROUND_OPTIONS} from "@website/builder/option_sequence";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export const TIMELINE = before(WEBSITE_BACKGROUND_OPTIONS);
 export const DOT_LINES_COLOR = SNIPPET_SPECIFIC_END;
@@ -43,11 +43,11 @@ class TimelineOptionPlugin extends Plugin {
             selector: ".s_timeline_row",
             dropNear: ".s_timeline_row",
         },
-        has_overlay_options: { hasOption: (el) => isTimelineCard(el) },
+        has_overlay_options: {hasOption: (el) => isTimelineCard(el)},
         get_overlay_buttons: withSequence(0, {
             getButtons: this.getActiveOverlayButtons.bind(this),
         }),
-        is_movable_selector: { selector: ".s_timeline_row", direction: "vertical" },
+        is_movable_selector: {selector: ".s_timeline_row", direction: "vertical"},
     };
 
     setup() {
@@ -70,7 +70,10 @@ class TimelineOptionPlugin extends Plugin {
         return [
             {
                 class: `fa fa-fw fa-angle-${direction}`,
-                title: hasPreviousCard !== this.isEditableRTL ? _t("Move left") : _t("Move right"),
+                title:
+                    hasPreviousCard !== this.isEditableRTL
+                        ? _t("Move left")
+                        : _t("Move right"),
                 handler: this.moveTimelineCard.bind(this),
             },
         ];

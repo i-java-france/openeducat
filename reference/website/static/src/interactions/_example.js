@@ -1,6 +1,6 @@
 // import { registry } from "@web/core/registry";
-import { Component, xml, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {Component, xml, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 // -----------------------------------------------------------------------------
 // Example of mounted component
@@ -14,7 +14,7 @@ export class Counter extends Component {
     static props = {};
 
     setup() {
-        this.state = useState({ value: 1 });
+        this.state = useState({value: 1});
         this.notification = useService("notification");
     }
 

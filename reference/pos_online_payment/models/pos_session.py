@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from odoo import models, tools, _
+
+from odoo import _, models, tools
 from odoo.exceptions import UserError
 
 

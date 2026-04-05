@@ -1,22 +1,22 @@
-import { Component, onWillUpdateProps, useRef } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { download } from "@web/core/network/download";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { sortBy } from "@web/core/utils/arrays";
-import { useService } from "@web/core/utils/hooks";
-import { CustomGroupByItem } from "@web/search/custom_group_by_item/custom_group_by_item";
-import { PropertiesGroupByItem } from "@web/search/properties_group_by_item/properties_group_by_item";
-import { getIntervalOptions } from "@web/search/utils/dates";
-import { GROUPABLE_TYPES } from "@web/search/utils/misc";
-import { MultiCurrencyPopover } from "@web/views/view_components/multi_currency_popover";
-import { ReportViewMeasures } from "@web/views/view_components/report_view_measures";
+import {Component, onWillUpdateProps, useRef} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {download} from "@web/core/network/download";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {sortBy} from "@web/core/utils/arrays";
+import {useService} from "@web/core/utils/hooks";
+import {CustomGroupByItem} from "@web/search/custom_group_by_item/custom_group_by_item";
+import {PropertiesGroupByItem} from "@web/search/properties_group_by_item/properties_group_by_item";
+import {getIntervalOptions} from "@web/search/utils/dates";
+import {GROUPABLE_TYPES} from "@web/search/utils/misc";
+import {MultiCurrencyPopover} from "@web/views/view_components/multi_currency_popover";
+import {ReportViewMeasures} from "@web/views/view_components/report_view_measures";
 
 const formatters = registry.category("formatters");
 
@@ -68,9 +68,11 @@ export class PivotRenderer extends Component {
             position: "right",
         });
         const fields = [];
-        for (const [fieldName, field] of Object.entries(this.env.searchModel.searchViewFields)) {
+        for (const [fieldName, field] of Object.entries(
+            this.env.searchModel.searchViewFields
+        )) {
             if (this.validateField(fieldName, field)) {
-                fields.push(Object.assign({ name: fieldName }, field));
+                fields.push(Object.assign({name: fieldName}, field));
             }
         }
         this.fields = sortBy(fields, "string");
@@ -97,10 +99,12 @@ export class PivotRenderer extends Component {
         let formatType = this.model.metaData.widgets[cell.measure];
         if (!formatType) {
             const fieldType = field.type;
-            formatType = ["many2one", "reference"].includes(fieldType) ? "integer" : fieldType;
+            formatType = ["many2one", "reference"].includes(fieldType)
+                ? "integer"
+                : fieldType;
         }
         const formatter = formatters.get(formatType);
-        const formatOptions = { field };
+        const formatOptions = {field};
         if (formatter.extractOptions) {
             Object.assign(formatOptions, formatter.extractOptions(fieldInfo));
         }
@@ -115,7 +119,7 @@ export class PivotRenderer extends Component {
             }
             formatOptions.currencyId = cell.currencyIds[0];
         }
-        return { value: formatter(cell.value, formatOptions) };
+        return {value: formatter(cell.value, formatOptions)};
     }
 
     /**
@@ -124,16 +128,20 @@ export class PivotRenderer extends Component {
     get groupByItems() {
         let items = this.env.searchModel.getSearchItems(
             (searchItem) =>
-                ["groupBy", "dateGroupBy"].includes(searchItem.type) && !searchItem.custom
+                ["groupBy", "dateGroupBy"].includes(searchItem.type) &&
+                !searchItem.custom
         );
         if (items.length === 0) {
             items = this.fields;
         }
 
         // Add custom groupbys
-        let groupNumber = 1 + Math.max(0, ...items.map(({ groupNumber: n }) => n || 0));
-        for (const [fieldName, customGroupBy] of this.model.metaData.customGroupBys.entries()) {
-            items.push({ ...customGroupBy, name: fieldName, groupNumber: groupNumber++ });
+        let groupNumber = 1 + Math.max(0, ...items.map(({groupNumber: n}) => n || 0));
+        for (const [
+            fieldName,
+            customGroupBy,
+        ] of this.model.metaData.customGroupBys.entries()) {
+            items.push({...customGroupBy, name: fieldName, groupNumber: groupNumber++});
         }
 
         return items.map((item) => ({
@@ -143,7 +151,9 @@ export class PivotRenderer extends Component {
             description: item.description || item.string,
             options:
                 item.options ||
-                (["date", "datetime"].includes(item.type) ? getIntervalOptions() : undefined),
+                (["date", "datetime"].includes(item.type)
+                    ? getIntervalOptions()
+                    : undefined),
         }));
     }
 
@@ -160,7 +170,7 @@ export class PivotRenderer extends Component {
      * @returns {boolean}
      */
     validateField(fieldName, field) {
-        const { groupable, type } = field;
+        const {groupable, type} = field;
         return groupable && fieldName !== "id" && GROUPABLE_TYPES.includes(type);
     }
 
@@ -174,7 +184,7 @@ export class PivotRenderer extends Component {
      * @param {string} fieldName
      */
     onAddCustomGroupBy(fieldName) {
-        this.model.addGroupBy({ ...this.dropdown.cellInfo, fieldName, custom: true });
+        this.model.addGroupBy({...this.dropdown.cellInfo, fieldName, custom: true});
         this.dropdown.state.close();
     }
 
@@ -185,9 +195,13 @@ export class PivotRenderer extends Component {
      * @param {number} param0.itemId
      * @param {number} [param0.optionId]
      */
-    onGroupBySelected({ itemId, optionId }) {
-        const { fieldName } = this.groupByItems.find(({ id }) => id === itemId);
-        this.model.addGroupBy({ ...this.dropdown.cellInfo, fieldName, interval: optionId });
+    onGroupBySelected({itemId, optionId}) {
+        const {fieldName} = this.groupByItems.find(({id}) => id === itemId);
+        this.model.addGroupBy({
+            ...this.dropdown.cellInfo,
+            fieldName,
+            interval: optionId,
+        });
     }
     /**
      * Handle a click on a header cell.
@@ -202,7 +216,7 @@ export class PivotRenderer extends Component {
             if (this.dropdown.state.isOpen) {
                 this.dropdown.state.close();
             } else {
-                this.dropdown.cellInfo = { type, groupId: cell.groupId };
+                this.dropdown.cellInfo = {type, groupId: cell.groupId};
                 Object.assign(this.dropdown.state, {
                     target: ev.target.closest(".o_pivot_header_cell_closed"),
                     position: isXAxis ? "bottom-start" : "bottom-end",
@@ -266,7 +280,7 @@ export class PivotRenderer extends Component {
         const table = this.model.exportData();
         download({
             url: "/web/pivot/export_xlsx",
-            data: { data: new Blob([JSON.stringify(table)], { type: "application/json" }) },
+            data: {data: new Blob([JSON.stringify(table)], {type: "application/json"})},
         });
     }
     /**
@@ -287,7 +301,7 @@ export class PivotRenderer extends Component {
      * @param {Object} param0
      * @param {string} param0.measure
      */
-    onMeasureSelected({ measure }) {
+    onMeasureSelected({measure}) {
         this.model.toggleMeasure(measure);
     }
     openMultiCurrencyPopover(ev, value, currencyIds) {
@@ -340,13 +354,13 @@ export class PivotRenderer extends Component {
         });
 
         // retrieve form and list view ids from the action
-        const { views = [] } = this.env.config;
+        const {views = []} = this.env.config;
         this.views = ["list", "form"].map((viewType) => {
             const view = views.find((view) => view[1] === viewType);
             return [view ? view[0] : false, viewType];
         });
 
-        const group = { rowValues: cell.groupId[0], colValues: cell.groupId[1] };
+        const group = {rowValues: cell.groupId[0], colValues: cell.groupId[1]};
         this.openView(this.model.getGroupDomain(group), this.views, context, newWindow);
     }
 }

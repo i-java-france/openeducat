@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { register_payment_method } from "@point_of_sale/app/services/pos_store";
+import {_t} from "@web/core/l10n/translation";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {register_payment_method} from "@point_of_sale/app/services/pos_store";
 
-import { QFPay, QFPayError } from "./qfpay";
+import {QFPay, QFPayError} from "./qfpay";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class PaymentQFpay extends PaymentInterface {
     setup() {
@@ -13,7 +13,11 @@ export class PaymentQFpay extends PaymentInterface {
         this.orm = this.env.services.orm;
         this.dialog = this.env.services.dialog;
         this.paymentLineResolvers = {};
-        this.qfpay = new QFPay(this.env, this.payment_method_id, this._showError.bind(this));
+        this.qfpay = new QFPay(
+            this.env,
+            this.payment_method_id,
+            this._showError.bind(this)
+        );
     }
 
     async sendPaymentRequest(uuid) {
@@ -28,29 +32,36 @@ export class PaymentQFpay extends PaymentInterface {
             if (!originalPayment) {
                 this._showError(
                     new QFPayError(
-                        _t("No payment with %s found for this order.", this.payment_method_id.name)
+                        _t(
+                            "No payment with %s found for this order.",
+                            this.payment_method_id.name
+                        )
                     )
                 );
                 return false;
             }
             if (this._isCreditCardPayment && originalPayment.amount !== -line.amount) {
                 this._showError(
-                    new QFPayError(_t("Credit card payments refund must be for the full amount."))
+                    new QFPayError(
+                        _t("Credit card payments refund must be for the full amount.")
+                    )
                 );
                 return false;
             }
             if (originalPayment.amount < -line.amount) {
                 this._showError(
                     new QFPayError(
-                        _t("Refund amount cannot be greater than the original payment amount.")
+                        _t(
+                            "Refund amount cannot be greater than the original payment amount."
+                        )
                     )
                 );
                 return false;
             }
             const currentDateTime = DateTime.now().setZone("Asia/Hong_Kong");
-            const originalPaymentDate = DateTime.fromISO(originalPayment.create_date).setZone(
-                "Asia/Hong_Kong"
-            );
+            const originalPaymentDate = DateTime.fromISO(
+                originalPayment.create_date
+            ).setZone("Asia/Hong_Kong");
             if (
                 !currentDateTime.hasSame(originalPaymentDate, "day") ||
                 currentDateTime.hour >= 23
@@ -131,7 +142,9 @@ export class PaymentQFpay extends PaymentInterface {
         } else {
             this._showError(
                 new QFPayError(
-                    _t("QFPay payment failed. Please try again or use a different payment method.")
+                    _t(
+                        "QFPay payment failed. Please try again or use a different payment method."
+                    )
                 )
             );
         }

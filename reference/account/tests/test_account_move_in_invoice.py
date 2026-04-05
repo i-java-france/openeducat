@@ -1,13 +1,16 @@
 # pylint: disable=bad-whitespace
-from freezegun import freeze_time
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests import Form, tagged
-from odoo import fields
-from odoo.fields import Command, Domain
-from odoo.exceptions import ValidationError, UserError
+from collections import defaultdict
 from datetime import date
 
-from collections import defaultdict
+from freezegun import freeze_time
+
+from odoo import fields
+from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Command, Domain
+from odoo.tests import Form, tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+
 
 @tagged('post_install', '-at_install')
 class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
@@ -134,7 +137,7 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
         return super().setup_armageddon_tax(tax_name, company_data, type_tax_use='purchase', **kwargs)
 
     def setUp(self):
-        super(TestAccountMoveInInvoiceOnchanges, self).setUp()
+        super().setUp()
         self.assertInvoiceValues(self.invoice, [
             self.product_line_vals_1,
             self.product_line_vals_2,

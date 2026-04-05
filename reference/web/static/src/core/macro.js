@@ -1,25 +1,25 @@
-import { isVisible } from "@web/core/utils/ui";
-import { delay } from "@web/core/utils/concurrency";
-import { validate } from "@odoo/owl";
+import {isVisible} from "@web/core/utils/ui";
+import {delay} from "@web/core/utils/concurrency";
+import {validate} from "@odoo/owl";
 
 const macroSchema = {
-    name: { type: String, optional: true },
-    timeout: { type: Number, optional: true },
+    name: {type: String, optional: true},
+    timeout: {type: Number, optional: true},
     steps: {
         type: Array,
         element: {
             type: Object,
             shape: {
-                action: { type: [Function, String], optional: true },
-                timeout: { type: Number, optional: true },
-                trigger: { type: [Function, String], optional: true },
+                action: {type: [Function, String], optional: true},
+                timeout: {type: Number, optional: true},
+                trigger: {type: [Function, String], optional: true},
             },
             validate: (step) => step.action || step.trigger,
         },
     },
-    onComplete: { type: Function, optional: true },
-    onStep: { type: Function, optional: true },
-    onError: { type: Function, optional: true },
+    onComplete: {type: Function, optional: true},
+    onStep: {type: Function, optional: true},
+    onError: {type: Function, optional: true},
 };
 
 class MacroError extends Error {
@@ -59,9 +59,13 @@ async function waitForTrigger(trigger) {
             }
         });
     } catch (error) {
-        throw new MacroError("Trigger", `ERROR during find trigger:\n${error.message}`, {
-            cause: error,
-        });
+        throw new MacroError(
+            "Trigger",
+            `ERROR during find trigger:\n${error.message}`,
+            {
+                cause: error,
+            }
+        );
     }
 }
 
@@ -121,7 +125,7 @@ export class Macro {
             const executeStep = async () => {
                 const trigger = await waitForTrigger(step.trigger);
                 const result = await performAction(trigger, step.action);
-                await this.onStep({ step, trigger, index: this.currentIndex });
+                await this.onStep({step, trigger, index: this.currentIndex});
                 return result;
             };
             const launchTimer = async () => {
@@ -153,7 +157,7 @@ export class Macro {
         this.isComplete = true;
         if (error) {
             const step = this.steps[this.currentIndex];
-            this.onError({ error, step, index: this.currentIndex });
+            this.onError({error, step, index: this.currentIndex});
         } else if (this.currentIndex === this.steps.length) {
             this.onComplete();
         }
@@ -207,7 +211,9 @@ export class MacroMutationObserver {
         //When iframes already exist at "this.target" initialization
         target
             .querySelectorAll("iframe")
-            .forEach((el) => this.observeIframe(el, this.observer, () => this.callback()));
+            .forEach((el) =>
+                this.observeIframe(el, this.observer, () => this.callback())
+            );
         //When shadowDom already exist at "this.target" initialization
         this.findAllShadowRoots(target).forEach((shadowRoot) => {
             this.observer.observe(shadowRoot, this.observerOptions);
@@ -226,7 +232,10 @@ export class MacroMutationObserver {
                     callback();
                     observer.observe(event.target, observerOptions);
                 });
-                if (!iframeEl.src || iframeEl.contentDocument.readyState === "complete") {
+                if (
+                    !iframeEl.src ||
+                    iframeEl.contentDocument.readyState === "complete"
+                ) {
                     callback();
                     observer.observe(iframeEl.contentDocument, observerOptions);
                 }

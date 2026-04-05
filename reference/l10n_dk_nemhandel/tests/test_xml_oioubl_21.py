@@ -1,6 +1,7 @@
+from unittest.mock import patch
+
 from freezegun import freeze_time
 from requests import PreparedRequest, Response, Session
-from unittest.mock import patch
 
 from odoo import Command
 from odoo.exceptions import UserError

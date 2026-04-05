@@ -1,4 +1,4 @@
-import { CalendarModel } from "@web/views/calendar/calendar_model";
+import {CalendarModel} from "@web/views/calendar/calendar_model";
 
 export class TimesheetCalendarMyTimesheetsModel extends CalendarModel {
     /**

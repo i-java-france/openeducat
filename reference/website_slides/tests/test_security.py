@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import base64
 
-from odoo import http
+from odoo.exceptions import AccessError
+from odoo.tests import HttpCase, tagged
+from odoo.tools import mute_logger
+
 from odoo.addons.base.tests.test_mimetypes import PNG
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.website_slides.tests import common
-from odoo.exceptions import AccessError
-from odoo.tests import tagged, HttpCase
-from odoo.tools import mute_logger
 
 
 @tagged('security')
@@ -428,7 +427,7 @@ class TestAccessHttp(common.SlidesCase, HttpCase):
 class TestRemoveMembership(common.SlidesCase):
 
     def setUp(self):
-        super(TestRemoveMembership, self).setUp()
+        super().setUp()
         self.channel_partner = self.env['slide.channel.partner'].create({
             'channel_id': self.channel.id,
             'partner_id': self.customer.id,

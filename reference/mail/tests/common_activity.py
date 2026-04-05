@@ -1,10 +1,11 @@
 from contextlib import contextmanager
 from unittest.mock import patch
 
-from odoo.addons.mail.models.mail_activity import MailActivity
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import Form
 from odoo.tools.misc import format_date
+
+from odoo.addons.mail.models.mail_activity import MailActivity
+from odoo.addons.mail.tests.common import MailCommon
 
 
 class ActivityScheduleCase(MailCommon):
@@ -92,7 +93,7 @@ class ActivityScheduleCase(MailCommon):
         )
         self.assertEqual(len(activities), expected_number_of_activity)
 
-        for activity, template, expected_deadline in zip(activities, plan.template_ids, expected_deadlines):
+        for activity, template, expected_deadline in zip(activities, plan.template_ids, expected_deadlines, strict=False):
             self.assertEqual(activity.activity_type_id, template.activity_type_id)
             self.assertEqual(activity.date_deadline, expected_deadline)
             self.assertEqual(activity.note, template.note)
@@ -116,7 +117,7 @@ class ActivityScheduleCase(MailCommon):
         message = record.message_ids[0]
         self.assertIn(f'The plan "{plan.name}" has been started', message.body)
 
-        for template, expected_deadline in zip(plan.template_ids, expected_deadlines):
+        for template, expected_deadline in zip(plan.template_ids, expected_deadlines, strict=False):
             if expected_responsible:
                 responsible_id = expected_responsible
             else:

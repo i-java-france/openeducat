@@ -1,25 +1,30 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import inspect
-import logging
 import base64
+import inspect
 import io
-
-from PIL import Image
+import logging
 from contextlib import contextmanager
-from unittest.mock import patch
-from unittest import skip
-from odoo import Command, api
-
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
-from odoo.tests import tagged, loaded_demo_data
-from odoo.addons.account.tests.common import TestTaxCommon, AccountTestInvoicingHttpCommon
-from odoo.addons.point_of_sale.tests.common_setup_methods import setup_product_combo_items
 from datetime import date, timedelta
-from odoo.addons.point_of_sale.tests.common import archive_products
-from odoo.exceptions import UserError
+from unittest import skip
+from unittest.mock import patch
+
 from freezegun import freeze_time
+from PIL import Image
+
+from odoo import Command, api
+from odoo.exceptions import UserError
+from odoo.tests import loaded_demo_data, tagged
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+
+from odoo.addons.account.tests.common import (
+    AccountTestInvoicingHttpCommon,
+    TestTaxCommon,
+)
+from odoo.addons.point_of_sale.tests.common import archive_products
+from odoo.addons.point_of_sale.tests.common_setup_methods import (
+    setup_product_combo_items,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -3676,7 +3681,7 @@ class TestTaxCommonPOS(TestPointOfSaleHttpCommon, TestTaxCommon):
 
         self.start_pos_tour(tour)
         orders = self.env['pos.order'].search([('session_id', '=', self.main_pos_config.current_session_id.id)], limit=len(tests_with_orders))
-        for index, (order, (test_code, _document, _soft_checking, _amount_type, _amount, expected_values)) in enumerate(zip(orders, tests_with_orders)):
+        for index, (order, (test_code, _document, _soft_checking, _amount_type, _amount, expected_values)) in enumerate(zip(orders, tests_with_orders, strict=False)):
             with self.subTest(test_code=test_code, index=index):
                 self.assert_pos_order_totals(order, expected_values)
                 if order.account_move:

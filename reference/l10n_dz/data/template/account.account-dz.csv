@@ -53,7 +53,7 @@ l10n_dz_237,Intangible assets in progress,237,asset_fixed,,False,Immobilisations
 l10n_dz_238,Advances and deposits paid on orders for fixed assets,238,asset_fixed,,False,Avances et acomptes versés sur commandes d'immobilisations
 l10n_dz_261,Shares in subsidiaries,261,asset_fixed,,False,Titres de filiales
 l10n_dz_262,Other investments,262,asset_fixed,,False,Autres titres de participation
-l10n_dz_265,Investments in associates,265,asset_fixed,,False,Titres de participation évalués par équivalence (entreprises associées) 
+l10n_dz_265,Investments in associates,265,asset_fixed,,False,Titres de participation évalués par équivalence (entreprises associées)
 l10n_dz_266,Receivables from Group investments,266,asset_fixed,,False,Créances rattachées à des participations groupe
 l10n_dz_267,Receivables from non-group investments,267,asset_fixed,,False,Créances rattachées à des participations hors groupe
 l10n_dz_268,Receivables from joint ventures,268,asset_fixed,,False,Créances rattachées à des sociétés en participation
@@ -97,7 +97,7 @@ l10n_dz_322,Consumable supplies,322,asset_current,,False,Fournitures consommable
 l10n_dz_326,Packaging,326,asset_current,,False,Emballages
 l10n_dz_331,Product in process,331,asset_current,,False,Produits en cours
 l10n_dz_335,Work in Progress,335,asset_current,,False,Travaux en cours
-l10n_dz_341,Studies in progress,341,asset_current,,False,Etudes en cours 
+l10n_dz_341,Studies in progress,341,asset_current,,False,Etudes en cours
 l10n_dz_345,Services in progress,345,asset_current,,False,Prestations de services en cours
 l10n_dz_351,Intermediate products,351,asset_current,,False,Produits intermédiaires
 l10n_dz_355,Finished products,355,asset_current,,False,Produits finis

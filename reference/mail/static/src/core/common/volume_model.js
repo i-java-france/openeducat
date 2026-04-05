@@ -1,4 +1,4 @@
-import { OR, fields, Record } from "./record";
+import {OR, fields, Record} from "./record";
 
 export class Volume extends Record {
     static id = OR("partner_id", "guest_id");

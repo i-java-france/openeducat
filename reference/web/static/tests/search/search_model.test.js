@@ -1,7 +1,12 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { defineModels, fields, models, mountWithSearch } from "@web/../tests/web_test_helpers";
-import { mockDate, mockTimeZone } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {
+    defineModels,
+    fields,
+    models,
+    mountWithSearch,
+} from "@web/../tests/web_test_helpers";
+import {mockDate, mockTimeZone} from "@odoo/hoot-mock";
 
 describe.current.tags("headless");
 
@@ -38,10 +43,10 @@ function sanitizeSearchItems(model) {
 
 class Foo extends models.Model {
     name = fields.Char();
-    foo = fields.Char({ default: "My little Foo Value" });
-    date_field = fields.Date({ string: "Date" });
-    float_field = fields.Float({ string: "Float" });
-    bar = fields.Many2one({ relation: "partner" });
+    foo = fields.Char({default: "My little Foo Value"});
+    date_field = fields.Date({string: "Date"});
+    float_field = fields.Float({string: "Float"});
+    bar = fields.Many2one({relation: "partner"});
     properties = fields.Properties({
         definition_record: "bar",
         definition_record_field: "child_properties",
@@ -51,10 +56,10 @@ class Foo extends models.Model {
 class Partner extends models.Model {
     foo = fields.Char();
     bar = fields.Boolean();
-    int_field = fields.Integer({ string: "Int Field", aggregator: "sum" });
-    company_id = fields.Many2one({ string: "res.company", relation: "res.company" });
-    company_ids = fields.Many2many({ string: "Companies", relation: "res.company" });
-    category_id = fields.Many2one({ string: "category", relation: "category" });
+    int_field = fields.Integer({string: "Int Field", aggregator: "sum"});
+    company_id = fields.Many2one({string: "res.company", relation: "res.company"});
+    company_ids = fields.Many2many({string: "Companies", relation: "res.company"});
+    category_id = fields.Many2one({string: "category", relation: "category"});
     state = fields.Selection({
         selection: [
             ["abc", "ABC"],
@@ -111,21 +116,21 @@ class Company extends models.Model {
     _name = "res.company";
 
     name = fields.Char();
-    parent_id = fields.Many2one({ string: "Parent company", relation: "res.company" });
-    category_id = fields.Many2one({ string: "Category", relation: "category" });
+    parent_id = fields.Many2one({string: "Parent company", relation: "res.company"});
+    category_id = fields.Many2one({string: "Category", relation: "category"});
 
     _records = [
-        { id: 3, name: "asustek", category_id: 6 },
-        { id: 5, name: "agrolait", category_id: 7 },
+        {id: 3, name: "asustek", category_id: 6},
+        {id: 5, name: "agrolait", category_id: 7},
     ];
 }
 
 class Category extends models.Model {
-    name = fields.Char({ string: "Category Name" });
+    name = fields.Char({string: "Category Name"});
 
     _records = [
-        { id: 6, name: "gold" },
-        { id: 7, name: "silver" },
+        {id: 6, name: "gold"},
+        {id: 7, name: "silver"},
     ];
 }
 
@@ -460,7 +465,7 @@ test("parsing a searchpanel tag", async () => {
                 </search>
             `,
         },
-        { viewType: "kanban" }
+        {viewType: "kanban"}
     );
     expect(model.getSections()).toEqual([]);
 });
@@ -477,7 +482,7 @@ test("parsing a searchpanel field select one", async () => {
             `,
             resModel: "partner",
         },
-        { viewType: "kanban" }
+        {viewType: "kanban"}
     );
     const sections = model.getSections();
     for (const section of sections) {
@@ -548,7 +553,7 @@ test("parsing a searchpanel field select multi", async () => {
             `,
             resModel: "partner",
         },
-        { viewType: "kanban" }
+        {viewType: "kanban"}
     );
     const sections = model.getSections();
     for (const section of sections) {
@@ -649,7 +654,7 @@ test("process search default group by", async () => {
                 <filter name="group_by" context="{ 'group_by': 'foo'}"/>
             </search>
         `,
-        context: { search_default_group_by: 14 },
+        context: {search_default_group_by: 14},
     });
     expect(sanitizeSearchItems(model)).toEqual([
         {
@@ -681,7 +686,7 @@ test("process and toggle a field with a context to evaluate", async () => {
             type: "field",
         },
     ]);
-    model.addAutoCompletionValues(1, { label: "7", operator: "=", value: 7 });
+    model.addAutoCompletionValues(1, {label: "7", operator: "=", value: 7});
     expect(model.context).toEqual({
         a: [7],
         lang: "en",
@@ -1016,9 +1021,11 @@ test("field tags with invisible attribute", async () => {
                 <field name="float_field" invisible="1"/>
             </search>
         `,
-        context: { abc: true },
+        context: {abc: true},
     });
-    const fields = model.getSearchItems((f) => f.type === "field").map((item) => item.fieldName);
+    const fields = model
+        .getSearchItems((f) => f.type === "field")
+        .map((item) => item.fieldName);
     expect(fields).toEqual(["bar"]);
 });
 
@@ -1031,7 +1038,7 @@ test("filter tags with invisible attribute", async () => {
                 <filter name="filter3" string="Always invisible" domain="[]" invisible="1"/>
             </search>
         `,
-        context: { abc: true },
+        context: {abc: true},
     });
     const filters = model
         .getSearchItems((item) => ["filter", "dateFilter"].includes(item.type))
@@ -1052,7 +1059,7 @@ test("no search items created for search panel sections", async () => {
             `,
             resModel: "partner",
         },
-        { viewType: "kanban" }
+        {viewType: "kanban"}
     );
     const sections = model.getSections();
     expect(sections).toHaveLength(2);

@@ -1,23 +1,23 @@
-import { browser } from "@web/core/browser/browser";
-import { formatInteger, formatMonetary } from "@web/views/fields/formatters";
+import {browser} from "@web/core/browser/browser";
+import {formatInteger, formatMonetary} from "@web/views/fields/formatters";
 
-import { Component, onWillUnmount, onWillUpdateProps, useState } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { user } from "@web/core/user";
-import { MultiCurrencyPopover } from "@web/views/view_components/multi_currency_popover";
+import {Component, onWillUnmount, onWillUpdateProps, useState} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {user} from "@web/core/user";
+import {MultiCurrencyPopover} from "@web/views/view_components/multi_currency_popover";
 
 export class AnimatedNumber extends Component {
     static template = "web.AnimatedNumber";
     static props = {
         value: Number,
         duration: Number,
-        animationClass: { type: String, optional: true },
-        currencies: { type: Array, optional: true },
-        title: { type: String, optional: true },
+        animationClass: {type: String, optional: true},
+        currencies: {type: Array, optional: true},
+        title: {type: String, optional: true},
         slots: {
             type: Object,
             shape: {
-                prefix: { type: Object, optional: true },
+                prefix: {type: Object, optional: true},
             },
             optional: true,
         },
@@ -25,14 +25,14 @@ export class AnimatedNumber extends Component {
     static enableAnimations = true;
 
     setup() {
-        this.state = useState({ value: this.props.value });
+        this.state = useState({value: this.props.value});
         this.handle = null;
         this.multiCurrencyPopover = usePopover(MultiCurrencyPopover, {
             position: "right",
         });
         onWillUpdateProps((nextProps) => {
-            const { value: from } = this.props;
-            const { value: to, duration } = nextProps;
+            const {value: from} = this.props;
+            const {value: to, duration} = nextProps;
             if (!this.constructor.enableAnimations || !duration || to <= from) {
                 browser.cancelAnimationFrame(this.handle);
                 this.state.value = to;
@@ -63,7 +63,7 @@ export class AnimatedNumber extends Component {
                 minDigits: 3,
             });
         }
-        return formatInteger(value, { humanReadable: true, minDigits: 3 });
+        return formatInteger(value, {humanReadable: true, minDigits: 3});
     }
 
     openMultiCurrencyPopover(ev) {
@@ -77,9 +77,11 @@ export class AnimatedNumber extends Component {
     }
 
     get currencyId() {
-        const { currencies } = this.props;
+        const {currencies} = this.props;
         if (currencies?.length) {
-            return currencies.length > 1 ? user.activeCompany.currency_id : currencies[0];
+            return currencies.length > 1
+                ? user.activeCompany.currency_id
+                : currencies[0];
         }
         return false;
     }

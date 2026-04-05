@@ -1,22 +1,22 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime, timedelta
+
 from freezegun import freeze_time
 
-from odoo import Command
-from odoo.addons.event.tests.common import EventCase
-from odoo import exceptions
+from odoo import Command, exceptions
 from odoo.fields import Datetime as FieldsDatetime
-from odoo.tests import Form, users, tagged
+from odoo.tests import Form, tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.event.tests.common import EventCase
 
 
 class TestEventInternalsCommon(EventCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEventInternalsCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.event_type_complex = cls.env['event.type'].create({
             'name': 'Update Type',
@@ -974,7 +974,7 @@ class TestEventRegistrationPhone(EventCase):
             '+917200000000',  # IN on event
             '+917200000088',  # already formatted
         ]
-        for (partner_id, phone), exp_phone in zip(sources, expected):
+        for (partner_id, phone), exp_phone in zip(sources, expected, strict=False):
             with self.subTest(partner_id=partner_id, phone=phone):
                 create_vals = {
                     'event_id': event.id,
@@ -995,7 +995,7 @@ class TestEventRegistrationPhone(EventCase):
             '7200000000',  # BE on company -> cannot format IN
             '+917200000088',  # already formatted
         ]
-        for (partner_id, phone), exp_phone in zip(sources, expected):
+        for (partner_id, phone), exp_phone in zip(sources, expected, strict=False):
             with self.subTest(partner_id=partner_id, phone=phone):
                 create_vals = {
                     'event_id': event.id,

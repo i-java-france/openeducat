@@ -1,15 +1,15 @@
-import { isVisible } from "@web/core/utils/ui";
+import {isVisible} from "@web/core/utils/ui";
 
 //TODO: Delete higlight function (duplicate whith highlight_utils) when deleting snippets options
 // SVG generator: contains all information needed to draw highlight SVGs
 // according to text dimensions, highlight style,...
 const _textHighlightFactory = {
-    underline: (targetEl) => drawPath(targetEl, { mode: "line" }),
+    underline: (targetEl) => drawPath(targetEl, {mode: "line"}),
     freehand_1: (targetEl) => {
         const template = (w, h) => [
             `M 0,${h * 1.1} C ${w / 8},${h * 1.05} ${w / 4},${h} ${w},${h}`,
         ];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     freehand_2: (targetEl) => {
         const template = (w, h) => [
@@ -56,14 +56,14 @@ const _textHighlightFactory = {
     },
     double: (targetEl) => {
         const template = (w, h) => [`M 0,${h * 0.9} h ${w}`, `M 0,${h * 1.1} h ${w}`];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     wavy: (targetEl) => {
         const template = (w, h) => [
             `c ${w / 4},0 ${w / 4},-${h / 2} ${w / 2},-${h / 2}` +
                 `c ${w / 4},0 ${w / 4},${h / 2} ${w / 2},${h / 2}`,
         ];
-        return drawPath(targetEl, { mode: "pattern", template });
+        return drawPath(targetEl, {mode: "pattern", template});
     },
     circle_1: (targetEl) => {
         const template = (w, h) => [
@@ -73,7 +73,7 @@ const _textHighlightFactory = {
                 `C ${w}, ${h / 14.6} ${w / 1.411},0 ${w / 2},0 S -2,${h / 14.6} -2,${h / 2.2}` +
                 `S ${w / 4.24},${h} ${w / 1.36},${h * 1.04}`,
         ];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     circle_2: (targetEl) => {
         const template = (w, h) => [
@@ -86,7 +86,12 @@ const _textHighlightFactory = {
                 `25 30.595-17.195 9.779-8.698 11.715-18.55 5.669-30.249-1.131-2.196-3.256-4.079-5.33-5.56-7.981-5.736-17.773-7.48-26.459-11.534-13.249-6.175-27.541-6.916-41.343-10` +
                 `.167-.817-.188-1.571-.64-2.35-.966.037-.364.088-.728.125-1.092Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 120 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 120,
+        });
     },
     circle_3: (targetEl) => {
         const template = (w, h) => [
@@ -97,11 +102,16 @@ const _textHighlightFactory = {
                 `5-109.66 18.762-8.18 3.883-15.497 9.177-21.359 14.752-9.725 9.27-8.044 19.889 3.727 28.032 4.862 3.383 10.997 6.233 17.269 8.237 14.406 4.605 30.04 5.544 48.58 5.` +
                 `763l.092-.03ZM130.37 3.573c-24.813-1.88-48.263 1.378-70.44 9.146 22.814-5.481 46.172-9.02 70.44-9.146Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 90 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 90,
+        });
     },
     over_underline: (targetEl) => {
         const template = (w, h) => [`M 0,0 h ${w}`, `M 0,${h} h ${w}`];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     scribble_1: (targetEl) => {
         const template = (w, h) => [
@@ -112,7 +122,7 @@ const _textHighlightFactory = {
                 `c ${w / 25},0 ${w / 10},0 ${w / 5},1 c 0,0 -${w / 10},1 -${w / 8},1` +
                 `c -${w / 40},0 -${w / 16},0 -${w / 4},${h / 22}`,
         ];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     scribble_2: (targetEl) => {
         const template = (w, h) => [
@@ -171,24 +181,29 @@ const _textHighlightFactory = {
                 ` 2.289-2.281 4.221-5.693 6.877-6.42 2.624-.718 5.992 1.26 9.599 2.216-.044.054.636-.565.96-1.348 1.048-2.499 2.883-3.4 5.42-2.825 2.775.62 5.474 1.304 6.284 4.76.` +
                 `216.89 1.285 2.042 2.159 2.248 7.58 1.793 7.6 1.739 8.108 9.55v.012Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 61 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 61,
+        });
     },
     jagged: (targetEl) => {
         const template = (w, h) => [
             `q ${(4 * w) / 3} -${(2 * w) / 3} ${(2 * w) / 3} 0` +
                 `c -${w / 3} ${w / 3} -${w / 3} ${w / 3} ${w / 3} 0`,
         ];
-        return drawPath(targetEl, { mode: "pattern", template });
+        return drawPath(targetEl, {mode: "pattern", template});
     },
     cross: (targetEl) => {
         const template = (w, h) => [`M 0,0 L ${w},${h}`, `M 0,${h} L ${w},0`];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
     diagonal: (targetEl) => {
         const template = (w, h) => [`M 0,${h} L${w},0`];
-        return drawPath(targetEl, { mode: "free", template });
+        return drawPath(targetEl, {mode: "free", template});
     },
-    strikethrough: (targetEl) => drawPath(targetEl, { mode: "line", position: "center" }),
+    strikethrough: (targetEl) => drawPath(targetEl, {mode: "line", position: "center"}),
     bold: (targetEl) => {
         const template = (w, h) => [
             `M136.604 41.568c5.373.513 10.746 1.047 16.12 1.479 14.437 1.13 29.327 4.047 42.858-4.294 4.92-3.04 2.346-13.56-2.687-13.395-.825.02-1.` +
@@ -196,7 +211,12 @@ const _textHighlightFactory = {
                 `455 3.84 19.893c9.727 2.24 19.454 4.335 29.214 6.307-1.085 1.09-1.764 2.671-2.023 4.356-.615.061-1.214.102-1.83.164-6.748.74-6.959 14.587 0 14.361l107.42-3.513h-.` +
                 `016Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 46 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 46,
+        });
     },
     bold_1: (targetEl) => {
         const template = (w, h) => [
@@ -204,7 +224,12 @@ const _textHighlightFactory = {
                 `C196.78 9.573 195.931.8 189.264.983L13.784 5.678c-7.226.2-7.497 9.422-1.499 11.32-2.186 0-4.354 0-6.54-.017-7.696-.05-7.624 11.286 0 11.635 8.22.383 16.423.733 24` +
                 `.643 1.016l-7.823.35c-7.624.349-7.678 11.985 0 11.635 55.915-2.53 111.813-5.077 167.729-7.607h-.018Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 42 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 42,
+        });
     },
     bold_2: (targetEl) => {
         const template = (w, h) => [
@@ -214,7 +239,12 @@ const _textHighlightFactory = {
                 `.218-.35 20.437-.38 30.655-.577C51.236.78 66.94-.04 82.635.264c14.652.273 29.296 1.655 43.948 2.643 19.822 1.336 39.643 2.02 59.455-.426.923-.121 1.835-.5 2.758-.` +
                 `622 1.329-.183 2.688-.456 4.008-.274 3.829.501 7.073 5.666 7.192 11.21.09 4.466-1.418 6.213-6.775 7.428v-.03Z`,
         ];
-        return drawPath(targetEl, { mode: "fill", template, SVGWidth: 200, SVGHeight: 43 });
+        return drawPath(targetEl, {
+            mode: "fill",
+            template,
+            SVGWidth: 200,
+            SVGHeight: 43,
+        });
     },
 };
 // Returns the width of the DOMRect object.
@@ -238,7 +268,7 @@ function drawPath(textEl, options) {
     // text highlights in snippets/add page dialogs where iframe is scaled.
     const width = textEl.offsetWidth;
     const height = textEl.offsetHeight;
-    options = { ...options, width, height };
+    options = {...options, width, height};
     const yStart = options.position === "center" ? height / 2 : height;
 
     switch (options.mode) {
@@ -332,7 +362,7 @@ export function drawTextHighlightSVG(textEl, highlightID) {
  */
 export function applyTextHighlight(topTextEl, highlightID) {
     const endHighlightUpdate = () =>
-        topTextEl.dispatchEvent(new Event("text_highlight_added", { bubbles: true }));
+        topTextEl.dispatchEvent(new Event("text_highlight_added", {bubbles: true}));
     // Don't reapply the effects to a highlighted text.
     // If the target is invisible, we still need to notify the public widget
     // that a highlight was detected (It's needed anyway, so the public widget
@@ -376,13 +406,15 @@ export function applyTextHighlight(topTextEl, highlightID) {
             range.setStart(lastCurrentText, lastCurrentText.length - 1);
             range.setEnd(lastCurrentText, lastCurrentText.length);
             // Get the "END" position of the last text node in current child.
-            const currentEnd = range.getBoundingClientRect()[isRTL(topTextEl) ? "left" : "right"];
+            const currentEnd =
+                range.getBoundingClientRect()[isRTL(topTextEl) ? "left" : "right"];
             const firstnextText = selectAllTextNodes(child.nextSibling)[0];
             range.setStart(firstnextText, 0);
             range.setEnd(firstnextText, 1);
             // Get the "START" position of the first text node in the next
             // sibling.
-            const nextStart = range.getBoundingClientRect()[isRTL(topTextEl) ? "right" : "left"];
+            const nextStart =
+                range.getBoundingClientRect()[isRTL(topTextEl) ? "right" : "left"];
             // The next sibling starts before the end of the current node
             // => Line break detected.
             lastNodeInLine = nextStart + 1 < currentEnd;
@@ -390,7 +422,7 @@ export function applyTextHighlight(topTextEl, highlightID) {
 
         // for each text line detected, we add the content as new
         // line and adjust the line index accordingly.
-        textLines.map((node, i, { length }) => {
+        textLines.map((node, i, {length}) => {
             if (!lines[lineIndex]) {
                 lines[lineIndex] = [];
             }
@@ -410,7 +442,10 @@ export function applyTextHighlight(topTextEl, highlightID) {
     // Build and set highlight SVGs.
     [...topTextEl.querySelectorAll(".o_text_highlight_item")].forEach((container) => {
         container.append(
-            drawTextHighlightSVG(container, highlightID || getCurrentTextHighlight(topTextEl))
+            drawTextHighlightSVG(
+                container,
+                highlightID || getCurrentTextHighlight(topTextEl)
+            )
         );
     });
     endHighlightUpdate();
@@ -422,7 +457,7 @@ export function applyTextHighlight(topTextEl, highlightID) {
  * @param {HTMLElement} topTextEl
  */
 export function removeTextHighlight(topTextEl) {
-    topTextEl.dispatchEvent(new Event("text_highlight_remove", { bubbles: true }));
+    topTextEl.dispatchEvent(new Event("text_highlight_remove", {bubbles: true}));
     // Simply replace every `<span class="o_text_highlight_item">
     // textNode1 [textNode2,...]<svg .../></span>` by `textNode1
     // [textNode2,...]`.
@@ -435,7 +470,11 @@ export function removeTextHighlight(topTextEl) {
     while (child) {
         const next = child.nextElementSibling;
         // Merge identical elements.
-        if (next && next === child.nextSibling && child.cloneNode().isEqualNode(next.cloneNode())) {
+        if (
+            next &&
+            next === child.nextSibling &&
+            child.cloneNode().isEqualNode(next.cloneNode())
+        ) {
             child.replaceChildren(...child.childNodes, ...next.childNodes);
             next.remove();
         } else {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t
         t-name="sale_pdf_quote_builder.QuotationDocumentX2ManyField"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import re
 
@@ -62,7 +61,7 @@ def get_iban_part(iban, number_kind):
     # Removing the country code from both the IBAN and the mask, since it can have some mask chars
     iban_nocc = iban[2:]
     template_nocc = _map_iban_template.get(country_code, '').replace(' ', '')[2:]
-    return template_nocc and "".join(c for c, t in zip(iban_nocc, template_nocc) if t == mask_char)
+    return template_nocc and "".join(c for c, t in zip(iban_nocc, template_nocc, strict=False) if t == mask_char)
 
 
 def validate_iban(iban):
@@ -90,7 +89,7 @@ class ResPartnerBank(models.Model):
 
     @api.model
     def _get_supported_account_types(self):
-        rslt = super(ResPartnerBank, self)._get_supported_account_types()
+        rslt = super()._get_supported_account_types()
         rslt.append(('iban', self.env._('IBAN')))
         return rslt
 
@@ -100,7 +99,7 @@ class ResPartnerBank(models.Model):
             validate_iban(acc_number)
             return 'iban'
         except ValidationError:
-            return super(ResPartnerBank, self).retrieve_acc_type(acc_number)
+            return super().retrieve_acc_type(acc_number)
 
     def get_bban(self):
         if self.acc_type != 'iban':
@@ -116,7 +115,7 @@ class ResPartnerBank(models.Model):
                     vals['acc_number'] = pretty_iban(normalize_iban(vals['acc_number']))
                 except ValidationError:
                     pass
-        return super(ResPartnerBank, self).create(vals_list)
+        return super().create(vals_list)
 
     def write(self, vals):
         if vals.get('acc_number'):
@@ -125,7 +124,7 @@ class ResPartnerBank(models.Model):
                 vals['acc_number'] = pretty_iban(normalize_iban(vals['acc_number']))
             except ValidationError:
                 pass
-        return super(ResPartnerBank, self).write(vals)
+        return super().write(vals)
 
     @api.constrains('acc_number')
     def _check_iban(self):

@@ -1,5 +1,5 @@
-import { PivotModel } from "@web/views/pivot/pivot_model";
-import { ProjectTaskModelMixin } from "../project_task_model_mixin";
+import {PivotModel} from "@web/views/pivot/pivot_model";
+import {ProjectTaskModelMixin} from "../project_task_model_mixin";
 
 export class ProjectTaskPivotModel extends ProjectTaskModelMixin(PivotModel) {
     async load(searchParams) {

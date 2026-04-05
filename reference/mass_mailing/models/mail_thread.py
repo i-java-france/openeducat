@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+
 from markupsafe import Markup
 
-from odoo import api, models, fields, tools, _
+from odoo import _, api, fields, models, tools
 
 BLACKLIST_MAX_BOUNCED_LIMIT = 5
 
@@ -26,7 +26,7 @@ class MailThread(models.AbstractModel):
             if msg_references:
                 self.env['mailing.trace'].set_opened(domain=[('message_id', 'in', msg_references)])
                 self.env['mailing.trace'].set_replied(domain=[('message_id', 'in', msg_references)])
-        return super(MailThread, self)._message_route_process(message, message_dict, routes)
+        return super()._message_route_process(message, message_dict, routes)
 
     def message_mail_with_source(self, source_ref, **kwargs):
         # avoid having message send through `message_post*` methods being implicitly considered as
@@ -54,7 +54,7 @@ class MailThread(models.AbstractModel):
         # in the last month and the bounced are at least separated by one week,
         # to avoid blacklist someone because of a temporary mail server error,
         # then the email is considered as invalid and is blacklisted.
-        super(MailThread, self)._routing_handle_bounce(email_message, message_dict)
+        super()._routing_handle_bounce(email_message, message_dict)
 
         bounced_email = message_dict['bounced_email']
         bounced_msg_ids = message_dict['bounced_msg_ids']
@@ -91,4 +91,4 @@ class MailThread(models.AbstractModel):
         if custom_values:
             defaults.update(custom_values)
 
-        return super(MailThread, self).message_new(msg_dict, custom_values=defaults)
+        return super().message_new(msg_dict, custom_values=defaults)

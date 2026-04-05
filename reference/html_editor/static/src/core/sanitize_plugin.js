@@ -1,5 +1,5 @@
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { Plugin } from "../plugin";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {Plugin} from "../plugin";
 
 /**
  * @typedef { Object } SanitizeShared
@@ -61,7 +61,7 @@ export class SanitizePlugin extends Plugin {
      * classes/attributes in a custom plugin should be managed by that same
      * custom plugin.
      */
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         for (const el of selectElements(
             root,
             ".o-contenteditable-false, .o-contenteditable-true"

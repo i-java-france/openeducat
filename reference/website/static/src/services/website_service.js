@@ -1,12 +1,12 @@
-import { jsToPyLocale } from "@web/core/l10n/utils";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { isVisible } from "@web/core/utils/ui";
+import {jsToPyLocale} from "@web/core/l10n/utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {isVisible} from "@web/core/utils/ui";
 
-import { FullscreenIndication } from "../components/fullscreen_indication/fullscreen_indication";
-import { WebsiteLoader } from "../components/website_loader/website_loader";
-import { reactive, EventBus } from "@odoo/owl";
+import {FullscreenIndication} from "../components/fullscreen_indication/fullscreen_indication";
+import {WebsiteLoader} from "../components/website_loader/website_loader";
+import {reactive, EventBus} from "@odoo/owl";
 
 const websiteSystrayRegistry = registry.category("website_systray");
 
@@ -26,7 +26,7 @@ const ANONYMOUS_PROCESS_ID = "ANONYMOUS_PROCESS_ID";
 
 export const websiteService = {
     dependencies: ["orm", "action", "hotkey"],
-    start(env, { orm, action, hotkey }) {
+    start(env, {orm, action, hotkey}) {
         let websites = [];
         let currentWebsiteId;
         const currentWebsiteIdList = [];
@@ -72,18 +72,20 @@ export const websiteService = {
                 fullscreen = !fullscreen;
                 document.body.classList.toggle("o_website_fullscreen", fullscreen);
                 bus.trigger(
-                    fullscreen ? "FULLSCREEN-INDICATION-SHOW" : "FULLSCREEN-INDICATION-HIDE"
+                    fullscreen
+                        ? "FULLSCREEN-INDICATION-SHOW"
+                        : "FULLSCREEN-INDICATION-HIDE"
                 );
             },
-            { global: true }
+            {global: true}
         );
         registry.category("main_components").add("FullscreenIndication", {
             Component: FullscreenIndication,
-            props: { bus },
+            props: {bus},
         });
         registry.category("main_components").add("WebsiteLoader", {
             Component: WebsiteLoader,
-            props: { bus },
+            props: {bus},
         });
 
         function addWebsiteId(id) {
@@ -147,7 +149,7 @@ export const websiteService = {
                     contentWindow = null;
                     return;
                 }
-                const { dataset } = document.documentElement;
+                const {dataset} = document.documentElement;
                 // XML files have no dataset on Firefox, and an empty one on
                 // Chrome.
                 const isWebsitePage = dataset && dataset.websiteId;
@@ -172,12 +174,15 @@ export const websiteService = {
                     // different desktop / mobile UI).
                     const contentMenus = [
                         ...new Map(
-                            [...document.querySelectorAll("[data-content_menu_id]")].map(
-                                (menuEl) => [
+                            [
+                                ...document.querySelectorAll("[data-content_menu_id]"),
+                            ].map((menuEl) => [
+                                menuEl.dataset.content_menu_id,
+                                [
+                                    menuEl.dataset.menu_name,
                                     menuEl.dataset.content_menu_id,
-                                    [menuEl.dataset.menu_name, menuEl.dataset.content_menu_id],
-                                ]
-                            )
+                                ],
+                            ])
                         ).values(),
                     ];
                     currentMetadata = {
@@ -197,10 +202,14 @@ export const websiteService = {
                         // denominator of editable pages.
                         editable: !!document.getElementById("wrapwrap"),
                         viewXmlid: viewXmlid,
-                        lang: jsToPyLocale(document.documentElement.getAttribute("lang")),
+                        lang: jsToPyLocale(
+                            document.documentElement.getAttribute("lang")
+                        ),
                         defaultLangName: defaultLangName,
                         langName: langName,
-                        direction: document.documentElement.querySelector("#wrapwrap.o_rtl")
+                        direction: document.documentElement.querySelector(
+                            "#wrapwrap.o_rtl"
+                        )
                             ? "rtl"
                             : "ltr",
                     };
@@ -262,7 +271,7 @@ export const websiteService = {
                 invalidateSnippetCache = value;
             },
 
-            goToWebsite({ websiteId, path, edition, translation, lang } = {}) {
+            goToWebsite({websiteId, path, edition, translation, lang} = {}) {
                 this.websiteRootInstance = undefined;
                 if (lang) {
                     invalidateSnippetCache = true;
@@ -274,7 +283,10 @@ export const websiteService = {
                     clearBreadcrumbs: true,
                     props: {
                         websiteId: websiteId || currentWebsiteId || false,
-                        path: path || (contentWindow && contentWindow.location.href) || "/",
+                        path:
+                            path ||
+                            (contentWindow && contentWindow.location.href) ||
+                            "/",
                         enableEditor: edition,
                         editTranslations: translation,
                     },
@@ -296,7 +308,7 @@ export const websiteService = {
                             id: {},
                             name: {},
                             language_ids: {},
-                            default_lang_id: { fields: { code: {} } },
+                            default_lang_id: {fields: {code: {}}},
                             cookies_bar: {},
                         },
                     })
@@ -304,12 +316,14 @@ export const websiteService = {
             },
             blockPreview(showLoader, processId) {
                 if (!blockingProcesses.length) {
-                    bus.trigger("BLOCK", { showLoader });
+                    bus.trigger("BLOCK", {showLoader});
                 }
                 blockingProcesses.push(processId || ANONYMOUS_PROCESS_ID);
             },
             unblockPreview(processId) {
-                const processIndex = blockingProcesses.indexOf(processId || ANONYMOUS_PROCESS_ID);
+                const processIndex = blockingProcesses.indexOf(
+                    processId || ANONYMOUS_PROCESS_ID
+                );
                 if (processIndex > -1) {
                     blockingProcesses.splice(processIndex, 1);
                     if (blockingProcesses.length === 0) {
@@ -333,7 +347,9 @@ export const websiteService = {
              * @param {string} [model]
              * @returns {string}
              */
-            async getUserModelName(model = this.currentWebsite.metadata.mainObject.model) {
+            async getUserModelName(
+                model = this.currentWebsite.metadata.mainObject.model
+            ) {
                 if (!modelNamesProm) {
                     // FIXME the `get_available_models` is to be removed/changed
                     // in a near future. This code is to be adapted, probably
@@ -344,7 +360,8 @@ export const websiteService = {
                         .call("ir.model", "get_available_models")
                         .then((modelsData) => {
                             for (const modelData of modelsData) {
-                                modelNames[modelData["model"]] = modelData["display_name"];
+                                modelNames[modelData["model"]] =
+                                    modelData["display_name"];
                             }
                         })
                         // Precaution in case the util is simply removed without

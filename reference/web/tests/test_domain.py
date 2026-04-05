@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.tests import tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 
 @tagged('post_install', '-at_install')

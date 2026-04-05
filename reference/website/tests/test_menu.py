@@ -1,18 +1,19 @@
 import json
-
 from hashlib import sha256
-from lxml import html
 from unittest.mock import Mock, patch
+
+from lxml import html
 from werkzeug.urls import url_parse
 
-from odoo.addons.http_routing.tests.common import MockRequest
-from odoo.tests import common
 from odoo.exceptions import UserError
+from odoo.tests import common
+
+from odoo.addons.http_routing.tests.common import MockRequest
 
 
 class TestMenu(common.TransactionCase):
     def setUp(self):
-        super(TestMenu, self).setUp()
+        super().setUp()
         self.nb_website = self.env['website'].search_count([])
 
     def test_01_menu_got_duplicated(self):

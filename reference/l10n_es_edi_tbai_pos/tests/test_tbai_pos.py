@@ -1,9 +1,10 @@
 from unittest.mock import patch
 
-from odoo.addons.l10n_es_edi_tbai.tests.common import TestEsEdiTbaiCommonGipuzkoa
-from odoo.addons.l10n_es_edi_tbai_pos.tests.common import CommonPosEsEdiTest
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+
+from odoo.addons.l10n_es_edi_tbai.tests.common import TestEsEdiTbaiCommonGipuzkoa
+from odoo.addons.l10n_es_edi_tbai_pos.tests.common import CommonPosEsEdiTest
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

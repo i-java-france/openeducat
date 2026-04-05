@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import odoo
-
-from odoo import fields
-from odoo.addons.point_of_sale.tests.common import TestPoSCommon
-from odoo.exceptions import ValidationError
-from freezegun import freeze_time
-from dateutil.relativedelta import relativedelta
-from datetime import datetime, timedelta
 import unittest.mock
+from datetime import datetime, timedelta
+
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+
+import odoo
+from odoo import fields
+from odoo.exceptions import ValidationError
 from odoo.http import UserError
+
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -22,7 +23,7 @@ class TestPoSBasicConfig(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPoSBasicConfig, self).setUp()
+        super().setUp()
         self.config = self.basic_config
         self.product0 = self.create_product('Product 0', self.categ_basic, 0.0, 0.0)
         self.product1 = self.create_product('Product 1', self.categ_basic, 10.0, 5)
@@ -837,7 +838,7 @@ class TestPoSBasicConfig(TestPoSCommon):
             self.assertTrue(cm.output[1].startswith(f'DEBUG:odoo.addons.point_of_sale.models.pos_order:PoS synchronisation #1996 processing order {order_log_str} order full data: '))
             self.assertEqual(cm.output[2], f'INFO:odoo.addons.point_of_sale.models.pos_order:PoS synchronisation #1996 order {order_log_str} created pos.order #{odoo_order_id}')
             self.assertEqual(cm.output[3], 'INFO:odoo.addons.point_of_sale.models.pos_order:PoS synchronisation #1996 finished')
-            
+
         session.post_closing_cash_details(amount_paid)
         session.close_session_from_ui()
 

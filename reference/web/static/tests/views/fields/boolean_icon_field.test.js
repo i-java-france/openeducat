@@ -1,13 +1,13 @@
-import { expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineModels, fields, models, mountView} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    bar = fields.Boolean({ string: "Bar field" });
+    bar = fields.Boolean({string: "Bar field"});
     foo = fields.Boolean();
 
-    _records = [{ id: 1, bar: true, foo: false }];
+    _records = [{id: 1, bar: true, foo: false}];
 }
 
 defineModels([Partner]);

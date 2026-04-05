@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 from collections import OrderedDict
 from zlib import error as zlib_error
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import pdf
 
@@ -53,7 +52,7 @@ class IrActionsReport(models.Model):
         if report_type == 'html':
             report = self._get_report(report_ref)
             bodies, res_ids, *_unused = self._prepare_html(content, report_model=report.model)
-            return {res_id: str(body).encode() for res_id, body in zip(res_ids, bodies)}
+            return {res_id: str(body).encode() for res_id, body in zip(res_ids, bodies, strict=False)}
         elif report_type == 'pdf':
             pdf_dict = {res_id: stream['stream'].getvalue() for res_id, stream in content.items()}
             for stream in content.values():

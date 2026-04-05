@@ -1,13 +1,13 @@
-import { LinkPopover } from "@html_editor/main/link/link_popover";
-import { rpc } from "@web/core/network/rpc";
-import { _t } from "@web/core/l10n/translation";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { patch } from "@web/core/utils/patch";
-import { useChildRef } from "@web/core/utils/hooks";
+import {LinkPopover} from "@html_editor/main/link/link_popover";
+import {rpc} from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {patch} from "@web/core/utils/patch";
+import {useChildRef} from "@web/core/utils/hooks";
 import wUtils from "@website/js/utils";
-import { useEffect } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { session } from "@web/session";
+import {useEffect} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {session} from "@web/session";
 
 /**
  * The goal of this patch is to handle the URL autocomplete in the LinkPopover
@@ -26,8 +26,8 @@ import { session } from "@web/session";
 export class AutoCompleteInLinkPopover extends AutoComplete {
     static props = {
         ...AutoComplete.props,
-        inputClass: { type: String, optional: true },
-        updateValue: { type: Function, optional: true },
+        inputClass: {type: String, optional: true},
+        updateValue: {type: Function, optional: true},
     };
     static template = "website.AutoCompleteInLinkPopover";
 
@@ -51,7 +51,7 @@ export class AutoCompleteInLinkPopover extends AutoComplete {
 }
 
 patch(LinkPopover, {
-    components: { ...LinkPopover.components, AutoCompleteInLinkPopover },
+    components: {...LinkPopover.components, AutoCompleteInLinkPopover},
 });
 
 /* patch the LinkPopover component to maintain the option source for the
@@ -65,7 +65,10 @@ patch(LinkPopover.prototype, {
         this.urlRef = useChildRef();
         useEffect(
             (el) => {
-                if (el && (this.state.isImage || (!this.state.url && this.state.label))) {
+                if (
+                    el &&
+                    (this.state.isImage || (!this.state.url && this.state.label))
+                ) {
                     el.focus();
                 }
             },
@@ -90,7 +93,7 @@ patch(LinkPopover.prototype, {
             cssClass: "ui-autocomplete-item",
             label: item.label,
             onSelect: this.onSelect.bind(this, item.value),
-            data: { icon: item.icon || false, isCategory: false },
+            data: {icon: item.icon || false, isCategory: false},
         });
 
         if (term[0] === "#") {
@@ -98,7 +101,10 @@ patch(LinkPopover.prototype, {
                 term,
                 this.props.linkElement.ownerDocument.body
             );
-            return anchors.map((anchor) => makeItem({ label: anchor, value: anchor }), this);
+            return anchors.map(
+                (anchor) => makeItem({label: anchor, value: anchor}),
+                this
+            );
         } else if (term.startsWith("http") || term.length === 0) {
             // avoid useless call to /website/get_suggested_links
             return [];
@@ -117,7 +123,7 @@ patch(LinkPopover.prototype, {
                 choices.push({
                     cssClass: "ui-autocomplete-category",
                     label: other.title,
-                    data: { icon: false, isCategory: true },
+                    data: {icon: false, isCategory: true},
                 });
                 for (const page of other.values) {
                     choices.push(makeItem(page));
@@ -145,7 +151,9 @@ patch(LinkPopover.prototype, {
         return (
             (browser.location.hostname === parsedUrl.hostname ||
                 // Also check if the odoo-hosted domain is the current domain of the url
-                new RegExp(`^https?://${session.db}\\.odoo\\.com(/.*)?$`).test(parsedUrl.origin)) &&
+                new RegExp(`^https?://${session.db}\\.odoo\\.com(/.*)?$`).test(
+                    parsedUrl.origin
+                )) &&
             !parsedUrl.pathname.startsWith("/odoo") &&
             !parsedUrl.pathname.startsWith("/web") &&
             !parsedUrl.pathname.startsWith("/@/")

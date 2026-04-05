@@ -1,20 +1,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-from pytz import UTC
 from collections import defaultdict
-from datetime import timedelta, datetime, time
-from lxml import html
+from datetime import datetime, time, timedelta
 
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
-from odoo.fields import Command, Date, Domain
-from odoo.addons.rating.models import rating_data
-from odoo.addons.html_editor.tools import handle_history_divergence
+from lxml import html
+from pytz import UTC
+
+from odoo import SUPERUSER_ID, _, api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import format_list, SQL, LazyTranslate, html_sanitize
-from odoo.addons.resource.models.utils import filter_domain_leaf
-from odoo.addons.project.controllers.project_sharing_chatter import ProjectSharingChatter
+from odoo.fields import Command, Date, Domain
+from odoo.tools import SQL, LazyTranslate, format_list, html_sanitize
+
+from odoo.addons.html_editor.tools import handle_history_divergence
 from odoo.addons.mail.tools.discuss import Store
+from odoo.addons.project.controllers.project_sharing_chatter import (
+    ProjectSharingChatter,
+)
+from odoo.addons.rating.models import rating_data
+from odoo.addons.resource.models.utils import filter_domain_leaf
 
 _lt = LazyTranslate(__name__)
 
@@ -850,7 +854,7 @@ class ProjectTask(models.Model):
         if not has_default_users:
             active_users = self.user_ids.filtered('active')
         milestone_mapping = self.env.context.get('milestone_mapping', {})
-        for task, vals in zip(self, vals_list):
+        for task, vals in zip(self, vals_list, strict=False):
 
             if not default.get('stage_id'):
                 vals['stage_id'] = task.stage_id.id
@@ -891,7 +895,7 @@ class ProjectTask(models.Model):
             (k: original_task_id, v: [original_task.depend_on_ids.ids, original_task.dependent_ids.ids]
         """
         task_mapping, task_dependencies = {}, {}
-        for original_task, copied_task in zip(self, copied_tasks):
+        for original_task, copied_task in zip(self, copied_tasks, strict=False):
             task_mapping[original_task.id] = copied_task
             if original_task.allow_task_dependencies and (original_task.depend_on_ids or original_task.dependent_ids):
                 task_dependencies[original_task.id] = [original_task.depend_on_ids.ids, original_task.dependent_ids.ids]
@@ -1110,7 +1114,7 @@ class ProjectTask(models.Model):
 
         self_ctx.browse().check_access('create')
         default_stage = dict()
-        for vals, additional_vals in zip(vals_list, additional_vals_list):
+        for vals, additional_vals in zip(vals_list, additional_vals_list, strict=False):
             project_id = vals.get('project_id') or default_project_id
 
             if vals.get('user_ids'):
@@ -1127,7 +1131,7 @@ class ProjectTask(models.Model):
             if self_ctx.env.user._is_portal() and not self_ctx.env.su:
                 self_ctx._ensure_fields_write(vals, defaults=True)
 
-            if project_id and not "company_id" in vals:
+            if project_id and "company_id" not in vals:
                 additional_vals["company_id"] = self_ctx.env["project.project"].browse(
                     project_id
                 ).company_id.id
@@ -1156,14 +1160,14 @@ class ProjectTask(models.Model):
                 vals['recurrence_id'] = recurrence.id
 
         # create the task, write computed inaccessible fields in sudo
-        for vals, computed_vals in zip(vals_list, additional_vals_list):
+        for vals, computed_vals in zip(vals_list, additional_vals_list, strict=False):
             for field_name in list(computed_vals):
                 if self_ctx._has_field_access(self_ctx._fields[field_name], 'write'):
                     vals[field_name] = computed_vals.pop(field_name)
         # no track when the portal user create a task to avoid using during tracking
         # process since the portal does not have access to tracking models
         tasks = super(ProjectTask, self_ctx.with_context(mail_create_nosubscribe=True, mail_notrack=not self_ctx.env.su and self_ctx.env.user._is_portal())).create(vals_list)
-        for task, computed_vals in zip(tasks.sudo(), additional_vals_list):
+        for task, computed_vals in zip(tasks.sudo(), additional_vals_list, strict=False):
             if computed_vals:
                 task.write(computed_vals)
         tasks.sudo()._populate_missing_personal_stages()
@@ -1259,7 +1263,7 @@ class ProjectTask(models.Model):
         # stage change: update date_last_stage_update
         now = fields.Datetime.now()
         if 'stage_id' in vals:
-            if not 'project_id' in vals and self.filtered(lambda t: not t.project_id):
+            if 'project_id' not in vals and self.filtered(lambda t: not t.project_id):
                 raise UserError(_('You can only set a personal stage on a private task.'))
 
             additional_vals.update(self.update_date_end(vals['stage_id']))

@@ -1,6 +1,6 @@
-import { Domain } from "@web/core/domain";
-import { NO_RECORD_AT_THIS_POSITION } from "../pivot_model";
-import { OdooCoreViewPlugin } from "@spreadsheet/plugins";
+import {Domain} from "@web/core/domain";
+import {NO_RECORD_AT_THIS_POSITION} from "../pivot_model";
+import {OdooCoreViewPlugin} from "@spreadsheet/plugins";
 
 /**
  * @typedef {import("@spreadsheet").FieldMatching} FieldMatching
@@ -38,9 +38,11 @@ function pivotPeriodToFilterValue(timeRange, value) {
                 year,
             };
         case "month": {
-            const month = value.includes("/") ? Number.parseInt(value.split("/")[0]) : -1;
+            const month = value.includes("/")
+                ? Number.parseInt(value.split("/")[0])
+                : -1;
             if (month <= 0 || month > 12) {
-                return { type: "year", year };
+                return {type: "year", year};
             }
             return {
                 type: "month",
@@ -49,9 +51,11 @@ function pivotPeriodToFilterValue(timeRange, value) {
             };
         }
         case "quarter": {
-            const quarter = value.includes("/") ? Number.parseInt(value.split("/")[0]) : -1;
+            const quarter = value.includes("/")
+                ? Number.parseInt(value.split("/")[0])
+                : -1;
             if (quarter <= 0 || quarter > 4) {
-                return { type: "year", year };
+                return {type: "year", year};
             }
             return {
                 type: "quarter",
@@ -149,12 +153,17 @@ export class PivotCoreViewGlobalFilterPlugin extends OdooCoreViewPlugin {
 
         for (const filter of filters) {
             const dataSource = this.getters.getPivot(pivotId);
-            const { type } = this.getters.getPivotCoreDefinition(pivotId);
+            const {type} = this.getters.getPivotCoreDefinition(pivotId);
             if (type !== "ODOO") {
                 continue;
             }
-            const { field, granularity: time } = dataSource.parseGroupField(lastNode.field);
-            const pivotFieldMatching = this.getters.getPivotFieldMatching(pivotId, filter.id);
+            const {field, granularity: time} = dataSource.parseGroupField(
+                lastNode.field
+            );
+            const pivotFieldMatching = this.getters.getPivotFieldMatching(
+                pivotId,
+                filter.id
+            );
             if (pivotFieldMatching && pivotFieldMatching.chain === field.name) {
                 let value = dataSource.getLastPivotGroupValue(PivotDomain.slice(-1));
                 if (value === NO_RECORD_AT_THIS_POSITION) {
@@ -169,7 +178,10 @@ export class PivotCoreViewGlobalFilterPlugin extends OdooCoreViewPlugin {
                             if (value === "false") {
                                 transformedValue = undefined;
                             } else {
-                                transformedValue = pivotPeriodToFilterValue(time, value);
+                                transformedValue = pivotPeriodToFilterValue(
+                                    time,
+                                    value
+                                );
                                 if (
                                     JSON.stringify(transformedValue) ===
                                     JSON.stringify(currentValue)
@@ -193,16 +205,16 @@ export class PivotCoreViewGlobalFilterPlugin extends OdooCoreViewPlugin {
                             break;
                         }
                         if (JSON.stringify(currentValue?.ids) !== `[${value}]`) {
-                            transformedValue = { operator: "in", ids: [value] };
+                            transformedValue = {operator: "in", ids: [value]};
                         }
                         break;
                     case "text":
                         if (JSON.stringify(currentValue?.strings) !== `[${value}]`) {
-                            transformedValue = { operator: "ilike", strings: [value] };
+                            transformedValue = {operator: "ilike", strings: [value]};
                         }
                         break;
                 }
-                matchingFilters.push({ filterId: filter.id, value: transformedValue });
+                matchingFilters.push({filterId: filter.id, value: transformedValue});
             }
         }
         return matchingFilters;

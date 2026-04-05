@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
-import { getScrollingElement } from "@web/core/utils/scrolling";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {getScrollingElement} from "@web/core/utils/scrolling";
 
 export class AnimateOverflow extends Interaction {
     static selector = "#wrapwrap";
@@ -42,7 +42,9 @@ export class AnimateOverflow extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.animate_overflow", AnimateOverflow);
+registry
+    .category("public.interactions")
+    .add("website.animate_overflow", AnimateOverflow);
 
 registry.category("public.interactions.edit").add("website.animate_overflow", {
     Interaction: AnimateOverflow,

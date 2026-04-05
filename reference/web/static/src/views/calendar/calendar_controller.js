@@ -2,27 +2,27 @@ import {
     deleteConfirmationMessage,
     ConfirmationDialog,
 } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useBus, useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { Layout } from "@web/search/layout";
-import { useModelWithSampleData } from "@web/model/model";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-import { CallbackRecorder, useSetupAction } from "@web/search/action_hook";
-import { CalendarMobileFilterPanel } from "./mobile_filter_panel/calendar_mobile_filter_panel";
-import { CalendarQuickCreate } from "./quick_create/calendar_quick_create";
-import { CalendarSidePanel } from "@web/views/calendar/calendar_side_panel/calendar_side_panel";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
-import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
-import { CogMenu } from "@web/search/cog_menu/cog_menu";
-import { browser } from "@web/core/browser/browser";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { MultiSelectionButtons } from "@web/views/view_components/multi_selection_buttons";
-import { getLocalYearAndWeek } from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {useBus, useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import {Layout} from "@web/search/layout";
+import {useModelWithSampleData} from "@web/model/model";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
+import {CallbackRecorder, useSetupAction} from "@web/search/action_hook";
+import {CalendarMobileFilterPanel} from "./mobile_filter_panel/calendar_mobile_filter_panel";
+import {CalendarQuickCreate} from "./quick_create/calendar_quick_create";
+import {CalendarSidePanel} from "@web/views/calendar/calendar_side_panel/calendar_side_panel";
+import {SearchBar} from "@web/search/search_bar/search_bar";
+import {useSearchBarToggler} from "@web/search/search_bar/search_bar_toggler";
+import {ViewScaleSelector} from "@web/views/view_components/view_scale_selector";
+import {CogMenu} from "@web/search/cog_menu/cog_menu";
+import {browser} from "@web/core/browser/browser";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {MultiSelectionButtons} from "@web/views/view_components/multi_selection_buttons";
+import {getLocalYearAndWeek} from "@web/core/l10n/dates";
 
-import { Component, reactive, useState } from "@odoo/owl";
+import {Component, reactive, useState} from "@odoo/owl";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export const SCALE_LABELS = {
     day: _t("Day"),
@@ -61,7 +61,7 @@ export class CalendarController extends Component {
         Renderer: Function,
         archInfo: Object,
         buttonTemplate: String,
-        itemCalendarProps: { type: Object, optional: true },
+        itemCalendarProps: {type: Object, optional: true},
     };
 
     setup() {
@@ -75,15 +75,20 @@ export class CalendarController extends Component {
             getLocalState: () => this.model.exportedState,
         });
 
-        const sessionShowSidebar = browser.sessionStorage.getItem("calendar.showSideBar");
+        const sessionShowSidebar =
+            browser.sessionStorage.getItem("calendar.showSideBar");
         this.state = useState({
             isWeekendVisible:
                 browser.localStorage.getItem("calendar.isWeekendVisible") != null
-                    ? JSON.parse(browser.localStorage.getItem("calendar.isWeekendVisible"))
+                    ? JSON.parse(
+                          browser.localStorage.getItem("calendar.isWeekendVisible")
+                      )
                     : true,
             showSideBar:
                 !this.env.isSmall &&
-                Boolean(sessionShowSidebar != null ? JSON.parse(sessionShowSidebar) : true),
+                Boolean(
+                    sessionShowSidebar != null ? JSON.parse(sessionShowSidebar) : true
+                ),
         });
 
         this.searchBarToggler = useSearchBarToggler();
@@ -148,7 +153,7 @@ export class CalendarController extends Component {
     }
 
     get weekHeader() {
-        const { rangeStart, rangeEnd } = this.model;
+        const {rangeStart, rangeEnd} = this.model;
         if (rangeStart.year != rangeEnd.year) {
             return `${rangeStart.toFormat("MMMM")} ${rangeStart.year} - ${rangeEnd.toFormat(
                 "MMMM"
@@ -188,7 +193,7 @@ export class CalendarController extends Component {
     }
 
     get sidePanelProps() {
-        return { model: this.model };
+        return {model: this.model};
     }
 
     toggleSideBar() {
@@ -239,11 +244,14 @@ export class CalendarController extends Component {
 
     prepareSelectionFeature() {
         this.selectedCells = null;
-        this.multiSelectionButtonsReactive = this.prepareMultiSelectionButtonsReactive();
+        this.multiSelectionButtonsReactive =
+            this.prepareMultiSelectionButtonsReactive();
         this.callbackRecorder = new CallbackRecorder();
         this._baseRendererProps.callbackRecorder = this.callbackRecorder;
-        this._baseRendererProps.onSquareSelection = this.updateMultiSelection.bind(this);
-        this._baseRendererProps.cleanSquareSelection = this.cleanSquareSelection.bind(this);
+        this._baseRendererProps.onSquareSelection =
+            this.updateMultiSelection.bind(this);
+        this._baseRendererProps.cleanSquareSelection =
+            this.cleanSquareSelection.bind(this);
 
         useBus(this.model.bus, "update", this.cleanSquareSelection.bind(this));
     }
@@ -333,7 +341,7 @@ export class CalendarController extends Component {
                         viewId: this.model.formViewId,
                         onRecordSaved: () => this.model.load(),
                     },
-                    { onClose: () => resolve() }
+                    {onClose: () => resolve()}
                 );
             });
         } else {
@@ -373,7 +381,10 @@ export class CalendarController extends Component {
     }
 
     deleteRecord(record) {
-        this.displayDialog(ConfirmationDialog, this.deleteConfirmationDialogProps(record));
+        this.displayDialog(
+            ConfirmationDialog,
+            this.deleteConfirmationDialogProps(record)
+        );
     }
 
     getDates(selectedCells) {
@@ -411,10 +422,10 @@ export class CalendarController extends Component {
         let date = null;
         switch (move) {
             case "next":
-                date = this.model.date.plus({ [`${this.model.scale}s`]: 1 });
+                date = this.model.date.plus({[`${this.model.scale}s`]: 1});
                 break;
             case "previous":
-                date = this.model.date.minus({ [`${this.model.scale}s`]: 1 });
+                date = this.model.date.minus({[`${this.model.scale}s`]: 1});
                 break;
             case "today":
                 date = luxon.DateTime.local().startOf("day");
@@ -423,21 +434,24 @@ export class CalendarController extends Component {
                 }
                 break;
         }
-        await this.model.load({ date });
+        await this.model.load({date});
     }
 
     get scales() {
         return Object.fromEntries(
-            this.model.scales.map((s) => [s, { description: SCALE_LABELS[s] }])
+            this.model.scales.map((s) => [s, {description: SCALE_LABELS[s]}])
         );
     }
 
     async setScale(scale) {
-        await this.model.load({ scale });
+        await this.model.load({scale});
     }
 
     toggleWeekendVisibility() {
         this.state.isWeekendVisible = !this.state.isWeekendVisible;
-        browser.localStorage.setItem("calendar.isWeekendVisible", this.state.isWeekendVisible);
+        browser.localStorage.setItem(
+            "calendar.isWeekendVisible",
+            this.state.isWeekendVisible
+        );
     }
 }

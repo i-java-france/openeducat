@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tests.common import TransactionCase
@@ -8,7 +7,7 @@ class TestRecipients(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestRecipients, cls).setUpClass()
+        super().setUpClass()
         Partner = cls.env['res.partner'].with_context({
             'mail_create_nolog': True,
             'mail_create_nosubscribe': True,

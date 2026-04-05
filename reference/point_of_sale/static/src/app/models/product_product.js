@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { Base } from "./related_models";
-import { normalize } from "@web/core/l10n/utils";
+import {registry} from "@web/core/registry";
+import {Base} from "./related_models";
+import {normalize} from "@web/core/l10n/utils";
 
 // When adding a method to this class, please pay attention to naming.
 // As in the backend, when trying to access taxes_id on product.product,
@@ -32,7 +32,11 @@ const ProductProductTemplateProxy = new Proxy(ProductProduct, {
             get(target, prop) {
                 const val = Reflect.get(target, prop);
 
-                if (val !== undefined || target.model.fields[prop] || typeof prop === "symbol") {
+                if (
+                    val !== undefined ||
+                    target.model.fields[prop] ||
+                    typeof prop === "symbol"
+                ) {
                     return val;
                 }
 

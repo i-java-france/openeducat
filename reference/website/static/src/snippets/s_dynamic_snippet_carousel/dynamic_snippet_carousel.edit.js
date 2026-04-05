@@ -1,5 +1,5 @@
-import { DynamicSnippetCarousel } from "@website/snippets/s_dynamic_snippet_carousel/dynamic_snippet_carousel";
-import { registry } from "@web/core/registry";
+import {DynamicSnippetCarousel} from "@website/snippets/s_dynamic_snippet_carousel/dynamic_snippet_carousel";
+import {registry} from "@web/core/registry";
 
 const DynamicSnippetCarouselEdit = (I) =>
     class extends I {

@@ -1,8 +1,8 @@
-import { nodeToTree } from "@html_editor/core/history_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { memoize } from "@web/core/utils/functions";
-import { renderToElement } from "@web/core/utils/render";
+import {nodeToTree} from "@html_editor/core/history_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {memoize} from "@web/core/utils/functions";
+import {renderToElement} from "@web/core/utils/render";
 
 /**
  * @typedef { Object } EmbeddedComponentShared
@@ -26,15 +26,17 @@ export class EmbeddedComponentPlugin extends Plugin {
     resources = {
         /** Handlers */
         normalize_handlers: withSequence(0, this.normalize.bind(this)),
-        clean_for_save_handlers: ({ root }) => this.cleanForSave(root),
+        clean_for_save_handlers: ({root}) => this.cleanForSave(root),
         attribute_change_handlers: this.onChangeAttribute.bind(this),
         restore_savepoint_handlers: () => this.handleComponents(this.editable),
         history_reset_handlers: () => this.handleComponents(this.editable),
         history_reset_from_steps_handlers: () => this.handleComponents(this.editable),
-        step_added_handlers: ({ stepCommonAncestor }) => this.handleComponents(stepCommonAncestor),
+        step_added_handlers: ({stepCommonAncestor}) =>
+            this.handleComponents(stepCommonAncestor),
         external_step_added_handlers: () => this.handleComponents(this.editable),
 
-        serializable_descendants_processors: this.processDescendantsToSerialize.bind(this),
+        serializable_descendants_processors:
+            this.processDescendantsToSerialize.bind(this),
         attribute_change_processors: this.onChangeAttribute.bind(this),
         savable_mutation_record_predicates: this.isMutationRecordSavable.bind(this),
         move_node_whitelist_selectors: "[data-embedded]",
@@ -87,7 +89,9 @@ export class EmbeddedComponentPlugin extends Plugin {
         if (!embedding) {
             return serializableDescendants;
         }
-        return Object.values(embedding.getEditableDescendants?.(elem) || {}).map(nodeToTree);
+        return Object.values(embedding.getEditableDescendants?.(elem) || {}).map(
+            nodeToTree
+        );
     }
 
     handleComponents(elem) {
@@ -134,14 +138,16 @@ export class EmbeddedComponentPlugin extends Plugin {
      * @returns {string} new attribute value to set on the node, which might be
      *        unchanged
      */
-    onChangeAttribute(attributeChange, { forNewStep = false } = {}) {
+    onChangeAttribute(attributeChange, {forNewStep = false} = {}) {
         const attributeValue = attributeChange.value;
         let newAttributeValue;
         if (attributeChange.attributeName === "data-embedded-state") {
             const attrState = attributeChange.reverse
                 ? attributeChange.oldValue
                 : attributeChange.value;
-            const stateChangeManager = this.getStateChangeManager(attributeChange.target);
+            const stateChangeManager = this.getStateChangeManager(
+                attributeChange.target
+            );
             if (stateChangeManager) {
                 // onStateChanged returns undefined if no change is needed for
                 // the attribute value
@@ -173,7 +179,7 @@ export class EmbeddedComponentPlugin extends Plugin {
 
     mountComponent(
         host,
-        { Component, getEditableDescendants, getProps, name, getStateChangeManager }
+        {Component, getEditableDescendants, getProps, name, getStateChangeManager}
     ) {
         const props = getProps?.(host) || {};
         const env = Object.create(this.env);
@@ -185,10 +191,10 @@ export class EmbeddedComponentPlugin extends Plugin {
             env.getEditableDescendants = getEditableDescendants;
             // Enable the automatic selection restoration feature in @see useEditableDescendants
             Object.assign(env.editorShared, {
-                selection: { ...this.dependencies.selection },
+                selection: {...this.dependencies.selection},
             });
         }
-        this.dispatchTo("mount_component_handlers", { name, env, props });
+        this.dispatchTo("mount_component_handlers", {name, env, props});
         const root = this.app.createRoot(Component, {
             props,
             env,
@@ -248,7 +254,7 @@ export class EmbeddedComponentPlugin extends Plugin {
         });
     }
 
-    deepDestroyComponent({ host }) {
+    deepDestroyComponent({host}) {
         const removed = [];
         this.forEachEmbeddedComponentHost(host, (containedHost) => {
             const info = this.nodeMap.get(containedHost);
@@ -267,8 +273,8 @@ export class EmbeddedComponentPlugin extends Plugin {
      * Should not be called directly as it will not handle recursivity and
      * removed components @see deepDestroyComponent
      */
-    destroyComponent({ root, host }) {
-        const { getEditableDescendants } = this.getEmbedding(host);
+    destroyComponent({root, host}) {
+        const {getEditableDescendants} = this.getEmbedding(host);
         const editableDescendants = getEditableDescendants?.(host) || {};
         root.destroy();
         this.components.delete(arguments[0]);
@@ -309,17 +315,20 @@ export class EmbeddedComponentPlugin extends Plugin {
     }
 
     normalize(elem) {
-        this.forEachEmbeddedComponentHost(elem, (host, { getEditableDescendants }) => {
+        this.forEachEmbeddedComponentHost(elem, (host, {getEditableDescendants}) => {
             this.dependencies.protectedNode.setProtectingNode(host, true);
             const editableDescendants = getEditableDescendants?.(host) || {};
             for (const editableDescendant of Object.values(editableDescendants)) {
-                this.dependencies.protectedNode.setProtectingNode(editableDescendant, false);
+                this.dependencies.protectedNode.setProtectingNode(
+                    editableDescendant,
+                    false
+                );
             }
         });
     }
 
     cleanForSave(clone) {
-        this.forEachEmbeddedComponentHost(clone, (host, { getEditableDescendants }) => {
+        this.forEachEmbeddedComponentHost(clone, (host, {getEditableDescendants}) => {
             // In this case, host is a cloned element, there is no OWL root
             // attached to it.
             const editableDescendants = getEditableDescendants?.(host) || {};

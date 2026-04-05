@@ -18,7 +18,7 @@ function blobToStr(blob) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            const { result } = reader;
+            const {result} = reader;
             if (typeof result === "string") {
                 resolve(result);
             } else {
@@ -49,7 +49,7 @@ async function write(items) {
     const strItem = await stringify(items[0]);
 
     const stubContainer = document.createElement("div");
-    const shadowContainer = stubContainer.attachShadow({ mode: "open" });
+    const shadowContainer = stubContainer.attachShadow({mode: "open"});
     const stub = document.createElement("span");
     stub.innerText = strItem["text/plain"];
     shadowContainer.appendChild(stub);

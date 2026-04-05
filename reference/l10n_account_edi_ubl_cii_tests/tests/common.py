@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 import base64
-
-from freezegun import freeze_time
 from os.path import join as opj
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from freezegun import freeze_time
+from lxml import etree
+
 from odoo import fields
 from odoo.tools import misc
 
-from lxml import etree
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 class TestUBLCommon(AccountTestInvoicingCommon):
@@ -76,7 +75,7 @@ class TestUBLCommon(AccountTestInvoicingCommon):
             'product_id': line.product_id.id,
             'product_uom_id': line.product_uom_id.id,
             **invoice_line_kwargs,
-        } for line, invoice_line_kwargs in zip(invoice1.invoice_line_ids, invoice_line_kwargs_list)])
+        } for line, invoice_line_kwargs in zip(invoice1.invoice_line_ids, invoice_line_kwargs_list, strict=False)])
 
     # -------------------------------------------------------------------------
     # IMPORT HELPERS

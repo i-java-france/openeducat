@@ -1,8 +1,8 @@
-import { patch } from "@web/core/utils/patch";
-import { Thread } from "@mail/core/common/thread_model";
-import { router } from "@web/core/browser/router";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
+import {Thread} from "@mail/core/common/thread_model";
+import {router} from "@web/core/browser/router";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
 
 patch(Thread.prototype, {
     /**
@@ -19,7 +19,8 @@ patch(Thread.prototype, {
      */
     async notifyMessageToUser(message) {
         const channel_notifications =
-            this.self_member_id?.custom_notifications || this.store.settings.channel_notifications;
+            this.self_member_id?.custom_notifications ||
+            this.store.settings.channel_notifications;
         if (
             !this.self_member_id?.mute_until_dt &&
             !this.store.self.im_status.includes("busy") &&
@@ -31,9 +32,9 @@ patch(Thread.prototype, {
         ) {
             if (this.model === "discuss.channel" && this.inChathubOnNewMessage) {
                 await this.store.chatHub.initPromise;
-                let chatWindow = this.store.ChatWindow.get({ thread: this });
+                let chatWindow = this.store.ChatWindow.get({thread: this});
                 if (!chatWindow) {
-                    chatWindow = this.store.ChatWindow.insert({ thread: this });
+                    chatWindow = this.store.ChatWindow.insert({thread: this});
                     if (
                         this.autoOpenChatWindowOnNewMessage &&
                         this.store.chatHub.opened.length < this.store.chatHub.maxOpened
@@ -68,12 +69,12 @@ patch(Thread.prototype, {
         this.store.discuss.activeTab = !this.store.env.services.ui.isSmall
             ? "notification"
             : this.model === "mail.box"
-            ? this.store.self.main_user_id?.notification_type === "inbox"
-                ? "inbox"
-                : "starred"
-            : ["chat", "group"].includes(this.channel_type)
-            ? "chat"
-            : "channel";
+              ? this.store.self.main_user_id?.notification_type === "inbox"
+                  ? "inbox"
+                  : "starred"
+              : ["chat", "group"].includes(this.channel_type)
+                ? "chat"
+                : "channel";
         if (pushState) {
             this.setActiveURL();
         }
@@ -82,34 +83,40 @@ patch(Thread.prototype, {
             this.model !== "mail.box" &&
             !this.store.is_welcome_page_displayed
         ) {
-            this.open({ focus: true });
+            this.open({focus: true});
         }
     },
 
     setActiveURL() {
         const activeId =
-            typeof this.id === "string" ? `mail.box_${this.id}` : `discuss.channel_${this.id}`;
-        router.pushState({ active_id: activeId });
+            typeof this.id === "string"
+                ? `mail.box_${this.id}`
+                : `discuss.channel_${this.id}`;
+        router.pushState({active_id: activeId});
         if (
             this.store.action_discuss_id &&
             this.store.env.services.action?.currentController?.action.id ===
                 this.store.action_discuss_id
         ) {
             // Keep the action stack up to date (used by breadcrumbs).
-            this.store.env.services.action.currentController.action.context.active_id = activeId;
+            this.store.env.services.action.currentController.action.context.active_id =
+                activeId;
         }
     },
     async unpin() {
         this.isLocallyPinned = false;
         if (this.eq(this.store.discuss.thread)) {
-            router.replaceState({ active_id: undefined });
+            router.replaceState({active_id: undefined});
         }
-        if (this.model === "discuss.channel" && this.self_member_id?.is_pinned !== false) {
+        if (
+            this.model === "discuss.channel" &&
+            this.self_member_id?.is_pinned !== false
+        ) {
             await this.store.env.services.orm.silent.call(
                 "discuss.channel",
                 "channel_pin",
                 [this.id],
-                { pinned: false }
+                {pinned: false}
             );
         }
     },

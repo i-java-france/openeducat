@@ -2,13 +2,13 @@
 // imported into Odoo UI Icons (oi-*), but we keep some old fa variant classes
 // to maintain compatibility.
 %additional-fa-classes {
-    font-family: 'odoo_ui_icons' !important;
+    font-family: "odoo_ui_icons" !important;
 }
 .fa.fa-tiktok {
     @extend %additional-fa-classes;
 
     &::before {
-        content: '\e81b';
+        content: "\e81b";
     }
 }
 // Don't write `.fa.fa-twitter` or this will be considered like a new icon in
@@ -19,21 +19,21 @@
     @extend %additional-fa-classes;
 
     &::before {
-        content: '\e81a';
+        content: "\e81a";
     }
 }
 .fa-twitter-square.fa {
     @extend %additional-fa-classes;
 
     &::before {
-        content: '\e848';
+        content: "\e848";
     }
 }
 .fa.fa-discord {
     @extend %additional-fa-classes;
 
     &::before {
-        content: '\e811';
+        content: "\e811";
     }
 }
 .fa.fa-google-play {

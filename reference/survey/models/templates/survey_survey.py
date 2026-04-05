@@ -1,6 +1,6 @@
 import ast
 
-from odoo import api, models, _
+from odoo import _, api, models
 
 
 class SurveySurvey(models.Model):

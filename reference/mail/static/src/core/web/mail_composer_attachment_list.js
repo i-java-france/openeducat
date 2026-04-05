@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 import {
     many2ManyBinaryField,
     Many2ManyBinaryField,
@@ -34,4 +34,6 @@ export const mailComposerAttachmentList = {
     component: MailComposerAttachmentList,
 };
 
-registry.category("fields").add("mail_composer_attachment_list", mailComposerAttachmentList);
+registry
+    .category("fields")
+    .add("mail_composer_attachment_list", mailComposerAttachmentList);

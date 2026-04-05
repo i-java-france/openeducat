@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { Component, useState, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {Component, useState, xml} from "@odoo/owl";
 import {
     defineModels,
     getPagerLimit,
@@ -9,9 +9,9 @@ import {
     pagerNext,
 } from "@web/../tests/web_test_helpers";
 
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { usePager } from "@web/search/pager_hook";
-import { animationFrame } from "@odoo/hoot-mock";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {usePager} from "@web/search/pager_hook";
+import {animationFrame} from "@odoo/hoot-mock";
 
 class Foo extends models.Model {}
 
@@ -19,7 +19,7 @@ defineModels([Foo]);
 
 test("pager is correctly displayed", async () => {
     class TestComponent extends Component {
-        static components = { ControlPanel };
+        static components = {ControlPanel};
         static template = xml`<ControlPanel />`;
         static props = ["*"];
         setup() {
@@ -44,7 +44,7 @@ test("pager is correctly displayed", async () => {
 test.tags("desktop");
 test("pager is correctly displayed on desktop", async () => {
     class TestComponent extends Component {
-        static components = { ControlPanel };
+        static components = {ControlPanel};
         static template = xml`<ControlPanel />`;
         static props = ["*"];
         setup() {
@@ -68,11 +68,11 @@ test("pager is correctly displayed on desktop", async () => {
 
 test("pager is correctly updated", async () => {
     class TestComponent extends Component {
-        static components = { ControlPanel };
+        static components = {ControlPanel};
         static template = xml`<ControlPanel />`;
         static props = ["*"];
         setup() {
-            this.state = useState({ offset: 0, limit: 10 });
+            this.state = useState({offset: 0, limit: 10});
             usePager(() => ({
                 offset: this.state.offset,
                 limit: this.state.limit,
@@ -89,26 +89,26 @@ test("pager is correctly updated", async () => {
         searchMenuTypes: [],
     });
     expect(`.o_pager`).toHaveCount(1);
-    expect(component.state).toEqual({ offset: 0, limit: 10 });
+    expect(component.state).toEqual({offset: 0, limit: 10});
 
     await pagerNext();
     expect(`.o_pager`).toHaveCount(1);
-    expect(component.state).toEqual({ offset: 10, limit: 10 });
+    expect(component.state).toEqual({offset: 10, limit: 10});
 
     component.state.offset = 20;
     await animationFrame();
     expect(`.o_pager`).toHaveCount(1);
-    expect(component.state).toEqual({ offset: 20, limit: 10 });
+    expect(component.state).toEqual({offset: 20, limit: 10});
 });
 
 test.tags("desktop");
 test("pager is correctly updated on desktop", async () => {
     class TestComponent extends Component {
-        static components = { ControlPanel };
+        static components = {ControlPanel};
         static template = xml`<ControlPanel />`;
         static props = ["*"];
         setup() {
-            this.state = useState({ offset: 0, limit: 10 });
+            this.state = useState({offset: 0, limit: 10});
             usePager(() => ({
                 offset: this.state.offset,
                 limit: this.state.limit,

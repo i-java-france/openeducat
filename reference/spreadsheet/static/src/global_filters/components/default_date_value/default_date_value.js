@@ -1,8 +1,8 @@
-import { Component } from "@odoo/owl";
-import { RELATIVE_PERIODS } from "@spreadsheet/global_filters/helpers";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {RELATIVE_PERIODS} from "@spreadsheet/global_filters/helpers";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
 
 const DATE_OPTIONS = [
     {
@@ -69,9 +69,9 @@ const DATE_OPTIONS = [
  */
 export class DefaultDateValue extends Component {
     static template = "spreadsheet.DefaultDateValue";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
-        value: { type: String, optional: true },
+        value: {type: String, optional: true},
         update: Function,
     };
 

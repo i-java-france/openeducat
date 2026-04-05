@@ -1,8 +1,8 @@
-import { __debug__ } from "@odoo/hoot";
-import { stores } from "@odoo/o-spreadsheet";
-import { patch } from "@web/core/utils/patch";
+import {__debug__} from "@odoo/hoot";
+import {stores} from "@odoo/o-spreadsheet";
+import {patch} from "@web/core/utils/patch";
 
-const { RendererStore } = stores;
+const {RendererStore} = stores;
 
 /**
  * When rendering a spreadsheet, drawing the grid in a canvas is a costly operation,

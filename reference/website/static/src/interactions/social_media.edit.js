@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class SocialMediaEdit extends Interaction {
     static selector = ".s_social_media > :first-child";

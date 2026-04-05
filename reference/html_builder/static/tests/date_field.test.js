@@ -1,5 +1,5 @@
-import { setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { expect, test, describe } from "@odoo/hoot";
+import {setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {describe, expect, test} from "@odoo/hoot";
 
 describe.current.tags("desktop");
 

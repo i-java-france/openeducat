@@ -1,15 +1,19 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { googlePlacesSession } from "@google_address_autocomplete/google_places_session";
-import { KeepLast } from "@web/core/utils/concurrency";
+import {googlePlacesSession} from "@google_address_autocomplete/google_places_session";
+import {KeepLast} from "@web/core/utils/concurrency";
 
 export class AddressForm extends Interaction {
     static selector = ".oe_cart .address_autoformat";
     static selectorHas = "input[name='street'][data-autocomplete-enabled='1']";
     dynamicContent = {
-        "input[name='street']": { "t-on-input.withTarget": this.debounced(this.onStreetInput, 200) },
-        ".js_autocomplete_result": { "t-on-click.withTarget": this.onClickAutocompleteResult },
+        "input[name='street']": {
+            "t-on-input.withTarget": this.debounced(this.onStreetInput, 200),
+        },
+        ".js_autocomplete_result": {
+            "t-on-click.withTarget": this.onClickAutocompleteResult,
+        },
     };
 
     setup() {
@@ -29,14 +33,20 @@ export class AddressForm extends Interaction {
         const inputContainerEl = inputEl.parentNode;
         if (inputEl.value.length >= 5) {
             this.keepLast.add(
-                googlePlacesSession.getAddressPropositions({
-                    partial_address: inputEl.value,
-                }).then((response) => {
-                    inputContainerEl.querySelector(".dropdown-menu")?.remove();
-                    this.renderAt("website_sale_autocomplete.AutocompleteDropDown", {
-                        results: response.results,
-                    }, inputContainerEl);
-                })
+                googlePlacesSession
+                    .getAddressPropositions({
+                        partial_address: inputEl.value,
+                    })
+                    .then((response) => {
+                        inputContainerEl.querySelector(".dropdown-menu")?.remove();
+                        this.renderAt(
+                            "website_sale_autocomplete.AutocompleteDropDown",
+                            {
+                                results: response.results,
+                            },
+                            inputContainerEl
+                        );
+                    })
             );
         } else {
             inputContainerEl.querySelector(".dropdown-menu")?.remove();
@@ -50,16 +60,27 @@ export class AddressForm extends Interaction {
     async onClickAutocompleteResult(ev, currentTargetEl) {
         const dropdownEl = currentTargetEl.parentNode;
         dropdownEl.innerText = "";
-        dropdownEl.classList.add("d-flex", "justify-content-center", "align-items-center");
+        dropdownEl.classList.add(
+            "d-flex",
+            "justify-content-center",
+            "align-items-center"
+        );
 
         const spinnerEl = document.createElement("div");
-        spinnerEl.classList.add("spinner-border", "text-warning", "text-center", "m-auto");
+        spinnerEl.classList.add(
+            "spinner-border",
+            "text-warning",
+            "text-center",
+            "m-auto"
+        );
         dropdownEl.appendChild(spinnerEl);
 
-        const address = await this.waitFor(googlePlacesSession.getAddressDetails({
-            address: currentTargetEl.innerText,
-            google_place_id: currentTargetEl.dataset.googlePlaceId,
-        }));
+        const address = await this.waitFor(
+            googlePlacesSession.getAddressDetails({
+                address: currentTargetEl.innerText,
+                google_place_id: currentTargetEl.dataset.googlePlaceId,
+            })
+        );
 
         if (address.formatted_street_number) {
             this.streetAndNumberInput.value = address.formatted_street_number;
@@ -72,7 +93,7 @@ export class AddressForm extends Interaction {
         if (address.country) {
             this.countrySelect.value = address.country[0];
             // Let the state select know that the country has changed so that it may fetch the correct states or disappear.
-            this.countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
+            this.countrySelect.dispatchEvent(new Event("change", {bubbles: true}));
         }
         if (address.state) {
             // Waits for the stateSelect to update before setting the state.

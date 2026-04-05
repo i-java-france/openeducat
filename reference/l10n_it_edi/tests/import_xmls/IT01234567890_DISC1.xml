@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<p:FatturaElettronica versione="FPR12" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-                      xmlns:p="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2"
-                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2 http://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2/Schema_del_file_xml_FatturaPA_versione_1.2.xsd">
-        <FatturaElettronicaHeader>
+<?xml version="1.0" encoding="utf-8" ?>
+<p:FatturaElettronica
+    versione="FPR12"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:p="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2 http://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2/Schema_del_file_xml_FatturaPA_versione_1.2.xsd"
+>
+    <FatturaElettronicaHeader>
         <DatiTrasmissione>
             <IdTrasmittente>
                 <IdPaese>IT</IdPaese>
@@ -12,7 +15,7 @@
             <ProgressivoInvio>00001</ProgressivoInvio>
             <FormatoTrasmissione>FPR12</FormatoTrasmissione>
             <CodiceDestinatario>ABC1234</CodiceDestinatario>
-            <ContattiTrasmittente/>
+            <ContattiTrasmittente />
         </DatiTrasmissione>
         <CedentePrestatore>
             <DatiAnagrafici>
@@ -58,8 +61,8 @@
                 <Data>2014-12-18</Data>
                 <Numero>01234567890</Numero>
                 <Causale>
-                    LA FATTURA FA RIFERIMENTO AD UNA OPERAZIONE AAAA BBBBBBBBBBBBBBBBBB CCC DDDDDDDDDDDDDDD 
-                </Causale>                      
+                    LA FATTURA FA RIFERIMENTO AD UNA OPERAZIONE AAAA BBBBBBBBBBBBBBBBBB CCC DDDDDDDDDDDDDDD
+                </Causale>
                 <ImportoTotaleDocumento>35.07</ImportoTotaleDocumento>
             </DatiGeneraliDocumento>
             <DatiOrdineAcquisto>

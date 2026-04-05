@@ -1,18 +1,18 @@
-import { browser } from "@web/core/browser/browser";
-import { getLocalYearAndWeek } from "@web/core/l10n/dates";
-import { localization } from "@web/core/l10n/localization";
-import { is24HourFormat } from "@web/core/l10n/time";
-import { useBus } from "@web/core/utils/hooks";
-import { renderToFragment, renderToString } from "@web/core/utils/render";
-import { useDebounced } from "@web/core/utils/timing";
-import { makeWeekColumn } from "@web/views/calendar/calendar_common/calendar_common_week_column";
-import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
-import { convertRecordToEvent, getColor } from "@web/views/calendar/utils";
-import { useCalendarPopover } from "@web/views/calendar/hooks/calendar_popover_hook";
-import { useFullCalendar } from "@web/views/calendar/hooks/full_calendar_hook";
-import { useSquareSelection } from "@web/views/calendar/hooks/square_selection_hook";
+import {browser} from "@web/core/browser/browser";
+import {getLocalYearAndWeek} from "@web/core/l10n/dates";
+import {localization} from "@web/core/l10n/localization";
+import {is24HourFormat} from "@web/core/l10n/time";
+import {useBus} from "@web/core/utils/hooks";
+import {renderToFragment, renderToString} from "@web/core/utils/render";
+import {useDebounced} from "@web/core/utils/timing";
+import {makeWeekColumn} from "@web/views/calendar/calendar_common/calendar_common_week_column";
+import {CalendarCommonPopover} from "@web/views/calendar/calendar_common/calendar_common_popover";
+import {convertRecordToEvent, getColor} from "@web/views/calendar/utils";
+import {useCalendarPopover} from "@web/views/calendar/hooks/calendar_popover_hook";
+import {useFullCalendar} from "@web/views/calendar/hooks/full_calendar_hook";
+import {useSquareSelection} from "@web/views/calendar/hooks/square_selection_hook";
 
-import { Component, useEffect } from "@odoo/owl";
+import {Component, useEffect} from "@odoo/owl";
 
 const SCALE_TO_FC_VIEW = {
     day: "timeGridDay",
@@ -43,7 +43,7 @@ const HOUR_FORMATS = {
     },
 };
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class CalendarCommonRenderer extends Component {
     static components = {
@@ -54,11 +54,11 @@ export class CalendarCommonRenderer extends Component {
     static headerTemplate = "web.CalendarCommonRendererHeader";
     static props = {
         model: Object,
-        isWeekendVisible: { type: Boolean, optional: true },
+        isWeekendVisible: {type: Boolean, optional: true},
         createRecord: Function,
         editRecord: Function,
         deleteRecord: Function,
-        setDate: { type: Function, optional: true },
+        setDate: {type: Function, optional: true},
         callbackRecorder: Object,
         onSquareSelection: Function,
         cleanSquareSelection: Function,
@@ -73,11 +73,17 @@ export class CalendarCommonRenderer extends Component {
             this.fc.api.scrollToTime(`${luxon.DateTime.local().hour - 2}:00:00`)
         );
 
-        const fullCalendarRenderDebounced = useDebounced(() => this.fc.api.updateSize(), 100, {
-            immediate: true,
-            trailing: true,
-        });
-        const fullCalendarResizeObserver = new ResizeObserver(fullCalendarRenderDebounced);
+        const fullCalendarRenderDebounced = useDebounced(
+            () => this.fc.api.updateSize(),
+            100,
+            {
+                immediate: true,
+                trailing: true,
+            }
+        );
+        const fullCalendarResizeObserver = new ResizeObserver(
+            fullCalendarRenderDebounced
+        );
         useEffect(
             (el) => {
                 fullCalendarResizeObserver.observe(el);
@@ -139,11 +145,14 @@ export class CalendarCommonRenderer extends Component {
             selectable: !this.props.model.hasMultiCreate && this.props.model.canCreate,
             showNonCurrentDates: this.props.model.monthOverflow,
             slotLabelFormat: is24HourFormat() ? HOUR_FORMATS[24] : HOUR_FORMATS[12],
-            snapDuration: { minutes: 15 },
+            snapDuration: {minutes: 15},
             timeZone: luxon.Settings.defaultZone.name,
             unselectAuto: false,
             weekNumberFormat: {
-                week: this.props.model.scale === "month" || this.env.isSmall ? "numeric" : "long",
+                week:
+                    this.props.model.scale === "month" || this.env.isSmall
+                        ? "numeric"
+                        : "long",
             },
             weekends: this.props.isWeekendVisible,
             weekNumberCalculation: (date) => getLocalYearAndWeek(date).week,
@@ -163,12 +172,12 @@ export class CalendarCommonRenderer extends Component {
         };
     }
 
-    viewDidMount({ el, view }) {
+    viewDidMount({el, view}) {
         const showWeek = view.calendar.currentData.options.weekNumbers;
         const weekText = view.calendar.currentData.options.weekText;
         const weekColumn = !this.customOptions.weekNumbersWithinDays;
         if (showWeek && weekColumn) {
-            makeWeekColumn({ el, weekText });
+            makeWeekColumn({el, weekText});
         }
     }
 
@@ -184,17 +193,23 @@ export class CalendarCommonRenderer extends Component {
         return `[data-event-id="${event.id}"]`;
     }
     highlightEvent(event, className) {
-        for (const el of this.fc.api.el.querySelectorAll(this.computeEventSelector(event))) {
+        for (const el of this.fc.api.el.querySelectorAll(
+            this.computeEventSelector(event)
+        )) {
             el.classList.add(className);
         }
     }
     unhighlightEvent(event, className) {
-        for (const el of this.fc.api.el.querySelectorAll(this.computeEventSelector(event))) {
+        for (const el of this.fc.api.el.querySelectorAll(
+            this.computeEventSelector(event)
+        )) {
             el.classList.remove(className);
         }
     }
     mapRecordsToEvents() {
-        return Object.values(this.props.model.records).map((r) => this.convertRecordToEvent(r));
+        return Object.values(this.props.model.records).map((r) =>
+            this.convertRecordToEvent(r)
+        );
     }
     convertRecordToEvent(record) {
         return convertRecordToEvent(record);
@@ -250,7 +265,7 @@ export class CalendarCommonRenderer extends Component {
         }
     }
     onEventContent(arg) {
-        const { event } = arg;
+        const {event} = arg;
         if (event.start && event.end) {
             const dateFmt = (date) =>
                 luxon.DateTime.fromJSDate(date).toFormat(this.timeFormat);
@@ -264,11 +279,11 @@ export class CalendarCommonRenderer extends Component {
                 startTime: this.getStartTime(record),
                 endTime: this.getEndTime(record),
             });
-            return { domNodes: fragment.children };
+            return {domNodes: fragment.children};
         }
         return true;
     }
-    eventClassNames({ el, event }) {
+    eventClassNames({el, event}) {
         const classesToAdd = [];
         classesToAdd.push("o_event");
         const record = this.props.model.records[event.id];
@@ -302,7 +317,7 @@ export class CalendarCommonRenderer extends Component {
         }
         return classesToAdd;
     }
-    onEventDidMount({ el, event }) {
+    onEventDidMount({el, event}) {
         el.dataset.eventId = event.id;
         const record = this.props.model.records[event.id];
 
@@ -337,14 +352,14 @@ export class CalendarCommonRenderer extends Component {
     }
     onEventDrop(info) {
         this.fc.api.unselect();
-        this.props.model.updateRecord(this.fcEventToRecord(info.event), { moved: true });
+        this.props.model.updateRecord(this.fcEventToRecord(info.event), {moved: true});
     }
     onEventResize(info) {
         this.fc.api.unselect();
         this.props.model.updateRecord(this.fcEventToRecord(info.event));
     }
     fcEventToRecord(event) {
-        const { id, allDay, date, start, end } = event;
+        const {id, allDay, date, start, end} = event;
         const res = {
             start: luxon.DateTime.fromJSDate(date || start),
             isAllDay: allDay,
@@ -352,7 +367,7 @@ export class CalendarCommonRenderer extends Component {
         if (end) {
             res.end = luxon.DateTime.fromJSDate(end);
             if (["week", "month"].includes(this.props.model.scale) && allDay) {
-                res.end = res.end.minus({ days: 1 });
+                res.end = res.end.minus({days: 1});
             }
         }
         if (id) {
@@ -401,9 +416,12 @@ export class CalendarCommonRenderer extends Component {
         this.updateSize();
     }
 
-    getHeaderHtml({ date }) {
+    getHeaderHtml({date}) {
         return {
-            html: renderToString(this.constructor.headerTemplate, this.headerTemplateProps(date)),
+            html: renderToString(
+                this.constructor.headerTemplate,
+                this.headerTemplateProps(date)
+            ),
         };
     }
 
@@ -411,8 +429,8 @@ export class CalendarCommonRenderer extends Component {
         const scale = this.props.model.scale;
         // when rendering months, FullCalendar uses a date w/out tz
         // so use UTC instead of local tz when converting to DateTime
-        const options = scale === "month" ? { zone: "UTC" } : {};
-        const { weekdayShort, weekdayLong, day } = DateTime.fromJSDate(date, options);
+        const options = scale === "month" ? {zone: "UTC"} : {};
+        const {weekdayShort, weekdayLong, day} = DateTime.fromJSDate(date, options);
         return {
             weekdayShort,
             weekdayLong,
@@ -421,7 +439,7 @@ export class CalendarCommonRenderer extends Component {
         };
     }
 
-    wrapMoreLink({ el }) {
+    wrapMoreLink({el}) {
         const wrapper = document.createElement("div");
         wrapper.classList.add("fc-more-cell");
         el.parentNode.insertBefore(wrapper, el);

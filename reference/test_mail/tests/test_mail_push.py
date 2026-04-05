@@ -1,20 +1,22 @@
 import json
-import socket
-
 from datetime import datetime, timedelta
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from markupsafe import Markup
 
 import odoo
-
+from odoo.tests import tagged
 from odoo.tools.misc import mute_logger
+
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.mail.tools.jwt import InvalidVapidError
-from odoo.addons.mail.tools.web_push import ENCRYPTION_BLOCK_OVERHEAD, ENCRYPTION_HEADER_SIZE
+from odoo.addons.mail.tools.web_push import (
+    ENCRYPTION_BLOCK_OVERHEAD,
+    ENCRYPTION_HEADER_SIZE,
+)
 from odoo.addons.sms.tests.common import SMSCommon
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
-from odoo.tests import tagged
-from markupsafe import Markup
-from unittest.mock import patch
-from types import SimpleNamespace
 
 
 @tagged('post_install', '-at_install', 'mail_push')
@@ -102,7 +104,7 @@ class TestWebPushNotification(SMSCommon):
         for channel, sender, notification_count in zip(
             (chat_channel + channel_channel + group_channel + group_channel),
             (self.user_email, self.user_email, self.user_email, self.guest),
-            (1, 0, 1, 2),
+            (1, 0, 1, 2), strict=False,
         ):
             with self.subTest(channel_type=channel.channel_type):
                 if sender == self.guest:

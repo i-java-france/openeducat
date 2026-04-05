@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.addons.stock.tests.common import TestStockCommon
-from odoo.tests import Form
 from odoo.exceptions import ValidationError
+from odoo.tests import Form
+
+from odoo.addons.stock.tests.common import TestStockCommon
 
 
 class TestLotSerial(TestStockCommon):

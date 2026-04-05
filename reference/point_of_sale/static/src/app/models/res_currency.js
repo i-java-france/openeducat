@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as numbers from "@point_of_sale/app/utils/numbers";
 
 export class ResCurrency extends numbers.AbstractNumbers {

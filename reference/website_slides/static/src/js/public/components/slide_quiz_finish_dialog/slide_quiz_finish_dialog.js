@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, onMounted, useState } from "@odoo/owl";
-import { SlideXPProgressBar } from "@website_slides/js/public/components/slide_quiz_finish_dialog/slide_xp_progress_bar";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, onMounted, useState} from "@odoo/owl";
+import {SlideXPProgressBar} from "@website_slides/js/public/components/slide_quiz_finish_dialog/slide_xp_progress_bar";
 
 export class SlideQuizFinishDialog extends Component {
-    static components = { Dialog, SlideXPProgressBar };
+    static components = {Dialog, SlideXPProgressBar};
     static props = {
         close: Function,
         hasNext: Boolean,
@@ -23,7 +23,9 @@ export class SlideQuizFinishDialog extends Component {
             hideDismissBtns: true,
             showRankMotivational: false,
         });
-        this.title = this.props.quiz.rankProgress.level_up ? _t("Level up!") : _t("Amazing!");
+        this.title = this.props.quiz.rankProgress.level_up
+            ? _t("Level up!")
+            : _t("Amazing!");
         onMounted(() => this.animateText());
     }
 

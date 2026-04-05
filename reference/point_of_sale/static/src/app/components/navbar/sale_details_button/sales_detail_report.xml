@@ -1,17 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
 
     <t t-name="point_of_sale.SaleDetailsReport">
         <div class="pos-receipt">
-            <img t-attf-src="/web/image?model=res.company&amp;id={{pos.company.id}}&amp;field=logo" alt="Logo" class="pos-receipt-logo"/>
-            <br/>
-            <br /><br />
+            <img
+                t-attf-src="/web/image?model=res.company&amp;id={{pos.company.id}}&amp;field=logo"
+                alt="Logo"
+                class="pos-receipt-logo"
+            />
+            <br />
+            <br />
+            <br />
 
             <div>
                 SOLD:
             </div>
 
-            <t t-set="ProductUnit" t-value="pos.models['decimal.precision'].find((dp) => dp.name === 'Product Unit')" />
+            <t
+                t-set="ProductUnit"
+                t-value="pos.models['decimal.precision'].find((dp) => dp.name === 'Product Unit')"
+            />
 
             <div class="orderlines">
                 <t t-foreach="products" t-as="category" t-key="category['name']">
@@ -21,22 +29,24 @@
                             <span class="pos-receipt-right-align">
                                 <t t-esc="ProductUnit.round(line.quantity)" />
                                 <t t-if="line.uom !== 'Units'">
-                                    <t t-esc="line.uom" />
-                                </t>
+                                <t t-esc="line.uom" />
+                            </t>
                                 x
                                 <t t-esc="formatCurrency(line.price_unit, false)" />
                             </span>
                         </div>
                         <t t-if="line.discount !== 0">
-                            <div class="pos-receipt-left-padding">Discount: <t t-esc="line.discount" />%</div>
+                            <div class="pos-receipt-left-padding">Discount: <t
+                                t-esc="line.discount"
+                            />%</div>
                         </t>
                     </t>
                 </t>
             </div>
 
-            <br/>
+            <br />
             <div>------------------------</div>
-            <br/>
+            <br />
 
             <div>
                 REFUNDED:
@@ -50,55 +60,68 @@
                             <span class="pos-receipt-right-align">
                                 <t t-esc="ProductUnit.round(line.quantity)" />
                                 <t t-if="line.uom !== 'Units'">
-                                    <t t-esc="line.uom" />
-                                </t>
+                                <t t-esc="line.uom" />
+                            </t>
                                 x
                                 <t t-esc="formatCurrency(line.price_unit, false)" />
                             </span>
                         </div>
                         <t t-if="line.discount !== 0">
-                            <div class="pos-receipt-left-padding">Discount: <t t-esc="line.discount" />%</div>
+                            <div class="pos-receipt-left-padding">Discount: <t
+                                t-esc="line.discount"
+                            />%</div>
                         </t>
                     </t>
                 </t>
             </div>
 
-            <br/>
+            <br />
             <div>------------------------</div>
-            <br/>
+            <br />
 
             <div>
                 Payments:
             </div>
             <div t-foreach="payments" t-as="payment" t-key="payment_index">
                 <t t-esc="payment['name']" />
-                <span t-esc="formatCurrency(payment['total'], false)" class="pos-receipt-right-align"/>
+                <span
+                    t-esc="formatCurrency(payment['total'], false)"
+                    class="pos-receipt-right-align"
+                />
             </div>
 
-            <br/>
+            <br />
             <div>------------------------</div>
-            <br/>
+            <br />
 
             <div>
                 Taxes:
             </div>
             <div t-foreach="taxes" t-as="tax" t-key="tax_index">
                 <t t-esc="tax.name" />
-                <span t-esc="formatCurrency(tax.tax_amount, false)" class="pos-receipt-right-align"/>
+                <span
+                    t-esc="formatCurrency(tax.tax_amount, false)"
+                    class="pos-receipt-right-align"
+                />
             </div>
 
-            <br/>
+            <br />
             <div>------------------------</div>
-            <br/>
+            <br />
 
             <div>
                 Total:
-                <span t-esc="formatCurrency(currency.total_paid, false)" class="pos-receipt-right-align"/>
+                <span
+                t-esc="formatCurrency(currency.total_paid, false)"
+                class="pos-receipt-right-align"
+            />
             </div>
 
-            <br/>
+            <br />
             <div class="pos-receipt-order-data">
-                <div><t t-esc="date" /></div>
+                <div>
+                    <t t-esc="date" />
+                </div>
             </div>
         </div>
     </t>

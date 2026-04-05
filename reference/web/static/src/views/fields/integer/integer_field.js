@@ -1,24 +1,24 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { formatInteger } from "../formatters";
-import { parseInteger } from "../parsers";
-import { useInputField } from "../input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
-import { useNumpadDecimal } from "../numpad_decimal_hook";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {formatInteger} from "../formatters";
+import {parseInteger} from "../parsers";
+import {useInputField} from "../input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
+import {useNumpadDecimal} from "../numpad_decimal_hook";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class IntegerField extends Component {
     static template = "web.IntegerField";
     static props = {
         ...standardFieldProps,
-        formatNumber: { type: Boolean, optional: true },
-        humanReadable: { type: Boolean, optional: true },
-        decimals: { type: Number, optional: true },
-        inputType: { type: String, optional: true },
-        min: { type: Number, optional: true },
-        max: { type: Number, optional: true },
-        step: { type: Number, optional: true },
+        formatNumber: {type: Boolean, optional: true},
+        humanReadable: {type: Boolean, optional: true},
+        decimals: {type: Number, optional: true},
+        inputType: {type: String, optional: true},
+        min: {type: Number, optional: true},
+        max: {type: Number, optional: true},
+        step: {type: Number, optional: true},
     };
     static defaultProps = {
         formatNumber: true,
@@ -34,7 +34,7 @@ export class IntegerField extends Component {
         useInputField({
             getValue: () => this.formattedValue,
             refName: "numpadDecimal",
-            parse: (v) => parseInteger(v, { allowOperation: true }),
+            parse: (v) => parseInteger(v, {allowOperation: true}),
         });
         useNumpadDecimal();
     }
@@ -63,7 +63,7 @@ export class IntegerField extends Component {
                 decimals: this.props.decimals,
             });
         } else {
-            return formatInteger(this.value, { humanReadable: false });
+            return formatInteger(this.value, {humanReadable: false});
         }
     }
 
@@ -99,21 +99,27 @@ export const integerField = {
             label: _t("User-friendly format"),
             name: "human_readable",
             type: "boolean",
-            help: _t("Use a human readable format (e.g.: 500G instead of 500,000,000,000)."),
+            help: _t(
+                "Use a human readable format (e.g.: 500G instead of 500,000,000,000)."
+            ),
         },
         {
             label: _t("Decimals"),
             name: "decimals",
             type: "number",
             default: 0,
-            help: _t("Use it with the 'User-friendly format' option to customize the formatting."),
+            help: _t(
+                "Use it with the 'User-friendly format' option to customize the formatting."
+            ),
         },
     ],
     supportedTypes: ["integer"],
     isEmpty: (record, fieldName) => record.data[fieldName] === false,
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         formatNumber:
-            options?.enable_formatting !== undefined ? Boolean(options.enable_formatting) : true,
+            options?.enable_formatting !== undefined
+                ? Boolean(options.enable_formatting)
+                : true,
         humanReadable: !!options.human_readable,
         inputType: options.type,
         min: options.min,

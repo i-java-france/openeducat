@@ -3,15 +3,15 @@ import {
     getEmbeddedProps,
     useEditableDescendants,
 } from "@html_editor/others/embedded_component_utils";
-import { browser } from "@web/core/browser/browser";
-import { Component, useEffect, useExternalListener, useState } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {Component, useEffect, useExternalListener, useState} from "@odoo/owl";
 
 const sessionStorage = browser.sessionStorage;
 export class EmbeddedToggleBlockComponent extends Component {
     static template = "html_editor.EmbeddedToggleBlock";
     static props = {
-        host: { type: Object },
-        toggleBlockId: { type: String },
+        host: {type: Object},
+        toggleBlockId: {type: String},
     };
 
     setup() {
@@ -36,7 +36,7 @@ export class EmbeddedToggleBlockComponent extends Component {
     }
 
     onToggle(ev) {
-        let { showContent, restoreSelection } = ev.detail ?? {};
+        let {showContent, restoreSelection} = ev.detail ?? {};
         showContent ??= !this.state.showContent;
         restoreSelection ??= this.neutralRestoreSelection;
         if (this.state.showContent !== showContent) {
@@ -52,6 +52,6 @@ export class EmbeddedToggleBlockComponent extends Component {
 export const toggleBlockEmbedding = {
     name: "toggleBlock",
     Component: EmbeddedToggleBlockComponent,
-    getProps: (host) => ({ host, ...getEmbeddedProps(host) }),
+    getProps: (host) => ({host, ...getEmbeddedProps(host)}),
     getEditableDescendants: getEditableDescendants,
 };

@@ -1,12 +1,12 @@
-import { patch } from "@web/core/utils/patch";
-import { SelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { session } from "@web/session";
+import {patch} from "@web/core/utils/patch";
+import {SelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {session} from "@web/session";
 
 patch(SelfOrder.prototype, {
     async setup(...args) {
         await super.setup(...args);
         this.onlinePaymentStatus = null;
-        this.data.connectWebSocket("ONLINE_PAYMENT_STATUS", ({ status, data }) => {
+        this.data.connectWebSocket("ONLINE_PAYMENT_STATUS", ({status, data}) => {
             if (
                 data["pos.order"].length === 0 ||
                 data["pos.order"][0].uuid !== this.currentOrder.uuid
@@ -21,12 +21,20 @@ patch(SelfOrder.prototype, {
                 (o) => o.access_token === data["pos.order"][0].access_token
             );
             if (status === "success" && !this.currentOrder.access_token && order) {
-                this.confirmationPage("order", this.config.self_ordering_mode, order.access_token);
+                this.confirmationPage(
+                    "order",
+                    this.config.self_ordering_mode,
+                    order.access_token
+                );
             }
         });
     },
     getOnlinePaymentUrl(
-        { id: order_id, access_token: order_access_token, config_id: order_pos_config_id },
+        {
+            id: order_id,
+            access_token: order_access_token,
+            config_id: order_pos_config_id,
+        },
         exitRoute = true
     ) {
         const baseUrl = session.base_url;
@@ -58,7 +66,8 @@ patch(SelfOrder.prototype, {
             (rec) =>
                 rec.is_online_payment &&
                 (this.config.self_order_online_payment_method_id?.id === rec.id ||
-                    (this.config.self_ordering_mode === "kiosk" && pmIds.includes(rec.id)))
+                    (this.config.self_ordering_mode === "kiosk" &&
+                        pmIds.includes(rec.id)))
         );
         return [...new Set([...pm, ...online_pms])];
     },

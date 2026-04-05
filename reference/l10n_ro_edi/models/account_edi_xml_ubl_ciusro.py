@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 
-from odoo import models, _
+from odoo import _, models
 
 DEFAULT_VAT = '0000000000000'
 SECTOR_RO_CODES = ('SECTOR1', 'SECTOR2', 'SECTOR3', 'SECTOR4', 'SECTOR5', 'SECTOR6')

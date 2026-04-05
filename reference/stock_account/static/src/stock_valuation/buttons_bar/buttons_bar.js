@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class StockValuationReportButtonsBar extends Component {
     static template = "stock_account.StockValuationReportButtonsBar";

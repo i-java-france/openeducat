@@ -1,4 +1,4 @@
-import { batched, reactive } from "@odoo/owl";
+import {batched, reactive} from "@odoo/owl";
 
 export const HEADINGS = ["H1", "H2", "H3", "H4", "H5", "H6"];
 
@@ -31,7 +31,10 @@ export class TableOfContentManager {
             )
         );
         return Array.from(element.querySelectorAll(HEADINGS.join(",")))
-            .filter((heading) => heading.innerText.trim().replaceAll("\u200B", "").length > 0)
+            .filter(
+                (heading) =>
+                    heading.innerText.trim().replaceAll("\u200B", "").length > 0
+            )
             .filter((heading) => !inEmbeddedHeadings.has(heading));
     }
 
@@ -39,8 +42,8 @@ export class TableOfContentManager {
         if (!heading) {
             return;
         }
-        const { target } = heading;
-        target.scrollIntoView({ behavior: "smooth" });
+        const {target} = heading;
+        target.scrollIntoView({behavior: "smooth"});
         target.classList.add("o_embedded_toc_header_highlight");
         window.setTimeout(() => {
             target.classList.remove("o_embedded_toc_header_highlight");

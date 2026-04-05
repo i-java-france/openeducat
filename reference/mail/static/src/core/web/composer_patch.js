@@ -1,13 +1,13 @@
-import { wrapInlinesInBlocks } from "@html_editor/utils/dom";
-import { childNodes } from "@html_editor/utils/dom_traversal";
+import {wrapInlinesInBlocks} from "@html_editor/utils/dom";
+import {childNodes} from "@html_editor/utils/dom_traversal";
 
-import { Composer } from "@mail/core/common/composer";
+import {Composer} from "@mail/core/common/composer";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
-import { createDocumentFragmentFromContent } from "@web/core/utils/html";
-import { patch } from "@web/core/utils/patch";
-import { renderToElement } from "@web/core/utils/render";
+import {createDocumentFragmentFromContent} from "@web/core/utils/html";
+import {patch} from "@web/core/utils/patch";
+import {renderToElement} from "@web/core/utils/render";
 
 patch(Composer.prototype, {
     /**
@@ -31,7 +31,7 @@ patch(Composer.prototype, {
         }
         const container = document.createElement("DIV");
         container.append(...childNodes(fragment));
-        wrapInlinesInBlocks(container, { baseContainerNodeName: "DIV" });
+        wrapInlinesInBlocks(container, {baseContainerNodeName: "DIV"});
         return markup(container.innerHTML);
     },
 });

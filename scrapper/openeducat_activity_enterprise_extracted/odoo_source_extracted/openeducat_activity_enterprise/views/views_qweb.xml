@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="Enterprise_student_activity_portal" model="ir.ui.view">
+        <field name="name">Enterprise_student_activity_portal</field>
+        <field name="model" />
+        <field name="type">qweb</field>
+        <field name="priority">30</field>
+        <field name="inherit_id" ref="openeducat_enterprise_student_portal" />
+        <field name="arch" type="xml">
+            <data
+                inherit_id="openeducat_core_enterprise.openeducat_enterprise_student_portal"
+                priority="30"
+            >
+                <xpath expr="//ul[hasclass('nav-pills')]" position="inside">
+                    <li class="tab">
+                        <a
+                            href="#activity_log"
+                            aria-expanded="false"
+                            data-bs-toggle="tab"
+                            role="tab"
+                        >
+                            <h5 class="mb0">
+                        Activity
+                    </h5>
+                        </a>
+                    </li>
+                </xpath>
+
+                <xpath expr="//div[hasclass('tab-content')]" position="inside">
+                    <div class="tab-pane fade  overflow-md-scroll" id="activity_log">
+                        <div class="card student-card mb24">
+                            <div class="card-header">
+                                <h5 class="mb-0">Activity</h5>
+                            </div>
+
+                            <div class="card-body p-0 table-responsive table_wrapper">
+                                <table class="mb-0 table table-condensed in_vwot_table">
+                                    <thead class="th-color">
+                                        <tr>
+                                            <th>Activity Type</th>
+
+                                            <th>Date</th>
+
+                                            <th>Faculty</th>
+
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t
+                                            t-foreach="student.activity_log"
+                                            t-as="activity_data"
+                                        >
+                                            <tr>
+                                                <td data-label="Activity Type : ">
+                                                    <span
+                                                        t-esc="activity_data.type_id.name"
+                                                    />
+                                                </td>
+
+                                                <td data-label="Date : ">
+                                                    <span
+                                                        t-esc="activity_data.date"
+                                                        t-options="{'widget': 'date'}"
+                                                    />
+                                                </td>
+
+                                                <td data-label="Faculty : ">
+                                                    <span
+                                                        t-esc="activity_data.faculty_id.name"
+                                                    />
+                                                </td>
+
+                                                <td data-label="Description : ">
+                                                    <span
+                                                        t-esc="activity_data.description"
+                                                    />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="student_activity_progression_report" model="ir.ui.view">
+        <field name="name">student_activity_progression_report</field>
+        <field name="model" />
+        <field name="type">qweb</field>
+        <field name="priority">60</field>
+        <field name="inherit_id" ref="student_progression_report" />
+        <field name="arch" type="xml">
+            <data
+                inherit_id="openeducat_student_progress_enterprise.student_progression_report"
+                priority="60"
+            >
+                <xpath expr="//div[hasclass('progression')]" position="after">
+                    <div
+                        t-if="objs.activity_lines"
+                        class="row mt32"
+                        style="page-break-inside:avoid;"
+                    >
+                        <div class="col-12" style="page-break-inside:avoid;">
+                            <div
+                                class="row mb16 col-8"
+                                style="page-break-inside:avoid;"
+                            >
+                                <strong>Activities:</strong>
+                            </div>
+
+                            <table
+                                class="table table-bordered"
+                                style="page-break-inside:avoid;"
+                            >
+                                <thead
+                                    class="text-center"
+                                    style="background-color:#eeeeee; font-size:14px; font-weight:600;"
+                                >
+                                    <tr>
+                                        <th style="text-align:center;">Date</th>
+
+                                        <th style="text-align:center;">Faculty</th>
+
+                                        <th
+                                            style="text-align:center;"
+                                        >Activity Type</th>
+
+                                        <th style="text-align:center;">Description</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="text-center" style="font-size:12px;">
+                                    <t
+                                        t-foreach="objs.activity_lines.sorted(key=lambda record: record.date, reverse=False)"
+                                        t-as="lines"
+                                    >
+                                        <tr>
+                                            <td>
+                                                <t
+                                                    t-esc="lines.date"
+                                                    t-options="{'widget': 'date'}"
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <t t-esc="lines.faculty_id.name" />
+                                            </td>
+
+                                            <td>
+                                                <t t-esc="lines.type_id.name" />
+                                            </td>
+
+                                            <td>
+                                                <t t-esc="lines.description" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="student_progression_activity_portal_inherit" model="ir.ui.view">
+        <field name="name">student_progression_activity_portal_inherit</field>
+        <field name="model" />
+        <field name="type">qweb</field>
+        <field name="priority">60</field>
+        <field name="inherit_id" ref="openeducat_student_progression_portal_data" />
+        <field name="arch" type="xml">
+            <data
+                inherit_id="openeducat_student_progress_enterprise.openeducat_student_progression_portal_data"
+                priority="60"
+            >
+                <xpath expr="//ul[hasclass('nav-pills')]" position="inside">
+                    <li class="activity_info bg-100 nav-link custom_highlight_tab">
+                        <a
+                            href="#activity"
+                            aria-expanded="false"
+                            data-bs-toggle="tab"
+                            role="tab"
+                        >
+                            <h5 class="mb0">
+                        Activity
+                    </h5>
+                        </a>
+                    </li>
+                </xpath>
+
+                <xpath expr="//div[hasclass('tab-content')]" position="inside">
+                    <div class="tab-pane fade overflow-md-scroll" id="activity">
+                        <div
+                            t-if="progression.activity_lines"
+                            class="table_wrapper_tablet_screen"
+                        >
+                            <table
+                                t-if="progression.activity_lines"
+                                class="mt8 table table-condensed in_vwot_table"
+                            >
+                                <thead class="th-color">
+                                    <tr>
+                                        <th>Date</th>
+
+                                        <th>Activity Type</th>
+
+                                        <th>Faculty</th>
+
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <t
+                                        t-foreach="progression.activity_lines.sorted(key=lambda record: record.date, reverse=False)"
+                                        t-as="activity_data"
+                                    >
+                                        <tr>
+                                            <td>
+                                                <span
+                                                    t-esc="activity_data.date"
+                                                    t-options="{'widget':'date'}"
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    t-esc="activity_data.type_id.name"
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    t-esc="activity_data.faculty_id.name"
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    t-esc="activity_data.description"
+                                                />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</odoo>

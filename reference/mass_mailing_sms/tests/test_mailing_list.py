@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
 from odoo.tests import Form, users
+
+from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
 
 
 class TestMailingListSms(MassSMSCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailingListSms, cls).setUpClass()
+        super().setUpClass()
         cls._create_mailing_list()
 
     @users('user_marketing')

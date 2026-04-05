@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="sale_project.ProjectProfitability" t-inherit="project.ProjectProfitability" t-inherit-mode="extension">
-       <xpath expr="//tr[hasclass('revenue_section')]" position="replace">
+    <t
+        t-name="sale_project.ProjectProfitability"
+        t-inherit="project.ProjectProfitability"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//tr[hasclass('revenue_section')]" position="replace">
             <ProjectProfitabilitySection
                 revenue="revenue"
                 labels="props.labels"

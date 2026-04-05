@@ -1,8 +1,8 @@
-import { Store } from "@mail/core/common/store_service";
+import {Store} from "@mail/core/common/store_service";
 
-import { deserializeDateTime, formatDateTime } from "@web/core/l10n/dates";
-import { localization } from "@web/core/l10n/localization";
-import { patch } from "@web/core/utils/patch";
+import {deserializeDateTime, formatDateTime} from "@web/core/l10n/dates";
+import {localization} from "@web/core/l10n/localization";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Store} */
 const StorePatch = {

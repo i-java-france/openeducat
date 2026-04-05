@@ -1,10 +1,10 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { addLoadingEffect } from "@web/core/utils/ui";
-import { browser } from "@web/core/browser/browser";
-import { WebsiteLinksTagsWrapper } from "@website_links/components/website_links_tags_wrapper";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {addLoadingEffect} from "@web/core/utils/ui";
+import {browser} from "@web/core/browser/browser";
+import {WebsiteLinksTagsWrapper} from "@website_links/components/website_links_tags_wrapper";
 
 class WebsiteLinks extends Interaction {
     static selector = ".o_website_links_create_tracked_url";
@@ -104,7 +104,7 @@ class WebsiteLinks extends Interaction {
         const sourceInputEl = this.el.querySelector("input[name='source-select']");
 
         const labelEl = this.el.querySelector("#label");
-        const params = { label: labelEl.value || undefined };
+        const params = {label: labelEl.value || undefined};
         params.url = this.el.querySelector("input#url").value;
         if (campaignInputEl.value !== "") {
             params.campaign_id = parseInt(campaignInputEl.value);
@@ -148,7 +148,8 @@ class WebsiteLinks extends Interaction {
 
             this.el.querySelector("#generated_tracked_link").classList.remove("d-none");
             this.el.querySelector("#btn_shorten_url").classList.add("d-none");
-            this.el.querySelector(".copy-to-clipboard").dataset.clipboardText = link.short_url;
+            this.el.querySelector(".copy-to-clipboard").dataset.clipboardText =
+                link.short_url;
             this.el.querySelector("#short-url-host").textContent = link.short_url_host;
             this.el.querySelector("#o_website_links_code").textContent = link.code;
 
@@ -195,7 +196,12 @@ class WebsiteLinks extends Interaction {
         }
         const hadLinks = this.linkEls.length > 0;
         this.linkEls.push(
-            ...this.renderAt("website_links.RecentLink", link, this.listContainerEl, "afterbegin")
+            ...this.renderAt(
+                "website_links.RecentLink",
+                link,
+                this.listContainerEl,
+                "afterbegin"
+            )
         );
         this.urls.add(link.short_url);
         if (!hadLinks) {
@@ -251,4 +257,6 @@ class WebsiteLinks extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website_links.WebsiteLinks", WebsiteLinks);
+registry
+    .category("public.interactions")
+    .add("website_links.WebsiteLinks", WebsiteLinks);

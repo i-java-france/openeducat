@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, api, fields, _
-from odoo.exceptions import UserError
 from datetime import datetime
-from odoo.fields import Datetime, Date
-from odoo.tools.misc import format_date
+
 import pytz
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+from odoo.fields import Date, Datetime
+from odoo.tools.misc import format_date
 
 
 def ctx_tz(record, field):
@@ -37,7 +38,7 @@ class ResCompany(models.Model):
         return companies
 
     def write(self, vals):
-        res = super(ResCompany, self).write(vals)
+        res = super().write(vals)
         #if country changed to fr, create the securisation sequence
         for company in self:
             if company._is_accounting_unalterable():
@@ -67,7 +68,7 @@ class ResCompany(models.Model):
                 msg_alert = (_('There isn\'t any order flagged for data inalterability yet for the company %s. This mechanism only runs for point of sale orders generated after the installation of the module France - Certification CGI 286 I-3 bis. - POS', self.env.company.name))
                 raise UserError(msg_alert)
 
-            previous_hash = u''
+            previous_hash = ''
             corrupted_orders = []
             for order in orders:
                 if order.l10n_fr_hash != order._compute_hash(previous_hash=previous_hash):

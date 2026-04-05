@@ -1,12 +1,13 @@
 import re
-from dateutil.relativedelta import relativedelta
 from datetime import timedelta
+
+from dateutil.relativedelta import relativedelta
 from freezegun.api import freeze_time
 
-
 from odoo import Command, fields
-from odoo.tools.misc import clean_context
 from odoo.tests import Form
+from odoo.tools.misc import clean_context
+
 from odoo.addons.base.tests.common import BaseCommon
 
 

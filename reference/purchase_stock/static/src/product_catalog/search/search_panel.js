@@ -1,13 +1,13 @@
-import { useEnv } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { AccountProductCatalogSearchPanel } from "@account/components/product_catalog/search/search_panel";
-import { TimePeriodSelectionField } from "./time_period_selection_fields";
-import { formatMonetary } from "@web/views/fields/formatters";
-import { clamp } from "@web/core/utils/numbers";
+import {useEnv} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {AccountProductCatalogSearchPanel} from "@account/components/product_catalog/search/search_panel";
+import {TimePeriodSelectionField} from "./time_period_selection_fields";
+import {formatMonetary} from "@web/views/fields/formatters";
+import {clamp} from "@web/core/utils/numbers";
 
 export class PurchaseSuggestCatalogSearchPanel extends AccountProductCatalogSearchPanel {
     static template = "purchase_stock.ProductCatalogSearchPanel";
-    static components = { TimePeriodSelectionField };
+    static components = {TimePeriodSelectionField};
     static basedOnOptions = [
         ["actual_demand", _t("Forecasted")],
         ["one_week", _t("Last 7 days")],
@@ -32,7 +32,7 @@ export class PurchaseSuggestCatalogSearchPanel extends AccountProductCatalogSear
             "Get recommendations of products to purchase at %(vendorName)s based on stock on hand, incoming quantities, " +
                 "and expected sales volumes.\n\n Set a reference period to estimate sales, and use the percentage " +
                 "to take into account seasonality and the increase/decrease of business.",
-            { vendorName: this.suggest.vendorName }
+            {vendorName: this.suggest.vendorName}
         );
     }
     onDaysInput(ev) {
@@ -50,16 +50,16 @@ export class PurchaseSuggestCatalogSearchPanel extends AccountProductCatalogSear
         this.debouncedReloadKanban();
     }
     get estimatedSuggestPrice() {
-        const { currencyId, digits } = this.suggest;
-        return formatMonetary(this.suggest.totalEstimatedPrice, { currencyId, digits });
+        const {currencyId, digits} = this.suggest;
+        return formatMonetary(this.suggest.totalEstimatedPrice, {currencyId, digits});
     }
     get timePeriodProps() {
         return {
             name: "based_on",
             required: true,
             record: {
-                data: { based_on: this.suggest.basedOn },
-                fields: { based_on: { selection: this.constructor.basedOnOptions } },
+                data: {based_on: this.suggest.basedOn},
+                fields: {based_on: {selection: this.constructor.basedOnOptions}},
             },
             onChange: (val) => {
                 this.suggest.basedOn = val;

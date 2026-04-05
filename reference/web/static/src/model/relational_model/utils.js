@@ -1,31 +1,37 @@
-import { markup, onWillDestroy, onWillStart, onWillUpdateProps, useComponent } from "@odoo/owl";
-import { evalPartialContext, makeContext } from "@web/core/context";
-import { Domain } from "@web/core/domain";
+import {
+    markup,
+    onWillDestroy,
+    onWillStart,
+    onWillUpdateProps,
+    useComponent,
+} from "@odoo/owl";
+import {evalPartialContext, makeContext} from "@web/core/context";
+import {Domain} from "@web/core/domain";
 import {
     deserializeDate,
     deserializeDateTime,
     serializeDate,
     serializeDateTime,
 } from "@web/core/l10n/dates";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { evaluateExpr } from "@web/core/py_js/py";
-import { Deferred } from "@web/core/utils/concurrency";
-import { omit } from "@web/core/utils/objects";
-import { effect } from "@web/core/utils/reactive";
-import { batched } from "@web/core/utils/timing";
-import { orderByToString } from "@web/search/utils/order_by";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { uniqueId } from "@web/core/utils/functions";
-import { unique } from "@web/core/utils/arrays";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {Deferred} from "@web/core/utils/concurrency";
+import {omit} from "@web/core/utils/objects";
+import {effect} from "@web/core/utils/reactive";
+import {batched} from "@web/core/utils/timing";
+import {orderByToString} from "@web/search/utils/order_by";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {uniqueId} from "@web/core/utils/functions";
+import {unique} from "@web/core/utils/arrays";
 
 const granularityToInterval = {
-    hour: { hours: 1 },
-    day: { days: 1 },
-    week: { days: 7 },
-    month: { month: 1 },
-    quarter: { month: 4 },
-    year: { year: 1 },
+    hour: {hours: 1},
+    day: {days: 1},
+    week: {days: 7},
+    month: {month: 1},
+    quarter: {month: 4},
+    year: {year: 1},
 };
 
 /**
@@ -71,7 +77,7 @@ export function addFieldDependencies(activeFields, fields, fieldDependencies = [
         } else {
             activeFields[field.name] = makeActiveField(field);
             if (["one2many", "many2many"].includes(field.type)) {
-                activeFields[field.name].related = { activeFields: {}, fields: {} };
+                activeFields[field.name].related = {activeFields: {}, fields: {}};
             }
         }
         if (!fields[field.name]) {
@@ -123,17 +129,17 @@ export function completeActiveFields(activeFields, extraActiveFields) {
 }
 
 export function createPropertyActiveField(property) {
-    const { type } = property;
+    const {type} = property;
 
     const activeField = makeActiveField();
     if (type === "one2many" || type === "many2many") {
         activeField.related = {
             fields: {
-                id: { name: "id", type: "integer" },
-                display_name: { name: "display_name", type: "char" },
+                id: {name: "id", type: "integer"},
+                display_name: {name: "display_name", type: "char"},
             },
             activeFields: {
-                id: makeActiveField({ readonly: true }),
+                id: makeActiveField({readonly: true}),
                 display_name: makeActiveField(),
             },
         };
@@ -171,8 +177,16 @@ export function combineModifiers(mod1, mod2, operator) {
 }
 
 export function patchActiveFields(activeField, patch) {
-    activeField.invisible = combineModifiers(activeField.invisible, patch.invisible, "AND");
-    activeField.readonly = combineModifiers(activeField.readonly, patch.readonly, "AND");
+    activeField.invisible = combineModifiers(
+        activeField.invisible,
+        patch.invisible,
+        "AND"
+    );
+    activeField.readonly = combineModifiers(
+        activeField.readonly,
+        patch.readonly,
+        "AND"
+    );
     activeField.required = combineModifiers(activeField.required, patch.required, "OR");
     activeField.onChange = activeField.onChange || patch.onChange;
     activeField.forceSave = activeField.forceSave || patch.forceSave;
@@ -187,7 +201,9 @@ export function patchActiveFields(activeField, patch) {
                     patch.related.activeFields[fieldName]
                 );
             } else {
-                related.activeFields[fieldName] = { ...patch.related.activeFields[fieldName] };
+                related.activeFields[fieldName] = {
+                    ...patch.related.activeFields[fieldName],
+                };
             }
         }
         Object.assign(related.fields, patch.related.fields);
@@ -200,13 +216,17 @@ export function patchActiveFields(activeField, patch) {
     }
 }
 
-export function extractFieldsFromArchInfo({ fieldNodes, widgetNodes }, fields) {
+export function extractFieldsFromArchInfo({fieldNodes, widgetNodes}, fields) {
     const activeFields = {};
     for (const fieldNode of Object.values(fieldNodes)) {
         const fieldName = fieldNode.name;
         const activeField = makeActiveField({
             context: fieldNode.context,
-            invisible: combineModifiers(fieldNode.invisible, fieldNode.column_invisible, "OR"),
+            invisible: combineModifiers(
+                fieldNode.invisible,
+                fieldNode.column_invisible,
+                "OR"
+            ),
             readonly: fieldNode.readonly,
             required: fieldNode.required,
             onChange: fieldNode.onChange,
@@ -221,7 +241,10 @@ export function extractFieldsFromArchInfo({ fieldNodes, widgetNodes }, fields) {
             if (fieldNode.views) {
                 const viewDescr = fieldNode.views[fieldNode.viewMode];
                 if (viewDescr) {
-                    activeField.related = extractFieldsFromArchInfo(viewDescr, viewDescr.fields);
+                    activeField.related = extractFieldsFromArchInfo(
+                        viewDescr,
+                        viewDescr.fields
+                    );
                     activeField.limit = viewDescr.limit;
                     activeField.defaultOrderBy = viewDescr.defaultOrder;
                     if (fieldNode.views.form) {
@@ -274,7 +297,10 @@ export function extractFieldsFromArchInfo({ fieldNodes, widgetNodes }, fields) {
             fieldNode.views
         ) {
             const viewDescr = fieldNode.views.default;
-            activeField.related = extractFieldsFromArchInfo(viewDescr, viewDescr.fields);
+            activeField.related = extractFieldsFromArchInfo(
+                viewDescr,
+                viewDescr.fields
+            );
         }
 
         if (fieldName in activeFields) {
@@ -299,7 +325,7 @@ export function extractFieldsFromArchInfo({ fieldNodes, widgetNodes }, fields) {
         }
         addFieldDependencies(activeFields, fields, fieldDependencies);
     }
-    return { activeFields, fields };
+    return {activeFields, fields};
 }
 
 export function getFieldContext(
@@ -341,7 +367,7 @@ export function getFieldDomain(record, fieldName, domain) {
 }
 
 export function getBasicEvalContext(config) {
-    const { uid, allowed_company_ids } = config.context;
+    const {uid, allowed_company_ids} = config.context;
     return {
         context: config.context,
         uid,
@@ -362,14 +388,19 @@ function getFieldContextForSpec(activeFields, fields, fieldName, evalContext) {
     }
 }
 
-export function getFieldsSpec(activeFields, fields, evalContext, { orderBys, withInvisible } = {}) {
+export function getFieldsSpec(
+    activeFields,
+    fields,
+    evalContext,
+    {orderBys, withInvisible} = {}
+) {
     const fieldsSpec = {};
     const properties = [];
     for (const fieldName in activeFields) {
         if (fields[fieldName].relatedPropertyField) {
             continue;
         }
-        const { related, limit, defaultOrderBy, invisible } = activeFields[fieldName];
+        const {related, limit, defaultOrderBy, invisible} = activeFields[fieldName];
         const isAlwaysInvisible = invisible === "True" || invisible === "1";
         fieldsSpec[fieldName] = {};
         switch (fields[fieldName].type) {
@@ -380,7 +411,7 @@ export function getFieldsSpec(activeFields, fields, evalContext, { orderBys, wit
                         related.activeFields,
                         related.fields,
                         evalContext,
-                        { withInvisible }
+                        {withInvisible}
                     );
                     fieldsSpec[fieldName].context = getFieldContextForSpec(
                         activeFields,
@@ -507,7 +538,7 @@ export function parseServerValue(field, value) {
             }
             if (typeof value === "number") {
                 // many2one_reference fetched without "fields" key in spec -> only returns the id
-                return { resId: value };
+                return {resId: value};
             }
             return {
                 resId: value.id,
@@ -517,7 +548,7 @@ export function parseServerValue(field, value) {
         case "many2one": {
             if (Array.isArray(value)) {
                 // Used for web_read_group, where the value is an array of [id, display_name]
-                value = { id: value[0], display_name: value[1] };
+                value = {id: value[0], display_name: value[1]};
             }
             return value;
         }
@@ -525,10 +556,16 @@ export function parseServerValue(field, value) {
             return value
                 ? value.map((property) => {
                       if (property.value !== undefined) {
-                          property.value = parseServerValue(property, property.value ?? false);
+                          property.value = parseServerValue(
+                              property,
+                              property.value ?? false
+                          );
                       }
                       if (property.default !== undefined) {
-                          property.default = parseServerValue(property, property.default ?? false);
+                          property.default = parseServerValue(
+                              property,
+                              property.default ?? false
+                          );
                       }
                       return property;
                   })
@@ -540,7 +577,9 @@ export function parseServerValue(field, value) {
 
 export function getAggregateSpecifications(fields) {
     const aggregatableFields = Object.values(fields)
-        .filter((field) => field.aggregator && AGGREGATABLE_FIELD_TYPES.includes(field.type))
+        .filter(
+            (field) => field.aggregator && AGGREGATABLE_FIELD_TYPES.includes(field.type)
+        )
         .map((field) => `${field.name}:${field.aggregator}`);
     const currencyFields = unique(
         Object.values(fields)
@@ -695,9 +734,9 @@ export function fromUnityToServerValues(
     values,
     fields,
     activeFields,
-    { withReadonly, context } = {}
+    {withReadonly, context} = {}
 ) {
-    const { CREATE, UPDATE } = x2ManyCommands;
+    const {CREATE, UPDATE} = x2ManyCommands;
     const serverValues = {};
     for (const fieldName in values) {
         let value = values[fieldName];
@@ -726,7 +765,9 @@ export function fromUnityToServerValues(
                         return [
                             c[0],
                             c[1],
-                            fromUnityToServerValues(c[2], _fields, _activeFields, { withReadonly }),
+                            fromUnityToServerValues(c[2], _fields, _activeFields, {
+                                withReadonly,
+                            }),
                         ];
                     }
                     return [c[0], c[1]];
@@ -789,7 +830,10 @@ export function useRecordObserver(callback) {
                                 .then(def.resolve)
                                 .catch(def.reject);
                         },
-                        () => new Promise((resolve) => window.requestAnimationFrame(resolve))
+                        () =>
+                            new Promise((resolve) =>
+                                window.requestAnimationFrame(resolve)
+                            )
                     )(record);
                 }
             },
@@ -854,7 +898,10 @@ export async function resequence({
         let lastSequence = (asc ? -1 : 1) * Infinity;
         for (let index = 0; index < records.length; index++) {
             const sequence = getSequence(records[index]);
-            if ((asc && lastSequence >= sequence) || (!asc && lastSequence <= sequence)) {
+            if (
+                (asc && lastSequence >= sequence) ||
+                (!asc && lastSequence <= sequence)
+            ) {
                 reorderAll = true;
                 break;
             }
@@ -874,7 +921,9 @@ export async function resequence({
     // Creates the list of records/groups to modify
     let toReorder = records;
     if (!reorderAll) {
-        toReorder = toReorder.slice(firstIndex, lastIndex).filter((r) => r.id !== movedId);
+        toReorder = toReorder
+            .slice(firstIndex, lastIndex)
+            .filter((r) => r.id !== movedId);
         if (fromIndex < toIndex) {
             toReorder.push(record);
         } else {
@@ -895,7 +944,7 @@ export async function resequence({
             field_name: fieldName,
             offset,
             context,
-            specification: { [fieldName]: {} },
+            specification: {[fieldName]: {}},
         });
     } catch (error) {
         // If the server fails to resequence, rollback the original list

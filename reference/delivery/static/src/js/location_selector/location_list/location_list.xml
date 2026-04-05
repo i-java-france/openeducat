@@ -2,12 +2,11 @@
 <templates xml:space="preserve">
     <t t-name="delivery.locationSelector.locationList">
         <div class="d-flex flex-grow-1 h-100 h-md-auto overflow-x-auto">
-            <div id="o_location_selector_list_view" class="list-group list-group-flush flex-grow-1">
-                <t
-                    t-foreach="this.props.locations"
-                    t-as="location"
-                    t-key="location.id"
-                >
+            <div
+                id="o_location_selector_list_view"
+                class="list-group list-group-flush flex-grow-1"
+            >
+                <t t-foreach="this.props.locations" t-as="location" t-key="location.id">
                     <Location
                         id="location.id.toString()"
                         number="location_index + 1"

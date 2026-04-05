@@ -1,10 +1,10 @@
-import { useService } from "@web/core/utils/hooks";
-import { isObject, pick } from "@web/core/utils/objects";
-import { RelationalModel } from "@web/model/relational_model/relational_model";
-import { getFieldsSpec } from "@web/model/relational_model/utils";
-import { Component, xml, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {isObject, pick} from "@web/core/utils/objects";
+import {RelationalModel} from "@web/model/relational_model/relational_model";
+import {getFieldsSpec} from "@web/model/relational_model/utils";
+import {Component, xml, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
 
-const defaultActiveField = { attrs: {}, options: {}, domain: "[]", string: "" };
+const defaultActiveField = {attrs: {}, options: {}, domain: "[]", string: ""};
 
 class StandaloneRelationalModel extends RelationalModel {
     load(params = {}) {
@@ -40,31 +40,45 @@ class _Record extends Component {
             hooks: this.props.info.hooks,
         };
         const modelServices = Object.fromEntries(
-            StandaloneRelationalModel.services.map((servName) => [servName, useService(servName)])
+            StandaloneRelationalModel.services.map((servName) => [
+                servName,
+                useService(servName),
+            ])
         );
         modelServices.orm = this.orm;
-        this.model = useState(new StandaloneRelationalModel(this.env, modelParams, modelServices));
+        this.model = useState(
+            new StandaloneRelationalModel(this.env, modelParams, modelServices)
+        );
 
         const prepareLoadWithValues = async (values) => {
             values = pick(values, ...Object.keys(modelParams.config.activeFields));
             const proms = [];
             for (const fieldName in values) {
-                if (["one2many", "many2many"].includes(this.props.fields[fieldName].type)) {
-                    if (values[fieldName].length && typeof values[fieldName][0] === "number") {
+                if (
+                    ["one2many", "many2many"].includes(
+                        this.props.fields[fieldName].type
+                    )
+                ) {
+                    if (
+                        values[fieldName].length &&
+                        typeof values[fieldName][0] === "number"
+                    ) {
                         const resModel = this.props.fields[fieldName].relation;
                         const resIds = values[fieldName];
                         const activeField = modelParams.config.activeFields[fieldName];
                         if (activeField.related) {
-                            const { activeFields, fields } = activeField.related;
+                            const {activeFields, fields} = activeField.related;
                             const fieldSpec = getFieldsSpec(activeFields, fields, {});
                             const kwargs = {
                                 context: activeField.context || {},
                                 specification: fieldSpec,
                             };
                             proms.push(
-                                this.orm.webRead(resModel, resIds, kwargs).then((records) => {
-                                    values[fieldName] = records;
-                                })
+                                this.orm
+                                    .webRead(resModel, resIds, kwargs)
+                                    .then((records) => {
+                                        values[fieldName] = records;
+                                    })
                             );
                         }
                     }
@@ -75,9 +89,13 @@ class _Record extends Component {
                         const activeField = modelParams.config.activeFields[fieldName];
                         const kwargs = {
                             context: activeField.context || {},
-                            specification: { display_name: {} },
+                            specification: {display_name: {}},
                         };
-                        const records = await this.orm.webRead(resModel, [resId], kwargs);
+                        const records = await this.orm.webRead(
+                            resModel,
+                            [resId],
+                            kwargs
+                        );
                         return records[0].display_name;
                     };
                     if (typeof values[fieldName] === "number") {
@@ -128,7 +146,7 @@ class _Record extends Component {
         onWillStart(async () => {
             if (this.props.values) {
                 const values = await prepareLoadWithValues(this.props.values);
-                await this.model.load({ values });
+                await this.model.load({values});
             } else {
                 await this.model.load();
             }
@@ -152,19 +170,19 @@ class _Record extends Component {
         if (this.props.info.activeFields) {
             const activeFields = {};
             for (const [fName, fInfo] of Object.entries(this.props.info.activeFields)) {
-                activeFields[fName] = { ...defaultActiveField, ...fInfo };
+                activeFields[fName] = {...defaultActiveField, ...fInfo};
             }
             return activeFields;
         }
         return Object.fromEntries(
-            this.props.info.fieldNames.map((f) => [f, { ...defaultActiveField }])
+            this.props.info.fieldNames.map((f) => [f, {...defaultActiveField}])
         );
     }
 }
 
 export class Record extends Component {
     static template = xml`<_Record fields="fields" slots="props.slots" values="props.values" info="props" />`;
-    static components = { _Record };
+    static components = {_Record};
     static props = [
         "slots",
         "resModel?",
@@ -181,7 +199,7 @@ export class Record extends Component {
         context: {},
     };
     setup() {
-        const { activeFields, fieldNames, fields, resModel } = this.props;
+        const {activeFields, fieldNames, fields, resModel} = this.props;
         if (!activeFields && !fieldNames) {
             throw Error(
                 `Record props should have either a "activeFields" key or a "fieldNames" key`
@@ -197,7 +215,7 @@ export class Record extends Component {
         } else {
             const fieldService = useService("field");
             onWillStart(async () => {
-                this.fields = await fieldService.loadFields(resModel, { fieldNames });
+                this.fields = await fieldService.loadFields(resModel, {fieldNames});
             });
         }
     }

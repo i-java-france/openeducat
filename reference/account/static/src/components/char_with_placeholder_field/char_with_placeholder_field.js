@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { CharField, charField } from "@web/views/fields/char/char_field";
+import {registry} from "@web/core/registry";
+import {CharField, charField} from "@web/views/fields/char/char_field";
 
 // Ensure that in Hoot tests, this module is loaded after `@mail/js/onchange_on_keydown`
 // (needed because that module patches `charField`).
@@ -19,4 +19,6 @@ export const charWithPlaceholderField = {
     component: CharWithPlaceholderField,
 };
 
-registry.category("fields").add("char_with_placeholder_field", charWithPlaceholderField);
+registry
+    .category("fields")
+    .add("char_with_placeholder_field", charWithPlaceholderField);

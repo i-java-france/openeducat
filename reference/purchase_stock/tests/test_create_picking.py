@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 
 from odoo import Command
 from odoo.tests import Form
+
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.product.tests.common import ProductVariantsCommon
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import itertools
@@ -104,7 +103,7 @@ class ProductProduct(models.Model):
 
         # base_result = [[(a1, b1, records), (a2, b2, records), ...], [(a1, b1, c1, records), (a2, b2, c2, records), ...] ...]
         result = []
-        for grouping_spec, grouping in zip(grouping_sets, base_result):
+        for grouping_spec, grouping in zip(grouping_sets, base_result, strict=False):
             row = []
             for *other, records in grouping:
                 for index, spec in enumerate(itertools.chain(grouping_spec, aggregates)):

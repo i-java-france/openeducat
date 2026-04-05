@@ -3,7 +3,7 @@ import hashlib
 import json
 import logging
 
-from odoo.http import Controller, request, Response, route
+from odoo.http import Controller, Response, request, route
 from odoo.tools import consteq
 
 _logger = logging.getLogger(__name__)

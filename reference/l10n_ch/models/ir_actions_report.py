@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import io
+from pathlib import Path
+
+from reportlab.graphics.shapes import Drawing as ReportLabDrawing
+from reportlab.graphics.shapes import Image as ReportLabImage
+
 from odoo import api, models
 from odoo.tools.pdf import OdooPdfFileReader, OdooPdfFileWriter
-from pathlib import Path
-from reportlab.graphics.shapes import Drawing as ReportLabDrawing, Image as ReportLabImage
-from reportlab.lib.units import mm
 
 CH_QR_CROSS_SIZE_RATIO = 0.1522 # Ratio between the side length of the Swiss QR-code cross image and the QR-code's
 CH_QR_CROSS_FILE = Path('../static/src/img/CH-Cross_7mm.png') # Image file containing the Swiss QR-code cross to add on top of the QR-code
@@ -16,7 +17,7 @@ class IrActionsReport(models.Model):
 
     @api.model
     def get_available_barcode_masks(self):
-        rslt = super(IrActionsReport, self).get_available_barcode_masks()
+        rslt = super().get_available_barcode_masks()
         rslt['ch_cross'] = self.apply_qr_code_ch_cross_mask
         return rslt
 
@@ -80,4 +81,4 @@ class IrActionsReport(models.Model):
                 return self.env.ref('l10n_ch.paperformat_euro_no_margin')
             if self.report_name == 'l10n_ch.qr_report_header':
                 return self.env.ref('l10n_din5008.paperformat_euro_din')
-        return super(IrActionsReport, self).get_paperformat()
+        return super().get_paperformat()

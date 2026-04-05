@@ -1,11 +1,11 @@
-import { fields, Record } from "@mail/core/common/record";
-import { assignDefined } from "@mail/utils/common/misc";
-import { generatePdfThumbnail } from "@mail/utils/common/pdf_thumbnail";
+import {fields, Record} from "@mail/core/common/record";
+import {assignDefined} from "@mail/utils/common/misc";
+import {generatePdfThumbnail} from "@mail/utils/common/pdf_thumbnail";
 
-import { FileModelMixin } from "@web/core/file_viewer/file_model";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { imageUrl, url } from "@web/core/utils/urls";
+import {FileModelMixin} from "@web/core/file_viewer/file_model";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {imageUrl, url} from "@web/core/utils/urls";
 
 export class Attachment extends FileModelMixin(Record) {
     static _name = "ir.attachment";
@@ -21,14 +21,14 @@ export class Attachment extends FileModelMixin(Record) {
         return attachment;
     }
 
-    composer = fields.One("Composer", { inverse: "attachments" });
-    thread = fields.One("Thread", { inverse: "attachments" });
+    composer = fields.One("Composer", {inverse: "attachments"});
+    thread = fields.One("Thread", {inverse: "attachments"});
     /** @type {string} */
     raw_access_token;
     res_name;
     /** @type {string} */
     thumbnail_access_token;
-    message = fields.One("mail.message", { inverse: "attachment_ids" });
+    message = fields.One("mail.message", {inverse: "attachment_ids"});
     /** @type {string} */
     ownership_token;
     create_date = fields.Datetime();
@@ -103,7 +103,10 @@ export class Attachment extends FileModelMixin(Record) {
         if (this.id > 0) {
             await rpc(
                 "/mail/attachment/delete",
-                assignDefined({ attachment_id: this.id }, { access_token: this.ownership_token })
+                assignDefined(
+                    {attachment_id: this.id},
+                    {access_token: this.ownership_token}
+                )
             );
         }
         this.delete();
@@ -114,18 +117,18 @@ export class Attachment extends FileModelMixin(Record) {
     }
 
     async setPdfThumbnail() {
-        const { isPdfValid, thumbnail } = await generatePdfThumbnail(
+        const {isPdfValid, thumbnail} = await generatePdfThumbnail(
             url(
                 `/mail/attachment/pdf_first_page/${this.id}`,
-                assignDefined({}, { access_token: this.ownership_token })
+                assignDefined({}, {access_token: this.ownership_token})
             )
         );
         if (isPdfValid) {
             rpc(
                 `/mail/attachment/update_thumbnail`,
                 assignDefined(
-                    { attachment_id: this.id, thumbnail },
-                    { access_token: this.ownership_token }
+                    {attachment_id: this.id, thumbnail},
+                    {access_token: this.ownership_token}
                 )
             );
         }

@@ -1,6 +1,6 @@
-import { beforeEach, expect, getFixture, test } from "@odoo/hoot";
-import { microTick, tick } from "@odoo/hoot-dom";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, getFixture, test} from "@odoo/hoot";
+import {microTick, tick} from "@odoo/hoot-dom";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 beforeEach(() => {
     patchWithCleanup(document.head, {
@@ -53,11 +53,15 @@ test("define: invalid module error handling", async () => {
     const loader = new ModuleLoader(getFixture());
     loader.debug = false;
 
-    expect(() => loader.define(null, null, null)).toThrow(/Module name should be a string/);
+    expect(() => loader.define(null, null, null)).toThrow(
+        /Module name should be a string/
+    );
     expect(() => loader.define("a", null, null)).toThrow(
         /Module dependencies should be a list of strings/
     );
-    expect(() => loader.define("a", [], null)).toThrow(/Module factory should be a function/);
+    expect(() => loader.define("a", [], null)).toThrow(
+        /Module factory should be a function/
+    );
 
     expect(loader.checkErrorProm).toBe(null);
 });

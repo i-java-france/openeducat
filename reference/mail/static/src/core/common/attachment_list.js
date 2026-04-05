@@ -1,20 +1,20 @@
-import { Gif } from "@mail/core/common/gif";
+import {Gif} from "@mail/core/common/gif";
 
-import { Component } from "@odoo/owl";
-import { isMobileOS } from "@web/core/browser/feature_detection";
+import {Component} from "@odoo/owl";
+import {isMobileOS} from "@web/core/browser/feature_detection";
 
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { download } from "@web/core/network/download";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useFileViewer } from "@web/core/file_viewer/file_viewer_hook";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { url } from "@web/core/utils/urls";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {download} from "@web/core/network/download";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useFileViewer} from "@web/core/file_viewer/file_viewer_hook";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {url} from "@web/core/utils/urls";
 
 class Actions extends Component {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = ["actions"];
     static template = "mail.Actions";
 
@@ -32,7 +32,7 @@ class Actions extends Component {
  * @extends {Component<Props, Env>}
  */
 export class AttachmentList extends Component {
-    static components = { Actions, Gif };
+    static components = {Actions, Gif};
     static props = ["attachments", "unlinkAttachment", "messageSearch?"];
     static template = "mail.AttachmentList";
 

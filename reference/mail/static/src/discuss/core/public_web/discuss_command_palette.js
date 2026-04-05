@@ -1,13 +1,13 @@
-import { cleanTerm } from "@mail/utils/common/format";
+import {cleanTerm} from "@mail/utils/common/format";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { ImStatus } from "@mail/core/common/im_status";
-import { useService } from "@web/core/utils/hooks";
-import { Dialog } from "@web/core/dialog/dialog";
-import { ChannelInvitation } from "../common/channel_invitation";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {ImStatus} from "@mail/core/common/im_status";
+import {useService} from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {ChannelInvitation} from "../common/channel_invitation";
 
 const commandSetupRegistry = registry.category("command_setup");
 const commandProviderRegistry = registry.category("command_provider");
@@ -16,7 +16,7 @@ const NEW_CHANNEL = "NEW_CHANNEL";
 const NEW_GROUP_CHAT = "NEW_GROUP_CHAT";
 
 class CreateChatDialog extends Component {
-    static components = { ChannelInvitation, Dialog };
+    static components = {ChannelInvitation, Dialog};
     static props = ["close", "name?"];
     static template = "mail.CreateChatDialog";
 
@@ -38,10 +38,12 @@ class CreateChatDialog extends Component {
     }
 
     onClickConfirm() {
-        const selectedPartnersId = this.invitePeopleState.selectedPartners.map((p) => p.id);
+        const selectedPartnersId = this.invitePeopleState.selectedPartners.map(
+            (p) => p.id
+        );
         const partners_to = [...new Set([this.store.self.id, ...selectedPartnersId])];
         if (partners_to.length === 1) {
-            this.store.createGroupChat({ partners_to });
+            this.store.createGroupChat({partners_to});
         } else {
             this.store.startChat(partners_to);
         }
@@ -50,7 +52,7 @@ class CreateChatDialog extends Component {
 }
 
 class CreateChannelDialog extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = ["close", "name?"];
     static template = "mail.CreateChannelDialog";
 
@@ -58,7 +60,7 @@ class CreateChannelDialog extends Component {
         super.setup();
         this.store = useService("mail.store");
         this.orm = useService("orm");
-        this.state = useState({ name: this.props.name || "", isInvalid: false });
+        this.state = useState({name: this.props.name || "", isInvalid: false});
     }
 
     /** @param {KeyboardEvent} ev */
@@ -84,16 +86,16 @@ class CreateChannelDialog extends Component {
 }
 
 class DiscussCommand extends Component {
-    static components = { ImStatus };
+    static components = {ImStatus};
     static template = "mail.DiscussCommand";
     static props = {
-        counter: { type: Number, optional: true },
+        counter: {type: Number, optional: true},
         executeCommand: Function,
-        imgUrl: { String, optional: true },
+        imgUrl: {String, optional: true},
         name: String,
-        persona: { type: Object, optional: true },
-        channel: { type: Object, optional: true },
-        action: { type: Object, optional: true },
+        persona: {type: Object, optional: true},
+        channel: {type: Object, optional: true},
+        action: {type: Object, optional: true},
         searchValue: String,
         slots: Object,
     };
@@ -120,12 +122,12 @@ commandSetupRegistry.add("@", {
  * @param {import("models").Store} store
  */
 async function makeNewChannel(name, store) {
-    const { channel } = await store.fetchStoreData(
+    const {channel} = await store.fetchStoreData(
         "/discuss/create_channel",
-        { name, group_id: store.internalUserGroupId },
-        { readonly: false, requestData: true }
+        {name, group_id: store.internalUserGroupId},
+        {readonly: false, requestData: true}
     );
-    await channel.open({ focus: true, bypassCompact: true });
+    await channel.open({focus: true, bypassCompact: true});
 }
 
 export class DiscussCommandPalette {
@@ -231,7 +233,7 @@ export class DiscussCommandPalette {
                 Component: DiscussCommand,
                 action: async () => {
                     const channel = await this.store.Thread.getOrFetch(thread);
-                    channel.open({ focus: true, bypassCompact: true });
+                    channel.open({focus: true, bypassCompact: true});
                 },
                 name: thread.displayName,
                 category,
@@ -239,7 +241,9 @@ export class DiscussCommandPalette {
                     imgUrl: thread.parent_channel_id?.avatarUrl ?? thread.avatarUrl,
                     channel: thread.channel_type !== "chat" ? thread : undefined,
                     persona:
-                        thread.channel_type === "chat" ? thread.correspondent.persona : undefined,
+                        thread.channel_type === "chat"
+                            ? thread.correspondent.persona
+                            : undefined,
                     counter: thread.importantCounter,
                 },
             };
@@ -251,7 +255,7 @@ export class DiscussCommandPalette {
             return {
                 Component: DiscussCommand,
                 action: () => {
-                    this.store.openChat({ partnerId: persona.id });
+                    this.store.openChat({partnerId: persona.id});
                 },
                 name: persona.displayName,
                 category,
@@ -275,7 +279,7 @@ export class DiscussCommandPalette {
                 },
                 name: _t("Create Channel"),
                 className: "o-mail-DiscussCommand-createChannel d-flex",
-                props: { action: { icon: "fa fa-fw fa-hashtag", searchValueSuffix: true } },
+                props: {action: {icon: "fa fa-fw fa-hashtag", searchValueSuffix: true}},
             };
         }
         if (threadOrPersona === NEW_GROUP_CHAT) {
@@ -283,11 +287,11 @@ export class DiscussCommandPalette {
             return {
                 Component: DiscussCommand,
                 action: () => {
-                    this.dialog.add(CreateChatDialog, { name });
+                    this.dialog.add(CreateChatDialog, {name});
                 },
                 name: _t("Create Chat"),
                 className: "d-flex",
-                props: { action: { icon: "oi fa-fw oi-users" } },
+                props: {action: {icon: "oi fa-fw oi-users"}},
             };
         }
         throw new Error(`Unsupported use of makeDiscussCommand("${threadOrPersona}")`);

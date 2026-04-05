@@ -1,4 +1,4 @@
-import { CorePlugin, CoreViewPlugin, UIPlugin } from "@odoo/o-spreadsheet";
+import {CorePlugin, CoreViewPlugin, UIPlugin} from "@odoo/o-spreadsheet";
 
 /**
  * An o-spreadsheet core plugin with access to all custom Odoo plugins

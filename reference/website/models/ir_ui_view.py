@@ -2,6 +2,7 @@
 
 import logging
 import uuid
+
 import werkzeug
 
 from odoo import api, fields, models
@@ -204,7 +205,7 @@ class IrUiView(models.Model):
 
         for record in self.browse(result.keys()):
             specific_parent_view_ids, website_ids = result[record.id]
-            for specific_parent_view_id, website_id in zip(specific_parent_view_ids, website_ids):
+            for specific_parent_view_id, website_id in zip(specific_parent_view_ids, website_ids, strict=False):
                 record.with_context(website_id=website_id).write({
                     'inherit_id': specific_parent_view_id,
                 })

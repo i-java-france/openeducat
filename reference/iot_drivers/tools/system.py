@@ -1,7 +1,7 @@
 """Operating system-related utilities for the IoT"""
 
 import subprocess
-from platform import system, release
+from platform import release, system
 
 IOT_SYSTEM = system()
 

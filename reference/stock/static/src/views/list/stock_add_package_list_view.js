@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
-import { listView } from "@web/views/list/list_view";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {listView} from "@web/views/list/list_view";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {_t} from "@web/core/l10n/translation";
 
 export class AddPackageListRenderer extends ListRenderer {
     setup() {
@@ -42,10 +42,11 @@ export class AddPackageListRenderer extends ListRenderer {
             },
             onSelected: async (resIds) => {
                 if (resIds.length) {
-                    const done = await this.orm.call("stock.picking", "action_add_entire_packs", [
-                        [this.pickingId],
-                        resIds,
-                    ]);
+                    const done = await this.orm.call(
+                        "stock.picking",
+                        "action_add_entire_packs",
+                        [[this.pickingId], resIds]
+                    );
                     if (done) {
                         await this.actionService.doAction({
                             type: "ir.actions.client",

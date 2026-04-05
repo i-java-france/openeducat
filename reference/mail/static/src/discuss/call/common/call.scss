@@ -80,13 +80,12 @@
 // ------------------------------------------------------------------
 
 .o-discuss-Call-sidebar {
-
     &::-webkit-scrollbar {
-        background: map-get($grays, '900');
+        background: map-get($grays, "900");
     }
 
     &::-webkit-scrollbar-thumb {
-        background: map-get($grays, '700');
+        background: map-get($grays, "700");
     }
 }
 

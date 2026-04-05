@@ -26,10 +26,10 @@
  * - https://developer.mozilla.org/en-US/docs/Web/API/VirtualKeyboard_API
  */
 
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { onWillUnmount } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { isVirtualKeyboardSupported } from "@web/core/browser/feature_detection";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {onWillUnmount} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {isVirtualKeyboardSupported} from "@web/core/browser/feature_detection";
 
 const viewport = {
     listeners: [],
@@ -67,7 +67,10 @@ if (typeof window !== "undefined") {
     }
 
     if (isVirtualKeyboardSupported()) {
-        browser.navigator.virtualKeyboard.addEventListener("geometrychange", throttledUpdate);
+        browser.navigator.virtualKeyboard.addEventListener(
+            "geometrychange",
+            throttledUpdate
+        );
     }
 
     // Fallback to window resize for browsers without VisualViewport or VirtualKeyboard

@@ -1,6 +1,6 @@
-import { mailModels } from "@mail/../tests/mail_test_helpers";
-import { fields, makeKwArgs } from "@web/../tests/web_test_helpers";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
+import {fields, makeKwArgs} from "@web/../tests/web_test_helpers";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
 export class ResPartner extends mailModels.ResPartner {
     employee_ids = fields.One2many({

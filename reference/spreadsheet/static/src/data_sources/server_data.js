@@ -1,7 +1,7 @@
 // @ts-check
 
-import { EvaluationError } from "@odoo/o-spreadsheet";
-import { LoadingDataError, isLoadingError } from "../o_spreadsheet/errors";
+import {EvaluationError} from "@odoo/o-spreadsheet";
+import {LoadingDataError, isLoadingError} from "../o_spreadsheet/errors";
 
 /**
  * @param {T[]} array
@@ -9,7 +9,9 @@ import { LoadingDataError, isLoadingError } from "../o_spreadsheet/errors";
  * @template T
  */
 function removeDuplicates(array) {
-    return [...new Set(array.map((el) => JSON.stringify(el)))].map((el) => JSON.parse(el));
+    return [...new Set(array.map((el) => JSON.stringify(el)))].map((el) =>
+        JSON.parse(el)
+    );
 }
 
 export class Request {
@@ -53,7 +55,9 @@ class ListRequestBatch {
     }
 
     get payload() {
-        const payload = removeDuplicates(this.requests.map((request) => request.args).flat());
+        const payload = removeDuplicates(
+            this.requests.map((request) => request.args).flat()
+        );
         return [payload];
     }
 
@@ -91,7 +95,7 @@ export class ServerData {
      * @param {object} params
      * @param {(promise: Promise<any>) => void} [params.whenDataStartLoading]
      */
-    constructor(orm, { whenDataStartLoading }) {
+    constructor(orm, {whenDataStartLoading}) {
         /** @type {import("@web/core/orm_service").ORM} */
         this.orm = orm;
         /** @type {(promise: Promise<any>) => void} */
@@ -105,7 +109,9 @@ export class ServerData {
      * @returns {{get: (resModel:string, method: string, args: unknown) => any}}
      */
     get batch() {
-        return { get: (resModel, method, args) => this._getBatchItem(resModel, method, args) };
+        return {
+            get: (resModel, method, args) => this._getBatchItem(resModel, method, args),
+        };
     }
 
     /**
@@ -172,7 +178,7 @@ export class ServerData {
         if (
             data instanceof Error ||
             data instanceof EvaluationError ||
-            isLoadingError({ value: data })
+            isLoadingError({value: data})
         ) {
             throw data;
         }
@@ -226,7 +232,12 @@ export class BatchEndpoint {
      * @param {function} callbacks.failureCallback
      * @param {(promise: Promise<any>) => void} callbacks.whenDataStartLoading
      */
-    constructor(orm, resModel, method, { successCallback, failureCallback, whenDataStartLoading }) {
+    constructor(
+        orm,
+        resModel,
+        method,
+        {successCallback, failureCallback, whenDataStartLoading}
+    ) {
         this.orm = orm;
         this.resModel = resModel;
         this.method = method;
@@ -271,7 +282,7 @@ export class BatchEndpoint {
         queueMicrotask(async () => {
             this._isScheduled = false;
             const batch = this._pendingBatch;
-            const { resModel, method } = batch;
+            const {resModel, method} = batch;
             this._pendingBatch = new ListRequestBatch(resModel, method);
             const promise = this.orm
                 .call(resModel, method, batch.payload)
@@ -289,7 +300,7 @@ export class BatchEndpoint {
      */
     async _retryOneByOne(batch) {
         const mergedResults = new Map();
-        const { resModel, method } = batch;
+        const {resModel, method} = batch;
         const singleRequestBatches = batch.requests.map(
             (request) => new ListRequestBatch(resModel, method, [request])
         );

@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     defineModels,
     getService,
@@ -7,7 +7,7 @@ import {
     models,
 } from "@web/../tests/web_test_helpers";
 
-import { rpcBus } from "@web/core/network/rpc";
+import {rpcBus} from "@web/core/network/rpc";
 
 class Company extends models.Model {
     _name = "res.company";
@@ -41,13 +41,13 @@ test("do not reload webclient when updating a res.company, but there is an error
     await makeMockEnv();
     expect.verifySteps([]);
     rpcBus.trigger("RPC:RESPONSE", {
-        data: { params: { model: "res.company", method: "write" } },
+        data: {params: {model: "res.company", method: "write"}},
         settings: {},
         result: {},
     });
     expect.verifySteps(["reload_context"]);
     rpcBus.trigger("RPC:RESPONSE", {
-        data: { params: { model: "res.company", method: "write" } },
+        data: {params: {model: "res.company", method: "write"}},
         settings: {},
         error: {},
     });

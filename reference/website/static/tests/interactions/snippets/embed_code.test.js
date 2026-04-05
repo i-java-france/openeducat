@@ -1,7 +1,10 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.embed_code");
 
@@ -21,7 +24,7 @@ test("embed code executed only once", async () => {
 */
 
 test("embed_code resets on stop", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <section class="s_embed_code text-center pt64 pb64 o_colored_level" data-snippet="s_embed_code" data-name="Embed Code">
             <template class="s_embed_code_saved">
                 <div>original</div>

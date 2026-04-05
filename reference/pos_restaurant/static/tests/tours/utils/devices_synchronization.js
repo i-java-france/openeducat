@@ -1,7 +1,9 @@
 /* global posmodel */
 
-const getData = ({ lineProductName, productName, partnerName } = {}) => {
-    const order = posmodel.models["pos.order"].find((o) => o.pos_reference.includes("device_sync"));
+const getData = ({lineProductName, productName, partnerName} = {}) => {
+    const order = posmodel.models["pos.order"].find((o) =>
+        o.pos_reference.includes("device_sync")
+    );
 
     let partner = null;
     if (partnerName) {
@@ -15,10 +17,12 @@ const getData = ({ lineProductName, productName, partnerName } = {}) => {
 
     let product = null;
     if (productName) {
-        product = posmodel.models["product.product"].find((p) => p.display_name === productName);
+        product = posmodel.models["product.product"].find(
+            (p) => p.display_name === productName
+        );
     }
 
-    return { order, line, product, partner };
+    return {order, line, product, partner};
 };
 
 const notify = async () => {
@@ -63,7 +67,7 @@ export function createNewLine(productName, quantity) {
         {
             trigger: "body",
             run: async () => {
-                const { order, product } = getData({ productName });
+                const {order, product} = getData({productName});
                 await writeOnOrder(order, {
                     lines: [[0, 0, getLineData(product, order, quantity)]],
                 });
@@ -82,9 +86,11 @@ export function changeLineQuantity(productName, quantity) {
         {
             trigger: "body",
             run: async () => {
-                const { order, line } = getData({ lineProductName: productName });
+                const {order, line} = getData({lineProductName: productName});
                 await writeOnOrder(order, {
-                    lines: [[1, line.id, getLineData(line.product_id, order, quantity)]],
+                    lines: [
+                        [1, line.id, getLineData(line.product_id, order, quantity)],
+                    ],
                 });
             },
         },
@@ -100,7 +106,7 @@ export function changePartner(partnerName) {
         {
             trigger: "body",
             run: async () => {
-                const { order, partner } = getData({ partnerName });
+                const {order, partner} = getData({partnerName});
                 await writeOnOrder(order, {
                     partner_id: partner.id,
                 });
@@ -114,7 +120,7 @@ export function markOrderAsPaid() {
         {
             trigger: "body",
             run: async () => {
-                const { order } = getData({});
+                const {order} = getData({});
                 await writeOnOrder(order, {
                     state: "paid",
                     amount_paid: order.amount_total,

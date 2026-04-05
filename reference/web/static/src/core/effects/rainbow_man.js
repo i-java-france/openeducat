@@ -1,6 +1,6 @@
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
-import { Component, useEffect, useExternalListener, useState } from "@odoo/owl";
+import {Component, useEffect, useExternalListener, useState} from "@odoo/owl";
 
 /**
  * @typedef Common
@@ -32,19 +32,19 @@ import { Component, useEffect, useExternalListener, useState } from "@odoo/owl";
  */
 export class RainbowMan extends Component {
     static template = "web.RainbowMan";
-    static rainbowFadeouts = { slow: 4500, medium: 3500, fast: 2000, no: false };
+    static rainbowFadeouts = {slow: 4500, medium: 3500, fast: 2000, no: false};
     static props = {
         fadeout: String,
         close: Function,
         message: String,
         imgUrl: String,
-        Component: { type: Function, optional: true },
-        props: { type: Object, optional: true },
+        Component: {type: Function, optional: true},
+        props: {type: Object, optional: true},
     };
 
     setup() {
         useExternalListener(document.body, "click", this.closeRainbowMan);
-        this.state = useState({ isFading: false });
+        this.state = useState({isFading: false});
         this.delay = RainbowMan.rainbowFadeouts[this.props.fadeout];
         if (this.delay) {
             useEffect(

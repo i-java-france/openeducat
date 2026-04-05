@@ -54,7 +54,9 @@ export class AttributeSelectionHelper {
 
     getMissingAttributeValue(attributes) {
         return attributes.find(
-            (attr) => attr.attribute_id.display_type !== "multi" && !this.hasValueSelected(attr)
+            (attr) =>
+                attr.attribute_id.display_type !== "multi" &&
+                !this.hasValueSelected(attr)
         );
     }
 

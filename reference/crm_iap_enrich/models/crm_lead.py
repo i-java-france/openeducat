@@ -4,8 +4,9 @@ import datetime
 import logging
 
 from odoo import _, api, fields, models, modules, tools
-from odoo.addons.iap.tools import iap_tools
 from odoo.tools import OrderedSet
+
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger(__name__)
 
@@ -173,7 +174,7 @@ class CrmLead(models.Model):
             values = {'iap_enrich_done': True}
             lead_fields = ['partner_name', 'reveal_id', 'street', 'city', 'zip']
             iap_fields = ['name', 'clearbit_id', 'location', 'city', 'postal_code']
-            for lead_field, iap_field in zip(lead_fields, iap_fields):
+            for lead_field, iap_field in zip(lead_fields, iap_fields, strict=False):
                 if not lead[lead_field] and iap_data.get(iap_field):
                     values[lead_field] = iap_data[iap_field]
 

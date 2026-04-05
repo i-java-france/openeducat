@@ -1,8 +1,14 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineModels, fields, models, mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {
+    defineModels,
+    fields,
+    models,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
 class LunchProduct extends models.Model {
     _name = "lunch.product";
@@ -35,10 +41,10 @@ defineMailModels();
 defineModels([LunchProduct]);
 
 test("Check is_favorite field is still editable even if the record/view is in readonly.", async () => {
-    onRpc("lunch.product", "web_save", ({ args }) => {
+    onRpc("lunch.product", "web_save", ({args}) => {
         const [ids, vals] = args;
         expect(ids).toEqual([1]);
-        expect(vals).toEqual({ is_favorite: true });
+        expect(vals).toEqual({is_favorite: true});
         expect.step("web_save");
     });
 
@@ -59,7 +65,7 @@ test("Check is_favorite field is readonly if the field is readonly", async () =>
         expect.step("web_save");
     });
 
-    LunchProduct._views["kanban"] = LunchProduct._views["kanban"].replace(
+    LunchProduct._views.kanban = LunchProduct._views.kanban.replace(
         'widget="lunch_is_favorite"',
         'widget="lunch_is_favorite" readonly="1"'
     );

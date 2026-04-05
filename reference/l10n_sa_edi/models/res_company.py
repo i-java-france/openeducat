@@ -1,5 +1,6 @@
 import re
-from odoo import models, fields, _
+
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 

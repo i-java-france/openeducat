@@ -1,19 +1,19 @@
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { rpc } from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {rpc} from "@web/core/network/rpc";
 import {
     SNIPPET_SPECIFIC_END,
     SNIPPET_SPECIFIC_NEXT,
     splitBetween,
 } from "@html_builder/utils/option_sequence";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { FooterTemplateChoice, FooterTemplateOption } from "./footer_template_option";
-import { reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { ShadowOption } from "@html_builder/plugins/shadow_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {FooterTemplateChoice, FooterTemplateOption} from "./footer_template_option";
+import {reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {ShadowOption} from "@html_builder/plugins/shadow_option";
 
 /** @typedef {import("@odoo/owl").Component} Component */
 
@@ -89,7 +89,7 @@ export class FooterBorder extends BaseOptionComponent {
     static applyTo = "#footer";
     static editableOnly = false;
     static groups = ["website.group_website_designer"];
-    static components = { BorderConfigurator, ShadowOption };
+    static components = {BorderConfigurator, ShadowOption};
 }
 
 export class FooterScrollToTopOption extends BaseOptionComponent {
@@ -123,18 +123,22 @@ class FooterOptionPlugin extends Plugin {
         footer_templates_providers: [
             () =>
                 [
-                    { name: "default", title: _t("Default"), view: "website.footer_custom" },
-                    { name: "descriptive", title: _t("Descriptive") },
-                    { name: "centered", title: _t("Centered") },
-                    { name: "links", title: _t("Links") },
-                    { name: "minimalist", title: _t("Minimalist") },
-                    { name: "contact", title: _t("Contact") },
-                    { name: "call_to_action", title: _t("Call-to-action") },
-                    { name: "headline", title: _t("Headline") },
-                    { name: "mega", title: _t("Mega") },
-                    { name: "mega_columns", title: _t("Mega Columns") },
-                    { name: "mega_links", title: _t("Mega Links") },
-                    { name: "mega_cards", title: _t("Mega Cards") },
+                    {
+                        name: "default",
+                        title: _t("Default"),
+                        view: "website.footer_custom",
+                    },
+                    {name: "descriptive", title: _t("Descriptive")},
+                    {name: "centered", title: _t("Centered")},
+                    {name: "links", title: _t("Links")},
+                    {name: "minimalist", title: _t("Minimalist")},
+                    {name: "contact", title: _t("Contact")},
+                    {name: "call_to_action", title: _t("Call-to-action")},
+                    {name: "headline", title: _t("Headline")},
+                    {name: "mega", title: _t("Mega")},
+                    {name: "mega_columns", title: _t("Mega Columns")},
+                    {name: "mega_links", title: _t("Mega Links")},
+                    {name: "mega_cards", title: _t("Mega Cards")},
                 ].map((info) => ({
                     key: info.name,
                     Component: FooterTemplateChoice,
@@ -153,7 +157,9 @@ class FooterOptionPlugin extends Plugin {
         // dropzone flickers otherwise when it is in grid mode).
         let restore = () => {};
         const wrapwrapEl = this.editable;
-        const hasFooterScrollEffect = wrapwrapEl.classList.contains("o_footer_effect_enable");
+        const hasFooterScrollEffect = wrapwrapEl.classList.contains(
+            "o_footer_effect_enable"
+        );
         if (hasFooterScrollEffect) {
             wrapwrapEl.classList.remove("o_footer_effect_enable");
             restore = () => {
@@ -168,14 +174,16 @@ class FooterOptionPlugin extends Plugin {
 
         // we don't wait for all promises to resolve and show the ones available
         // as soon as they are (and keep them in the order of the providers)
-        const templatesByProvider = this.getResource("footer_templates_providers").map((p) => {
-            const provided = [];
-            Promise.resolve(p()).then((t) => {
-                provided.push(...t);
-                templates.splice(0, Infinity, ...templatesByProvider.flat());
-            });
-            return provided;
-        });
+        const templatesByProvider = this.getResource("footer_templates_providers").map(
+            (p) => {
+                const provided = [];
+                Promise.resolve(p()).then((t) => {
+                    provided.push(...t);
+                    templates.splice(0, Infinity, ...templatesByProvider.flat());
+                });
+                return provided;
+            }
+        );
 
         return templates;
     }
@@ -187,19 +195,19 @@ export class WebsiteConfigFooterAction extends BuilderAction {
     setup() {
         this.reload = {};
     }
-    isApplied({ params: { vars } }) {
+    isApplied({params: {vars}}) {
         for (const [name, value] of Object.entries(vars)) {
             if (
                 !this.dependencies.builderActions
                     .getAction("customizeWebsiteVariable")
-                    .isApplied({ params: { mainParam: name }, value })
+                    .isApplied({params: {mainParam: name}, value})
             ) {
                 return false;
             }
         }
         return true;
     }
-    async apply({ params: { vars, view }, selectableContext }) {
+    async apply({params: {vars, view}, selectableContext}) {
         const possibleValues = new Set();
         for (const item of selectableContext.items) {
             for (const a of item.getActions()) {

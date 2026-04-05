@@ -1,10 +1,10 @@
-import { HistoryPlugin } from "@html_editor/core/history_plugin";
-import { CollaborationPlugin } from "@html_editor/others/collaboration/collaboration_plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { createDOMPathGenerator } from "@html_editor/utils/dom_traversal";
-import { DIRECTIONS } from "@html_editor/utils/position";
-import { after, expect } from "@odoo/hoot";
-import { setupEditor } from "./editor";
+import {HistoryPlugin} from "@html_editor/core/history_plugin";
+import {CollaborationPlugin} from "@html_editor/others/collaboration/collaboration_plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {createDOMPathGenerator} from "@html_editor/utils/dom_traversal";
+import {DIRECTIONS} from "@html_editor/utils/position";
+import {after, expect} from "@odoo/hoot";
+import {setupEditor} from "./editor";
 
 /**
  *
@@ -32,8 +32,10 @@ import { setupEditor } from "./editor";
  * @property { number } focusOffset
  */
 
-function historyMissingParentSteps(peerInfos, peerInfo, { step, fromStepId }) {
-    const missingSteps = peerInfos[step.peerId].collaborationPlugin.historyGetMissingSteps({
+function historyMissingParentSteps(peerInfos, peerInfo, {step, fromStepId}) {
+    const missingSteps = peerInfos[
+        step.peerId
+    ].collaborationPlugin.historyGetMissingSteps({
         fromStepId,
         toStepId: step.id,
     });
@@ -69,13 +71,17 @@ export const setupMultiEditor = async (spec) => {
         let selection;
         const defaultPlugins = MAIN_PLUGINS;
         const base = await setupEditor(spec.contentBefore, {
-            props: { iframe: true },
+            props: {iframe: true},
             onMounted: (editable) => {
                 selection = parseMultipleTextualSelection(editable, peerId);
             },
             config: {
-                Plugins: [...defaultPlugins, CollaborationPlugin, ...(spec.Plugins || [])],
-                collaboration: { peerId },
+                Plugins: [
+                    ...defaultPlugins,
+                    CollaborationPlugin,
+                    ...(spec.Plugins || []),
+                ],
+                collaboration: {peerId},
                 resources: {
                     ...spec.resources,
                     collaboration_step_added_handlers: (step) => {
@@ -96,7 +102,8 @@ export const setupMultiEditor = async (spec) => {
         }
         peerInfo.plugins = base.plugins;
         // TODO @phoenix refactor tests, no need to assign every plugin individually
-        const getPlugin = (id) => base.editor.plugins.find((x) => x.constructor.id === id);
+        const getPlugin = (id) =>
+            base.editor.plugins.find((x) => x.constructor.id === id);
         peerInfo.collaborationPlugin = getPlugin("collaboration");
         peerInfo.historyPlugin = getPlugin("history");
     }
@@ -107,7 +114,7 @@ export const setupMultiEditor = async (spec) => {
 
     // From now, any any step from a peer must have a different ID.
     let concurrentNextId = 1;
-    for (const { historyPlugin } of peerInfosList) {
+    for (const {historyPlugin} of peerInfosList) {
         historyPlugin.generateId = () => "fake_concurrent_id_" + concurrentNextId++;
         historyPlugin.currentStep.id = historyPlugin.generateId();
     }
@@ -177,9 +184,12 @@ export const validateSameHistory = (peerInfos) => {
             message: "The history size should be the same.",
         });
         for (let i = 0; i < historyLength; i++) {
-            expect(PeerInfo.historyPlugin.steps[i].id).toBe(peerInfo.historyPlugin.steps[i].id, {
-                message: `History steps are not consistent accross peers.`,
-            });
+            expect(PeerInfo.historyPlugin.steps[i].id).toBe(
+                peerInfo.historyPlugin.steps[i].id,
+                {
+                    message: `History steps are not consistent accross peers.`,
+                }
+            );
         }
     }
 };
@@ -207,15 +217,15 @@ export function renderTextualSelection(peerInfos) {
             continue;
         }
 
-        const { anchorNode, anchorOffset, focusNode, focusOffset } = peerSelection;
+        const {anchorNode, anchorOffset, focusNode, focusOffset} = peerSelection;
 
         const peerId = peerInfo.peerId;
         const focusNodeId = historyPlugin.nodeMap.getId(focusNode);
         const anchorNodeId = historyPlugin.nodeMap.getId(anchorNode);
         cursorNodes[focusNodeId] = cursorNodes[focusNodeId] || [];
-        cursorNodes[focusNodeId].push({ type: "focus", peerId, offset: focusOffset });
+        cursorNodes[focusNodeId].push({type: "focus", peerId, offset: focusOffset});
         cursorNodes[anchorNodeId] = cursorNodes[anchorNodeId] || [];
-        cursorNodes[anchorNodeId].push({ type: "anchor", peerId, offset: anchorOffset });
+        cursorNodes[anchorNodeId].push({type: "anchor", peerId, offset: anchorOffset});
     }
 
     for (const nodeId of Object.keys(cursorNodes)) {
@@ -267,7 +277,7 @@ export function insertCharsAt(chars, node, offset) {
     }
 }
 
-const inScopeTraversal = createDOMPathGenerator(DIRECTIONS.RIGHT, { inScope: true });
+const inScopeTraversal = createDOMPathGenerator(DIRECTIONS.RIGHT, {inScope: true});
 
 /**
  * @param {Node} rootElement

@@ -1,11 +1,11 @@
-import { Popup } from "@website/interactions/popup/popup";
-import { registry } from "@web/core/registry";
+import {Popup} from "@website/interactions/popup/popup";
+import {registry} from "@web/core/registry";
 
-import { cookie } from "@web/core/browser/cookie";
-import { _t } from "@web/core/l10n/translation";
-import { isVisible } from "@web/core/utils/ui";
-import { cloneContentEls } from "@website/js/utils";
-import { setUtmsHtmlDataset } from "@website/utils/misc";
+import {cookie} from "@web/core/browser/cookie";
+import {_t} from "@web/core/l10n/translation";
+import {isVisible} from "@web/core/utils/ui";
+import {cloneContentEls} from "@website/js/utils";
+import {setUtmsHtmlDataset} from "@website/utils/misc";
 
 // Extending the Popup class with cookiebar functionality.
 // This allows for refusing optional cookies for now and can be
@@ -22,10 +22,12 @@ export class CookiesBar extends Popup {
             "t-on-cookiesBar.show": this.onShowCookiesBar,
             "t-on-cookiesBar.toggle": this.onToggleCookiesBar,
         },
-        "#cookies-consent-essential, #cookies-consent-all": { "t-on-click": this.onAcceptClick },
+        "#cookies-consent-essential, #cookies-consent-all": {
+            "t-on-click": this.onAcceptClick,
+        },
         // Override to avoid side effects on hide.
-        ".js_close_popup": { "t-on-click": () => {} },
-        ".btn-primary": { "t-on-click": () => {} },
+        ".js_close_popup": {"t-on-click": () => {}},
+        ".btn-primary": {"t-on-click": () => {}},
         ".modal": {
             "t-on-keydown.capture": (ev) => {
                 if (ev.key === "Escape") {
@@ -63,10 +65,15 @@ export class CookiesBar extends Popup {
         // toggles the gtag consent. So, when the user modifies their cookie
         // preference their gtag consent is also updated.
         // TODO: In master, update the #tracking_code_config script via XML.
-        const originalTrackingCodeScriptEl = document.querySelector("#tracking_code_config");
+        const originalTrackingCodeScriptEl = document.querySelector(
+            "#tracking_code_config"
+        );
         if (originalTrackingCodeScriptEl) {
             // Remove the one-time event listener added by the original script
-            document.removeEventListener("optionalCookiesAccepted", window.allConsentsGranted);
+            document.removeEventListener(
+                "optionalCookiesAccepted",
+                window.allConsentsGranted
+            );
 
             // Create a new script element
             const updatedTrackingCodeScript = `
@@ -113,7 +120,10 @@ export class CookiesBar extends Popup {
 
     showToggle() {
         const policyLinkEl = this.el.querySelector(".o_cookies_bar_text_policy");
-        if (policyLinkEl && window.location.pathname === new URL(policyLinkEl.href).pathname) {
+        if (
+            policyLinkEl &&
+            window.location.pathname === new URL(policyLinkEl.href).pathname
+        ) {
             this.toggleEl = cloneContentEls(`
             <button class="o_cookies_bar_toggle btn btn-info btn-sm rounded-circle d-flex gap-2 align-items-center position-fixed pe-auto">
                 <i class="fa fa-eye" alt="" aria-hidden="true"></i> <span class="o_cookies_bar_toggle_label"></span>
@@ -168,7 +178,10 @@ export class CookiesBar extends Popup {
      */
     onShowCookiesBar() {
         const currCookie = cookie.get(this.el.id);
-        if ((currCookie && JSON.parse(currCookie).optional) || !this.popupAlreadyShown) {
+        if (
+            (currCookie && JSON.parse(currCookie).optional) ||
+            !this.popupAlreadyShown
+        ) {
             return;
         }
         this.bsModal.show();
@@ -177,7 +190,9 @@ export class CookiesBar extends Popup {
         // or an extension: notify the user because "nothing happens when I
         // click" is never good.
         if (!isVisible(this.modalEl)) {
-            window.alert(_t("Our cookies bar was blocked by your browser or an extension."));
+            window.alert(
+                _t("Our cookies bar was blocked by your browser or an extension.")
+            );
             return;
         }
         this.modalEl.focus();

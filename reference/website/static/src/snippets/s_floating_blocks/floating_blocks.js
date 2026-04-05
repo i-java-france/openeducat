@@ -1,7 +1,7 @@
-import { convertNumericToUnit, getHtmlStyle } from "@html_editor/utils/formatting";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {convertNumericToUnit, getHtmlStyle} from "@html_editor/utils/formatting";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class FloatingBlocks extends Interaction {
     static selector = ".s_floating_blocks";
@@ -41,7 +41,9 @@ export class FloatingBlocks extends Interaction {
     start() {
         this.adaptToHeaderChange();
         this.registerCleanup(
-            this.services.website_menus.registerCallback(this.adaptToHeaderChange.bind(this))
+            this.services.website_menus.registerCallback(
+                this.adaptToHeaderChange.bind(this)
+            )
         );
 
         if (this.boxesEls.length >= 2) {
@@ -51,7 +53,8 @@ export class FloatingBlocks extends Interaction {
             // Calculate the minimal scale based on number of animated cards.
             // Each card decreases the scale by `this.boxScaleStep`.
             this.minimalScale = Math.max(
-                this.maximalScale - this.boxScaleStep * (this.boxesToAnimate.length - 1),
+                this.maximalScale -
+                    this.boxScaleStep * (this.boxesToAnimate.length - 1),
                 0.7 // Safe-net to ensure we don't go below 0.7 for very large numbers of cards
             );
 
@@ -105,7 +108,9 @@ export class FloatingBlocks extends Interaction {
      */
     adaptToHeaderChange() {
         let top = this.initialGap;
-        for (const el of this.el.ownerDocument.querySelectorAll(".o_top_fixed_element")) {
+        for (const el of this.el.ownerDocument.querySelectorAll(
+            ".o_top_fixed_element"
+        )) {
             top += el.offsetHeight;
         }
         this.boxesEls.forEach((boxEl, index) => {
@@ -183,9 +188,14 @@ export class FloatingBlocks extends Interaction {
     onKeydown(ev) {
         const hotkey = getActiveHotkey(ev);
         if (hotkey === "shift+tab") {
-            this.addListener(ev.currentTarget, "focusout", this.onShiftTabFocusout.bind(this), {
-                once: true,
-            });
+            this.addListener(
+                ev.currentTarget,
+                "focusout",
+                this.onShiftTabFocusout.bind(this),
+                {
+                    once: true,
+                }
+            );
         }
     }
     onShiftTabFocusout(ev) {

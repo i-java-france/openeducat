@@ -1,6 +1,6 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { advanceTime } from "@odoo/hoot-mock";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {advanceTime} from "@odoo/hoot-mock";
 import {
     defineModels,
     fieldInput,
@@ -13,8 +13,8 @@ import {
 class Product extends models.Model {
     url = fields.Char({
         onChange(record) {
-            // factice onchange to cause onchange calls
-        }
+            // Factice onchange to cause onchange calls
+        },
     });
     old_url = fields.Char();
 }
@@ -23,8 +23,8 @@ defineModels([Product]);
 defineMailModels();
 
 test("PageUrlField in form view", async () => {
-    Product._records = [{ id: 1, url: "/test", old_url: "/test" }];
-    onRpc("onchange", ({ args }) => {
+    Product._records = [{id: 1, url: "/test", old_url: "/test"}];
+    onRpc("onchange", ({args}) => {
         expect.step(`onchange ${args[1].url}`);
     });
     await mountView({
@@ -52,5 +52,5 @@ test("PageUrlField in form view", async () => {
     expect(`#changed`).toHaveCount(1);
     await advanceTime(100);
     expect(`#changed`).toHaveCount(0);
-    expect.verifySteps(['onchange /testab', 'onchange /test']);
+    expect.verifySteps(["onchange /testab", "onchange /test"]);
 });

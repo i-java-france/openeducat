@@ -1,13 +1,13 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { before, VERTICAL_ALIGNMENT, WIDTH } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {before, VERTICAL_ALIGNMENT, WIDTH} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 class MassMailingBorderOption extends BaseOptionComponent {
     static template = "mass_mailing.BorderOption";
-    static components = { BorderConfigurator };
+    static components = {BorderConfigurator};
     withRoundCorner = true;
 }
 
@@ -48,4 +48,6 @@ export class BorderOptionPlugin extends Plugin {
     };
 }
 
-registry.category("mass_mailing-plugins").add(BorderOptionPlugin.id, BorderOptionPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(BorderOptionPlugin.id, BorderOptionPlugin);

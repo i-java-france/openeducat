@@ -1,8 +1,8 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
-import { loadBundle } from "@web/core/assets";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
+import {loadBundle} from "@web/core/assets";
 
 export class Chart extends Interaction {
     static selector = ".s_chart";
@@ -97,7 +97,7 @@ export class Chart extends Interaction {
         }
 
         if (this.noAnimation) {
-            chartData.options.animation = { duration: 0 };
+            chartData.options.animation = {duration: 0};
         }
 
         const canvasEl = this.el.querySelector("canvas");
@@ -105,7 +105,9 @@ export class Chart extends Interaction {
         this.chart = new window.Chart(canvasEl, chartData);
         this.registerCleanup(() => {
             this.chart.destroy();
-            this.el.querySelectorAll(".chartjs-size-monitor").forEach((el) => el.remove());
+            this.el
+                .querySelectorAll(".chartjs-size-monitor")
+                .forEach((el) => el.remove());
         });
     }
 

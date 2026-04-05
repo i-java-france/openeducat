@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { HierarchyArchParser } from "./hierarchy_arch_parser";
-import { HierarchyController } from "./hierarchy_controller";
-import { HierarchyModel } from "./hierarchy_model";
-import { HierarchyRenderer } from "./hierarchy_renderer";
+import {registry} from "@web/core/registry";
+import {HierarchyArchParser} from "./hierarchy_arch_parser";
+import {HierarchyController} from "./hierarchy_controller";
+import {HierarchyModel} from "./hierarchy_model";
+import {HierarchyRenderer} from "./hierarchy_renderer";
 
 export const hierarchyView = {
     type: "hierarchy",
@@ -14,8 +14,8 @@ export const hierarchyView = {
     searchMenuTypes: ["filter"],
 
     props: (genericProps, view) => {
-        const { ArchParser, Model, Renderer, buttonTemplate: viewButtonTemplate } = view;
-        const { arch, relatedModels, resModel, buttonTemplate } = genericProps;
+        const {ArchParser, Model, Renderer, buttonTemplate: viewButtonTemplate} = view;
+        const {arch, relatedModels, resModel, buttonTemplate} = genericProps;
         return {
             ...genericProps,
             archInfo: new ArchParser().parse(arch, relatedModels, resModel),
@@ -23,7 +23,7 @@ export const hierarchyView = {
             Model,
             Renderer,
         };
-    }
-}
+    },
+};
 
 registry.category("views").add("hierarchy", hierarchyView);

@@ -1,8 +1,8 @@
-import { ColorList } from "@web/core/colorlist/colorlist";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "../standard_field_props";
+import {ColorList} from "@web/core/colorlist/colorlist";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class ColorPickerField extends Component {
     static template = "web.ColorPickerField";
@@ -11,7 +11,7 @@ export class ColorPickerField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        canToggle: { type: Boolean },
+        canToggle: {type: Boolean},
     };
 
     static RECORD_COLORS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -21,14 +21,14 @@ export class ColorPickerField extends Component {
     }
 
     switchColor(colorIndex) {
-        this.props.record.update({ [this.props.name]: colorIndex });
+        this.props.record.update({[this.props.name]: colorIndex});
     }
 }
 
 export const colorPickerField = {
     component: ColorPickerField,
     supportedTypes: ["integer"],
-    extractProps: ({ viewType }) => ({
+    extractProps: ({viewType}) => ({
         canToggle: viewType !== "list",
     }),
 };

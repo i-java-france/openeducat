@@ -19,29 +19,29 @@ import {
     startServer,
     waitStoreFetch,
 } from "@mail/../tests/mail_test_helpers";
-import { LONG_PRESS_DELAY } from "@mail/utils/common/hooks";
-import { describe, test } from "@odoo/hoot";
-import { advanceTime, pointerDown, press } from "@odoo/hoot-dom";
-import { Deferred, mockTouch, mockUserAgent } from "@odoo/hoot-mock";
+import {LONG_PRESS_DELAY} from "@mail/utils/common/hooks";
+import {describe, test} from "@odoo/hoot";
+import {advanceTime, pointerDown, press} from "@odoo/hoot-dom";
+import {Deferred, mockTouch, mockUserAgent} from "@odoo/hoot-mock";
 
-import { browser } from "@web/core/browser/browser";
-import { asyncStep, serverState, waitForSteps } from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {asyncStep, serverState, waitForSteps} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("mobile");
 defineMailModels();
 
 test("auto-select 'Inbox' when discuss had channel as active thread", async () => {
     const pyEnv = await startServer();
-    pyEnv["res.users"].write(serverState.userId, { notification_type: "inbox" });
-    const channelId = pyEnv["discuss.channel"].create({ name: "test" });
-    patchUiSize({ size: SIZES.SM });
+    pyEnv["res.users"].write(serverState.userId, {notification_type: "inbox"});
+    const channelId = pyEnv["discuss.channel"].create({name: "test"});
+    patchUiSize({size: SIZES.SM});
     await start();
     await openDiscuss(channelId);
     await click(".o-mail-ChatWindow [title*='Close Chat Window']");
-    await contains(".o-mail-MessagingMenu-tab.active", { text: "Channels" });
-    await click("button", { text: "Inbox" });
-    await contains(".o-mail-MessagingMenu-tab.active", { text: "Inbox" });
-    await contains(".btn-secondary.active", { text: "Inbox" }); // in header
+    await contains(".o-mail-MessagingMenu-tab.active", {text: "Channels"});
+    await click("button", {text: "Inbox"});
+    await contains(".o-mail-MessagingMenu-tab.active", {text: "Inbox"});
+    await contains(".btn-secondary.active", {text: "Inbox"}); // In header
 });
 
 test("show loading on initial opening", async () => {
@@ -54,41 +54,41 @@ test("show loading on initial opening", async () => {
         },
     });
     const pyEnv = await startServer();
-    pyEnv["discuss.channel"].create({ name: "General" });
-    patchUiSize({ size: SIZES.SM });
+    pyEnv["discuss.channel"].create({name: "General"});
+    patchUiSize({size: SIZES.SM});
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
     await contains(".o-mail-MessagingMenu .fa.fa-circle-o-notch.fa-spin");
-    await contains(".o-mail-NotificationItem", { text: "General", count: 0 });
+    await contains(".o-mail-NotificationItem", {text: "General", count: 0});
     await waitForSteps(["before channels_as_member"]);
     def.resolve();
     await waitStoreFetch("channels_as_member");
-    await contains(".o-mail-MessagingMenu .fa.fa-circle-o-notch.fa-spin", { count: 0 });
-    await contains(".o-mail-NotificationItem", { text: "General" });
+    await contains(".o-mail-MessagingMenu .fa.fa-circle-o-notch.fa-spin", {count: 0});
+    await contains(".o-mail-NotificationItem", {text: "General"});
 });
 
 test("can leave channel in mobile", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
-    patchUiSize({ size: SIZES.SM });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
+    patchUiSize({size: SIZES.SM});
     await start();
     await openDiscuss(channelId);
-    // dropdown requires an extra delay before click (because handler is registered in useEffect)
-    await contains(".o-mail-ChatWindow-moreActions", { text: "General" });
-    await click(".o-mail-ChatWindow-moreActions", { text: "General" });
-    await contains(".o-dropdown-item", { text: "Leave Channel" });
+    // Dropdown requires an extra delay before click (because handler is registered in useEffect)
+    await contains(".o-mail-ChatWindow-moreActions", {text: "General"});
+    await click(".o-mail-ChatWindow-moreActions", {text: "General"});
+    await contains(".o-dropdown-item", {text: "Leave Channel"});
 });
 
 test("enter key should create a newline in composer", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await insertText(".o-mail-Composer-input", "Test\n");
     await press("Enter");
     await insertText(".o-mail-Composer-input", "Other");
     await click(".fa-paper-plane-o");
-    await contains(".o-mail-Message-body:has(br)", { textContent: "TestOther" });
+    await contains(".o-mail-Message-body:has(br)", {textContent: "TestOther"});
 });
 
 test("can add message reaction (mobile)", mailCanAddMessageReactionMobile);
@@ -98,9 +98,9 @@ test("can copy text to clipboard (mobile)", mailCanCopyTextToClipboardMobile);
 test("Can edit message comment in chatter (mobile)", async () => {
     mockTouch(true);
     mockUserAgent("android");
-    patchUiSize({ size: SIZES.SM });
+    patchUiSize({size: SIZES.SM});
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "TestPartner" });
+    const partnerId = pyEnv["res.partner"].create({name: "TestPartner"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "original message",
@@ -110,46 +110,51 @@ test("Can edit message comment in chatter (mobile)", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Message", { text: "original message" });
-    await pointerDown(".o-mail-Message", { contains: "original message" });
+    await contains(".o-mail-Message", {text: "original message"});
+    await pointerDown(".o-mail-Message", {contains: "original message"});
     await advanceTime(LONG_PRESS_DELAY);
-    await click("button", { text: "Edit" });
-    await click("button", { text: "Discard editing" });
-    await contains(".o-mail-Message", { text: "original message" });
-    await pointerDown(".o-mail-Message", { contains: "original message" });
+    await click("button", {text: "Edit"});
+    await click("button", {text: "Discard editing"});
+    await contains(".o-mail-Message", {text: "original message"});
+    await pointerDown(".o-mail-Message", {contains: "original message"});
     await advanceTime(LONG_PRESS_DELAY);
-    await click("button", { text: "Edit" });
-    await insertText(".o-mail-Message .o-mail-Composer-input", "edited message", { replace: true });
+    await click("button", {text: "Edit"});
+    await insertText(".o-mail-Message .o-mail-Composer-input", "edited message", {
+        replace: true,
+    });
     await click("button[title='Save editing']");
-    await contains(".o-mail-Message", { text: "edited message (edited)" });
+    await contains(".o-mail-Message", {text: "edited message (edited)"});
 });
 
 test("Don't show chat hub in discuss app on mobile", async () => {
     mockTouch(true);
     mockUserAgent("android");
-    patchUiSize({ size: SIZES.SM });
+    patchUiSize({size: SIZES.SM});
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "test" });
-    setupChatHub({ folded: [channelId] });
+    const channelId = pyEnv["discuss.channel"].create({name: "test"});
+    setupChatHub({folded: [channelId]});
     await start();
     await contains(".o-mail-ChatBubble");
     await openDiscuss();
-    await contains(".o-mail-ChatBubble", { count: 0 });
+    await contains(".o-mail-ChatBubble", {count: 0});
 });
 
 test("click on an odoo link should fold the chat window (mobile)", async () => {
     const pyEnv = await startServer();
     const channelId = pyEnv["discuss.channel"].create({});
-    patchUiSize({ size: SIZES.SM });
+    patchUiSize({size: SIZES.SM});
     await start();
     await openDiscuss(channelId);
-    await insertText(".o-mail-Composer-input", `http://${browser.location.host}/odoo.com`);
+    await insertText(
+        ".o-mail-Composer-input",
+        `http://${browser.location.host}/odoo.com`
+    );
     await click(".o-mail-Composer button[title='Send']");
     await contains(".o-mail-ChatWindow");
     await click(`a[href="http://${browser.location.host}/odoo.com"]`);
-    await contains(".o-mail-ChatWindow", { count: 0 });
-    await contains(".o-mail-ChatBubble", { count: 0 });
-    await openListView("discuss.channel", { res_id: channelId });
+    await contains(".o-mail-ChatWindow", {count: 0});
+    await contains(".o-mail-ChatBubble", {count: 0});
+    await openListView("discuss.channel", {res_id: channelId});
     await contains(".o-mail-ChatBubble");
-    assertChatHub({ folded: [channelId] });
+    assertChatHub({folded: [channelId]});
 });

@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 import urllib.parse
-
 from datetime import timedelta
+
 from markupsafe import Markup, escape
-from lxml import etree
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 
 from odoo import _, fields, http, tools
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.tools import consteq
 
 

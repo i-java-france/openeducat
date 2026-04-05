@@ -1,9 +1,9 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { InputConfirmationDialog } from "@html_builder/snippets/input_confirmation_dialog";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {InputConfirmationDialog} from "@html_builder/snippets/input_confirmation_dialog";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class MailGroupOption extends BaseOptionComponent {
     static template = "website_mail_group.MailGroupOption";
@@ -28,11 +28,13 @@ class MailGroupOptionPlugin extends Plugin {
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
     };
 
-    async onSnippetDropped({ snippetEl }) {
+    async onSnippetDropped({snippetEl}) {
         if (snippetEl.dataset.snippet !== "s_group") {
             return;
         }
-        const group = await this.services.orm.call("mail.group", "name_search", [""], { limit: 1 });
+        const group = await this.services.orm.call("mail.group", "name_search", [""], {
+            limit: 1,
+        });
         if (this.isDestroyed) {
             return;
         }
@@ -56,35 +58,35 @@ class MailGroupOptionPlugin extends Plugin {
                         name = confirmedValue;
                     },
                 },
-                { onClose: resolve }
+                {onClose: resolve}
             );
         });
         if (name) {
-            return await this.services.orm.create("mail.group", [{ name }]);
+            return await this.services.orm.create("mail.group", [{name}]);
         }
     }
 }
 
 export class MailGroupAction extends BuilderAction {
-    static id = "mailGroupAction"
+    static id = "mailGroupAction";
     static dependencies = ["builderActions"];
-    apply({ editingElement, value }) {
-        const { id } = JSON.parse(value);
+    apply({editingElement, value}) {
+        const {id} = JSON.parse(value);
 
         this.dependencies.builderActions
             .getAction("dataAttributeAction")
-            .apply({ editingElement, params: { mainParam: "id" }, value: id });
+            .apply({editingElement, params: {mainParam: "id"}, value: id});
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         this.dependencies.builderActions
             .getAction("dataAttributeAction")
-            .clean({ editingElement, params: { mainParam: "id" } });
+            .clean({editingElement, params: {mainParam: "id"}});
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         const value = {};
         const id = this.dependencies.builderActions
             .getAction("dataAttributeAction")
-            .getValue({ editingElement, params: { mainParam: "id" } });
+            .getValue({editingElement, params: {mainParam: "id"}});
         if (!id) {
             return;
         }
@@ -95,16 +97,18 @@ export class MailGroupAction extends BuilderAction {
 export class CreateMailGroupAction extends BuilderAction {
     static id = "createMailGroup";
     static dependencies = ["builderActions", "mailGroupOption"];
-    load({ value }) {
+    load({value}) {
         return this.dependencies.mailGroupOption.createGroup(value);
     }
-    apply({ editingElement, loadResult: id }) {
+    apply({editingElement, loadResult: id}) {
         if (id) {
             this.dependencies.builderActions
                 .getAction("mailGroupAction")
-                .apply({ editingElement, value: JSON.stringify({ id }) });
+                .apply({editingElement, value: JSON.stringify({id})});
         }
     }
 }
 
-registry.category("website-plugins").add(MailGroupOptionPlugin.id, MailGroupOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(MailGroupOptionPlugin.id, MailGroupOptionPlugin);

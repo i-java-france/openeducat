@@ -3,8 +3,9 @@ import datetime
 from freezegun import freeze_time
 
 from odoo import Command
-from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 from odoo.tests.common import tagged
+
+from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
@@ -99,4 +100,3 @@ class TestItEdiSaleOrderPa(TestItEdi):
             'l10n_it_origin_document_type': None,
             'l10n_it_origin_document_date': None,
         }])
-

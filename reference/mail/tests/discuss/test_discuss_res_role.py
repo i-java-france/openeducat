@@ -1,6 +1,7 @@
+from odoo.tests.common import tagged
+
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.mail.tests.test_res_role import TestResRole
-from odoo.tests.common import tagged
 
 
 @tagged("-at_install", "post_install")

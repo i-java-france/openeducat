@@ -3,12 +3,13 @@ from datetime import datetime
 
 from freezegun import freeze_time
 from lxml import etree
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 from odoo.exceptions import UserError
 from odoo.fields import Command
 from odoo.tests import Form, tagged
 from odoo.tools import file_open
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 NS_MAP = {
     'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2',

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- This one is kept in data instead of demo to avoid crashing if the user starts creating campaigns
     before stages have been created, as they are mandatory -->

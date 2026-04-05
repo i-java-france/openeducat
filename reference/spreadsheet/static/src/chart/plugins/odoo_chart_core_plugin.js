@@ -1,8 +1,8 @@
-import { checkFilterFieldMatching } from "@spreadsheet/global_filters/helpers";
-import { CommandResult } from "../../o_spreadsheet/cancelled_reason";
-import { Domain } from "@web/core/domain";
-import { OdooCorePlugin } from "@spreadsheet/plugins";
-import { _t } from "@web/core/l10n/translation";
+import {checkFilterFieldMatching} from "@spreadsheet/global_filters/helpers";
+import {CommandResult} from "../../o_spreadsheet/cancelled_reason";
+import {Domain} from "@web/core/domain";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} Chart
@@ -59,7 +59,7 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
                 break;
             }
             case "DELETE_CHART": {
-                const charts = { ...this.charts };
+                const charts = {...this.charts};
                 delete charts[cmd.chartId];
                 this.history.update("charts", charts);
                 break;
@@ -102,7 +102,7 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
      * @returns {string}
      */
     getOdooChartDisplayName(chartId) {
-        const { title, type } = this.getters.getChart(chartId);
+        const {title, type} = this.getters.getChart(chartId);
         const name = title.text || CHART_PLACEHOLDER_DISPLAY_NAME[type];
         return `(#${this.getOdooChartIds().indexOf(chartId) + 1}) ${name}`;
     }
@@ -112,7 +112,7 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
         if (definition.type.startsWith("odoo_") && definition.metaData.groupBy.length) {
             const horizontalAxis = definition.metaData.groupBy[0];
             const [fieldName, granularity] = horizontalAxis.split(":");
-            return { fieldName, granularity };
+            return {fieldName, granularity};
         }
         return null;
     }
@@ -126,12 +126,22 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
         for (const sheet of data.sheets) {
             if (sheet.figures) {
                 for (const figure of sheet.figures) {
-                    if (figure.tag === "chart" && figure.data.type.startsWith("odoo_")) {
-                        this._addOdooChart(figure.data.chartId, figure.data.fieldMatching ?? {});
+                    if (
+                        figure.tag === "chart" &&
+                        figure.data.type.startsWith("odoo_")
+                    ) {
+                        this._addOdooChart(
+                            figure.data.chartId,
+                            figure.data.fieldMatching ?? {}
+                        );
                     } else if (figure.tag === "carousel") {
                         for (const chartId in figure.data.chartDefinitions) {
                             const fieldMatching = figure.data.fieldMatching ?? {};
-                            if (figure.data.chartDefinitions[chartId].type.startsWith("odoo_")) {
+                            if (
+                                figure.data.chartDefinitions[chartId].type.startsWith(
+                                    "odoo_"
+                                )
+                            ) {
                                 this._addOdooChart(chartId, fieldMatching[chartId]);
                             }
                         }
@@ -149,15 +159,21 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
         for (const sheet of data.sheets) {
             if (sheet.figures) {
                 for (const figure of sheet.figures) {
-                    if (figure.tag === "chart" && figure.data.type.startsWith("odoo_")) {
-                        figure.data.fieldMatching = this.getChartFieldMatch(figure.data.chartId);
+                    if (
+                        figure.tag === "chart" &&
+                        figure.data.type.startsWith("odoo_")
+                    ) {
+                        figure.data.fieldMatching = this.getChartFieldMatch(
+                            figure.data.chartId
+                        );
                         figure.data.searchParams.domain = new Domain(
                             figure.data.searchParams.domain
                         ).toJson();
                     } else if (figure.tag === "carousel") {
                         figure.data.fieldMatching = {};
                         for (const chartId in figure.data.chartDefinitions) {
-                            const chartDefinition = figure.data.chartDefinitions[chartId];
+                            const chartDefinition =
+                                figure.data.chartDefinitions[chartId];
                             if (chartDefinition.type.startsWith("odoo_")) {
                                 figure.data.fieldMatching[chartId] =
                                     this.getChartFieldMatch(chartId);
@@ -192,7 +208,7 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
      * @param {Record<string,FieldMatching>} chartFieldMatches
      */
     _setOdooChartFieldMatching(filterId, chartFieldMatches) {
-        const charts = { ...this.charts };
+        const charts = {...this.charts};
         for (const [chartId, fieldMatch] of Object.entries(chartFieldMatches)) {
             charts[chartId].fieldMatching[filterId] = fieldMatch;
         }
@@ -200,9 +216,15 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
     }
 
     _onFilterDeletion(filterId) {
-        const charts = { ...this.charts };
+        const charts = {...this.charts};
         for (const chartId in charts) {
-            this.history.update("charts", chartId, "fieldMatching", filterId, undefined);
+            this.history.update(
+                "charts",
+                chartId,
+                "fieldMatching",
+                filterId,
+                undefined
+            );
         }
     }
 
@@ -214,7 +236,8 @@ export class OdooChartCorePlugin extends OdooCorePlugin {
         const model = this.getters.getChartDefinition(chartId).metaData.resModel;
         this.history.update("charts", chartId, {
             chartId,
-            fieldMatching: fieldMatching || this.getters.getFieldMatchingForModel(model),
+            fieldMatching:
+                fieldMatching || this.getters.getFieldMatchingForModel(model),
         });
     }
 }

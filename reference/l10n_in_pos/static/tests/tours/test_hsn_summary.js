@@ -2,7 +2,7 @@ import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as ProductScreen from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export function addDocument(documentParams) {
     const steps = [];
@@ -23,12 +23,12 @@ registry.category("web_tour.tours").add("test_l10n_in_hsn_summary_pos", {
             Dialog.confirm("Open Register"),
 
             ...addDocument([
-                { product: "product_1_1", quantity: "2" },
-                { product: "product_1_2", quantity: "1" },
-                { product: "product_1_3", quantity: "5" },
-                { product: "product_1_4", quantity: "2" },
-                { product: "product_1_5", quantity: "1" },
-                { product: "product_1_6", quantity: "5" },
+                {product: "product_1_1", quantity: "2"},
+                {product: "product_1_2", quantity: "1"},
+                {product: "product_1_3", quantity: "5"},
+                {product: "product_1_4", quantity: "2"},
+                {product: "product_1_5", quantity: "1"},
+                {product: "product_1_6", quantity: "5"},
             ]),
             PaymentScreen.totalIs("5,129.0"),
             PaymentScreen.clickPaymentMethod("Bank"),

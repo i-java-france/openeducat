@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { GroupConfigMenu } from "@web/views/view_components/group_config_menu";
-import { TRIGGER_FILTERS } from "./utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {GroupConfigMenu} from "@web/views/view_components/group_config_menu";
+import {TRIGGER_FILTERS} from "./utils";
 
 const SUPPORTED_TRIGGERS = [
     "on_stage_set",
@@ -16,10 +16,10 @@ const SUPPORTED_TRIGGERS = [
 ];
 
 function enrichContext(context, group) {
-    const { displayName, groupByField, value } = group;
-    const { name, relation, type: ttype } = groupByField;
+    const {displayName, groupByField, value} = group;
+    const {name, relation, type: ttype} = groupByField;
     for (const trigger of SUPPORTED_TRIGGERS) {
-        if (!TRIGGER_FILTERS[trigger]({ name, relation, ttype })) {
+        if (!TRIGGER_FILTERS[trigger]({name, relation, ttype})) {
             continue;
         }
         switch (trigger) {
@@ -38,12 +38,12 @@ function enrichContext(context, group) {
                     default_trg_field_ref: value,
                 };
             default:
-                return { ...context, default_trigger: trigger };
+                return {...context, default_trigger: trigger};
         }
     }
 
     // Default trigger
-    return { ...context, default_trigger: "on_create_or_write" };
+    return {...context, default_trigger: "on_create_or_write"};
 }
 
 patch(GroupConfigMenu.prototype, {
@@ -71,7 +71,7 @@ patch(GroupConfigMenu.prototype, {
 
     async _openAutomations() {
         const domain = [["model", "=", this.props.list.resModel]];
-        const modelId = await this.orm.search("ir.model", domain, { limit: 1 });
+        const modelId = await this.orm.search("ir.model", domain, {limit: 1});
         const context = {
             active_test: false,
             default_model_id: modelId[0],
@@ -88,9 +88,9 @@ registry.category("group_config_items").add(
     {
         label: _t("Automations"),
         method: "openAutomations",
-        isVisible: ({ permissions }) => permissions.canEditAutomations,
+        isVisible: ({permissions}) => permissions.canEditAutomations,
         class: "o_column_automations",
         icon: "fa-magic",
     },
-    { sequence: 25, force: true }
+    {sequence: 25, force: true}
 );

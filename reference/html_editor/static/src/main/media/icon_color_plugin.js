@@ -1,15 +1,15 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { ColorSelector } from "../font/color_selector";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {ColorSelector} from "../font/color_selector";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 export class IconColorPlugin extends Plugin {
     static id = "iconColor";
     static dependencies = ["icon", "colorUi"];
     /** @type {import("plugins").EditorResources} */
     resources = {
-        toolbar_groups: withSequence(1, { id: "icon_color", namespaces: ["icon"] }),
+        toolbar_groups: withSequence(1, {id: "icon_color", namespaces: ["icon"]}),
         toolbar_items: [
             {
                 id: "icon_forecolor",

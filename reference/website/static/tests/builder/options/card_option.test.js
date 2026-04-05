@@ -1,13 +1,20 @@
-import { expect, test } from "@odoo/hoot";
-import { tick } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {tick} from "@odoo/hoot-mock";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
     setupWebsiteBuilderWithSnippet,
 } from "@website/../tests/builder/website_helpers";
-import { contains } from "@web/../tests/web_test_helpers";
-import { animationFrame, click, press, queryOne, setInputRange, waitFor } from "@odoo/hoot-dom";
-import { getContent } from "@html_editor/../tests/_helpers/selection";
+import {contains} from "@web/../tests/web_test_helpers";
+import {
+    animationFrame,
+    click,
+    press,
+    queryOne,
+    setInputRange,
+    waitFor,
+} from "@odoo/hoot-dom";
+import {getContent} from "@html_editor/../tests/_helpers/selection";
 import {
     insertText,
     simulateArrowKeyPress,
@@ -27,7 +34,7 @@ test("set card width", async () => {
 
     await setInputRange("[data-action-id='setCardWidth'] input", 50);
     await animationFrame();
-    expect(":iframe .s_card").toHaveStyle({ maxWidth: "50%" });
+    expect(":iframe .s_card").toHaveStyle({maxWidth: "50%"});
 });
 
 test("set card alignment", async () => {
@@ -44,19 +51,25 @@ test("set card alignment", async () => {
 
     expect(":iframe .s_card").not.toHaveClass(["me-auto", "mx-auto", "ms-auto"]);
     // Left alignment button is active by default
-    expect("[data-label='Card Width'] + [data-label='Alignment'] button[title='Left']").toHaveClass(
-        "active"
-    );
+    expect(
+        "[data-label='Card Width'] + [data-label='Alignment'] button[title='Left']"
+    ).toHaveClass("active");
 
-    await click("[data-label='Card Width'] + [data-label='Alignment'] button[title='Center']");
+    await click(
+        "[data-label='Card Width'] + [data-label='Alignment'] button[title='Center']"
+    );
     await animationFrame();
     expect(":iframe .s_card").toHaveClass("mx-auto");
 
-    await click("[data-label='Card Width'] + [data-label='Alignment'] button[title='Right']");
+    await click(
+        "[data-label='Card Width'] + [data-label='Alignment'] button[title='Right']"
+    );
     await animationFrame();
     expect(":iframe .s_card").toHaveClass("ms-auto");
 
-    await click("[data-label='Card Width'] + [data-label='Alignment'] button[title='Left']");
+    await click(
+        "[data-label='Card Width'] + [data-label='Alignment'] button[title='Left']"
+    );
     await animationFrame();
     expect(":iframe .s_card").toHaveClass("me-auto");
 });
@@ -117,7 +130,9 @@ test("set cover image position", async () => {
     expect(":iframe .s_card").toHaveClass("o_card_img_top");
     expect(":iframe .s_card .o_card_img").toHaveClass("card-img-top");
     // Top position is active
-    expect("[data-action-id='setCoverImagePosition'][title='Top']").toHaveClass("active");
+    expect("[data-action-id='setCoverImagePosition'][title='Top']").toHaveClass(
+        "active"
+    );
 
     // Set image position to left
     await click("[data-action-id='setCoverImagePosition'][title='Left']");
@@ -128,7 +143,10 @@ test("set cover image position", async () => {
     // Set image position to right
     await click("[data-action-id='setCoverImagePosition'][title='Right']");
     await waitFor("[data-action-id='setCoverImagePosition'][title='Right'].active");
-    expect(":iframe .s_card").toHaveClass(["o_card_img_horizontal", "flex-lg-row-reverse"]);
+    expect(":iframe .s_card").toHaveClass([
+        "o_card_img_horizontal",
+        "flex-lg-row-reverse",
+    ]);
     expect(":iframe .s_card .o_card_img").toHaveClass("rounded-end");
 
     // Set image position to bottom
@@ -182,7 +200,10 @@ test("set cover image ratio", async () => {
         await openRatioDropdownMenu();
         await click(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`);
         await animationFrame();
-        expect(":iframe .s_card .o_card_img_wrapper").toHaveClass(["ratio", ratioClass]);
+        expect(":iframe .s_card .o_card_img_wrapper").toHaveClass([
+            "ratio",
+            ratioClass,
+        ]);
     }
 
     // Set custom ratio
@@ -191,8 +212,10 @@ test("set cover image ratio", async () => {
     await waitFor("[data-label='Custom Ratio'] input[type='range']");
     await setInputRange("[data-label='Custom Ratio'] input[type='range']", 60);
     await animationFrame();
-    expect(":iframe .s_card .o_card_img_wrapper").toHaveClass("o_card_img_ratio_custom");
-    expect(":iframe .s_card").toHaveStyle({ "--card-img-aspect-ratio": "60%" });
+    expect(":iframe .s_card .o_card_img_wrapper").toHaveClass(
+        "o_card_img_ratio_custom"
+    );
+    expect(":iframe .s_card").toHaveStyle({"--card-img-aspect-ratio": "60%"});
 });
 
 test("ratios supported for vertical images", async () => {
@@ -211,7 +234,9 @@ test("ratios supported for vertical images", async () => {
     expect(":iframe .s_card").toHaveClass("o_card_img_top");
     expect(`.dropdown-menu [data-class-action='']`).toHaveCount(1); // Default image ratio
     for (const ratioClass of verticalRatioClasses) {
-        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(1);
+        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(
+            1
+        );
     }
     // Set image position to bottom
     await click("[data-action-id='setCoverImagePosition'][title='Bottom']");
@@ -220,7 +245,9 @@ test("ratios supported for vertical images", async () => {
     expect(":iframe .s_card").toHaveClass("o_card_img_bottom");
     expect(`.dropdown-menu [data-class-action='']`).toHaveCount(1); // Default image ratio
     for (const ratioClass of verticalRatioClasses) {
-        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(1);
+        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(
+            1
+        );
     }
     // Set image position to left
     await click("[data-action-id='setCoverImagePosition'][title='Left']");
@@ -230,8 +257,15 @@ test("ratios supported for vertical images", async () => {
     // When cover image is left or right, only default and square ratios are available
     expect(`.dropdown-menu [data-class-action='']`).toHaveCount(1); // Default image ratio
     expect(`.dropdown-menu [data-class-action='ratio ratio-1x1']`).toHaveCount(1); // Square
-    for (const ratioClass of ["ratio-4x3", "ratio-16x9", "ratio-21x9", "o_card_img_ratio_custom"]) {
-        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(0);
+    for (const ratioClass of [
+        "ratio-4x3",
+        "ratio-16x9",
+        "ratio-21x9",
+        "o_card_img_ratio_custom",
+    ]) {
+        expect(`.dropdown-menu [data-class-action='ratio ${ratioClass}']`).toHaveCount(
+            0
+        );
     }
 });
 
@@ -266,7 +300,7 @@ test("cover image set to wide aspect ratio can be vertically aligned", async () 
     await setInputRange("[data-action-id='alignCoverImage'] input", 50);
     await animationFrame();
     expect(":iframe .s_card .o_card_img_wrapper").toHaveClass("o_card_img_adjust_v");
-    expect(":iframe .s_card").toHaveStyle({ "--card-img-ratio-align": "50%" });
+    expect(":iframe .s_card").toHaveStyle({"--card-img-ratio-align": "50%"});
 });
 
 const nestedCardsWithTwoCovers = `
@@ -302,15 +336,15 @@ test("cover image ratio option only act on the right card when two of them are n
 test.tags("desktop");
 // Because up/down arrows are tested within a full page width layout.
 test("navigate between cards with keyboard", async () => {
-    const { getEditor } = await setupWebsiteBuilderWithSnippet("s_cards_grid");
+    const {getEditor} = await setupWebsiteBuilderWithSnippet("s_cards_grid");
     const editor = getEditor();
     const h2El = await waitFor(":iframe h2");
     const rowEl = await waitFor(":iframe div.row");
-    await contains(":iframe .s_cards_grid :contains()").click(); // click on text
+    await contains(":iframe .s_cards_grid :contains()").click(); // Click on text
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(h2El)).toMatch(/^.+\[\]$/);
     splitBlock(editor);
     expect(":iframe p[data-selection-placeholder]").toHaveCount(0);
@@ -322,54 +356,54 @@ test("navigate between cards with keyboard", async () => {
     expect(":iframe p[data-selection-placeholder]").toHaveCount(0);
 
     await insertText(editor, "1");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>1\[\]<\/p>/);
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>1<\/p>/);
     await insertText(editor, "2");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>2\[\]<\/p>/);
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>2<\/p>/);
     await insertText(editor, "3");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>3\[\]<\/p>/);
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(tableEl)).toMatch(/>3<\/p>/);
     expect(":iframe p[data-selection-placeholder]").toHaveCount(0);
-    await simulateArrowKeyPress(editor, "ArrowDown"); // exit table
-    await animationFrame(); // await selectionchange
+    await simulateArrowKeyPress(editor, "ArrowDown"); // Exit table
+    await animationFrame(); // Await selectionchange
     expect(":iframe p[data-selection-placeholder]").toHaveCount(0);
     expect(getContent(rowEl)).toMatch(/>Qu\[\]ality/);
 
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/>We\[\] provide/);
 
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/>Ex\[\]pertise/);
 
     await simulateArrowKeyPress(editor, "ArrowUp");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/>We\[\] provide/);
 
     await simulateArrowKeyPress(editor, "ArrowDown");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/>\[\]Expertise/);
 
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/finish.\[\]<\/p>/);
 
     await simulateArrowKeyPress(editor, "ArrowRight");
-    await animationFrame(); // await selectionchange
+    await animationFrame(); // Await selectionchange
     expect(getContent(rowEl)).toMatch(/>\[\]Expertise/);
 });

@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
 
-import { EventBus, Component, useState } from "@odoo/owl";
+import {EventBus, Component, useState} from "@odoo/owl";
 
 export class BlockUI extends Component {
     static props = {
@@ -12,8 +12,8 @@ export class BlockUI extends Component {
 
     setup() {
         this.messagesByDuration = [
-            { time: 20, l1: _t("Loading...") },
-            { time: 40, l1: _t("Still loading...") },
+            {time: 20, l1: _t("Loading...")},
+            {time: 40, l1: _t("Still loading...")},
             {
                 time: 60,
                 l1: _t("Still loading..."),
@@ -36,10 +36,12 @@ export class BlockUI extends Component {
             },
             {
                 time: null,
-                l1: _t("Maybe you should consider reloading the application by pressing F5..."),
+                l1: _t(
+                    "Maybe you should consider reloading the application by pressing F5..."
+                ),
             },
         ];
-        this.BLOCK_STATES = { UNBLOCKED: 0, BLOCKED: 1, VISIBLY_BLOCKED: 2 };
+        this.BLOCK_STATES = {UNBLOCKED: 0, BLOCKED: 1, VISIBLY_BLOCKED: 2};
         this.state = useState({
             blockState: this.BLOCK_STATES.UNBLOCKED,
             line1: "",
@@ -62,7 +64,8 @@ export class BlockUI extends Component {
     }
 
     block(ev) {
-        const showBlockedUI = () => (this.state.blockState = this.BLOCK_STATES.VISIBLY_BLOCKED);
+        const showBlockedUI = () =>
+            (this.state.blockState = this.BLOCK_STATES.VISIBLY_BLOCKED);
         const delay = ev.detail?.delay;
         if (delay) {
             this.state.blockState = this.BLOCK_STATES.BLOCKED;

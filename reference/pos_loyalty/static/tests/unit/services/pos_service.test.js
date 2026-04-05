@@ -1,8 +1,8 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { addProductLineToOrder } from "@pos_loyalty/../tests/unit/utils";
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {addProductLineToOrder} from "@pos_loyalty/../tests/unit/utils";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
 definePosModels();
 
@@ -22,14 +22,14 @@ describe("PosStore - loyalty essentials", () => {
         order._programIsApplicable = () => true;
         order._code_activated_coupon_ids = [];
         order.uiState.couponPointChanges = {};
-        order.pricelist_id = { id: 1 };
+        order.pricelist_id = {id: 1};
 
         const line = await addProductLineToOrder(store, order, {
             gift_code: "XYZ123",
         });
 
         order.pointsForPrograms = () => ({
-            [program.id]: [{ points: 10 }],
+            [program.id]: [{points: 10}],
         });
 
         await store.updatePrograms();

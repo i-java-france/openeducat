@@ -1,10 +1,12 @@
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * Speed up fade-in fade-out to avoid useless delay in tests.
  */
 function patchSurveyForm() {
-    const SurveyForm = odoo.loader.modules.get("@survey/interactions/survey_form").SurveyForm;
+    const SurveyForm = odoo.loader.modules.get(
+        "@survey/interactions/survey_form"
+    ).SurveyForm;
     patch(SurveyForm.prototype, {
         submitForm() {
             this.fadeInOutDelay = 0;
@@ -18,7 +20,7 @@ function patchSurveyForm() {
  * try and fail twice and will no longer be able to take the certification.
  */
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 const patchSteps = [
     {
@@ -182,11 +184,14 @@ const retrySteps = [
     },
 ];
 
-var lastSteps = [{
-    trigger: 'h1:contains("You scored")',
-}, {
-    trigger: 'body:not(:has(a:contains("Retry")))',
-}];
+var lastSteps = [
+    {
+        trigger: 'h1:contains("You scored")',
+    },
+    {
+        trigger: 'body:not(:has(a:contains("Retry")))',
+    },
+];
 
 registry.category("web_tour.tours").add("test_certification_failure", {
     url: "/survey/start/4ead4bc8-b8f2-4760-a682-1fde8daaaaac",

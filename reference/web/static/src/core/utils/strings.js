@@ -1,4 +1,4 @@
-import { isObject } from "./objects";
+import {isObject} from "./objects";
 
 /**
  * @template [T=unknown]
@@ -254,7 +254,7 @@ export function sprintf(str, ...substitutions) {
             }
             raw[raw.length - 1] += str[i];
         }
-        return String.raw({ raw }, ...substitutions);
+        return String.raw({raw}, ...substitutions);
     }
 }
 

@@ -4,9 +4,10 @@ import re
 from contextlib import contextmanager
 
 from odoo import http
+from odoo.tests.common import TransactionCase, tagged
+
 from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.addons.http_routing.tests.common import MockRequest
-from odoo.tests.common import TransactionCase, tagged
 
 
 class TestQweb(TransactionCaseWithUserDemo):
@@ -302,7 +303,7 @@ class TestQweb(TransactionCaseWithUserDemo):
 
 class TestQwebProcessAtt(TransactionCase):
     def setUp(self):
-        super(TestQwebProcessAtt, self).setUp()
+        super().setUp()
         self.website = self.env.ref('website.default_website')
         self.env['res.lang']._activate_lang('fr_FR')
         self.website.language_ids = self.env.ref('base.lang_en') + self.env.ref('base.lang_fr')

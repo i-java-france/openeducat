@@ -1,16 +1,16 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { stores } from "@odoo/o-spreadsheet";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { makeStore } from "@spreadsheet/../tests/helpers/stores";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {stores} from "@odoo/o-spreadsheet";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {makeStore} from "@spreadsheet/../tests/helpers/stores";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
-const { CellComposerStore } = stores;
+const {CellComposerStore} = stores;
 
 test("ODOO.ACCOUNT.GROUP type", async function () {
-    const { store: composer } = await makeStore(CellComposerStore);
+    const {store: composer} = await makeStore(CellComposerStore);
 
     composer.startEdition("=ODOO.ACCOUNT.GROUP(");
     await animationFrame();

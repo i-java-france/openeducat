@@ -1,4 +1,5 @@
 from odoo import fields, models
+
 from odoo.addons.l10n_sa.models.account_move import ADJUSTMENT_REASONS
 
 

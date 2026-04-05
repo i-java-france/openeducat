@@ -1,19 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
-from freezegun import freeze_time
 from unittest.mock import patch
 
+from freezegun import freeze_time
+
 from odoo import fields
-from odoo.addons.base.tests.test_format_address_mixin import FormatAddressCase
-from odoo.addons.crm.models.crm_lead import PARTNER_FIELDS_TO_SYNC, PARTNER_ADDRESS_FIELDS_TO_SYNC
-from odoo.addons.crm.tests.common import TestCrmCommon, INCOMING_EMAIL
-from odoo.addons.mail.tests.common_tracking import MailTrackingDurationMixinCase
-from odoo.addons.phone_validation.tools.phone_validation import phone_format
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.base.tests.test_format_address_mixin import FormatAddressCase
+from odoo.addons.crm.models.crm_lead import (
+    PARTNER_ADDRESS_FIELDS_TO_SYNC,
+    PARTNER_FIELDS_TO_SYNC,
+)
+from odoo.addons.crm.tests.common import INCOMING_EMAIL, TestCrmCommon
+from odoo.addons.mail.tests.common_tracking import MailTrackingDurationMixinCase
+from odoo.addons.phone_validation.tools.phone_validation import phone_format
 
 
 @tagged('lead_internals')
@@ -21,7 +25,7 @@ class TestCRMLead(TestCrmCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestCRMLead, cls).setUpClass()
+        super().setUpClass()
         cls.country_ref = cls.env.ref('base.be')
         cls.test_email = '"Test Email" <test.email@example.com>'
         cls.test_phone = '0485112233'

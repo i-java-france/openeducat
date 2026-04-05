@@ -1,13 +1,13 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { NameAndSignature } from "./name_and_signature";
+import {Dialog} from "@web/core/dialog/dialog";
+import {NameAndSignature} from "./name_and_signature";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class SignatureDialog extends Component {
     static template = "web.SignatureDialog";
-    static components = { Dialog, NameAndSignature };
+    static components = {Dialog, NameAndSignature};
     static props = {
-        defaultName: { type: String, optional: true },
+        defaultName: {type: String, optional: true},
         nameAndSignatureProps: Object,
         uploadSignature: Function,
         close: Function,

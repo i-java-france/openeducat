@@ -1,14 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import Markup
+import io
 from unittest.mock import patch
 
-import io
 import requests
+from markupsafe import Markup
+
+from odoo.tests.common import tagged
 
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.mail.tools import link_preview
-from odoo.tests.common import tagged
 
 
 @tagged("mail_link_preview", "mail_message", "post_install", "-at_install")
@@ -131,7 +132,7 @@ class TestLinkPreview(MailCommon):
             }
         ]
         session = requests.Session()
-        for (get_patch, url), expected in zip(test_cases, expected_values):
+        for (get_patch, url), expected in zip(test_cases, expected_values, strict=False):
             with self.subTest(get_patch=get_patch, url=url, expected=expected), patch.object(requests.Session, 'get', get_patch):
                 preview = link_preview.get_link_preview_from_url(url, session)
                 self.assertEqual(preview, expected)
@@ -271,7 +272,7 @@ class TestLinkPreview(MailCommon):
                 .link_preview_id
             )
             message = self.test_partner.message_post(
-                body=Markup(f'<a href="%s/test">Nothing link</a>') % self.source_url
+                body=Markup('<a href="%s/test">Nothing link</a>') % self.source_url
             )
             self.env["mail.link.preview"]._create_from_message_and_notify(message)
             link_preview_count = self.env["mail.message.link.preview"].search_count(

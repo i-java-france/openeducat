@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 /**
  * @typedef { Object } EditInteractionShared
@@ -23,10 +23,10 @@ export class EditInteractionPlugin extends Plugin {
         content_manually_updated_handlers: this.refreshInteractions.bind(this),
         before_save_handlers: withSequence(5, this.stopInteractions.bind(this)),
         after_save_handlers: this.restartInteractions.bind(this),
-        on_will_clone_handlers: ({ originalEl }) => {
+        on_will_clone_handlers: ({originalEl}) => {
             this.stopInteractions(originalEl);
         },
-        on_cloned_handlers: ({ originalEl }) => {
+        on_cloned_handlers: ({originalEl}) => {
             this.restartInteractions(originalEl);
             // The clonedEl is implicitly started because it is a newly
             // inserted content.
@@ -39,7 +39,7 @@ export class EditInteractionPlugin extends Plugin {
         window.parent.document.addEventListener(
             "transfer_website_edit_service",
             this.updateEditInteraction.bind(this),
-            { once: true }
+            {once: true}
         );
         const event = new CustomEvent("edit_interaction_plugin_loaded");
         event.shared = this.__editor.shared;
@@ -50,7 +50,7 @@ export class EditInteractionPlugin extends Plugin {
         this.stopInteractions();
     }
 
-    updateEditInteraction({ detail: { websiteEditService } }) {
+    updateEditInteraction({detail: {websiteEditService}}) {
         this.websiteEditService = websiteEditService;
         this.websiteEditService.installPatches();
     }
@@ -81,4 +81,6 @@ export class EditInteractionPlugin extends Plugin {
     }
 }
 
-registry.category("website-plugins").add(EditInteractionPlugin.id, EditInteractionPlugin);
+registry
+    .category("website-plugins")
+    .add(EditInteractionPlugin.id, EditInteractionPlugin);

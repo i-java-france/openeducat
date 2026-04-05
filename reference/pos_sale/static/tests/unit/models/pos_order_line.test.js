@@ -1,6 +1,6 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { setupPosEnv, getFilledOrder } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -92,9 +92,9 @@ describe("setQuantityFromSOL", () => {
         const order = await getFilledOrder(store);
         const line = order.lines[0];
         line.product_id.type = "service";
-        line.sale_order_origin_id = { state: "sale" }; // not 'sent' or 'draft'
+        line.sale_order_origin_id = {state: "sale"}; // Not 'sent' or 'draft'
 
-        const saleOrderLine = { qty_to_invoice: 2 };
+        const saleOrderLine = {qty_to_invoice: 2};
 
         await line.setQuantityFromSOL(saleOrderLine);
         expect(line.qty).toBe(2);

@@ -1,14 +1,14 @@
-import { Img } from "@html_builder/core/img";
-import { Component } from "@odoo/owl";
+import {Img} from "@html_builder/core/img";
+import {Component} from "@odoo/owl";
 
 export class Snippet extends Component {
     static template = "html_builder.Snippet";
-    static components = { Img };
+    static components = {Img};
     static props = {
-        snippetModel: { type: Object },
-        snippet: { type: Object },
-        onClickHandler: { type: Function },
-        disabledTooltip: { type: String },
+        snippetModel: {type: Object},
+        snippet: {type: Object},
+        onClickHandler: {type: Function},
+        disabledTooltip: {type: String},
     };
 
     get snippet() {

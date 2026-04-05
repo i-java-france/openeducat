@@ -1,6 +1,6 @@
-import { ResUsers } from "@mail/core/common/res_users_model";
+import {ResUsers} from "@mail/core/common/res_users_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").ResUsers} */
 const resUsersPatch = {

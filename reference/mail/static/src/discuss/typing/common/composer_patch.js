@@ -1,12 +1,12 @@
-import { Composer } from "@mail/core/common/composer";
-import { Typing } from "@mail/discuss/typing/common/typing";
-import { rpc } from "@web/core/network/rpc";
+import {Composer} from "@mail/core/common/composer";
+import {Typing} from "@mail/discuss/typing/common/typing";
+import {rpc} from "@web/core/network/rpc";
 
-import { onWillDestroy } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
-import { useDebounced } from "@web/core/utils/timing";
+import {onWillDestroy} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
+import {useDebounced} from "@web/core/utils/timing";
 
 const commandRegistry = registry.category("discuss.channel_commands");
 
@@ -14,7 +14,7 @@ export const SHORT_TYPING = 5000;
 export const LONG_TYPING = 50000;
 
 patch(Composer, {
-    components: { ...Composer.components, Typing },
+    components: {...Composer.components, Typing},
 });
 
 patch(Composer.prototype, {
@@ -24,7 +24,10 @@ patch(Composer.prototype, {
     setup() {
         super.setup();
         this.typingNotified = false;
-        this.stopTypingDebounced = useDebounced(this.stopTyping.bind(this), SHORT_TYPING);
+        this.stopTypingDebounced = useDebounced(
+            this.stopTyping.bind(this),
+            SHORT_TYPING
+        );
         onWillDestroy(() => {
             this.stopTyping();
         });
@@ -42,7 +45,7 @@ patch(Composer.prototype, {
                     channel_id: this.thread.id,
                     is_typing,
                 },
-                { silent: true }
+                {silent: true}
             );
         }
     },
@@ -61,7 +64,7 @@ patch(Composer.prototype, {
                 this.hasSuggestions ||
                 (command &&
                     (!command.condition ||
-                        command.condition({ store: this.store, thread: this.thread })) &&
+                        command.condition({store: this.store, thread: this.thread})) &&
                     (!command.channel_types ||
                         command.channel_types.includes(this.thread.channel_type)))
             ) {

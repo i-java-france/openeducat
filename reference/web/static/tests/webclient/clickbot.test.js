@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred, mockDate, runAllTimers, tick } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame, mockDate, runAllTimers, tick} from "@odoo/hoot-mock";
 import {
     defineActions,
     defineMenus,
@@ -12,12 +12,12 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { onWillStart, onWillUpdateProps } from "@odoo/owl";
+import {onWillStart, onWillUpdateProps} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { SUCCESS_SIGNAL } from "@web/webclient/clickbot/clickbot";
-import { WebClient } from "@web/webclient/webclient";
+import {browser} from "@web/core/browser/browser";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {SUCCESS_SIGNAL} from "@web/webclient/clickbot/clickbot";
+import {WebClient} from "@web/webclient/webclient";
 
 class Foo extends models.Model {
     foo = fields.Char();
@@ -25,10 +25,10 @@ class Foo extends models.Model {
     date = fields.Date();
 
     _records = [
-        { id: 1, bar: true, foo: "yop", date: "2017-01-25" },
-        { id: 2, bar: true, foo: "blip" },
-        { id: 3, bar: true, foo: "gnap" },
-        { id: 4, bar: false, foo: "blip" },
+        {id: 1, bar: true, foo: "yop", date: "2017-01-25"},
+        {id: 2, bar: true, foo: "blip"},
+        {id: 3, bar: true, foo: "gnap"},
+        {id: 4, bar: false, foo: "blip"},
     ];
 
     _views = {
@@ -106,7 +106,7 @@ test("clickbot clickeverywhere test", async () => {
         },
     });
     defineMenus([
-        { id: 1, name: "App1", appID: 1, actionID: 1001, xmlid: "app1" },
+        {id: 1, name: "App1", appID: 1, actionID: 1001, xmlid: "app1"},
         {
             id: 2,
             children: [
@@ -133,7 +133,7 @@ test("clickbot clickeverywhere test", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     window.clickEverywhere();
     await clickEverywhereDef;
@@ -206,7 +206,7 @@ test("only one app", async () => {
         },
     });
     defineMenus([
-        { id: 1, name: "App1", appID: 1, actionID: 1001, xmlid: "app1" },
+        {id: 1, name: "App1", appID: 1, actionID: 1001, xmlid: "app1"},
         {
             id: 2,
             children: [
@@ -233,7 +233,7 @@ test("only one app", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     window.clickEverywhere("app1");
     await clickEverywhereDef;
@@ -313,11 +313,11 @@ test("clickbot clickeverywhere test (with dropdown menu)", async () => {
                 xmlid: "app2",
             },
         ],
-        { mode: "replace" }
+        {mode: "replace"}
     );
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     await runAllTimers();
     await animationFrame();
@@ -386,7 +386,7 @@ test("clickbot test waiting rpc after clicking filter", async () => {
                 views: [[false, "list"]],
             },
         ],
-        { mode: "replace" }
+        {mode: "replace"}
     );
     defineMenus([
         {
@@ -397,7 +397,7 @@ test("clickbot test waiting rpc after clicking filter", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     await runAllTimers();
     await animationFrame();
@@ -405,11 +405,11 @@ test("clickbot test waiting rpc after clicking filter", async () => {
     window.clickEverywhere();
     await clickEverywhereDef;
     expect.verifySteps([
-        "web_search_read called", // click on the App
+        "web_search_read called", // Click on the App
         "response",
-        "web_search_read called", // click on the Filter
+        "web_search_read called", // Click on the Filter
         "response",
-        "web_search_read called", // click on the Second Filter
+        "web_search_read called", // Click on the Second Filter
         "response",
         SUCCESS_SIGNAL,
     ]);
@@ -440,9 +440,10 @@ test("clickbot show rpc error when an error dialog is detected", async () => {
     onRpc("web_search_read", () => {
         if (clickBotStarted) {
             if (id === 3) {
-                // click on the Second Filter
+                // Click on the Second Filter
                 throw makeServerError({
-                    message: "This is a server Error, it should be displayed in an error dialog",
+                    message:
+                        "This is a server Error, it should be displayed in an error dialog",
                     type: "Programming error",
                 });
             }
@@ -468,7 +469,7 @@ test("clickbot show rpc error when an error dialog is detected", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     await runAllTimers();
     await animationFrame();
@@ -487,7 +488,7 @@ test("clickbot show rpc error when an error dialog is detected", async () => {
                 method: "web_search_read",
                 args: [],
                 kwargs: {
-                    specification: { foo: {} },
+                    specification: {foo: {}},
                     offset: 0,
                     order: "",
                     limit: 80,
@@ -509,7 +510,7 @@ test("clickbot show rpc error when an error dialog is detected", async () => {
                 },
             },
         },
-        settings: { silent: false, cache: false },
+        settings: {silent: false, cache: false},
         error: {
             name: "RPC_ERROR",
             type: "server",
@@ -519,13 +520,15 @@ test("clickbot show rpc error when an error dialog is detected", async () => {
                 debug: "traceback",
                 arguments: [],
                 context: {},
-                message: "This is a server Error, it should be displayed in an error dialog",
+                message:
+                    "This is a server Error, it should be displayed in an error dialog",
             },
             exceptionName: "odoo.exceptions.Programming error",
             subType: "server",
-            message: "This is a server Error, it should be displayed in an error dialog",
+            message:
+                "This is a server Error, it should be displayed in an error dialog",
             model: "foo",
-            errorEvent: { isTrusted: true },
+            errorEvent: {isTrusted: true},
         },
     });
     const expectedModalHtml = /* xml */ `
@@ -605,7 +608,7 @@ test("clickbot test waiting render after clicking filter", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     await runAllTimers();
     await animationFrame();
@@ -613,11 +616,11 @@ test("clickbot test waiting render after clicking filter", async () => {
     window.clickEverywhere();
     await clickEverywhereDef;
     expect.verifySteps([
-        "onWillStart called", // click on APP
+        "onWillStart called", // Click on APP
         "response",
-        "onWillUpdateProps called", // click on filter
+        "onWillUpdateProps called", // Click on filter
         "response",
-        "onWillUpdateProps called", // click on second filter
+        "onWillUpdateProps called", // Click on second filter
         "response",
         SUCCESS_SIGNAL,
     ]);
@@ -672,7 +675,7 @@ test("clickbot clickeverywhere menu modal", async () => {
     ]);
     const webClient = await mountWithCleanup(WebClient);
     patchWithCleanup(odoo, {
-        __WOWL_DEBUG__: { root: webClient },
+        __WOWL_DEBUG__: {root: webClient},
     });
     window.clickEverywhere();
     await clickEverywhereDef;

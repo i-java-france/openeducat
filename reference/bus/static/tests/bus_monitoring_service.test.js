@@ -3,14 +3,14 @@ import {
     defineBusModels,
     lockWebsocketConnect,
 } from "@bus/../tests/bus_test_helpers";
-import { WEBSOCKET_CLOSE_CODES } from "@bus/workers/websocket_worker";
-import { describe, expect, test } from "@odoo/hoot";
-import { manuallyDispatchProgrammaticEvent, runAllTimers } from "@odoo/hoot-dom";
+import {WEBSOCKET_CLOSE_CODES} from "@bus/workers/websocket_worker";
+import {describe, expect, test} from "@odoo/hoot";
+import {manuallyDispatchProgrammaticEvent, runAllTimers} from "@odoo/hoot-dom";
 import {
+    MockServer,
     asyncStep,
     getService,
     makeMockEnv,
-    MockServer,
     mockService,
     patchWithCleanup,
     waitForSteps,
@@ -42,7 +42,9 @@ test("connection considered as lost after failed reconnect attempt", async () =>
     await makeMockEnv();
     await waitForSteps(["isConnectionLost - false", "BUS:CONNECT"]);
     const unlockWebsocket = lockWebsocketConnect();
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:DISCONNECT"]);
     await runAllTimers();
     await waitForSteps(["isConnectionLost - true"]);
@@ -60,7 +62,9 @@ test("brief disconect not considered lost", async () => {
     );
     await makeMockEnv();
     await waitForSteps(["isConnectionLost - false", "BUS:CONNECT"]);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.SESSION_EXPIRED);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.SESSION_EXPIRED
+    );
     await waitForSteps(["BUS:DISCONNECT"]);
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT"]); // Only reconnect step, which means the monitoring state didn't change.
@@ -76,10 +80,10 @@ test("computer sleep doesn't mark connection as lost", async () => {
     await makeMockEnv();
     await waitForSteps(["isConnectionLost - false", "BUS:CONNECT"]);
     const unlockWebsocket = lockWebsocketConnect();
-    patchWithCleanup(navigator, { onLine: false });
+    patchWithCleanup(navigator, {onLine: false});
     await manuallyDispatchProgrammaticEvent(window, "offline"); // Offline event is triggered when the computer goes to sleep.
     await waitForSteps(["BUS:DISCONNECT"]);
-    patchWithCleanup(navigator, { onLine: true });
+    patchWithCleanup(navigator, {onLine: true});
     await manuallyDispatchProgrammaticEvent(window, "online"); // Online event is triggered when the computer wakes up.
     unlockWebsocket();
     await runAllTimers();

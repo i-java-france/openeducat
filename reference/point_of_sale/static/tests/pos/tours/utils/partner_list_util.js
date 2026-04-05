@@ -1,6 +1,6 @@
-import { negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
 
-export function clickPartner(name = "", { expectUnloadPage = false } = {}) {
+export function clickPartner(name = "", {expectUnloadPage = false} = {}) {
     return {
         content: `click partner '${name}' from partner list screen`,
         trigger: `.modal .partner-list b:contains(${name})`,
@@ -138,7 +138,7 @@ export function searchCustomerValue(val, pressEnter = false) {
             run: function () {
                 document
                     .querySelector(".modal-header .input-group input")
-                    .dispatchEvent(new KeyboardEvent("keyup", { key: "" }));
+                    .dispatchEvent(new KeyboardEvent("keyup", {key: ""}));
             },
         });
         steps.push({
@@ -147,7 +147,9 @@ export function searchCustomerValue(val, pressEnter = false) {
             run: function () {
                 document
                     .querySelector(".modal-dialog .input-group input")
-                    .dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }));
+                    .dispatchEvent(
+                        new KeyboardEvent("keydown", {bubbles: true, key: "Enter"})
+                    );
             },
         });
     }

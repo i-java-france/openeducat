@@ -1,20 +1,22 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from unittest.mock import patch, ANY, call
 from datetime import timedelta
+from unittest.mock import ANY, call, patch
 
 from odoo import fields
-
 from odoo.exceptions import UserError
-from odoo.addons.microsoft_calendar.utils.microsoft_calendar import MicrosoftCalendarService
-from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
+
 from odoo.addons.microsoft_calendar.models.res_users import ResUsers
 from odoo.addons.microsoft_calendar.tests.common import (
     TestCommon,
-    mock_get_token,
     _modified_date_in_the_future,
-    patch_api
+    mock_get_token,
+    patch_api,
 )
+from odoo.addons.microsoft_calendar.utils.microsoft_calendar import (
+    MicrosoftCalendarService,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 
 
 @patch.object(ResUsers, '_get_microsoft_calendar_token', mock_get_token)
@@ -22,7 +24,7 @@ class TestDeleteEvents(TestCommon):
 
     @patch_api
     def setUp(self):
-        super(TestDeleteEvents, self).setUp()
+        super().setUp()
         self.create_events_for_tests()
 
     @patch.object(MicrosoftCalendarService, 'delete')

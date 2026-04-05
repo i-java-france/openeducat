@@ -1,13 +1,13 @@
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { Component, useState } from "@odoo/owl";
-import { user } from "@web/core/user";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {Component, useState} from "@odoo/owl";
+import {user} from "@web/core/user";
 
 export class SwitchCompanyItem extends Component {
     static template = "web.SwitchCompanyItem";
-    static components = { DropdownItem, SwitchCompanyItem };
+    static components = {DropdownItem, SwitchCompanyItem};
     static props = {
         company: {},
-        level: { type: Number },
+        level: {type: Number},
     };
 
     setup() {

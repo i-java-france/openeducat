@@ -1,16 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import babel.dates
-from json import dumps
 from datetime import datetime, time
+from json import dumps
+
 from dateutil.relativedelta import relativedelta
 
-
-from odoo import api, fields, models, SUPERUSER_ID, _
+from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.fields import Domain
-from odoo.tools.date_utils import get_month, subtract
 from odoo.tools.float_utils import float_round
-from odoo.tools.misc import get_lang, format_date
+from odoo.tools.misc import format_date
 
 
 class StockReplenishmentInfo(models.TransientModel):

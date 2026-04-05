@@ -1,6 +1,6 @@
-import { Message } from "@mail/core/common/message";
+import {Message} from "@mail/core/common/message";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(Message.prototype, {
     get authorAvatarUrl() {
@@ -14,6 +14,8 @@ patch(Message.prototype, {
     },
 
     get shouldHideFromMessageListOnDelete() {
-        return this.env.inFrontendPortalChatter || super.shouldHideFromMessageListOnDelete;
+        return (
+            this.env.inFrontendPortalChatter || super.shouldHideFromMessageListOnDelete
+        );
     },
 });

@@ -1,13 +1,13 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { getImageSrc, getMimetype } from "@html_editor/utils/image";
-import { clamp } from "@web/core/utils/numbers";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {getImageSrc, getMimetype} from "@html_editor/utils/image";
+import {clamp} from "@web/core/utils/numbers";
 
 export class ImageFormatOption extends BaseOptionComponent {
     static template = "html_builder.ImageFormat";
     static dependencies = ["imageFormatOption"];
     static props = {
-        level: { type: Number, optional: true },
-        computeMaxDisplayWidth: { type: Function, optional: true },
+        level: {type: Number, optional: true},
+        computeMaxDisplayWidth: {type: Function, optional: true},
     };
     static defaultProps = {
         level: 0,
@@ -15,7 +15,7 @@ export class ImageFormatOption extends BaseOptionComponent {
     MAX_SUGGESTED_WIDTH = 1920;
     setup() {
         super.setup();
-        const { computeAvailableFormats } = this.dependencies.imageFormatOption;
+        const {computeAvailableFormats} = this.dependencies.imageFormatOption;
         this.state = useDomState(async (editingElement) => {
             const formats = await computeAvailableFormats(
                 editingElement,
@@ -52,7 +52,8 @@ export function computeMaxDisplayWidth(img, MAX_SUGGESTED_WIDTH = 1920) {
     }
     const computedStyles = window.getComputedStyle(img);
     const displayWidth = parseFloat(computedStyles.getPropertyValue("width"));
-    const gutterWidth = parseFloat(computedStyles.getPropertyValue("--o-grid-gutter-width")) || 30;
+    const gutterWidth =
+        parseFloat(computedStyles.getPropertyValue("--o-grid-gutter-width")) || 30;
 
     // For the logos we don't want to suggest a width too small.
     if (img.closest("nav")) {
@@ -64,18 +65,24 @@ export function computeMaxDisplayWidth(img, MAX_SUGGESTED_WIDTH = 1920) {
         // width since we only use col-lg-* in Odoo).
     } else if (img.closest(".container, .o_container_small")) {
         const mdContainerMaxWidth =
-            parseFloat(computedStyles.getPropertyValue("--o-md-container-max-width")) || 720;
+            parseFloat(computedStyles.getPropertyValue("--o-md-container-max-width")) ||
+            720;
         const mdContainerInnerWidth = mdContainerMaxWidth - gutterWidth;
-        return Math.round(clamp(displayWidth, mdContainerInnerWidth, MAX_SUGGESTED_WIDTH));
+        return Math.round(
+            clamp(displayWidth, mdContainerInnerWidth, MAX_SUGGESTED_WIDTH)
+        );
         // If the image is displayed in a container-fluid, it might also get
         // bigger on smaller screens. The same way, we suggest the width of the
         // current image unless it is smaller than the max size of the container
         // on the md breakpoint (which is the LG breakpoint since the container
         // fluid is full-width).
     } else if (img.closest(".container-fluid")) {
-        const lgBp = parseFloat(computedStyles.getPropertyValue("--breakpoint-lg")) || 992;
+        const lgBp =
+            parseFloat(computedStyles.getPropertyValue("--breakpoint-lg")) || 992;
         const mdContainerFluidMaxInnerWidth = lgBp - gutterWidth;
-        return Math.round(clamp(displayWidth, mdContainerFluidMaxInnerWidth, MAX_SUGGESTED_WIDTH));
+        return Math.round(
+            clamp(displayWidth, mdContainerFluidMaxInnerWidth, MAX_SUGGESTED_WIDTH)
+        );
     }
     // If it's not in a container, it's probably not going to change size
     // depending on breakpoints. We still keep a margin safety.

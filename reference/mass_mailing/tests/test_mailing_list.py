@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import copy
-
 from datetime import datetime
-from freezegun import freeze_time
 from unittest.mock import patch
 
+from freezegun import freeze_time
+
 from odoo import exceptions
-from odoo.addons.mass_mailing.tests.common import MassMailCommon
 from odoo.tests import Form, tagged, users
+
+from odoo.addons.mass_mailing.tests.common import MassMailCommon
 
 
 @tagged('mailing_list')
@@ -98,7 +98,7 @@ class TestMailingListMerge(MassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailingListMerge, cls).setUpClass()
+        super().setUpClass()
         cls._create_mailing_list()
 
         cls.mailing_list_3 = cls.env['mailing.list'].with_context(cls._test_context).create({

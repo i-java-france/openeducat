@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-
-from odoo import api, fields, models, _, Command
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import format_date, formatLang, frozendict, date_utils
-from odoo.tools.float_utils import float_round
 
 from dateutil.relativedelta import relativedelta
+
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import date_utils, format_date, formatLang, frozendict
+from odoo.tools.float_utils import float_round
 
 
 class AccountPaymentTerm(models.Model):
@@ -275,7 +274,7 @@ class AccountPaymentTerm(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=_("%s (copy)", line.name)) for line, vals in zip(self, vals_list)]
+        return [dict(vals, name=_("%s (copy)", line.name)) for line, vals in zip(self, vals_list, strict=False)]
 
 
 class AccountPaymentTermLine(models.Model):

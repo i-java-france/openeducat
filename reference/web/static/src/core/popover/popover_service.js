@@ -1,6 +1,6 @@
-import { markRaw } from "@odoo/owl";
-import { Popover } from "@web/core/popover/popover";
-import { registry } from "@web/core/registry";
+import {markRaw} from "@odoo/owl";
+import {Popover} from "@web/core/popover/popover";
+import {registry} from "@web/core/registry";
 
 /**
  * @typedef {{
@@ -23,7 +23,7 @@ import { registry } from "@web/core/registry";
 
 export const popoverService = {
     dependencies: ["overlay"],
-    start(_, { overlay }) {
+    start(_, {overlay}) {
         /**
          * Signals the manager to add a popover.
          *
@@ -70,7 +70,7 @@ export const popoverService = {
             return remove;
         };
 
-        return { add };
+        return {add};
     },
 };
 

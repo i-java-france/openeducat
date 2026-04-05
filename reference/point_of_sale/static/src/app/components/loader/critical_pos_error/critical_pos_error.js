@@ -1,11 +1,11 @@
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class CriticalPOSError extends Component {
     static template = "point_of_sale.CriticalPOSError";
-    static props = { error: Object };
+    static props = {error: Object};
 
     setup() {
-        this.state = useState({ expanded: false });
+        this.state = useState({expanded: false});
     }
     async fullReset() {
         const step = async (fn) => {

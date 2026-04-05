@@ -1,20 +1,20 @@
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { describe, expect, test } from "@odoo/hoot";
-import { setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {describe, expect, test} from "@odoo/hoot";
+import {setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
 import "@spreadsheet_account/index";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
-const { DEFAULT_LOCALE } = spreadsheet.constants;
+const {DEFAULT_LOCALE} = spreadsheet.constants;
 
 test("Basic evaluation", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "get_fiscal_dates") {
                 expect.step("get_fiscal_dates");
@@ -26,7 +26,7 @@ test("Basic evaluation", async () => {
                         },
                     ],
                 ]);
-                return [{ start: "2020-01-01", end: "2020-12-31" }];
+                return [{start: "2020-01-01", end: "2020-12-31"}];
             }
         },
     });
@@ -39,7 +39,7 @@ test("Basic evaluation", async () => {
 });
 
 test("with a given company id", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "get_fiscal_dates") {
                 expect.step("get_fiscal_dates");
@@ -51,7 +51,7 @@ test("with a given company id", async () => {
                         },
                     ],
                 ]);
-                return [{ start: "2020-01-01", end: "2020-12-31" }];
+                return [{start: "2020-01-01", end: "2020-12-31"}];
             }
         },
     });
@@ -64,7 +64,7 @@ test("with a given company id", async () => {
 });
 
 test("with a wrong company id", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "get_fiscal_dates") {
                 expect.step("get_fiscal_dates");
@@ -93,7 +93,7 @@ test("with a wrong company id", async () => {
 });
 
 test("with wrong input arguments", async () => {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(model, "A1", `=ODOO.FISCALYEAR.START("not a number")`);
     setCellContent(model, "A2", `=ODOO.FISCALYEAR.END("11/11/2020", "not a number")`);
     expect(getEvaluatedCell(model, "A1").message).toBe(
@@ -105,10 +105,10 @@ test("with wrong input arguments", async () => {
 });
 
 test("Date format is locale dependant", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "get_fiscal_dates") {
-                return [{ start: "2020-01-01", end: "2020-12-31" }];
+                return [{start: "2020-01-01", end: "2020-12-31"}];
             }
         },
     });
@@ -119,7 +119,9 @@ test("Date format is locale dependant", async () => {
     expect(getEvaluatedCell(model, "A1").format).toBe("m/d/yyyy");
     expect(getEvaluatedCell(model, "A2").format).toBe("m/d/yyyy");
 
-    model.dispatch("UPDATE_LOCALE", { locale: { ...DEFAULT_LOCALE, dateFormat: "d/m/yyyy" } });
+    model.dispatch("UPDATE_LOCALE", {
+        locale: {...DEFAULT_LOCALE, dateFormat: "d/m/yyyy"},
+    });
 
     expect(getEvaluatedCell(model, "A1").format).toBe("d/m/yyyy");
     expect(getEvaluatedCell(model, "A2").format).toBe("d/m/yyyy");

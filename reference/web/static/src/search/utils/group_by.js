@@ -1,4 +1,4 @@
-import { DEFAULT_INTERVAL, BACKEND_INTERVAL_OPTIONS } from "./dates";
+import {DEFAULT_INTERVAL, BACKEND_INTERVAL_OPTIONS} from "./dates";
 
 /**
  * @param {string} descr

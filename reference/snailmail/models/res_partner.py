@@ -1,8 +1,8 @@
 
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models
+
 from odoo.addons.snailmail.country_utils import SNAILMAIL_COUNTRIES
 
 
@@ -23,7 +23,7 @@ class ResPartner(models.Model):
             ])
             letters.write(letter_address_vals)
 
-        return super(ResPartner, self).write(vals)
+        return super().write(vals)
 
     def _get_country_name(self):
         # when sending a letter, thus rendering the report with the snailmail_layout,
@@ -33,7 +33,7 @@ class ResPartner(models.Model):
         if self.env.context.get('snailmail_layout') and country_code in SNAILMAIL_COUNTRIES:
             return SNAILMAIL_COUNTRIES.get(country_code)
 
-        return super(ResPartner, self)._get_country_name()
+        return super()._get_country_name()
 
     @api.model
     def _get_address_format(self):
@@ -47,4 +47,4 @@ class ResPartner(models.Model):
         if self.env.context.get('snailmail_layout') and self.street2:
             return "%(street)s, %(street2)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s"
 
-        return super(ResPartner, self)._get_address_format()
+        return super()._get_address_format()

@@ -1,16 +1,16 @@
 <templates>
-
     <t t-name="account.DocumentFileUploader">
         <FileUploader
             acceptedFileExtensions="props.acceptedFileExtensions"
             fileUploadClass="'document_file_uploader'"
             multiUpload="true"
             onUploaded.bind="onFileUploaded"
-            onUploadComplete.bind="onUploadComplete">
+            onUploadComplete.bind="onUploadComplete"
+        >
             <t t-set-slot="toggler">
-                <t t-slot="toggler"/>
+                <t t-slot="toggler" />
             </t>
-            <t t-slot="default"/>
+            <t t-slot="default" />
         </FileUploader>
     </t>
 
@@ -18,12 +18,15 @@
         <DocumentFileUploader resModel="props.resModel">
             <t t-set-slot="toggler">
                 <t t-if="!hideUploadButton">
-                    <button type="button" class="btn btn-secondary" data-hotkey="shift+i">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-hotkey="shift+i"
+                    >
                         Upload
                     </button>
                 </t>
             </t>
         </DocumentFileUploader>
     </t>
-
 </templates>

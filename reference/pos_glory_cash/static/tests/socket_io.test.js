@@ -1,7 +1,7 @@
-import { afterEach, beforeEach, describe, expect, test } from "@odoo/hoot";
-import { waitUntil } from "@odoo/hoot-dom";
-import { advanceTime, mockWebSocket } from "@odoo/hoot-mock";
-import { SocketIoService } from "@pos_glory_cash/utils/socket_io";
+import {afterEach, beforeEach, describe, expect, test} from "@odoo/hoot";
+import {waitUntil} from "@odoo/hoot-dom";
+import {advanceTime, mockWebSocket} from "@odoo/hoot-mock";
+import {SocketIoService} from "@pos_glory_cash/utils/socket_io";
 
 const websocketState = {
     instance: null,
@@ -50,7 +50,7 @@ describe("when open message is received", () => {
     });
 
     test("sends ping request every 5 seconds", async () => {
-        const socketIo = new SocketIoService({ onClose: () => {} });
+        const socketIo = new SocketIoService({onClose: () => {}});
         socketIo.connect("mockUrl");
         await waitUntil(() => websocketState.instance.readyState);
 
@@ -63,7 +63,7 @@ describe("when open message is received", () => {
     });
 
     test("closes connection if pong response is not received in 10s after ping", async () => {
-        const socketIo = new SocketIoService({ onClose: () => {} });
+        const socketIo = new SocketIoService({onClose: () => {}});
         socketIo.connect("mockUrl");
         await waitUntil(() => websocketState.instance.readyState);
 

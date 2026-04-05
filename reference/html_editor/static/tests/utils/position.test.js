@@ -8,8 +8,8 @@ import {
     rightPos,
     startPos,
 } from "@html_editor/utils/position";
-import { describe, expect, test } from "@odoo/hoot";
-import { insertTestHtml } from "../_helpers/editor";
+import {describe, expect, test} from "@odoo/hoot";
+import {insertTestHtml} from "../_helpers/editor";
 
 describe("leftPos", () => {
     test("should return the left position of a lonely text node", () => {

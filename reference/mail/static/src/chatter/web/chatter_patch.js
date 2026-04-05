@@ -1,30 +1,30 @@
-import { ScheduledMessage } from "@mail/chatter/web/scheduled_message";
-import { Activity } from "@mail/core/web/activity";
-import { AttachmentList } from "@mail/core/common/attachment_list";
-import { Chatter } from "@mail/chatter/web_portal/chatter";
-import { FollowerList } from "@mail/core/web/follower_list";
-import { assignGetter, isDragSourceExternalFile } from "@mail/utils/common/misc";
-import { useAttachmentUploader } from "@mail/core/common/attachment_uploader_hook";
-import { useCustomDropzone } from "@web/core/dropzone/dropzone_hook";
-import { useHover, useMessageScrolling } from "@mail/utils/common/hooks";
-import { MailAttachmentDropzone } from "@mail/core/common/mail_attachment_dropzone";
-import { RecipientsInput } from "@mail/core/web/recipients_input";
-import { SearchMessageInput } from "@mail/core/common/search_message_input";
-import { SearchMessageResult } from "@mail/core/common/search_message_result";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { status, useEffect } from "@odoo/owl";
+import {ScheduledMessage} from "@mail/chatter/web/scheduled_message";
+import {Activity} from "@mail/core/web/activity";
+import {AttachmentList} from "@mail/core/common/attachment_list";
+import {Chatter} from "@mail/chatter/web_portal/chatter";
+import {FollowerList} from "@mail/core/web/follower_list";
+import {assignGetter, isDragSourceExternalFile} from "@mail/utils/common/misc";
+import {useAttachmentUploader} from "@mail/core/common/attachment_uploader_hook";
+import {useCustomDropzone} from "@web/core/dropzone/dropzone_hook";
+import {useHover, useMessageScrolling} from "@mail/utils/common/hooks";
+import {MailAttachmentDropzone} from "@mail/core/common/mail_attachment_dropzone";
+import {RecipientsInput} from "@mail/core/web/recipients_input";
+import {SearchMessageInput} from "@mail/core/common/search_message_input";
+import {SearchMessageResult} from "@mail/core/common/search_message_result";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {status, useEffect} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { FileUploader } from "@web/views/fields/file_handler";
-import { patch } from "@web/core/utils/patch";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { useService } from "@web/core/utils/hooks";
-import { useMessageSearch } from "@mail/core/common/message_search_hook";
-import { usePopoutAttachment } from "@mail/core/common/attachment_view";
-import { rpc } from "@web/core/network/rpc";
-import { useRecordObserver } from "@web/model/relational_model/utils";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {FileUploader} from "@web/views/fields/file_handler";
+import {patch} from "@web/core/utils/patch";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {useService} from "@web/core/utils/hooks";
+import {useMessageSearch} from "@mail/core/common/message_search_hook";
+import {usePopoutAttachment} from "@mail/core/common/attachment_view";
+import {rpc} from "@web/core/network/rpc";
+import {useRecordObserver} from "@web/model/relational_model/utils";
 
 export const DELAY_FOR_SPINNER = 1000;
 
@@ -82,7 +82,7 @@ patch(Chatter.prototype, {
         this.orm = useService("orm");
         this.keepLastSuggestedRecipientsUpdate = new KeepLast();
         /** @deprecated equivalent to partner_fields and primary_email_field on thread */
-        this.mailImpactingFields = { recordFields: [], emailFields: [] };
+        this.mailImpactingFields = {recordFields: [], emailFields: []};
         useRecordObserver((record) => this.updateRecipients(record));
         this.attachmentPopout = usePopoutAttachment();
         Object.assign(this.state, {
@@ -95,7 +95,10 @@ patch(Chatter.prototype, {
         });
         this.messageSearch = useMessageSearch();
         this.attachmentUploader = useAttachmentUploader(
-            this.store.Thread.insert({ model: this.props.threadModel, id: this.props.threadId })
+            this.store.Thread.insert({
+                model: this.props.threadModel,
+                id: this.props.threadId,
+            })
         );
         this.unfollowHover = useHover("unfollow");
         this.followerListDropdown = useDropdownState();
@@ -120,7 +123,9 @@ patch(Chatter.prototype, {
                             }
                         }
                         Promise.all(
-                            files.map((file) => this.attachmentUploader.uploadFile(file))
+                            files.map((file) =>
+                                this.attachmentUploader.uploadFile(file)
+                            )
                         ).then(() => {
                             if (this.props.hasParentReloadOnAttachmentsChanged) {
                                 this.reloadParentView();
@@ -147,7 +152,8 @@ patch(Chatter.prototype, {
                     this.state.showAttachmentLoading = false;
                     this.state.isAttachmentBoxOpened =
                         this.state.isAttachmentBoxOpened ||
-                        (this.props.isAttachmentBoxVisibleInitially && this.attachments.length > 0);
+                        (this.props.isAttachmentBoxVisibleInitially &&
+                            this.attachments.length > 0);
                 }
                 return () => browser.clearTimeout(this.loadingAttachmentTimeout);
             },
@@ -194,7 +200,11 @@ patch(Chatter.prototype, {
                 return;
             }
         });
-        if ((!partnerIds.length && !email) || mode !== "message" || status(this) === "destroyed") {
+        if (
+            (!partnerIds.length && !email) ||
+            mode !== "message" ||
+            status(this) === "destroyed"
+        ) {
             return;
         }
         const recipients = await this.keepLastSuggestedRecipientsUpdate.add(
@@ -214,13 +224,13 @@ patch(Chatter.prototype, {
             partner_id: result.partner_id,
             name: result.name || result.email,
         }));
-        this.state.thread.additionalRecipients = this.state.thread.additionalRecipients.filter(
-            (additionalRecipient) =>
+        this.state.thread.additionalRecipients =
+            this.state.thread.additionalRecipients.filter((additionalRecipient) =>
                 this.state.thread.suggestedRecipients.every(
                     (suggestedRecipient) =>
                         suggestedRecipient.partner_id !== additionalRecipient.partner_id
                 )
-        );
+            );
     },
 
     /**
@@ -244,9 +254,11 @@ patch(Chatter.prototype, {
     },
 
     get childSubEnv() {
-        const res = Object.assign(super.childSubEnv, { messageHighlight: this.messageHighlight });
-        assignGetter(res.inChatter, { aside: () => this.props.isChatterAside });
-        Object.assign(res.inChatter, { toggleComposer: this.toggleComposer.bind(this) });
+        const res = Object.assign(super.childSubEnv, {
+            messageHighlight: this.messageHighlight,
+        });
+        assignGetter(res.inChatter, {aside: () => this.props.isChatterAside});
+        Object.assign(res.inChatter, {toggleComposer: this.toggleComposer.bind(this)});
         return res;
     },
 
@@ -441,7 +453,7 @@ patch(Chatter.prototype, {
         this.state.showActivities = !this.state.showActivities;
     },
 
-    toggleComposer(mode = false, { force = false } = {}) {
+    toggleComposer(mode = false, {force = false} = {}) {
         this.closeSearch();
         const toggle = async () => {
             if (!force && this.state.composerType === mode) {

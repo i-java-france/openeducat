@@ -1,6 +1,6 @@
-import { importRecordsItem } from "@base_import/import_records/import_records";
-import { before, expect, test } from "@odoo/hoot";
-import { animationFrame, press } from "@odoo/hoot-dom";
+import {importRecordsItem} from "@base_import/import_records/import_records";
+import {before, expect, test} from "@odoo/hoot";
+import {animationFrame, press} from "@odoo/hoot-dom";
 import {
     clearRegistry,
     contains,
@@ -13,12 +13,12 @@ import {
     selectFieldDropdownItem,
     toggleActionMenu,
 } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 class Foo extends models.Model {
     foo = fields.Char();
 
-    _records = [{ id: 1, foo: "yop" }];
+    _records = [{id: 1, foo: "yop"}];
 }
 
 defineModels([Foo]);
@@ -181,7 +181,7 @@ test(`import should not be available in cog menu dropdown in kanban with import=
 });
 
 test(`import should not be available in cog menu dropdown in pivot (other than kanban or list)`, async () => {
-    Foo._fields.foobar = fields.Integer({ aggregator: "sum" });
+    Foo._fields.foobar = fields.Integer({aggregator: "sum"});
 
     await mountView({
         resModel: "foo",
@@ -200,7 +200,7 @@ test(`import should not be available in cog menu dropdown in dialog view`, async
     class Bar extends models.Model {
         name = fields.Char();
 
-        _records = Array.from({ length: 10 }, (_, i) => ({
+        _records = Array.from({length: 10}, (_, i) => ({
             id: i + 1,
             name: `Bar ${i + 1}`,
         }));
@@ -211,7 +211,7 @@ test(`import should not be available in cog menu dropdown in dialog view`, async
     }
     defineModels([Bar]);
 
-    Foo._fields.m2o = fields.Many2one({ relation: "bar" });
+    Foo._fields.m2o = fields.Many2one({relation: "bar"});
 
     await mountView({
         resModel: "foo",

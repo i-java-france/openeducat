@@ -1,14 +1,14 @@
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { imageUrl } from "@web/core/utils/urls";
-import { isBinarySize } from "@web/core/utils/binary";
-import { FileUploader } from "../file_handler";
-import { standardFieldProps } from "../standard_field_props";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {imageUrl} from "@web/core/utils/urls";
+import {isBinarySize} from "@web/core/utils/binary";
+import {FileUploader} from "../file_handler";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component, useState, onWillRender } from "@odoo/owl";
-const { DateTime } = luxon;
+import {Component, useState, onWillRender} from "@odoo/owl";
+const {DateTime} = luxon;
 
 export const fileTypeMagicWordMap = {
     "/": "jpg",
@@ -26,16 +26,16 @@ export class ImageField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        alt: { type: String, optional: true },
-        enableZoom: { type: Boolean, optional: true },
-        imgClass: { type: String, optional: true },
-        zoomDelay: { type: Number, optional: true },
-        previewImage: { type: String, optional: true },
-        acceptedFileExtensions: { type: String, optional: true },
-        width: { type: Number, optional: true },
-        height: { type: Number, optional: true },
-        reload: { type: Boolean, optional: true },
-        convertToWebp: { type: Boolean, optional: true },
+        alt: {type: String, optional: true},
+        enableZoom: {type: Boolean, optional: true},
+        imgClass: {type: String, optional: true},
+        zoomDelay: {type: Number, optional: true},
+        previewImage: {type: String, optional: true},
+        acceptedFileExtensions: {type: String, optional: true},
+        width: {type: Number, optional: true},
+        height: {type: Number, optional: true},
+        reload: {type: Boolean, optional: true},
+        convertToWebp: {type: Boolean, optional: true},
     };
     static defaultProps = {
         acceptedFileExtensions: "image/*",
@@ -112,10 +112,11 @@ export class ImageField extends Component {
         return this.props.enableZoom && this.props.record.data[this.props.name];
     }
     get tooltipAttributes() {
-        const fieldName = this.fieldType === "many2one" ? this.props.previewImage : this.props.name;
+        const fieldName =
+            this.fieldType === "many2one" ? this.props.previewImage : this.props.name;
         return {
             template: "web.ImageZoomTooltip",
-            info: JSON.stringify({ url: this.getUrl(fieldName) }),
+            info: JSON.stringify({url: this.getUrl(fieldName)}),
         };
     }
 
@@ -131,25 +132,27 @@ export class ImageField extends Component {
                 this.props.record.fields[this.props.name].relation,
                 this.props.record.data[this.props.name].id,
                 imageFieldName,
-                { unique: this.rawCacheKey }
+                {unique: this.rawCacheKey}
             );
         } else if (isBinarySize(this.props.record.data[this.props.name])) {
             this.lastURL = imageUrl(
                 this.props.record.resModel,
                 this.props.record.resId,
                 imageFieldName,
-                { unique: this.rawCacheKey }
+                {unique: this.rawCacheKey}
             );
         } else {
             // Use magic-word technique for detecting image type
-            const magic = fileTypeMagicWordMap[this.props.record.data[this.props.name][0]] || "png";
+            const magic =
+                fileTypeMagicWordMap[this.props.record.data[this.props.name][0]] ||
+                "png";
             this.lastURL = `data:image/${magic};base64,${this.props.record.data[this.props.name]}`;
         }
         return this.lastURL;
     }
     onFileRemove() {
         this.state.isValid = true;
-        this.props.record.update({ [this.props.name]: false });
+        this.props.record.update({[this.props.name]: false});
     }
     async onFileUploaded(info) {
         this.state.isValid = true;
@@ -177,7 +180,9 @@ export class ImageField extends Component {
             image.src = `data:image/webp;base64,${info.data}`;
             await new Promise((resolve) => image.addEventListener("load", resolve));
             const originalSize = Math.max(image.width, image.height);
-            const smallerSizes = [1920, 1024, 512, 256, 128].filter((size) => size < originalSize);
+            const smallerSizes = [1920, 1024, 512, 256, 128].filter(
+                (size) => size < originalSize
+            );
             let referenceId = undefined;
             for (const size of [originalSize, ...smallerSizes]) {
                 const ratio = size / originalSize;
@@ -200,21 +205,26 @@ export class ImageField extends Component {
                     canvas.width,
                     canvas.height
                 );
-                const [resizedId] = await this.orm.call("ir.attachment", "create_unique", [
+                const [resizedId] = await this.orm.call(
+                    "ir.attachment",
+                    "create_unique",
                     [
-                        {
-                            name: info.name,
-                            description: size === originalSize ? "" : `resize: ${size}`,
-                            datas:
-                                size === originalSize
-                                    ? info.data
-                                    : canvas.toDataURL("image/webp").split(",")[1],
-                            res_id: referenceId,
-                            res_model: "ir.attachment",
-                            mimetype: "image/webp",
-                        },
-                    ],
-                ]);
+                        [
+                            {
+                                name: info.name,
+                                description:
+                                    size === originalSize ? "" : `resize: ${size}`,
+                                datas:
+                                    size === originalSize
+                                        ? info.data
+                                        : canvas.toDataURL("image/webp").split(",")[1],
+                                res_id: referenceId,
+                                res_model: "ir.attachment",
+                                mimetype: "image/webp",
+                            },
+                        ],
+                    ]
+                );
                 referenceId = referenceId || resizedId; // Keep track of original.
                 // Converted to JPEG for use in PDF files, alpha values will default to white
                 await this.orm.call("ir.attachment", "create_unique", [
@@ -231,7 +241,7 @@ export class ImageField extends Component {
                 ]);
             }
         }
-        this.props.record.update({ [this.props.name]: info.data });
+        this.props.record.update({[this.props.name]: info.data});
     }
     onLoadFailed() {
         this.state.isValid = false;
@@ -269,7 +279,9 @@ export const imageField = {
             label: _t("Zoom delay"),
             name: "zoom_delay",
             type: "number",
-            help: _t("Delay the apparition of the zoomed image with a value in milliseconds"),
+            help: _t(
+                "Delay the apparition of the zoomed image with a value in milliseconds"
+            ),
         },
         {
             label: _t("Accepted file extensions"),
@@ -281,9 +293,9 @@ export const imageField = {
             name: "size",
             type: "selection",
             choices: [
-                { label: _t("Small"), value: "[0,90]" },
-                { label: _t("Medium"), value: "[0,180]" },
-                { label: _t("Large"), value: "[0,270]" },
+                {label: _t("Small"), value: "[0,90]"},
+                {label: _t("Medium"), value: "[0,180]"},
+                {label: _t("Large"), value: "[0,270]"},
             ],
         },
         {
@@ -294,9 +306,9 @@ export const imageField = {
         },
     ],
     supportedTypes: ["binary", "many2one"],
-    fieldDependencies: [{ name: "write_date", type: "datetime" }],
+    fieldDependencies: [{name: "write_date", type: "datetime"}],
     isEmpty: () => false,
-    extractProps: ({ attrs, options }) => ({
+    extractProps: ({attrs, options}) => ({
         alt: attrs.alt,
         enableZoom: options.zoom,
         convertToWebp: options.convert_to_webp,

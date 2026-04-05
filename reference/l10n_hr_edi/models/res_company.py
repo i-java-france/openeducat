@@ -4,14 +4,14 @@ from odoo import api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
 
 from ..tools import (
-    _mer_api_query_inbox,
-    _mer_api_query_document_process_status_outbox,
-    _mer_api_query_document_process_status_inbox,
-    _mer_api_check_fiscalization_status_outbox,
-    _mer_api_check_fiscalization_status_inbox,
-    _mer_api_receive_document,
-    _mer_api_notify_import,
     MojEracunServiceError,
+    _mer_api_check_fiscalization_status_inbox,
+    _mer_api_check_fiscalization_status_outbox,
+    _mer_api_notify_import,
+    _mer_api_query_document_process_status_inbox,
+    _mer_api_query_document_process_status_outbox,
+    _mer_api_query_inbox,
+    _mer_api_receive_document,
 )
 
 BATCH_SIZE = 50

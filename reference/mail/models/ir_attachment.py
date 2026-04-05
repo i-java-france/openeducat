@@ -2,9 +2,13 @@
 
 import contextlib
 
-from odoo import _, models, fields, api
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
-from odoo.tools.misc import limited_field_access_token, verify_limited_field_access_token
+from odoo.tools.misc import (
+    limited_field_access_token,
+    verify_limited_field_access_token,
+)
+
 from odoo.addons.mail.tools.discuss import Store
 
 
@@ -66,7 +70,7 @@ class IrAttachment(models.Model):
 
             # this action is generic; if user cannot update record do not crash
             # just skip update
-            for related_record, attachment in zip(related_records, attachments):
+            for related_record, attachment in zip(related_records, attachments, strict=False):
                 with contextlib.suppress(AccessError):
                     related_record._message_set_main_attachment_id(attachment, force=force)
 

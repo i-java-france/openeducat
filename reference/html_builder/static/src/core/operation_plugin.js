@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { useComponent } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { Operation } from "./operation";
+import {Plugin} from "@html_editor/plugin";
+import {useComponent} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Operation} from "./operation";
 
 /** @typedef {import("./operation").OperationParams} OperationParams */
 
@@ -34,7 +34,7 @@ export class OperationPlugin extends Plugin {
      * @param {OperationParams} params
      * @returns {Promise<void>}
      */
-    async next(fn, params = { canTimeout: false }) {
+    async next(fn, params = {canTimeout: false}) {
         let rollback;
         const result = await this.operation.next(() => {
             if (params.canTimeout) {
@@ -73,9 +73,12 @@ export class OperationPlugin extends Plugin {
 export function useOperation() {
     const comp = useComponent();
     return (apply, ...args) => {
-        comp.env.editor.shared.operation.next(async (...args) => {
-            await apply(...args);
-            comp.env.editor.shared.history.addStep();
-        }, ...args);
+        comp.env.editor.shared.operation.next(
+            async (...args) => {
+                await apply(...args);
+                comp.env.editor.shared.history.addStep();
+            },
+            ...args
+        );
     };
 }

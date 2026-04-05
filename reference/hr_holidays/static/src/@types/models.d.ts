@@ -1,5 +1,5 @@
 declare module "models" {
-    export interface ResPartner {
-        outOfOfficeDateEndText: Readonly<string>;
-    }
+  export interface ResPartner {
+    outOfOfficeDateEndText: Readonly<string>;
+  }
 }

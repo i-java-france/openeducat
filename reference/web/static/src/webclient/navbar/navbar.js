@@ -1,11 +1,11 @@
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { DropdownGroup } from "@web/core/dropdown/dropdown_group";
-import { Transition } from "@web/core/transition";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { debounce } from "@web/core/utils/timing";
-import { ErrorHandler } from "@web/core/utils/components";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {DropdownGroup} from "@web/core/dropdown/dropdown_group";
+import {Transition} from "@web/core/transition";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {debounce} from "@web/core/utils/timing";
+import {ErrorHandler} from "@web/core/utils/components";
 
 import {
     Component,
@@ -90,7 +90,8 @@ export class NavBar extends Component {
 
     get currentAppSections() {
         return (
-            (this.currentApp && this.menuService.getMenuAsTree(this.currentApp.id).childrenTree) ||
+            (this.currentApp &&
+                this.menuService.getMenuAsTree(this.currentApp.id).childrenTree) ||
             []
         );
     }
@@ -106,8 +107,10 @@ export class NavBar extends Component {
     get systrayItems() {
         return systrayRegistry
             .getEntries()
-            .map(([key, value]) => ({ key, ...value }))
-            .filter((item) => ("isDisplayed" in item ? item.isDisplayed(this.env) : true))
+            .map(([key, value]) => ({key, ...value}))
+            .filter((item) =>
+                "isDisplayed" in item ? item.isDisplayed(this.env) : true
+            )
             .reverse();
     }
 
@@ -143,7 +146,8 @@ export class NavBar extends Component {
         // Save initial state to further check if new render has to be done.
         const initialAppSectionsExtra = this.currentAppSectionsExtra;
         const firstInitialAppSectionExtra = [...initialAppSectionsExtra].shift();
-        const initialAppId = firstInitialAppSectionExtra && firstInitialAppSectionExtra.appID;
+        const initialAppId =
+            firstInitialAppSectionExtra && firstInitialAppSectionExtra.appID;
 
         // Restore (needed to get offset widths)
         const sections = [
@@ -169,14 +173,18 @@ export class NavBar extends Component {
             for (const section of sections) {
                 if (sectionsAvailableWidth < width + section.offsetWidth) {
                     // Last sections are overflowing
-                    const overflowingSections = sections.slice(sections.indexOf(section));
+                    const overflowingSections = sections.slice(
+                        sections.indexOf(section)
+                    );
                     overflowingSections.forEach((s) => {
                         // Hide from normal menu
                         s.classList.add("d-none");
                         // Show inside "more" menu
                         const sectionId =
                             s.dataset.section ||
-                            s.querySelector("[data-section]").getAttribute("data-section");
+                            s
+                                .querySelector("[data-section]")
+                                .getAttribute("data-section");
                         const currentAppSection = this.currentAppSections.find(
                             (appSection) => appSection.id.toString() === sectionId
                         );
@@ -190,7 +198,8 @@ export class NavBar extends Component {
 
         // ------- Final rendering -------
         const firstCurrentAppSectionExtra = [...this.currentAppSectionsExtra].shift();
-        const currentAppId = firstCurrentAppSectionExtra && firstCurrentAppSectionExtra.appID;
+        const currentAppId =
+            firstCurrentAppSectionExtra && firstCurrentAppSectionExtra.appID;
         if (
             initialAppSectionsExtra.length === this.currentAppSectionsExtra.length &&
             initialAppId === currentAppId

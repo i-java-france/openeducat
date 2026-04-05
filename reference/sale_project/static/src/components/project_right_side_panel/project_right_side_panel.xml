@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="sale_project.ProjectRightSidePanel" t-inherit="project.ProjectRightSidePanel" t-inherit-mode="extension">
+    <t
+        t-name="sale_project.ProjectRightSidePanel"
+        t-inherit="project.ProjectRightSidePanel"
+        t-inherit-mode="extension"
+    >
         <xpath expr="//ProjectProfitability" position="replace">
             <ProjectProfitability
                 t-if="showProjectProfitability"

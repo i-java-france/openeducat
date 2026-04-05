@@ -15,17 +15,17 @@ export class Cache {
             }
             key = path[path.length - 1];
         }
-        return { cache, key };
+        return {cache, key};
     }
     clear(...path) {
-        const { cache, key } = this._getCacheAndKey(...path);
+        const {cache, key} = this._getCacheAndKey(...path);
         delete cache[key];
     }
     invalidate() {
         this.cache = {};
     }
     read(...path) {
-        const { cache, key } = this._getCacheAndKey(...path);
+        const {cache, key} = this._getCacheAndKey(...path);
         if (!(key in cache)) {
             cache[key] = this.getValue(...path);
         }

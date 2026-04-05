@@ -1,4 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class ProductAttributeCustomValue extends models.ServerModel {
     _name = "product.attribute.custom.value";

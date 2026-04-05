@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _, exceptions
+from odoo import _, api, exceptions, fields, models
 from odoo.tools.safe_eval import safe_eval
 
 DOMAIN_TEMPLATE = "[('store', '=', True), '|', ('model_id', '=', model_id), ('model_id', 'in', model_inherited_ids)%s]"
@@ -68,11 +67,11 @@ class GamificationGoalDefinition(models.Model):
             items = []
 
             if goal.monetary:
-                items.append(self.env.company.currency_id.symbol or u'¤')
+                items.append(self.env.company.currency_id.symbol or '¤')
             if goal.suffix:
                 items.append(goal.suffix)
 
-            goal.full_suffix = u' '.join(items)
+            goal.full_suffix = ' '.join(items)
 
     def _check_domain_validity(self):
         # take admin as should always be present

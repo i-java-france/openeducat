@@ -1,10 +1,11 @@
-from freezegun import freeze_time
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
-from odoo import fields, Command
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests import tagged, Form
+from odoo import Command, fields
 from odoo.exceptions import UserError
+from odoo.tests import Form, tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')

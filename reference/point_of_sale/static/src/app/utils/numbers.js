@@ -1,11 +1,11 @@
-import { roundPrecision } from "@web/core/utils/numbers";
-import { Base } from "@point_of_sale/app/models/related_models";
+import {roundPrecision} from "@web/core/utils/numbers";
+import {Base} from "@point_of_sale/app/models/related_models";
 
 export const LT = -1;
 export const EQ = 0;
 export const GT = 1;
 
-export function comp(a, b, { precision = 1, method = "HALF-UP" } = {}) {
+export function comp(a, b, {precision = 1, method = "HALF-UP"} = {}) {
     a = roundPrecision(a, precision, method);
     b = roundPrecision(b, precision, method);
     const d = a - b;
@@ -19,12 +19,12 @@ function invertMethod(method) {
     return method === "UP"
         ? "DOWN"
         : method === "DOWN"
-        ? "UP"
-        : method === "HALF-UP"
-        ? "HALF-DOWN"
-        : method === "HALF-DOWN"
-        ? "HALF-UP"
-        : method;
+          ? "UP"
+          : method === "HALF-UP"
+            ? "HALF-DOWN"
+            : method === "HALF-DOWN"
+              ? "HALF-UP"
+              : method;
 }
 
 export class AbstractNumbers extends Base {

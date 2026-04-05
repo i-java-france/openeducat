@@ -1,20 +1,30 @@
-import { Component, useRef, onMounted, onWillUnmount, useEffect, useState } from "@odoo/owl";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { useService } from "@web/core/utils/hooks";
+import {
+    Component,
+    useRef,
+    onMounted,
+    onWillUnmount,
+    useEffect,
+    useState,
+} from "@odoo/owl";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {useService} from "@web/core/utils/hooks";
 
-import { OrderWidget } from "@pos_self_order/app/components/order_widget/order_widget";
-import { ProductNameWidget } from "@pos_self_order/app/components/product_name_widget/product_name_widget";
-import { CategoryListPopup } from "@pos_self_order/app/components/category_list_popup/category_list_popup";
-import { useCategoryScrollSpy } from "../../utils/category_scrollspy_hook";
-import { useDraggableScroll } from "../../utils/scroll_dnd_hook";
-import { scrollItemIntoViewX } from "../../utils/scroll";
-import { useScrollShadow, useHorizontalScrollShadow } from "../../utils/scroll_shadow_hook";
+import {OrderWidget} from "@pos_self_order/app/components/order_widget/order_widget";
+import {ProductNameWidget} from "@pos_self_order/app/components/product_name_widget/product_name_widget";
+import {CategoryListPopup} from "@pos_self_order/app/components/category_list_popup/category_list_popup";
+import {useCategoryScrollSpy} from "../../utils/category_scrollspy_hook";
+import {useDraggableScroll} from "../../utils/scroll_dnd_hook";
+import {scrollItemIntoViewX} from "../../utils/scroll";
+import {
+    useScrollShadow,
+    useHorizontalScrollShadow,
+} from "../../utils/scroll_shadow_hook";
 
 let savedScrollTop = 0;
 
 export class ProductListPage extends Component {
     static template = "pos_self_order.ProductListPage";
-    static components = { OrderWidget, ProductNameWidget };
+    static components = {OrderWidget, ProductNameWidget};
     static props = {};
 
     setup() {
@@ -31,7 +41,9 @@ export class ProductListPage extends Component {
             this.selfOrder.computeAvailableCategories();
         }
         const availableCategories = this.selfOrder.availableCategories;
-        const topCategories = availableCategories.filter((category) => !category.parent_id);
+        const topCategories = availableCategories.filter(
+            (category) => !category.parent_id
+        );
         const selectedCategory =
             initCategories && topCategories.length > 0
                 ? topCategories[0]
@@ -66,7 +78,7 @@ export class ProductListPage extends Component {
             (lines) => {
                 this.state.quantityByProductTmplId = lines
                     .filter((line) => !line.combo_parent_id)
-                    .reduce((acc, { product_id, changes: { qty } }) => {
+                    .reduce((acc, {product_id, changes: {qty}}) => {
                         const tmplId = product_id.product_tmpl_id.id;
                         if (tmplId != null) {
                             acc[tmplId] = (acc[tmplId] || 0) + qty;
@@ -98,7 +110,7 @@ export class ProductListPage extends Component {
                 this.toggleSubCategoryPanel();
             }
             this.ensureCategoryVisible();
-            this.productListRef.el?.scrollTo({ top: 0 });
+            this.productListRef.el?.scrollTo({top: 0});
         } else {
             this.scrollToCategory(category.id);
         }
@@ -112,7 +124,7 @@ export class ProductListPage extends Component {
         scrollItemIntoViewX(
             this.categoryListRef.el,
             `[data-category-pill="${this.selectedCategory.id}"]`,
-            { edgePadding: 20, minRightGap: this.categoryListRef.el.offsetWidth / 3 }
+            {edgePadding: 20, minRightGap: this.categoryListRef.el.offsetWidth / 3}
         );
     }
 
@@ -120,7 +132,9 @@ export class ProductListPage extends Component {
         if (product.pos_categ_ids.length === 0) {
             return true;
         }
-        return product.pos_categ_ids.some((categ) => this.selfOrder.isCategoryAvailable(categ.id));
+        return product.pos_categ_ids.some((categ) =>
+            this.selfOrder.isCategoryAvailable(categ.id)
+        );
     }
 
     get topSelectedCategory() {
@@ -154,7 +168,11 @@ export class ProductListPage extends Component {
     }
 
     getProducts(category) {
-        return category.associatedProducts || this.selfOrder.productByCategIds[category.id] || [];
+        return (
+            category.associatedProducts ||
+            this.selfOrder.productByCategIds[category.id] ||
+            []
+        );
     }
 
     toggleSubCategoryPanel() {
@@ -177,7 +195,10 @@ export class ProductListPage extends Component {
                 el.removeEventListener("transitionend", handler);
             });
             return;
-        } else if (nextSubCategories.length === 0 && this.state.subCategories.length === 0) {
+        } else if (
+            nextSubCategories.length === 0 &&
+            this.state.subCategories.length === 0
+        ) {
             return;
         }
 
@@ -194,9 +215,10 @@ export class ProductListPage extends Component {
             return;
         }
         if (product.isCombo()) {
-            const { show, selectedCombos } = this.selfOrder.showComboSelectionPage(product);
+            const {show, selectedCombos} =
+                this.selfOrder.showComboSelectionPage(product);
             if (show) {
-                this.router.navigate("combo_selection", { id: product.id });
+                this.router.navigate("combo_selection", {id: product.id});
             } else {
                 this.flyToCart(target);
                 this.selfOrder.addToCart(
@@ -212,7 +234,7 @@ export class ProductListPage extends Component {
                 );
             }
         } else if (product.isConfigurable()) {
-            this.router.navigate("product", { id: product.id });
+            this.router.navigate("product", {id: product.id});
         } else {
             if (!this.selfOrder.ordering) {
                 return;
@@ -235,7 +257,11 @@ export class ProductListPage extends Component {
         const productEl = target.closest(".o_self_product_box");
 
         const toOrder = document.querySelector(".to-order");
-        if (!toOrder || window.getComputedStyle(toOrder).display === "none" || !productEl) {
+        if (
+            !toOrder ||
+            window.getComputedStyle(toOrder).display === "none" ||
+            !productEl
+        ) {
             return;
         }
 
@@ -268,7 +294,12 @@ export class ProductListPage extends Component {
 
         const wrapper = document.createElement("div");
         Object.assign(wrapper.style, initialStyles);
-        wrapper.classList.add("position-fixed", "o_self_product_list_page", "shadow-lg", "z-1");
+        wrapper.classList.add(
+            "position-fixed",
+            "o_self_product_list_page",
+            "shadow-lg",
+            "z-1"
+        );
         wrapper.appendChild(clonedPic);
 
         const infosDiv = clonedPic.querySelector(".product-infos");
@@ -285,9 +316,9 @@ export class ProductListPage extends Component {
             wrapper.style.transform = `scale(${ANIMATION_CONFIG.initialScale})`;
             requestAnimationFrame(() => {
                 wrapper.style.transform = `
-                    translateY(${offsetTop}px) 
-                    translateX(${offsetLeft}px) 
-                    scale(${ANIMATION_CONFIG.finalScale}) 
+                    translateY(${offsetTop}px)
+                    translateX(${offsetLeft}px)
+                    scale(${ANIMATION_CONFIG.finalScale})
                     rotate(${ANIMATION_CONFIG.rotation})
                 `;
                 wrapper.style.opacity = "0";

@@ -1,4 +1,4 @@
-import { FontPlugin } from "@html_editor/main/font/font_plugin";
+import {FontPlugin} from "@html_editor/main/font/font_plugin";
 
 const excludedPowerboxCommands = ["setTagHeading1", "setTagHeading2", "setTagHeading3"];
 const excludedFontItems = ["h1", "h2", "h3"];

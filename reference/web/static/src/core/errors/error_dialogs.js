@@ -1,39 +1,42 @@
-import { browser } from "../browser/browser";
-import { Dialog } from "../dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "../registry";
-import { Tooltip } from "@web/core/tooltip/tooltip";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { capitalize } from "../utils/strings";
+import {browser} from "../browser/browser";
+import {Dialog} from "../dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "../registry";
+import {Tooltip} from "@web/core/tooltip/tooltip";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {capitalize} from "../utils/strings";
 
-import { Component, useRef, useState, markup } from "@odoo/owl";
+import {Component, useRef, useState, markup} from "@odoo/owl";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 // This props are added by the error handler
 export const standardErrorDialogProps = {
-    traceback: { type: [String, { value: null }], optional: true },
-    message: { type: String, optional: true },
-    name: { type: String, optional: true },
-    exceptionName: { type: [String, { value: null }], optional: true },
-    data: { type: [Object, { value: null }], optional: true },
-    subType: { type: [String, { value: null }], optional: true },
-    code: { type: [Number, String, { value: null }], optional: true },
-    type: { type: [String, { value: null }], optional: true },
-    serverHost: { type: [String, { value: null }], optional: true },
-    id: { type: [Number, { value: null }], optional: true },
-    model: { type: [String, { value: null }], optional: true },
+    traceback: {type: [String, {value: null}], optional: true},
+    message: {type: String, optional: true},
+    name: {type: String, optional: true},
+    exceptionName: {type: [String, {value: null}], optional: true},
+    data: {type: [Object, {value: null}], optional: true},
+    subType: {type: [String, {value: null}], optional: true},
+    code: {type: [Number, String, {value: null}], optional: true},
+    type: {type: [String, {value: null}], optional: true},
+    serverHost: {type: [String, {value: null}], optional: true},
+    id: {type: [Number, {value: null}], optional: true},
+    model: {type: [String, {value: null}], optional: true},
     close: Function, // prop added by the Dialog service
 };
 
 export const odooExceptionTitleMap = new Map(
     Object.entries({
-        "odoo.addons.base.models.ir_mail_server.MailDeliveryException": _t("MailDeliveryException"),
+        "odoo.addons.base.models.ir_mail_server.MailDeliveryException": _t(
+            "MailDeliveryException"
+        ),
         "odoo.exceptions.AccessDenied": _t("Access Denied"),
         "odoo.exceptions.MissingError": _t("Missing Record"),
         "odoo.addons.web.controllers.action.MissingActionError": _t("Missing Action"),
-        "odoo.addons.base.models.ir_actions.ServerActionWithWarningsError": _t("Invalid Operation"),
+        "odoo.addons.base.models.ir_actions.ServerActionWithWarningsError":
+            _t("Invalid Operation"),
         "odoo.exceptions.UserError": _t("Invalid Operation"),
         "odoo.exceptions.ValidationError": _t("Validation Error"),
         "odoo.exceptions.AccessError": _t("Access Error"),
@@ -46,11 +49,11 @@ export const odooExceptionTitleMap = new Map(
 // -----------------------------------------------------------------------------
 export class ErrorDialog extends Component {
     static template = "web.ErrorDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static title = _t("Odoo Error");
     static showTracebackButtonText = _t("See technical details");
     static hideTracebackButtonText = _t("Hide technical details");
-    static props = { ...standardErrorDialogProps };
+    static props = {...standardErrorDialogProps};
 
     setup() {
         this.state = useState({
@@ -71,7 +74,7 @@ export class ErrorDialog extends Component {
     }
 
     showTooltip() {
-        this.popover.open(this.copyButtonRef.el, { tooltip: _t("Copied") });
+        this.popover.open(this.copyButtonRef.el, {tooltip: _t("Copied")});
         browser.setTimeout(this.popover.close, 800);
     }
 
@@ -109,7 +112,10 @@ export class RPCErrorDialog extends ErrorDialog {
     }
     inferTitle() {
         // If the server provides an exception name that we have in a registry.
-        if (this.props.exceptionName && odooExceptionTitleMap.has(this.props.exceptionName)) {
+        if (
+            this.props.exceptionName &&
+            odooExceptionTitleMap.has(this.props.exceptionName)
+        ) {
             this.title = odooExceptionTitleMap.get(this.props.exceptionName).toString();
             return;
         }
@@ -143,15 +149,15 @@ export class RPCErrorDialog extends ErrorDialog {
 // -----------------------------------------------------------------------------
 export class WarningDialog extends Component {
     static template = "web.WarningDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         ...standardErrorDialogProps,
-        title: { type: String, optional: true },
+        title: {type: String, optional: true},
     };
 
     setup() {
         this.title = this.inferTitle();
-        const { data, message } = this.props;
+        const {data, message} = this.props;
         if (data && data.arguments && data.arguments.length > 0) {
             this.message = data.arguments[0];
         } else {
@@ -159,7 +165,10 @@ export class WarningDialog extends Component {
         }
     }
     inferTitle() {
-        if (this.props.exceptionName && odooExceptionTitleMap.has(this.props.exceptionName)) {
+        if (
+            this.props.exceptionName &&
+            odooExceptionTitleMap.has(this.props.exceptionName)
+        ) {
             return odooExceptionTitleMap.get(this.props.exceptionName).toString();
         }
         return this.props.title || _t("Odoo Warning");
@@ -171,12 +180,12 @@ export class WarningDialog extends Component {
 // -----------------------------------------------------------------------------
 export class RedirectWarningDialog extends Component {
     static template = "web.RedirectWarningDialog";
-    static components = { Dialog };
-    static props = { ...standardErrorDialogProps };
+    static components = {Dialog};
+    static props = {...standardErrorDialogProps};
 
     setup() {
         this.actionService = useService("action");
-        const { data, subType } = this.props;
+        const {data, subType} = this.props;
         const [message, actionId, buttonText, additionalContext] = data.arguments;
         this.title = capitalize(subType) || _t("Odoo Warning");
         this.message = message;
@@ -185,7 +194,7 @@ export class RedirectWarningDialog extends Component {
         this.additionalContext = additionalContext;
     }
     async onClick() {
-        const options = { forceLeave: true };
+        const options = {forceLeave: true};
         if (this.additionalContext) {
             options.additionalContext = this.additionalContext;
         }
@@ -202,8 +211,8 @@ export class RedirectWarningDialog extends Component {
 // -----------------------------------------------------------------------------
 export class Error504Dialog extends Component {
     static template = "web.Error504Dialog";
-    static components = { Dialog };
-    static props = { ...standardErrorDialogProps };
+    static components = {Dialog};
+    static props = {...standardErrorDialogProps};
 }
 
 // -----------------------------------------------------------------------------
@@ -211,8 +220,8 @@ export class Error504Dialog extends Component {
 // -----------------------------------------------------------------------------
 export class SessionExpiredDialog extends Component {
     static template = "web.SessionExpiredDialog";
-    static components = { Dialog };
-    static props = { ...standardErrorDialogProps };
+    static components = {Dialog};
+    static props = {...standardErrorDialogProps};
 
     onClick() {
         browser.location.reload();
@@ -225,7 +234,10 @@ registry
     .add("odoo.exceptions.AccessError", WarningDialog)
     .add("odoo.exceptions.MissingError", WarningDialog)
     .add("odoo.addons.web.controllers.action.MissingActionError", WarningDialog)
-    .add("odoo.addons.base.models.ir_actions.ServerActionWithWarningsError", WarningDialog)
+    .add(
+        "odoo.addons.base.models.ir_actions.ServerActionWithWarningsError",
+        WarningDialog
+    )
     .add("odoo.exceptions.UserError", WarningDialog)
     .add("odoo.exceptions.ValidationError", WarningDialog)
     .add("odoo.exceptions.RedirectWarning", RedirectWarningDialog)

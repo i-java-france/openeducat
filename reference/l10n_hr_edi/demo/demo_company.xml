@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="base.demo_company_hr" model="res.company">
         <field name="l10n_hr_mer_username">12513</field>

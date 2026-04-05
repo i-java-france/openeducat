@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { tick } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {tick} from "@odoo/hoot-mock";
 
-import { Deferred, Mutex, KeepLast, Race } from "@web/core/utils/concurrency";
+import {Deferred, KeepLast, Mutex, Race} from "@web/core/utils/concurrency";
 
 describe.current.tags("headless");
 
@@ -73,7 +73,7 @@ describe("Mutex", () => {
         await tick();
         expect.verifySteps(["ok [1]"]);
 
-        def2.reject({ name: "sdkjfmqsjdfmsjkdfkljsdq" });
+        def2.reject({name: "sdkjfmqsjdfmsjkdfkljsdq"});
         await tick();
         expect.verifySteps(["ko [2]"]);
 

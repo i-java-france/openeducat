@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import tagged, users
+
+from odoo.addons.mail.tests.common import MailCommon
 
 
 @tagged('mail_tools', 'res_partner')
@@ -10,7 +10,7 @@ class TestMailTools(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailTools, cls).setUpClass()
+        super().setUpClass()
 
         cls._test_email = 'alfredoastaire@test.example.com'
         cls.test_partner = cls.env['res.partner'].create({
@@ -36,7 +36,7 @@ class TestMailTools(MailCommon):
             test_partner,
             self.env['res.partner'],
         ]
-        for source, expected_partner in zip(sources, expected_partners):
+        for source, expected_partner in zip(sources, expected_partners, strict=False):
             with self.subTest(source=source):
                 found = Partner._mail_find_partner_from_emails([source])
                 self.assertEqual(found, [expected_partner])
@@ -57,7 +57,7 @@ class TestMailTools(MailCommon):
             test_partner,
             test_partner,
         ]
-        for source, expected_partner in zip(sources, expected_partners):
+        for source, expected_partner in zip(sources, expected_partners, strict=False):
             with self.subTest(source=source):
                 found = Partner._mail_find_partner_from_emails([source])
                 self.assertEqual(found, [expected_partner])
@@ -197,7 +197,7 @@ class TestMailTools(MailCommon):
             (test_partner_company_3, "Prefer same company as reference record."),
             (test_partner_no_company, "Prefer non-specific partner for non-specific records."),
         ]
-        for record, (expected, msg) in zip(records, expected_partners):
+        for record, (expected, msg) in zip(records, expected_partners, strict=False):
             with self.subTest(record=record.name if record else 'NoRecord'):
                 found = Partner._mail_find_partner_from_emails([self._test_email], records=record)
                 self.assertEqual(found, [expected], f'Found {found[0].name} instead of {expected[0].name}: {msg}')

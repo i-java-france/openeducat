@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.tools import plaintext2html
 
 
@@ -34,10 +33,10 @@ class PosSession(models.Model):
     def _get_message_author(self):
         if not self.employee_id:
             return None
-        
+
         if related_partners := self.employee_id._get_related_partners():
             return related_partners[0]
-        
+
         return self.user_id.partner_id
 
     def _aggregate_payments_amounts_by_employee(self, all_payments):

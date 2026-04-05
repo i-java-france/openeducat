@@ -1,8 +1,6 @@
-import { OdooUIPlugin } from "@spreadsheet/plugins";
-
+import {OdooUIPlugin} from "@spreadsheet/plugins";
 
 export class PivotUIGlobalFilterPlugin extends OdooUIPlugin {
-
     constructor(config) {
         super(config);
         /** @type {string} */
@@ -18,14 +16,14 @@ export class PivotUIGlobalFilterPlugin extends OdooUIPlugin {
         switch (event.type) {
             case "ZonesSelected": {
                 const sheetId = this.getters.getActiveSheetId();
-                const { col, row } = event.anchor.cell;
-                const cell = this.getters.getCell({ sheetId, col, row });
+                const {col, row} = event.anchor.cell;
+                const cell = this.getters.getCell({sheetId, col, row});
                 if (cell !== undefined && cell.content.startsWith("=PIVOT.HEADER(")) {
                     const filters = this._getFiltersMatchingPivot(
                         sheetId,
                         cell.compiledFormula.tokens
                     );
-                    this.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
+                    this.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", {filters});
                 }
                 break;
             }
@@ -43,7 +41,7 @@ export class PivotUIGlobalFilterPlugin extends OdooUIPlugin {
         if (!functionDescription) {
             return [];
         }
-        const { args } = functionDescription;
+        const {args} = functionDescription;
         if (args.length <= 2) {
             return [];
         }
@@ -51,7 +49,7 @@ export class PivotUIGlobalFilterPlugin extends OdooUIPlugin {
         const pivotId = this.getters.getPivotId(formulaId);
         const index = functionDescription.functionName === "PIVOT.HEADER" ? 1 : 2;
         const pivot = this.getters.getPivot(pivotId);
-        const domainArgs = args.slice(index).map((value) => ({ value }));
+        const domainArgs = args.slice(index).map((value) => ({value}));
         const domain = pivot.parseArgsToPivotDomain(domainArgs);
         return this.getters.getFiltersMatchingPivotArgs(pivotId, domain);
     }

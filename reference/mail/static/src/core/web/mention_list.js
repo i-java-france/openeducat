@@ -1,18 +1,18 @@
-import { _t } from "@web/core/l10n/translation";
-import { Component, useEffect, useState } from "@odoo/owl";
-import { useService, useAutofocus } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {Component, useEffect, useState} from "@odoo/owl";
+import {useService, useAutofocus} from "@web/core/utils/hooks";
 
-import { NavigableList } from "@mail/core/common/navigable_list";
-import { useSequential } from "@mail/utils/common/hooks";
+import {NavigableList} from "@mail/core/common/navigable_list";
+import {useSequential} from "@mail/utils/common/hooks";
 
 export class MentionList extends Component {
     static template = "mail.MentionList";
-    static components = { NavigableList };
+    static components = {NavigableList};
     static props = {
-        onSelect: { type: Function },
-        close: { type: Function, optional: true },
-        thread: { optional: true },
-        type: { type: String },
+        onSelect: {type: Function},
+        close: {type: Function, optional: true},
+        thread: {optional: true},
+        type: {type: String},
     };
     static defaultProps = {
         close: () => {},
@@ -29,7 +29,7 @@ export class MentionList extends Component {
         this.store = useService("mail.store");
         this.suggestionService = useService("mail.suggestion");
         this.sequential = useSequential();
-        this.ref = useAutofocus({ mobile: true });
+        this.ref = useAutofocus({mobile: true});
 
         useEffect(
             (term, delimiter, thread) => {
@@ -41,15 +41,15 @@ export class MentionList extends Component {
                     this.state.isFetching = true;
                     try {
                         await this.suggestionService.fetchSuggestions(
-                            { delimiter, term },
-                            { thread }
+                            {delimiter, term},
+                            {thread}
                         );
                     } finally {
                         this.state.isFetching = false;
                     }
-                    const { suggestions } = this.suggestionService.searchSuggestions(
-                        { delimiter, term },
-                        { thread }
+                    const {suggestions} = this.suggestionService.searchSuggestions(
+                        {delimiter, term},
+                        {thread}
                     );
                     this.state.options = suggestions;
                 });

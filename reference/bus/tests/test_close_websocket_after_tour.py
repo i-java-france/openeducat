@@ -3,6 +3,7 @@ from unittest.mock import patch
 from weakref import WeakSet
 
 from odoo.tests import tagged
+
 from .. import websocket as websocket_module
 from .common import WebsocketCase
 

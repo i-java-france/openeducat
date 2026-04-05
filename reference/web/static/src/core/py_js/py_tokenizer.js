@@ -215,7 +215,16 @@ const PointFloat = group(`\\d+\\.\\d*(${Exponent})?`, `\\.\\d+(${Exponent})?`);
 const FloatNumber = group(PointFloat, `\\d+${Exponent}`);
 
 const Number = group(FloatNumber, IntNumber);
-const Operator = group("\\*\\*=?", ">>=?", "<<=?", "<>", "!=", "//=?", "[+\\-*/%&|^=<>]=?", "~");
+const Operator = group(
+    "\\*\\*=?",
+    ">>=?",
+    "<<=?",
+    "<>",
+    "!=",
+    "//=?",
+    "[+\\-*/%&|^=<>]=?",
+    "~"
+);
 const Bracket = "[\\[\\]\\(\\)\\{\\}]";
 const Special = "[:;.,`@]";
 const Funny = group(Operator, Bracket, Special);
@@ -279,11 +288,18 @@ export function tokenize(str) {
             var m = StringPattern.exec(token);
             tokens.push({
                 type: 1 /* String */,
-                value: decodeStringLiteral(m[3] !== undefined ? m[3] : m[5], !!(m[2] || m[4])),
+                value: decodeStringLiteral(
+                    m[3] !== undefined ? m[3] : m[5],
+                    !!(m[2] || m[4])
+                ),
             });
         } else if (symbols.has(token)) {
             // transform 'not in' and 'is not' in a single token
-            if (token === "in" && tokens.length > 0 && tokens[tokens.length - 1].value === "not") {
+            if (
+                token === "in" &&
+                tokens.length > 0 &&
+                tokens[tokens.length - 1].value === "not"
+            ) {
                 token = "not in";
                 tokens.pop();
             } else if (

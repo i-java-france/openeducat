@@ -12,7 +12,6 @@ from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_xendit import const
 from odoo.addons.payment_xendit.controllers.main import XenditController
 
-
 _logger = get_payment_logger(__name__)
 
 

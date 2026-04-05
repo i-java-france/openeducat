@@ -1,5 +1,5 @@
-import { PosData } from "@point_of_sale/app/services/data_service";
-import { patch } from "@web/core/utils/patch";
+import {PosData} from "@point_of_sale/app/services/data_service";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * Disable IndexedDB in Hoot tests to avoid creating to much IndexedDB databases

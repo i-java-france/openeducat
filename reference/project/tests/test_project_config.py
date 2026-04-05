@@ -6,7 +6,7 @@ class TestProjectConfig(TestProjectCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestProjectConfig, cls).setUpClass()
+        super().setUpClass()
         cls.Settings = cls.env["res.config.settings"]
         cls.user_settings_project_manager = cls.env['res.users.settings']._find_or_create_for_user(cls.user_projectmanager)
         cls.user_settings_project_user = cls.env['res.users.settings']._find_or_create_for_user(cls.user_projectuser)

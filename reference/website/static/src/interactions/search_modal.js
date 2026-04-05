@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class SearchModal extends Interaction {
     static selector = "#o_search_modal_block #o_search_modal";

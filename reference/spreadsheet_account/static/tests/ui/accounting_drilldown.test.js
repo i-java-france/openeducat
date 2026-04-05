@@ -1,20 +1,20 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { registries, constants } from "@odoo/o-spreadsheet";
-import { selectCell, setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { doMenuAction } from "@spreadsheet/../tests/helpers/ui";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {describe, expect, test} from "@odoo/hoot";
+import {constants, registries} from "@odoo/o-spreadsheet";
+import {selectCell, setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {doMenuAction} from "@spreadsheet/../tests/helpers/ui";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 import {
     defineSpreadsheetAccountModels,
     getAccountingData,
 } from "@spreadsheet_account/../tests/accounting_test_data";
-import { mockService } from "@web/../tests/web_test_helpers";
+import {mockService} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("headless");
 defineSpreadsheetAccountModels();
 
-const { cellMenuRegistry } = registries;
-const { DEFAULT_LOCALE } = constants;
+const {cellMenuRegistry} = registries;
+const {DEFAULT_LOCALE} = constants;
 
 const serverData = getAccountingData();
 
@@ -32,13 +32,13 @@ test("Create drill down domain", async () => {
         doAction: async (action, options) => {
             expect.step("drill down action");
             expect(action).toEqual(drillDownAction);
-            expect(options).toEqual({ newWindow: undefined });
+            expect(options).toEqual({newWindow: undefined});
             return true;
         },
     };
     mockService("action", fakeActionService);
 
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         serverData,
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_move_line_action") {
@@ -88,8 +88,8 @@ test("Create drill down domain", async () => {
 });
 
 test("Create drill down domain when month date is a reference", async () => {
-    mockService("action", { doAction: () => {} });
-    const { model } = await createModelWithDataSource({
+    mockService("action", {doAction: () => {}});
+    const {model} = await createModelWithDataSource({
         serverData,
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_move_line_action") {
@@ -121,8 +121,8 @@ test("Create drill down domain when month date is a reference", async () => {
 });
 
 test("Create drill down domain when date uses a non-standard locale", async () => {
-    mockService("action", { doAction: () => {} });
-    const { model } = await createModelWithDataSource({
+    mockService("action", {doAction: () => {}});
+    const {model} = await createModelWithDataSource({
         serverData,
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_move_line_action") {
@@ -146,8 +146,8 @@ test("Create drill down domain when date uses a non-standard locale", async () =
     });
     const env = model.config.custom.env;
     env.model = model;
-    const myLocale = { ...DEFAULT_LOCALE, dateFormat: "d/mmm/yyyy" };
-    model.dispatch("UPDATE_LOCALE", { locale: myLocale });
+    const myLocale = {...DEFAULT_LOCALE, dateFormat: "d/mmm/yyyy"};
+    model.dispatch("UPDATE_LOCALE", {locale: myLocale});
     setCellContent(model, "A1", '=ODOO.BALANCE("100", DATE(2002, 2, 1))');
     await waitForDataLoaded(model);
     await doMenuAction(cellMenuRegistry, ["move_lines_see_records"], env);

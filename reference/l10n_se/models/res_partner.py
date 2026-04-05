@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
 from stdnum import luhn
+
+from odoo import _, api, fields, models
 
 
 class ResPartner(models.Model):
@@ -17,5 +17,5 @@ class ResPartner(models.Model):
             reference = self.l10n_se_default_vendor_payment_ref
             try:
                 luhn.validate(reference)
-            except: 
+            except:
                 return {'warning': {'title': _('Warning'), 'message': _('Default vendor OCR number isn\'t a valid OCR number.')}}

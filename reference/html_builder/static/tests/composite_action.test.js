@@ -3,11 +3,11 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { describe, expect, test } from "@odoo/hoot";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {describe, expect, test} from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 // TODO: test composite with each spec: prepare, load, getValue
 // TODO: test reloadComposite
@@ -17,20 +17,20 @@ describe.current.tags("desktop");
 test("can call 2 separate actions with composite action", async () => {
     class Action1 extends BuilderAction {
         static id = "action1";
-        isApplied({ editingElement, params: { mainParam: cls } }) {
+        isApplied({editingElement, params: {mainParam: cls}}) {
             return editingElement.classList.contains(cls);
         }
-        apply({ editingElement, params: { mainParam: cls } }) {
+        apply({editingElement, params: {mainParam: cls}}) {
             editingElement.classList.toggle(cls);
             expect.step(`action1: ${cls}`);
         }
     }
     class Action2 extends BuilderAction {
         static id = "action2";
-        isApplied({ editingElement, params: { mainParam: cls } }) {
+        isApplied({editingElement, params: {mainParam: cls}}) {
             return editingElement.classList.contains(cls);
         }
-        apply({ editingElement, params: { mainParam: cls } }) {
+        apply({editingElement, params: {mainParam: cls}}) {
             editingElement.classList.toggle(cls);
             expect.step(`action2: ${cls}`);
         }
@@ -58,22 +58,22 @@ test("can call 2 separate actions with composite action", async () => {
     await contains("[data-action-id='composite']").click();
     expect(":iframe .s_test").toHaveClass("class1 class2");
     expect.verifySteps([
-        "action1: class1", // preview
-        "action2: class2", // preview
-        "action1: class1", // apply
-        "action2: class2", // apply
+        "action1: class1", // Preview
+        "action2: class2", // Preview
+        "action1: class1", // Apply
+        "action2: class2", // Apply
     ]);
     await contains("[data-action-id='composite']").click();
-    expect.verifySteps(["action1: class1", "action2: class2"]); // clean
+    expect.verifySteps(["action1: class1", "action2: class2"]); // Clean
 });
 
 test("can call the same action twice with composite action", async () => {
     class Action1 extends BuilderAction {
         static id = "action1";
-        isApplied({ editingElement, params: { mainParam: cls } }) {
+        isApplied({editingElement, params: {mainParam: cls}}) {
             return editingElement.classList.contains(cls);
         }
-        apply({ editingElement, params: { mainParam: cls } }) {
+        apply({editingElement, params: {mainParam: cls}}) {
             editingElement.classList.toggle(cls);
             expect.step(`action1: ${cls}`);
         }
@@ -100,19 +100,19 @@ test("can call the same action twice with composite action", async () => {
     await contains("[data-action-id='composite']").click();
     expect(":iframe .s_test").toHaveClass("class1 class2");
     expect.verifySteps([
-        "action1: class1", // preview
-        "action1: class2", // preview
-        "action1: class1", // apply
-        "action1: class2", // apply
+        "action1: class1", // Preview
+        "action1: class2", // Preview
+        "action1: class1", // Apply
+        "action1: class2", // Apply
     ]);
     await contains("[data-action-id='composite']").click();
-    expect.verifySteps(["action1: class1", "action1: class2"]); // clean
+    expect.verifySteps(["action1: class1", "action1: class2"]); // Clean
 });
 
 test("composite action's isApplied returns false if no action defined it", async () => {
     class Action1 extends BuilderAction {
         static id = "action1";
-        apply({ params: { mainParam: cls } }) {
+        apply({params: {mainParam: cls}}) {
             expect.step(`action: ${cls}`);
         }
     }
@@ -139,10 +139,10 @@ test("composite action's isApplied returns false if no action defined it", async
     await contains("[data-action-id='composite']").click();
     expect("[data-action-id='composite']").not.toHaveClass("active");
     expect.verifySteps([
-        "action: class1", // preview
-        "action: class2", // preview
-        "action: class1", // apply
-        "action: class2", // apply
+        "action: class1", // Preview
+        "action: class2", // Preview
+        "action: class1", // Apply
+        "action: class2", // Apply
     ]);
 });
 
@@ -153,10 +153,10 @@ test("composite action's isApplied returns true if at least one action defined i
     }
     class Action2 extends BuilderAction {
         static id = "action2";
-        isApplied({ editingElement, params: { mainParam: cls } }) {
+        isApplied({editingElement, params: {mainParam: cls}}) {
             return editingElement.classList.contains(cls);
         }
-        apply({ editingElement, params: { mainParam: cls } }) {
+        apply({editingElement, params: {mainParam: cls}}) {
             editingElement.classList.add(cls);
         }
     }

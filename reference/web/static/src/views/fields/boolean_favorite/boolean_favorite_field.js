@@ -1,23 +1,25 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { standardFieldProps } from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class BooleanFavoriteField extends Component {
     static template = "web.BooleanFavoriteField";
     static props = {
         ...standardFieldProps,
-        noLabel: { type: Boolean, optional: true },
-        autosave: { type: Boolean, optional: true },
+        noLabel: {type: Boolean, optional: true},
+        autosave: {type: Boolean, optional: true},
     };
     static defaultProps = {
         noLabel: false,
     };
 
     get iconClass() {
-        return this.props.record.data[this.props.name] ? "fa fa-star me-1" : "fa fa-star-o me-1";
+        return this.props.record.data[this.props.name]
+            ? "fa fa-star me-1"
+            : "fa fa-star-o me-1";
     }
 
     get label() {
@@ -30,8 +32,8 @@ export class BooleanFavoriteField extends Component {
         if (this.props.readonly) {
             return;
         }
-        const changes = { [this.props.name]: !this.props.record.data[this.props.name] };
-        await this.props.record.update(changes, { save: this.props.autosave });
+        const changes = {[this.props.name]: !this.props.record.data[this.props.name]};
+        await this.props.record.update(changes, {save: this.props.autosave});
     }
 }
 
@@ -40,7 +42,7 @@ export const booleanFavoriteField = {
     displayName: _t("Favorite"),
     supportedTypes: ["boolean"],
     isEmpty: () => false,
-    listViewWidth: ({ hasLabel }) => (!hasLabel ? 20 : false),
+    listViewWidth: ({hasLabel}) => (!hasLabel ? 20 : false),
     supportedOptions: [
         {
             label: _t("Autosave"),
@@ -52,7 +54,7 @@ export const booleanFavoriteField = {
             ),
         },
     ],
-    extractProps: ({ attrs, options }, dynamicInfo) => ({
+    extractProps: ({attrs, options}, dynamicInfo) => ({
         noLabel: exprToBoolean(attrs.nolabel),
         autosave: "autosave" in options ? Boolean(options.autosave) : true,
         readonly: dynamicInfo.readonly,

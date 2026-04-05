@@ -3,17 +3,17 @@ import {
     getEmbeddedProps,
     StateChangeManager,
 } from "@html_editor/others/embedded_component_utils";
-import { Component, useState, useRef, onMounted, onWillDestroy } from "@odoo/owl";
+import {Component, useState, useRef, onMounted, onWillDestroy} from "@odoo/owl";
 
 export class EmbeddedCaptionComponent extends Component {
     static template = "html_editor.EmbeddedCaption";
 
     static props = {
-        image: { type: Element },
-        onUpdateCaption: { type: Function },
-        onEditorHistoryApply: { type: Function },
-        focusInput: { type: Boolean },
-        host: { type: Object },
+        image: {type: Element},
+        onUpdateCaption: {type: Function},
+        onEditorHistoryApply: {type: Function},
+        focusInput: {type: Boolean},
+        host: {type: Object},
     };
 
     setup() {
@@ -32,12 +32,15 @@ export class EmbeddedCaptionComponent extends Component {
         this.updateCaption();
         const observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (mutation.type === "attributes" && mutation.attributeName === "data-caption") {
+                if (
+                    mutation.type === "attributes" &&
+                    mutation.attributeName === "data-caption"
+                ) {
                     this.updateCaption();
                 }
             }
         });
-        observer.observe(this.props.image, { attributes: true });
+        observer.observe(this.props.image, {attributes: true});
         onWillDestroy(() => {
             observer.disconnect();
         });
@@ -83,7 +86,7 @@ export class EmbeddedCaptionComponent extends Component {
 export const captionEmbedding = {
     name: "caption",
     Component: EmbeddedCaptionComponent,
-    getProps: (host) => ({ host, ...getEmbeddedProps(host) }),
+    getProps: (host) => ({host, ...getEmbeddedProps(host)}),
     getStateChangeManager: (config) =>
         new StateChangeManager(
             Object.assign(config, {

@@ -1,7 +1,7 @@
-import { user } from "@web/core/user";
-import { registry } from "../registry";
+import {user} from "@web/core/user";
+import {registry} from "../registry";
 
-import { useEffect, useEnv, useSubEnv } from "@odoo/owl";
+import {useEffect, useEnv, useSubEnv} from "@odoo/owl";
 const debugRegistry = registry.category("debug");
 
 const getAccessRights = async () => {
@@ -13,8 +13,9 @@ const getAccessRights = async () => {
     const proms = Object.entries(rightsToCheck).map(([model, operation]) => {
         return user.checkAccessRight(model, operation);
     });
-    const [canEditView, canSeeRecordRules, canSeeModelAccess] = await Promise.all(proms);
-    const accessRights = { canEditView, canSeeRecordRules, canSeeModelAccess };
+    const [canEditView, canSeeRecordRules, canSeeModelAccess] =
+        await Promise.all(proms);
+    const accessRights = {canEditView, canSeeRecordRules, canSeeModelAccess};
     return accessRights;
 };
 
@@ -43,7 +44,9 @@ class DebugContext {
                 return debugRegistry
                     .category(category)
                     .getAll()
-                    .map((factory) => factory(Object.assign({ env, accessRights }, ...contexts)));
+                    .map((factory) =>
+                        factory(Object.assign({env, accessRights}, ...contexts))
+                    );
             })
             .filter(Boolean)
             .sort((x, y) => {
@@ -55,18 +58,20 @@ class DebugContext {
 }
 
 const debugContextSymbol = Symbol("debugContext");
-export function createDebugContext({ categories = [] } = {}) {
-    return { [debugContextSymbol]: new DebugContext(categories) };
+export function createDebugContext({categories = []} = {}) {
+    return {[debugContextSymbol]: new DebugContext(categories)};
 }
 
-export function useOwnDebugContext({ categories = [] } = {}) {
-    useSubEnv(createDebugContext({ categories }));
+export function useOwnDebugContext({categories = []} = {}) {
+    useSubEnv(createDebugContext({categories}));
 }
 
 export function useEnvDebugContext() {
     const debugContext = useEnv()[debugContextSymbol];
     if (!debugContext) {
-        throw new Error("There is no debug context available in the current environment.");
+        throw new Error(
+            "There is no debug context available in the current environment."
+        );
     }
     return debugContext;
 }

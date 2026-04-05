@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
+import random
+import time
+
 from odoo import fields
 from odoo.tests import Form
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-import random
-import logging
-import time
 
 _logger = logging.getLogger(__name__)
 

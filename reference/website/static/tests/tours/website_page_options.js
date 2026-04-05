@@ -13,7 +13,7 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         ...changeOptionInPopover("Header", "Header Position", "Over the content"),
         // It's important to test saving right after changing that option only as
         // this is why this test was made in the first place: the page was not
@@ -24,9 +24,10 @@ registerWebsitePreviewTour(
             trigger: ":iframe #wrapwrap.o_header_overlay",
         },
         ...clickOnEditAndWaitEditMode(),
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         {
-            content: "Open the color picker to change the background color of the header",
+            content:
+                "Open the color picker to change the background color of the header",
             trigger:
                 "div[data-container-title='Header'] .hb-row[data-label='Header Position'] + .hb-row-sublevel-1[data-label='Background'] button",
             run: "click",
@@ -42,7 +43,7 @@ registerWebsitePreviewTour(
             trigger: ":iframe header#top.bg-600",
         },
         ...clickOnEditAndWaitEditMode(),
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         {
             content: "Open the color picker to change the text color of the header",
             trigger:
@@ -66,7 +67,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check that text color of the navbar toggler icon is in red",
-            trigger: ':iframe header#top [data-bs-toggle="offcanvas"] .navbar-toggler-icon',
+            trigger:
+                ':iframe header#top [data-bs-toggle="offcanvas"] .navbar-toggler-icon',
             run: function () {
                 if (getComputedStyle(this.anchor).color !== "rgb(255, 0, 0)") {
                     console.error("The navbar toggler icon is not in red");
@@ -79,7 +81,7 @@ registerWebsitePreviewTour(
             run: "click",
         },
         ...clickOnEditAndWaitEditMode(),
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         ...changeOptionInPopover("Header", "Header Position", "Hidden"),
         ...clickOnSave(),
         {
@@ -92,9 +94,10 @@ registerWebsitePreviewTour(
             trigger: ".o_we_invisible_el_panel .o_we_invisible_entry",
             run: "click",
         },
-        ...clickOnSnippet({ id: "o_footer", name: "Footer" }),
+        ...clickOnSnippet({id: "o_footer", name: "Footer"}),
         {
-            content: "Click on the visibility toggle to change the visibility of the footer",
+            content:
+                "Click on the visibility toggle to change the visibility of the footer",
             trigger:
                 "div[data-container-title='Footer'] div[data-label='Page Visibility'] div[data-action-id='setWebsiteFooterVisible'] input",
             run: "click",

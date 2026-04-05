@@ -1,32 +1,36 @@
-import { Component, onMounted, useEffect, useRef, useState } from "@odoo/owl";
-import { useTransition } from "@web/core/transition";
-import { uniqueId } from "@web/core/utils/functions";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onMounted, useEffect, useRef, useState} from "@odoo/owl";
+import {useTransition} from "@web/core/transition";
+import {uniqueId} from "@web/core/utils/functions";
+import {useService} from "@web/core/utils/hooks";
 import {
     basicContainerBuilderComponentProps,
     useApplyVisibility,
     useBuilderComponent,
     useVisibilityObserver,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderRow extends Component {
     static template = "html_builder.BuilderRow";
-    static components = { BuilderComponent };
+    static components = {BuilderComponent};
     static props = {
         ...basicContainerBuilderComponentProps,
-        label: { type: String, optional: true },
-        tooltip: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        level: { type: Number, optional: true },
-        expand: { type: Boolean, optional: true },
-        initialExpandAnim: { type: Boolean, optional: true },
-        extraLabelClass: { type: String, optional: true },
-        observeCollapseContent: { type: Boolean, optional: true },
-        disabled: { type: Boolean, optional: true },
-        fullRowToggler: { type: Boolean, optional: true },
+        label: {type: String, optional: true},
+        tooltip: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        level: {type: Number, optional: true},
+        expand: {type: Boolean, optional: true},
+        initialExpandAnim: {type: Boolean, optional: true},
+        extraLabelClass: {type: String, optional: true},
+        observeCollapseContent: {type: Boolean, optional: true},
+        disabled: {type: Boolean, optional: true},
+        fullRowToggler: {type: Boolean, optional: true},
     };
-    static defaultProps = { expand: false, observeCollapseContent: false, fullRowToggler: false };
+    static defaultProps = {
+        expand: false,
+        observeCollapseContent: false,
+        fullRowToggler: false,
+    };
 
     setup() {
         useBuilderComponent();
@@ -84,7 +88,9 @@ export class BuilderRow extends Component {
                 switch (stage) {
                     case "enter-active": {
                         contentEl.style.height = contentEl.scrollHeight + "px";
-                        contentEl.addEventListener("transitionend", setHeightAuto, { once: true });
+                        contentEl.addEventListener("transitionend", setHeightAuto, {
+                            once: true,
+                        });
                         break;
                     }
                     case "leave": {
@@ -104,7 +110,9 @@ export class BuilderRow extends Component {
     }
 
     getLevelClass() {
-        return this.props.level ? `hb-row-sublevel hb-row-sublevel-${this.props.level}` : "";
+        return this.props.level
+            ? `hb-row-sublevel hb-row-sublevel-${this.props.level}`
+            : "";
     }
 
     onRowContentClick() {
@@ -123,7 +131,8 @@ export class BuilderRow extends Component {
     }
 
     get collapseContentClass() {
-        const isNotVisible = this.props.observeCollapseContent && !this.transition.shouldMount;
+        const isNotVisible =
+            this.props.observeCollapseContent && !this.transition.shouldMount;
         return `${this.transition.className} ${isNotVisible ? "d-none" : ""}`;
     }
 
@@ -134,7 +143,7 @@ export class BuilderRow extends Component {
         }
         if (this.hasTooltip) {
             const tooltip = this.props.tooltip || this.props.label;
-            this.removeTooltip = this.tooltip.add(this.labelRef.el, { tooltip });
+            this.removeTooltip = this.tooltip.add(this.labelRef.el, {tooltip});
         }
     }
 
@@ -200,7 +209,8 @@ function applyLineOffset(rowEl, previousRowEl) {
         return;
     }
     const offset =
-        previousLabelEl.getBoundingClientRect().bottom - labelEl.getBoundingClientRect().top;
+        previousLabelEl.getBoundingClientRect().bottom -
+        labelEl.getBoundingClientRect().top;
     if (offset < 0) {
         labelEl.style.setProperty("--o-hb-row-sublevel-top", `${offset}px`);
     }
@@ -216,4 +226,4 @@ function getRowLevel(rowEl) {
     return parseInt(sublevelClass.replace("hb-row-sublevel-", ""), 10) || 0;
 }
 
-export { refreshSublevelLines };
+export {refreshSublevelLines};

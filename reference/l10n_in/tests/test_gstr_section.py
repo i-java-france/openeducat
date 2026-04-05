@@ -1,8 +1,9 @@
 from datetime import date
 
 from odoo import Command
-from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 from odoo.tests import tagged
+
+from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 
 TEST_DATE = date(2025, 6, 8)
 

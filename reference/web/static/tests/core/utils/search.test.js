@@ -1,32 +1,34 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { fuzzyLookup, fuzzyTest } from "@web/core/utils/search";
+import {fuzzyLookup, fuzzyTest} from "@web/core/utils/search";
 
 describe.current.tags("headless");
 
 test("fuzzyLookup", () => {
     const data = [
-        { name: "Abby White" },
-        { name: "Robert Black" },
-        { name: "Jane Yellow" },
-        { name: "Brandon Green" },
-        { name: "Jérémy Red" },
-        { name: "สมศรี จู่โจม" },
+        {name: "Abby White"},
+        {name: "Robert Black"},
+        {name: "Jane Yellow"},
+        {name: "Brandon Green"},
+        {name: "Jérémy Red"},
+        {name: "สมศรี จู่โจม"},
     ];
     expect(fuzzyLookup("ba", data, (d) => d.name)).toEqual([
-        { name: "Brandon Green" },
-        { name: "Robert Black" },
+        {name: "Brandon Green"},
+        {name: "Robert Black"},
     ]);
-    expect(fuzzyLookup("g", data, (d) => d.name)).toEqual([{ name: "Brandon Green" }]);
+    expect(fuzzyLookup("g", data, (d) => d.name)).toEqual([{name: "Brandon Green"}]);
     expect(fuzzyLookup("z", data, (d) => d.name)).toEqual([]);
-    expect(fuzzyLookup("brand", data, (d) => d.name)).toEqual([{ name: "Brandon Green" }]);
-    expect(fuzzyLookup("jâ", data, (d) => d.name)).toEqual([{ name: "Jane Yellow" }]);
+    expect(fuzzyLookup("brand", data, (d) => d.name)).toEqual([
+        {name: "Brandon Green"},
+    ]);
+    expect(fuzzyLookup("jâ", data, (d) => d.name)).toEqual([{name: "Jane Yellow"}]);
     expect(fuzzyLookup("je", data, (d) => d.name)).toEqual([
-        { name: "Jérémy Red" },
-        { name: "Jane Yellow" },
+        {name: "Jérémy Red"},
+        {name: "Jane Yellow"},
     ]);
     expect(fuzzyLookup("", data, (d) => d.name)).toEqual([]);
-    expect(fuzzyLookup("สมศ", data, (d) => d.name)).toEqual([{ name: "สมศรี จู่โจม" }]);
+    expect(fuzzyLookup("สมศ", data, (d) => d.name)).toEqual([{name: "สมศรี จู่โจม"}]);
 });
 
 test("fuzzyTest", () => {

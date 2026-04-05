@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="state_in_ot" model="res.country.state">
         <field name="name">Other Territory</field>
         <field name="code">IN_OT</field>
-        <field name="country_id" ref="base.in"/>
+        <field name="country_id" ref="base.in" />
         <field name="l10n_in_tin">97</field>
     </record>
 
     <record id="state_in_oc" model="res.country.state">
         <field name="name">Foreign Country</field>
         <field name="code">IN_OC</field>
-        <field name="country_id" ref="base.in"/>
+        <field name="country_id" ref="base.in" />
         <field name="l10n_in_tin">96</field>
     </record>
 
     <record id="state_in_la" model="res.country.state">
         <field name="name">Ladakh</field>
         <field name="code">LA</field>
-        <field name="country_id" ref="base.in"/>
+        <field name="country_id" ref="base.in" />
         <field name="l10n_in_tin">38</field>
     </record>
 
@@ -131,5 +130,4 @@
     <record id="base.state_in_wb" model="res.country.state">
         <field name="l10n_in_tin">19</field>
     </record>
-
 </odoo>

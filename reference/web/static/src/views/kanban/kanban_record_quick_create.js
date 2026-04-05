@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { parseXML } from "@web/core/utils/xml";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {parseXML} from "@web/core/utils/xml";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useOwnedDialogs, useService} from "@web/core/utils/hooks";
 
 import {
     Component,
@@ -12,11 +12,11 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { RPCError } from "@web/core/network/rpc";
-import { extractFieldsFromArchInfo } from "@web/model/relational_model/utils";
-import { formView } from "../form/form_view";
-import { getDefaultConfig } from "../view";
-import { FormViewDialog } from "../view_dialogs/form_view_dialog";
+import {RPCError} from "@web/core/network/rpc";
+import {extractFieldsFromArchInfo} from "@web/model/relational_model/utils";
+import {formView} from "../form/form_view";
+import {getDefaultConfig} from "../view";
+import {FormViewDialog} from "../view_dialogs/form_view_dialog";
 
 const DEFAULT_QUICK_CREATE_VIEW = {
     // note: the required modifier is written in the format returned by the server
@@ -26,7 +26,7 @@ const DEFAULT_QUICK_CREATE_VIEW = {
         </form>`,
 };
 const DEFAULT_QUICK_CREATE_FIELDS = {
-    display_name: { string: "Display name", type: "char" },
+    display_name: {string: "Display name", type: "char"},
 };
 
 const ACTION_SELECTORS = [
@@ -43,9 +43,9 @@ export class KanbanQuickCreateController extends Component {
         resModel: String,
         onValidate: Function,
         onCancel: Function,
-        fields: { type: Object },
-        context: { type: Object },
-        archInfo: { type: Object },
+        fields: {type: Object},
+        context: {type: Object},
+        archInfo: {type: Object},
     };
     static template = "web.KanbanQuickCreateController";
     setup() {
@@ -53,16 +53,19 @@ export class KanbanQuickCreateController extends Component {
 
         this.uiService = useService("ui");
         this.rootRef = useRef("root");
-        this.state = useState({ disabled: false });
+        this.state = useState({disabled: false});
         this.addDialog = useOwnedDialogs();
 
-        const { activeFields, fields } = extractFieldsFromArchInfo(
+        const {activeFields, fields} = extractFieldsFromArchInfo(
             this.props.archInfo,
             this.props.fields
         );
 
         const modelServices = Object.fromEntries(
-            this.props.Model.services.map((servName) => [servName, useService(servName)])
+            this.props.Model.services.map((servName) => [
+                servName,
+                useService(servName),
+            ])
         );
         modelServices.orm = useService("orm");
         const config = {
@@ -75,7 +78,7 @@ export class KanbanQuickCreateController extends Component {
             mode: "edit",
             context: this.props.context,
         };
-        this.model = useState(new this.props.Model(this.env, { config }, modelServices));
+        this.model = useState(new this.props.Model(this.env, {config}, modelServices));
 
         onWillStart(async () => {
             await this.model.load();
@@ -118,11 +121,13 @@ export class KanbanQuickCreateController extends Component {
                 }
                 this.mousedownTarget = null;
             },
-            { capture: true }
+            {capture: true}
         );
 
         // Key Navigation
-        useHotkey("enter", () => this.validate("add"), { bypassEditableProtection: true });
+        useHotkey("enter", () => this.validate("add"), {
+            bypassEditableProtection: true,
+        });
         useHotkey("escape", () => this.cancel(true));
     }
 
@@ -165,7 +170,7 @@ export class KanbanQuickCreateController extends Component {
         if (resId) {
             this.props.onValidate(resId, mode);
             if (mode === "add") {
-                await this.model.load({ resId: false });
+                await this.model.load({resId: false});
                 this.state.disabled = false;
             }
         } else {
@@ -208,10 +213,10 @@ export class KanbanQuickCreateController extends Component {
 }
 
 export class KanbanRecordQuickCreate extends Component {
-    static components = { KanbanQuickCreateController };
+    static components = {KanbanQuickCreateController};
     static template = "web.KanbanRecordQuickCreate";
     static props = {
-        quickCreateView: { type: [String, { value: null }], optional: 1 },
+        quickCreateView: {type: [String, {value: null}], optional: 1},
         onValidate: Function,
         onCancel: Function,
         group: Object,
@@ -233,17 +238,17 @@ export class KanbanRecordQuickCreate extends Component {
     }
 
     async getQuickCreateProps(props) {
-        let quickCreateFields = { fields: DEFAULT_QUICK_CREATE_FIELDS };
+        let quickCreateFields = {fields: DEFAULT_QUICK_CREATE_FIELDS};
         let quickCreateForm = DEFAULT_QUICK_CREATE_VIEW;
         let quickCreateRelatedModels = {};
 
         if (props.quickCreateView) {
-            const { fields, relatedModels, views } = await this.viewService.loadViews({
-                context: { ...props.context, form_view_ref: props.quickCreateView },
+            const {fields, relatedModels, views} = await this.viewService.loadViews({
+                context: {...props.context, form_view_ref: props.quickCreateView},
                 resModel: props.group.resModel,
                 views: [[false, "form"]],
             });
-            quickCreateFields = { fields: fields };
+            quickCreateFields = {fields: fields};
             quickCreateForm = views.form;
             quickCreateRelatedModels = relatedModels;
         }

@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-# -*- coding: utf-8 -*-
 
 from odoo import Command
+from odoo.tests import Form, HttpCase, tagged
+
 from odoo.addons.mrp.tests.common import TestMrpCommon
-from odoo.tests import tagged, Form, HttpCase
 
 
 @tagged('post_install', '-at_install')

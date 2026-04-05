@@ -1,8 +1,8 @@
 /* global ace */
 
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
 import {
     clickSave,
@@ -22,11 +22,11 @@ class Partner extends models.Model {
     _name = "res.partner";
     _rec_name = "display_name";
 
-    foo = fields.Text({ default: "My little Foo Value" });
+    foo = fields.Text({default: "My little Foo Value"});
 
     _records = [
-        { id: 1, foo: "yop" },
-        { id: 2, foo: "blip" },
+        {id: 1, foo: "yop"},
+        {id: 2, foo: "blip"},
     ];
 }
 
@@ -42,7 +42,7 @@ test("AceEditorField on text fields works", async () => {
         type: "form",
         arch: `<form><field name="foo" widget="code"/></form>`,
     });
-    expect(window).toInclude("ace", { message: "the ace library should be loaded" });
+    expect(window).toInclude("ace", {message: "the ace library should be loaded"});
     expect(`div.ace_content`).toHaveCount(1);
     expect(".o_field_code").toHaveText(/yop/);
 });
@@ -58,13 +58,13 @@ test("AceEditorField mark as dirty as soon at onchange", async () => {
     const aceEditor = queryOne`.ace_editor`;
     expect(aceEditor).toHaveText(/yop/);
 
-    // edit the foo field
+    // Edit the foo field
     ace.edit(aceEditor).setValue("blip");
     await animationFrame();
     expect(`.o_form_status_indicator_buttons`).toHaveCount(1);
     expect(`.o_form_status_indicator_buttons`).not.toHaveClass("invisible");
 
-    // revert edition
+    // Revert edition
     ace.edit(aceEditor).setValue("yop");
     await animationFrame();
     expect(`.o_form_status_indicator_buttons`).toHaveCount(1);
@@ -73,9 +73,9 @@ test("AceEditorField mark as dirty as soon at onchange", async () => {
 
 test("AceEditorField on html fields works", async () => {
     Partner._fields.html_field = fields.Html();
-    Partner._records.push({ id: 3, html_field: `<p>My little HTML Test</p>` });
+    Partner._records.push({id: 3, html_field: `<p>My little HTML Test</p>`});
 
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
 
     await mountView({
         resModel: "res.partner",
@@ -126,7 +126,7 @@ test("leaving an untouched record with an unset ace field should not write", asy
         record.foo = false;
     }
 
-    onRpc(({ args, method }) => {
+    onRpc(({args, method}) => {
         if (method) {
             expect.step(`${method}: ${JSON.stringify(args)}`);
         }
@@ -152,7 +152,7 @@ test("AceEditorField only trigger onchanges when blurred", async () => {
         record.foo = false;
     }
 
-    onRpc(({ args, method }) => {
+    onRpc(({args, method}) => {
         expect.step(`${method}: ${JSON.stringify(args)}`);
     });
 
@@ -166,8 +166,10 @@ test("AceEditorField only trigger onchanges when blurred", async () => {
     expect.verifySteps(["get_views: []", "web_read: [[1]]"]);
 
     await editAce("a");
-    await contains(getFixture()).focus(); // blur ace editor
-    expect.verifySteps([`onchange: [[1],{"foo":"a"},["foo"],{"display_name":{},"foo":{}}]`]);
+    await contains(getFixture()).focus(); // Blur ace editor
+    expect.verifySteps([
+        `onchange: [[1],{"foo":"a"},["foo"],{"display_name":{},"foo":{}}]`,
+    ]);
 
     await clickSave();
     expect.verifySteps([`web_save: [[1],{"foo":"a"}]`]);

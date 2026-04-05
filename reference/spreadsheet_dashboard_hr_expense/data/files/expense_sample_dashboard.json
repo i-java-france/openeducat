@@ -7,40 +7,40 @@
       "colNumber": 7,
       "rowNumber": 56,
       "rows": {
-        "6": { "size": 40 },
-        "22": { "size": 40 },
-        "23": { "size": 40 },
-        "24": { "size": 30 },
-        "25": { "size": 30 },
-        "26": { "size": 30 },
-        "27": { "size": 30 },
-        "28": { "size": 30 },
-        "29": { "size": 30 },
-        "30": { "size": 30 },
-        "31": { "size": 30 },
-        "32": { "size": 30 },
-        "33": { "size": 30 },
-        "35": { "size": 40 },
-        "36": { "size": 40 },
-        "37": { "size": 30 },
-        "38": { "size": 30 },
-        "39": { "size": 30 },
-        "40": { "size": 30 },
-        "41": { "size": 30 },
-        "42": { "size": 30 },
-        "43": { "size": 30 },
-        "44": { "size": 30 },
-        "45": { "size": 30 },
-        "46": { "size": 30 }
+        "6": {"size": 40},
+        "22": {"size": 40},
+        "23": {"size": 40},
+        "24": {"size": 30},
+        "25": {"size": 30},
+        "26": {"size": 30},
+        "27": {"size": 30},
+        "28": {"size": 30},
+        "29": {"size": 30},
+        "30": {"size": 30},
+        "31": {"size": 30},
+        "32": {"size": 30},
+        "33": {"size": 30},
+        "35": {"size": 40},
+        "36": {"size": 40},
+        "37": {"size": 30},
+        "38": {"size": 30},
+        "39": {"size": 30},
+        "40": {"size": 30},
+        "41": {"size": 30},
+        "42": {"size": 30},
+        "43": {"size": 30},
+        "44": {"size": 30},
+        "45": {"size": 30},
+        "46": {"size": 30}
       },
       "cols": {
-        "0": { "size": 276 },
-        "1": { "size": 95 },
-        "2": { "size": 100 },
-        "3": { "size": 50 },
-        "4": { "size": 295 },
-        "5": { "size": 85 },
-        "6": { "size": 100 }
+        "0": {"size": 276},
+        "1": {"size": 95},
+        "2": {"size": 100},
+        "3": {"size": 50},
+        "4": {"size": 295},
+        "5": {"size": 85},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -114,13 +114,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Expenses", "bold": true, "color": "#434343" },
+            "title": {"text": "Expenses", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!C1",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 12 },
+          "offset": {"x": 0, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -133,13 +133,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To report", "bold": true, "color": "#434343" },
+            "title": {"text": "To report", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C2",
             "humanize": false
           },
-          "offset": { "x": 210, "y": 12 },
+          "offset": {"x": 210, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -152,13 +152,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To validate", "bold": true, "color": "#434343" },
+            "title": {"text": "To validate", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C3",
             "humanize": false
           },
-          "offset": { "x": 420, "y": 12 },
+          "offset": {"x": 420, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -171,13 +171,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To reimburse", "bold": true, "color": "#434343" },
+            "title": {"text": "To reimburse", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C4",
             "humanize": false
           },
-          "offset": { "x": 629, "y": 12 },
+          "offset": {"x": 629, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -190,10 +190,10 @@
             "type": "bar",
             "dataSetsHaveTitle": true,
             "dataSets": [
-              { "dataRange": "Data!B7:B14", "yAxisId": "y" },
-              { "dataRange": "Data!C7:C14" },
-              { "dataRange": "Data!D7:D14" },
-              { "dataRange": "Data!E7:E14" }
+              {"dataRange": "Data!B7:B14", "yAxisId": "y"},
+              {"dataRange": "Data!C7:C14"},
+              {"dataRange": "Data!D7:D14"},
+              {"dataRange": "Data!E7:E14"}
             ],
             "legendPosition": "top",
             "labelRange": "Data!A7:A14",
@@ -202,7 +202,7 @@
             "aggregated": false,
             "horizontal": false
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         }
@@ -284,8 +284,8 @@
         "F13": "1",
         "F14": "0"
       },
-      "styles": { "C1:C4": 4 },
-      "formats": { "A8:A14": 1, "B1": 2, "B2:C4": 3, "B8:E14": 3 },
+      "styles": {"C1:C4": 4},
+      "formats": {"A8:A14": 1, "B1": 2, "B2:C4": 3, "B8:E14": 3},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -301,33 +301,33 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
-    "2": { "textColor": "#434343", "fontSize": 11, "bold": true },
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
+    "2": {"textColor": "#434343", "fontSize": 11, "bold": true},
     "3": {
       "textColor": "#434343",
       "fontSize": 11,
       "bold": true,
       "align": "center"
     },
-    "4": { "fillColor": "#f8f9fa" }
+    "4": {"fillColor": "#f8f9fa"}
   },
-  "formats": { "1": "mmmm yyyy", "2": "0", "3": "[$$]#,##0" },
+  "formats": {"1": "mmmm yyyy", "2": "0", "3": "[$$]#,##0"},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#B7B7B7" }
+      "bottom": {"style": "thin", "color": "#B7B7B7"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#B7B7B7" }
+      "top": {"style": "thin", "color": "#B7B7B7"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",

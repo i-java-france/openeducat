@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAll, queryAllTexts } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryAll, queryAllTexts} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilderWithSnippet,

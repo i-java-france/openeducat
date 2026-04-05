@@ -1,8 +1,8 @@
-import requests
-
 from contextlib import contextmanager
 from unittest.mock import Mock, patch
 from urllib.parse import parse_qs, quote_plus
+
+import requests
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 

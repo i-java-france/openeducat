@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import SQL
 from odoo.tools.misc import unquote

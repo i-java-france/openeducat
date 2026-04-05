@@ -1,18 +1,18 @@
-import { Component } from "@odoo/owl";
-import { rpc } from "@web/core/network/rpc";
-import { useChildRef } from "@web/core/utils/hooks";
-import { AutoCompleteWithPages } from "@website/components/autocomplete_with_pages/autocomplete_with_pages";
+import {Component} from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {useChildRef} from "@web/core/utils/hooks";
+import {AutoCompleteWithPages} from "@website/components/autocomplete_with_pages/autocomplete_with_pages";
 
 // TODO: we probably don't need it anymore after merging html_builder
 // see: https://github.com/odoo/odoo/pull/187091
 export class UrlAutoComplete extends Component {
     static props = {
-        options: { type: Object },
-        loadAnchors: { type: Function },
-        targetDropdown: { type: HTMLElement },
+        options: {type: Object},
+        loadAnchors: {type: Function},
+        targetDropdown: {type: HTMLElement},
     };
     static template = "website.UrlAutoComplete";
-    static components = { AutoCompleteWithPages };
+    static components = {AutoCompleteWithPages};
 
     setup() {
         this.inputRef = useChildRef();
@@ -50,7 +50,9 @@ export class UrlAutoComplete extends Component {
                             term,
                             this.props.options && this.props.options.body
                         );
-                        return anchors.map((anchor) => makeItem({ label: anchor, value: anchor }));
+                        return anchors.map((anchor) =>
+                            makeItem({label: anchor, value: anchor})
+                        );
                     } else if (term.startsWith("http") || term.length === 0) {
                         // avoid useless call to /website/get_suggested_links
                         return [];
@@ -70,7 +72,7 @@ export class UrlAutoComplete extends Component {
                         if (other.values.length) {
                             choices.push({
                                 cssClass: "ui-autocomplete-category",
-                                data: { separator: true },
+                                data: {separator: true},
                                 label: other.title,
                             });
                             for (const page of other.values) {
@@ -90,7 +92,7 @@ export class UrlAutoComplete extends Component {
         this.props.options.urlChosen?.();
     }
 
-    onInput({ inputValue }) {
+    onInput({inputValue}) {
         this.props.targetDropdown.value = inputValue;
     }
 }

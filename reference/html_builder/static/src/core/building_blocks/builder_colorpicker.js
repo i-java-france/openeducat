@@ -1,11 +1,11 @@
-import { ColorSelector } from "@html_editor/main/font/color_selector";
-import { Component, useComponent, useRef } from "@odoo/owl";
+import {ColorSelector} from "@html_editor/main/font/color_selector";
+import {Component, useComponent, useRef} from "@odoo/owl";
 import {
     useColorPicker,
     DEFAULT_COLORS,
     DEFAULT_THEME_COLOR_VARS,
 } from "@web/core/color_picker/color_picker";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 import {
     basicContainerBuilderComponentProps,
     getAllActionsAndOperations,
@@ -14,13 +14,13 @@ import {
     useDomState,
     useHasPreview,
 } from "../utils";
-import { isCSSColor, isColorGradient } from "@web/core/utils/colors";
-import { getAllUsedColors } from "@html_builder/utils/utils_css";
+import {isCSSColor, isColorGradient} from "@web/core/utils/colors";
+import {getAllUsedColors} from "@html_builder/utils/utils_css";
 
 // TODO replace by useInputBuilderComponent after extract unit by AGAU
 export function useColorPickerBuilderComponent() {
     const comp = useComponent();
-    const { getAllActions, callOperation } = getAllActionsAndOperations(comp);
+    const {getAllActions, callOperation} = getAllActionsAndOperations(comp);
     const getAction = comp.env.editor.shared.builderActions.getAction;
     let selectedTab;
     const state = useDomState(getState);
@@ -48,10 +48,13 @@ export function useColorPickerBuilderComponent() {
         //     return {};
         // }
         const actionWithGetValue = getAllActions().find(
-            ({ actionId }) => getAction(actionId).getValue
+            ({actionId}) => getAction(actionId).getValue
         );
-        const { actionId, actionParam } = actionWithGetValue;
-        const actionValue = getAction(actionId).getValue({ editingElement, params: actionParam });
+        const {actionId, actionParam} = actionWithGetValue;
+        const actionValue = getAction(actionId).getValue({
+            editingElement,
+            params: actionParam,
+        });
         return {
             // defaultTab is the tab to open if the user has not done a selection yet.
             // If the user has already selected a color, the tab of the last selection is opened
@@ -76,7 +79,7 @@ export function useColorPickerBuilderComponent() {
     function onApply(colorValue) {
         previewValue = null;
         selectedTab = comp.getCorrespondingColorPickerTab(colorValue);
-        callOperation(applyOperation.commit, { userInputValue: getColor(colorValue) });
+        callOperation(applyOperation.commit, {userInputValue: getColor(colorValue)});
     }
     let onPreview = (colorValue) => {
         // Avoid previewing the same color twice.
@@ -112,15 +115,15 @@ export class BuilderColorPicker extends Component {
     static template = "html_builder.BuilderColorPicker";
     static props = {
         ...basicContainerBuilderComponentProps,
-        noTransparency: { type: Boolean, optional: true },
-        enabledTabs: { type: Array, optional: true },
-        grayscales: { type: Object, optional: true },
-        unit: { type: String, optional: true },
-        title: { type: String, optional: true },
-        getUsedCustomColors: { type: Function, optional: true },
-        selectedTab: { type: String, optional: true },
-        defaultColor: { type: String, optional: true },
-        defaultOpacity: { type: Number, optional: true },
+        noTransparency: {type: Boolean, optional: true},
+        enabledTabs: {type: Array, optional: true},
+        grayscales: {type: Object, optional: true},
+        unit: {type: String, optional: true},
+        title: {type: String, optional: true},
+        getUsedCustomColors: {type: Function, optional: true},
+        selectedTab: {type: String, optional: true},
+        defaultColor: {type: String, optional: true},
+        defaultOpacity: {type: Number, optional: true},
     };
     static defaultProps = {
         enabledTabs: ["theme", "gradient", "custom"],
@@ -134,7 +137,8 @@ export class BuilderColorPicker extends Component {
 
     setup() {
         useBuilderComponent();
-        const { state, onApply, onPreview, onPreviewRevert } = useColorPickerBuilderComponent();
+        const {state, onApply, onPreview, onPreviewRevert} =
+            useColorPickerBuilderComponent();
         this.colorButton = useRef("colorButton");
         this.state = state;
         useColorPicker(
@@ -145,7 +149,8 @@ export class BuilderColorPicker extends Component {
                 applyColorPreview: onPreview,
                 applyColorResetPreview: onPreviewRevert,
                 getUsedCustomColors:
-                    this.props.getUsedCustomColors || this.getUsedCustomColors.bind(this),
+                    this.props.getUsedCustomColors ||
+                    this.getUsedCustomColors.bind(this),
                 colorPrefix: "color-prefix-",
                 cssVarColorPrefix: "hb-cp-",
                 noTransparency: this.props.noTransparency,
@@ -173,7 +178,10 @@ export class BuilderColorPicker extends Component {
             return `background-color: var(--${this.state.selectedColor})`;
         }
         if (this.state.selectedColorCombination) {
-            const colorCombination = this.state.selectedColorCombination.replace("_", "-");
+            const colorCombination = this.state.selectedColorCombination.replace(
+                "_",
+                "-"
+            );
             const el = this.env.getEditingElement();
             const style = el.ownerDocument.defaultView.getComputedStyle(el);
             if (style.backgroundImage !== "none") {
@@ -205,7 +213,10 @@ export class BuilderColorPicker extends Component {
             ...DEFAULT_COLORS.flat(),
             ...DEFAULT_THEME_COLOR_VARS.map((color) => color.toUpperCase()),
         ];
-        if (isTabEnabled("solid") && solidTabColors.includes(selectedColor.toUpperCase())) {
+        if (
+            isTabEnabled("solid") &&
+            solidTabColors.includes(selectedColor.toUpperCase())
+        ) {
             return "solid";
         }
 

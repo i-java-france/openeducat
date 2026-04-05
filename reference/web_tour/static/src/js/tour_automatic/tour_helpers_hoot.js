@@ -1,6 +1,6 @@
 import * as hoot from "@odoo/hoot-dom";
-import { patch } from "@web/core/utils/patch";
-import { TourHelpers } from "./tour_helpers";
+import {patch} from "@web/core/utils/patch";
+import {TourHelpers} from "./tour_helpers";
 
 patch(TourHelpers.prototype, {
     /**
@@ -50,7 +50,7 @@ patch(TourHelpers.prototype, {
      * @example
      *  run: "click .o_rows:first", // Click on the selector
      */
-    async click(selector, options = { interactive: false }) {
+    async click(selector, options = {interactive: false}) {
         const element = this._get_action_element(selector);
         // FIXME: should always target interactive element, but some tour steps are
         // targetting elements affected by 'pointer-events: none' for some reason.
@@ -92,7 +92,7 @@ patch(TourHelpers.prototype, {
      */
     async drag_and_drop(selector, options) {
         if (typeof options !== "object") {
-            options = { position: "top", relative: true };
+            options = {position: "top", relative: true};
         }
         const dragEffectDelay = async () => {
             await hoot.animationFrame();
@@ -100,7 +100,7 @@ patch(TourHelpers.prototype, {
         };
 
         const element = this.anchor;
-        const { drop, moveTo } = await hoot.drag(element);
+        const {drop, moveTo} = await hoot.drag(element);
         await dragEffectDelay();
         await hoot.hover(element, {
             position: {
@@ -198,7 +198,9 @@ patch(TourHelpers.prototype, {
      *  run : "press Enter",
      */
     async press(...args) {
-        await hoot.press(args.flatMap((arg) => typeof arg === "string" && arg.split("+")));
+        await hoot.press(
+            args.flatMap((arg) => typeof arg === "string" && arg.split("+"))
+        );
     },
 
     /**
@@ -217,7 +219,7 @@ patch(TourHelpers.prototype, {
     async select(value, selector) {
         const element = this._get_action_element(selector);
         await hoot.click(element);
-        await hoot.select(value, { target: element });
+        await hoot.select(value, {target: element});
     },
 
     /**
@@ -231,9 +233,9 @@ patch(TourHelpers.prototype, {
     async selectByIndex(index, selector) {
         const element = this._get_action_element(selector);
         await hoot.click(element);
-        const value = hoot.queryValue(`option:eq(${index})`, { root: element });
+        const value = hoot.queryValue(`option:eq(${index})`, {root: element});
         if (value) {
-            await hoot.select(value, { target: element });
+            await hoot.select(value, {target: element});
             await hoot.manuallyDispatchProgrammaticEvent(element, "input");
         }
     },
@@ -249,8 +251,10 @@ patch(TourHelpers.prototype, {
     async selectByLabel(contains, selector) {
         const element = this._get_action_element(selector);
         await hoot.click(element);
-        const values = hoot.queryAllValues(`option:contains(${contains})`, { root: element });
-        await hoot.select(values, { target: element });
+        const values = hoot.queryAllValues(`option:contains(${contains})`, {
+            root: element,
+        });
+        await hoot.select(values, {target: element});
     },
 
     /**

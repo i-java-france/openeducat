@@ -4,8 +4,11 @@
             <t t-foreach="state.groups" t-as="group" t-key="group_index">
                 <select class="form-select" t-on-change="onChange">
                     <t t-foreach="group" t-as="element" t-key="element_index">
-                        <option t-attf-value="{{group_index}},{{element_index}}" t-att-selected="element.isActive">
-                            <t t-esc="element.label"/>
+                        <option
+                            t-attf-value="{{group_index}},{{element_index}}"
+                            t-att-selected="element.isActive"
+                        >
+                            <t t-esc="element.label" />
                         </option>
                     </t>
                 </select>

@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 
 from odoo import Command
-from odoo.addons.survey.tests import common
 from odoo.tests.common import HttpCase
+
+from odoo.addons.survey.tests import common
 
 
 class TestSurveyController(common.TestSurveyCommon, HttpCase):

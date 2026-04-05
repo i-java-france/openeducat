@@ -1,14 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import functools
 import io
 import json
 import logging
 import os
 import unicodedata
-
 from contextlib import nullcontext
+
 try:
     from werkzeug.utils import send_file
 except ImportError:
@@ -16,13 +15,14 @@ except ImportError:
 
 import odoo
 import odoo.modules.registry
-from odoo import SUPERUSER_ID, _, http, api
-from odoo.addons.base.models.assetsbundle import ANY_UNIQUE
+from odoo import SUPERUSER_ID, _, api, http
 from odoo.exceptions import AccessError, UserError
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.tools import file_open, file_path, replace_exceptions, str2bool
 from odoo.tools.image import image_guess_size_from_field_name
 from odoo.tools.mimetypes import guess_mimetype
+
+from odoo.addons.base.models.assetsbundle import ANY_UNIQUE
 
 _logger = logging.getLogger(__name__)
 
@@ -99,7 +99,7 @@ class Binary(http.Controller):
         attachment = None
         if unique != 'debug':
             url = env['ir.asset']._get_asset_bundle_url(filename, unique, assets_params)
-            assert not '%' in url
+            assert '%' not in url
             domain = [
                 ('public', '=', True),
                 ('url', '!=', False),

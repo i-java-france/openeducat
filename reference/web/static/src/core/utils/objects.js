@@ -127,7 +127,7 @@ export function deepMerge(target, extension) {
             ) {
                 output[key] = deepMerge(target[key], extension[key]);
             } else {
-                Object.assign(output, { [key]: extension[key] });
+                Object.assign(output, {[key]: extension[key]});
             }
         }
     }

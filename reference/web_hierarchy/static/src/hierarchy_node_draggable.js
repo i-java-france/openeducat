@@ -1,7 +1,7 @@
-import { onWillUnmount, reactive, useEffect, useExternalListener } from "@odoo/owl";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
-import { pick } from "@web/core/utils/objects";
-import { makeDraggableHook } from "@web/core/utils/draggable_hook_builder";
+import {onWillUnmount, reactive, useEffect, useExternalListener} from "@odoo/owl";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
+import {pick} from "@web/core/utils/objects";
+import {makeDraggableHook} from "@web/core/utils/draggable_hook_builder";
 
 const hookParams = {
     name: "useHierarchyNodeDraggable",
@@ -9,10 +9,10 @@ const hookParams = {
         rows: [String],
     },
     defaultParams: {
-        edgeScrolling: { speed: 20, threshold: 60 },
+        edgeScrolling: {speed: 20, threshold: 60},
         rows: null,
     },
-    onComputeParams({ ctx, params }) {
+    onComputeParams({ctx, params}) {
         // Row selector
         ctx.rowSelector = params.rows || null;
         if (ctx.rowSelector) {
@@ -20,33 +20,33 @@ const hookParams = {
         }
     },
     onDragStart(params) {
-        const { ctx, addListener, callHandler } = params;
+        const {ctx, addListener, callHandler} = params;
 
         const onElementPointerEnter = (ev) => {
             const element = ev.currentTarget;
             current.hierarchyElement = element;
-            callHandler("onElementEnter", { element });
+            callHandler("onElementEnter", {element});
         };
 
         const onElementPointerLeave = (ev) => {
             const element = ev.currentTarget;
             current.hierarchyElement = null;
-            callHandler("onElementLeave", { element });
+            callHandler("onElementLeave", {element});
         };
 
         const onRowPointerEnter = (ev) => {
             const row = ev.currentTarget;
             current.hierarchyRow = row;
-            callHandler("onRowEnter", { row });
+            callHandler("onRowEnter", {row});
         };
 
         const onRowPointerLeave = (ev) => {
             const row = ev.currentTarget;
             current.hierarchyRow = null;
-            callHandler("onRowLeave", { row });
+            callHandler("onRowLeave", {row});
         };
 
-        const { ref, current, elementSelector, rowSelector } = ctx;
+        const {ref, current, elementSelector, rowSelector} = ctx;
 
         for (const rowEl of ref.el.querySelectorAll(rowSelector)) {
             addListener(rowEl, "pointerenter", onRowPointerEnter);
@@ -62,11 +62,11 @@ const hookParams = {
 
         return pick(current, "element", "row");
     },
-    onDragEnd({ ctx }) {
+    onDragEnd({ctx}) {
         return pick(ctx.current, "element", "row", "hierarchyRow");
     },
-    onDrop({ ctx }) {
-        const { current } = ctx;
+    onDrop({ctx}) {
+        const {current} = ctx;
         const rowElement = current.hierarchyRow;
         const element = current.hierarchyElement;
         if ((rowElement && rowElement !== current.row) || element) {
@@ -78,8 +78,8 @@ const hookParams = {
             };
         }
     },
-    onWillStartDrag({ ctx }) {
-        const { current, rowSelector } = ctx;
+    onWillStartDrag({ctx}) {
+        const {current, rowSelector} = ctx;
 
         if (rowSelector) {
             current.row = current.element.closest(rowSelector);
@@ -96,6 +96,6 @@ export function useHierarchyNodeDraggable(params) {
         teardown: onWillUnmount,
         throttle: useThrottleForAnimation,
         wrapState: reactive,
-    }
-    return makeDraggableHook({ ...hookParams, setupHooks })(params);
+    };
+    return makeDraggableHook({...hookParams, setupHooks})(params);
 }

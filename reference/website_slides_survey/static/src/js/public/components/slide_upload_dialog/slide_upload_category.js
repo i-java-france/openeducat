@@ -1,8 +1,8 @@
-import { SlideUploadCategory } from "@website_slides/js/public/components/slide_upload_dialog/slide_upload_category";
-import { patch } from "@web/core/utils/patch";
-import { onWillStart } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
+import {SlideUploadCategory} from "@website_slides/js/public/components/slide_upload_dialog/slide_upload_category";
+import {patch} from "@web/core/utils/patch";
+import {onWillStart} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
 
 patch(SlideUploadCategory.prototype, {
     setup() {
@@ -15,9 +15,11 @@ patch(SlideUploadCategory.prototype, {
                 fields: ["title"],
             });
 
-            this.state.choices.certifications = results.read_results.map((certification) => {
-                return { value: certification.id, label: certification.title };
-            });
+            this.state.choices.certifications = results.read_results.map(
+                (certification) => {
+                    return {value: certification.id, label: certification.title};
+                }
+            );
         });
     },
 
@@ -31,7 +33,10 @@ patch(SlideUploadCategory.prototype, {
 
     _formValidate() {
         const isFormValid = super._formValidate();
-        if (this.props.slideCategory === "certification" && !this.state.choices.certificationId) {
+        if (
+            this.props.slideCategory === "certification" &&
+            !this.state.choices.certificationId
+        ) {
             this.state.showCertificationRequiredError = true;
             return false;
         }
@@ -66,7 +71,7 @@ patch(SlideUploadCategory.prototype, {
                     title: certification.label,
                 };
             } else {
-                result.survey = { id: parseInt(this.state.choices.certificationId, 10) };
+                result.survey = {id: parseInt(this.state.choices.certificationId, 10)};
             }
         }
 

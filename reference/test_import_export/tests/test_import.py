@@ -8,9 +8,14 @@ import unittest
 
 from PIL import Image
 
-from odoo.tests.common import TransactionCase, can_import, RecordCapturer
-from odoo.tools import mute_logger, DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tests.common import RecordCapturer, TransactionCase, can_import
+from odoo.tools import (
+    DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    mute_logger,
+)
 from odoo.tools.misc import file_open
+
 from odoo.addons.base_import.models.base_import import ImportValidationError
 
 
@@ -182,7 +187,7 @@ class TestO2M(BaseImportCase):
 
     def test_shallow(self):
         self.assertEqualFields(
-            self.env['base_import.import'].get_fields_tree("import.o2m"), 
+            self.env['base_import.import'].get_fields_tree("import.o2m"),
             [
                 get_id_field("import.o2m"),
                 {'id': 'name', 'name': 'name', 'string': "Name", 'required': False, 'fields': [], 'type': 'char', 'model_name': 'import.o2m'},

@@ -1,6 +1,6 @@
-import { monetaryField, MonetaryField } from "@web/views/fields/monetary/monetary_field";
-import { registry } from "@web/core/registry";
-import { floatIsZero } from "@web/core/utils/numbers";
+import {monetaryField, MonetaryField} from "@web/views/fields/monetary/monetary_field";
+import {registry} from "@web/core/registry";
+import {floatIsZero} from "@web/core/utils/numbers";
 
 export class MonetaryFieldNoZero extends MonetaryField {
     static props = {

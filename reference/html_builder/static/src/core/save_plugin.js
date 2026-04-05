@@ -1,8 +1,8 @@
-import { escapeTextNodes } from "@html_builder/utils/escaping";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { groupBy } from "@web/core/utils/arrays";
-import { uniqueId } from "@web/core/utils/functions";
+import {escapeTextNodes} from "@html_builder/utils/escaping";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {groupBy} from "@web/core/utils/arrays";
+import {uniqueId} from "@web/core/utils/functions";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 /**
@@ -85,10 +85,12 @@ export class SavePlugin extends Plugin {
         });
     }
 
-    async save({ shouldSkipAfterSaveHandlers = async () => true } = {}) {
+    async save({shouldSkipAfterSaveHandlers = async () => true} = {}) {
         let skipAfterSaveHandlers;
         try {
-            await Promise.all(this.getResource("before_save_handlers").map((handler) => handler()));
+            await Promise.all(
+                this.getResource("before_save_handlers").map((handler) => handler())
+            );
             await this._save();
             skipAfterSaveHandlers = await shouldSkipAfterSaveHandlers();
         } finally {
@@ -113,16 +115,20 @@ export class SavePlugin extends Plugin {
             const cleanedEls = dirtyEls.map((dirtyEl) => {
                 dirtyEl.classList.remove("o_dirty");
                 const cleanedEl = dirtyEl.cloneNode(true);
-                this.dispatchTo("clean_for_save_handlers", { root: cleanedEl });
+                this.dispatchTo("clean_for_save_handlers", {root: cleanedEl});
                 return cleanedEl;
             });
-            for (const saveElementsOverride of this.getResource("save_elements_overrides")) {
+            for (const saveElementsOverride of this.getResource(
+                "save_elements_overrides"
+            )) {
                 if (await saveElementsOverride(cleanedEls)) {
                     return;
                 }
             }
             for (const cleanedEl of cleanedEls) {
-                for (const saveElementHandler of this.getResource("save_element_handlers")) {
+                for (const saveElementHandler of this.getResource(
+                    "save_element_handlers"
+                )) {
                     await saveElementHandler(cleanedEl);
                 }
             }
@@ -146,7 +152,7 @@ export class SavePlugin extends Plugin {
 
         let context = {};
         if (this.services.website) {
-            const delay = delayTranslations ? { delay_translations: true } : {};
+            const delay = delayTranslations ? {delay_translations: true} : {};
             context = {
                 website_id: this.services.website.currentWebsite.id,
                 lang: this.services.website.currentWebsite.metadata.lang,
@@ -158,8 +164,12 @@ export class SavePlugin extends Plugin {
         return this.services.orm.call(
             "ir.ui.view",
             "save",
-            [viewID, el.outerHTML, (!el.dataset["oeExpression"] && el.dataset["oeXpath"]) || null],
-            { context }
+            [
+                viewID,
+                el.outerHTML,
+                (!el.dataset["oeExpression"] && el.dataset["oeXpath"]) || null,
+            ],
+            {context}
         );
     }
 

@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
-import { registries, tokenColors, helpers } from "@odoo/o-spreadsheet";
+import {registries, tokenColors, helpers} from "@odoo/o-spreadsheet";
 
-const { insertTokenAfterLeftParenthesis } = helpers;
+const {insertTokenAfterLeftParenthesis} = helpers;
 
 // copy-pasted list of options from the `account_type` selection field.
 const ACCOUNT_TYPES = [
@@ -40,7 +40,7 @@ registries.autoCompleteProviders.add("account_group_types", {
                 return {
                     text,
                     description: displayName,
-                    htmlContent: [{ value: text, color: tokenColors.STRING }],
+                    htmlContent: [{value: text, color: tokenColors.STRING}],
                     fuzzySearchKey: technicalName + displayName,
                 };
             });

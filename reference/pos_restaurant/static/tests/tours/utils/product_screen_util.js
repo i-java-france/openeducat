@@ -13,7 +13,7 @@ export function clickOrderButton() {
     ];
 }
 export function orderlinesHaveNoChange() {
-    return Order.doesNotHaveLine({ withClass: ".has-change" });
+    return Order.doesNotHaveLine({withClass: ".has-change"});
 }
 export function orderlineIsToOrder(name) {
     return Order.hasLine({

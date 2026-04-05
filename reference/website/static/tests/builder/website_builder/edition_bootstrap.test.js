@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -9,7 +9,7 @@ import {
 defineWebsiteModels();
 
 test("Opening a dropdown should not add mutations to the history", async () => {
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<a href="#" role="button" data-bs-toggle="dropdown" class="dropdown-toggle">Toggle</a>
         <div role="menu" class="dropdown-menu">
             <a href="#" role="menuitem" class="dropdown-item">Item</a>
@@ -26,7 +26,7 @@ test("Opening a dropdown should not add mutations to the history", async () => {
 });
 
 test("Opening an offcancas should not add mutations to the history", async () => {
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `
 <button class="toggleCanvas" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
   Button

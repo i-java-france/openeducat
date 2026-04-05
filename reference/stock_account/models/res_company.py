@@ -1,9 +1,10 @@
 from collections import defaultdict
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import Command, _, api, fields, models
-from odoo.fields import Domain
 from odoo.exceptions import UserError
+from odoo.fields import Domain
 
 
 class ResCompany(models.Model):

@@ -1,25 +1,25 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import random
-
 from ast import literal_eval
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 from unittest.mock import patch
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import fields
-from odoo.addons.crm.tests.common import TestLeadConvertCommon
+from odoo.fields import Datetime
 from odoo.tests.common import tagged
 from odoo.tools import mute_logger
-from odoo.fields import Datetime
+
+from odoo.addons.crm.tests.common import TestLeadConvertCommon
 
 
 class TestLeadAssignCommon(TestLeadConvertCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLeadAssignCommon, cls).setUpClass()
+        super().setUpClass()
         cls._switch_to_multi_membership()
         cls._switch_to_auto_assign()
 

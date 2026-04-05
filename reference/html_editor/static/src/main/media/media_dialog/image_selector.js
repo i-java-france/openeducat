@@ -1,11 +1,16 @@
-import { useRef, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { DEFAULT_PALETTE } from "@html_editor/utils/color";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { Attachment, FileSelector, IMAGE_EXTENSIONS, IMAGE_MIMETYPES } from "./file_selector";
-import { isSrcCorsProtected } from "@html_editor/utils/image";
+import {useRef, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {DEFAULT_PALETTE} from "@html_editor/utils/color";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {
+    Attachment,
+    FileSelector,
+    IMAGE_EXTENSIONS,
+    IMAGE_MIMETYPES,
+} from "./file_selector";
+import {isSrcCorsProtected} from "@html_editor/utils/image";
 
 export class AutoResizeImage extends Attachment {
     static template = "html_editor.AutoResizeImage";
@@ -78,7 +83,8 @@ export class ImageSelector extends FileSelector {
         this.addText = _t("Add URL");
         this.searchPlaceholder = _t("Search an image");
         this.urlWarningTitle = _t(
-            "Uploaded image's format is not supported. Try with: " + IMAGE_EXTENSIONS.join(", ")
+            "Uploaded image's format is not supported. Try with: " +
+                IMAGE_EXTENSIONS.join(", ")
         );
         this.allLoadedText = _t("All images have been loaded");
         this.showOptimizedOption = this.env.debug;
@@ -86,7 +92,8 @@ export class ImageSelector extends FileSelector {
 
         this.fileMimetypes = IMAGE_MIMETYPES.join(",");
         this.isImageField =
-            !!this.props.media?.closest("[data-oe-type=image]") || !!this.props.addFieldImage;
+            !!this.props.media?.closest("[data-oe-type=image]") ||
+            !!this.props.addFieldImage;
     }
 
     get canLoadMore() {
@@ -116,7 +123,7 @@ export class ImageSelector extends FileSelector {
     get selectedMediaIds() {
         return this.props.selectedMedia[this.props.id]
             .filter((media) => media.mediaType === "libraryMedia")
-            .map(({ id }) => id);
+            .map(({id}) => id);
     }
 
     get allAttachments() {
@@ -169,13 +176,13 @@ export class ImageSelector extends FileSelector {
     async uploadFiles(files) {
         await this.uploadService.uploadFiles(
             files,
-            { resModel: this.props.resModel, resId: this.props.resId, isImage: true },
+            {resModel: this.props.resModel, resId: this.props.resId, isImage: true},
             (attachment) => this.onUploaded(attachment)
         );
     }
 
     async validateUrl(...args) {
-        const { isValidUrl, path } = super.validateUrl(...args);
+        const {isValidUrl, path} = super.validateUrl(...args);
         const isValidFileFormat =
             isValidUrl &&
             (await new Promise((resolve) => {
@@ -184,12 +191,14 @@ export class ImageSelector extends FileSelector {
                 img.onload = () => resolve(true);
                 img.onerror = () => resolve(false);
             }));
-        return { isValidFileFormat, isValidUrl };
+        return {isValidFileFormat, isValidUrl};
     }
 
     async onLoadUploadedUrl(url, resolve) {
         const urlPathname = new URL(url, window.location.href).pathname;
-        const imageExtension = IMAGE_EXTENSIONS.find((format) => urlPathname.endsWith(format));
+        const imageExtension = IMAGE_EXTENSIONS.find((format) =>
+            urlPathname.endsWith(format)
+        );
         if (this.isImageField && imageExtension === ".webp") {
             // Do not allow the user to replace an image field by a
             // webp CORS protected image as we are not currently
@@ -269,7 +278,7 @@ export class ImageSelector extends FileSelector {
 
     async fetchLibraryMedia(offset) {
         if (!this.state.needle) {
-            return { media: [], results: null };
+            return {media: [], results: null};
         }
 
         this.state.isFetchingLibrary = true;
@@ -285,14 +294,17 @@ export class ImageSelector extends FileSelector {
                 }
             );
             this.state.isFetchingLibrary = false;
-            const media = (response.media || []).slice(0, this.NUMBER_OF_MEDIA_TO_DISPLAY);
+            const media = (response.media || []).slice(
+                0,
+                this.NUMBER_OF_MEDIA_TO_DISPLAY
+            );
             media.forEach((record) => (record.mediaType = "libraryMedia"));
-            return { media, results: response.results };
+            return {media, results: response.results};
         } catch {
             // Either API endpoint doesn't exist or is misconfigured.
             console.error(`Couldn't reach API endpoint.`);
             this.state.isFetchingLibrary = false;
-            return { media: [], results: null };
+            return {media: [], results: null};
         }
     }
 
@@ -307,7 +319,7 @@ export class ImageSelector extends FileSelector {
         }
         return this.keepLastLibraryMedia
             .add(this.fetchLibraryMedia(this.state.libraryMedia.length))
-            .then(({ media }) => {
+            .then(({media}) => {
                 // This is never reached if another search or loadMore occurred.
                 this.state.libraryMedia.push(...media);
             });
@@ -325,7 +337,7 @@ export class ImageSelector extends FileSelector {
         this.state.libraryResults = 0;
         return this.keepLastLibraryMedia
             .add(this.fetchLibraryMedia(0))
-            .then(({ media, results }) => {
+            .then(({media, results}) => {
                 // This is never reached if a new search occurred.
                 this.state.libraryMedia = media;
                 this.state.libraryResults = results;
@@ -352,7 +364,7 @@ export class ImageSelector extends FileSelector {
     }
 
     async onClickMedia(media) {
-        this.props.selectMedia({ ...media, mediaType: "libraryMedia" });
+        this.props.selectMedia({...media, mediaType: "libraryMedia"});
         if (!this.props.multiSelect) {
             await this.props.save();
         }
@@ -361,7 +373,7 @@ export class ImageSelector extends FileSelector {
     /**
      * Utility method used by the MediaDialog component.
      */
-    static async createElements(selectedMedia, { orm }) {
+    static async createElements(selectedMedia, {orm}) {
         // Create all media-library attachments.
         const toSave = Object.fromEntries(
             selectedMedia
@@ -377,7 +389,7 @@ export class ImageSelector extends FileSelector {
         );
         let savedMedia = [];
         if (Object.keys(toSave).length !== 0) {
-            savedMedia = await rpc("/html_editor/save_library_media", { media: toSave });
+            savedMedia = await rpc("/html_editor/save_library_media", {media: toSave});
         }
         const selected = selectedMedia
             .filter((media) => media.mediaType === "attachment")
@@ -403,7 +415,8 @@ export class ImageSelector extends FileSelector {
                             );
                         }
                     });
-                    attachment.image_src = colorCustomizedURL.pathname + colorCustomizedURL.search;
+                    attachment.image_src =
+                        colorCustomizedURL.pathname + colorCustomizedURL.search;
                 }
                 return attachment;
             });
@@ -414,9 +427,11 @@ export class ImageSelector extends FileSelector {
                 if (!attachment.public && !attachment.url) {
                     let accessToken = attachment.access_token;
                     if (!accessToken) {
-                        [accessToken] = await orm.call("ir.attachment", "generate_access_token", [
-                            attachment.id,
-                        ]);
+                        [accessToken] = await orm.call(
+                            "ir.attachment",
+                            "generate_access_token",
+                            [attachment.id]
+                        );
                     }
                     src += `?access_token=${encodeURIComponent(accessToken)}`;
                 }
@@ -465,7 +480,10 @@ export class ImageSelector extends FileSelector {
                         (key) => DEFAULT_PALETTE[key] === match.toUpperCase()
                     );
                     const colorKey = "c" + colorId;
-                    dynamicColors[colorKey] = getCSSVariableValue("o-color-" + colorId, htmlStyle);
+                    dynamicColors[colorKey] = getCSSVariableValue(
+                        "o-color-" + colorId,
+                        htmlStyle
+                    );
                     return dynamicColors[colorKey];
                 });
                 const fileName = mediaUrl.split("/").pop();

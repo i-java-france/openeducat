@@ -1,6 +1,6 @@
 import publicRootData from "@web/legacy/js/public/public_root";
 import "@website/libs/zoomodoo/zoomodoo";
-import { pick } from "@web/core/utils/objects";
+import {pick} from "@web/core/utils/objects";
 
 export const WebsiteRoot = publicRootData.PublicRoot.extend({
     events: Object.assign({}, publicRootData.PublicRoot.prototype.events || {}, {
@@ -8,13 +8,17 @@ export const WebsiteRoot = publicRootData.PublicRoot.extend({
         "click .js_publish_management .js_publish_btn": "_onPublishBtnClick",
         "shown.bs.modal": "_onModalShown",
     }),
-    custom_events: Object.assign({}, publicRootData.PublicRoot.prototype.custom_events || {}, {
-        gmap_api_request: "_onGMapAPIRequest",
-        gmap_api_key_request: "_onGMapAPIKeyRequest",
-        ready_to_clean_for_save: "_onWidgetsStopRequest",
-        seo_object_request: "_onSeoObjectRequest",
-        will_remove_snippet: "_onWidgetsStopRequest",
-    }),
+    custom_events: Object.assign(
+        {},
+        publicRootData.PublicRoot.prototype.custom_events || {},
+        {
+            gmap_api_request: "_onGMapAPIRequest",
+            gmap_api_key_request: "_onGMapAPIKeyRequest",
+            ready_to_clean_for_save: "_onWidgetsStopRequest",
+            seo_object_request: "_onSeoObjectRequest",
+            will_remove_snippet: "_onWidgetsStopRequest",
+        }
+    ),
 
     /**
      * @override
@@ -121,7 +125,10 @@ export const WebsiteRoot = publicRootData.PublicRoot.extend({
      */
     async _onGMapAPIRequest(ev) {
         ev.stopPropagation();
-        const apiKey = await this.website_map.loadGMapAPI(ev.data.editableMode, ev.data.refetch);
+        const apiKey = await this.website_map.loadGMapAPI(
+            ev.data.editableMode,
+            ev.data.refetch
+        );
         ev.data.onSuccess(apiKey);
     },
     /**

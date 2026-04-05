@@ -5,7 +5,7 @@
 // this code and the interaction are needed to ensure the correct behaviour in
 // any possible case. See commit message for more details.
 
-const BREAKPOINT_SIZES = { sm: "575", md: "767", lg: "991", xl: "1199", xxl: "1399" };
+const BREAKPOINT_SIZES = {sm: "575", md: "767", lg: "991", xl: "1199", xxl: "1399"};
 
 let ignoreDOMMutations;
 export function setupIgnoreDOMMutations(fn) {
@@ -42,7 +42,7 @@ async function autoHideMenu(el, options) {
     const minSize = BREAKPOINT_SIZES[breakpoint];
     let wasExtraMenuOpenBefore = false;
     const docSelection = el.ownerDocument.getSelection();
-    let { anchorNode, anchorOffset, focusNode, focusOffset } = docSelection;
+    let {anchorNode, anchorOffset, focusNode, focusOffset} = docSelection;
 
     options = Object.assign(
         {
@@ -109,27 +109,32 @@ async function autoHideMenu(el, options) {
             return;
         }
         // Move extra menu items from dropdown-menu to menu element in the same order.
-        [...extraItemsToggle.querySelector(".dropdown-menu").children].forEach((item) => {
-            if (!isUserNavbar) {
-                item.classList.add("nav-item");
-                const itemLink = item.querySelector(".dropdown-item");
-                if (itemLink) {
-                    itemLink.classList.remove("dropdown-item");
-                    itemLink.classList.add("nav-link");
+        [...extraItemsToggle.querySelector(".dropdown-menu").children].forEach(
+            (item) => {
+                if (!isUserNavbar) {
+                    item.classList.add("nav-item");
+                    const itemLink = item.querySelector(".dropdown-item");
+                    if (itemLink) {
+                        itemLink.classList.remove("dropdown-item");
+                        itemLink.classList.add("nav-link");
+                    }
+                } else {
+                    item.classList.remove("dropdown-item");
+                    const dropdownSubMenu = item.querySelector(".dropdown-menu");
+                    const dropdownSubMenuButton =
+                        item.querySelector(".dropdown-toggle");
+                    if (dropdownSubMenu) {
+                        dropdownSubMenu.classList.remove(...dropdownSubMenuClasses);
+                    }
+                    if (dropdownSubMenuButton) {
+                        dropdownSubMenuButton.classList.remove(
+                            ...dropdownToggleClasses
+                        );
+                    }
                 }
-            } else {
-                item.classList.remove("dropdown-item");
-                const dropdownSubMenu = item.querySelector(".dropdown-menu");
-                const dropdownSubMenuButton = item.querySelector(".dropdown-toggle");
-                if (dropdownSubMenu) {
-                    dropdownSubMenu.classList.remove(...dropdownSubMenuClasses);
-                }
-                if (dropdownSubMenuButton) {
-                    dropdownSubMenuButton.classList.remove(...dropdownToggleClasses);
-                }
+                el.insertBefore(item, extraItemsToggle);
             }
-            el.insertBefore(item, extraItemsToggle);
-        });
+        );
         extraItemsToggle.remove();
         extraItemsToggle = null;
     }
@@ -150,14 +155,15 @@ async function autoHideMenu(el, options) {
         // there, which will be restored after the menu adaptation.
         const extraMenuEl = _getExtraMenuEl();
         wasExtraMenuOpenBefore = extraMenuEl && extraMenuEl.classList.contains("show");
-        ({ anchorNode, anchorOffset, focusNode, focusOffset } = docSelection);
+        ({anchorNode, anchorOffset, focusNode, focusOffset} = docSelection);
         _restore();
 
         // Ignore invisible/toggleable top menu element & small viewports.
         if (
             !el.getClientRects().length ||
             el.closest(".show") ||
-            (window.matchMedia(`(max-width: ${minSize}px)`).matches && !isNoHamburgerMenu)
+            (window.matchMedia(`(max-width: ${minSize}px)`).matches &&
+                !isNoHamburgerMenu)
         ) {
             return _endAutoMoreMenu();
         }
@@ -186,7 +192,8 @@ async function autoHideMenu(el, options) {
                 parseFloat(style.borderLeftWidth) +
                 parseFloat(style.borderRightWidth);
             maxWidth -= unfoldableItems.reduce(
-                (sum, el) => sum + computeFloatOuterWidthWithMargins(el, true, true, false),
+                (sum, el) =>
+                    sum + computeFloatOuterWidthWithMargins(el, true, true, false),
                 0
             );
         }
@@ -195,8 +202,15 @@ async function autoHideMenu(el, options) {
             return _endAutoMoreMenu();
         }
 
-        const dropdownMenu = _addExtraItemsButton(items[nbItems - 1].nextElementSibling);
-        menuItemsWidth += computeFloatOuterWidthWithMargins(extraItemsToggle, true, true, false);
+        const dropdownMenu = _addExtraItemsButton(
+            items[nbItems - 1].nextElementSibling
+        );
+        menuItemsWidth += computeFloatOuterWidthWithMargins(
+            extraItemsToggle,
+            true,
+            true,
+            false
+        );
         do {
             menuItemsWidth -= computeFloatOuterWidthWithMargins(
                 items[--nbItems],
@@ -268,8 +282,9 @@ async function autoHideMenu(el, options) {
         extraItemsToggle.className = "nav-item dropdown o_extra_menu_items";
         extraItemsToggle.setAttribute("role", "presentation");
         extraItemsToggleIcon.className = "oi oi-plus";
-        const extraItemsToggleAriaLabel = el.closest("[data-extra-items-toggle-aria-label]")
-            ?.dataset.extraItemsToggleAriaLabel;
+        const extraItemsToggleAriaLabel = el.closest(
+            "[data-extra-items-toggle-aria-label]"
+        )?.dataset.extraItemsToggleAriaLabel;
         Object.entries({
             role: "menuitem",
             href: "#",
@@ -318,13 +333,18 @@ async function autoHideMenu(el, options) {
     function _endAutoMoreMenu() {
         const extraMenuEl = _getExtraMenuEl();
         const setSelection = () =>
-            docSelection.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
+            docSelection.setBaseAndExtent(
+                anchorNode,
+                anchorOffset,
+                focusNode,
+                focusOffset
+            );
         const anchorInExtra = anchorNode?.parentElement.closest(
             ".o_extra_menu_items .dropdown-menu"
         );
         if (extraMenuEl && (anchorInExtra || wasExtraMenuOpenBefore)) {
             if (anchorInExtra) {
-                el.addEventListener("shown.bs.dropdown", setSelection, { once: true });
+                el.addEventListener("shown.bs.dropdown", setSelection, {once: true});
             }
             window.Dropdown.getOrCreateInstance(extraMenuEl).show();
         }
@@ -339,7 +359,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const header = document.querySelector("header#top");
     if (header) {
         const topMenu = header.querySelector(".top_menu");
-        const unfoldable = ".divider, .divider ~ li, .o_no_autohide_item, .js_language_selector";
+        const unfoldable =
+            ".divider, .divider ~ li, .o_no_autohide_item, .js_language_selector";
         if (
             !topMenu.querySelector(`:scope > :not(${unfoldable})`) ||
             header.classList.contains("o_no_autohide_menu")
@@ -347,7 +368,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             topMenu.classList.remove("o_menu_loading");
             return;
         }
-        const excludedImagesSelector = ".o_mega_menu, .o_offcanvas_logo_container, .o_lang_flag";
+        const excludedImagesSelector =
+            ".o_mega_menu, .o_offcanvas_logo_container, .o_lang_flag";
         const excludedImages = [...header.querySelectorAll(excludedImagesSelector)];
         const images = [...header.querySelectorAll("img")].filter((img) => {
             excludedImages.forEach((node) => {

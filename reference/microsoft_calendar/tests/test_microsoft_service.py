@@ -1,15 +1,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from unittest.mock import MagicMock, call, patch
+
 import requests
-from unittest.mock import patch, call, MagicMock
 
 from odoo import fields
-from odoo.addons.microsoft_calendar.utils.microsoft_calendar import MicrosoftCalendarService
-from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
-from odoo.addons.microsoft_account.models.microsoft_service import MicrosoftService, DEFAULT_MICROSOFT_TOKEN_ENDPOINT
 from odoo.tests import TransactionCase
 
+from odoo.addons.microsoft_account.models.microsoft_service import (
+    DEFAULT_MICROSOFT_TOKEN_ENDPOINT,
+    MicrosoftService,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_calendar import (
+    MicrosoftCalendarService,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 
 DEFAULT_TIMEOUT = 20
 
@@ -21,7 +27,7 @@ class TestMicrosoftService(TransactionCase):
         return (None, data, None)
 
     def setUp(self):
-        super(TestMicrosoftService, self).setUp()
+        super().setUp()
 
         self.service = MicrosoftCalendarService(self.env["microsoft.service"])
         self.fake_token = "MY_TOKEN"

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 import base64
 from collections import defaultdict
 
 import werkzeug
 import werkzeug.exceptions
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import SQL

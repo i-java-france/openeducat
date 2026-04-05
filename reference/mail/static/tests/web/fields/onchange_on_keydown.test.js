@@ -7,10 +7,10 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { DiscussChannel } from "@mail/../tests/mock_server/mock_models/discuss_channel";
-import { describe, expect, test } from "@odoo/hoot";
-import { keyDown, runAllTimers } from "@odoo/hoot-dom";
-import { asyncStep, onRpc, waitForSteps } from "@web/../tests/web_test_helpers";
+import {DiscussChannel} from "@mail/../tests/mock_server/mock_models/discuss_channel";
+import {describe, expect, test} from "@odoo/hoot";
+import {keyDown, runAllTimers} from "@odoo/hoot-dom";
+import {asyncStep, onRpc, waitForSteps} from "@web/../tests/web_test_helpers";
 
 defineMailModels();
 describe.current.tags("desktop");
@@ -18,7 +18,7 @@ describe.current.tags("desktop");
 test("onchange_on_keydown option triggers onchange properly", async () => {
     DiscussChannel._onChanges.description = () => {};
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     onRpc("discuss.channel", "onchange", (params) => {
         expect(params.args[1].description).toBe("testing the keydown event");
@@ -34,7 +34,7 @@ test("onchange_on_keydown option triggers onchange properly", async () => {
 test("editing a text field with the onchange_on_keydown option disappearing shouldn't trigger a crash", async () => {
     DiscussChannel._onChanges.description = () => {};
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     onRpc("discuss.channel", "onchange", () => asyncStep("onchange"));
     await start();
     await openFormView("discuss.channel", channelId, {
@@ -47,8 +47,8 @@ test("editing a text field with the onchange_on_keydown option disappearing shou
     });
     await click("textarea#description_0");
     await keyDown("a");
-    await insertText("[name=name] input", "yop", { replace: true });
-    await contains("textarea#description_0", { count: 0 });
+    await insertText("[name=name] input", "yop", {replace: true});
+    await contains("textarea#description_0", {count: 0});
     await runAllTimers();
     await waitForSteps([]);
 });

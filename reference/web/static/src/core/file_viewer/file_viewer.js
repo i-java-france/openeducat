@@ -1,6 +1,6 @@
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { hidePDFJSButtons } from "@web/core/utils/pdfjs";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {hidePDFJSButtons} from "@web/core/utils/pdfjs";
 
 /**
  * @typedef {Object} File
@@ -131,9 +131,9 @@ export class FileViewer extends Component {
      */
     onWheelImage(ev) {
         if (ev.deltaY > 0) {
-            this.zoomOut({ scroll: true });
+            this.zoomOut({scroll: true});
         } else {
-            this.zoomIn({ scroll: true });
+            this.zoomIn({scroll: true});
         }
     }
 
@@ -188,15 +188,16 @@ export class FileViewer extends Component {
     /**
      * @param {{ scroll?: boolean }}
      */
-    zoomIn({ scroll = false } = {}) {
-        this.state.scale = this.state.scale + (scroll ? this.scrollZoomStep : this.zoomStep);
+    zoomIn({scroll = false} = {}) {
+        this.state.scale =
+            this.state.scale + (scroll ? this.scrollZoomStep : this.zoomStep);
         this.updateZoomerStyle();
     }
 
     /**
      * @param {{ scroll?: boolean }}
      */
-    zoomOut({ scroll = false } = {}) {
+    zoomOut({scroll = false} = {}) {
         if (this.state.scale === this.minScale) {
             return;
         }
@@ -208,11 +209,13 @@ export class FileViewer extends Component {
 
     updateZoomerStyle() {
         const tx =
-            this.imageRef.el.offsetWidth * this.state.scale > this.zoomerRef.el.offsetWidth
+            this.imageRef.el.offsetWidth * this.state.scale >
+            this.zoomerRef.el.offsetWidth
                 ? this.translate.x + this.translate.dx
                 : 0;
         const ty =
-            this.imageRef.el.offsetHeight * this.state.scale > this.zoomerRef.el.offsetHeight
+            this.imageRef.el.offsetHeight * this.state.scale >
+            this.zoomerRef.el.offsetHeight
                 ? this.translate.y + this.translate.dy
                 : 0;
         if (tx === 0) {

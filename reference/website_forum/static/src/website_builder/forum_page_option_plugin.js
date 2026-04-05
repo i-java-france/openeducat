@@ -1,9 +1,9 @@
-import { DEFAULT } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {DEFAULT} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export const FORUMS_INDEX = DEFAULT;
 
@@ -18,10 +18,10 @@ export class ForumPageOption extends BaseOptionComponent {
 class ForumPageOptionPlugin extends Plugin {
     static id = "forumPageOption";
     resources = {
-        builder_options: [
-            withSequence(FORUMS_INDEX, ForumPageOption),
-        ],
+        builder_options: [withSequence(FORUMS_INDEX, ForumPageOption)],
     };
 }
 
-registry.category("website-plugins").add(ForumPageOptionPlugin.id, ForumPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ForumPageOptionPlugin.id, ForumPageOptionPlugin);

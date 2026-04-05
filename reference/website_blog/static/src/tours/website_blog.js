@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { clickOnSave, registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {_t} from "@web/core/l10n/translation";
+import {clickOnSave, registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
 registerWebsitePreviewTour(
     "blog",
@@ -68,7 +68,8 @@ registerWebsitePreviewTour(
             tooltipPosition: "top",
         },
         {
-            trigger: ".o_select_media_dialog .o_existing_attachment_cell:first .o_button_area",
+            trigger:
+                ".o_select_media_dialog .o_existing_attachment_cell:first .o_button_area",
             content: _t("Choose an image from the library."),
             tooltipPosition: "top",
             run: "click",

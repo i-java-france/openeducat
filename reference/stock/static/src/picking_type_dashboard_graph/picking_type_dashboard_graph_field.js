@@ -1,8 +1,8 @@
-import { cookie } from "@web/core/browser/cookie";
-import { getColor, getCustomColor } from "@web/core/colors/colors";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { JournalDashboardGraphField } from "@web/views/fields/journal_dashboard_graph/journal_dashboard_graph_field";
+import {cookie} from "@web/core/browser/cookie";
+import {getColor, getCustomColor} from "@web/core/colors/colors";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {JournalDashboardGraphField} from "@web/views/fields/journal_dashboard_graph/journal_dashboard_graph_field";
 
 export class PickingTypeDashboardGraphField extends JournalDashboardGraphField {
     setup() {
@@ -28,7 +28,9 @@ export class PickingTypeDashboardGraphField extends JournalDashboardGraphField {
             } else if (pt.type === "future") {
                 backgroundColor.push(colorFuture);
             } else {
-                backgroundColor.push(getCustomColor(cookie.get("color_scheme"), "#ebebeb", "#3C3E4B"));
+                backgroundColor.push(
+                    getCustomColor(cookie.get("color_scheme"), "#ebebeb", "#3C3E4B")
+                );
             }
         });
         return {
@@ -68,11 +70,11 @@ export class PickingTypeDashboardGraphField extends JournalDashboardGraphField {
                     // Add a filter for the given date category
                     additionalContext["search_default_".concat(dateCategory)] = true;
                     this.actionService.doAction("stock.click_dashboard_graph", {
-                        additionalContext: additionalContext
+                        additionalContext: additionalContext,
                     });
                 },
                 plugins: {
-                    legend: { display: false },
+                    legend: {display: false},
                     tooltip: {
                         intersect: false,
                         position: "nearest",
@@ -102,9 +104,11 @@ export class PickingTypeDashboardGraphField extends JournalDashboardGraphField {
 export const pickingTypeDashboardGraphField = {
     component: PickingTypeDashboardGraphField,
     supportedTypes: ["text"],
-    extractProps: ({ attrs }) => ({
+    extractProps: ({attrs}) => ({
         graphType: attrs.graph_type,
     }),
 };
 
-registry.category("fields").add("picking_type_dashboard_graph", pickingTypeDashboardGraphField);
+registry
+    .category("fields")
+    .add("picking_type_dashboard_graph", pickingTypeDashboardGraphField);

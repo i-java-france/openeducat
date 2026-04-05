@@ -1,10 +1,10 @@
-import { Component, useState, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { uniqueId } from "@web/core/utils/functions";
-import { useService } from "@web/core/utils/hooks";
-import { useDomState } from "@html_builder/core/utils";
-import { useCachedModel } from "@html_builder/core/cached_model_utils";
-import { BuilderComponent } from "./builder_component";
-import { BasicMany2Many } from "./basic_many2many";
+import {Component, useState, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {uniqueId} from "@web/core/utils/functions";
+import {useService} from "@web/core/utils/hooks";
+import {useDomState} from "@html_builder/core/utils";
+import {useCachedModel} from "@html_builder/core/cached_model_utils";
+import {BuilderComponent} from "./builder_component";
+import {BasicMany2Many} from "./basic_many2many";
 
 export class ModelMany2Many extends Component {
     static template = "html_builder.ModelMany2Many";
@@ -13,20 +13,20 @@ export class ModelMany2Many extends Component {
         baseModel: String,
         recordId: Number,
         m2oField: String,
-        fields: { type: Array, element: String, optional: true },
-        domain: { type: Array, optional: true },
-        limit: { type: Number, optional: true },
-        createAction: { type: String, optional: true },
-        id: { type: String, optional: true },
+        fields: {type: Array, element: String, optional: true},
+        domain: {type: Array, optional: true},
+        limit: {type: Number, optional: true},
+        createAction: {type: String, optional: true},
+        id: {type: String, optional: true},
         // currently always allowDelete
-        applyTo: { type: String, optional: true },
+        applyTo: {type: String, optional: true},
     };
     static defaultProps = {
         fields: [],
         domain: [],
         limit: 10,
     };
-    static components = { BuilderComponent, BasicMany2Many };
+    static components = {BuilderComponent, BasicMany2Many};
 
     setup() {
         this.fields = useService("field");
@@ -38,7 +38,7 @@ export class ModelMany2Many extends Component {
         // This `useDomState` is here to get update from history when undo/redo
         this.domState = useDomState((el) => {
             if (!this.modelEdit) {
-                return { selection: [] };
+                return {selection: []};
             }
             return {
                 selection: this.modelEdit.get(this.props.m2oField),

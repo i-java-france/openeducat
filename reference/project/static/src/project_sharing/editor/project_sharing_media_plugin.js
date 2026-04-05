@@ -1,19 +1,19 @@
-import { ImageCropPlugin } from "@html_editor/main/media/image_crop_plugin";
-import { ImageSavePlugin } from "@html_editor/main/media/image_save_plugin";
-import { MediaPlugin } from "@html_editor/main/media/media_plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
+import {ImageCropPlugin} from "@html_editor/main/media/image_crop_plugin";
+import {ImageSavePlugin} from "@html_editor/main/media/image_save_plugin";
+import {MediaPlugin} from "@html_editor/main/media/media_plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
 
 export class ProjectSharingMediaPlugin extends MediaPlugin {
     resources = {
         ...this.resources,
         toolbar_items: this.resources.toolbar_items.filter(
-            item => item.id !== "replace_image"
+            (item) => item.id !== "replace_image"
         ),
-    }
+    };
 }
 
 export class ProjectSharingImageSavePlugin extends ImageSavePlugin {
-    async createAttachment({ el, imageData, resId }) {
+    async createAttachment({el, imageData, resId}) {
         const response = JSON.parse(
             await this.services.http.post(
                 "/project_sharing/attachment/add_image",
@@ -28,7 +28,7 @@ export class ProjectSharingImageSavePlugin extends ImageSavePlugin {
             )
         );
         if (response.error) {
-            this.services.notification.add(response.error, { type: "danger" });
+            this.services.notification.add(response.error, {type: "danger"});
             el.remove();
         }
         const attachment = response;

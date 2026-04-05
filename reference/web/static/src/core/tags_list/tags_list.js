@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class TagsList extends Component {
     static template = "web.TagsList";
@@ -6,22 +6,28 @@ export class TagsList extends Component {
         displayText: true,
     };
     static props = {
-        displayText: { type: Boolean, optional: true },
-        visibleItemsLimit: { type: Number, optional: true },
-        tags: { type: Array, element: Object },
+        displayText: {type: Boolean, optional: true},
+        visibleItemsLimit: {type: Number, optional: true},
+        tags: {type: Array, element: Object},
     };
 
     get visibleTagsCount() {
         return this.props.visibleItemsLimit - 1;
     }
     get visibleTags() {
-        if (this.props.visibleItemsLimit && this.props.tags.length > this.props.visibleItemsLimit) {
+        if (
+            this.props.visibleItemsLimit &&
+            this.props.tags.length > this.props.visibleItemsLimit
+        ) {
             return this.props.tags.slice(0, this.visibleTagsCount);
         }
         return this.props.tags;
     }
     get otherTags() {
-        if (this.props.visibleItemsLimit && this.props.tags.length > this.props.visibleItemsLimit) {
+        if (
+            this.props.visibleItemsLimit &&
+            this.props.tags.length > this.props.visibleItemsLimit
+        ) {
             return this.props.tags.slice(this.visibleTagsCount);
         }
         return [];

@@ -3,10 +3,10 @@
 import contextlib
 import logging
 import re
-import requests
-
-from markupsafe import Markup
 from urllib.parse import parse_qs, urlparse
+
+import requests
+from markupsafe import Markup
 from werkzeug.urls import url_encode
 
 from odoo import _

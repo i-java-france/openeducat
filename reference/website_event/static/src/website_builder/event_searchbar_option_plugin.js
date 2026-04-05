@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 class EventSearchbarOptionPlugin extends Plugin {
     static id = "eventSearchbarOption";
@@ -33,4 +33,6 @@ class EventSearchbarOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(EventSearchbarOptionPlugin.id, EventSearchbarOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(EventSearchbarOptionPlugin.id, EventSearchbarOptionPlugin);

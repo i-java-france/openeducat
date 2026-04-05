@@ -1,12 +1,12 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { pasteText } from "@html_editor/../tests/_helpers/user_actions";
-import { setupEditor } from "@html_editor/../tests/_helpers/editor";
-import { getContent } from "@html_editor/../tests/_helpers/selection";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { HeaderOptionPlugin } from "@website/builder/plugins/options/header/header_option_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { cleanLinkArtifacts } from "@html_editor/../tests/_helpers/format";
+import {describe, expect, test} from "@odoo/hoot";
+import {pasteText} from "@html_editor/../tests/_helpers/user_actions";
+import {setupEditor} from "@html_editor/../tests/_helpers/editor";
+import {getContent} from "@html_editor/../tests/_helpers/selection";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {HeaderOptionPlugin} from "@website/builder/plugins/options/header/header_option_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {cleanLinkArtifacts} from "@html_editor/../tests/_helpers/format";
 
 defineMailModels();
 class FakeCustomizeWebsitePlugin extends Plugin {
@@ -19,7 +19,7 @@ class FakeMenuDataPlugin extends Plugin {
 
 describe("Navbar Contact Us button", () => {
     test("should keep the unremovable Contact Us button on paste", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             `<div id="o_main_nav">
                 <div class="oe_structure oe_structure_solo o_editable">
                     <section class="oe_unremovable" contenteditable="false">
@@ -30,7 +30,7 @@ describe("Navbar Contact Us button", () => {
                 </div>
             </div>`,
             {
-                props: { iframe: true },
+                props: {iframe: true},
                 config: {
                     Plugins: [
                         ...MAIN_PLUGINS,

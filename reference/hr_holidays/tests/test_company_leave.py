@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime
@@ -14,7 +13,7 @@ class TestCompanyLeave(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestCompanyLeave, cls).setUpClass()
+        super().setUpClass()
         cls.company = cls.env['res.company'].create({'name': 'A company'})
         cls.company.resource_calendar_id.tz = "Europe/Brussels"
 

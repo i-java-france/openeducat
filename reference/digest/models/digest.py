@@ -1,19 +1,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import pytz
+from datetime import date, datetime
 
-from datetime import datetime, date
+import pytz
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 from werkzeug.urls import url_encode
 
-from odoo import api, fields, models, tools, _
-from odoo.addons.base.models.ir_mail_server import MailDeliveryException
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.tools.float_utils import float_round
 from odoo.tools.urls import urljoin as url_join
+
+from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 
 _logger = logging.getLogger(__name__)
 
@@ -228,7 +229,7 @@ class DigestDigest(models.Model):
         for digest in digests:
             try:
                 digest.action_send()
-            except MailDeliveryException as e:
+            except MailDeliveryException:
                 _logger.warning('MailDeliveryException while sending digest %d. Digest is now scheduled for next cron update.', digest.id)
 
     def _get_unsubscribe_token(self, user_id):
@@ -474,5 +475,5 @@ class DigestDigest(models.Model):
 
     def _format_currency_amount(self, amount, currency_id):
         pre = currency_id.position == 'before'
-        symbol = u'{symbol}'.format(symbol=currency_id.symbol or '')
-        return u'{pre}{0}{post}'.format(amount, pre=symbol if pre else '', post=symbol if not pre else '')
+        symbol = '{symbol}'.format(symbol=currency_id.symbol or '')
+        return '{pre}{0}{post}'.format(amount, pre=symbol if pre else '', post=symbol if not pre else '')

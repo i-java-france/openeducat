@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.tools.float_utils import float_round
-from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ProductTemplate(models.Model):
@@ -37,7 +36,7 @@ class ProductTemplate(models.Model):
 
     @api.model
     def get_import_templates(self):
-        res = super(ProductTemplate, self).get_import_templates()
+        res = super().get_import_templates()
         if self.env.context.get('purchase_product_template'):
             return [{
                 'label': _('Import Template for Products'),

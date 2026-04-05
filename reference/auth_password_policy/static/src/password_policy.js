@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 export class Policy {
     /**
@@ -15,7 +15,7 @@ export class ConcretePolicy extends Policy {
      * @param {Number} [info.minwords=0]
      * @param {Number} [info.minclasses=0]
      */
-    constructor({ minlength, minwords, minclasses }) {
+    constructor({minlength, minwords, minclasses}) {
         super();
         this.minlength = minlength || 0;
         this.minwords = minwords || 0;
@@ -55,7 +55,8 @@ export class ConcretePolicy extends Policy {
         // for us. We could generate the regex statically but they're huge
         // and gnarly as hell.
         const wordCount = password.split(/[^\W_]+/).length - 1;
-        const wordscore = this.minwords !== 0 ? Math.min(wordCount / this.minwords, 1.0) : 1.0;
+        const wordscore =
+            this.minwords !== 0 ? Math.min(wordCount / this.minwords, 1.0) : 1.0;
         // See above for issues pertaining to character classification:
         // we'll classify using the ascii range because that's basically our
         // only option
@@ -79,7 +80,11 @@ export class ConcretePolicy extends Policy {
  * @param {Policy} requirements
  * @param {Policy} recommendations
  */
-export function computeScore(password, requirements, recommendations = recommendations) {
+export function computeScore(
+    password,
+    requirements,
+    recommendations = recommendations
+) {
     const req = requirements.score(password);
     const rec = recommendations.score(password);
     return Math.pow(req, 4) * (0.5 + Math.pow(rec, 2) / 2);
@@ -103,7 +108,7 @@ export const recommendations = {
         return Math.max(...this.policies.map((p) => p.score(password)));
     },
     policies: [
-        new ConcretePolicy({ minlength: 16, minwords: 2 }),
-        new ConcretePolicy({ minlength: 12, minclasses: 3 }),
+        new ConcretePolicy({minlength: 16, minwords: 2}),
+        new ConcretePolicy({minlength: 12, minclasses: 3}),
     ],
 };

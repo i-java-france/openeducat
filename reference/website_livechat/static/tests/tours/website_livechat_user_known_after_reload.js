@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("website_livechat_user_known_after_reload", {
     steps: () => [

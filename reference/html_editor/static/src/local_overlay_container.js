@@ -1,8 +1,8 @@
-import { Component } from "@odoo/owl";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { useForwardRefToParent } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { useRegistry } from "@web/core/registry_hook";
+import {Component} from "@odoo/owl";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {useForwardRefToParent} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {useRegistry} from "@web/core/registry_hook";
 
 /**
  * TODO ABD: refactor to propagate a reactive object instead of using a registry with an identifier
@@ -10,8 +10,8 @@ import { useRegistry } from "@web/core/registry_hook";
 export class LocalOverlayContainer extends MainComponentsContainer {
     static template = "html_editor.LocalOverlayContainer";
     static props = {
-        localOverlay: { type: Function, optional: true },
-        identifier: { type: String, optional: true },
+        localOverlay: {type: Function, optional: true},
+        identifier: {type: String, optional: true},
     };
     static defaultProps = {
         identifier: "overlay_components",
@@ -22,8 +22,8 @@ export class LocalOverlayContainer extends MainComponentsContainer {
         // todo: remove this somehow
         if (!overlayComponents.validationSchema) {
             overlayComponents.addValidation({
-                Component: { validate: (c) => c.prototype instanceof Component },
-                props: { type: Object, optional: true },
+                Component: {validate: (c) => c.prototype instanceof Component},
+                props: {type: Object, optional: true},
             });
         }
         this.Components = useRegistry(overlayComponents);

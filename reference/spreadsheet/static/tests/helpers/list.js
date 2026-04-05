@@ -1,6 +1,6 @@
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { generateListDefinition } from "@spreadsheet/../tests/helpers/data";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {generateListDefinition} from "@spreadsheet/../tests/helpers/data";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
 
 /**
  * @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model
@@ -19,7 +19,7 @@ import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
  * @param {{name: string, asc: boolean}[]} [params.orderBy]
  */
 export function insertListInSpreadsheet(model, params) {
-    const { definition, columns } = generateListDefinition(
+    const {definition, columns} = generateListDefinition(
         params.model,
         params.columns,
         params.actionXmlId,
@@ -54,7 +54,7 @@ export function insertListInSpreadsheet(model, params) {
  * @returns { Promise<{ model: OdooSpreadsheetModel, env: Object }>}
  */
 export async function createSpreadsheetWithList(params = {}) {
-    const { model, env } = await createModelWithDataSource({
+    const {model, env} = await createModelWithDataSource({
         mockRPC: params.mockRPC,
         serverData: params.serverData,
         modelConfig: params.modelConfig,
@@ -70,5 +70,5 @@ export async function createSpreadsheetWithList(params = {}) {
     });
 
     await waitForDataLoaded(model);
-    return { model, env };
+    return {model, env};
 }

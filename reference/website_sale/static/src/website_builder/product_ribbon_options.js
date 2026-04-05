@@ -1,9 +1,9 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { onWillStart, useState } from "@odoo/owl";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {onWillStart, useState} from "@odoo/owl";
 
 export class ProductsRibbonOption extends BaseOptionComponent {
-    static template = 'website_sale.ProductsRibbonOptionPlugin';
-    static dependencies = ['productsRibbonOptionPlugin'];
+    static template = "website_sale.ProductsRibbonOptionPlugin";
+    static dependencies = ["productsRibbonOptionPlugin"];
 
     setup() {
         super.setup();

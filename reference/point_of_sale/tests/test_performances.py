@@ -2,11 +2,11 @@
 
 import logging
 
-from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
-
 from odoo.cli.populate import Populate
 from odoo.tests.common import tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
 _logger = logging.getLogger(__name__)
 

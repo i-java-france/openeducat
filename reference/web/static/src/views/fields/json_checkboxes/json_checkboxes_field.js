@@ -1,17 +1,17 @@
-import { _t } from "@web/core/l10n/translation";
-import { Component, useState } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { debounce } from "@web/core/utils/timing";
-import { useRecordObserver } from "@web/model/relational_model/utils";
+import {_t} from "@web/core/l10n/translation";
+import {Component, useState} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {debounce} from "@web/core/utils/timing";
+import {useRecordObserver} from "@web/model/relational_model/utils";
 
 export class JsonCheckboxes extends Component {
     static template = "account.JsonCheckboxes";
-    static components = { CheckBox };
+    static components = {CheckBox};
     static props = {
         ...standardFieldProps,
-        stacked: { type: Boolean, optional: true },
+        stacked: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -24,7 +24,7 @@ export class JsonCheckboxes extends Component {
     }
 
     commitChanges() {
-        this.props.record.update({ [this.props.name]: this.checkboxes });
+        this.props.record.update({[this.props.name]: this.checkboxes});
     }
 
     onChange(key, checked) {
@@ -46,7 +46,7 @@ export const jsonCheckboxes = {
         },
     ],
     supportedTypes: ["json"],
-    extractProps({ options }) {
+    extractProps({options}) {
         const stacked = Boolean(options.stacked);
         return {
             stacked,

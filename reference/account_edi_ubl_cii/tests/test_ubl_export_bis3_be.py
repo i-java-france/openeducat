@@ -1,6 +1,11 @@
 from odoo import Command
-from odoo.addons.account_edi_ubl_cii.tests.common import TestUblBis3Common, TestUblCiiBECommon
 from odoo.exceptions import UserError
+
+from odoo.addons.account_edi_ubl_cii.tests.common import (
+    TestUblBis3Common,
+    TestUblCiiBECommon,
+)
+
 try:
     from odoo.addons.test_mimetypes.tests.test_guess_mimetypes import contents
 except ImportError:

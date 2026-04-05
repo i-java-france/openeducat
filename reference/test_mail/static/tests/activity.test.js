@@ -8,16 +8,16 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { MailActivitySchedule } from "@mail/../tests/mock_server/mock_models/mail_activity_schedule";
-import { ActivityController } from "@mail/views/web/activity/activity_controller";
-import { ActivityModel } from "@mail/views/web/activity/activity_model";
-import { ActivityRenderer } from "@mail/views/web/activity/activity_renderer";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { keyDown, waitFor } from "@odoo/hoot-dom";
-import { animationFrame, disableAnimations, mockDate } from "@odoo/hoot-mock";
-import { onMounted, onWillUnmount } from "@odoo/owl";
-import { MailTestActivity } from "@test_mail/../tests/mock_server/models/mail_test_activity";
-import { defineTestMailModels } from "@test_mail/../tests/test_mail_test_helpers";
+import {MailActivitySchedule} from "@mail/../tests/mock_server/mock_models/mail_activity_schedule";
+import {ActivityController} from "@mail/views/web/activity/activity_controller";
+import {ActivityModel} from "@mail/views/web/activity/activity_model";
+import {ActivityRenderer} from "@mail/views/web/activity/activity_renderer";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {keyDown, waitFor} from "@odoo/hoot-dom";
+import {animationFrame, disableAnimations, mockDate} from "@odoo/hoot-mock";
+import {onMounted, onWillUnmount} from "@odoo/owl";
+import {MailTestActivity} from "@test_mail/../tests/mock_server/models/mail_test_activity";
+import {defineTestMailModels} from "@test_mail/../tests/test_mail_test_helpers";
 import {
     asyncStep,
     mockService,
@@ -27,14 +27,14 @@ import {
     waitForSteps,
     contains as webContains,
 } from "@web/../tests/web_test_helpers";
-import { Domain } from "@web/core/domain";
-import { formatDate, serializeDate } from "@web/core/l10n/dates";
-import { deepEqual, omit } from "@web/core/utils/objects";
-import { getOrigin } from "@web/core/utils/urls";
-import { DynamicList } from "@web/model/relational_model/dynamic_list";
-import { RelationalModel } from "@web/model/relational_model/relational_model";
+import {Domain} from "@web/core/domain";
+import {formatDate, serializeDate} from "@web/core/l10n/dates";
+import {deepEqual, omit} from "@web/core/utils/objects";
+import {getOrigin} from "@web/core/utils/urls";
+import {DynamicList} from "@web/model/relational_model/dynamic_list";
+import {RelationalModel} from "@web/model/relational_model/relational_model";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 let pyEnv;
 const archs = {
@@ -65,14 +65,16 @@ function patchActivityDomain(load, params) {
     if (params.domain) {
         // Remove domain term used to filter record having "done" activities (not understood by the getRecords mock)
         const domain = new Domain(params.domain);
-        const newDomain = Domain.removeDomainLeaves(domain.toList(), ["activity_ids.active"]);
+        const newDomain = Domain.removeDomainLeaves(domain.toList(), [
+            "activity_ids.active",
+        ]);
         if (!deepEqual(domain.toList(), newDomain.toList())) {
             return load({
                 ...params,
                 domain: newDomain.toList(),
                 context: params.context
-                    ? { ...params.context, active_test: false }
-                    : { active_test: false },
+                    ? {...params.context, active_test: false}
+                    : {active_test: false},
             });
         }
     }
@@ -98,24 +100,24 @@ beforeEach(async () => {
     });
     pyEnv = await startServer();
     const mailTemplateIds = pyEnv["mail.template"].create([
-        { name: "Template1" },
-        { name: "Template2" },
+        {name: "Template1"},
+        {name: "Template2"},
     ]);
-    // reset incompatible setup
+    // Reset incompatible setup
     pyEnv["mail.activity.type"].unlink(pyEnv["mail.activity.type"].search([]));
     const mailActivityTypeIds = pyEnv["mail.activity.type"].create([
-        { name: "Email", mail_template_ids: mailTemplateIds },
-        { name: "Call" },
-        { name: "Call for Demo" },
-        { name: "To Do" },
+        {name: "Email", mail_template_ids: mailTemplateIds},
+        {name: "Call"},
+        {name: "Call for Demo"},
+        {name: "To Do"},
     ]);
     const resUsersId1 = pyEnv["res.users"].create({
-        partner_id: pyEnv["res.partner"].create({ name: "first partner" }),
+        partner_id: pyEnv["res.partner"].create({name: "first partner"}),
     });
     const mailActivityIds = pyEnv["mail.activity"].create([
         {
             display_name: "An activity",
-            date_deadline: serializeDate(DateTime.now().plus({ days: 3 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 3})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[0],
@@ -132,7 +134,7 @@ beforeEach(async () => {
         {
             res_model: "mail.test.activity",
             display_name: "An activity",
-            date_deadline: serializeDate(DateTime.now().minus({ days: 2 })),
+            date_deadline: serializeDate(DateTime.now().minus({days: 2})),
             can_write: true,
             state: "overdue",
             activity_type_id: mailActivityTypeIds[1],
@@ -140,8 +142,11 @@ beforeEach(async () => {
         },
     ]);
     pyEnv["mail.test.activity"].create([
-        { name: "Meeting Room Furnitures", activity_ids: [mailActivityIds[0]] },
-        { name: "Office planning", activity_ids: [mailActivityIds[1], mailActivityIds[2]] },
+        {name: "Meeting Room Furnitures", activity_ids: [mailActivityIds[0]]},
+        {
+            name: "Office planning",
+            activity_ids: [mailActivityIds[1], mailActivityIds[2]],
+        },
     ]);
 });
 
@@ -154,27 +159,27 @@ test("activity view: simple activity rendering", async () => {
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
     });
-    await contains(".o_activity_view_table th", { text: "Email" });
+    await contains(".o_activity_view_table th", {text: "Email"});
     await contains(".progress-bar[data-tooltip='1 Planned']", {
-        parent: [".o_activity_view_table th", { text: "Email" }],
+        parent: [".o_activity_view_table th", {text: "Email"}],
     });
     await contains(".progress-bar[data-tooltip='1 Today']", {
-        parent: [".o_activity_view_table th", { text: "Email" }],
+        parent: [".o_activity_view_table th", {text: "Email"}],
     });
     await contains(".o_activity_view_table th", {
         text: "Call",
-        after: [".o_activity_view_table th", { text: "Email" }],
+        after: [".o_activity_view_table th", {text: "Email"}],
     });
     await contains(".progress-bar[data-tooltip='1 Overdue']", {
-        parent: [".o_activity_view_table th", { text: "Call" }],
+        parent: [".o_activity_view_table th", {text: "Call"}],
     });
     await contains(".o_activity_view_table th", {
         text: "Call for Demo",
-        after: [".o_activity_view_table th", { text: "Call" }],
+        after: [".o_activity_view_table th", {text: "Call"}],
     });
     await contains(".progress-bar", {
         count: 0,
-        parent: [".o_activity_view_table th", { text: "Call for Demo" }],
+        parent: [".o_activity_view_table th", {text: "Call for Demo"}],
     });
     await contains(".o_activity_view_table tr:nth-child(1) .o_activity_record", {
         text: "Office planning",
@@ -188,7 +193,7 @@ test("activity view: simple activity rendering", async () => {
         parent: [
             "tr",
             {
-                contains: [".o_activity_record", { text: "Office planning" }],
+                contains: [".o_activity_record", {text: "Office planning"}],
             },
         ],
     });
@@ -197,7 +202,7 @@ test("activity view: simple activity rendering", async () => {
         parent: [
             "tr",
             {
-                contains: [".o_activity_record", { text: "Office planning" }],
+                contains: [".o_activity_record", {text: "Office planning"}],
             },
         ],
     });
@@ -225,7 +230,7 @@ test("activity view: simple activity rendering", async () => {
         parent: [
             "tr",
             {
-                contains: [".o_activity_record", { text: "Office planning" }],
+                contains: [".o_activity_record", {text: "Office planning"}],
             },
         ],
     });
@@ -239,40 +244,46 @@ test("activity view: Activity rendering with done activities", async () => {
         name: "Test Upload document",
     });
     pyEnv["mail.activity"].create(
-        Object.entries(["done", "done", "done", "done", "planned", "planned", "planned"]).map(
-            ([idx, state]) => {
-                const userId = pyEnv["res.users"].create({
-                    partner_id: pyEnv["res.partner"].create({ name: `Partner ${idx}` }),
-                });
-                // issue with compute/related, `display_name` is wrong until next write.
-                pyEnv["res.users"].write([userId], {});
-                return {
-                    active: state !== "done",
-                    activity_type_id: activityTypeUpload,
-                    attachment_ids:
-                        state === "done"
-                            ? [
-                                  pyEnv["ir.attachment"].create({
-                                      name: `attachment ${idx}`,
-                                      create_date: serializeDate(
-                                          DateTime.now().minus({ days: idx })
-                                      ),
-                                      create_uid: serverState.userId,
-                                  }),
-                              ]
-                            : [],
-                    can_write: true,
-                    date_deadline: serializeDate(DateTime.now().plus({ days: idx })),
-                    date_done:
-                        state === "done"
-                            ? serializeDate(DateTime.now().minus({ days: idx }))
-                            : false,
-                    display_name: `Upload folders ${idx}`,
-                    state: state,
-                    user_id: userId,
-                };
-            }
-        )
+        Object.entries([
+            "done",
+            "done",
+            "done",
+            "done",
+            "planned",
+            "planned",
+            "planned",
+        ]).map(([idx, state]) => {
+            const userId = pyEnv["res.users"].create({
+                partner_id: pyEnv["res.partner"].create({name: `Partner ${idx}`}),
+            });
+            // Issue with compute/related, `display_name` is wrong until next write.
+            pyEnv["res.users"].write([userId], {});
+            return {
+                active: state !== "done",
+                activity_type_id: activityTypeUpload,
+                attachment_ids:
+                    state === "done"
+                        ? [
+                              pyEnv["ir.attachment"].create({
+                                  name: `attachment ${idx}`,
+                                  create_date: serializeDate(
+                                      DateTime.now().minus({days: idx})
+                                  ),
+                                  create_uid: serverState.userId,
+                              }),
+                          ]
+                        : [],
+                can_write: true,
+                date_deadline: serializeDate(DateTime.now().plus({days: idx})),
+                date_done:
+                    state === "done"
+                        ? serializeDate(DateTime.now().minus({days: idx}))
+                        : false,
+                display_name: `Upload folders ${idx}`,
+                state: state,
+                user_id: userId,
+            };
+        })
     );
     const [meetingRecord, officeRecord] = pyEnv["mail.test.activity"].search([]);
     const uploadDoneActs = pyEnv["mail.activity"].search_read([
@@ -291,7 +302,11 @@ test("activity view: Activity rendering with done activities", async () => {
         ],
     });
     pyEnv["mail.test.activity"].write([officeRecord], {
-        activity_ids: [uploadDoneActs[1].id, uploadDoneActs[2].id, uploadDoneActs[3].id],
+        activity_ids: [
+            uploadDoneActs[1].id,
+            uploadDoneActs[2].id,
+            uploadDoneActs[3].id,
+        ],
     });
     await start();
     registerArchs(archs);
@@ -300,16 +315,21 @@ test("activity view: Activity rendering with done activities", async () => {
         views: [[false, "activity"]],
     });
     const domActivity = document.querySelector(".o_activity_view");
-    const domHeaderUpload = domActivity.querySelector("table thead tr:first-child th:nth-child(6)");
+    const domHeaderUpload = domActivity.querySelector(
+        "table thead tr:first-child th:nth-child(6)"
+    );
     const selRowMeetingCellUpload = "table tbody tr:first-child td:nth-child(6)";
     const domRowMeetingCellUpload = domActivity.querySelector(selRowMeetingCellUpload);
     const selRowOfficeCellUpload = "table tbody tr:nth-child(2) td:nth-child(6)";
     const domRowOfficeCellUpload = domActivity.querySelector(selRowOfficeCellUpload);
 
     // Headers
-    await contains(".o_column_progress .progress-bar:first-child[data-tooltip='3 Planned']", {
-        target: domHeaderUpload,
-    });
+    await contains(
+        ".o_column_progress .progress-bar:first-child[data-tooltip='3 Planned']",
+        {
+            target: domHeaderUpload,
+        }
+    );
     await contains(".o_animated_number", {
         target: domHeaderUpload,
         text: "3",
@@ -321,17 +341,17 @@ test("activity view: Activity rendering with done activities", async () => {
     // Cells avatars
     await contains(
         `.o-mail-Avatar img[data-src='/web/image/res.users/${uploadPlannedActs[0].user_id[0]}/avatar_128'`,
-        { target: domRowMeetingCellUpload }
+        {target: domRowMeetingCellUpload}
     );
     await contains(
         `.o-mail-Avatar img[data-src='/web/image/res.users/${uploadPlannedActs[1].user_id[0]}/avatar_128'`,
-        { target: domRowMeetingCellUpload }
+        {target: domRowMeetingCellUpload}
     );
     await contains(
         `.o-mail-Avatar img[data-src='/web/image/res.users/${uploadPlannedActs[2].user_id[0]}/avatar_128'`,
-        { target: domRowMeetingCellUpload, count: 0 }
+        {target: domRowMeetingCellUpload, count: 0}
     );
-    await contains(`.o-mail-Avatar`, { target: domRowOfficeCellUpload, count: 0 }); // all activity are done
+    await contains(`.o-mail-Avatar`, {target: domRowOfficeCellUpload, count: 0}); // All activity are done
     // Cells counters
     await contains(".o-mail-ActivityCell-counter", {
         target: domRowMeetingCellUpload,
@@ -354,24 +374,26 @@ test("activity view: Activity rendering with done activities", async () => {
     await click(`${selRowMeetingCellUpload} > div`, {
         target: domActivity,
     });
-    await contains(".o-mail-ActivityListPopover .badge.text-bg-success", { text: "3" }); // 3 planned
+    await contains(".o-mail-ActivityListPopover .badge.text-bg-success", {text: "3"}); // 3 planned
     for (const actIdx of [0, 1, 2]) {
         await contains(".o-mail-ActivityListPopoverItem", {
             text: uploadPlannedActs[actIdx].user_id[1],
         });
     }
-    await contains(".o-mail-ActivityListPopoverItem", { text: "Due in 4 days" });
-    await contains(".o-mail-ActivityListPopoverItem", { text: "Due in 5 days" });
-    await contains(".o-mail-ActivityListPopoverItem", { text: "Due in 6 days" });
-    await contains(".o-mail-ActivityListPopover .badge.text-bg-secondary", { text: "1" }); // 1 done
-    await contains(".o-mail-ActivityListPopoverItem", { text: uploadDoneActs[0].user_id[1] });
+    await contains(".o-mail-ActivityListPopoverItem", {text: "Due in 4 days"});
+    await contains(".o-mail-ActivityListPopoverItem", {text: "Due in 5 days"});
+    await contains(".o-mail-ActivityListPopoverItem", {text: "Due in 6 days"});
+    await contains(".o-mail-ActivityListPopover .badge.text-bg-secondary", {text: "1"}); // 1 done
+    await contains(".o-mail-ActivityListPopoverItem", {
+        text: uploadDoneActs[0].user_id[1],
+    });
     await contains(".o-mail-ActivityListPopoverItem", {
         text: formatDate(luxon.DateTime.fromISO(uploadDoneActs[0].date_done)),
     });
     await click(`${selRowOfficeCellUpload} > div`, {
         target: domActivity,
     });
-    await contains(".o-mail-ActivityListPopover .badge.text-bg-secondary", { text: "3" }); // 3 done
+    await contains(".o-mail-ActivityListPopover .badge.text-bg-secondary", {text: "3"}); // 3 done
     for (const actIdx of [1, 2, 3]) {
         await contains(".o-mail-ActivityListPopoverItem", {
             text: formatDate(luxon.DateTime.fromISO(uploadDoneActs[actIdx].date_done)),
@@ -391,14 +413,14 @@ test("activity view: a pager can be used when there are more than the limit of 1
     for (let i = 0; i < 101; i++) {
         activityToCreate.push({
             display_name: "An activity " + i * 2,
-            date_deadline: serializeDate(DateTime.now().plus({ days: 3 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 3})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[0],
         });
         activityToCreate.push({
             display_name: "An activity " + (i * 2 + 1),
-            date_deadline: serializeDate(DateTime.now().plus({ days: 2 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 2})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[1],
@@ -420,19 +442,19 @@ test("activity view: a pager can be used when there are more than the limit of 1
         views: [[false, "activity"]],
         domain: [["name", "like", "pagerTestRecord"]],
     });
-    await contains(".o_activity_record", { count: 100 });
-    await contains(".o_activity_summary_cell.planned", { count: 200 });
+    await contains(".o_activity_record", {count: 100});
+    await contains(".o_activity_summary_cell.planned", {count: 200});
     await click(".o_pager_next");
     await contains(".o_activity_record");
-    await contains(".o_activity_summary_cell.planned", { count: 2 });
+    await contains(".o_activity_summary_cell.planned", {count: 2});
     await click(".o_pager_previous");
-    await contains(".o_activity_record", { count: 100 });
-    await contains(".o_activity_summary_cell.planned", { count: 200 });
+    await contains(".o_activity_record", {count: 100});
+    await contains(".o_activity_summary_cell.planned", {count: 200});
 });
 
 test("activity view: no content rendering", async () => {
     await start();
-    // reset incompatible setup
+    // Reset incompatible setup
     pyEnv["mail.activity.type"].unlink(pyEnv["mail.activity.type"].search([]));
     await openView({
         res_model: "mail.test.activity",
@@ -447,7 +469,7 @@ test("activity view: no content rendering", async () => {
 test("activity view: batch send mail on activity", async () => {
     const mailTestActivityIds = pyEnv["mail.test.activity"].search([]);
     const mailTemplateIds = pyEnv["mail.template"].search([]);
-    onRpc("activity_send_mail", ({ args }) => {
+    onRpc("activity_send_mail", ({args}) => {
         asyncStep(args);
         return true;
     });
@@ -458,22 +480,22 @@ test("activity view: batch send mail on activity", async () => {
         views: [[false, "activity"]],
     });
     await click("[data-bs-toggle=dropdown]", {
-        parent: [".o_activity_view_table th", { text: "Email" }],
+        parent: [".o_activity_view_table th", {text: "Email"}],
     });
-    await contains(".dropdown-menu.show .o_send_mail_template", { count: 2 });
-    await click(".o_send_mail_template", { text: "Template1" });
+    await contains(".dropdown-menu.show .o_send_mail_template", {count: 2});
+    await click(".o_send_mail_template", {text: "Template1"});
     await waitForSteps([
-        [[mailTestActivityIds[0], mailTestActivityIds[1]], mailTemplateIds[0]], // template 1 sendt on activity 1 and 2
+        [[mailTestActivityIds[0], mailTestActivityIds[1]], mailTemplateIds[0]], // Template 1 sendt on activity 1 and 2
     ]);
-    await click(".o_send_mail_template", { text: "Template2" });
+    await click(".o_send_mail_template", {text: "Template2"});
     await waitForSteps([
-        [[mailTestActivityIds[0], mailTestActivityIds[1]], mailTemplateIds[1]], // template 2 sendt on activity 1 and 2
+        [[mailTestActivityIds[0], mailTestActivityIds[1]], mailTemplateIds[1]], // Template 2 sendt on activity 1 and 2
     ]);
 });
 
 test("activity view: activity_ids condition in domain", async () => {
-    onRpc("get_activity_data", ({ kwargs }) => asyncStep(kwargs.domain));
-    onRpc("web_search_read", ({ kwargs }) => asyncStep(kwargs.domain));
+    onRpc("get_activity_data", ({kwargs}) => asyncStep(kwargs.domain));
+    onRpc("web_search_read", ({kwargs}) => asyncStep(kwargs.domain));
     await start();
     registerArchs(archs);
     await openView({
@@ -486,7 +508,7 @@ test("activity view: activity_ids condition in domain", async () => {
     await keyDown("Enter");
 
     await waitForSteps([
-        // load view requests
+        // Load view requests
         [["activity_ids.active", "in", [true, false]]],
         [[1, "=", 1]], // Due to the relational model patch above that removes it
         // pager requests
@@ -500,17 +522,21 @@ test("activity view: activity widget", async () => {
     const [mailTestActivityId2] = pyEnv["mail.test.activity"].search([
         ["name", "=", "Office planning"],
     ]);
-    const [mailTemplateId1] = pyEnv["mail.template"].search([["name", "=", "Template1"]]);
+    const [mailTemplateId1] = pyEnv["mail.template"].search([
+        ["name", "=", "Template1"],
+    ]);
     onRpc("activity_send_mail", (args) => {
         expect(args.args).toEqual([[mailTestActivityId2], mailTemplateId1]);
         asyncStep("activity_send_mail");
         return true;
     });
     onRpc("action_feedback_schedule_next", (args) => {
-        expect(args.args).toEqual([pyEnv["mail.activity"].search([["state", "=", "overdue"]])]);
+        expect(args.args).toEqual([
+            pyEnv["mail.activity"].search([["state", "=", "overdue"]]),
+        ]);
         expect(args.kwargs.feedback).toBe("feedback2");
         asyncStep("action_feedback_schedule_next");
-        return { serverGeneratedAction: true };
+        return {serverGeneratedAction: true};
     });
     await start();
     registerArchs(archs);
@@ -546,37 +572,41 @@ test("activity view: activity widget", async () => {
     });
     await click(".today .o-mail-ActivityCell-deadline");
     await contains(".o-mail-ActivityListPopover");
-    await contains(".o-mail-ActivityListPopover-todayTitle", { text: "Today" });
-    await contains(".o-mail-ActivityMailTemplate-name", { text: "Template1" });
-    await contains(".o-mail-ActivityMailTemplate-name", { text: "Template2" });
+    await contains(".o-mail-ActivityListPopover-todayTitle", {text: "Today"});
+    await contains(".o-mail-ActivityMailTemplate-name", {text: "Template1"});
+    await contains(".o-mail-ActivityMailTemplate-name", {text: "Template2"});
     await click(".o-mail-ActivityMailTemplate-preview[data-mail-template-id='1']");
     await waitForSteps(["do_action_compose"]);
     await click(".today .o-mail-ActivityCell-deadline");
     await click(".o-mail-ActivityMailTemplate-send[data-mail-template-id='1']");
     await waitForSteps(["activity_send_mail"]);
     await click(".overdue .o-mail-ActivityCell-deadline");
-    await contains(".o-mail-ActivityMailTemplate-name", { count: 0 });
-    await click(".o-mail-ActivityListPopover button", { text: "Schedule an activity" });
+    await contains(".o-mail-ActivityMailTemplate-name", {count: 0});
+    await click(".o-mail-ActivityListPopover button", {text: "Schedule an activity"});
     await waitForSteps(["do_action_activity"]);
-    await contains(".o-mail-ActivityListPopover", { count: 0 });
+    await contains(".o-mail-ActivityListPopover", {count: 0});
     await click(".overdue .o-mail-ActivityCell-deadline");
     await click(".o-mail-ActivityListPopoverItem-markAsDone");
     await insertText(
         ".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']",
         "feedback2"
     );
-    await click(".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']");
+    await click(
+        ".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']"
+    );
     await waitForSteps(["action_feedback_schedule_next", "serverGeneratedAction"]);
 });
 
 test("activity widget: cancel an activity from the widget", async () => {
     const [mailActivityId] = pyEnv["mail.activity"].search([["state", "=", "planned"]]);
-    const [mailActivityTypeId] = pyEnv["mail.activity.type"].search([["name", "=", "Email"]]);
+    const [mailActivityTypeId] = pyEnv["mail.activity.type"].search([
+        ["name", "=", "Email"],
+    ]);
     pyEnv["res.users"].write([serverState.userId], {
         activity_ids: [mailActivityId],
         activity_type_id: mailActivityTypeId,
     });
-    onRpc("mail.activity", "unlink", ({ args, route }) => {
+    onRpc("mail.activity", "unlink", ({args, route}) => {
         expect(args).toEqual([[mailActivityId]]);
         expect(route).toInclude("mail.activity");
         expect(route).toInclude("unlink");
@@ -596,17 +626,25 @@ test("activity widget: cancel an activity from the widget", async () => {
     const activityListPopoverButtons = document.querySelectorAll(
         ".overflow-auto.d-flex.align-items-baseline button"
     );
-    // ensure the buttons are in the same order as in the chatter.
-    expect(activityListPopoverButtons[0]).toHaveClass("o-mail-ActivityListPopoverItem-markAsDone");
-    expect(activityListPopoverButtons[1]).toHaveClass("o-mail-ActivityListPopoverItem-editbtn");
-    expect(activityListPopoverButtons[2]).toHaveClass("o-mail-ActivityListPopoverItem-cancel btn");
+    // Ensure the buttons are in the same order as in the chatter.
+    expect(activityListPopoverButtons[0]).toHaveClass(
+        "o-mail-ActivityListPopoverItem-markAsDone"
+    );
+    expect(activityListPopoverButtons[1]).toHaveClass(
+        "o-mail-ActivityListPopoverItem-editbtn"
+    );
+    expect(activityListPopoverButtons[2]).toHaveClass(
+        "o-mail-ActivityListPopoverItem-cancel btn"
+    );
 
     // Cancel the activity
-    await click(".o-mail-ActivityListPopoverItem .o-mail-ActivityListPopoverItem-cancel");
+    await click(
+        ".o-mail-ActivityListPopoverItem .o-mail-ActivityListPopoverItem-cancel"
+    );
     await waitForSteps(["unlink"]);
 
     // Verify no activity is scheduled
-    await contains(".planned", { count: 0 });
+    await contains(".planned", {count: 0});
 });
 
 test("activity view: Mark as done with keep done enabled", async () => {
@@ -618,7 +656,9 @@ test("activity view: Mark as done with keep done enabled", async () => {
     });
     await contains(".o_activity_view:not(.o_action)");
     const domActivity = document.querySelector(".o_activity_view:not(.o_action)");
-    const domHeaderEmail = domActivity.querySelector("table thead tr:first-child th:nth-child(2)");
+    const domHeaderEmail = domActivity.querySelector(
+        "table thead tr:first-child th:nth-child(2)"
+    );
     const selRowOfficeCellEmail = "table tbody tr:nth-child(2) td:nth-child(2)";
 
     await contains(".o_animated_number", {
@@ -632,7 +672,9 @@ test("activity view: Mark as done with keep done enabled", async () => {
     await click(`${selRowOfficeCellEmail} > div`, {
         target: domActivity,
     });
-    await click(".o-mail-ActivityListPopoverItem .o-mail-ActivityListPopoverItem-markAsDone");
+    await click(
+        ".o-mail-ActivityListPopoverItem .o-mail-ActivityListPopoverItem-markAsDone"
+    );
     await click(".o-mail-ActivityMarkAsDone button[aria-label='Done']");
     await contains(".o_animated_number", {
         target: domHeaderEmail,
@@ -652,7 +694,7 @@ test("activity view: no group_by_menu and no comparison_menu", async () => {
         views: [[false, "activity"]],
     });
     await click(".o_searchview_dropdown_toggler");
-    await contains(".o-dropdown--menu .o_dropdown_container", { count: 2 });
+    await contains(".o-dropdown--menu .o_dropdown_container", {count: 2});
     await contains(".o-dropdown--menu .o_filter_menu");
     await contains(".o-dropdown--menu .o_favorite_menu");
 });
@@ -660,12 +702,12 @@ test("activity view: no group_by_menu and no comparison_menu", async () => {
 test("activity view: group_by in the action has no effect", async () => {
     patchWithCleanup(ActivityModel.prototype, {
         async load(params) {
-            // force params to have a groupBy set, the model should ignore this value during the load
+            // Force params to have a groupBy set, the model should ignore this value during the load
             params.groupBy = ["user_id"];
             await super.load(params);
         },
     });
-    onRpc("get_activity_data", ({ kwargs }) => {
+    onRpc("get_activity_data", ({kwargs}) => {
         expect(kwargs.groupby).toBe(undefined);
         asyncStep("get_activity_data");
     });
@@ -683,7 +725,8 @@ test("activity view: search more to schedule an activity for a record of a respe
         name: "MailTestActivity 3",
     });
     registerArchs(archs);
-    MailTestActivity._views.list = '<list string="MailTestActivity"><field name="name"/></list>';
+    MailTestActivity._views.list =
+        '<list string="MailTestActivity"><field name="name"/></list>';
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -712,18 +755,19 @@ test("activity view: search more to schedule an activity for a record of a respe
     await click(".o_activity_view tfoot tr .o_record_selector");
     await contains(".o_data_row .o_data_cell", {
         count: 3,
-        parent: [".modal-dialog", { text: "Search: MailTestActivity" }],
+        parent: [".modal-dialog", {text: "Search: MailTestActivity"}],
     });
     await click(".o_data_row .o_data_cell", {
         text: "MailTestActivity 3",
-        parent: [".modal-dialog", { text: "Search: MailTestActivity" }],
+        parent: [".modal-dialog", {text: "Search: MailTestActivity"}],
     });
     await waitForSteps(["doAction"]);
 });
 
 test("activity view: Domain should not reset on load", async () => {
     registerArchs(archs);
-    MailTestActivity._views.list = '<list string="MailTestActivity"><field name="name"/></list>';
+    MailTestActivity._views.list =
+        '<list string="MailTestActivity"><field name="name"/></list>';
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -738,11 +782,11 @@ test("activity view: Domain should not reset on load", async () => {
     });
 
     await click(".o_activity_view .o_record_selector");
-    // search create dialog
+    // Search create dialog
     await click(".modal-lg .o_data_row .o_data_cell");
     await waitForSteps(["doAction"]);
     await click(".o_activity_view .o_record_selector");
-    // again open search create dialog
+    // Again open search create dialog
     await contains(".modal-lg .o_data_row");
 });
 
@@ -754,7 +798,8 @@ test("activity view: 'scheduleActivity' does not add activity_ids condition as s
         },
     });
     registerArchs(archs);
-    MailTestActivity._views.list = '<list string="MailTestActivity"><field name="name"/></list>';
+    MailTestActivity._views.list =
+        '<list string="MailTestActivity"><field name="name"/></list>';
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -765,13 +810,13 @@ test("activity view: 'scheduleActivity' does not add activity_ids condition as s
             options.onClose?.();
         },
     });
-    // open search create dialog and schedule an activity
+    // Open search create dialog and schedule an activity
     await click(".o_activity_view .o_record_selector");
     await click(".modal-lg .o_data_row .o_data_cell", {
         text: "Meeting Room Furnitures",
     });
 
-    // again open search create dialog
+    // Again open search create dialog
     await click(".o_activity_view .o_record_selector");
     await waitForSteps([[], []]);
 });
@@ -784,7 +829,8 @@ test("activity view: 'onClose' of 'openActivityFormView' does not add activity_i
         },
     });
     registerArchs(archs);
-    MailTestActivity._views.list = '<list string="MailTestActivity"><field name="name"/></list>';
+    MailTestActivity._views.list =
+        '<list string="MailTestActivity"><field name="name"/></list>';
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -795,7 +841,7 @@ test("activity view: 'onClose' of 'openActivityFormView' does not add activity_i
             options.onClose?.();
         },
     });
-    //schedule an activity on an empty activity cell
+    // Schedule an activity on an empty activity cell
     await click(
         ".o_activity_view :nth-child(1 of .o_data_row) :nth-child(1 of .o_activity_empty_cell)"
     );
@@ -805,13 +851,14 @@ test("activity view: 'onClose' of 'openActivityFormView' does not add activity_i
 test("activity view: 'onReloadData' does not add activity_ids condition as selectCreateDialog domain", async () => {
     patchWithCleanup(ActivityController.prototype, {
         get rendererProps() {
-            const rendererProps = { ...super.rendererProps };
+            const rendererProps = {...super.rendererProps};
             asyncStep(this.getSearchProps().domain);
             return rendererProps;
         },
     });
     registerArchs(archs);
-    MailTestActivity._views.list = '<list string="MailTestActivity"><field name="name"/></list>';
+    MailTestActivity._views.list =
+        '<list string="MailTestActivity"><field name="name"/></list>';
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -823,7 +870,7 @@ test("activity view: 'onReloadData' does not add activity_ids condition as selec
         },
     });
 
-    //schedule another activity on an activity cell with a scheduled activity
+    // Schedule another activity on an activity cell with a scheduled activity
     await click(".today .o-mail-ActivityCell-deadline");
     await click(".o-mail-ActivityListPopover button:contains(Schedule an activity)");
     await waitForSteps([[], [], []]);
@@ -842,7 +889,7 @@ test("Activity view: discard an activity creation dialog", async () => {
     );
     await contains(".modal.o_technical_modal");
     await click(".modal.o_technical_modal .o_form_button_cancel");
-    await contains(".modal.o_technical_modal", { count: 0 });
+    await contains(".modal.o_technical_modal", {count: 0});
 });
 
 test("Activity view: many2one_avatar_user widget in activity view", async () => {
@@ -853,7 +900,9 @@ test("Activity view: many2one_avatar_user widget in activity view", async () => 
         display_name: "first user",
         avatar_128: "Atmaram Bhide",
     });
-    pyEnv["mail.test.activity"].write([mailTestActivityId1], { activity_user_id: resUsersId1 });
+    pyEnv["mail.test.activity"].write([mailTestActivityId1], {
+        activity_user_id: resUsersId1,
+    });
     registerArchs({
         "mail.test.activity,false,activity": `<activity string="MailTestActivity">
                 <templates>
@@ -869,12 +918,12 @@ test("Activity view: many2one_avatar_user widget in activity view", async () => 
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
     });
-    await contains(".o_m2o_avatar", { count: 1 });
+    await contains(".o_m2o_avatar", {count: 1});
     await contains(
         `tr:nth-child(2) .o_m2o_avatar > img[data-src="/web/image/res.users/${resUsersId1}/avatar_128"]`
     );
     // "should not have text on many2one_avatar_user if onlyImage node option is passed"
-    await contains(".o_m2o_avatar > span", { count: 0 });
+    await contains(".o_m2o_avatar > span", {count: 0});
 });
 
 test("Activity view: on_destroy_callback doesn't crash", async () => {
@@ -895,7 +944,7 @@ test("Activity view: on_destroy_callback doesn't crash", async () => {
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
     });
-    // force the unmounting of the activity view by opening another one
+    // Force the unmounting of the activity view by opening another one
     await openFormView("mail.test.activity");
     await waitForSteps(["mounted", "willUnmount"]);
 });
@@ -904,7 +953,7 @@ test("Schedule activity dialog uses the same search view as activity view", asyn
     pyEnv["mail.test.activity"].unlink(pyEnv["mail.test.activity"].search([]));
     MailTestActivity._views.list = `<list><field name="name"/></list>`;
     registerArchs(archs);
-    onRpc("get_views", ({ kwargs }) => asyncStep(kwargs.views));
+    onRpc("get_views", ({kwargs}) => asyncStep(kwargs.views));
     await start();
     await openView({
         res_model: "mail.test.activity",
@@ -918,7 +967,7 @@ test("Schedule activity dialog uses the same search view as activity view", asyn
             [19, "search"],
         ],
     ]);
-    // click on "Schedule activity"
+    // Click on "Schedule activity"
     await click(".o_activity_view .o_record_selector");
     await waitForSteps([
         [
@@ -926,7 +975,7 @@ test("Schedule activity dialog uses the same search view as activity view", asyn
             [19, "search"],
         ],
     ]);
-    // open an activity view (with search arch 1)
+    // Open an activity view (with search arch 1)
     await openView({
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
@@ -939,7 +988,7 @@ test("Schedule activity dialog uses the same search view as activity view", asyn
             [16, "search"],
         ],
     ]);
-    // click on "Schedule activity"
+    // Click on "Schedule activity"
     await click(".o_activity_view .o_record_selector");
     await waitForSteps([
         [
@@ -956,7 +1005,7 @@ test("Activity view: apply progressbar filter", async () => {
     pyEnv["mail.activity"].create([
         {
             display_name: "An activity",
-            date_deadline: serializeDate(DateTime.now().plus({ days: 3 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 3})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[2],
@@ -967,7 +1016,7 @@ test("Activity view: apply progressbar filter", async () => {
     const mailActivityIds = pyEnv["mail.activity"].create([
         {
             display_name: "An activity",
-            date_deadline: serializeDate(DateTime.now().plus({ days: 3 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 3})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[0],
@@ -975,7 +1024,7 @@ test("Activity view: apply progressbar filter", async () => {
         },
         {
             display_name: "An activity",
-            date_deadline: serializeDate(DateTime.now().plus({ days: 3 })),
+            date_deadline: serializeDate(DateTime.now().plus({days: 3})),
             can_write: true,
             state: "planned",
             activity_type_id: mailActivityTypeIds[2],
@@ -999,16 +1048,19 @@ test("Activity view: apply progressbar filter", async () => {
         text: "Office planning",
         parent: [".o_activity_view tbody tr:first-of-type"],
     });
-    await contains(".o_activity_view .planned", { count: 2 });
+    await contains(".o_activity_view .planned", {count: 2});
     await click(".progress-bar[data-tooltip='1 Planned']", {
-        parent: [".o_activity_view_table th", { text: "Email" }],
+        parent: [".o_activity_view_table th", {text: "Email"}],
     });
     await contains(".o_activity_view thead .o_activity_filter_planned");
     await contains(".progress-bar-striped");
-    await contains(".progress-bar-animated.progress-bar-striped[data-tooltip='1 Planned']", {
-        parent: [".o_activity_view_table th", { text: "Email" }],
-    });
-    await contains(".o_activity_view tbody .o_activity_filter_planned", { count: 5 });
+    await contains(
+        ".progress-bar-animated.progress-bar-striped[data-tooltip='1 Planned']",
+        {
+            parent: [".o_activity_view_table th", {text: "Email"}],
+        }
+    );
+    await contains(".o_activity_view tbody .o_activity_filter_planned", {count: 5});
     const tr = document.querySelectorAll(".o_activity_view tbody tr")[1];
     expect(tr.querySelectorAll("td")[2]).toHaveClass("o_activity_empty_cell");
 });
@@ -1021,31 +1073,48 @@ test("Activity view: hide/show columns", async () => {
         views: [[false, "activity"]],
     });
 
-    for (const [index, column] of ["Email", "Call", "Call for Demo", "To Do"].entries()) {
-        await contains(`.o_activity_view th:nth-child(${index + 2}) div span:first-child`, {
-            text: column,
-        });
+    for (const [index, column] of [
+        "Email",
+        "Call",
+        "Call for Demo",
+        "To Do",
+    ].entries()) {
+        await contains(
+            `.o_activity_view th:nth-child(${index + 2}) div span:first-child`,
+            {
+                text: column,
+            }
+        );
     }
     await contains(".o_activity_view th:last-child button.dropdown-toggle");
     await click("th:last-child button.dropdown-toggle");
     await click("input[name='Email']");
     for (const [index, column] of ["Call", "Call for Demo", "To Do"].entries()) {
-        await contains(`.o_activity_view th:nth-child(${index + 2}) div span:first-child`, {
-            text: column,
-        });
+        await contains(
+            `.o_activity_view th:nth-child(${index + 2}) div span:first-child`,
+            {
+                text: column,
+            }
+        );
     }
     await click("input[name='Call for Demo']");
     for (const [index, column] of ["Call", "To Do"].entries()) {
-        await contains(`.o_activity_view th:nth-child(${index + 2}) div span:first-child`, {
-            text: column,
-        });
+        await contains(
+            `.o_activity_view th:nth-child(${index + 2}) div span:first-child`,
+            {
+                text: column,
+            }
+        );
     }
 
     await click("input[name='Email']");
     for (const [index, column] of ["Email", "Call", "To Do"].entries()) {
-        await contains(`.o_activity_view th:nth-child(${index + 2}) div span:first-child`, {
-            text: column,
-        });
+        await contains(
+            `.o_activity_view th:nth-child(${index + 2}) div span:first-child`,
+            {
+                text: column,
+            }
+        );
     }
 });
 
@@ -1068,11 +1137,11 @@ test("Activity view: luxon in renderingContext", async () => {
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
     });
-    await contains(".luxon", { count: 2 });
+    await contains(".luxon", {count: 2});
 });
 
 test("test displaying image (write_date field)", async () => {
-    // the presence of write_date field ensures that the image is reloaded when necessary
+    // The presence of write_date field ensures that the image is reloaded when necessary
     registerArchs({
         "mail.test.activity,false,activity": `
             <activity string="MailTestActivity">
@@ -1086,14 +1155,16 @@ test("test displaying image (write_date field)", async () => {
     });
     onRpc("web.search_read", (route, args) => {
         expect(Object.keys(args.specification)).toEqual(["write_date", "id"]);
-        return { length: 2, records: [{ id: 1 }, { id: 2 }] };
+        return {length: 2, records: [{id: 1}, {id: 2}]};
     });
     await start();
     await openView({
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
     });
-    await contains(`.o_activity_record img[src='${getOrigin()}/web/image/partner/2/image']`);
+    await contains(
+        `.o_activity_record img[src='${getOrigin()}/web/image/partner/2/image']`
+    );
 });
 
 test("test node visibility depends on invisible attribute on the node and in the context", async () => {
@@ -1114,13 +1185,13 @@ test("test node visibility depends on invisible attribute on the node and in the
         res_model: "mail.test.activity",
         views: [[1, "activity"]],
     });
-    await contains(".invisible_node", { count: 2 });
+    await contains(".invisible_node", {count: 2});
     await openView({
         res_model: "mail.test.activity",
         views: [[1, "activity"]],
-        context: { invisible: true },
+        context: {invisible: true},
     });
-    await contains(".invisible_node", { count: 0 });
+    await contains(".invisible_node", {count: 0});
 });
 
 test("update activity view after creating multiple activities", async () => {
@@ -1133,7 +1204,7 @@ test("update activity view after creating multiple activities", async () => {
     const activityToCreate = omit(Activity[0], "id");
     Activity.unlink(Activity.search([]));
 
-    onRpc(({ method, model }) => {
+    onRpc(({method, model}) => {
         if (method === "web_save" && model === "mail.activity.schedule") {
             Activity.create(activityToCreate);
         }
@@ -1154,7 +1225,7 @@ test("update activity view after creating multiple activities", async () => {
     await insertText(`.o_form_view .o_field_widget[name='summary'] input`, "test1", {
         target: modalSchedule,
     });
-    await click(".modal-footer button.o_form_button_save", { target: modalSchedule });
+    await click(".modal-footer button.o_form_button_save", {target: modalSchedule});
     await click(".modal-footer button.o_form_button_cancel");
     await waitFor(".o_activity_summary_cell:not(.o_activity_empty_cell)");
     expect(".o_activity_summary_cell:not(.o_activity_empty_cell)").toHaveCount(1);
@@ -1162,8 +1233,8 @@ test("update activity view after creating multiple activities", async () => {
 
 test("Activity view: context given to the rpc to fetch data", async () => {
     registerArchs(archs);
-    const context = { custom_context: true };
-    onRpc("get_activity_data", ({ kwargs }) => {
+    const context = {custom_context: true};
+    onRpc("get_activity_data", ({kwargs}) => {
         const customContext = kwargs.context?.custom_context;
         expect(customContext).toBe(true);
         asyncStep("get_activity_data");
@@ -1189,7 +1260,7 @@ test("Activity View: Hide 'New' button in SelectCreateDialog based on action con
     await openView({
         res_model: "mail.test.activity",
         views: [[false, "activity"]],
-        context: { create: false },
+        context: {create: false},
     });
     await click("table tfoot tr .o_record_selector");
     await animationFrame();

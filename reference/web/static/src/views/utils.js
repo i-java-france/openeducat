@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { unique } from "@web/core/utils/arrays";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { combineModifiers } from "@web/model/relational_model/utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {unique} from "@web/core/utils/arrays";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {combineModifiers} from "@web/model/relational_model/utils";
 
 export const X2M_TYPES = ["one2many", "many2many"];
 const NUMERIC_TYPES = ["integer", "float", "monetary"];
@@ -79,16 +79,16 @@ export const computeReportMeasures = (
     fields,
     fieldAttrs,
     activeMeasures,
-    { sumAggregatorOnly = false } = {}
+    {sumAggregatorOnly = false} = {}
 ) => {
     const measures = {
-        __count: { name: "__count", string: _t("Count"), type: "integer" },
+        __count: {name: "__count", string: _t("Count"), type: "integer"},
     };
     for (const [fieldName, field] of Object.entries(fields)) {
         if (fieldName === "id") {
             continue;
         }
-        const { isInvisible } = fieldAttrs[fieldName] || {};
+        const {isInvisible} = fieldAttrs[fieldName] || {};
         if (isInvisible) {
             continue;
         }
@@ -219,7 +219,7 @@ export function processButton(node) {
     };
     const clickParams = {};
     const attrs = {};
-    for (const { name, value } of node.attributes) {
+    for (const {name, value} of node.attributes) {
         if (BUTTON_CLICK_PARAMS.includes(name)) {
             clickParams[name] = withDefault[name] ? withDefault[name](value) : value;
         } else {

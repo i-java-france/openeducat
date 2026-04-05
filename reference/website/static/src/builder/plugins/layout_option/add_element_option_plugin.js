@@ -1,9 +1,9 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { resizeGrid, setElementToMaxZindex } from "@html_builder/utils/grid_layout_utils";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {resizeGrid, setElementToMaxZindex} from "@html_builder/utils/grid_layout_utils";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 /**
  * @typedef { Object } AddElementOptionShared
@@ -37,7 +37,10 @@ export class AddElementOptionPlugin extends Plugin {
         // in the top left corner.
         const currentTime = new Date().getTime();
         if (this.lastAddTime && (currentTime - this.lastAddTime) / 1000 < 15) {
-            this.lastStartPosition = [this.lastStartPosition[0] + 1, this.lastStartPosition[1] + 1];
+            this.lastStartPosition = [
+                this.lastStartPosition[0] + 1,
+                this.lastStartPosition[1] + 1,
+            ];
         } else {
             this.lastStartPosition = [1, 1]; // [rowStart, columnStart]
         }
@@ -78,7 +81,7 @@ export class AddElementOptionPlugin extends Plugin {
         const middleY = (newColumnPosition.top + newColumnPosition.bottom) / 2;
         const sameCoordinatesEl = this.document.elementFromPoint(middleX, middleY);
         if (!sameCoordinatesEl || !newColumnEl.contains(sameCoordinatesEl)) {
-            newColumnEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            newColumnEl.scrollIntoView({behavior: "smooth", block: "center"});
         }
         // Activate the new column options.
         this.dependencies.builderOptions.setNextTarget(newColumnEl);
@@ -96,7 +99,7 @@ export class AddGridElementAction extends BuilderAction {
         this.canTimeout = false;
     }
 
-    async apply({ editingElement: rowEl, params: { mainParam: elementType } }) {
+    async apply({editingElement: rowEl, params: {mainParam: elementType}}) {
         if (elementType === "image") {
             // Choose an image with the media dialog.
             let imageEl;
@@ -129,4 +132,6 @@ export class AddGridElementAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(AddElementOptionPlugin.id, AddElementOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(AddElementOptionPlugin.id, AddElementOptionPlugin);

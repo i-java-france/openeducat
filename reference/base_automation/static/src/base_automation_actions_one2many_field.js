@@ -1,7 +1,7 @@
-import { Component, useExternalListener, useEffect, useRef } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
+import {Component, useExternalListener, useEffect, useRef} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
 
 class ActionsOne2ManyField extends Component {
     static props = ["*"];
@@ -31,7 +31,9 @@ class ActionsOne2ManyField extends Component {
         const rootWidth = this.root.el.getBoundingClientRect().width;
 
         // remove all d-none classes (needed to get the real width of the elements)
-        const actionsEls = Array.from(this.root.el.children).filter((el) => el.dataset.actionId);
+        const actionsEls = Array.from(this.root.el.children).filter(
+            (el) => el.dataset.actionId
+        );
         actionsEls.forEach((el) => el.classList.remove("d-none"));
         const actionsTotalWidth = actionsEls.reduce(
             (sum, el) => sum + el.getBoundingClientRect().width,
@@ -50,7 +52,8 @@ class ActionsOne2ManyField extends Component {
                     const firstOverflowingEl = actionsEls.find(
                         (el) => el.dataset.actionId === overflowingActionId
                     );
-                    const firstOverflowingIndex = actionsEls.indexOf(firstOverflowingEl);
+                    const firstOverflowingIndex =
+                        actionsEls.indexOf(firstOverflowingEl);
                     const overflowingEls = actionsEls.slice(firstOverflowingIndex);
                     // hide overflowing elements
                     overflowingEls.forEach((el) => el.classList.add("d-none"));
@@ -64,7 +67,9 @@ class ActionsOne2ManyField extends Component {
         const initialHiddenActionsCount = this.hiddenActionsCount;
         this.hiddenActionsCount = overflowingActionId
             ? this.currentActions.length -
-              this.currentActions.findIndex((action) => action.id === overflowingActionId)
+              this.currentActions.findIndex(
+                  (action) => action.id === overflowingActionId
+              )
             : 0;
         if (initialHiddenActionsCount !== this.hiddenActionsCount) {
             // Render only if hidden actions count has changed.
@@ -80,9 +85,11 @@ class ActionsOne2ManyField extends Component {
 const actionsOne2ManyField = {
     component: ActionsOne2ManyField,
     relatedFields: [
-        { name: "name", type: "char" },
-        { name: "state", type: "selection" },
+        {name: "name", type: "char"},
+        {name: "state", type: "selection"},
     ],
 };
 
-registry.category("fields").add("base_automation_actions_one2many", actionsOne2ManyField);
+registry
+    .category("fields")
+    .add("base_automation_actions_one2many", actionsOne2ManyField);

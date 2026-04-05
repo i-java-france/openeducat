@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.survey.tests import common
 from odoo.tests import tagged
-from odoo.tests.common import warmup, HttpCase
+from odoo.tests.common import HttpCase, warmup
+
+from odoo.addons.survey.tests import common
 
 
 @tagged('post_install', '-at_install')

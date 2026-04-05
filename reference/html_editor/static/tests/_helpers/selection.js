@@ -1,4 +1,4 @@
-import { manuallyDispatchProgrammaticEvent, animationFrame } from "@odoo/hoot-dom";
+import {manuallyDispatchProgrammaticEvent, animationFrame} from "@odoo/hoot-dom";
 
 /**
  * @param {Node} node
@@ -27,7 +27,10 @@ function _getContent(node, selection, options) {
 function getTextContent(node, selection, options) {
     let text = node.textContent;
     if (selection.focusNode === node) {
-        text = text.slice(0, selection.focusOffset) + "]" + text.slice(selection.focusOffset);
+        text =
+            text.slice(0, selection.focusOffset) +
+            "]" +
+            text.slice(selection.focusOffset);
     }
     if (selection.anchorNode === node) {
         const isAfterFocus =
@@ -95,7 +98,7 @@ function getTextNodesIterator(el) {
     walker[Symbol.iterator] = () => ({
         next() {
             const value = walker.nextNode();
-            return { value, done: !value };
+            return {value, done: !value};
         },
     });
     return walker;
@@ -153,7 +156,10 @@ export function getSelection(el, content) {
     const configSelection = {};
     visitAndSetRange(el, elRef, configSelection);
 
-    if (configSelection.anchorNode === undefined || configSelection.focusNode === undefined) {
+    if (
+        configSelection.anchorNode === undefined ||
+        configSelection.focusNode === undefined
+    ) {
         return;
     }
     return configSelection;
@@ -222,31 +228,31 @@ function visitAndSetRange(target, ref, configSelection) {
 }
 
 export async function firstClick(target) {
-    manuallyDispatchProgrammaticEvent(target, "mousedown", { detail: 1 });
-    setSelection({ anchorNode: target, anchorOffset: 0 });
+    manuallyDispatchProgrammaticEvent(target, "mousedown", {detail: 1});
+    setSelection({anchorNode: target, anchorOffset: 0});
     await animationFrame(); // selectionChange
-    manuallyDispatchProgrammaticEvent(target, "mouseup", { detail: 1 });
-    manuallyDispatchProgrammaticEvent(target, "click", { detail: 1 });
+    manuallyDispatchProgrammaticEvent(target, "mouseup", {detail: 1});
+    manuallyDispatchProgrammaticEvent(target, "click", {detail: 1});
     await animationFrame();
 }
 
 export async function secondClick(target) {
-    manuallyDispatchProgrammaticEvent(target, "mousedown", { detail: 2 });
+    manuallyDispatchProgrammaticEvent(target, "mousedown", {detail: 2});
     const document = target.ownerDocument;
     document.getSelection().modify("extend", "forward", "word");
     await animationFrame(); // selectionChange
-    manuallyDispatchProgrammaticEvent(target, "mouseup", { detail: 2 });
-    manuallyDispatchProgrammaticEvent(target, "click", { detail: 2 });
+    manuallyDispatchProgrammaticEvent(target, "mouseup", {detail: 2});
+    manuallyDispatchProgrammaticEvent(target, "click", {detail: 2});
     await animationFrame();
 }
 
 export async function thirdClick(target) {
-    manuallyDispatchProgrammaticEvent(target, "mousedown", { detail: 3 });
+    manuallyDispatchProgrammaticEvent(target, "mousedown", {detail: 3});
     const document = target.ownerDocument;
     document.getSelection().modify("extend", "forward", "paragraphboundary");
     await animationFrame(); // selectionChange
-    manuallyDispatchProgrammaticEvent(target, "mouseup", { detail: 3 });
-    manuallyDispatchProgrammaticEvent(target, "click", { detail: 3 });
+    manuallyDispatchProgrammaticEvent(target, "mouseup", {detail: 3});
+    manuallyDispatchProgrammaticEvent(target, "click", {detail: 3});
     await animationFrame();
 }
 

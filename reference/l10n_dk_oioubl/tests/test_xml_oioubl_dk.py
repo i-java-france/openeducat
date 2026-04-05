@@ -1,11 +1,12 @@
 from freezegun import freeze_time
 
 from odoo import Command, fields
-from odoo.addons.l10n_account_edi_ubl_cii_tests.tests.common import TestUBLCommon
-from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import file_open
+
+from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
+from odoo.addons.l10n_account_edi_ubl_cii_tests.tests.common import TestUBLCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

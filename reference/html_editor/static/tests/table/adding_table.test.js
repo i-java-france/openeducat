@@ -1,12 +1,12 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { setupEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
-import { insertText } from "../_helpers/user_actions";
-import { unformat } from "../_helpers/format";
-import { press, waitFor, queryOne } from "@odoo/hoot-dom";
-import { expectElementCount } from "../_helpers/ui_expectations";
-import { findInSelection } from "@html_editor/utils/selection";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {setupEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
+import {insertText} from "../_helpers/user_actions";
+import {unformat} from "../_helpers/format";
+import {press, queryOne, waitFor} from "@odoo/hoot-dom";
+import {expectElementCount} from "../_helpers/ui_expectations";
+import {findInSelection} from "@html_editor/utils/selection";
 
 function expectContentToBe(el, html) {
     expect(getContent(el)).toBe(unformat(html));
@@ -14,25 +14,25 @@ function expectContentToBe(el, html) {
 
 test.tags("desktop");
 test("can add a table using the powerbox and keyboard", async () => {
-    const { el, editor } = await setupEditor("<p>a[]</p>");
+    const {el, editor} = await setupEditor("<p>a[]</p>");
     await expectElementCount(".o-we-powerbox", 0);
     expectContentToBe(el, `<p>a[]</p>`);
 
-    // open powerbox
+    // Open powerbox
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await expectElementCount(".o-we-tablepicker", 0);
 
-    // filter to get table command in first position
+    // Filter to get table command in first position
     await insertText(editor, "table");
     await animationFrame();
 
-    // press enter to open tablepicker
+    // Press enter to open tablepicker
     await press("Enter");
     await waitFor(".o-we-tablepicker");
     await expectElementCount(".o-we-powerbox", 0);
 
-    // press enter to validate current dimension (3x3)
+    // Press enter to validate current dimension (3x3)
     await press("Enter");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 0);
@@ -65,7 +65,7 @@ test("can add a table using the powerbox and keyboard", async () => {
 
 test.tags("desktop");
 test("can close table picker with escape", async () => {
-    const { el, editor } = await setupEditor("<p>a[]</p>");
+    const {el, editor} = await setupEditor("<p>a[]</p>");
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await insertText(editor, "table");
@@ -81,28 +81,28 @@ test("can close table picker with escape", async () => {
 
 test.tags("iframe", "desktop");
 test("in iframe, can add a table using the powerbox and keyboard", async () => {
-    const { el, editor } = await setupEditor("<p>a[]</p>", {
-        props: { iframe: true },
+    const {el, editor} = await setupEditor("<p>a[]</p>", {
+        props: {iframe: true},
     });
     await expectElementCount(".o-we-powerbox", 0);
     expect(getContent(el)).toBe(`<p>a[]</p>`);
     expect(":iframe .o_table").toHaveCount(0);
 
-    // open powerbox
+    // Open powerbox
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await expectElementCount(".o-we-tablepicker", 0);
 
-    // filter to get table command in first position
+    // Filter to get table command in first position
     await insertText(editor, "table");
     await animationFrame();
 
-    // press enter to open tablepicker
+    // Press enter to open tablepicker
     await press("Enter");
     await waitFor(".o-we-tablepicker");
     await expectElementCount(".o-we-powerbox", 0);
 
-    // press enter to validate current dimension (3x3)
+    // Press enter to validate current dimension (3x3)
     await press("Enter");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 0);
@@ -112,7 +112,7 @@ test("in iframe, can add a table using the powerbox and keyboard", async () => {
 
 test.tags("desktop");
 test("Expand columns in the correct direction in 'rtl'", async () => {
-    const { editor } = await setupEditor("<p>a[]</p>", {
+    const {editor} = await setupEditor("<p>a[]</p>", {
         config: {
             direction: "rtl",
         },
@@ -123,7 +123,7 @@ test("Expand columns in the correct direction in 'rtl'", async () => {
 
     // Initially we have 3 columns
     const tablePickerOverlay = queryOne(".overlay");
-    expect(tablePickerOverlay).toHaveStyle({ right: /px$/ });
+    expect(tablePickerOverlay).toHaveStyle({right: /px$/});
     const right = tablePickerOverlay.style.right;
     const width3Columns = tablePickerOverlay.getBoundingClientRect().width;
     expect(".o-we-cell.active").toHaveCount(9);
@@ -131,43 +131,47 @@ test("Expand columns in the correct direction in 'rtl'", async () => {
     // Add one column -> we have 4 columns
     await press("ArrowLeft");
     await animationFrame();
-    expect(tablePickerOverlay.getBoundingClientRect().width).toBeGreaterThan(width3Columns);
-    expect(tablePickerOverlay).toHaveStyle({ right });
+    expect(tablePickerOverlay.getBoundingClientRect().width).toBeGreaterThan(
+        width3Columns
+    );
+    expect(tablePickerOverlay).toHaveStyle({right});
     expect(".o-we-cell.active").toHaveCount(12);
 
     // Remove one column -> we have 3 columns
     await press("ArrowRight");
     await animationFrame();
     expect(".o-we-cell.active").toHaveCount(9);
-    expect(tablePickerOverlay).toHaveStyle({ right });
+    expect(tablePickerOverlay).toHaveStyle({right});
 
     // Remove one column -> we have 2 columns
     await press("ArrowRight");
     await animationFrame();
-    expect(tablePickerOverlay.getBoundingClientRect().width).toBeLessThan(width3Columns);
-    expect(tablePickerOverlay).toHaveStyle({ right });
+    expect(tablePickerOverlay.getBoundingClientRect().width).toBeLessThan(
+        width3Columns
+    );
+    expect(tablePickerOverlay).toHaveStyle({right});
     expect(".o-we-cell.active").toHaveCount(6);
 });
 
 test.tags("desktop");
 test("add table inside empty list", async () => {
-    const { el, editor } = await setupEditor("<ul><li>[]<br></li></ul>");
+    const {el, editor} = await setupEditor("<ul><li>[]<br></li></ul>");
 
-    // open powerbox
+    // Open powerbox
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await expectElementCount(".o-we-tablepicker", 0);
 
-    // filter to get table command in first position
+    // Filter to get table command in first position
     await insertText(editor, "table");
     await animationFrame();
 
-    // press enter to open tablepicker
+    // Press enter to open tablepicker
     await press("Enter");
     await waitFor(".o-we-tablepicker");
     await expectElementCount(".o-we-powerbox", 0);
 
-    // press enter to validate current dimension (3x3)
+    // Press enter to validate current dimension (3x3)
     await press("Enter");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 0);
@@ -203,23 +207,23 @@ test("add table inside empty list", async () => {
 
 test.tags("desktop");
 test("add table inside non-empty list", async () => {
-    const { el, editor } = await setupEditor("<ul><li>abc[]</li></ul>");
+    const {el, editor} = await setupEditor("<ul><li>abc[]</li></ul>");
 
-    // open powerbox
+    // Open powerbox
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await expectElementCount(".o-we-tablepicker", 0);
 
-    // filter to get table command in first position
+    // Filter to get table command in first position
     await insertText(editor, "table");
     await animationFrame();
 
-    // press enter to open tablepicker
+    // Press enter to open tablepicker
     await press("Enter");
     await waitFor(".o-we-tablepicker");
     await expectElementCount(".o-we-powerbox", 0);
 
-    // press enter to validate current dimension (3x3)
+    // Press enter to validate current dimension (3x3)
     await press("Enter");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 0);
@@ -255,7 +259,7 @@ test("add table inside non-empty list", async () => {
 
 test.tags("desktop");
 test("should close the table picker when any key except arrow keys pressed", async () => {
-    const { el, editor } = await setupEditor("<p>a[]</p>");
+    const {el, editor} = await setupEditor("<p>a[]</p>");
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
     await insertText(editor, "table");
@@ -283,7 +287,7 @@ test("should close the table picker when any key except arrow keys pressed", asy
 
 test.tags("desktop");
 test("should not navigate table cells when table picker is open", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
             <table class="table table-bordered o_table">
                 <tbody>
@@ -300,19 +304,19 @@ test("should not navigate table cells when table picker is open", async () => {
             </table>
         `)
     );
-    // open powerbox
+    // Open powerbox
     await insertText(editor, "/");
     await waitFor(".o-we-powerbox");
 
-    // filter to get table command in first position
+    // Filter to get table command in first position
     await insertText(editor, "table");
     await animationFrame();
 
-    // press enter to open tablepicker
+    // Press enter to open tablepicker
     await press("Enter");
     await waitFor(".o-we-tablepicker");
 
-    // navigate to 1x3
+    // Navigate to 1x3
     press("ArrowUp");
     await animationFrame();
     press("ArrowUp");
@@ -355,7 +359,7 @@ test("should not navigate table cells when table picker is open", async () => {
 
 test.tags("desktop");
 test("should not navigate table cells when powerbox is open", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
             <table class="table table-bordered o_table">
                 <tbody>
@@ -381,7 +385,10 @@ test("should not navigate table cells when powerbox is open", async () => {
     const secondTd = el.querySelectorAll("td")[1];
 
     // Selection starts in first cell
-    let selectedTd = findInSelection(editor.shared.selection.getEditableSelection(), "td");
+    let selectedTd = findInSelection(
+        editor.shared.selection.getEditableSelection(),
+        "td"
+    );
     expect(selectedTd).toBe(secondTd);
 
     // ArrowUp should not navigate table cells

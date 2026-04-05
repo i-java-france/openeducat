@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { PivotArchParser } from "@web/views/pivot/pivot_arch_parser";
-import { PivotController } from "./pivot_controller";
-import { PivotModel } from "@web/views/pivot/pivot_model";
-import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
-import { PivotSearchModel } from "./pivot_search_model";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {PivotArchParser} from "@web/views/pivot/pivot_arch_parser";
+import {PivotController} from "./pivot_controller";
+import {PivotModel} from "@web/views/pivot/pivot_model";
+import {PivotRenderer} from "@web/views/pivot/pivot_renderer";
+import {PivotSearchModel} from "./pivot_search_model";
 
 const viewRegistry = registry.category("views");
 
@@ -24,7 +24,7 @@ export const pivotView = {
             modelParams.data = genericProps.state.data;
             modelParams.metaData = genericProps.state.metaData;
         } else {
-            const { arch, fields, resModel } = genericProps;
+            const {arch, fields, resModel} = genericProps;
 
             // parse arch
             const archInfo = new view.ArchParser().parse(arch);

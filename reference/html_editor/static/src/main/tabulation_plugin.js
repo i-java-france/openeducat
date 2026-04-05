@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestBlock, isBlock } from "@html_editor/utils/blocks";
-import { splitTextNode } from "@html_editor/utils/dom";
+import {Plugin} from "@html_editor/plugin";
+import {closestBlock, isBlock} from "@html_editor/utils/blocks";
+import {splitTextNode} from "@html_editor/utils/dom";
 import {
     isEditorTab,
     isParagraphRelatedElement,
@@ -14,9 +14,9 @@ import {
     firstLeaf,
     selectElements,
 } from "@html_editor/utils/dom_traversal";
-import { parseHTML } from "@html_editor/utils/html";
-import { DIRECTIONS, childNodeIndex } from "@html_editor/utils/position";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {parseHTML} from "@html_editor/utils/html";
+import {DIRECTIONS, childNodeIndex} from "@html_editor/utils/position";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 const tabHtml = '<span class="oe-tabs" contenteditable="false">\u0009</span>\u200B';
 const GRID_COLUMN_WIDTH = 40; //@todo Configurable?
@@ -64,10 +64,12 @@ export class TabulationPlugin extends Plugin {
             },
         ],
         shortcuts: [
-            { hotkey: "tab", commandId: "tab" },
-            { hotkey: "shift+tab", commandId: "shiftTab" },
+            {hotkey: "tab", commandId: "tab"},
+            {hotkey: "shift+tab", commandId: "shiftTab"},
         ],
-        content_not_editable_providers: (rootEl) => [...selectElements(rootEl, ".oe-tabs")],
+        content_not_editable_providers: (rootEl) => [
+            ...selectElements(rootEl, ".oe-tabs"),
+        ],
         contenteditable_to_remove_selector: "span.oe-tabs",
 
         /** Handlers */
@@ -131,7 +133,9 @@ export class TabulationPlugin extends Plugin {
         for (const block of indentableBlocks) {
             block.prepend(tab.cloneNode(true));
         }
-        this.dependencies.selection.setSelection(selectionToRestore, { normalize: false });
+        this.dependencies.selection.setSelection(selectionToRestore, {
+            normalize: false,
+        });
     }
 
     /**
@@ -149,7 +153,7 @@ export class TabulationPlugin extends Plugin {
 
     removeTrailingZWS(tab) {
         const selection = this.dependencies.selection.getEditableSelection();
-        const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
+        const {anchorNode, anchorOffset, focusNode, focusOffset} = selection;
         const updateAnchor = anchorNode === tab.nextSibling;
         const updateFocus = focusNode === tab.nextSibling;
         let zwsRemoved = 0;
@@ -165,9 +169,13 @@ export class TabulationPlugin extends Plugin {
         if (updateAnchor || updateFocus) {
             this.dependencies.selection.setSelection({
                 anchorNode: updateAnchor ? tab.nextSibling : anchorNode,
-                anchorOffset: updateAnchor ? Math.max(0, anchorOffset - zwsRemoved) : anchorOffset,
+                anchorOffset: updateAnchor
+                    ? Math.max(0, anchorOffset - zwsRemoved)
+                    : anchorOffset,
                 focusNode: updateFocus ? tab.nextSibling : focusNode,
-                focusOffset: updateFocus ? Math.max(0, focusOffset - zwsRemoved) : focusOffset,
+                focusOffset: updateFocus
+                    ? Math.max(0, focusOffset - zwsRemoved)
+                    : focusOffset,
             });
         }
     }
@@ -194,7 +202,8 @@ export class TabulationPlugin extends Plugin {
             return;
         }
         const relativePosition = spanRect.left - referenceRect.left;
-        const distToNextGridLine = GRID_COLUMN_WIDTH - (relativePosition % GRID_COLUMN_WIDTH);
+        const distToNextGridLine =
+            GRID_COLUMN_WIDTH - (relativePosition % GRID_COLUMN_WIDTH);
         // Round to the first decimal point.
         const width = distToNextGridLine.toFixed(1);
         tabSpan.style.width = `${width}px`;
@@ -236,14 +245,18 @@ export class TabulationPlugin extends Plugin {
 
     // @todo consider registering this as adjustRange callback instead.
     handleDeleteForward(range) {
-        let { endContainer, endOffset } = range;
+        let {endContainer, endOffset} = range;
         if (!(endContainer?.nodeType === Node.ELEMENT_NODE) || !endOffset) {
             return;
         }
         const nodeToDelete = endContainer.childNodes[endOffset - 1];
         if (isEditorTab(nodeToDelete)) {
             [endContainer, endOffset] = this.expandRangeToIncludeZWS(nodeToDelete);
-            range = this.dependencies.delete.deleteRange({ ...range, endContainer, endOffset });
+            range = this.dependencies.delete.deleteRange({
+                ...range,
+                endContainer,
+                endOffset,
+            });
             this.dependencies.selection.setSelection({
                 anchorNode: range.startContainer,
                 anchorOffset: range.startOffset,

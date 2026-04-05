@@ -1,18 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="slide_slide_view_form" model="ir.ui.view">
         <field name="name">slide.slide.view.form.inherit.survey</field>
         <field name="model">slide.slide</field>
-        <field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
+        <field name="inherit_id" ref="website_slides.view_slide_slide_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='slide_category']" position="after">
-                <field name="survey_id"
+                <field
+                    name="survey_id"
                     invisible="slide_category != 'certification'"
                     required="slide_category == 'certification'"
-                    domain="[('certification', '=', True)]" context="{'default_certification': True, 'default_scoring_type': 'scoring_without_answers'}"/>
+                    domain="[('certification', '=', True)]"
+                    context="{'default_certification': True, 'default_scoring_type': 'scoring_without_answers'}"
+                />
             </xpath>
             <xpath expr="//field[@name='is_preview']" position="attributes">
-                <attribute name="invisible">slide_category == 'certification'</attribute>
+                <attribute
+                    name="invisible"
+                >slide_category == 'certification'</attribute>
             </xpath>
         </field>
     </record>
@@ -28,6 +33,6 @@
                 Add a new certification
             </p>
         </field>
-        <field name="view_id" ref="website_slides.view_slide_slide_tree"/>
+        <field name="view_id" ref="website_slides.view_slide_slide_tree" />
     </record>
 </odoo>

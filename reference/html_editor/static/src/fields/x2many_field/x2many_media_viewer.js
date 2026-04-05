@@ -1,15 +1,15 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
-import { getVideoUrl } from "@html_editor/utils/url";
-import { useChildSubEnv } from "@odoo/owl";
-import { CustomMediaDialog } from "./custom_media_dialog";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {X2ManyField, x2ManyField} from "@web/views/fields/x2many/x2many_field";
+import {getVideoUrl} from "@html_editor/utils/url";
+import {useChildSubEnv} from "@odoo/owl";
+import {CustomMediaDialog} from "./custom_media_dialog";
 
 export class X2ManyMediaViewer extends X2ManyField {
     static template = "html_editor.X2ManyMediaViewer";
     static props = {
         ...X2ManyField.props,
-        convertToWebp: { type: Boolean, optional: true },
+        convertToWebp: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -17,7 +17,13 @@ export class X2ManyMediaViewer extends X2ManyField {
         this.dialogs = useService("dialog");
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.supportedFields = ["image_1920", "image_1024", "image_512", "image_256", "image_128"];
+        this.supportedFields = [
+            "image_1920",
+            "image_1024",
+            "image_512",
+            "image_256",
+            "image_128",
+        ];
         useChildSubEnv({
             parentField: this.props.name,
         });
@@ -34,10 +40,17 @@ export class X2ManyMediaViewer extends X2ManyField {
     }
 
     onVideoSave(videoInfo) {
-        const url = getVideoUrl(videoInfo[0].platform, videoInfo[0].videoId, videoInfo[0].params);
+        const url = getVideoUrl(
+            videoInfo[0].platform,
+            videoInfo[0].videoId,
+            videoInfo[0].params
+        );
         const videoList = this.props.record.data[this.props.name];
-        videoList.addNewRecord({ position: "bottom" }).then((record) => {
-            record.update({ name: videoInfo[0].platform + " - [Video]", video_url: url.href });
+        videoList.addNewRecord({position: "bottom"}).then((record) => {
+            record.update({
+                name: videoInfo[0].platform + " - [Video]",
+                video_url: url.href,
+            });
         });
     }
 
@@ -74,7 +87,9 @@ export class X2ManyMediaViewer extends X2ManyField {
                 await new Promise((resolve) => image.addEventListener("load", resolve));
 
                 const originalSize = Math.max(image.width, image.height);
-                const smallerSizes = [1024, 512, 256, 128].filter((size) => size < originalSize);
+                const smallerSizes = [1024, 512, 256, 128].filter(
+                    (size) => size < originalSize
+                );
                 let referenceId = undefined;
 
                 for (const size of [originalSize, ...smallerSizes]) {
@@ -97,18 +112,23 @@ export class X2ManyMediaViewer extends X2ManyField {
 
                     // WebP format
                     const webpData = canvas.toDataURL("image/webp").split(",")[1];
-                    const [resizedId] = await this.orm.call("ir.attachment", "create_unique", [
+                    const [resizedId] = await this.orm.call(
+                        "ir.attachment",
+                        "create_unique",
                         [
-                            {
-                                name: attachment.name.replace(/\.[^/.]+$/, ".webp"),
-                                description: size === originalSize ? "" : `resize: ${size}`,
-                                datas: webpData,
-                                res_id: referenceId,
-                                res_model: "ir.attachment",
-                                mimetype: "image/webp",
-                            },
-                        ],
-                    ]);
+                            [
+                                {
+                                    name: attachment.name.replace(/\.[^/.]+$/, ".webp"),
+                                    description:
+                                        size === originalSize ? "" : `resize: ${size}`,
+                                    datas: webpData,
+                                    res_id: referenceId,
+                                    res_model: "ir.attachment",
+                                    mimetype: "image/webp",
+                                },
+                            ],
+                        ]
+                    );
 
                     referenceId = referenceId || resizedId;
 
@@ -139,7 +159,7 @@ export class X2ManyMediaViewer extends X2ManyField {
                 attachment.name = attachment.name.replace(/\.[^/.]+$/, ".webp");
             }
 
-            imageList.addNewRecord({ position: "bottom" }).then((record) => {
+            imageList.addNewRecord({position: "bottom"}).then((record) => {
                 const activeFields = imageList.activeFields;
                 const updateData = {};
                 for (const field in activeFields) {
@@ -153,7 +173,7 @@ export class X2ManyMediaViewer extends X2ManyField {
         }
     }
 
-    async onAdd({ context, editable } = {}) {
+    async onAdd({context, editable} = {}) {
         this.addMedia();
     }
 }
@@ -162,11 +182,11 @@ export const x2ManyMediaViewer = {
     ...x2ManyField,
     component: X2ManyMediaViewer,
     extractProps: (
-        { attrs, relatedFields, viewMode, views, widget, options, string },
+        {attrs, relatedFields, viewMode, views, widget, options, string},
         dynamicInfo
     ) => {
         const x2ManyFieldProps = x2ManyField.extractProps(
-            { attrs, relatedFields, viewMode, views, widget, options, string },
+            {attrs, relatedFields, viewMode, views, widget, options, string},
             dynamicInfo
         );
         return {

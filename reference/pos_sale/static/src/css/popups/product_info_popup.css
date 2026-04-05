@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .product-info-popup .extra{
+    .product-info-popup .extra {
         flex-direction: column;
     }
     .product-info-popup .section-optional-product-body td {

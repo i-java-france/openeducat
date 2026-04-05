@@ -1,15 +1,15 @@
-import { Component, useState, useRef } from "@odoo/owl";
+import {Component, useState, useRef} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { useAutofocus } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useAutofocus} from "@web/core/utils/hooks";
 
 export class SubtaskCreate extends Component {
     static template = "project.SubtaskCreate";
     static props = {
         name: String,
-        isReadonly: { type: Boolean, optional: true },
-        onSubtaskCreateNameChanged: { type: Function },
-        onBlur: { type: Function },
+        isReadonly: {type: Boolean, optional: true},
+        onSubtaskCreateNameChanged: {type: Function},
+        onBlur: {type: Function},
     };
     setup() {
         this.placeholder = _t("Write a task name");
@@ -19,7 +19,7 @@ export class SubtaskCreate extends Component {
             isFieldInvalid: false,
         });
         this.input = useRef("subtaskCreateInput");
-        useAutofocus({ refName: "subtaskCreateInput" });
+        useAutofocus({refName: "subtaskCreateInput"});
     }
 
     /**

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models, _
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import UserError
 
 

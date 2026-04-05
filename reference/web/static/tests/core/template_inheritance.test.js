@@ -1,6 +1,6 @@
-import { test, expect } from "@odoo/hoot";
-import { applyInheritance } from "@web/core/template_inheritance";
-import { patchWithCleanup, serverState } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {applyInheritance} from "@web/core/template_inheritance";
+import {patchWithCleanup, serverState} from "@web/../tests/web_test_helpers";
 
 const parser = new DOMParser();
 const serializer = new XMLSerializer();
@@ -53,7 +53,7 @@ test("single operation: replace", async () => {
             // TODO check if text should be there? (I think there is a bug in python code)
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -70,7 +70,7 @@ test("single operation: replace (debug mode)", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <div><!-- From file: test/from_op ; expr="./div/h2" ; position="replace" --><h3 t-translation-context="from_op">Other title</h3>text</div> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -84,7 +84,7 @@ test("single operation: replace root (and use a $0)", async () => {
                     <xpath expr="." position="replace"><div>At first I was afraid</div>$0</xpath>
                 </t>`,
             result: `<div t-translation-context="from_op" t-name="web.A">At first I was afraid</div>`,
-            // in outer mode with no parent only first child of operation is kept
+            // In outer mode with no parent only first child of operation is kept
         },
         {
             arch: `<t t-name="web.A"> <div>I was petrified</div> </t>`,
@@ -124,7 +124,7 @@ test("single operation: replace root (and use a $0)", async () => {
             result: `<div overriden-attr="overriden" t-translation-context="from_op" t-name="template_1_1">And I grew strong</div>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -140,7 +140,7 @@ test("single operation: replace (mode inner)", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <div> E <div t-translation-context="from_op"/> F <span attr1="12" t-translation-context="from_op"/> </div> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -157,7 +157,7 @@ test("single operation: replace (mode inner) (debug mode)", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <div><!-- From file: test/from_op ; expr="./div" ; position="replace" ; mode="inner" --> E <div t-translation-context="from_op"/> F <span attr1="12" t-translation-context="from_op"/> </div> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -189,7 +189,7 @@ test("single operation: before", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> a 4 <div/> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -229,7 +229,7 @@ test("single operation: inside", async () => {
             result: `<t t-translation-context="from_target">a<div><span t-translation-context="from_op"/></div><span/></t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -253,7 +253,7 @@ test("single operation: after", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <div/>4a </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -285,7 +285,7 @@ test("single operation: attributes", async (assert) => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <div><a href="1"/><div><a href="2" found="1" t-translation-context-found="from_op"/></div></div> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -308,7 +308,7 @@ test("single operation: attributes (debug mode)", async () => {
             result: `<t t-name="web.A" t-translation-context="from_target"> <!-- From file: test/from_op ; expr="./div" ; position="attributes" --><div attr1="45" attr2="b c" t-translation-context-attr1="from_op" attr4="new" t-translation-context-attr4="from_op"/> </t>`,
         },
     ];
-    for (const { arch, operations, result } of toTest) {
+    for (const {arch, operations, result} of toTest) {
         expect(_applyInheritance(arch, operations)).toBe(result);
     }
 });
@@ -381,7 +381,7 @@ test("xpath with hasclass", async () => {
             isError: true,
         },
     ];
-    for (const { arch, operations, result, isError } of toTest) {
+    for (const {arch, operations, result, isError} of toTest) {
         if (isError) {
             expect(() => _applyInheritance(arch, operations)).toThrow();
         } else {

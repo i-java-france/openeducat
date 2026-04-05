@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import os
 import unittest
-
 from unittest.mock import MagicMock, patch
 
 from odoo.tests import new_test_user, tagged
+
 from .common import WebsocketCase
 
 

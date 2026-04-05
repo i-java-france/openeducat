@@ -4,18 +4,18 @@
 
 import logging
 import operator as py_operator
-import pytz
-
 from collections import defaultdict
 from datetime import date, datetime, time
+
+import pytz
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
-from odoo.tools import format_date, frozendict
-from odoo.tools.translate import _
+from odoo.tools import format_date
 from odoo.tools.float_utils import float_round
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -418,7 +418,7 @@ class HrLeaveType(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", leave_type.name)) for leave_type, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", leave_type.name)) for leave_type, vals in zip(self, vals_list, strict=False)]
 
     def action_see_days_allocated(self):
         self.ensure_one()

@@ -1,4 +1,5 @@
 from odoo import Command, models
+
 from odoo.addons.account.models.chart_template import template
 
 

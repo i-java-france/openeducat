@@ -1,4 +1,5 @@
-from odoo import fields, models, _
+from odoo import _, fields, models
+
 from odoo.addons.l10n_tr_nilvera.lib.nilvera_client import _get_nilvera_client
 
 

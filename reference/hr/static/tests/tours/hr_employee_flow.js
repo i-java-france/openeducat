@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
 
 registry.category("web_tour.tours").add("hr_employee_tour", {
     url: "/odoo",
@@ -21,7 +21,8 @@ registry.category("web_tour.tours").add("hr_employee_tour", {
             run: "click",
         },
         {
-            trigger: ".o-mail-ChatWindow .o-mail-ChatWindow-header:contains('Johnny H.')",
+            trigger:
+                ".o-mail-ChatWindow .o-mail-ChatWindow-header:contains('Johnny H.')",
         },
         {
             content: "Open user account menu",

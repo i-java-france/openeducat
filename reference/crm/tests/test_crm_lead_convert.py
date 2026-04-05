@@ -1,9 +1,11 @@
 from itertools import product
 
 from odoo import SUPERUSER_ID
-from odoo.addons.crm.tests import common as crm_common
 from odoo.fields import Datetime
 from odoo.tests import Form, tagged, users
+
+from odoo.addons.crm.tests import common as crm_common
+
 
 @tagged('lead_manage')
 class TestLeadConvertForm(crm_common.TestLeadConvertCommon):

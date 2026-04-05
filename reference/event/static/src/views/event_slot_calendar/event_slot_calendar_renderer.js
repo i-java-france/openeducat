@@ -1,6 +1,6 @@
-import { CalendarCommonRenderer } from "@web/views/calendar/calendar_common/calendar_common_renderer";
-import { CalendarRenderer } from "@web/views/calendar/calendar_renderer";
-import { CalendarYearRenderer } from "@web/views/calendar/calendar_year/calendar_year_renderer";
+import {CalendarCommonRenderer} from "@web/views/calendar/calendar_common/calendar_common_renderer";
+import {CalendarRenderer} from "@web/views/calendar/calendar_renderer";
+import {CalendarYearRenderer} from "@web/views/calendar/calendar_year/calendar_year_renderer";
 
 export class EventSlotCalendarCommonRenderer extends CalendarCommonRenderer {
     // Display end time and hide title on the full calendar library event.
@@ -10,7 +10,8 @@ export class EventSlotCalendarCommonRenderer extends CalendarCommonRenderer {
 
     setup() {
         super.setup(...arguments);
-        this.rangeStartDate = this.props.model.meta.context.event_calendar_range_start_date;
+        this.rangeStartDate =
+            this.props.model.meta.context.event_calendar_range_start_date;
         this.rangeEndDate = this.props.model.meta.context.event_calendar_range_end_date;
     }
 
@@ -41,7 +42,7 @@ export class EventSlotCalendarCommonRenderer extends CalendarCommonRenderer {
     /**
      * @override
      * Prevent click on disabled dates in mobile.
-    */
+     */
     onDateClick(info) {
         if (info.dayEl.classList.contains("o_calendar_disabled")) {
             return;

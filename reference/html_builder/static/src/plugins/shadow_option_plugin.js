@@ -1,7 +1,7 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { parseBoxShadow } from "@html_builder/utils/utils_css";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {parseBoxShadow} from "@html_builder/utils/utils_css";
 
 const shadowClass = "shadow";
 
@@ -66,13 +66,13 @@ registry.category("builder-plugins").add(ShadowOptionPlugin.id, ShadowOptionPlug
 
 export class SetShadowModeAction extends BuilderAction {
     static id = "setShadowMode";
-    isApplied({ editingElement, value: shadowMode }) {
+    isApplied({editingElement, value: shadowMode}) {
         return shadowMode === getShadowMode(editingElement);
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return getShadowMode(editingElement, "mode");
     }
-    apply({ editingElement, value: shadowMode }) {
+    apply({editingElement, value: shadowMode}) {
         if (shadowMode === "none") {
             editingElement.classList.remove(shadowClass);
             setBoxShadow(editingElement, "");
@@ -97,12 +97,12 @@ export class SetShadowModeAction extends BuilderAction {
 }
 export class SetShadowAction extends BuilderAction {
     static id = "setShadow";
-    apply({ editingElement, params: { mainParam: attributeName }, value }) {
+    apply({editingElement, params: {mainParam: attributeName}, value}) {
         const shadow = getCurrentShadow(editingElement);
         shadow[attributeName] = value;
         setBoxShadow(editingElement, shadowToString(shadow));
     }
-    getValue({ editingElement, params: { mainParam: attributeName } }) {
+    getValue({editingElement, params: {mainParam: attributeName}}) {
         return getCurrentShadow(editingElement)[attributeName];
     }
 }

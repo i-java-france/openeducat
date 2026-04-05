@@ -1,8 +1,8 @@
-import { addToBoardItem } from "@board/add_to_board/add_to_board";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { hover, press, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {addToBoardItem} from "@board/add_to_board/add_to_board";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {hover, press, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import * as dsHelpers from "@web/../tests/core/domain_selector/domain_selector_helpers";
 import {
     contains,
@@ -21,8 +21,8 @@ import {
     toggleMenuItem,
     toggleSearchBarMenu,
 } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
 
 describe.current.tags("desktop");
 
@@ -35,7 +35,7 @@ class Partner extends models.Model {
         default: "My little Foo Value",
         searchable: true,
     });
-    bar = fields.Boolean({ string: "Bar" });
+    bar = fields.Boolean({string: "Bar"});
     int_field = fields.Integer({
         string: "Integer field",
         aggregator: "sum",
@@ -72,7 +72,7 @@ function getAddToDashboardMenu() {
 }
 
 beforeEach(() => {
-    favoriteMenuRegistry.add("add-to-board", addToBoardItem, { sequence: 10 });
+    favoriteMenuRegistry.add("add-to-board", addToBoardItem, {sequence: 10});
 });
 
 test("save actions to dashboard", async () => {
@@ -83,7 +83,7 @@ test("save actions to dashboard", async () => {
     };
 
     onRpc("/board/add_to_dashboard", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args.context_to_save.group_by).toEqual(["foo"], {
             message: "The group_by should have been saved",
         });
@@ -94,13 +94,15 @@ test("save actions to dashboard", async () => {
                     asc: true,
                 },
             ],
-            { message: "The orderedBy should have been saved" }
+            {message: "The orderedBy should have been saved"}
         );
         expect(args.context_to_save.fire).toBe("on the bayou", {
             message: "The context of a controller should be passed and flattened",
         });
-        expect(args.action_id).toBe(1, { message: "should save the correct action" });
-        expect(args.view_mode).toBe("list", { message: "should save the correct view type" });
+        expect(args.action_id).toBe(1, {message: "should save the correct action"});
+        expect(args.view_mode).toBe("list", {
+            message: "should save the correct view type",
+        });
         return true;
     });
 
@@ -109,11 +111,11 @@ test("save actions to dashboard", async () => {
         id: 1,
         res_model: "partner",
         type: "ir.actions.act_window",
-        context: { fire: "on the bayou" },
+        context: {fire: "on the bayou"},
         views: [[false, "list"]],
     });
 
-    expect(".o_list_view").toHaveCount(1, { message: "should display the list view" });
+    expect(".o_list_view").toHaveCount(1, {message: "should display the list view"});
 
     // Sort the list
     await contains(".o_column_sortable").click();
@@ -122,17 +124,17 @@ test("save actions to dashboard", async () => {
     await toggleSearchBarMenu();
     await selectGroup("foo");
 
-    // add this action to dashboard
+    // Add this action to dashboard
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("input", { root: getAddToDashboardMenu() })).edit("a name", {
+    await contains(queryOne("input", {root: getAddToDashboardMenu()})).edit("a name", {
         confirm: false,
     });
-    await contains(queryOne("button", { root: getAddToDashboardMenu() })).click();
+    await contains(queryOne("button", {root: getAddToDashboardMenu()})).click();
 });
 
 test("save two searches to dashboard", async () => {
-    // the second search saved should not be influenced by the first
+    // The second search saved should not be influenced by the first
     expect.assertions(2);
 
     Partner._views = {
@@ -146,7 +148,7 @@ test("save two searches to dashboard", async () => {
     };
 
     onRpc("/board/add_to_dashboard", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         if (filter_count === 0) {
             expect(args.domain).toEqual([["name", "ilike", "a"]], {
                 message: "the correct domain should be sent",
@@ -179,7 +181,7 @@ test("save two searches to dashboard", async () => {
     // Add it to dashboard
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("button", { root: getAddToDashboardMenu() })).click();
+    await contains(queryOne("button", {root: getAddToDashboardMenu()})).click();
 
     // Remove it
     await removeFacet("Filter on a");
@@ -191,7 +193,7 @@ test("save two searches to dashboard", async () => {
     // Add it to dashboard
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("button", { root: getAddToDashboardMenu() })).click();
+    await contains(queryOne("button", {root: getAddToDashboardMenu()})).click();
 });
 
 test("save an action domain to dashboard", async () => {
@@ -213,7 +215,7 @@ test("save an action domain to dashboard", async () => {
     };
 
     onRpc("/board/add_to_dashboard", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args.domain).toEqual(expectedDomain, {
             message: "the correct domain should be sent",
         });
@@ -237,8 +239,8 @@ test("save an action domain to dashboard", async () => {
     // Add it to dashboard
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    // add
-    await contains(queryOne("button", { root: getAddToDashboardMenu() })).click();
+    // Add
+    await contains(queryOne("button", {root: getAddToDashboardMenu()})).click();
 });
 
 test("add to dashboard with no action id", async () => {
@@ -274,7 +276,7 @@ test("Add a view to dashboard (keynav)", async () => {
         pivot: '<pivot><field name="foo"/></pivot>',
     };
 
-    // makes mouseEnter work
+    // Makes mouseEnter work
 
     onRpc("/board/add_to_dashboard", () => {
         expect.step("add to board");
@@ -293,9 +295,12 @@ test("Add a view to dashboard (keynav)", async () => {
     await toggleSearchBarMenu();
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("input", { root: getAddToDashboardMenu() })).edit("Pipeline", {
-        confirm: false,
-    });
+    await contains(queryOne("input", {root: getAddToDashboardMenu()})).edit(
+        "Pipeline",
+        {
+            confirm: false,
+        }
+    );
     await press("Enter");
 
     expect.verifySteps(["add to board"]);
@@ -312,10 +317,10 @@ test("Add a view with dynamic domain", async () => {
             </search>`,
     };
 
-    // makes mouseEnter work
+    // Makes mouseEnter work
 
     onRpc("/board/add_to_dashboard", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args.domain).toEqual(["&", ["int_field", "<=", 3], ["user_id", "=", 7]]);
         return true;
     });
@@ -328,13 +333,13 @@ test("Add a view with dynamic domain", async () => {
         type: "ir.actions.act_window",
         views: [[false, "pivot"]],
         domain: [["int_field", "<=", 3]],
-        context: { search_default_filter: 1 },
+        context: {search_default_filter: 1},
     });
 
     await toggleSearchBarMenu();
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("input", { root: getAddToDashboardMenu() })).edit("Pipeline");
+    await contains(queryOne("input", {root: getAddToDashboardMenu()})).edit("Pipeline");
 });
 
 test("Add a view to dashboard doesn't save default filters", async () => {
@@ -349,11 +354,11 @@ test("Add a view to dashboard doesn't save default filters", async () => {
             </search>`,
     };
 
-    // makes mouseEnter work
+    // Makes mouseEnter work
     serverState.debug = "1";
 
     onRpc("/board/add_to_dashboard", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args.domain).toEqual([["foo", "=", "yop"]]);
         expect(args.context_to_save).toEqual({
             pivot_measures: ["__count"],
@@ -379,7 +384,7 @@ test("Add a view to dashboard doesn't save default filters", async () => {
             [false, "list"],
             [false, "pivot"],
         ],
-        context: { search_default_filter: 1 },
+        context: {search_default_filter: 1},
     });
 
     await switchView("pivot");
@@ -397,7 +402,7 @@ test("Add a view to dashboard doesn't save default filters", async () => {
     await toggleSearchBarMenu();
     await hover(".o_add_to_board button.dropdown-toggle");
     await animationFrame();
-    await contains(queryOne("input", { root: getAddToDashboardMenu() })).edit("Pipeline");
+    await contains(queryOne("input", {root: getAddToDashboardMenu()})).edit("Pipeline");
 });
 
 test("Add to my dashboard is not available in form views", async () => {
@@ -411,20 +416,20 @@ test("Add to my dashboard is not available in form views", async () => {
         id: 1,
         res_model: "partner",
         type: "ir.actions.act_window",
-        context: { fire: "on the bayou" },
+        context: {fire: "on the bayou"},
         views: [
             [false, "list"],
             [false, "form"],
         ],
     });
 
-    expect(".o_list_view").toHaveCount(1, { message: "should display the list view" });
+    expect(".o_list_view").toHaveCount(1, {message: "should display the list view"});
 
-    // sanity check
+    // Sanity check
     await contains(".o_cp_action_menus .dropdown-toggle").click();
     expect(".o-dropdown--menu .o_add_to_board").toHaveCount(1);
 
-    // open form view
+    // Open form view
     await contains(".o_data_cell").click();
     expect(".o_form_view").toHaveCount(1);
 

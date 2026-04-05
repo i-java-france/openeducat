@@ -1,14 +1,14 @@
-import { DIRECTIONS, nodeSize } from "@html_editor/utils/position";
+import {DIRECTIONS, nodeSize} from "@html_editor/utils/position";
 import {
     ensureFocus,
     getAdjacentCharacter,
     getCursorDirection,
 } from "@html_editor/utils/selection";
-import { describe, expect, test } from "@odoo/hoot";
-import { dispatch } from "@odoo/hoot-dom";
-import { insertText, setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { setSelection } from "../_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {dispatch} from "@odoo/hoot-dom";
+import {insertText, setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {setSelection} from "../_helpers/selection";
 
 describe("ensureFocus", () => {
     // TODO @phoenix: unskipped when ensureFocus is add in the code base
@@ -24,14 +24,16 @@ describe("ensureFocus", () => {
                 stepFunction: async (editor) => {
                     const sel = document.getSelection();
                     const element = sel.anchorNode;
-                    await dispatch(editor.editable, "keydown", { key: "/" });
+                    await dispatch(editor.editable, "keydown", {key: "/"});
                     await insertText(editor, "/");
-                    await dispatch(editor.editable, "keyup", { key: "/" });
+                    await dispatch(editor.editable, "keyup", {key: "/"});
                     await insertText(editor, "h2");
-                    await dispatch(element, "keyup", { key: "2" });
-                    await dispatch(editor.editable, "keydown", { key: "Enter" });
+                    await dispatch(element, "keyup", {key: "2"});
+                    await dispatch(editor.editable, "keydown", {key: "Enter"});
                     const activeElement = document.activeElement;
-                    editor.shared.selection.setCursorStart(activeElement.lastElementChild);
+                    editor.shared.selection.setCursorStart(
+                        activeElement.lastElementChild
+                    );
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                 },
@@ -58,7 +60,9 @@ describe("ensureFocus", () => {
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                     let activeElement = document.activeElement;
-                    editor.shared.selection.setCursorStart(activeElement.lastElementChild);
+                    editor.shared.selection.setCursorStart(
+                        activeElement.lastElementChild
+                    );
                     await insertText(editor, "focusWasConserved");
                     // Proof that a simple call to Element.focus would change
                     // the focus in this case.
@@ -66,7 +70,9 @@ describe("ensureFocus", () => {
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                     activeElement = document.activeElement;
-                    editor.shared.selection.setCursorStart(activeElement.lastElementChild);
+                    editor.shared.selection.setCursorStart(
+                        activeElement.lastElementChild
+                    );
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                 },
@@ -96,7 +102,9 @@ describe("ensureFocus", () => {
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                     const activeElement = document.activeElement;
-                    editor.shared.selection.setCursorStart(activeElement.lastElementChild);
+                    editor.shared.selection.setCursorStart(
+                        activeElement.lastElementChild
+                    );
                     // TODO @phoenix still need it ?
                     // await nextTickFrame();
                 },
@@ -117,11 +125,11 @@ describe("getCursorDirection", () => {
         await testEditor({
             contentBefore: "<p>a[bc]d</p>",
             stepFunction: (editor) => {
-                const { anchorNode, anchorOffset, focusNode, focusOffset } =
+                const {anchorNode, anchorOffset, focusNode, focusOffset} =
                     editor.document.getSelection();
-                expect(getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)).toBe(
-                    DIRECTIONS.RIGHT
-                );
+                expect(
+                    getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)
+                ).toBe(DIRECTIONS.RIGHT);
             },
         });
     });
@@ -130,11 +138,11 @@ describe("getCursorDirection", () => {
         await testEditor({
             contentBefore: "<p>a]bc[d</p>",
             stepFunction: (editor) => {
-                const { anchorNode, anchorOffset, focusNode, focusOffset } =
+                const {anchorNode, anchorOffset, focusNode, focusOffset} =
                     editor.document.getSelection();
-                expect(getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)).toBe(
-                    DIRECTIONS.LEFT
-                );
+                expect(
+                    getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)
+                ).toBe(DIRECTIONS.LEFT);
             },
         });
     });
@@ -143,11 +151,11 @@ describe("getCursorDirection", () => {
         await testEditor({
             contentBefore: "<p>ab[]cd</p>",
             stepFunction: (editor) => {
-                const { anchorNode, anchorOffset, focusNode, focusOffset } =
+                const {anchorNode, anchorOffset, focusNode, focusOffset} =
                     editor.document.getSelection();
-                expect(getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)).toBe(
-                    false
-                );
+                expect(
+                    getCursorDirection(anchorNode, anchorOffset, focusNode, focusOffset)
+                ).toBe(false);
             },
         });
     });
@@ -155,10 +163,10 @@ describe("getCursorDirection", () => {
 
 describe("getAdjacentCharacter", () => {
     test("should return the ZWS character before the cursor", async () => {
-        const { editor, el } = await setupEditor("<p><span>abc</span>\u200b</p>");
+        const {editor, el} = await setupEditor("<p><span>abc</span>\u200b</p>");
         const p = el.firstChild;
         // Place the cursor at the end of the P (not in a leaf node)
-        setSelection({ anchorNode: p, anchorOffset: nodeSize(p) });
+        setSelection({anchorNode: p, anchorOffset: nodeSize(p)});
         const selection = editor.document.getSelection();
         expect(getAdjacentCharacter(selection, "previous", el)).toBe("\u200b");
     });

@@ -1,5 +1,6 @@
-from odoo.tests import tagged
 import logging
+
+from odoo.tests import tagged
 
 from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 

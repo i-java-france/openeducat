@@ -1,7 +1,7 @@
-import { describe, test } from "@odoo/hoot";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { base64Img, testEditor } from "./_helpers/editor";
-import { insertText } from "./_helpers/user_actions";
+import {describe, test} from "@odoo/hoot";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {base64Img, testEditor} from "./_helpers/editor";
+import {insertText} from "./_helpers/user_actions";
 
 describe("inline code", () => {
     test("should convert text into inline code (start) (1)", async () => {
@@ -120,10 +120,12 @@ describe("inline code", () => {
         await testEditor({
             contentBefore: "<p>b`c[]d</p>",
             stepFunction: async (editor) => {
-                editor.document.getSelection().anchorNode.before(document.createTextNode("a"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.before(document.createTextNode("a"));
 
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 await insertText(editor, "`");
             },
@@ -138,10 +140,12 @@ describe("inline code", () => {
         await testEditor({
             contentBefore: "<p>a`b[]c</p>",
             stepFunction: async (editor) => {
-                editor.document.getSelection().anchorNode.after(document.createTextNode("d"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.after(document.createTextNode("d"));
 
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 await insertText(editor, "`");
             },
@@ -156,11 +160,15 @@ describe("inline code", () => {
         await testEditor({
             contentBefore: "<p>b`c[]d</p>",
             stepFunction: async (editor) => {
-                editor.document.getSelection().anchorNode.before(document.createTextNode("a"));
-                editor.document.getSelection().anchorNode.after(document.createTextNode("e"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.before(document.createTextNode("a"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.after(document.createTextNode("e"));
 
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 await insertText(editor, "`");
             },
@@ -175,10 +183,12 @@ describe("inline code", () => {
         await testEditor({
             contentBefore: "<p>ab[]c</p>",
             stepFunction: async (editor) => {
-                editor.document.getSelection().anchorNode.before(document.createTextNode("`"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.before(document.createTextNode("`"));
 
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 await insertText(editor, "`");
             },
@@ -193,10 +203,12 @@ describe("inline code", () => {
         await testEditor({
             contentBefore: "<p>ab[]c</p>",
             stepFunction: async (editor) => {
-                editor.document.getSelection().anchorNode.after(document.createTextNode("`"));
+                editor.document
+                    .getSelection()
+                    .anchorNode.after(document.createTextNode("`"));
 
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 await insertText(editor, "`");
             },

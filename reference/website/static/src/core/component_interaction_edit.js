@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { PublicComponentInteraction } from "@web/public/public_component_interaction";
+import {registry} from "@web/core/registry";
+import {PublicComponentInteraction} from "@web/public/public_component_interaction";
 
 // We register an editable interaction here to add support for <owl-component/>
 // in edit mode. The idea is that <owl-components /> in edit mode are rendered,

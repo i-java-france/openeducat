@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from odoo.exceptions import UserError
-from odoo.tests.common import HttpCase, tagged, freeze_time
+from odoo.tests.common import HttpCase, freeze_time, tagged
 from odoo.tools import mute_logger
 
 from odoo.addons.account_peppol.tests.common import PeppolConnectorCommon

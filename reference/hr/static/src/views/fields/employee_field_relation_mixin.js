@@ -1,7 +1,7 @@
-import { AvatarCardEmployeePopover } from "@hr/components/avatar_card_employee/avatar_card_employee_popover";
-import { onWillStart } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { user } from "@web/core/user";
+import {AvatarCardEmployeePopover} from "@hr/components/avatar_card_employee/avatar_card_employee_popover";
+import {onWillStart} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {user} from "@web/core/user";
 
 /**
  * Mixin that handles public/private access of employee records in many2X fields
@@ -12,7 +12,7 @@ export function EmployeeFieldRelationMixin(fieldClass) {
     return class extends fieldClass {
         static props = {
             ...fieldClass.props,
-            relation: { type: String, optional: true },
+            relation: {type: String, optional: true},
         };
 
         setup() {
@@ -20,7 +20,9 @@ export function EmployeeFieldRelationMixin(fieldClass) {
             onWillStart(async () => {
                 this.isHrUser = await user.hasGroup("hr.group_hr_user");
             });
-            this.avatarCard = usePopover(AvatarCardEmployeePopover, { closeOnClickAway: true });
+            this.avatarCard = usePopover(AvatarCardEmployeePopover, {
+                closeOnClickAway: true,
+            });
         }
 
         get relation() {

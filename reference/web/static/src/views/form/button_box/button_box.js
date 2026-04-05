@@ -1,14 +1,14 @@
-import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {useService} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
-import { Component, onWillRender } from "@odoo/owl";
+import {Component, onWillRender} from "@odoo/owl";
 export class ButtonBox extends Component {
     static template = "web.Form.ButtonBox";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
         slots: Object,
-        class: { type: String, optional: true },
+        class: {type: String, optional: true},
     };
     static defaultProps = {
         class: "",

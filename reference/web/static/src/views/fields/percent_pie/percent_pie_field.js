@@ -1,15 +1,15 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { formatFloat } from "../formatters";
-import { standardFieldProps } from "../standard_field_props";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {formatFloat} from "../formatters";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class PercentPieField extends Component {
     static template = "web.PercentPieField";
     static props = {
         ...standardFieldProps,
-        string: { type: String, optional: true },
+        string: {type: String, optional: true},
     };
 
     /**
@@ -27,7 +27,7 @@ export const percentPieField = {
     displayName: _t("PercentPie"),
     supportedTypes: ["float", "integer"],
     additionalClasses: ["o_field_percent_pie"],
-    extractProps: ({ string }) => ({ string }),
+    extractProps: ({string}) => ({string}),
 };
 
 registry.category("fields").add("percentpie", percentPieField);

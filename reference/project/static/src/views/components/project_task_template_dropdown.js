@@ -1,9 +1,9 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
-import { ProjectTemplateButtons } from "./project_template_buttons";
+import {ProjectTemplateButtons} from "./project_template_buttons";
 
 export class ProjectTaskTemplateDropdown extends Component {
     static template = "project.TemplateDropdown";
@@ -39,7 +39,7 @@ export class ProjectTaskTemplateDropdown extends Component {
     setup() {
         this.action = useService("action");
         this.orm = useService("orm");
-        this.state = useState({ taskTemplates: [] });
+        this.state = useState({taskTemplates: []});
         onWillStart(this.onWillStart);
     }
 
@@ -60,7 +60,7 @@ export class ProjectTaskTemplateDropdown extends Component {
     }
 
     async createTaskFromTemplate(templateId) {
-        const context = { ...this.props.context };
+        const context = {...this.props.context};
         if (this.props.getAdditionalContext) {
             Object.assign(context, this.props.getAdditionalContext());
         }

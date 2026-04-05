@@ -1,6 +1,6 @@
-import { Record } from "./record";
-import { STORE_SYM, modelRegistry } from "./misc";
-import { reactive, toRaw } from "@odoo/owl";
+import {Record} from "./record";
+import {STORE_SYM, modelRegistry} from "./misc";
+import {reactive, toRaw} from "@odoo/owl";
 
 /** @typedef {import("./record_list").RecordList} RecordList */
 
@@ -78,7 +78,7 @@ export class Store extends Record {
                     const [record, recMap] = FC_QUEUE.entries().next().value;
                     FC_QUEUE.delete(record);
                     for (const fieldName of recMap.keys()) {
-                        record._.requestCompute(record, fieldName, { force: true });
+                        record._.requestCompute(record, fieldName, {force: true});
                     }
                 }
                 while (FS_QUEUE.size > 0) {
@@ -86,7 +86,7 @@ export class Store extends Record {
                     const [record, recMap] = FS_QUEUE.entries().next().value;
                     FS_QUEUE.delete(record);
                     for (const fieldName of recMap.keys()) {
-                        record._.requestSort(record, fieldName, { force: true });
+                        record._.requestSort(record, fieldName, {force: true});
                     }
                 }
                 while (FA_QUEUE.size > 0) {
@@ -149,9 +149,9 @@ export class Store extends Record {
                     RD_QUEUE.delete(record);
                     for (const [localId, names] of record._.uses.data.entries()) {
                         for (const [name2, count] of names.entries()) {
-                            const existingRecordProxyInternal = toRaw(this.recordByLocalId).get(
-                                localId
-                            );
+                            const existingRecordProxyInternal = toRaw(
+                                this.recordByLocalId
+                            ).get(localId);
                             const usingRecord =
                                 (existingRecordProxyInternal &&
                                     toRaw(existingRecordProxyInternal)?._raw) ||
@@ -205,9 +205,15 @@ export class Store extends Record {
         Record.MAKE_UPDATE(function storeInsert() {
             const recordsDataToDelete = [];
             for (const [pyOrJsModelName, data] of Object.entries(dataByModelName)) {
-                const modelName = storeInsertFns.getActualModelName(store, ctx, pyOrJsModelName);
+                const modelName = storeInsertFns.getActualModelName(
+                    store,
+                    ctx,
+                    pyOrJsModelName
+                );
                 if (!store[modelName]) {
-                    console.warn(`store.insert() received data for unknown model “${modelName}”.`);
+                    console.warn(
+                        `store.insert() received data for unknown model “${modelName}”.`
+                    );
                     continue;
                 }
                 const insertData = [];

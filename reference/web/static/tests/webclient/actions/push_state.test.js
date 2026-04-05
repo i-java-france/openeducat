@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
-import { Component, onMounted, xml } from "@odoo/owl";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {Component, onMounted, xml} from "@odoo/owl";
 import {
     contains,
     defineActions,
@@ -17,11 +17,11 @@ import {
     validateSearch,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { router } from "@web/core/browser/router";
-import { registry } from "@web/core/registry";
-import { redirect } from "@web/core/utils/urls";
-import { WebClient } from "@web/webclient/webclient";
+import {browser} from "@web/core/browser/browser";
+import {router} from "@web/core/browser/router";
+import {registry} from "@web/core/registry";
+import {redirect} from "@web/core/utils/urls";
+import {WebClient} from "@web/webclient/webclient";
 
 describe.current.tags("desktop");
 
@@ -65,35 +65,35 @@ defineActions([
         tag: "__test__client__action__",
         target: "main",
         type: "ir.actions.client",
-        params: { description: "Id 1" },
+        params: {description: "Id 1"},
     },
     {
         id: 1002,
         tag: "__test__client__action__",
         target: "main",
         type: "ir.actions.client",
-        params: { description: "Id 2" },
+        params: {description: "Id 2"},
     },
 ]);
 
 defineMenus([
-    { id: 0 }, // prevents auto-loading the first action
-    { id: 1, actionID: 1001 },
-    { id: 2, actionID: 1002 },
+    {id: 0}, // Prevents auto-loading the first action
+    {id: 1, actionID: 1001},
+    {id: 2, actionID: 1002},
 ]);
 
 class Partner extends models.Model {
     name = fields.Char();
     foo = fields.Char();
-    parent_id = fields.Many2one({ relation: "partner" });
-    child_ids = fields.One2many({ relation: "partner", relation_field: "parent_id" });
+    parent_id = fields.Many2one({relation: "partner"});
+    child_ids = fields.One2many({relation: "partner", relation_field: "parent_id"});
 
     _records = [
-        { id: 1, name: "First record", foo: "yop" },
-        { id: 2, name: "Second record", foo: "blip" },
-        { id: 3, name: "Third record", foo: "gnap" },
-        { id: 4, name: "Fourth record", foo: "plop" },
-        { id: 5, name: "Fifth record", foo: "zoup" },
+        {id: 1, name: "First record", foo: "yop"},
+        {id: 2, name: "Second record", foo: "blip"},
+        {id: 3, name: "Third record", foo: "gnap"},
+        {id: 4, name: "Fourth record", foo: "plop"},
+        {id: 5, name: "Fifth record", foo: "zoup"},
     ];
     _views = {
         "kanban,1": /* xml */ `
@@ -134,9 +134,9 @@ class Pony extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 4, name: "Twilight Sparkle" },
-        { id: 6, name: "Applejack" },
-        { id: 9, name: "Fluttershy" },
+        {id: 4, name: "Twilight Sparkle"},
+        {id: 6, name: "Applejack"},
+        {id: 9, name: "Fluttershy"},
     ];
     _views = {
         list: `<list><field name="name"/></list>`,
@@ -207,7 +207,7 @@ test(`do action keeps menu in url`, async () => {
     expect(`.test_client_action`).toHaveText("ClientAction_Id 2");
     expect(`.o_menu_brand`).toHaveText("App2");
 
-    await getService("action").doAction(1001, { clearBreadcrumbs: true });
+    await getService("action").doAction(1001, {clearBreadcrumbs: true});
     await animationFrame();
     expect(browser.location.href).toBe("http://example.com/odoo/action-1001");
     expect(router.current.action).toBe(1001);
@@ -225,7 +225,7 @@ test(`actions can push state`, async () => {
         static props = ["*"];
 
         _actionPushState() {
-            router.pushState({ arbitrary: "actionPushed" });
+            router.pushState({arbitrary: "actionPushed"});
         }
     }
     actionRegistry.add("client_action_pushes", ClientActionPushes);
@@ -262,7 +262,7 @@ test(`actions override previous state`, async () => {
         static props = ["*"];
 
         _actionPushState() {
-            router.pushState({ arbitrary: "actionPushed" });
+            router.pushState({arbitrary: "actionPushed"});
         }
     }
     actionRegistry.add("client_action_pushes", ClientActionPushes);
@@ -273,7 +273,7 @@ test(`actions override previous state`, async () => {
     expect(router.current).toEqual({});
 
     await getService("action").doAction("client_action_pushes");
-    await animationFrame(); // wait for pushState because it's unrealistic to click before it
+    await animationFrame(); // Wait for pushState because it's unrealistic to click before it
     await contains(`.test_client_action`).click();
     await animationFrame();
     expect(browser.location.href).toBe(
@@ -286,7 +286,8 @@ test(`actions override previous state`, async () => {
     await getService("action").doAction(1001);
     await animationFrame();
     expect(browser.location.href).toBe("http://example.com/odoo/action-1001", {
-        message: "client_action_pushes removed from url because action 1001 is in target main",
+        message:
+            "client_action_pushes removed from url because action 1001 is in target main",
     });
     expect(browser.history.length).toBe(4);
     expect(router.current.action).toBe(1001);
@@ -303,7 +304,7 @@ test(`actions override previous state from menu click`, async () => {
         static props = ["*"];
 
         _actionPushState() {
-            router.pushState({ arbitrary: "actionPushed" });
+            router.pushState({arbitrary: "actionPushed"});
         }
     }
     actionRegistry.add("client_action_pushes", ClientActionPushes);
@@ -329,7 +330,7 @@ test(`action in target new do not push state`, async () => {
             tag: "__test__client__action__",
             target: "new",
             type: "ir.actions.client",
-            params: { description: "Id 1" },
+            params: {description: "Id 1"},
         },
     ]);
 
@@ -350,7 +351,7 @@ test(`action in target new do not push state`, async () => {
     expect(browser.location.href).toBe("http://example.com/odoo", {
         message: "url did not change",
     });
-    expect(browser.history.length).toBe(1, { message: "did not create a history entry" });
+    expect(browser.history.length).toBe(1, {message: "did not create a history entry"});
     expect(router.current).toEqual({});
 });
 
@@ -478,12 +479,12 @@ test(`do not push state when action fails`, async () => {
     });
 
     await contains(`tr.o_data_row:first`).click();
-    // we make sure here that the list view is still in the dom
+    // We make sure here that the list view is still in the dom
     expect(`.o_list_view`).toHaveCount(1, {
         message: "there should still be a list view in dom",
     });
 
-    await animationFrame(); // wait for possible debounced pushState
+    await animationFrame(); // Wait for possible debounced pushState
     expect(browser.location.href).toBe("http://example.com/odoo/action-8");
     expect(browser.history.length).toBe(2);
     expect(router.current).toEqual({
@@ -519,16 +520,18 @@ test(`view_type is in url when not the default one`, async () => {
     });
     expect(`.breadcrumb`).toHaveCount(0);
 
-    await getService("action").doAction(3, { viewType: "kanban" });
+    await getService("action").doAction(3, {viewType: "kanban"});
     await animationFrame();
-    expect(browser.location.href).toBe("http://example.com/odoo/action-3?view_type=kanban");
-    expect(browser.history.length).toBe(3, { message: "created a history entry" });
+    expect(browser.location.href).toBe(
+        "http://example.com/odoo/action-3?view_type=kanban"
+    );
+    expect(browser.history.length).toBe(3, {message: "created a history entry"});
     expect(`.breadcrumb`).toHaveCount(1, {
         message: "created a breadcrumb entry",
     });
     expect(router.current).toEqual({
         action: 3,
-        view_type: "kanban", // view_type is on the state when it's not the default one
+        view_type: "kanban", // View_type is on the state when it's not the default one
         actionStack: [
             {
                 action: 3,
@@ -567,12 +570,14 @@ test(`switchView pushes the stat but doesn't add to the breadcrumbs`, async () =
 
     await getService("action").switchView("kanban");
     await animationFrame();
-    expect(browser.location.href).toBe("http://example.com/odoo/action-3?view_type=kanban");
-    expect(browser.history.length).toBe(3, { message: "created a history entry" });
-    expect(`.breadcrumb`).toHaveCount(0, { message: "didn't create a breadcrumb entry" });
+    expect(browser.location.href).toBe(
+        "http://example.com/odoo/action-3?view_type=kanban"
+    );
+    expect(browser.history.length).toBe(3, {message: "created a history entry"});
+    expect(`.breadcrumb`).toHaveCount(0, {message: "didn't create a breadcrumb entry"});
     expect(router.current).toEqual({
         action: 3,
-        view_type: "kanban", // view_type is on the state when it's not the default one
+        view_type: "kanban", // View_type is on the state when it's not the default one
         actionStack: [
             {
                 action: 3,
@@ -603,12 +608,12 @@ test(`properly push globalState`, async () => {
         ],
     });
 
-    // add element on the search Model
+    // Add element on the search Model
     await editSearch("blip");
     await validateSearch();
     expect(queryAllTexts(".o_facet_value")).toEqual(["blip"]);
 
-    //open record
+    // Open record
     await contains(".o_kanban_record").click();
 
     // Add the globalState on the state before leaving the kanban
@@ -626,7 +631,7 @@ test(`properly push globalState`, async () => {
         },
     });
 
-    // pushState is defered
+    // PushState is defered
     await animationFrame();
     expect(".o_form_view").toHaveCount(1);
     expect(browser.location.href).toBe("http://example.com/odoo/action-4/2");
@@ -648,7 +653,7 @@ test(`properly push globalState`, async () => {
         resId: 2,
     });
 
-    // came back using the browser
+    // Came back using the browser
     browser.history.back(); // Click on back button
     await animationFrame();
 

@@ -1,6 +1,6 @@
-import { reactive } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
+import {reactive} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
 
 export const frequentEmojiService = {
     start() {
@@ -9,7 +9,10 @@ export const frequentEmojiService = {
             incrementEmojiUsage(codepoints) {
                 state.all[codepoints] ??= 0;
                 state.all[codepoints]++;
-                browser.localStorage.setItem("web.emoji.frequent", JSON.stringify(state.all));
+                browser.localStorage.setItem(
+                    "web.emoji.frequent",
+                    JSON.stringify(state.all)
+                );
             },
             getMostFrequent(limit) {
                 return Object.entries(state.all)

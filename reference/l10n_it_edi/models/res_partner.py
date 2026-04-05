@@ -2,7 +2,7 @@
 
 from stdnum.it import codicefiscale, iva
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 

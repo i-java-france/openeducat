@@ -1,7 +1,7 @@
 <templates>
     <t t-name="html_builder.LayoutColumnOption">
         <BuilderRow label.translate="Columns">
-            <SelectNumberColumn/>
+            <SelectNumberColumn />
         </BuilderRow>
     </t>
 </templates>

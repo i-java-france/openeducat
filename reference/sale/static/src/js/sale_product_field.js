@@ -2,23 +2,27 @@ import {
     ProductLabelSectionAndNoteField,
     productLabelSectionAndNoteField,
 } from "@account/components/product_label_section_and_note_field/product_label_section_and_note_field";
-import { useEffect } from "@odoo/owl";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { uuid } from "@web/core/utils/strings";
-import { ComboConfiguratorDialog } from "./combo_configurator_dialog/combo_configurator_dialog";
-import { ProductCombo } from "./models/product_combo";
-import { ProductConfiguratorDialog } from "./product_configurator_dialog/product_configurator_dialog";
-import { getLinkedSaleOrderLines, serializeComboItem, getSelectedCustomPtav } from "./sale_utils";
+import {useEffect} from "@odoo/owl";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {uuid} from "@web/core/utils/strings";
+import {ComboConfiguratorDialog} from "./combo_configurator_dialog/combo_configurator_dialog";
+import {ProductCombo} from "./models/product_combo";
+import {ProductConfiguratorDialog} from "./product_configurator_dialog/product_configurator_dialog";
+import {
+    getLinkedSaleOrderLines,
+    serializeComboItem,
+    getSelectedCustomPtav,
+} from "./sale_utils";
 
 async function applyProduct(record, product) {
     // handle custom values & no variants
     const customAttributesCommands = [
-        x2ManyCommands.set([]),  // Command.clear isn't supported in static_list/_applyCommands
+        x2ManyCommands.set([]), // Command.clear isn't supported in static_list/_applyCommands
     ];
     for (const ptal of product.attribute_lines) {
         const selectedCustomPTAV = getSelectedCustomPtav(ptal);
@@ -42,11 +46,11 @@ async function applyProduct(record, product) {
     // We use `_update` (not locked) instead of `update` (locked) so that multiple records can be
     // updated in parallel (for performance).
     const update_values = {
-        product_id: { id: product.id, display_name: product.display_name },
+        product_id: {id: product.id, display_name: product.display_name},
         product_uom_qty: product.quantity,
         product_no_variant_attribute_value_ids: [x2ManyCommands.set(noVariantPTAVIds)],
         product_custom_attribute_value_ids: customAttributesCommands,
-    }
+    };
     if (product.uom) {
         // only update uom field if uom are enabled (uom_data provided), otherwise we don't have the display_name
         // and the value isn't expected to change anyway.
@@ -59,7 +63,7 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
     static template = "sale.SaleProductField";
     static props = {
         ...super.props,
-        readonlyField: { type: Boolean, optional: true },
+        readonlyField: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -70,29 +74,34 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         this.isInternalUpdate = false;
         this.wasCombo = false;
         let isMounted = false;
-        useEffect(value => {
-            if (!isMounted) {
-                isMounted = true;
-            } else if (value && this.isInternalUpdate) {
-                // we don't want to trigger product update when update comes from an external sources,
-                // such as an onchange, or the product configuration dialog itself
-                if (this.wasCombo) {
-                    // If the previously selected product was a combo, delete its selected combo
-                    // items before changing the product.
-                    this.props.record.update({ selected_combo_items: JSON.stringify([]) });
+        useEffect(
+            (value) => {
+                if (!isMounted) {
+                    isMounted = true;
+                } else if (value && this.isInternalUpdate) {
+                    // we don't want to trigger product update when update comes from an external sources,
+                    // such as an onchange, or the product configuration dialog itself
+                    if (this.wasCombo) {
+                        // If the previously selected product was a combo, delete its selected combo
+                        // items before changing the product.
+                        this.props.record.update({
+                            selected_combo_items: JSON.stringify([]),
+                        });
+                    }
+                    if (this.relation === "product.template" || this.isCombo) {
+                        this._onProductTemplateUpdate();
+                    } else {
+                        this._onProductUpdate();
+                    }
                 }
-                if (this.relation === "product.template" || this.isCombo) {
-                    this._onProductTemplateUpdate();
-                } else {
-                    this._onProductUpdate();
-                }
-            }
-            this.isInternalUpdate = false;
-        }, () => [this.value && this.value.id]);
+                this.isInternalUpdate = false;
+            },
+            () => [this.value && this.value.id]
+        );
     }
 
     get productName() {
-        if (this.props.name == 'product_template_id') {
+        if (this.props.name == "product_template_id") {
             const product_id_data = this.props.record.data.product_id;
             if (product_id_data && product_id_data.display_name) {
                 return product_id_data.display_name.split("\n")[0];
@@ -116,7 +125,10 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         return this.props.record.data.is_configurable_product;
     }
     get isCombo() {
-        return this.props.record.data.product_template_id && this.props.record.data.product_type === 'combo';
+        return (
+            this.props.record.data.product_template_id &&
+            this.props.record.data.product_type === "combo"
+        );
     }
     get isDownpayment() {
         return this.props.record.data.is_downpayment;
@@ -133,15 +145,21 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         return {
             ...super.sectionAndNoteClasses,
             "text-warning":
-                !this.isSectionOrSubSection && !this.isNote() && !this.productName && !this.isDownpayment,
+                !this.isSectionOrSubSection &&
+                !this.isNote() &&
+                !this.productName &&
+                !this.isDownpayment,
         };
     }
 
     get label() {
         let label = this.props.record.data.name;
-        if (this.translatedProductName && label.startsWith(this.translatedProductName)) {
+        if (
+            this.translatedProductName &&
+            label.startsWith(this.translatedProductName)
+        ) {
             // Remove the translated name as it is already shown to the salesman on the SOL.
-            label = label.slice(this.translatedProductName.length + 1);  // + "\n"
+            label = label.slice(this.translatedProductName.length + 1); // + "\n"
         } else {
             label = super.label;
         }
@@ -156,19 +174,23 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         if (!this.translatedProductName) {
             return super.parseLabel(value);
         }
-        return value && this.translatedProductName.concat("\n", value) || this.translatedProductName;
+        return (
+            (value && this.translatedProductName.concat("\n", value)) ||
+            this.translatedProductName
+        );
     }
 
     get m2oProps() {
         const p = super.m2oProps;
-        const value = p.value && { ...p.value };
+        const value = p.value && {...p.value};
         if (this.isCombo && value && value.display_name) {
             // Show the product quantity next to the product name for combo lines.
             value.display_name = `${value.display_name} x ${this.props.record.data.product_uom_qty}`;
         }
         return {
             ...p,
-            canOpen: this.props.canOpen && (!this.props.readonly || this.isProductClickable),
+            canOpen:
+                this.props.canOpen && (!this.props.readonly || this.isProductClickable),
             update: (value) => {
                 this.isInternalUpdate = true;
                 this.wasCombo = this.isCombo;
@@ -188,8 +210,8 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
 
     async _onProductTemplateUpdate() {
         const result = await this.orm.call(
-            'product.template',
-            'get_single_product_variant',
+            "product.template",
+            "get_single_product_variant",
             [this.props.record.data.product_template_id.id],
             {
                 context: this.context,
@@ -199,19 +221,25 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
             if (this.props.record.data.product_id != result.product_id.id) {
                 if (result.is_combo) {
                     await this.props.record.update({
-                        product_id: { id: result.product_id, display_name: result.product_name },
+                        product_id: {
+                            id: result.product_id,
+                            display_name: result.product_name,
+                        },
                     });
                     this._openComboConfigurator(false, result.has_optional_products);
                 } else if (result.has_optional_products) {
                     this._openProductConfigurator();
                 } else {
                     await this.props.record.update({
-                        product_id: { id: result.product_id, display_name: result.product_name },
+                        product_id: {
+                            id: result.product_id,
+                            display_name: result.product_name,
+                        },
                     });
                     this._onProductUpdate();
                 }
             }
-        } else if (!result.mode || result.mode === 'configurator') {
+        } else if (!result.mode || result.mode === "configurator") {
             this._openProductConfigurator();
         } else {
             // only triggered when sale_product_matrix is installed.
@@ -267,12 +295,18 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
 
                 for (const [i, product] of optionalProducts.entries()) {
                     const index =
-                        saleOrderRecord.data.order_line.records.indexOf(this.props.record)
-                        + selectedComboItems.length
-                        + i;
-                    const line = await saleOrderRecord.data.order_line.addNewRecordAtIndex(index, {
-                        mode: 'readonly',
-                    });
+                        saleOrderRecord.data.order_line.records.indexOf(
+                            this.props.record
+                        ) +
+                        selectedComboItems.length +
+                        i;
+                    const line =
+                        await saleOrderRecord.data.order_line.addNewRecordAtIndex(
+                            index,
+                            {
+                                mode: "readonly",
+                            }
+                        );
                     const productData = this._prepareNewLineData(line, product);
                     proms.push(applyProduct(line, productData));
                 }
@@ -295,30 +329,37 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
     async _openComboConfigurator(edit = false, hasOptionalProducts = false) {
         const saleOrder = this.props.record.model.root.data;
         const comboLineRecord = this.props.record;
-        const comboItemLineRecords = getLinkedSaleOrderLines(comboLineRecord).filter(record => !!record.data.combo_item_id);
-        const selectedComboItems = await Promise.all(comboItemLineRecords.map(async record => ({
-            id: record.data.combo_item_id.id,
-            no_variant_ptav_ids: edit ? this._getNoVariantPtavIds(record.data) : [],
-            custom_ptavs: edit ? await this._getCustomPtavs(record.data) : [],
-        })));
-        const { combos, ...remainingData } = await rpc('/sale/combo_configurator/get_data', {
-            product_tmpl_id: comboLineRecord.data.product_template_id.id,
-            currency_id: comboLineRecord.data.currency_id.id,
-            quantity: comboLineRecord.data.product_uom_qty,
-            date: serializeDateTime(saleOrder.date_order),
-            company_id: saleOrder.company_id.id,
-            pricelist_id: saleOrder.pricelist_id.id,
-            selected_combo_items: selectedComboItems,
-            ...this._getAdditionalRpcParams(),
-        });
+        const comboItemLineRecords = getLinkedSaleOrderLines(comboLineRecord).filter(
+            (record) => !!record.data.combo_item_id
+        );
+        const selectedComboItems = await Promise.all(
+            comboItemLineRecords.map(async (record) => ({
+                id: record.data.combo_item_id.id,
+                no_variant_ptav_ids: edit ? this._getNoVariantPtavIds(record.data) : [],
+                custom_ptavs: edit ? await this._getCustomPtavs(record.data) : [],
+            }))
+        );
+        const {combos, ...remainingData} = await rpc(
+            "/sale/combo_configurator/get_data",
+            {
+                product_tmpl_id: comboLineRecord.data.product_template_id.id,
+                currency_id: comboLineRecord.data.currency_id.id,
+                quantity: comboLineRecord.data.product_uom_qty,
+                date: serializeDateTime(saleOrder.date_order),
+                company_id: saleOrder.company_id.id,
+                pricelist_id: saleOrder.pricelist_id.id,
+                selected_combo_items: selectedComboItems,
+                ...this._getAdditionalRpcParams(),
+            }
+        );
 
-        const comboChoices = combos.map(combo => new ProductCombo(combo));
+        const comboChoices = combos.map((combo) => new ProductCombo(combo));
         const preselectedComboItems = comboChoices
-            .map(combo => combo.preselectedComboItem)
+            .map((combo) => combo.preselectedComboItem)
             .filter(Boolean);
         if (preselectedComboItems.length === comboChoices.length) {
             return this.handleComboSave(
-                { 'quantity' : remainingData.quantity },
+                {quantity: remainingData.quantity},
                 preselectedComboItems,
                 edit,
                 hasOptionalProducts
@@ -344,7 +385,12 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         });
     }
 
-    async handleComboSave(comboProductData, selectedComboItems, edit, hasOptionalProducts) {
+    async handleComboSave(
+        comboProductData,
+        selectedComboItems,
+        edit,
+        hasOptionalProducts
+    ) {
         const saleOrder = this.props.record.model.root.data;
         const comboLineRecord = this.props.record;
         saleOrder.order_line.leaveEditMode();
@@ -362,9 +408,9 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         await saleOrder.order_line._sort();
 
         if (hasOptionalProducts && !edit) {
-            const selectedComboProducts = selectedComboItems.map(
-                item => ({ name: item.product.display_name })
-            );
+            const selectedComboProducts = selectedComboItems.map((item) => ({
+                name: item.product.display_name,
+            }));
             await this._openProductConfigurator(false, selectedComboProducts);
         }
     }
@@ -427,22 +473,23 @@ export class SaleOrderLineProductField extends ProductLabelSectionAndNoteField {
         const customPtavIds = saleOrderLine.product_custom_attribute_value_ids;
         let customPtavs = [];
         if (customPtavIds.records[0]?.isNew) {
-            customPtavs = customPtavIds.records.map(record => record.data);
+            customPtavs = customPtavIds.records.map((record) => record.data);
         } else if (customPtavIds.currentIds.length) {
             const specification = {
                 custom_product_template_attribute_value_id: {
-                    fields: { id: {} },
+                    fields: {id: {}},
                 },
                 custom_value: {},
             };
             customPtavs = await this.orm.webRead(
-                'product.attribute.custom.value',
+                "product.attribute.custom.value",
                 customPtavIds.currentIds,
-                { specification },
+                {specification}
             );
         }
-        return customPtavs.map(customPtav => ({
-            id: customPtav.custom_product_template_attribute_value_id &&
+        return customPtavs.map((customPtav) => ({
+            id:
+                customPtav.custom_product_template_attribute_value_id &&
                 customPtav.custom_product_template_attribute_value_id.id,
             value: customPtav.custom_value,
         }));
@@ -459,11 +506,11 @@ export const saleOrderLineProductField = {
         };
     },
     fieldDependencies: [
-        { name: 'is_configurable_product', type: 'boolean' },
-        { name: 'product_type', type: 'selection' },
-        { name: 'service_tracking', type: 'selection' },
-        { name: 'product_template_attribute_value_ids', type: 'many2many' },
-        { name: 'translated_product_name', type: 'char' },
+        {name: "is_configurable_product", type: "boolean"},
+        {name: "product_type", type: "selection"},
+        {name: "service_tracking", type: "selection"},
+        {name: "product_template_attribute_value_ids", type: "many2many"},
+        {name: "translated_product_name", type: "char"},
     ],
 };
 

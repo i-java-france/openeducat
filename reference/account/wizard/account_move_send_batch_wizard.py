@@ -1,6 +1,6 @@
 from collections import Counter
 
-from odoo import _, api, Command, fields, models
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import RedirectWarning, UserError
 
 

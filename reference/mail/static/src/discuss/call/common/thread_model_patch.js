@@ -1,7 +1,7 @@
-import { fields } from "@mail/core/common/record";
-import { Thread } from "@mail/core/common/thread_model";
+import {fields} from "@mail/core/common/record";
+import {Thread} from "@mail/core/common/thread_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 export const CALL_PROMOTE_FULLSCREEN = Object.freeze({
     INACTIVE: "INACTIVE",
@@ -39,7 +39,9 @@ const ThreadPatch = {
             async onUpdate() {
                 const hadSelfSession = this.hadSelfSession;
                 const lastSessionIds = this.lastSessionIds;
-                this.hadSelfSession = Boolean(this.store.rtc.selfSession?.in(this.rtc_session_ids));
+                this.hadSelfSession = Boolean(
+                    this.store.rtc.selfSession?.in(this.rtc_session_ids)
+                );
                 this.lastSessionIds = new Set(this.rtc_session_ids.map((s) => s.id));
                 const shouldPlayJoinSound = [...this.lastSessionIds].some(
                     (id) => !lastSessionIds.has(id)
@@ -56,7 +58,7 @@ const ThreadPatch = {
                 }
                 if (shouldPlayJoinSound) {
                     this.store.env.services["mail.sound_effects"].play("call-join");
-                    this.store.rtc.call({ asFallback: true });
+                    this.store.rtc.call({asFallback: true});
                 }
                 if (shouldPlayLeaveSound) {
                     this.store.env.services["mail.sound_effects"].play("member-leave");
@@ -91,9 +93,12 @@ const ThreadPatch = {
                 const raisingHandCards = [];
                 const sessionCards = [];
                 const invitationCards = [];
-                const filterVideos = this.store.settings.showOnlyVideo && this.videoCount > 0;
+                const filterVideos =
+                    this.store.settings.showOnlyVideo && this.videoCount > 0;
                 for (const session of this.rtc_session_ids) {
-                    const target = session.raisingHand ? raisingHandCards : sessionCards;
+                    const target = session.raisingHand
+                        ? raisingHandCards
+                        : sessionCards;
                     const cameraStream = session.is_camera_on
                         ? session.videoStreams.get("camera")
                         : undefined;
@@ -119,10 +124,12 @@ const ThreadPatch = {
                 }
                 if (!filterVideos) {
                     for (const member of this.invited_member_ids) {
-                        invitationCards.push({ key: "member_" + member.id, member });
+                        invitationCards.push({key: "member_" + member.id, member});
                     }
                 }
-                raisingHandCards.sort((c1, c2) => c1.session.raisingHand - c2.session.raisingHand);
+                raisingHandCards.sort(
+                    (c1, c2) => c1.session.raisingHand - c2.session.raisingHand
+                );
                 sessionCards.sort(
                     (c1, c2) =>
                         c1.session.channel_member_id?.persona?.name?.localeCompare(
@@ -130,7 +137,10 @@ const ThreadPatch = {
                         ) ?? 1
                 );
                 invitationCards.sort(
-                    (c1, c2) => c1.member.persona?.name?.localeCompare(c2.member.persona?.name) ?? 1
+                    (c1, c2) =>
+                        c1.member.persona?.name?.localeCompare(
+                            c2.member.persona?.name
+                        ) ?? 1
                 );
                 return raisingHandCards.concat(sessionCards, invitationCards);
             },
@@ -138,7 +148,10 @@ const ThreadPatch = {
         this.useCameraByDefault = fields.Attr(null, {
             /** @this {import("models").Thread} */
             compute() {
-                if (this.channel_type === "chat" && this.store.rtc.selfSession?.channel?.eq(this)) {
+                if (
+                    this.channel_type === "chat" &&
+                    this.store.rtc.selfSession?.channel?.eq(this)
+                ) {
                     return this.store.rtc.selfSession.is_camera_on;
                 }
                 return JSON.parse(
@@ -183,9 +196,8 @@ const ThreadPatch = {
             return;
         }
         this.activeRtcSession = otherStreamingSession;
-        otherStreamingSession.mainVideoStreamType = otherStreamingSession.is_screen_sharing_on
-            ? "screen"
-            : "camera";
+        otherStreamingSession.mainVideoStreamType =
+            otherStreamingSession.is_screen_sharing_on ? "screen" : "camera";
     },
     open(options) {
         if (this.store.fullscreenChannel?.notEq(this)) {

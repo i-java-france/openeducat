@@ -1,9 +1,9 @@
-import { formatDate, formatDateTime } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { renderToElement } from "@web/core/utils/render";
-import { Interaction } from "@web/public/interaction";
+import {formatDate, formatDateTime} from "@web/core/l10n/dates";
+import {registry} from "@web/core/registry";
+import {renderToElement} from "@web/core/utils/render";
+import {Interaction} from "@web/public/interaction";
 import SESSION_CHART_COLORS from "@survey/interactions/survey_session_colors";
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class SurveySessionTextAnswers extends Interaction {
     static selector = ".o_survey_session_text_answers_container";
@@ -38,16 +38,21 @@ export class SurveySessionTextAnswers extends Interaction {
             if (!this.answerIds.includes(inputLineValue.id) && inputLineValue.value) {
                 let textValue = inputLineValue.value;
                 if (questionType === "date") {
-                    textValue = formatDate(DateTime.fromFormat(textValue, "yyyy-MM-dd"));
+                    textValue = formatDate(
+                        DateTime.fromFormat(textValue, "yyyy-MM-dd")
+                    );
                 } else if (questionType === "datetime") {
                     textValue = formatDateTime(
                         DateTime.fromFormat(textValue, "yyyy-MM-dd HH:mm:ss")
                     );
                 }
-                const textAnswerEl = renderToElement("survey.survey_session_text_answer", {
-                    value: textValue,
-                    borderColor: `rgb(${SESSION_CHART_COLORS[this.answerIds.length % 10]})`,
-                });
+                const textAnswerEl = renderToElement(
+                    "survey.survey_session_text_answer",
+                    {
+                        value: textValue,
+                        borderColor: `rgb(${SESSION_CHART_COLORS[this.answerIds.length % 10]})`,
+                    }
+                );
                 this.insert(textAnswerEl, this.el);
                 const spanWidth = textAnswerEl.querySelector("span").offsetWidth;
                 const containerEl = textAnswerEl.querySelector(

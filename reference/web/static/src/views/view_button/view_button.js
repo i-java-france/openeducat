@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
-import { useDropdownCloser } from "@web/core/dropdown/dropdown_hooks";
-import { pick } from "@web/core/utils/objects";
-import { debounce as debounceFn } from "@web/core/utils/timing";
+import {Component} from "@odoo/owl";
+import {useDropdownCloser} from "@web/core/dropdown/dropdown_hooks";
+import {pick} from "@web/core/utils/objects";
+import {debounce as debounceFn} from "@web/core/utils/timing";
 
 const explicitRankClasses = [
     "btn-primary",
@@ -65,7 +65,7 @@ export class ViewButton extends Component {
         if (this.props.icon) {
             this.icon = iconFromString(this.props.icon);
         }
-        const { debounce } = this.clickParams;
+        const {debounce} = this.clickParams;
         if (debounce) {
             this.onClick = debounceFn(this.onClick.bind(this), debounce, true);
         }
@@ -91,7 +91,7 @@ export class ViewButton extends Component {
     }
 
     get clickParams() {
-        return { context: this.props.context, ...this.props.clickParams };
+        return {context: this.props.context, ...this.props.clickParams};
     }
 
     get hasBigTooltip() {
@@ -103,7 +103,7 @@ export class ViewButton extends Component {
     }
 
     get disabled() {
-        const { name, type, special } = this.clickParams;
+        const {name, type, special} = this.clickParams;
         return (!name && !type && !special) || this.props.disabled;
     }
 

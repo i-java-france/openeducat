@@ -6,10 +6,10 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 from odoo import api, fields, models, modules, tools
-from odoo.addons.base.models.ir_qweb import QWebError
 from odoo.tools import exception_to_unicode
 from odoo.tools.translate import _
 
+from odoo.addons.base.models.ir_qweb import QWebError
 
 _logger = logging.getLogger(__name__)
 

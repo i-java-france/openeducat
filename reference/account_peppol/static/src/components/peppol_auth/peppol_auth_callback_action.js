@@ -1,5 +1,4 @@
-import { registry } from "@web/core/registry"
-
+import {registry} from "@web/core/registry";
 
 export async function PeppolAuthCallbackAction(env, action) {
     const params = action.params || {};
@@ -10,4 +9,6 @@ export async function PeppolAuthCallbackAction(env, action) {
     return params.next;
 }
 
-registry.category("actions").add("action_peppol_auth_callback", PeppolAuthCallbackAction)
+registry
+    .category("actions")
+    .add("action_peppol_auth_callback", PeppolAuthCallbackAction);

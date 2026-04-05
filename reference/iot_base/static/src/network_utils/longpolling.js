@@ -1,12 +1,12 @@
-import { registry } from '@web/core/registry';
-import { post } from '@iot_base/network_utils/http';
-import { uuid } from "@web/core/utils/strings";
-import { _t } from '@web/core/l10n/translation';
+import {registry} from "@web/core/registry";
+import {post} from "@iot_base/network_utils/http";
+import {uuid} from "@web/core/utils/strings";
+import {_t} from "@web/core/l10n/translation";
 
 export class IoTLongpolling {
     static serviceDependencies = ["notification", "orm"];
-    actionRoute = '/iot_drivers/action';
-    pollRoute = '/iot_drivers/event';
+    actionRoute = "/iot_drivers/action";
+    pollRoute = "/iot_drivers/event";
 
     rpcDelay = 1500;
     maxRpcDelay = 15000;
@@ -21,7 +21,7 @@ export class IoTLongpolling {
     /**
      * Setup in addition to constructor to allow patching
      */
-    setup({ notification, orm }) {
+    setup({notification, orm}) {
         this._session_id = uuid();
         this._delayedStartPolling(this.rpcDelay);
         this.notification = notification;
@@ -92,7 +92,13 @@ export class IoTLongpolling {
             device_identifier: device_identifier,
             data,
         };
-        return this._rpcIoT(iot_ip, route || this.actionRoute, body, undefined, fallback);
+        return this._rpcIoT(
+            iot_ip,
+            route || this.actionRoute,
+            body,
+            undefined,
+            fallback
+        );
     }
 
     /**
@@ -143,14 +149,29 @@ export class IoTLongpolling {
      * @param {boolean} fallback if true, no notification will be displayed on fail
      * @param {Object} headers headers to send with the request (optional, allows patching)
      */
-    async _rpcIoT(iot_ip, route, params, timeout = undefined, fallback = false, headers = undefined) {
+    async _rpcIoT(
+        iot_ip,
+        route,
+        params,
+        timeout = undefined,
+        fallback = false,
+        headers = undefined
+    ) {
         try {
             const abortController = new AbortController();
 
             if (this._listeners[iot_ip] && route === this.pollRoute) {
                 this._listeners[iot_ip].abortController = abortController;
             }
-            return await post(iot_ip, route, params, timeout, headers, abortController.signal, this.useLna);
+            return await post(
+                iot_ip,
+                route,
+                params,
+                timeout,
+                headers,
+                abortController.signal,
+                this.useLna
+            );
         } catch (error) {
             if (!fallback && error?.name !== "AbortError") {
                 this._doWarnFail(iot_ip);
@@ -169,7 +190,13 @@ export class IoTLongpolling {
         const listener = this._listeners[iot_ip];
 
         // The backend has a maximum cycle time of 50 seconds so give +10 seconds
-        this._rpcIoT(iot_ip, this.pollRoute, { listener: listener }, 60000, fallback).then(
+        this._rpcIoT(
+            iot_ip,
+            this.pollRoute,
+            {listener: listener},
+            60000,
+            fallback
+        ).then(
             (result) => {
                 this._retries = 0;
                 this._listeners[iot_ip].abortController = null;
@@ -178,8 +205,13 @@ export class IoTLongpolling {
                         this._onSuccess(iot_ip, result.result);
                     }
                 }
-                const remainingDevices = Object.keys(this._listeners[iot_ip].devices || {});
-                if (remainingDevices.length > 0 && !this._listeners[iot_ip].abortController) {
+                const remainingDevices = Object.keys(
+                    this._listeners[iot_ip].devices || {}
+                );
+                if (
+                    remainingDevices.length > 0 &&
+                    !this._listeners[iot_ip].abortController
+                ) {
                     this._poll(iot_ip);
                 }
             },
@@ -199,7 +231,9 @@ export class IoTLongpolling {
 
     _onError() {
         this._retries++;
-        this._delayedStartPolling(Math.min(this.rpcDelay * this._retries, this.maxRpcDelay));
+        this._delayedStartPolling(
+            Math.min(this.rpcDelay * this._retries, this.maxRpcDelay)
+        );
     }
 
     /**
@@ -207,13 +241,10 @@ export class IoTLongpolling {
      * @param {string} url
      */
     _doWarnFail(url) {
-        this.notification.add(
-            _t("Failed to reach IoT Box at %s", url),
-            {
-                title: _t("Connection to IoT Box failed"),
-                type: "danger",
-            }
-        );
+        this.notification.add(_t("Failed to reach IoT Box at %s", url), {
+            title: _t("Connection to IoT Box failed"),
+            type: "danger",
+        });
     }
 
     /**
@@ -233,4 +264,4 @@ export const iotLongpollingService = {
     },
 };
 
-registry.category('services').add('iot_longpolling', iotLongpollingService);
+registry.category("services").add("iot_longpolling", iotLongpollingService);

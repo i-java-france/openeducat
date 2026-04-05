@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 from contextlib import contextmanager
 
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.fields import Domain
 from odoo.tools.misc import formatLang
 
 
@@ -353,7 +351,7 @@ class AccountBankStatement(models.Model):
 
         yield
 
-        for stmt, attachments in zip(container['records'], attachments_to_fix_list):
+        for stmt, attachments in zip(container['records'], attachments_to_fix_list, strict=False):
             attachments.write({'res_id': stmt.id, 'res_model': stmt._name})
 
     @api.model_create_multi

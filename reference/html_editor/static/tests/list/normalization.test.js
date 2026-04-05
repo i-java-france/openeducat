@@ -1,6 +1,6 @@
-import { describe, test } from "@odoo/hoot";
-import { testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
+import {describe, test} from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
 
 describe("Inlines and blocks in list item", () => {
     test("should allow paragraphs in list item", async () => {

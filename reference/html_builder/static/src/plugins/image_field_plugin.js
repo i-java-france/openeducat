@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class ImageFieldPlugin extends Plugin {
     static id = "imageField";

@@ -1,15 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from typing import NamedTuple
-from contextlib import contextmanager
 import logging
-import serial
-from threading import Lock
 import time
 import traceback
+from contextlib import contextmanager
+from threading import Lock
+from typing import NamedTuple
 
-from odoo.addons.iot_drivers.event_manager import event_manager
+import serial
+
 from odoo.addons.iot_drivers.driver import Driver
+from odoo.addons.iot_drivers.event_manager import event_manager
 
 _logger = logging.getLogger(__name__)
 

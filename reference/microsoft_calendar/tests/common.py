@@ -1,17 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
-from datetime import datetime, timedelta
-from markupsafe import Markup
-from unittest.mock import patch, MagicMock
 from contextlib import contextmanager
+from datetime import datetime, timedelta
+from unittest.mock import MagicMock, patch
+
+import pytz
 from freezegun import freeze_time
+from markupsafe import Markup
 
 from odoo import fields
-
 from odoo.tests.common import HttpCase
 
 from odoo.addons.microsoft_calendar.models.microsoft_sync import MicrosoftCalendarSync
+
 
 def mock_get_token(user):
     return f"TOKEN_FOR_USER_{user.id}"
@@ -39,7 +40,7 @@ class TestCommon(HttpCase):
 
     @patch_api
     def setUp(self):
-        super(TestCommon, self).setUp()
+        super().setUp()
         self.env.user.unpause_microsoft_synchronization()
 
         # prepare users

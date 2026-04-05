@@ -1,7 +1,14 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
-import { defineModels, fields, getService, models, mountWebClient, onRpc } from "@web/../tests/web_test_helpers";
-import { defineHrHolidaysModels } from "./hr_holidays_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {
+    defineModels,
+    fields,
+    getService,
+    models,
+    mountWebClient,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
+import {defineHrHolidaysModels} from "./hr_holidays_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -27,12 +34,12 @@ class HrLeave extends models.Model {
         `,
     };
 
-    color = fields.Integer({ related: "holiday_status_id.color" });
+    color = fields.Integer({related: "holiday_status_id.color"});
     date_from = fields.Datetime();
     date_to = fields.Datetime();
-    department_id = fields.Many2one({ relation: "hr.department" });
-    employee_id =  fields.Many2one({ relation: "hr.employee" });
-    holiday_status_id = fields.Many2one({ relation: "hr.leave.type" });
+    department_id = fields.Many2one({relation: "hr.department"});
+    employee_id = fields.Many2one({relation: "hr.employee"});
+    holiday_status_id = fields.Many2one({relation: "hr.leave.type"});
     holiday_type = fields.Char();
     name = fields.Char();
     number_of_days = fields.Integer();
@@ -47,17 +54,22 @@ class HrLeaveType extends models.Model {
 defineHrHolidaysModels();
 defineModels([HrLeave, HrLeaveType]);
 
-onRpc("hr.employee", "get_time_off_dashboard_data", () => (
-    {has_accrual_allocation: true, allocation_data: {}, allocation_request_amount: 0}
-));
+onRpc("hr.employee", "get_time_off_dashboard_data", () => ({
+    has_accrual_allocation: true,
+    allocation_data: {},
+    allocation_request_amount: 0,
+}));
 onRpc("hr.employee", "get_mandatory_days", () => ({}));
-onRpc("hr.employee", "get_special_days_data", () => ({ mandatoryDays: [], bankHolidays: [] }));
+onRpc("hr.employee", "get_special_days_data", () => ({
+    mandatoryDays: [],
+    bankHolidays: [],
+}));
 onRpc("hr.leave", "get_unusual_days", () => ({}));
 onRpc("hr.leave", "has_access", () => true);
 onRpc("hr.leave.type", "has_accrual_allocation", () => true);
 
 test(`test employee is passed to get_time_off_dashboard_data`, async () => {
-    onRpc("hr.employee", "get_time_off_dashboard_data", ({ kwargs }) => {
+    onRpc("hr.employee", "get_time_off_dashboard_data", ({kwargs}) => {
         expect.step(kwargs.context.employee_id);
     });
 
@@ -67,7 +79,7 @@ test(`test employee is passed to get_time_off_dashboard_data`, async () => {
         res_model: "hr.leave",
         type: "ir.actions.act_window",
         views: [[false, "calendar"]],
-        context: { employee_id: [200] },
+        context: {employee_id: [200]},
         domain: [["employee_id", "in", [200]]],
     });
     expect.verifySteps([200]);
@@ -75,7 +87,7 @@ test(`test employee is passed to get_time_off_dashboard_data`, async () => {
 
 test(`test basic rendering`, async () => {
     mockDate("2025-03-18 08:00:00");
-    onRpc("hr.employee", "get_mandatory_days", () => ({ "2025-03-17": 5 }));
+    onRpc("hr.employee", "get_mandatory_days", () => ({"2025-03-17": 5}));
     onRpc("hr.employee", "get_special_days_data", () => ({
         mandatoryDays: [
             {
@@ -98,11 +110,13 @@ test(`test basic rendering`, async () => {
         res_model: "hr.leave",
         type: "ir.actions.act_window",
         views: [[false, "calendar"]],
-        context: { employee_id: [200] },
+        context: {employee_id: [200]},
         domain: [["employee_id", "in", [200]]],
     });
     expect(`.o_calendar_filter:contains("Legend")`).toHaveCount(1);
     expect(`.o_calendar_filter:contains("To Approve")`).toHaveCount(1);
-    expect(`.o_calendar_filter:contains("Mar 17, 2025 : Test Mandatory Day")`).toHaveCount(1);
+    expect(
+        `.o_calendar_filter:contains("Mar 17, 2025 : Test Mandatory Day")`
+    ).toHaveCount(1);
     expect(`.fc-day.hr_mandatory_day_5[data-date="2025-03-17"]`).toHaveCount(1);
 });

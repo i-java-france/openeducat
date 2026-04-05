@@ -1,6 +1,6 @@
-import { test, expect } from "@odoo/hoot";
-import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
-import { Component, useState, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {MultiRecordSelector} from "@web/core/record_selectors/multi_record_selector";
+import {Component, useState, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -9,8 +9,8 @@ import {
     mountWithCleanup,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { click, fill, press, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {click, fill, press, queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
 class Partner extends models.Model {
     _name = "partner";
@@ -18,9 +18,9 @@ class Partner extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Alice" },
-        { id: 2, name: "Bob" },
-        { id: 3, name: "Charlie" },
+        {id: 1, name: "Alice"},
+        {id: 2, name: "Bob"},
+        {id: 3, name: "Charlie"},
     ];
 }
 
@@ -34,11 +34,11 @@ defineModels([Partner, Users]);
 
 async function mountMultiRecordSelector(props) {
     class Parent extends Component {
-        static components = { MultiRecordSelector };
+        static components = {MultiRecordSelector};
         static template = xml`<MultiRecordSelector t-props="recordProps" />`;
         static props = ["*"];
         setup() {
-            this.state = useState({ resIds: props.resIds });
+            this.state = useState({resIds: props.resIds});
         }
 
         get recordProps() {
@@ -138,7 +138,7 @@ test("Can display avatars with the right model", async () => {
 
 test("Display name is correctly fetched", async () => {
     expect.assertions(4);
-    onRpc("partner", "web_search_read", ({ kwargs }) => {
+    onRpc("partner", "web_search_read", ({kwargs}) => {
         expect.step("web_search_read");
         expect(kwargs.domain).toEqual([["id", "in", [1]]]);
     });
@@ -155,9 +155,14 @@ test("Display name is correctly fetched", async () => {
 
 test("Can give domain and context props for the name search", async () => {
     expect.assertions(4);
-    onRpc("partner", "name_search", ({ kwargs }) => {
+    onRpc("partner", "name_search", ({kwargs}) => {
         expect.step("name_search");
-        expect(kwargs.domain).toEqual(["&", ["display_name", "=", "Bob"], "!", ["id", "in", [1]]]);
+        expect(kwargs.domain).toEqual([
+            "&",
+            ["display_name", "=", "Bob"],
+            "!",
+            ["id", "in", [1]],
+        ]);
         expect(kwargs.context.blip).toBe("blop");
     });
 
@@ -165,7 +170,7 @@ test("Can give domain and context props for the name search", async () => {
         resModel: "partner",
         resIds: [1],
         domain: [["display_name", "=", "Bob"]],
-        context: { blip: "blop" },
+        context: {blip: "blop"},
     });
 
     expect.verifySteps([]);
@@ -180,7 +185,10 @@ test("Support placeholder", async () => {
         resIds: [],
         placeholder: "Select a partner",
     });
-    expect(".o_multi_record_selector input").toHaveAttribute("placeholder", "Select a partner");
+    expect(".o_multi_record_selector input").toHaveAttribute(
+        "placeholder",
+        "Select a partner"
+    );
     await click(".o_multi_record_selector input");
     await animationFrame();
     await contains("li.o-autocomplete--dropdown-item:eq(0)").click();
@@ -279,14 +287,14 @@ test("Backspace do nothing when the input is currently edited", async () => {
 test.tags("desktop");
 test("Can pass domain to search more", async () => {
     Partner._records.push(
-        { id: 4, name: "David" },
-        { id: 5, name: "Eve" },
-        { id: 6, name: "Frank" },
-        { id: 7, name: "Grace" },
-        { id: 8, name: "Helen" },
-        { id: 9, name: "Ivy" }
+        {id: 4, name: "David"},
+        {id: 5, name: "Eve"},
+        {id: 6, name: "Frank"},
+        {id: 7, name: "Grace"},
+        {id: 8, name: "Helen"},
+        {id: 9, name: "Ivy"}
     );
-    Partner._views["list"] = /* xml */ `<list><field name="name"/></list>`;
+    Partner._views.list = /* xml */ `<list><field name="name"/></list>`;
     await mountMultiRecordSelector({
         resModel: "partner",
         resIds: [],
@@ -298,5 +306,5 @@ test("Can pass domain to search more", async () => {
     await click(".o_multi_record_selector .o_m2o_dropdown_option");
     await animationFrame();
 
-    expect(".o_data_row").toHaveCount(8, { message: "should contain 8 records" });
+    expect(".o_data_row").toHaveCount(8, {message: "should contain 8 records"});
 });

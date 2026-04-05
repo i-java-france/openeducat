@@ -1,28 +1,27 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, Command
-from odoo.models import BaseModel
-from odoo.tests import Form, HttpCase, new_test_user, tagged, save_test_file
-from odoo.tools import config, file_path, file_open
-from odoo.tools.float_utils import float_round
-
-from odoo.addons.product.tests.common import ProductCommon
-
-import json
 import base64
 import copy
-import logging
-import re
-
 import difflib
+import json
+import logging
 import pprint
-import requests
+import re
 from contextlib import contextmanager
 from functools import wraps
 from itertools import count
-from lxml import etree
 from unittest import SkipTest, TestCase
-from unittest.mock import patch, ANY
+from unittest.mock import ANY, patch
+
+import requests
+from lxml import etree
+
+from odoo import Command, fields
+from odoo.models import BaseModel
+from odoo.tests import Form, HttpCase, new_test_user, save_test_file, tagged
+from odoo.tools import config, file_open, file_path
+from odoo.tools.float_utils import float_round
+
+from odoo.addons.product.tests.common import ProductCommon
 
 _logger = logging.getLogger(__name__)
 
@@ -1083,12 +1082,12 @@ class AccountTestInvoicingCommon(ProductCommon):
         if soft_checking:
             return
 
-        for subtotal, expected_subtotal in zip(tax_totals['subtotals'], expected_results['subtotals']):
+        for subtotal, expected_subtotal in zip(tax_totals['subtotals'], expected_results['subtotals'], strict=False):
             current_values = {k: len(v) if k == 'tax_groups' else v for k, v in subtotal.items() if k not in excluded_fields}
             expected_values = {k: len(v) if k == 'tax_groups' else v for k, v in expected_subtotal.items()}
             fix_monetary_value(current_values, expected_values, monetary_fields)
             self.assertEqual(current_values, expected_values)
-            for tax_group, expected_tax_group in zip(subtotal['tax_groups'], expected_subtotal['tax_groups']):
+            for tax_group, expected_tax_group in zip(subtotal['tax_groups'], expected_subtotal['tax_groups'], strict=False):
                 current_tax_group = {k: v for k, v in tax_group.items() if k not in excluded_fields}
                 fix_monetary_value(current_tax_group, expected_tax_group, monetary_fields)
                 self.assertDictEqual(current_tax_group, expected_tax_group)
@@ -1486,7 +1485,7 @@ class AccountTestInvoicingCommon(ProductCommon):
                 f"Number of children elements for node {node_dict['full_path']} is different.",
             )
 
-            for child_node_dict, expected_child_node_dict in zip(node_dict['children'], expected_node_dict['children']):
+            for child_node_dict, expected_child_node_dict in zip(node_dict['children'], expected_node_dict['children'], strict=False):
                 assertNodeDictEqual(child_node_dict, expected_child_node_dict)
 
         assertNodeDictEqual(
@@ -1809,7 +1808,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
                 float_round(expected_values['total_excluded'], precision_rounding=rounding),
             )
             self.assertEqual(len(sub_results['taxes_data']), len(expected_values['taxes_data']))
-            for tax_data, (expected_base, expected_tax) in zip(sub_results['taxes_data'], expected_values['taxes_data']):
+            for tax_data, (expected_base, expected_tax) in zip(sub_results['taxes_data'], expected_values['taxes_data'], strict=False):
                 self.assertEqual(
                     float_round(tax_data['base_amount'], precision_rounding=rounding),
                     float_round(expected_base, precision_rounding=rounding),
@@ -1997,7 +1996,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
 
     def _assert_sub_test_base_lines_tax_details(self, results, expected_values):
         self.assertEqual(len(results['base_lines_tax_details']), len(expected_values['base_lines_tax_details']))
-        for result, expected in zip(results['base_lines_tax_details'], expected_values['base_lines_tax_details']):
+        for result, expected in zip(results['base_lines_tax_details'], expected_values['base_lines_tax_details'], strict=False):
             self.assertDictEqual(result, expected)
 
     def _create_py_sub_test_base_lines_tax_details(self, document):

@@ -1,23 +1,28 @@
-import { _t } from "@web/core/l10n/translation";
-import { OrderSummary } from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
-import { patch } from "@web/core/utils/patch";
-import { ask } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { useService } from "@web/core/utils/hooks";
-import { AlertDialog, ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { ManageGiftCardPopup } from "@pos_loyalty/app/components/popups/manage_giftcard_popup/manage_giftcard_popup";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
+import {_t} from "@web/core/l10n/translation";
+import {OrderSummary} from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
+import {patch} from "@web/core/utils/patch";
+import {ask} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {useService} from "@web/core/utils/hooks";
+import {
+    AlertDialog,
+    ConfirmationDialog,
+} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {ManageGiftCardPopup} from "@pos_loyalty/app/components/popups/manage_giftcard_popup/manage_giftcard_popup";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
 
 patch(OrderSummary.prototype, {
     setup() {
         super.setup(...arguments);
         this.notification = useService("notification");
     },
-    async updateSelectedOrderline({ buffer, key }) {
+    async updateSelectedOrderline({buffer, key}) {
         const selectedLine = this.currentOrder.getSelectedOrderline();
         if (selectedLine?.gift_code && key !== "Backspace" && key !== "Delete") {
             this.dialog.add(AlertDialog, {
                 title: _t("Gift Card"),
-                body: _t("You cannot change the quantity or price of a physical gift card."),
+                body: _t(
+                    "You cannot change the quantity or price of a physical gift card."
+                ),
             });
             return;
         }
@@ -27,7 +32,9 @@ patch(OrderSummary.prototype, {
                 // Do not allow negative quantity or price in a gift card or ewallet orderline.
                 // Refunding gift card or ewallet is not supported.
                 this.notification.add(
-                    _t("You cannot set negative quantity or price to gift card or ewallet."),
+                    _t(
+                        "You cannot set negative quantity or price to gift card or ewallet."
+                    ),
                     4000
                 );
                 return;
@@ -56,7 +63,7 @@ patch(OrderSummary.prototype, {
                 return;
             }
         }
-        return super.updateSelectedOrderline({ buffer, key });
+        return super.updateSelectedOrderline({buffer, key});
     },
     /**
      * 1/ Perform the usual set value operation (super._setValue(val)) if the line being modified
@@ -80,7 +87,9 @@ patch(OrderSummary.prototype, {
             if (
                 coupon &&
                 coupon.id > 0 &&
-                this.currentOrder._code_activated_coupon_ids.find((c) => c.code === coupon.code)
+                this.currentOrder._code_activated_coupon_ids.find(
+                    (c) => c.code === coupon.code
+                )
             ) {
                 coupon.delete();
             }
@@ -92,7 +101,10 @@ patch(OrderSummary.prototype, {
         ) {
             super._setValue(val);
         }
-        if (!selectedLine.is_reward_line || (selectedLine.is_reward_line && val === "remove")) {
+        if (
+            !selectedLine.is_reward_line ||
+            (selectedLine.is_reward_line && val === "remove")
+        ) {
             this.pos.updateRewards();
         }
     },
@@ -122,25 +134,25 @@ patch(OrderSummary.prototype, {
         const program = this.pos.models["loyalty.program"].find(
             (p) => p.program_type === "gift_card"
         );
-        const existingCouponIds = Object.keys(this.currentOrder.uiState.couponPointChanges).filter(
-            (key) => {
-                const change = this.currentOrder.uiState.couponPointChanges[key];
-                return (
-                    change.points === product.lst_price &&
-                    change.program_id === program.id &&
-                    change.product_id === product.id &&
-                    !change.manual
-                );
-            }
-        );
+        const existingCouponIds = Object.keys(
+            this.currentOrder.uiState.couponPointChanges
+        ).filter((key) => {
+            const change = this.currentOrder.uiState.couponPointChanges[key];
+            return (
+                change.points === product.lst_price &&
+                change.program_id === program.id &&
+                change.product_id === product.id &&
+                !change.manual
+            );
+        });
         if (existingCouponIds.length) {
             const couponId = existingCouponIds.shift();
             delete this.currentOrder.uiState.couponPointChanges[couponId];
         }
 
         await this.pos.addLineToCurrentOrder(
-            { product_id: product, product_tmpl_id: product.product_tmpl_id },
-            { price_unit: points }
+            {product_id: product, product_tmpl_id: product.product_tmpl_id},
+            {price_unit: points}
         );
         selectedLine = this.currentOrder.getSelectedOrderline();
         selectedLine.gift_code = code;
@@ -180,7 +192,10 @@ patch(OrderSummary.prototype, {
     },
 
     clickLine(ev, orderline) {
-        if (orderline.isSelected() && orderline.getEWalletGiftCardProgramType() === "gift_card") {
+        if (
+            orderline.isSelected() &&
+            orderline.getEWalletGiftCardProgramType() === "gift_card"
+        ) {
             return;
         } else {
             super.clickLine(ev, orderline);

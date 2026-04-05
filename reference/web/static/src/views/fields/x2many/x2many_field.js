@@ -1,10 +1,10 @@
-import { makeContext } from "@web/core/context";
-import { _t } from "@web/core/l10n/translation";
-import { Pager } from "@web/core/pager/pager";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { getFieldDomain } from "@web/model/relational_model/utils";
+import {makeContext} from "@web/core/context";
+import {_t} from "@web/core/l10n/translation";
+import {Pager} from "@web/core/pager/pager";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {getFieldDomain} from "@web/model/relational_model/utils";
 import {
     useActiveActions,
     useAddInlineRecord,
@@ -12,37 +12,37 @@ import {
     useSelectCreate,
     useX2ManyCrud,
 } from "@web/views/fields/relational_utils";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { KanbanCompiler } from "@web/views/kanban/kanban_compiler";
-import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { computeViewClassName } from "@web/views/utils";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { symmetricalDifference } from "@web/core/utils/arrays";
-import { x2ManyCommands } from "@web/core/orm_service";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {KanbanCompiler} from "@web/views/kanban/kanban_compiler";
+import {KanbanRenderer} from "@web/views/kanban/kanban_renderer";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {computeViewClassName} from "@web/views/utils";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {symmetricalDifference} from "@web/core/utils/arrays";
+import {x2ManyCommands} from "@web/core/orm_service";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class X2ManyField extends Component {
     static template = "web.X2ManyField";
-    static components = { Pager, KanbanRenderer, ListRenderer, ViewButton };
+    static components = {Pager, KanbanRenderer, ListRenderer, ViewButton};
     static props = {
         ...standardFieldProps,
-        addLabel: { type: String, optional: true },
-        editable: { type: String, optional: true },
-        viewMode: { type: String, optional: true },
-        widget: { type: String, optional: true },
-        crudOptions: { type: Object, optional: true },
-        string: { type: String, optional: true },
-        relatedFields: { type: Object, optional: true },
-        views: { type: Object, optional: true },
-        domain: { type: [Array, Function], optional: true },
-        context: { type: Object },
+        addLabel: {type: String, optional: true},
+        editable: {type: String, optional: true},
+        viewMode: {type: String, optional: true},
+        widget: {type: String, optional: true},
+        crudOptions: {type: Object, optional: true},
+        string: {type: String, optional: true},
+        relatedFields: {type: Object, optional: true},
+        views: {type: Object, optional: true},
+        domain: {type: [Array, Function], optional: true},
+        context: {type: Object},
     };
 
     setup() {
         this.field = this.props.record.fields[this.props.name];
-        const { saveRecord, updateRecord, removeRecord } = useX2ManyCrud(
+        const {saveRecord, updateRecord, removeRecord} = useX2ManyCrud(
             () => this.list,
             this.isMany2Many
         );
@@ -51,9 +51,13 @@ export class X2ManyField extends Component {
         const classes = this.props.viewMode
             ? ["o_field_x2many", `o_field_x2many_${this.props.viewMode}`]
             : ["o_field_x2many"];
-        this.className = computeViewClassName(this.props.viewMode, this.archInfo.xmlDoc, classes);
+        this.className = computeViewClassName(
+            this.props.viewMode,
+            this.archInfo.xmlDoc,
+            classes
+        );
 
-        const { activeActions, controls } = this.archInfo;
+        const {activeActions, controls} = this.archInfo;
         if (this.props.viewMode === "kanban") {
             this.controls = controls || [];
         }
@@ -105,15 +109,15 @@ export class X2ManyField extends Component {
             resModel: this.props.record.data[this.props.name].resModel,
             activeActions: this.activeActions,
             onSelected: (resIds) => saveRecord(resIds),
-            onCreateEdit: ({ context }) => this._openRecord({ context }),
+            onCreateEdit: ({context}) => this._openRecord({context}),
             onUnselect: this.isMany2Many ? undefined : () => saveRecord(),
         });
 
         this.selectCreate = (params) => {
             const p = Object.assign({}, params);
-            const currentIds = this.props.record.data[this.props.name].currentIds.filter(
-                (id) => typeof id === "number"
-            );
+            const currentIds = this.props.record.data[
+                this.props.name
+            ].currentIds.filter((id) => typeof id === "number");
             p.domain = [...(p.domain || []), "!", ["id", "in", currentIds]];
             return selectCreate(p);
         };
@@ -131,13 +135,18 @@ export class X2ManyField extends Component {
     }
 
     get displayControlPanelButtons() {
-        return this.props.viewMode === "kanban" && this.canCreate && this.controls.length > 0;
+        return (
+            this.props.viewMode === "kanban" &&
+            this.canCreate &&
+            this.controls.length > 0
+        );
     }
 
     get canCreate() {
         return (
-            ("link" in this.activeActions ? this.activeActions.link : this.activeActions.create) &&
-            !this.props.readonly
+            ("link" in this.activeActions
+                ? this.activeActions.link
+                : this.activeActions.create) && !this.props.readonly
         );
     }
 
@@ -163,11 +172,14 @@ export class X2ManyField extends Component {
             offset: list.offset,
             limit: list.limit,
             total: list.count,
-            onUpdate: async ({ offset, limit }) => {
+            onUpdate: async ({offset, limit}) => {
                 const initialLimit = this.list.limit;
                 const leaved = await list.leaveEditMode();
                 if (leaved) {
-                    if (initialLimit === limit && initialLimit === this.list.limit + 1) {
+                    if (
+                        initialLimit === limit &&
+                        initialLimit === this.list.limit + 1
+                    ) {
                         // Unselecting the edited record might have abandonned it. If the page
                         // size was reached before that record was created, the limit was temporarily
                         // increased to keep that new record in the current page, and abandonning it
@@ -176,7 +188,7 @@ export class X2ManyField extends Component {
                         offset -= 1;
                         limit -= 1;
                     }
-                    await list.load({ limit, offset });
+                    await list.load({limit, offset});
                     this.render();
                 }
             },
@@ -185,7 +197,7 @@ export class X2ManyField extends Component {
     }
 
     get rendererProps() {
-        const { archInfo } = this;
+        const {archInfo} = this;
         const props = {
             archInfo,
             list: this.list,
@@ -195,7 +207,7 @@ export class X2ManyField extends Component {
 
         if (this.props.viewMode === "kanban") {
             const recordsDraggable = !this.props.readonly && archInfo.recordsDraggable;
-            props.archInfo = { ...archInfo, recordsDraggable };
+            props.archInfo = {...archInfo, recordsDraggable};
             props.Compiler = KanbanCompiler;
             // TODO: apply same logic in the list case
             props.deleteRecord = (record) => {
@@ -212,14 +224,16 @@ export class X2ManyField extends Component {
         }
 
         const editable =
-            (this.archInfo.activeActions.edit && archInfo.editable) || this.props.editable;
+            (this.archInfo.activeActions.edit && archInfo.editable) ||
+            this.props.editable;
         props.activeActions = this.activeActions;
         props.cycleOnTab = false;
         props.editable = !this.props.readonly && editable;
         props.nestedKeyOptionalFieldsData = this.nestedKeyOptionalFieldsData;
         props.onAdd = (params) => {
             params.editable =
-                !this.props.readonly && ("editable" in params ? params.editable : editable);
+                !this.props.readonly &&
+                ("editable" in params ? params.editable : editable);
             this.onAdd(params);
         };
         props.onOpenFormView = this.switchToForm.bind(this);
@@ -252,9 +266,12 @@ export class X2ManyField extends Component {
             }
             const newResIds = symmetricalDifference(this.list.resIds, previousResIds);
             if (newResIds.length !== createCommands.length) {
-                return this.notificationService.add(_t("Please save your changes first"), {
-                    type: "danger",
-                });
+                return this.notificationService.add(
+                    _t("Please save your changes first"),
+                    {
+                        type: "danger",
+                    }
+                );
             }
             newResIds.sort((x, y) => x - y);
             resId = newResIds[newRecordIndex];
@@ -275,7 +292,7 @@ export class X2ManyField extends Component {
                 context: this.getFormActionContext(),
             },
             {
-                props: { resIds: this.list.resIds },
+                props: {resIds: this.list.resIds},
                 newWindow: options.newWindow,
             }
         );
@@ -285,28 +302,32 @@ export class X2ManyField extends Component {
         return this.props.context;
     }
 
-    async onAdd({ context, editable } = {}) {
+    async onAdd({context, editable} = {}) {
         context = makeContext([this.props.context, context]);
         if (this.isMany2Many) {
-            const domain = getFieldDomain(this.props.record, this.props.name, this.props.domain);
-            const { string } = this.props;
+            const domain = getFieldDomain(
+                this.props.record,
+                this.props.name,
+                this.props.domain
+            );
+            const {string} = this.props;
             const title = _t("Add: %s", string);
-            return this.selectCreate({ domain, context, title });
+            return this.selectCreate({domain, context, title});
         }
         if (editable) {
             const editedRecord = this.list.editedRecord;
             if (editedRecord) {
                 const proms = [];
-                this.list.model.bus.trigger("NEED_LOCAL_CHANGES", { proms });
+                this.list.model.bus.trigger("NEED_LOCAL_CHANGES", {proms});
                 await Promise.all([...proms, editedRecord._updatePromise]);
-                await this.list.leaveEditMode({ canAbandon: false });
+                await this.list.leaveEditMode({canAbandon: false});
             }
             if (!this.list.editedRecord) {
-                return this.addInLine({ context, editable });
+                return this.addInLine({context, editable});
             }
             return;
         }
-        return this._openRecord({ context });
+        return this._openRecord({context});
     }
 
     async openRecord(record) {
@@ -326,7 +347,7 @@ export const x2ManyField = {
     supportedTypes: ["one2many", "many2many"],
     useSubView: true,
     extractProps: (
-        { attrs, relatedFields, viewMode, views, widget, options, string },
+        {attrs, relatedFields, viewMode, views, widget, options, string},
         dynamicInfo
     ) => {
         const props = {

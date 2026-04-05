@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.StatusBarField.Dropdown">
@@ -13,7 +13,12 @@
     </t>
 
     <t t-name="web.StatusBarField">
-        <div class="o_statusbar_status" t-ref="root" role="radiogroup" aria-label="Statusbar">
+        <div
+            class="o_statusbar_status"
+            t-ref="root"
+            role="radiogroup"
+            aria-label="Statusbar"
+        >
             <Dropdown position="'bottom-end'">
                 <button
                     t-ref="after"
@@ -66,10 +71,13 @@
             </Dropdown>
             <Dropdown position="'bottom-end'">
                 <t t-set="allItems" t-value="getAllItems()" />
-                <t t-set="selectedIndex" t-value="allItems.findIndex((item) => item.isSelected)" />
+                <t
+                    t-set="selectedIndex"
+                    t-value="allItems.findIndex((item) => item.isSelected)"
+                />
                 <button
-                    t-ref="dropdown" 
-                    type="button" 
+                    t-ref="dropdown"
+                    type="button"
                     class="btn btn-secondary dropdown-toggle"
                     t-att-class="{'o_arrow_button': env.isSmall, 'o_last': selectedIndex === 0 , 'o_first': selectedIndex === allItems.length - 1}"
                     t-att-disabled="props.isDisabled"

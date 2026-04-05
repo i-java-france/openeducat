@@ -1,7 +1,7 @@
-import { CrmKanbanModel } from "@crm/views/crm_kanban/crm_kanban_model";
+import {CrmKanbanModel} from "@crm/views/crm_kanban/crm_kanban_model";
 
 export class ForecastKanbanModel extends CrmKanbanModel {
-    setup(params, { fillTemporalService }) {
+    setup(params, {fillTemporalService}) {
         super.setup(...arguments);
         this.fillTemporalService = fillTemporalService;
         this.forceNextRecompute = !params.state?.groups;
@@ -58,8 +58,10 @@ export class ForecastKanbanModel extends CrmKanbanModel {
     fillTemporalPeriod(config) {
         const [groupByFieldName, granularity] = config.groupBy[0].split(":");
         const groupByField = config.fields[groupByFieldName];
-        const minGroups = (config.context.fill_temporal && config.context.fill_temporal.min_groups) || undefined;
-        const { name, type } = groupByField;
+        const minGroups =
+            (config.context.fill_temporal && config.context.fill_temporal.min_groups) ||
+            undefined;
+        const {name, type} = groupByField;
         const forceRecompute = this.forceNextRecompute;
         this.forceNextRecompute = false;
         return this.fillTemporalService.getFillTemporalPeriod({

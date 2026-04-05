@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 /**
  * @typedef { import("./builder_action").BuilderAction } BuilderAction

@@ -1,14 +1,14 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { range } from "@web/core/utils/numbers";
+import {range} from "@web/core/utils/numbers";
 
-const { toCartesian, toZone, toXC } = spreadsheet.helpers;
+const {toCartesian, toZone, toXC} = spreadsheet.helpers;
 
 /**
  * Get the value of the given cell
  */
 export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    const cell = model.getters.getEvaluatedCell({ sheetId, col, row });
+    const {col, row} = toCartesian(xc);
+    const cell = model.getters.getEvaluatedCell({sheetId, col, row});
     return cell.value;
 }
 
@@ -16,48 +16,64 @@ export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId
  * Get the cell of the given xc
  */
 export function getCell(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    return model.getters.getCell({ sheetId, col, row });
+    const {col, row} = toCartesian(xc);
+    return model.getters.getCell({sheetId, col, row});
 }
 
-export function getEvaluatedCell(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    return model.getters.getEvaluatedCell({ sheetId, col, row });
+export function getEvaluatedCell(
+    model,
+    xc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const {col, row} = toCartesian(xc);
+    return model.getters.getEvaluatedCell({sheetId, col, row});
 }
 
-export function getEvaluatedGrid(model, zoneXc, sheetId = model.getters.getActiveSheetId()) {
-    const { top, bottom, left, right } = toZone(zoneXc);
+export function getEvaluatedGrid(
+    model,
+    zoneXc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const {top, bottom, left, right} = toZone(zoneXc);
     const grid = [];
     for (const row of range(top, bottom + 1)) {
         const colValues = [];
         grid.push(colValues);
         for (const col of range(left, right + 1)) {
-            const cell = model.getters.getEvaluatedCell({ sheetId, col, row });
+            const cell = model.getters.getEvaluatedCell({sheetId, col, row});
             colValues.push(cell.value);
         }
     }
     return grid;
 }
 
-export function getEvaluatedFormatGrid(model, zoneXc, sheetId = model.getters.getActiveSheetId()) {
-    const { top, bottom, left, right } = toZone(zoneXc);
+export function getEvaluatedFormatGrid(
+    model,
+    zoneXc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const {top, bottom, left, right} = toZone(zoneXc);
     const grid = [];
     for (const row of range(top, bottom + 1)) {
         grid.push([]);
         for (const col of range(left, right + 1)) {
-            const cell = model.getters.getEvaluatedCell({ sheetId, col, row });
+            const cell = model.getters.getEvaluatedCell({sheetId, col, row});
             grid[row][col] = cell.format;
         }
     }
     return grid;
 }
 
-export function getFormattedValueGrid(model, zoneXc, sheetId = model.getters.getActiveSheetId()) {
-    const { top, bottom, left, right } = toZone(zoneXc);
+export function getFormattedValueGrid(
+    model,
+    zoneXc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const {top, bottom, left, right} = toZone(zoneXc);
     const grid = {};
     for (const row of range(top, bottom + 1)) {
         for (const col of range(left, right + 1)) {
-            const cell = model.getters.getEvaluatedCell({ sheetId, col, row });
+            const cell = model.getters.getEvaluatedCell({sheetId, col, row});
             grid[toXC(col, row)] = cell.formattedValue;
         }
     }
@@ -83,12 +99,19 @@ export function getCellFormula(model, xc, sheetId = model.getters.getActiveSheet
  * Get the content of the given xc
  */
 export function getCellContent(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    return model.getters.getCellText({ sheetId, col, row }, { showFormula: true });
+    const {col, row} = toCartesian(xc);
+    return model.getters.getCellText({sheetId, col, row}, {showFormula: true});
 }
 
-export function getCorrespondingCellFormula(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const cell = model.getters.getCorrespondingFormulaCell({ sheetId, ...toCartesian(xc) });
+export function getCorrespondingCellFormula(
+    model,
+    xc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const cell = model.getters.getCorrespondingFormulaCell({
+        sheetId,
+        ...toCartesian(xc),
+    });
     return cell && cell.isFormula ? cell.content : "";
 }
 
@@ -103,24 +126,30 @@ export function getMerges(model, sheetId = model.getters.getActiveSheetId()) {
  * Get the borders at the given XC
  */
 export function getBorders(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    const borders = model.getters.getCellBorder({ sheetId, col, row });
+    const {col, row} = toCartesian(xc);
+    const borders = model.getters.getCellBorder({sheetId, col, row});
     if (!borders) {
         return null;
     }
-    Object.keys(borders).forEach((key) => borders[key] === undefined && delete borders[key]);
+    Object.keys(borders).forEach(
+        (key) => borders[key] === undefined && delete borders[key]
+    );
     return borders;
 }
 
 /**
  * Get the formatted value of the given xc
  */
-export function getCellFormattedValue(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
-    return model.getters.getCellText({ sheetId, col, row }, false);
+export function getCellFormattedValue(
+    model,
+    xc,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    const {col, row} = toCartesian(xc);
+    return model.getters.getCellText({sheetId, col, row}, false);
 }
 
 export function getCellIcons(model, xc) {
     const sheetId = model.getters.getActiveSheetId();
-    return model.getters.getCellIcons({ ...toCartesian(xc), sheetId });
+    return model.getters.getCellIcons({...toCartesian(xc), sheetId});
 }

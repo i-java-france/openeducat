@@ -1,4 +1,4 @@
-import { SUB_SNIPPET_TEMPLATES } from "@website/../tests/tours/snippets_all_drag_and_drop";
+import {SUB_SNIPPET_TEMPLATES} from "@website/../tests/tours/snippets_all_drag_and_drop";
 
 Object.assign(SUB_SNIPPET_TEMPLATES, {
     s_blog_posts_big_picture: "s_blog_posts",

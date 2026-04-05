@@ -1,4 +1,4 @@
-import { ProductProduct } from "@point_of_sale/../tests/unit/data/product_product.data";
+import {ProductProduct} from "@point_of_sale/../tests/unit/data/product_product.data";
 
 ProductProduct._records = [
     ...ProductProduct._records,

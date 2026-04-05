@@ -1,16 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command
 import odoo.tests
+from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
-from odoo.exceptions import UserError
 
 
 class TestPackingCommon(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestPackingCommon, cls).setUpClass()
+        super().setUpClass()
         cls.stock_location = cls.env.ref('stock.stock_location_stock')
         cls.warehouse = cls.env['stock.warehouse'].search([('lot_stock_id', '=', cls.stock_location.id)], limit=1)
         cls.warehouse.delivery_steps = 'pick_pack_ship'

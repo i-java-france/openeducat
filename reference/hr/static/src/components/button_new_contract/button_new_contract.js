@@ -1,9 +1,9 @@
-import { useDateTimePicker } from "@web/core/datetime/datetime_picker_hook";
-import { serializeDate } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { Component } from "@odoo/owl";
+import {useDateTimePicker} from "@web/core/datetime/datetime_picker_hook";
+import {serializeDate} from "@web/core/l10n/dates";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {Component} from "@odoo/owl";
 
 export class ButtonNewContractWidget extends Component {
     static template = "hr.ButtonNewContract";
@@ -24,7 +24,7 @@ export class ButtonNewContractWidget extends Component {
                 }
             },
             get pickerProps() {
-                return { type: "date" };
+                return {type: "date"};
             },
         });
     }
@@ -50,7 +50,7 @@ export class ButtonNewContractWidget extends Component {
     }
 
     async loadVersion(version_id) {
-        const { record } = this.props;
+        const {record} = this.props;
         await record.save();
         await this.props.record.model.load({
             context: {

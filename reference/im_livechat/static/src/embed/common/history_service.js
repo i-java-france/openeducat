@@ -1,7 +1,7 @@
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
-import { browser } from "@web/core/browser/browser";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
+import {browser} from "@web/core/browser/browser";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
 
 export class HistoryService {
     static HISTORY_STORAGE_KEY = "im_livechat_history";
@@ -36,7 +36,9 @@ export class HistoryService {
 
     updateHistory() {
         const page = browser.location.href.replace(/^.*\/\/[^/]+/, "");
-        const pageHistory = expirableStorage.getItem(HistoryService.HISTORY_STORAGE_KEY);
+        const pageHistory = expirableStorage.getItem(
+            HistoryService.HISTORY_STORAGE_KEY
+        );
         const urlHistory = pageHistory ? JSON.parse(pageHistory) : [];
         if (!urlHistory.includes(page)) {
             urlHistory.push(page);

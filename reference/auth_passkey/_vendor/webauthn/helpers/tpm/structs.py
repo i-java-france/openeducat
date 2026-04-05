@@ -1,6 +1,6 @@
+from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import Enum
-from typing import Mapping, Union
 
 from ..cose import COSECRV, COSEAlgorithmIdentifier
 from ..exceptions import InvalidTPMPubAreaStructure
@@ -269,7 +269,7 @@ class TPMPubArea:
     name_alg: TPM_ALG
     object_attributes: TPMPubAreaObjectAttributes
     auth_policy: bytes
-    parameters: Union[TPMPubAreaParametersRSA, TPMPubAreaParametersECC]
+    parameters: TPMPubAreaParametersRSA | TPMPubAreaParametersECC
     unique: TPMPubAreaUnique
 
 

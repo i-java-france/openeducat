@@ -1,9 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from urllib.parse import urlencode
 import ast
+from urllib.parse import urlencode
 
 from odoo import Command
-
 from odoo.tests import HttpCase, tagged
 
 

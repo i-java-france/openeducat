@@ -1,15 +1,21 @@
-import { onWillStart, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { FloatTimeSelectionPopover } from "./float_time_selection_popover";
+import {onWillStart, useState} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {FloatTimeSelectionPopover} from "./float_time_selection_popover";
 
-import { FloatTimeField, floatTimeField } from "@web/views/fields/float_time/float_time_field";
-const { DateTime } = luxon;
+import {
+    FloatTimeField,
+    floatTimeField,
+} from "@web/views/fields/float_time/float_time_field";
+const {DateTime} = luxon;
 
 function floatToHoursMinutes(floatValue) {
     const hours = Math.floor(floatValue);
     const minutes = Math.round((floatValue - hours) * 60);
-    return { hours: String(hours).padStart(2, "0"), minutes: String(minutes).padStart(2, "0") };
+    return {
+        hours: String(hours).padStart(2, "0"),
+        minutes: String(minutes).padStart(2, "0"),
+    };
 }
 
 function hoursMinutesToFloat(hours, minutes) {
@@ -35,7 +41,7 @@ export class FloatTimeSelectionField extends FloatTimeField {
 
         onWillStart(() => {
             const initialValue = this.props.record.data[this.props.name];
-            const { hours, minutes } = floatToHoursMinutes(initialValue);
+            const {hours, minutes} = floatToHoursMinutes(initialValue);
             this.timeValues.hours = hours;
             this.timeValues.minutes = minutes;
             this.timeValues.floatValue = initialValue;
@@ -44,9 +50,10 @@ export class FloatTimeSelectionField extends FloatTimeField {
 
     get formattedValue() {
         const unitAmount = super.formattedValue;
-        return DateTime
-            .fromFormat(unitAmount, 'hh:mm', { numberingSystem: 'latn', zone: 'default'})
-            .toLocaleString({ hour: 'numeric', minute: 'numeric'});
+        return DateTime.fromFormat(unitAmount, "hh:mm", {
+            numberingSystem: "latn",
+            zone: "default",
+        }).toLocaleString({hour: "numeric", minute: "numeric"});
     }
 
     onCharHoursClick(ev) {
@@ -63,7 +70,8 @@ export class FloatTimeSelectionField extends FloatTimeField {
     onTimeChange(newTimeValues) {
         this.timeValues.hours = newTimeValues.hours;
         this.timeValues.minutes = newTimeValues.minutes;
-        this.timeValues.floatValue = parseInt(newTimeValues.hours) + newTimeValues.minutes / 60;
+        this.timeValues.floatValue =
+            parseInt(newTimeValues.hours) + newTimeValues.minutes / 60;
     }
 
     handleInputChange() {
@@ -75,7 +83,7 @@ export class FloatTimeSelectionField extends FloatTimeField {
             this.timeValues.minutes = String(minutes).padStart(2, "0");
             this.timeValues.floatValue = hoursMinutesToFloat(hours, minutes);
         } else {
-            const { hours, minutes } = floatToHoursMinutes(parseFloat(inputValue));
+            const {hours, minutes} = floatToHoursMinutes(parseFloat(inputValue));
             this.timeValues.hours = hours;
             this.timeValues.minutes = minutes;
             this.timeValues.floatValue = parseFloat(inputValue);
@@ -83,7 +91,7 @@ export class FloatTimeSelectionField extends FloatTimeField {
     }
 
     onClose() {
-        this.props.record.update({ [this.props.name]: this.timeValues.floatValue });
+        this.props.record.update({[this.props.name]: this.timeValues.floatValue});
     }
 }
 

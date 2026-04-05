@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import fields, models
 
 
 class SaleOrderLine(models.Model):
@@ -11,6 +11,6 @@ class SaleOrderLine(models.Model):
     def _read_qties(self, date, wh):
         res = super()._read_qties(date, wh)
         if any(self.mapped('use_expiration_date')):
-            for res_record, read_record in zip(res, self.mapped('product_id').with_context(warehouse_id=wh).read(['free_qty'])):
+            for res_record, read_record in zip(res, self.mapped('product_id').with_context(warehouse_id=wh).read(['free_qty']), strict=False):
                 res_record['free_qty'] = read_record['free_qty']
         return res

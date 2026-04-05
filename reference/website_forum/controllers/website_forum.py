@@ -9,13 +9,14 @@ import werkzeug.urls
 import werkzeug.wrappers
 
 from odoo import _, http, tools
-from odoo.addons.website.models.ir_http import sitemap_qs2dom
-from odoo.addons.website_profile.controllers.main import WebsiteProfile
 from odoo.exceptions import AccessError, UserError
 from odoo.fields import Domain
 from odoo.http import request
 from odoo.tools import is_html_empty
 from odoo.tools.translate import LazyTranslate
+
+from odoo.addons.website.models.ir_http import sitemap_qs2dom
+from odoo.addons.website_profile.controllers.main import WebsiteProfile
 
 _lt = LazyTranslate(__name__)
 _logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ class WebsiteForum(WebsiteProfile):
     _user_per_page = 30
 
     def _prepare_user_values(self, **kwargs):
-        values = super(WebsiteForum, self)._prepare_user_values(**kwargs)
+        values = super()._prepare_user_values(**kwargs)
         values['forum_welcome_message'] = request.cookies.get('forum_welcome_message', False)
         values.update({
             'header': kwargs.get('header', dict()),
@@ -156,7 +157,7 @@ class WebsiteForum(WebsiteProfile):
 
         url_args = {'sorting': sorting}
 
-        for name, value in zip(['filters', 'search', 'my'], [filters, search, my]):
+        for name, value in zip(['filters', 'search', 'my'], [filters, search, my], strict=False):
             if value:
                 url_args[name] = value
 
@@ -278,7 +279,7 @@ class WebsiteForum(WebsiteProfile):
             req.raise_for_status()
             arch = lxml.html.fromstring(req.content)
             return arch.find(".//title").text
-        except IOError:
+        except OSError:
             return False
 
     @http.route(['''/forum/<model("forum.forum"):forum>/question/<model("forum.post", "[('forum_id','=',forum.id),('parent_id','=',False),('can_view', '=', True)]"):question>'''],
@@ -662,7 +663,7 @@ class WebsiteForum(WebsiteProfile):
     # -----------------------------------
 
     def _prepare_user_profile_values(self, user, **post):
-        values = super(WebsiteForum, self)._prepare_user_profile_values(user, **post)
+        values = super()._prepare_user_profile_values(user, **post)
         if not post.get('no_forum'):
             if post.get('forum'):
                 forums = post['forum']

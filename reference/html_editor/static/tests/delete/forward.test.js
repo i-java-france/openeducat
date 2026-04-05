@@ -1,19 +1,19 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { getContent } from "../_helpers/selection";
-import { deleteForward, insertText, tripleClick } from "../_helpers/user_actions";
-import { EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { animationFrame } from "@odoo/hoot-dom";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {getContent} from "../_helpers/selection";
+import {deleteForward, insertText, tripleClick} from "../_helpers/user_actions";
+import {EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {animationFrame} from "@odoo/hoot-dom";
 import {
     compareHighlightedContent,
     highlightedPre,
     patchPrism,
 } from "../_helpers/syntax_highlighting";
-import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
+import {MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
 
 /**
- * content of the "deleteForward" sub suite in editor.test.js
+ * Content of the "deleteForward" sub suite in editor.test.js
  */
 
 async function twoDeleteForward(editor) {
@@ -111,7 +111,8 @@ describe("Selection collapsed", () => {
 
         test("should merge SPAN node correctly ", async () => {
             await testEditor({
-                contentBefore: '<div>a<span class="a">bc[]</span><span class="a">de</span>f</div>',
+                contentBefore:
+                    '<div>a<span class="a">bc[]</span><span class="a">de</span>f</div>',
                 stepFunction: deleteForward,
                 contentAfter: '<div>a<span class="a">bc[]e</span>f</div>',
             });
@@ -422,13 +423,15 @@ describe("Selection collapsed", () => {
                     contentBefore:
                         '<p>abc[]</p><p>def</p><p style="margin-bottom: 0px;"> orphan node</p>',
                     stepFunction: deleteForward,
-                    contentAfter: '<p>abc[]def</p><p style="margin-bottom: 0px;"> orphan node</p>',
+                    contentAfter:
+                        '<p>abc[]def</p><p style="margin-bottom: 0px;"> orphan node</p>',
                 });
             });
 
             test("should delete the space if the second <p> is display inline", async () => {
                 await testEditor({
-                    contentBefore: '<div>abc[] <p style="display: inline;">def</p></div>',
+                    contentBefore:
+                        '<div>abc[] <p style="display: inline;">def</p></div>',
                     stepFunction: deleteForward,
                     contentAfter: '<div>abc[]<p style="display: inline;">def</p></div>',
                 });
@@ -471,7 +474,8 @@ describe("Selection collapsed", () => {
 
             test("should delete the space if the second <p> is display inline", async () => {
                 await testEditor({
-                    contentBefore: '<div>abc[]x <p style="display: inline;">def</p></div>',
+                    contentBefore:
+                        '<div>abc[]x <p style="display: inline;">def</p></div>',
                     stepFunction: twoDeleteForward,
                     contentAfter: '<div>abc[]<p style="display: inline;">def</p></div>',
                 });
@@ -769,7 +773,7 @@ describe("Selection collapsed", () => {
         describe("with syntax highlighting", () => {
             const configWithEmbeddings = {
                 Plugins: [...MAIN_PLUGINS, ...EMBEDDED_COMPONENT_PLUGINS],
-                resources: { embedded_components: MAIN_EMBEDDINGS },
+                resources: {embedded_components: MAIN_EMBEDDINGS},
             };
             const testDeleteInCodeBlock = (selectionStart) => async (editor) => {
                 // Set the given selection in the textarea.
@@ -790,12 +794,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>abcd</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abcd" }) +
+                        highlightedPre({value: "abcd"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(2), // "ab[]cd"
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abd", textareaRange: 2 }) +
+                        highlightedPre({value: "abd", textareaRange: 2}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abd</pre>[]`,
                     config: configWithEmbeddings,
@@ -808,12 +812,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>     abcd</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     abcd" }) +
+                        highlightedPre({value: "     abcd"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(7), // "     ab[]cd"
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     abd", textareaRange: 7 }) +
+                        highlightedPre({value: "     abd", textareaRange: 7}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">     abd</pre>[]`,
                     config: configWithEmbeddings,
@@ -826,12 +830,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>abcd     </pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abcd     " }) +
+                        highlightedPre({value: "abcd     "}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(2), // "ab[]cd     "
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abd     ", textareaRange: 2 }) +
+                        highlightedPre({value: "abd     ", textareaRange: 2}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abd     </pre>[]`,
                     config: configWithEmbeddings,
@@ -844,12 +848,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>     abcd     </pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     abcd     " }) +
+                        highlightedPre({value: "     abcd     "}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(7), // "     ab[]cd     "
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     abd     ", textareaRange: 7 }) +
+                        highlightedPre({value: "     abd     ", textareaRange: 7}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">     abd     </pre>[]`,
                     config: configWithEmbeddings,
@@ -862,12 +866,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>     ab</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     ab" }) +
+                        highlightedPre({value: "     ab"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(2), // "  []   ab"
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "    ab", textareaRange: 2 }) +
+                        highlightedPre({value: "    ab", textareaRange: 2}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">    ab</pre>[]`,
                     config: configWithEmbeddings,
@@ -880,12 +884,12 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>ab\ncd</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "ab\ncd" }) +
+                        highlightedPre({value: "ab\ncd"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testDeleteInCodeBlock(2), // "ab[]\ncd"
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abcd", textareaRange: 2 }) +
+                        highlightedPre({value: "abcd", textareaRange: 2}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abcd</pre>[]`,
                     config: configWithEmbeddings,
@@ -898,7 +902,7 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>     ab</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "     ab" }) +
+                        highlightedPre({value: "     ab"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: async (editor) => {
                         await testDeleteInCodeBlock(0)(editor); // "[]     ab"
@@ -909,7 +913,7 @@ describe("Selection collapsed", () => {
                     },
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "ab", textareaRange: 0 }) +
+                        highlightedPre({value: "ab", textareaRange: 0}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">ab</pre>[]`,
                     config: configWithEmbeddings,
@@ -922,7 +926,7 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>ab     </pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "ab     " }) +
+                        highlightedPre({value: "ab     "}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: async (editor) => {
                         await testDeleteInCodeBlock(2)(editor); // "ab[]     "
@@ -933,7 +937,7 @@ describe("Selection collapsed", () => {
                     },
                     contentAfterEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "ab", textareaRange: 2 }) +
+                        highlightedPre({value: "ab", textareaRange: 2}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">ab</pre>[]`,
                     config: configWithEmbeddings,
@@ -1074,7 +1078,8 @@ describe("Selection collapsed", () => {
 
         test("should merge a text following a paragraph (keeping the text) (2)", async () => {
             await testEditor({
-                contentBefore: '<p>ab[]</p><p style="margin-bottom: 0px;">cd</p><p>ef</p>',
+                contentBefore:
+                    '<p>ab[]</p><p style="margin-bottom: 0px;">cd</p><p>ef</p>',
                 stepFunction: deleteForward,
                 contentAfter: "<p>ab[]cd</p><p>ef</p>",
             });
@@ -1104,7 +1109,8 @@ describe("Selection collapsed", () => {
                 contentBefore:
                     '<p><span class="a">dom to[]</span></p><p><span class="b">edit</span></p>',
                 stepFunction: deleteForward,
-                contentAfter: '<p><span class="a">dom to[]</span><span class="b">edit</span></p>',
+                contentAfter:
+                    '<p><span class="a">dom to[]</span><span class="b">edit</span></p>',
             });
         });
 
@@ -1492,7 +1498,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 with a format to the middle of a paragraph + start of editable (1)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1><b>[abcd</b></h1><p>ef]gh1</p>",
             stepFunction: deleteForward,
@@ -1501,7 +1507,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 with a format to the middle of a paragraph + start of editable (2)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1>[<b>abcd</b></h1><p>ef]gh2</p>",
             stepFunction: deleteForward,
@@ -1544,7 +1550,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 to the end of a paragraph (1)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1>[abcd</h1><p>ef]</p><h2>1</h2>",
             stepFunction: deleteForward,
@@ -1553,7 +1559,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 to the end of a paragraph (2)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1>[abcd</h1><p>ef]</p><h2>2</h2>",
             stepFunction: deleteForward,
@@ -1580,7 +1586,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 with a format to the end of a paragraph (1)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1><u>[abcd</u></h1><p>ef]</p><h2>1</h2>",
             stepFunction: deleteForward,
@@ -1591,7 +1597,7 @@ describe("Selection not collapsed", () => {
     });
 
     test("should delete a selection from the beginning of a heading1 with a format to the end of a paragraph (2)", async () => {
-        //Forward selection
+        // Forward selection
         await testEditor({
             contentBefore: "<h1>[<u>abcd</u></h1><p>ef]</p><h2>2</h2>",
             stepFunction: deleteForward,
@@ -1625,7 +1631,7 @@ describe("Selection not collapsed", () => {
 
     test.tags("desktop");
     test("should delete a heading (triple click delete) (1)", async () => {
-        const { editor, el } = await setupEditor("<h1>abc</h1><p>def</p>", {});
+        const {editor, el} = await setupEditor("<h1>abc</h1><p>def</p>", {});
         await tripleClick(el.querySelector("h1"));
         expect(getContent(el)).toBe("<h1>[abc]</h1><p>def</p>");
         deleteForward(editor);
@@ -1635,7 +1641,7 @@ describe("Selection not collapsed", () => {
     });
     test.tags("desktop");
     test("should delete a heading (triple click delete) (2)", async () => {
-        const { editor, el } = await setupEditor("<h1>abc</h1><p><br></p><p>def</p>", {});
+        const {editor, el} = await setupEditor("<h1>abc</h1><p><br></p><p>def</p>", {});
         await tripleClick(el.querySelector("h1"));
         expect(getContent(el)).toBe("<h1>[abc]</h1><p><br></p><p>def</p>");
         deleteForward(editor);

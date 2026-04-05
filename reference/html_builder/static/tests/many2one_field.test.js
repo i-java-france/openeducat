@@ -1,7 +1,7 @@
-import { setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { expect, test, describe } from "@odoo/hoot";
-import { animationFrame, press } from "@odoo/hoot-dom";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, press} from "@odoo/hoot-dom";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -19,7 +19,7 @@ test("Preview changes of many2one option", async () => {
     onRpc(
         "ir.qweb.field.contact",
         "get_record_to_html",
-        ({ args: [[id]], kwargs }) => `<span>The ${kwargs.options.option} of ${id}</span>`
+        ({args: [[id]], kwargs}) => `<span>The ${kwargs.options.option} of ${id}</span>`
     );
 
     await setupHTMLBuilder(`
@@ -43,7 +43,7 @@ test("Preview changes of many2one option", async () => {
     await contains("span.o-dropdown-item.dropdown-item").hover();
     expect(":iframe span.span-1 > span").toHaveText("The Name of 1");
     expect(":iframe span.span-2 > span").toHaveText("The Address of 1");
-    expect(":iframe span.span-3 > span").toHaveText("The Address of 3"); // author of other post is not changed
+    expect(":iframe span.span-3 > span").toHaveText("The Address of 3"); // Author of other post is not changed
     expect(":iframe span.span-4").toHaveText("Hermit");
 
     await press("esc"); // This causes the dropdown to close, and thus the preview to be reverted
@@ -57,7 +57,7 @@ test("Many2OneOption: add null_text option in dropdown", async () => {
     onRpc(
         "ir.qweb.field.contact",
         "get_record_to_html",
-        ({ args: [[id]], kwargs }) => `<span>The ${kwargs.options.option} of ${id}</span>`
+        ({args: [[id]], kwargs}) => `<span>The ${kwargs.options.option} of ${id}</span>`
     );
     await setupHTMLBuilder(`
         <div class="many2oneoption_dropdown"

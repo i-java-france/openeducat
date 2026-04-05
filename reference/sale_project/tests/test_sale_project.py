@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
+from odoo.exceptions import UserError
 from odoo.fields import Datetime
 from odoo.tests import Form, new_test_user, tagged
-from odoo.exceptions import UserError
 
 from .common import TestSaleProjectCommon
 
@@ -892,7 +892,7 @@ class TestSaleProject(TestSaleProjectCommon):
                 ],
                 'company_id': company.id,
             }
-            for company, product in zip([company_a, company_b], [product_a, product_b])
+            for company, product in zip([company_a, company_b], [product_a, product_b], strict=False)
         ])
         (sale_order_a + sale_order_b).action_confirm()
 

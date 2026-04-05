@@ -1,8 +1,8 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { splitBlock, keydownTab, undo, tripleClick } from "../_helpers/user_actions";
-import { getContent } from "../_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {keydownTab, splitBlock, tripleClick, undo} from "../_helpers/user_actions";
+import {getContent} from "../_helpers/selection";
 
 describe("Checklist", () => {
     test("should indent a checklist (1)", async () => {
@@ -1353,11 +1353,11 @@ describe("Mixed: list + paragraph", () => {
                 <li>[abc</li>
             </ul>
             <p>def]</p>`);
-        const { el, editor } = await setupEditor(contentBefore);
+        const {el, editor} = await setupEditor(contentBefore);
 
         await keydownTab(editor);
 
-        /* eslint-disable */
+
         const expectedContent =
             unformat(`
             <ul>
@@ -1368,7 +1368,7 @@ describe("Mixed: list + paragraph", () => {
                 </li>
             </ul>`) +
             '<p><span class="oe-tabs" contenteditable="false" style="width: 40px;">\t</span>\u200bdef]</p>';
-        /* eslint-enable */
+
         expect(getContent(el)).toBe(expectedContent);
 
         // Check that it was done as single history step.

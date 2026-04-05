@@ -2,7 +2,8 @@
 
 from werkzeug.exceptions import NotFound
 
-from odoo.http import route, request
+from odoo.http import request, route
+
 from odoo.addons.mail.controllers.discuss.rtc import RtcController
 from odoo.addons.mail.tools.discuss import add_guest_to_context
 

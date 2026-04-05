@@ -1,13 +1,13 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 import {
     getFilledOrder,
     setupPosEnv,
     waitUntilOrdersSynced,
 } from "@point_of_sale/../tests/unit/utils";
-import { MockServer } from "@web/../tests/web_test_helpers";
+import {MockServer} from "@web/../tests/web_test_helpers";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 definePosModels();
 
@@ -16,7 +16,7 @@ describe("restaurant pos_store.js", () => {
         const store = await setupPosEnv();
         const table1 = store.models["restaurant.table"].get(1);
         const table2 = store.models["restaurant.table"].get(2);
-        const sourceOrder = store.addNewOrder({ table_id: table1 });
+        const sourceOrder = store.addNewOrder({table_id: table1});
         const product = store.models["product.template"].get(5);
         await store.addLineToOrder(
             {
@@ -77,7 +77,7 @@ describe("restaurant pos_store.js", () => {
         await waitUntilOrdersSynced(store);
         expect(store.getPendingOrder().orderToCreate).toHaveLength(0);
         expect(order.isDirty()).toBe(false);
-        //Update the order
+        // Update the order
         order.setInternalNote("Test note");
         expect(order.isDirty()).toBe(true);
         await store.unsetTable();
@@ -287,9 +287,9 @@ describe("restaurant pos_store.js", () => {
             order.general_customer_note = '[{"text":"General Note","colorIndex":0}]';
             const changes = store.categoryCount;
             expect(changes).toEqual([
-                { count: 3, name: "Category 1" },
-                { count: 2, name: "Category 2" },
-                { count: 1, name: "Message" },
+                {count: 3, name: "Category 1"},
+                {count: 2, name: "Category 2"},
+                {count: 1, name: "Message"},
             ]);
         });
 
@@ -298,14 +298,14 @@ describe("restaurant pos_store.js", () => {
             const order = await getFilledOrder(store);
             order.general_customer_note = '[{"text":"General Note","colorIndex":0}]';
             store.selectedOrderUuid = null;
-            // without a selected order, `categoryCount` throws
+            // Without a selected order, `categoryCount` throws
             expect(() => store.categoryCount).toThrow();
-            // explicitly specify the order to compute the changes for
+            // Explicitly specify the order to compute the changes for
             const changes = store.getCategoryCount(order);
             expect(changes).toEqual([
-                { count: 3, name: "Category 1" },
-                { count: 2, name: "Category 2" },
-                { count: 1, name: "Message" },
+                {count: 3, name: "Category 1"},
+                {count: 2, name: "Category 2"},
+                {count: 1, name: "Message"},
             ]);
         });
     });
@@ -341,7 +341,7 @@ describe("restaurant pos_store.js", () => {
     test("getTableOrders", async () => {
         const store = await setupPosEnv();
         const table = store.models["restaurant.table"].get(2);
-        store.addNewOrder({ table_id: table });
+        store.addNewOrder({table_id: table});
         const orders = store.getTableOrders(table.id);
         expect(orders.length).toBe(1);
     });
@@ -349,8 +349,8 @@ describe("restaurant pos_store.js", () => {
     test("getActiveOrdersOnTable", async () => {
         const store = await setupPosEnv();
         const table = store.models["restaurant.table"].get(2);
-        store.addNewOrder({ table_id: table });
-        store.addNewOrder({ table_id: table });
+        store.addNewOrder({table_id: table});
+        store.addNewOrder({table_id: table});
         const orders = await store.getActiveOrdersOnTable(table);
         expect(orders.length).toBe(2);
     });
@@ -359,7 +359,7 @@ describe("restaurant pos_store.js", () => {
         const store = await setupPosEnv();
         const tableSrc = store.models["restaurant.table"].get(1);
         const tableDst = store.models["restaurant.table"].get(2);
-        const order = store.addNewOrder({ table_id: tableSrc });
+        const order = store.addNewOrder({table_id: tableSrc});
         store.alert = {
             dismiss: () => {},
         };
@@ -373,7 +373,7 @@ describe("restaurant pos_store.js", () => {
         const store = await setupPosEnv();
         const tableSrc = store.models["restaurant.table"].get(1);
         const tableDst = store.models["restaurant.table"].get(2);
-        const sourceOrder = store.addNewOrder({ table_id: tableSrc });
+        const sourceOrder = store.addNewOrder({table_id: tableSrc});
         const product1 = store.models["product.template"].get(5);
         await store.addLineToOrder(
             {
@@ -382,7 +382,7 @@ describe("restaurant pos_store.js", () => {
             },
             sourceOrder
         );
-        const order = store.addNewOrder({ table_id: tableDst });
+        const order = store.addNewOrder({table_id: tableDst});
         await store.transferOrder(sourceOrder.uuid, tableDst);
         expect(sourceOrder.lines.length).toBe(0);
         expect(order.lines.length).toBe(1);
@@ -394,16 +394,22 @@ describe("restaurant pos_store.js", () => {
         const models = store.models;
         const table1 = models["restaurant.table"].get(2);
         const table2 = models["restaurant.table"].get(3);
-        const order1 = store.addNewOrder({ table_id: table1 });
+        const order1 = store.addNewOrder({table_id: table1});
         const course1 = store.addCourse();
         const product1 = models["product.template"].get(5);
-        const line1 = await store.addLineToOrder({ product_tmpl_id: product1, qty: 1 }, order1);
+        const line1 = await store.addLineToOrder(
+            {product_tmpl_id: product1, qty: 1},
+            order1
+        );
         line1.course_id = course1;
         course1.line_ids = [line1];
-        const order2 = store.addNewOrder({ table_id: table2 });
+        const order2 = store.addNewOrder({table_id: table2});
         const course2 = store.addCourse();
         const product2 = models["product.template"].get(6);
-        const line2 = await store.addLineToOrder({ product_tmpl_id: product2, qty: 2 }, order2);
+        const line2 = await store.addLineToOrder(
+            {product_tmpl_id: product2, qty: 2},
+            order2
+        );
         line2.course_id = course2;
         course2.line_ids = [line2];
         await store.mergeOrders(order1, order2);
@@ -420,9 +426,9 @@ describe("restaurant pos_store.js", () => {
         const models = store.models;
         const table1 = models["restaurant.table"].get(2);
         const table2 = models["restaurant.table"].get(3);
-        const order1 = store.addNewOrder({ table_id: table1 });
+        const order1 = store.addNewOrder({table_id: table1});
         order1.setCustomerCount(3);
-        const order2 = store.addNewOrder({ table_id: table2 });
+        const order2 = store.addNewOrder({table_id: table2});
         order2.setCustomerCount(5);
         await store.mergeOrders(order1, order2);
         expect(order2.getCustomerCount()).toBe(8);
@@ -431,8 +437,8 @@ describe("restaurant pos_store.js", () => {
     test("getCustomerCount", async () => {
         const store = await setupPosEnv();
         const table = store.models["restaurant.table"].get(2);
-        store.addNewOrder({ table_id: table }).setCustomerCount(3);
-        store.addNewOrder({ table_id: table }).setCustomerCount(6);
+        store.addNewOrder({table_id: table}).setCustomerCount(3);
+        store.addNewOrder({table_id: table}).setCustomerCount(6);
         const count = store.getCustomerCount(table.id);
         expect(count).toBe(9);
     });
@@ -455,7 +461,7 @@ describe("restaurant pos_store.js", () => {
             const store = await setupPosEnv();
             const order = store.addNewOrder();
             const product = store.models["product.template"].get(5);
-            await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+            await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
             const course1 = store.addCourse();
             const course2 = order.getSelectedCourse();
             expect(order.course_ids.length).toBe(2);

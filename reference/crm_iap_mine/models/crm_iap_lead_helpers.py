@@ -1,4 +1,3 @@
-from math import floor, log10
 from odoo import api, models
 
 

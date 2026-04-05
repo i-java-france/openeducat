@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class NewsletterPopupPlugin extends Plugin {
     static id = "newsletterPopup";
@@ -8,4 +8,6 @@ class NewsletterPopupPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(NewsletterPopupPlugin.id, NewsletterPopupPlugin);
+registry
+    .category("website-plugins")
+    .add(NewsletterPopupPlugin.id, NewsletterPopupPlugin);

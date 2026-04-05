@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-from odoo import models, fields, api
-from odoo.tools.translate import _
+from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 
 class AccountMoveReversal(models.TransientModel):
@@ -65,7 +64,7 @@ class AccountMoveReversal(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(AccountMoveReversal, self).default_get(fields)
+        res = super().default_get(fields)
         move_ids = self.env['account.move'].browse(self.env.context['active_ids']) if self.env.context.get('active_model') == 'account.move' else self.env['account.move']
 
         if len(move_ids.company_id) > 1:
@@ -123,7 +122,7 @@ class AccountMoveReversal(models.TransientModel):
             [self.env['account.move'], [], True],   # Moves to be cancelled by the reverses.
             [self.env['account.move'], [], False],  # Others.
         ]
-        for move, default_vals in zip(moves, default_values_list):
+        for move, default_vals in zip(moves, default_values_list, strict=False):
             is_auto_post = default_vals.get('auto_post') != 'no'
             is_cancel_needed = not is_auto_post and (is_modify or self.move_type == 'entry')
             batch_index = 0 if is_cancel_needed else 1
@@ -136,7 +135,7 @@ class AccountMoveReversal(models.TransientModel):
             new_moves = moves._reverse_moves(default_values_list, cancel=is_cancel_needed)
             new_moves._compute_partner_bank_id()
             moves._message_log_batch(
-                bodies={move.id: move.env._('This entry has been %s', reverse._get_html_link(title=move.env._("reversed"))) for move, reverse in zip(moves, new_moves)}
+                bodies={move.id: move.env._('This entry has been %s', reverse._get_html_link(title=move.env._("reversed"))) for move, reverse in zip(moves, new_moves, strict=False)}
             )
 
             if is_modify:

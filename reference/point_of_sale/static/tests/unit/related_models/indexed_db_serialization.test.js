@@ -1,16 +1,16 @@
-import { expect, test } from "@odoo/hoot";
-import { SERIALIZED_UI_STATE_PROP } from "@point_of_sale/app/models/related_models/utils";
-import { getRelatedModelsInstance } from "../data/get_model_definitions";
-import { makeMockServer } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "../data/generate_model_definitions";
-import { getFilledOrder, setupPosEnv } from "../utils";
+import {expect, test} from "@odoo/hoot";
+import {SERIALIZED_UI_STATE_PROP} from "@point_of_sale/app/models/related_models/utils";
+import {getRelatedModelsInstance} from "../data/get_model_definitions";
+import {makeMockServer} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "../data/generate_model_definitions";
+import {getFilledOrder, setupPosEnv} from "../utils";
 
 definePosModels();
 
 test("newly created record", async () => {
     await makeMockServer();
     const models = getRelatedModelsInstance(false);
-    const order = models["pos.order"].create({ amount_total: 10 });
+    const order = models["pos.order"].create({amount_total: 10});
     const line1 = models["pos.order.line"].create({
         order_id: order,
         qty: 1,
@@ -41,8 +41,8 @@ test("newly created record", async () => {
 test("UIState serialization", async () => {
     await makeMockServer();
     const models = getRelatedModelsInstance(false);
-    const order = models["pos.order"].create({ amount_total: 10 });
-    order.uiState = { demoValue: 99 };
+    const order = models["pos.order"].create({amount_total: 10});
+    order.uiState = {demoValue: 99};
 
     const result = order.serializeForIndexedDB();
     expect(result.id).toBe(order.id);
@@ -54,7 +54,7 @@ test("UIState serialization", async () => {
 test("Restore serialized data", async () => {
     const store = await setupPosEnv();
     const order = await getFilledOrder(store);
-    order.uiState = { demoValue: 999 };
+    order.uiState = {demoValue: 999};
     const serialized = order.serializeForIndexedDB();
     const serializedLines = order.lines.map((line) => line.serializeForIndexedDB());
 

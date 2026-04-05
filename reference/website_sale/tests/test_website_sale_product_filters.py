@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.tests import tagged, HttpCase
+from odoo.tests import HttpCase, tagged
 from odoo.tools import SQL
 
 from odoo.addons.product.tests.test_product_attribute_value_config import (

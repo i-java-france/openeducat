@@ -1,6 +1,9 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
 import {
     animationFrame,
     click,
@@ -12,11 +15,11 @@ import {
     queryOne,
     tick,
 } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {advanceTime} from "@odoo/hoot-mock";
 
-import { browser } from "@web/core/browser/browser";
-import { cookie } from "@web/core/browser/cookie";
-import { defineStyle } from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {cookie} from "@web/core/browser/cookie";
+import {defineStyle} from "@web/../tests/web_test_helpers";
 
 setupInteractionWhiteList("website.popup");
 
@@ -35,13 +38,13 @@ function removeTransitions() {
 
 /**
  * @param {Object} [options]
- * @param {number} [options.showAfter] - delay
- * @param {string} [options.display] - one of "afterDelay", "onClick", "mouseExit"
- * @param {boolean} [options.backdrop]
- * @param {string} [options.extraPrimaryBtnClasses]
- * @param {string} [options.modalId]
- * @param {boolean} [options.focusableElements]
- * @returns {string} - popup template
+ * @param {Number} [options.showAfter] - delay
+ * @param {String} [options.display] - one of "afterDelay", "onClick", "mouseExit"
+ * @param {Boolean} [options.backdrop]
+ * @param {String} [options.extraPrimaryBtnClasses]
+ * @param {String} [options.modalId]
+ * @param {Boolean} [options.focusableElements]
+ * @returns {String} - popup template
  */
 function getPopupTemplate(options = {}) {
     const {
@@ -86,7 +89,7 @@ function getPopupTemplate(options = {}) {
 const modal = "#sPopup .modal";
 
 test("popup interaction does not activate without .s_popup", async () => {
-    const { core } = await startInteractions(``);
+    const {core} = await startInteractions(``);
     expect(core.interactions).toHaveLength(0);
 });
 
@@ -94,7 +97,7 @@ describe("close popup", () => {
     beforeEach(removeTransitions);
 
     test("close popup with close button and check cookies", async () => {
-        const { core } = await startInteractions(getPopupTemplate());
+        const {core} = await startInteractions(getPopupTemplate());
         expect(core.interactions).toHaveLength(1);
         expect(cookie.get("sPopup")).not.toBe("true");
         await tick();
@@ -108,7 +111,7 @@ describe("close popup", () => {
     });
 
     test("close popup by pressing escape", async () => {
-        const { core } = await startInteractions(getPopupTemplate());
+        const {core} = await startInteractions(getPopupTemplate());
         expect(core.interactions).toHaveLength(1);
         await tick();
         await animationFrame();
@@ -122,7 +125,7 @@ describe("close popup", () => {
     });
 
     test("click on primary button closes popup", async () => {
-        const { core } = await startInteractions(getPopupTemplate());
+        const {core} = await startInteractions(getPopupTemplate());
         expect(core.interactions).toHaveLength(1);
         await tick();
         await animationFrame();
@@ -134,8 +137,8 @@ describe("close popup", () => {
     });
 
     test("click on primary button which is a form submit doesn't close popup", async () => {
-        const { core } = await startInteractions(
-            getPopupTemplate({ extraPrimaryBtnClasses: "o_website_form_send" })
+        const {core} = await startInteractions(
+            getPopupTemplate({extraPrimaryBtnClasses: "o_website_form_send"})
         );
         expect(core.interactions).toHaveLength(1);
         await tick();
@@ -146,7 +149,7 @@ describe("close popup", () => {
     });
 
     test("close popup by clicking outside the modal", async () => {
-        const { core } = await startInteractions(getPopupTemplate());
+        const {core} = await startInteractions(getPopupTemplate());
         expect(core.interactions).toHaveLength(1);
         await tick();
         await animationFrame();
@@ -160,7 +163,7 @@ describe("close popup", () => {
 describe("show popup", () => {
     beforeEach(removeTransitions);
     test("popup shows after 5000ms", async () => {
-        const { core } = await startInteractions(getPopupTemplate({ showAfter: 5000 }));
+        const {core} = await startInteractions(getPopupTemplate({showAfter: 5000}));
         expect(core.interactions).toHaveLength(1);
         expect(modal).not.toBeVisible();
         await advanceTime(4500);
@@ -170,9 +173,9 @@ describe("show popup", () => {
     });
 
     test("show popup after click on link", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a href="#modal">Show popup</a>
-            ${getPopupTemplate({ display: "onClick", modalId: "modal" })}
+            ${getPopupTemplate({display: "onClick", modalId: "modal"})}
         `);
         expect(core.interactions).toHaveLength(1);
         const modal = "#sPopup #modal[data-display='onClick']";
@@ -186,7 +189,9 @@ describe("show popup", () => {
 
     test.tags("desktop");
     test("show popup when mouse leaves document", async () => {
-        const { core } = await startInteractions(getPopupTemplate({ display: "mouseExit" }));
+        const {core} = await startInteractions(
+            getPopupTemplate({display: "mouseExit"})
+        );
         expect(core.interactions).toHaveLength(1);
         const modalEl = queryOne("#sPopup .modal");
         expect(modalEl).not.toBeVisible();
@@ -200,9 +205,9 @@ describe("trap focus", () => {
     beforeEach(removeTransitions);
 
     test("focus is trapped when popup opens", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a href="#">Link</a>
-            ${getPopupTemplate({ modalId: "modal", focusableElements: true })}
+            ${getPopupTemplate({modalId: "modal", focusableElements: true})}
         `);
         expect(core.interactions).toHaveLength(1);
         await pointerDown(document.body);
@@ -216,14 +221,14 @@ describe("trap focus", () => {
         expect("#focus").toBeFocused();
         await press("Tab");
         expect(".btn-primary").toBeFocused();
-        await press("Tab", { shiftKey: true });
+        await press("Tab", {shiftKey: true});
         expect("#focus").toBeFocused();
     });
 
     test("reset focus on the previous active element when popup is closed", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a id="showLink" href="#">Link</a>
-            ${getPopupTemplate({ modalId: "modal" })}
+            ${getPopupTemplate({modalId: "modal"})}
         `);
         expect(core.interactions).toHaveLength(1);
         await pointerDown(document.body);
@@ -242,9 +247,9 @@ describe("trap focus", () => {
     });
 
     test("trap & reset focus when popup opens on click", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a href="#modal">Show popup</a>
-            ${getPopupTemplate({ display: "onClick", modalId: "modal", focusableElements: true })}
+            ${getPopupTemplate({display: "onClick", modalId: "modal", focusableElements: true})}
         `);
         const modal = "#sPopup #modal[data-display='onClick']";
         expect(core.interactions).toHaveLength(1);
@@ -265,7 +270,7 @@ describe("trap focus", () => {
         expect("#focus").toBeFocused();
         await press("Tab");
         expect(".btn-primary").toBeFocused();
-        await press("Tab", { shiftKey: true });
+        await press("Tab", {shiftKey: true});
         expect("#focus").toBeFocused();
         await press("Escape");
         expect(modal).not.toBeVisible();
@@ -273,9 +278,9 @@ describe("trap focus", () => {
     });
 
     test("intercept & reset focus with no backdrop popup", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a id="link1" href="#">Link</a>
-            ${getPopupTemplate({ modalId: "modal", backdrop: false })}
+            ${getPopupTemplate({modalId: "modal", backdrop: false})}
         `);
         expect(core.interactions).toHaveLength(1);
         await pointerDown(document.body);
@@ -293,9 +298,9 @@ describe("trap focus", () => {
     });
 
     test("don't trap focus if no backdrop", async () => {
-        const { core } = await startInteractions(`
+        const {core} = await startInteractions(`
             <a id="link1" href="#">Link before</a>
-            ${getPopupTemplate({ modalId: "modal", backdrop: false, focusableElements: true })}
+            ${getPopupTemplate({modalId: "modal", backdrop: false, focusableElements: true})}
             <a id="link2" href="#">Link after</a>
         `);
         expect(core.interactions).toHaveLength(1);
@@ -309,11 +314,11 @@ describe("trap focus", () => {
         expect("#focus").toBeFocused();
         await press("Tab");
         expect("#link2").toBeFocused();
-        await press("Tab", { shiftKey: true });
+        await press("Tab", {shiftKey: true});
         expect("#focus").toBeFocused();
-        await press("Tab", { shiftKey: true });
+        await press("Tab", {shiftKey: true});
         expect(".btn-primary").toBeFocused();
-        await press("Tab", { shiftKey: true });
+        await press("Tab", {shiftKey: true});
         expect("#link1").toBeFocused();
     });
 });

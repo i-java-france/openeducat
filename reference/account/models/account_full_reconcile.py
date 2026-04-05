@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from odoo import api, fields, models, Command
+from odoo import Command, api, fields, models
 
 
 class AccountFullReconcile(models.Model):
@@ -28,7 +27,7 @@ class AccountFullReconcile(models.Model):
                SET full_reconcile_id = source.full_id
               FROM (VALUES %s) AS source(full_id, line_ids)
              WHERE line.id = ANY(source.line_ids)
-        """, [(full.id, line_ids) for full, line_ids in zip(fulls, move_line_ids)], page_size=1000)
+        """, [(full.id, line_ids) for full, line_ids in zip(fulls, move_line_ids, strict=False)], page_size=1000)
         fulls.reconciled_line_ids.invalidate_recordset(['full_reconcile_id'], flush=False)
         fulls.invalidate_recordset(['reconciled_line_ids'], flush=False)
 
@@ -37,7 +36,7 @@ class AccountFullReconcile(models.Model):
                SET full_reconcile_id = source.full_id
               FROM (VALUES %s) AS source(full_id, partial_ids)
              WHERE partial.id = ANY(source.partial_ids)
-        """, [(full.id, line_ids) for full, line_ids in zip(fulls, partial_ids)], page_size=1000)
+        """, [(full.id, line_ids) for full, line_ids in zip(fulls, partial_ids, strict=False)], page_size=1000)
         fulls.partial_reconcile_ids.invalidate_recordset(['full_reconcile_id'], flush=False)
         fulls.invalidate_recordset(['partial_reconcile_ids'], flush=False)
 

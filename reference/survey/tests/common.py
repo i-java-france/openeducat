@@ -1,21 +1,20 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 import re
-
 from collections import Counter
 from contextlib import nullcontext
 
-from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common
+
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class SurveyCase(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(SurveyCase, cls).setUpClass()
+        super().setUpClass()
 
         """ Some custom stuff to make the matching between questions and answers
           :param dict _type_match: dict
@@ -369,7 +368,7 @@ class TestSurveyResultsCommon(SurveyCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestSurveyResultsCommon, cls).setUpClass()
+        super().setUpClass()
         cls.survey_manager = mail_new_test_user(
             cls.env, name='Gustave Doré', login='survey_manager', email='survey.manager@example.com',
             groups='survey.group_survey_manager,base.group_user'

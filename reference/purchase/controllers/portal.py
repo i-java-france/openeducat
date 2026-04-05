@@ -6,9 +6,10 @@ from datetime import datetime
 
 from odoo import http
 from odoo.exceptions import AccessError, MissingError
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.tools.image import image_process
 from odoo.tools.translate import _
+
 from odoo.addons.portal.controllers import portal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 

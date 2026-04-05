@@ -1,10 +1,10 @@
 /* global posmodel */
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
 import * as ProductPage from "@pos_self_order/../tests/tours/utils/product_page_util";
-import { patch } from "@web/core/utils/patch";
-import { QFPay } from "@pos_qfpay/app/qfpay";
-import { mockQFPayWebhook } from "@pos_qfpay/../tests/tours/utils/common";
+import {patch} from "@web/core/utils/patch";
+import {QFPay} from "@pos_qfpay/app/qfpay";
+import {mockQFPayWebhook} from "@pos_qfpay/../tests/tours/utils/common";
 
 // Patch QFPay to validate the request that would be sent to the terminal
 patch(QFPay.prototype, {
@@ -42,8 +42,14 @@ registry.category("web_tour.tours").add("kiosk_qfpay_order", {
             trigger: "body:not(:has(.btn:text(Retry)))",
             run: async function () {
                 const amount = posmodel.currentOrder.amount_total;
-                const paymentMethodId = posmodel.models["pos.payment.method"].getAll()[0].id;
-                mockQFPayWebhook(posmodel.currentOrder.uuid, paymentMethodId, amount, false);
+                const paymentMethodId =
+                    posmodel.models["pos.payment.method"].getAll()[0].id;
+                mockQFPayWebhook(
+                    posmodel.currentOrder.uuid,
+                    paymentMethodId,
+                    amount,
+                    false
+                );
             },
         },
         Utils.clickBtn("Close"),

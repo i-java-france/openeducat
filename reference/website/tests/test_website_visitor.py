@@ -1,14 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import random
-
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+from odoo.tests import HttpCase, common, tagged
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.addons.website.models.website_visitor import WebsiteVisitor
-from odoo.tests import common, tagged, HttpCase
 
 
 class MockVisitor(common.BaseCase):

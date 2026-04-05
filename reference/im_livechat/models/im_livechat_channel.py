@@ -1,14 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict
-from datetime import timedelta
 import random
 import re
+from collections import defaultdict
+from datetime import timedelta
 from urllib.parse import urlparse
 
-from odoo import api, Command, fields, models, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import AccessError, ValidationError
 from odoo.fields import Domain
+
 from odoo.addons.bus.websocket import WebsocketConnectionHandler
 from odoo.addons.mail.tools.discuss import Store
 

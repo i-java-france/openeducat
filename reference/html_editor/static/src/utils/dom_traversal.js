@@ -1,4 +1,4 @@
-import { DIRECTIONS } from "./position";
+import {DIRECTIONS} from "./position";
 
 export const closestPath = function* (node) {
     while (node) {
@@ -14,7 +14,11 @@ export const closestPath = function* (node) {
  * @param {findCallback} stopCallback - This callback check if this function
  *      should stop when it receive `node`.
  */
-export function findNode(domPath, findCallback = () => true, stopCallback = () => false) {
+export function findNode(
+    domPath,
+    findCallback = () => true,
+    stopCallback = () => false
+) {
     for (const node of domPath) {
         if (findCallback(node)) {
             return node;
@@ -190,7 +194,7 @@ export const PATH_END_REASONS = {
  */
 export function createDOMPathGenerator(
     direction,
-    { leafOnly = false, inScope = false, stopTraverseFunction, stopFunction } = {}
+    {leafOnly = false, inScope = false, stopTraverseFunction, stopFunction} = {}
 ) {
     const nextDeepest =
         direction === DIRECTIONS.LEFT
@@ -199,8 +203,10 @@ export function createDOMPathGenerator(
 
     const firstNode =
         direction === DIRECTIONS.LEFT
-            ? (node, offset) => lastLeaf(node.childNodes[offset - 1], stopTraverseFunction)
-            : (node, offset) => firstLeaf(node.childNodes[offset], stopTraverseFunction);
+            ? (node, offset) =>
+                  lastLeaf(node.childNodes[offset - 1], stopTraverseFunction)
+            : (node, offset) =>
+                  firstLeaf(node.childNodes[offset], stopTraverseFunction);
 
     // Note "reasons" is a way for the caller to be able to know why the
     // generator ended yielding values.
@@ -215,7 +221,9 @@ export function createDOMPathGenerator(
 
         while (currentNode) {
             if (stopFunction && stopFunction(currentNode)) {
-                reasons.push(movedUp ? PATH_END_REASONS.BLOCK_OUT : PATH_END_REASONS.BLOCK_HIT);
+                reasons.push(
+                    movedUp ? PATH_END_REASONS.BLOCK_OUT : PATH_END_REASONS.BLOCK_HIT
+                );
                 break;
             }
             if (inScope && currentNode === node) {
@@ -247,7 +255,11 @@ export function createDOMPathGenerator(
  * @returns {Node}
  */
 export function lastLeaf(node, stopTraverseFunction) {
-    while (node && node.lastChild && !(stopTraverseFunction && stopTraverseFunction(node))) {
+    while (
+        node &&
+        node.lastChild &&
+        !(stopTraverseFunction && stopTraverseFunction(node))
+    ) {
         node = node.lastChild;
     }
     return node;
@@ -260,7 +272,11 @@ export function lastLeaf(node, stopTraverseFunction) {
  * @returns {Node}
  */
 export function firstLeaf(node, stopTraverseFunction) {
-    while (node && node.firstChild && !(stopTraverseFunction && stopTraverseFunction(node))) {
+    while (
+        node &&
+        node.firstChild &&
+        !(stopTraverseFunction && stopTraverseFunction(node))
+    ) {
         node = node.firstChild;
     }
     return node;

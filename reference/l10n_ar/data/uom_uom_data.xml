@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="True">
-
     <record model='uom.uom' id='uom.product_uom_kgm'>
         <field name='l10n_ar_afip_code'>01</field>
     </record>

@@ -1,6 +1,6 @@
-import { makeKwArgs, models } from "@web/../tests/web_test_helpers";
-import { groupBy } from "@web/core/utils/arrays";
-import { mailDataHelpers } from "../mail_mock_server";
+import {makeKwArgs, models} from "@web/../tests/web_test_helpers";
+import {groupBy} from "@web/core/utils/arrays";
+import {mailDataHelpers} from "../mail_mock_server";
 
 export class MailMessageReaction extends models.ServerModel {
     _name = "mail.message.reaction";
@@ -14,8 +14,10 @@ export class MailMessageReaction extends models.ServerModel {
         const reactionGroups = groupBy(this, (r) => [r.message_id, r.content]);
         for (const groupId in reactionGroups) {
             const reactionGroup = reactionGroups[groupId];
-            const { message_id, content } = reactionGroups[groupId][0];
-            const guests = MailGuest.browse(reactionGroup.map((reaction) => reaction.guest_id));
+            const {message_id, content} = reactionGroups[groupId][0];
+            const guests = MailGuest.browse(
+                reactionGroup.map((reaction) => reaction.guest_id)
+            );
             const partners = ResPartner.browse(
                 reactionGroup.map((reaction) => reaction.partner_id)
             );
@@ -24,12 +26,12 @@ export class MailMessageReaction extends models.ServerModel {
                 count: reactionGroup.length,
                 guests: mailDataHelpers.Store.many(
                     guests,
-                    makeKwArgs({ fields: ["avatar_128", "name"] })
+                    makeKwArgs({fields: ["avatar_128", "name"]})
                 ),
                 message: message_id,
                 partners: mailDataHelpers.Store.many(
                     partners,
-                    makeKwArgs({ fields: ["avatar_128", "name"] })
+                    makeKwArgs({fields: ["avatar_128", "name"]})
                 ),
                 sequence: Math.min(reactionGroup.map((reaction) => reaction.id)),
             };

@@ -1,11 +1,11 @@
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { downloadReport } from "@web/webclient/actions/reports/utils";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {downloadReport} from "@web/webclient/actions/reports/utils";
 
 export const reportService = {
     dependencies: ["ui", "orm", "pos"],
-    start(env, { ui, orm, pos }) {
+    start(env, {ui, orm, pos}) {
         const reportActionsCache = {};
         return {
             async doAction(reportXmlId, active_ids) {
@@ -18,7 +18,7 @@ export const reportService = {
                     // await instead of return because we want the ui to stay blocked
                     await downloadReport(
                         rpc,
-                        { ...reportAction, context: { active_ids } },
+                        {...reportAction, context: {active_ids}},
                         "pdf",
                         user.context
                     );

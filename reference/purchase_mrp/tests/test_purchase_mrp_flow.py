@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
 from unittest import skip
 
-from odoo.tests import Form, TransactionCase, tagged
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo import fields
 from odoo.fields import Command
+from odoo.tests import Form, tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')

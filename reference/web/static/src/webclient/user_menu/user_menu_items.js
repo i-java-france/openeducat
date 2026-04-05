@@ -1,11 +1,11 @@
-import { Component, markup } from "@odoo/owl";
-import { isMacOS } from "@web/core/browser/feature_detection";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { session } from "@web/session";
-import { browser } from "../../core/browser/browser";
-import { registry } from "../../core/registry";
+import {Component, markup} from "@odoo/owl";
+import {isMacOS} from "@web/core/browser/feature_detection";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {session} from "@web/session";
+import {browser} from "../../core/browser/browser";
+import {registry} from "../../core/registry";
 
 function supportItem(env) {
     const url = session.support_url;
@@ -24,7 +24,7 @@ function supportItem(env) {
 class ShortcutsFooterComponent extends Component {
     static template = "web.UserMenu.ShortcutsFooterComponent";
     static props = {
-        switchNamespace: { type: Function, optional: true },
+        switchNamespace: {type: Function, optional: true},
     };
     setup() {
         this.runShortcutKey = isMacOS() ? "CONTROL" : "ALT";
@@ -42,7 +42,9 @@ function shortCutsItem(env) {
                 <span class="fw-bold">${isMacOS() ? "CMD" : "CTRL"}+K</span>
             </div>`,
         callback: () => {
-            env.services.command.openMainPalette({ FooterComponent: ShortcutsFooterComponent });
+            env.services.command.openMainPalette({
+                FooterComponent: ShortcutsFooterComponent,
+            });
         },
         sequence: 30,
     };
@@ -61,7 +63,10 @@ export function preferencesItem(env) {
         id: "preferences",
         description: _t("My Preferences"),
         callback: async function () {
-            const actionDescription = await env.services.orm.call("res.users", "action_get");
+            const actionDescription = await env.services.orm.call(
+                "res.users",
+                "action_get"
+            );
             actionDescription.res_id = user.userId;
             env.services.action.doAction(actionDescription);
         },
@@ -92,7 +97,10 @@ function installPWAItem(env) {
     let callback = () => env.services.pwa.show();
     let show = () => env.services.pwa.isAvailable;
     const currentApp = env.services.menu.getCurrentApp();
-    if (currentApp && ["barcode", "field-service", "shop-floor"].includes(currentApp.actionPath)) {
+    if (
+        currentApp &&
+        ["barcode", "field-service", "shop-floor"].includes(currentApp.actionPath)
+    ) {
         // While the feature could work with all apps, we have decided to only
         // support the installation of the apps contained in this list
         // The list can grow in the future, by simply adding their path

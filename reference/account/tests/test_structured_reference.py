@@ -2,14 +2,14 @@ from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 
 from odoo.addons.account.tools import (
+    is_valid_structured_reference,
     is_valid_structured_reference_be,
     is_valid_structured_reference_fi,
+    is_valid_structured_reference_for_country,
+    is_valid_structured_reference_iso,
+    is_valid_structured_reference_nl,
     is_valid_structured_reference_no_se,
     is_valid_structured_reference_si,
-    is_valid_structured_reference_nl,
-    is_valid_structured_reference_iso,
-    is_valid_structured_reference,
-    is_valid_structured_reference_for_country,
 )
 
 

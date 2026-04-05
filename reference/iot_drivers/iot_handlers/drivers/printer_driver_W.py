@@ -1,21 +1,28 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import io
 import logging
+import subprocess
 from base64 import b64decode
 from datetime import datetime, timezone
-from escpos import printer
+
 import escpos.exceptions
-import io
-import subprocess
-import win32print
-import pywintypes
 import ghostscript
+import pywintypes
+import win32print
+from escpos import printer
+
+from odoo.tools.mimetypes import guess_mimetype
 
 from odoo.addons.iot_drivers.controllers.proxy import proxy_drivers
-from odoo.addons.iot_drivers.iot_handlers.drivers.printer_driver_base import EscposNotAvailableError, PrinterDriverBase
+from odoo.addons.iot_drivers.iot_handlers.drivers.printer_driver_base import (
+    EscposNotAvailableError,
+    PrinterDriverBase,
+)
+from odoo.addons.iot_drivers.iot_handlers.interfaces.printer_interface_W import (
+    win32print_lock,
+)
 from odoo.addons.iot_drivers.tools import helpers
-from odoo.tools.mimetypes import guess_mimetype
-from odoo.addons.iot_drivers.iot_handlers.interfaces.printer_interface_W import win32print_lock
 
 _logger = logging.getLogger(__name__)
 

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-import dateutil.parser as dparser
 from re import findall as re_findall
+
+import dateutil.parser as dparser
 
 from odoo import api, fields, models
 from odoo.tools import get_lang

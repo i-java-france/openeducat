@@ -1,13 +1,13 @@
-import { Interaction } from "@web/public/interaction";
-import { redirect } from "@web/core/utils/urls";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {redirect} from "@web/core/utils/urls";
+import {registry} from "@web/core/registry";
 
 export class WebsiteEventTrackSuggestion extends Interaction {
     static selector = ".owevent_track_video_suggestion";
     dynamicContent = {
         ".owevent_track_suggestion_next": {
             "t-on-click": this.onNextTrackClick,
-            "t-att-class": () => ({ invisible: !this.nextVisible }),
+            "t-att-class": () => ({invisible: !this.nextVisible}),
         },
         ".owevent_track_suggestion_close": {
             "t-on-click": this.onCloseClick,
@@ -53,4 +53,7 @@ export class WebsiteEventTrackSuggestion extends Interaction {
 
 registry
     .category("public.interactions")
-    .add("website_event_track_live.WebsiteEventTrackSuggestion", WebsiteEventTrackSuggestion);
+    .add(
+        "website_event_track_live.WebsiteEventTrackSuggestion",
+        WebsiteEventTrackSuggestion
+    );

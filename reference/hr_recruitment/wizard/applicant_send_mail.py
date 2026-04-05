@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 
 class ApplicantSendMail(models.TransientModel):

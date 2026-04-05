@@ -7,55 +7,55 @@
       "colNumber": 11,
       "rowNumber": 95,
       "rows": {
-        "11": { "size": 36 },
-        "29": { "size": 41 },
-        "48": { "size": 39 },
-        "49": { "size": 36 },
-        "50": { "size": 26 },
-        "51": { "size": 26 },
-        "52": { "size": 26 },
-        "53": { "size": 26 },
-        "54": { "size": 26 },
-        "55": { "size": 26 },
-        "56": { "size": 26 },
-        "57": { "size": 26 },
-        "58": { "size": 26 },
-        "59": { "size": 26 },
-        "60": { "size": 26 },
-        "61": { "size": 26 },
-        "62": { "size": 26 },
-        "63": { "size": 26 },
-        "64": { "size": 26 },
-        "66": { "size": 39 },
-        "67": { "size": 34 },
-        "68": { "size": 26 },
-        "69": { "size": 26 },
-        "70": { "size": 26 },
-        "71": { "size": 26 },
-        "72": { "size": 26 },
-        "73": { "size": 26 },
-        "74": { "size": 26 },
-        "75": { "size": 26 },
-        "76": { "size": 26 },
-        "77": { "size": 26 },
-        "78": { "size": 26 },
-        "79": { "size": 26 },
-        "80": { "size": 26 },
-        "81": { "size": 26 },
-        "82": { "size": 26 }
+        "11": {"size": 36},
+        "29": {"size": 41},
+        "48": {"size": 39},
+        "49": {"size": 36},
+        "50": {"size": 26},
+        "51": {"size": 26},
+        "52": {"size": 26},
+        "53": {"size": 26},
+        "54": {"size": 26},
+        "55": {"size": 26},
+        "56": {"size": 26},
+        "57": {"size": 26},
+        "58": {"size": 26},
+        "59": {"size": 26},
+        "60": {"size": 26},
+        "61": {"size": 26},
+        "62": {"size": 26},
+        "63": {"size": 26},
+        "64": {"size": 26},
+        "66": {"size": 39},
+        "67": {"size": 34},
+        "68": {"size": 26},
+        "69": {"size": 26},
+        "70": {"size": 26},
+        "71": {"size": 26},
+        "72": {"size": 26},
+        "73": {"size": 26},
+        "74": {"size": 26},
+        "75": {"size": 26},
+        "76": {"size": 26},
+        "77": {"size": 26},
+        "78": {"size": 26},
+        "79": {"size": 26},
+        "80": {"size": 26},
+        "81": {"size": 26},
+        "82": {"size": 26}
       },
       "cols": {
-        "0": { "isHidden": true, "size": 40 },
-        "1": { "size": 288 },
-        "2": { "size": 99 },
-        "3": { "size": 76 },
-        "4": { "size": 65 },
-        "5": { "size": 27 },
-        "6": { "isHidden": true, "size": 41 },
-        "7": { "size": 217 },
-        "8": { "size": 92 },
-        "9": { "size": 80 },
-        "10": { "size": 84 }
+        "0": {"isHidden": true, "size": 40},
+        "1": {"size": 288},
+        "2": {"size": 99},
+        "3": {"size": 76},
+        "4": {"size": 65},
+        "5": {"size": 27},
+        "6": {"isHidden": true, "size": 41},
+        "7": {"size": 217},
+        "8": {"size": 92},
+        "9": {"size": 80},
+        "10": {"size": 84}
       },
       "merges": [],
       "cells": {
@@ -172,22 +172,22 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "E51:E65" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "E51:E65"},
           "id": "69908097-d804-420a-bb1a-e7ec1024cee2",
           "ranges": ["B51:B65"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "K51:K65" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "K51:K65"},
           "id": "1ba4063f-c1d3-4588-a731-6d92d66ca393",
           "ranges": ["H51:H65"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "D69:D83" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "D69:D83"},
           "id": "cd2ee1d1-f7fa-4fa6-8e20-23519d360998",
           "ranges": ["B69:B83"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "K69:K78" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "K69:K78"},
           "id": "acf8e638-6670-4ab2-a451-aa5455e1e9ea",
           "ranges": ["H69:H78"]
         }
@@ -213,27 +213,27 @@
                 "dataRange": "Data!D13:D37",
                 "label": "Average per order",
                 "yAxisId": "y1",
-                "trend": { "type": "polynomial", "order": 2, "display": false },
+                "trend": {"type": "polynomial", "order": 2, "display": false},
                 "type": "line"
               }
             ],
             "legendPosition": "top",
             "labelRange": "Data!A13:A37",
-            "title": { "text": "" },
+            "title": {"text": ""},
             "aggregated": false,
             "axesDesign": {
               "y": {
-                "title": { "text": "Total revenue" }
+                "title": {"text": "Total revenue"}
               },
               "y1": {
-                "title": { "text": "Average revenue per order" }
+                "title": {"text": "Average revenue per order"}
               }
             },
             "showValues": false,
             "humanize": true,
             "chartId": "fdceb3b9-643f-4d30-a572-2d9b0b684f17"
           },
-          "offset": { "x": 0, "y": 289 },
+          "offset": {"x": 0, "y": 289},
           "col": 0,
           "row": 0
         },
@@ -246,7 +246,7 @@
             "type": "combo",
             "dataSetsHaveTitle": true,
             "dataSets": [
-              { "dataRange": "Data!H13:H20", "yAxisId": "y", "type": "bar" },
+              {"dataRange": "Data!H13:H20", "yAxisId": "y", "type": "bar"},
               {
                 "dataRange": "Data!J13:J20",
                 "yAxisId": "y1",
@@ -256,20 +256,20 @@
             ],
             "legendPosition": "top",
             "labelRange": "Data!G13:G20",
-            "title": { "text": "" },
+            "title": {"text": ""},
             "aggregated": false,
             "axesDesign": {
               "y": {
-                "title": { "text": "Total revenue" }
+                "title": {"text": "Total revenue"}
               },
               "y1": {
-                "title": { "text": "Average revenue per order" }
+                "title": {"text": "Average revenue per order"}
               }
             },
             "humanize": true,
             "chartId": "1ebdd3d0-8af0-4922-9223-2da0d6ec024c"
           },
-          "offset": { "x": 0, "y": 721 },
+          "offset": {"x": 0, "y": 721},
           "col": 0,
           "row": 0
         },
@@ -282,14 +282,14 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "#Orders", "bold": true, "color": "#434343" },
+            "title": {"text": "#Orders", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!B2",
             "humanize": false,
             "chartId": "49b3e330-3a31-4d43-9930-c42f2805c0c3"
           },
-          "offset": { "x": 620, "y": 10 },
+          "offset": {"x": 620, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -302,14 +302,14 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Total revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Total revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B3",
             "humanize": false,
             "chartId": "d96a0fa5-e91b-455c-8004-9f39eeb09ee2"
           },
-          "offset": { "x": 0, "y": 127 },
+          "offset": {"x": 0, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -322,14 +322,14 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Untaxed revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B4",
             "humanize": false,
             "chartId": "6b97f89c-8416-43db-a32e-d0ab5cf9051e"
           },
-          "offset": { "x": 0, "y": 10 },
+          "offset": {"x": 0, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -342,14 +342,18 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue per order", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Untaxed revenue per order",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B5",
             "humanize": false,
             "chartId": "cd102569-7656-4986-bf87-6e87b3ea493a"
           },
-          "offset": { "x": 207, "y": 10 },
+          "offset": {"x": 207, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -362,14 +366,18 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue per guest", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Untaxed revenue per guest",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B7",
             "humanize": false,
             "chartId": "7b541ea8-8f93-44f4-9626-67073e540f16"
           },
-          "offset": { "x": 414, "y": 10 },
+          "offset": {"x": 414, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -382,14 +390,14 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Discount Rate", "bold": true, "color": "#434343" },
+            "title": {"text": "Discount Rate", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FEF2F2",
             "keyValue": "Data!B9",
             "humanize": false,
             "chartId": "150978db-0307-4a65-a70a-e3a634dcfd48"
           },
-          "offset": { "x": 620, "y": 127 },
+          "offset": {"x": 620, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -402,14 +410,18 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Avg revenue per order", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Avg revenue per order",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B6",
             "humanize": false,
             "chartId": "77f395fa-f25d-4ba8-a99d-405a99ebeef7"
           },
-          "offset": { "x": 207, "y": 127 },
+          "offset": {"x": 207, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -422,14 +434,18 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Avg revenue per guest", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Avg revenue per guest",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B8",
             "humanize": false,
             "chartId": "87cda1aa-ba42-4865-8f56-912dd9e323a7"
           },
-          "offset": { "x": 414, "y": 127 },
+          "offset": {"x": 414, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -437,7 +453,7 @@
           "id": "9b676d28-0a28",
           "col": 5,
           "row": 48,
-          "offset": { "x": 26, "y": 6 },
+          "offset": {"x": 26, "y": 6},
           "width": 474,
           "height": 465,
           "tag": "carousel",
@@ -461,25 +477,19 @@
                   "domain": [
                     "&",
                     ["state", "!=", "cancel"],
-                    [
-                      "config_id",
-                      "in",
-                      [4, 5]
-                    ]
+                    ["config_id", "in", [4, 5]]
                   ],
                   "groupBy": ["product_categ_id"],
                   "orderBy": []
                 },
                 "type": "odoo_treemap",
                 "actionXmlId": "point_of_sale.action_report_pos_order_all",
-                "dataSets": [
-                  {}
-                ]
+                "dataSets": [{}]
               }
             },
             "items": [
-              { "type": "chart", "chartId": "bb13976b-be42" },
-              { "type": "carouselDataView", "title": "Top 15" }
+              {"type": "chart", "chartId": "bb13976b-be42"},
+              {"type": "carouselDataView", "title": "Top 15"}
             ],
             "title": {
               "text": "Top Categories",
@@ -489,10 +499,22 @@
             },
             "fieldMatching": {
               "bb13976b-be42": {
-                "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date", "type": "datetime" },
-                "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "pos_categ_id", "type": "many2one" },
-                "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "product_tmpl_id", "type": "many2one" },
-                "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+                "4b44fd69-5c22-4402-be22-636d52226a76": {
+                  "chain": "date",
+                  "type": "datetime"
+                },
+                "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+                  "chain": "pos_categ_id",
+                  "type": "many2one"
+                },
+                "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+                  "chain": "product_tmpl_id",
+                  "type": "many2one"
+                },
+                "7674d2c1-e82b-4199-a991-6fae2268676b": {
+                  "chain": "employee_id",
+                  "type": "many2one"
+                }
               }
             }
           }
@@ -575,12 +597,12 @@
       "rowNumber": 113,
       "rows": {},
       "cols": {
-        "0": { "size": 213 },
-        "3": { "size": 108 },
-        "6": { "size": 236 },
-        "8": { "size": 121 },
-        "9": { "size": 139 },
-        "12": { "size": 160 }
+        "0": {"size": 213},
+        "3": {"size": 108},
+        "6": {"size": 236},
+        "8": {"size": 121},
+        "9": {"size": 139},
+        "12": {"size": 160}
       },
       "merges": [],
       "cells": {
@@ -746,7 +768,7 @@
         "J19": "=PIVOT.VALUE(3,\"Average amount per table:sum\",\"date_order:day_of_week\",F19)",
         "J20": "=PIVOT.VALUE(3,\"Average amount per table:sum\",\"date_order:day_of_week\",F20)"
       },
-      "styles": { "A1:B1": 7, "A12": 8, "F12": 8 },
+      "styles": {"A1:B1": 7, "A12": 8, "F12": 8},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -794,37 +816,37 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#434343" },
-    "2": { "textColor": "#434343", "verticalAlign": "middle" },
-    "3": { "fontSize": 16, "textColor": "#01666B", "bold": true },
-    "4": { "textColor": "#434343", "bold": true, "fontSize": 11 },
+    "1": {"textColor": "#434343"},
+    "2": {"textColor": "#434343", "verticalAlign": "middle"},
+    "3": {"fontSize": 16, "textColor": "#01666B", "bold": true},
+    "4": {"textColor": "#434343", "bold": true, "fontSize": 11},
     "5": {
       "textColor": "#434343",
       "bold": true,
       "fontSize": 11,
       "align": "center"
     },
-    "6": { "textColor": "#01666b", "fontSize": 16, "bold": true },
-    "7": { "fillColor": "#01666B", "textColor": "#FFFFFF", "bold": true },
-    "8": { "bold": true, "textColor": "#01666B" }
+    "6": {"textColor": "#01666b", "fontSize": 16, "bold": true},
+    "7": {"fillColor": "#01666B", "textColor": "#FFFFFF", "bold": true},
+    "8": {"bold": true, "textColor": "#01666B"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -844,9 +866,7 @@
   "pivots": {
     "0005f6f8-d7c6-4629-88c2-0596dce2bdb3": {
       "type": "ODOO",
-      "domain": [
-        ["config_id.module_pos_restaurant", "=", true]
-      ],
+      "domain": [["config_id.module_pos_restaurant", "=", true]],
       "context": {},
       "sortedColumn": null,
       "measures": [
@@ -855,7 +875,7 @@
           "fieldName": "amount_total",
           "aggregator": "sum"
         },
-        { "id": "__count:sum", "fieldName": "__count", "aggregator": "sum" },
+        {"id": "__count:sum", "fieldName": "__count", "aggregator": "sum"},
         {
           "id": "Average amount per table:sum",
           "fieldName": "Average amount per table",
@@ -880,17 +900,28 @@
       "actionXmlId": "point_of_sale.action_pos_pos_form",
       "formulaId": "1",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date_order", "type": "datetime", "offset": 0 },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "lines.product_id.pos_categ_ids", "type": "many2many" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "lines.product_id.product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {
+          "chain": "date_order",
+          "type": "datetime",
+          "offset": 0
+        },
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "lines.product_id.pos_categ_ids",
+          "type": "many2many"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "lines.product_id.product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "e95e7842-672b-414d-9df8-d63fc9893cba": {
       "type": "ODOO",
-      "domain": [
-        ["config_id.module_pos_restaurant", "=", true]
-      ],
+      "domain": [["config_id.module_pos_restaurant", "=", true]],
       "context": {},
       "sortedColumn": null,
       "measures": [
@@ -899,7 +930,7 @@
           "fieldName": "amount_total",
           "aggregator": "sum"
         },
-        { "id": "__count:sum", "fieldName": "__count", "aggregator": "sum" },
+        {"id": "__count:sum", "fieldName": "__count", "aggregator": "sum"},
         {
           "id": "Average amount per table:sum",
           "fieldName": "Average amount per table",
@@ -924,10 +955,23 @@
       "actionXmlId": "point_of_sale.action_pos_pos_form",
       "formulaId": "3",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date_order", "type": "datetime", "offset": 0 },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "lines.product_id.pos_categ_ids", "type": "many2many" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "lines.product_id.product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {
+          "chain": "date_order",
+          "type": "datetime",
+          "offset": 0
+        },
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "lines.product_id.pos_categ_ids",
+          "type": "many2many"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "lines.product_id.product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "f9256105-4dad-47e4-bdbd-9dc1cdf54b96": {
@@ -935,11 +979,7 @@
       "domain": [
         "&",
         ["config_id.module_pos_restaurant", "=", true],
-        [
-          "state",
-          "not in",
-          ["cancel"]
-        ]
+        ["state", "not in", ["cancel"]]
       ],
       "context": {
         "group_by": []
@@ -1009,10 +1049,23 @@
       "actionXmlId": "point_of_sale.action_report_pos_order_all",
       "formulaId": "4",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date", "type": "datetime", "offset": 0 },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "pos_categ_id", "type": "many2one" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "pos_categ_id",
+          "type": "many2one"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "d360c54a-4c26-43af-9fb6-3814df165c9e": {
@@ -1035,8 +1088,8 @@
           "fieldName": "customer_count",
           "aggregator": "sum"
         },
-        { "id": "amount_tax:sum", "fieldName": "amount_tax", "aggregator": "sum" },
-        { "id": "__count", "fieldName": "__count" },
+        {"id": "amount_tax:sum", "fieldName": "amount_tax", "aggregator": "sum"},
+        {"id": "__count", "fieldName": "__count"},
         {
           "id": "Untaxed Total:sum",
           "fieldName": "Untaxed Total",
@@ -1077,17 +1130,28 @@
       "actionXmlId": "point_of_sale.action_pos_pos_form",
       "formulaId": "5",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date_order", "type": "datetime", "offset": 0 },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "lines.product_id.pos_categ_ids", "type": "many2many" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "lines.product_id.product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {
+          "chain": "date_order",
+          "type": "datetime",
+          "offset": 0
+        },
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "lines.product_id.pos_categ_ids",
+          "type": "many2many"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "lines.product_id.product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "15d132ec-7f1b-4f5a-99c0-14c696423a56": {
       "type": "ODOO",
-      "domain": [
-        ["config_id.module_pos_restaurant", "=", true]
-      ],
+      "domain": [["config_id.module_pos_restaurant", "=", true]],
       "context": {
         "group_by": []
       },
@@ -1114,29 +1178,34 @@
       ],
       "model": "report.pos.order",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ],
+      "rows": [{"fieldName": "product_id"}],
       "name": "Product ",
       "actionXmlId": "point_of_sale.action_report_pos_order_all",
       "formulaId": "6",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date", "type": "datetime" },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "pos_categ_id", "type": "many2one" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {"chain": "date", "type": "datetime"},
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "pos_categ_id",
+          "type": "many2one"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "2ada09e2-9b25-41c4-96b9-f3d7f077e5cf": {
       "type": "ODOO",
-      "domain": [
-        ["config_id.module_pos_restaurant", "=", true]
-      ],
+      "domain": [["config_id.module_pos_restaurant", "=", true]],
       "context": {
         "params": {
           "debug": 1,
           "actionStack": [
-            { "displayName": "Orders", "action": "pos-orders", "view_type": "pivot" }
+            {"displayName": "Orders", "action": "pos-orders", "view_type": "pivot"}
           ],
           "action": "pos-orders",
           "view_type": "pivot",
@@ -1154,7 +1223,7 @@
           "format": "",
           "userDefinedName": "Orders"
         },
-        { "id": "__count", "fieldName": "__count", "userDefinedName": "Revenue" },
+        {"id": "__count", "fieldName": "__count", "userDefinedName": "Revenue"},
         {
           "id": "tip_amount:sum",
           "fieldName": "tip_amount",
@@ -1165,24 +1234,32 @@
       ],
       "model": "pos.order",
       "columns": [],
-      "rows": [
-        { "fieldName": "table_id" }
-      ],
+      "rows": [{"fieldName": "table_id"}],
       "name": "Table",
       "actionXmlId": "point_of_sale.action_pos_pos_form",
       "formulaId": "7",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date_order", "type": "datetime" },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "lines.product_id.pos_categ_ids", "type": "many2many" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "lines.product_id.product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {
+          "chain": "date_order",
+          "type": "datetime"
+        },
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "lines.product_id.pos_categ_ids",
+          "type": "many2many"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "lines.product_id.product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "46b474b9-dc26-424c-b423-ac9209ba9899": {
       "type": "ODOO",
-      "domain": [
-        ["config_id.module_pos_restaurant", "=", true]
-      ],
+      "domain": [["config_id.module_pos_restaurant", "=", true]],
       "context": {
         "group_by": []
       },
@@ -1209,18 +1286,24 @@
       ],
       "model": "report.pos.order",
       "columns": [],
-      "rows": [
-        { "fieldName": "pos_categ_id" },
-        { "fieldName": "product_id" }
-      ],
+      "rows": [{"fieldName": "pos_categ_id"}, {"fieldName": "product_id"}],
       "name": "Category ",
       "actionXmlId": "point_of_sale.action_report_pos_order_all",
       "formulaId": "9",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date", "type": "datetime" },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "pos_categ_id", "type": "many2one" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {"chain": "date", "type": "datetime"},
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "pos_categ_id",
+          "type": "many2one"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     },
     "bc1df90b-fa7e-417a-868c-5f48e0e20349": {
@@ -1229,11 +1312,7 @@
         "&",
         "&",
         ["user_id", "!=", false],
-        [
-          "state",
-          "in",
-          ["paid", "done", "invoiced"]
-        ],
+        ["state", "in", ["paid", "done", "invoiced"]],
         ["config_id.module_pos_restaurant", "=", true]
       ],
       "context": {
@@ -1256,17 +1335,24 @@
       ],
       "model": "report.pos.order",
       "columns": [],
-      "rows": [
-        { "fieldName": "user_id" }
-      ],
+      "rows": [{"fieldName": "user_id"}],
       "name": "Responsible",
       "actionXmlId": "point_of_sale.action_report_pos_order_all",
       "formulaId": "10",
       "fieldMatching": {
-        "4b44fd69-5c22-4402-be22-636d52226a76": { "chain": "date", "type": "datetime" },
-        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": { "chain": "pos_categ_id", "type": "many2one" },
-        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": { "chain": "product_tmpl_id", "type": "many2one" },
-        "7674d2c1-e82b-4199-a991-6fae2268676b": { "chain": "employee_id", "type": "many2one" }
+        "4b44fd69-5c22-4402-be22-636d52226a76": {"chain": "date", "type": "datetime"},
+        "31b1d5d4-6549-4dbe-9c8e-57d6e6e0889d": {
+          "chain": "pos_categ_id",
+          "type": "many2one"
+        },
+        "6cb73c89-2591-456e-a7bc-8eb76e321b9e": {
+          "chain": "product_tmpl_id",
+          "type": "many2one"
+        },
+        "7674d2c1-e82b-4199-a991-6fae2268676b": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     }
   },

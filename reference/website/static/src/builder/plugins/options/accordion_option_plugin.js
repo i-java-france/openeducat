@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { SNIPPET_SPECIFIC } from "@html_builder/utils/option_sequence";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {SNIPPET_SPECIFIC} from "@html_builder/utils/option_sequence";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class AccordionOption extends BaseOptionComponent {
     static template = "website.AccordionOption";
@@ -50,7 +50,7 @@ export class DefineCustomIconAction extends BuilderAction {
         });
         return selectedIconClass;
     }
-    apply({ editingElement, params, loadResult: customClass }) {
+    apply({editingElement, params, loadResult: customClass}) {
         if (!customClass) {
             return;
         }
@@ -59,8 +59,12 @@ export class DefineCustomIconAction extends BuilderAction {
         media.className = isActiveIcon
             ? editingElement.dataset.activeCustomIcon
             : editingElement.dataset.inactiveCustomIcon;
-        const activeIconsEls = editingElement.querySelectorAll(".o_custom_icon_active i");
-        const inactiveIconsEls = editingElement.querySelectorAll(".o_custom_icon_inactive i");
+        const activeIconsEls = editingElement.querySelectorAll(
+            ".o_custom_icon_active i"
+        );
+        const inactiveIconsEls = editingElement.querySelectorAll(
+            ".o_custom_icon_inactive i"
+        );
         const iconsEls = isActiveIcon ? activeIconsEls : inactiveIconsEls;
         iconsEls.forEach((iconEl) => {
             iconEl.removeAttribute("class");
@@ -75,12 +79,14 @@ export class DefineCustomIconAction extends BuilderAction {
 }
 export class CustomAccordionIconAction extends BuilderAction {
     static id = "customAccordionIcon";
-    apply({ editingElement, params, value }) {
+    apply({editingElement, params, value}) {
         const accordionButtonEls = editingElement.querySelectorAll(
             ":scope > .accordion-item > .accordion-button"
         );
-        const activeCustomIcon = editingElement.dataset.activeCustomIcon || "fa fa-arrow-up";
-        const inactiveCustomIcon = editingElement.dataset.inactiveCustomIcon || "fa fa-arrow-down";
+        const activeCustomIcon =
+            editingElement.dataset.activeCustomIcon || "fa fa-arrow-up";
+        const inactiveCustomIcon =
+            editingElement.dataset.inactiveCustomIcon || "fa fa-arrow-down";
         if (value) {
             if (value === "custom") {
                 editingElement.dataset.activeCustomIcon = activeCustomIcon;
@@ -133,4 +139,6 @@ export class CustomAccordionIconAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(accordionOptionPlugin.id, accordionOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(accordionOptionPlugin.id, accordionOptionPlugin);

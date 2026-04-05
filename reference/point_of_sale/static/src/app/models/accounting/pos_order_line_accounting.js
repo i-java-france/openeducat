@@ -1,7 +1,7 @@
-import { formatCurrency } from "@web/core/currency";
-import { Base } from "../related_models";
-import { accountTaxHelpers } from "@account/helpers/account_tax";
-import { _t } from "@web/core/l10n/translation";
+import {formatCurrency} from "@web/core/currency";
+import {Base} from "../related_models";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
+import {_t} from "@web/core/l10n/translation";
 
 export class PosOrderlineAccounting extends Base {
     static accountingFields = new Set([
@@ -47,7 +47,9 @@ export class PosOrderlineAccounting extends Base {
                 : this.priceExcl
             : this.combo_line_ids.reduce((total, cl) => {
                   const price =
-                      this.config.iface_tax_included === "total" ? cl.priceIncl : cl.priceExcl;
+                      this.config.iface_tax_included === "total"
+                          ? cl.priceIncl
+                          : cl.priceExcl;
                   return total + price;
               }, 0);
     }
@@ -79,10 +81,14 @@ export class PosOrderlineAccounting extends Base {
     }
 
     get priceIncl() {
-        return this.currency.round(this.prices.total_included * this.order_id.orderSign);
+        return this.currency.round(
+            this.prices.total_included * this.order_id.orderSign
+        );
     }
     get priceExcl() {
-        return this.currency.round(this.prices.total_excluded * this.order_id.orderSign);
+        return this.currency.round(
+            this.prices.total_excluded * this.order_id.orderSign
+        );
     }
     get priceInclNoDiscount() {
         return this.currency.round(
@@ -165,7 +171,7 @@ export class PosOrderlineAccounting extends Base {
     prepareBaseLineForTaxesComputationExtraValues(customValues = {}) {
         const order = this.order_id;
         const currency = this.config.currency_id;
-        const extraValues = { currency_id: currency };
+        const extraValues = {currency_id: currency};
         const product = this.getProduct();
         const productUom = this.getUnit();
         const priceUnit = this.price_unit || 0;
@@ -184,7 +190,9 @@ export class PosOrderlineAccounting extends Base {
         };
         if (order?.fiscal_position_id && product !== this.config.discount_product_id) {
             // Recompute taxes based on product and fiscal position.
-            values.tax_ids = order.fiscal_position_id.getTaxesAfterFiscalPosition(values.tax_ids);
+            values.tax_ids = order.fiscal_position_id.getTaxesAfterFiscalPosition(
+                values.tax_ids
+            );
         }
         return values;
     }

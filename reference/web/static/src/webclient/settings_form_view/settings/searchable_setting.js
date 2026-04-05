@@ -1,9 +1,9 @@
-import { onMounted, useRef, useState } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { normalizedMatch } from "@web/core/l10n/utils";
-import { Setting } from "@web/views/form/setting/setting";
-import { FormLabelHighlightText } from "../highlight_text/form_label_highlight_text";
-import { HighlightText } from "../highlight_text/highlight_text";
+import {onMounted, useRef, useState} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {normalizedMatch} from "@web/core/l10n/utils";
+import {Setting} from "@web/views/form/setting/setting";
+import {FormLabelHighlightText} from "../highlight_text/form_label_highlight_text";
+import {HighlightText} from "../highlight_text/highlight_text";
 
 export class SearchableSetting extends Setting {
     static template = "web.SearchableSetting";
@@ -24,13 +24,14 @@ export class SearchableSetting extends Setting {
         super.setup();
         onMounted(() => {
             if (this.settingRef.el) {
-                const searchableTexts = this.settingRef.el.querySelectorAll("span[searchableText]");
+                const searchableTexts =
+                    this.settingRef.el.querySelectorAll("span[searchableText]");
                 searchableTexts.forEach((st) => {
                     this.labels.push(st.getAttribute("searchableText"));
                 });
             }
             if (browser.location.hash.substring(1) === this.props.id) {
-                this.state.highlightClass = { o_setting_highlight: true };
+                this.state.highlightClass = {o_setting_highlight: true};
                 setTimeout(() => (this.state.highlightClass = {}), 5000);
             }
         });
@@ -39,7 +40,7 @@ export class SearchableSetting extends Setting {
     get classNames() {
         const classNames = super.classNames;
         classNames.o_searchable_setting = Boolean(this.labels.length);
-        return { ...classNames, ...this.state.highlightClass };
+        return {...classNames, ...this.state.highlightClass};
     }
 
     visible() {

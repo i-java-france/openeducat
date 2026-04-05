@@ -1,16 +1,16 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class PlausiblePush extends Interaction {
     static selector = ".js_plausible_push";
 
     setup() {
-        const { eventName, eventParams } = this.el.dataset;
+        const {eventName, eventParams} = this.el.dataset;
 
         window.plausible ||= function () {
             (window.plausible.q = window.plausible.q || []).push(arguments);
         };
-        window.plausible(eventName, { props: JSON.parse(eventParams) || {} });
+        window.plausible(eventName, {props: JSON.parse(eventParams) || {}});
     }
 }
 

@@ -1,11 +1,12 @@
 
-import requests
-import json
 import base64
+import json
 import logging
 
-from odoo.tests.common import HttpCase
+import requests
+
 from odoo.tests import tagged
+from odoo.tests.common import HttpCase
 
 _logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ _logger = logging.getLogger(__name__)
 class TestPingenSend(HttpCase):
 
     def setUp(self):
-        super(TestPingenSend, self).setUp()
+        super().setUp()
         self.pingen_url = "https://stage-api.pingen.com/document/upload/token/30fc3947dbea4792eb12548b41ec8117/"
         self.sample_invoice = self.create_invoice()
         self.sample_invoice.partner_id.vat = "BE000000000"

@@ -1,6 +1,6 @@
-import { test, expect, beforeEach } from "@odoo/hoot";
-import { runAllTimers } from "@odoo/hoot-mock";
-import { fields, models, defineModels, mountView } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {runAllTimers} from "@odoo/hoot-mock";
+import {defineModels, fields, models, mountView} from "@web/../tests/web_test_helpers";
 
 beforeEach(() => {
     const qweb = JSON.stringify([
@@ -32,7 +32,7 @@ beforeEach(() => {
 
         qweb = fields.Text();
 
-        _records = [{ qweb }];
+        _records = [{qweb}];
     }
 
     class View extends models.Model {
@@ -70,8 +70,12 @@ test("profiling qweb view field renders delay and query", async function (assert
 
     expect("[name='qweb'] .ace_gutter .ace_gutter-cell").toHaveCount(3);
     expect("[name='qweb'] .ace_gutter .ace_gutter-cell .o_info").toHaveCount(1);
-    expect("[name='qweb'] .ace_gutter .ace_gutter-cell .o_info .o_delay").toHaveText("0.1");
-    expect("[name='qweb'] .ace_gutter .ace_gutter-cell .o_info .o_query").toHaveText("9");
+    expect("[name='qweb'] .ace_gutter .ace_gutter-cell .o_info .o_delay").toHaveText(
+        "0.1"
+    );
+    expect("[name='qweb'] .ace_gutter .ace_gutter-cell .o_info .o_query").toHaveText(
+        "9"
+    );
     expect("[name='qweb'] .o_select_view_profiling .o_delay").toHaveText("0.1 ms");
     expect("[name='qweb'] .o_select_view_profiling .o_query").toHaveText("9 query");
 });

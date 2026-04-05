@@ -1,6 +1,7 @@
 from lxml import etree
 
 from odoo import models
+
 from odoo.addons.account.tools import dict_to_xml
 
 

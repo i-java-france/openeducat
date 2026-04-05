@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("formatters").add("im_livechat.rating_percentage", (value) => {
     const percentage = (Math.max(value - 1, 0) * 100) / 4;

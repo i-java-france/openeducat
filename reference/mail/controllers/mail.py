@@ -1,19 +1,20 @@
 import io
 import logging
 import time
-
 from math import floor
-from PIL import Image, ImageFont, ImageDraw
-from werkzeug.urls import url_encode
-from werkzeug.exceptions import NotFound
 from urllib.parse import parse_qsl, urlencode, urlparse
+
+from PIL import Image, ImageDraw, ImageFont
+from werkzeug.exceptions import NotFound
+from werkzeug.urls import url_encode
 
 from odoo import _, http
 from odoo.exceptions import AccessError
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.tools import consteq
-from odoo.addons.mail.tools.discuss import add_guest_to_context
 from odoo.tools.misc import file_open
+
+from odoo.addons.mail.tools.discuss import add_guest_to_context
 
 _logger = logging.getLogger(__name__)
 

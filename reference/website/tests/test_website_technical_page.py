@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
-from odoo.addons.website.models.website_technical_page import WebsiteTechnicalPage
 from odoo.tests import TransactionCase, tagged
+
+from odoo.addons.website.models.website_technical_page import WebsiteTechnicalPage
 
 
 @tagged("post_install", "-at_install")

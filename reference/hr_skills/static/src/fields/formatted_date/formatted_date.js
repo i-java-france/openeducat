@@ -1,8 +1,8 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 export class FormattedDate extends Component {
     static template = "hr_skills.FormattedDate";
@@ -26,12 +26,17 @@ export class FormattedDate extends Component {
         const colors = Object.keys(this.props.color);
         if (colors) {
             for (const colorName of colors) {
-                if (evaluateBooleanExpr(`${this.props.color[colorName]}`, this.props.record.evalContextWithVirtualIds)) {
+                if (
+                    evaluateBooleanExpr(
+                        `${this.props.color[colorName]}`,
+                        this.props.record.evalContextWithVirtualIds
+                    )
+                ) {
                     return "text-" + colorName;
                 }
             }
         }
-        return ""
+        return "";
     }
 }
 
@@ -43,7 +48,6 @@ export const formattedDate = {
             name: "day_format",
             type: "string",
             default: "numeric",
-
         },
         {
             label: _t("Month Format"),
@@ -65,7 +69,7 @@ export const formattedDate = {
         },
     ],
     supportedTypes: ["date"],
-    extractProps({ options }) {
+    extractProps({options}) {
         return {
             dayFormat: options.day_format || "numeric",
             monthFormat: options.month_format || "numeric",

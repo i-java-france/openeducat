@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { WarningDialog } from "@web/core/errors/error_dialogs";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {WarningDialog} from "@web/core/errors/error_dialogs";
+import {_t} from "@web/core/l10n/translation";
 
 async function posQrStands(env, action) {
     const user_data = action.params.data;

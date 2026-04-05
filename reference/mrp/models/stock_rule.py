@@ -2,10 +2,11 @@
 
 from collections import defaultdict
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, SUPERUSER_ID, _
-from odoo.fields import Domain, Command
+from odoo import SUPERUSER_ID, _, api, fields, models
+from odoo.fields import Command, Domain
 from odoo.tools import OrderedSet
 
 
@@ -16,7 +17,7 @@ class StockRule(models.Model):
     ], ondelete={'manufacture': 'cascade'})
 
     def _get_message_dict(self):
-        message_dict = super(StockRule, self)._get_message_dict()
+        message_dict = super()._get_message_dict()
         source, destination, direct_destination, operation = self._get_message_values()
         manufacture_message = _('When products are needed in <b>%s</b>, <br/> a manufacturing order is created to fulfill the need.', destination)
         if self.location_src_id:
@@ -129,7 +130,7 @@ class StockRule(models.Model):
         return Domain(domain) & Domain('production_id', '=', False)
 
     def _get_custom_move_fields(self):
-        fields = super(StockRule, self)._get_custom_move_fields()
+        fields = super()._get_custom_move_fields()
         fields += ['bom_line_id']
         return fields
 

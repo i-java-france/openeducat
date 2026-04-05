@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onTreemapOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onTreemapOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getTreeMapChartDatasets,
@@ -42,7 +42,8 @@ chartRegistry.add("odoo_treemap", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooTreemapChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooTreemapChart.transformDefinition(definition),
+    transformDefinition: (definition) =>
+        OdooTreemapChart.transformDefinition(definition),
     getChartDefinitionFromContextCreation: () =>
         OdooTreemapChart.getDefinitionFromContextCreation(),
     name: _t("Treemap"),
@@ -50,14 +51,14 @@ chartRegistry.add("odoo_treemap", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getHierarchicalData();
+    const {datasets, labels} = chart.dataSource.getHierarchicalData();
 
     const definition = chart.getDefinition();
     const locale = getters.getLocale();
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
     };
 
@@ -72,7 +73,7 @@ function createOdooChartRuntime(chart, getters) {
             layout: getChartLayout(definition, chartData),
             plugins: {
                 title: getChartTitle(definition, getters),
-                legend: { display: false },
+                legend: {display: false},
                 tooltip: getTreeMapChartTooltip(definition, chartData),
             },
             onHover: onOdooChartItemHover(),
@@ -80,5 +81,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

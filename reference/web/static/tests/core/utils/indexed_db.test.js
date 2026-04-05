@@ -1,6 +1,6 @@
-import { _OriginalIndexedDB as IndexedDB } from "@web/core/utils/indexed_db";
+import {_OriginalIndexedDB as IndexedDB} from "@web/core/utils/indexed_db";
 
-import { describe, expect, onError, test } from "@odoo/hoot";
+import {describe, expect, onError, test} from "@odoo/hoot";
 
 describe.current.tags("headless");
 
@@ -40,7 +40,7 @@ test("two caches, read", async () => {
     onError(() => deleteCacheDB());
     await ensureDbIsAbsent();
 
-    // having 2 caches simulates 2 tabs, each one accessing the same indexeddb
+    // Having 2 caches simulates 2 tabs, each one accessing the same indexeddb
     const indexedDB1 = new IndexedDB(CACHE_NAME, 1);
     await indexedDB1.write("mytable", "test", "value for 'test'");
     expect(await indexedDB1.read("mytable", "test")).toBe("value for 'test'");
@@ -49,7 +49,7 @@ test("two caches, read", async () => {
     expect(await indexedDB2.read("mytable", "test")).toBe("value for 'test'");
 
     await indexedDB1.deleteDatabase();
-    await indexedDB2.deleteDatabase(); // deleting twice the same DB don't throw error !
+    await indexedDB2.deleteDatabase(); // Deleting twice the same DB don't throw error !
     await ensureDbIsAbsent();
 });
 
@@ -57,7 +57,7 @@ test("two caches, read (2)", async () => {
     onError(() => deleteCacheDB());
     await ensureDbIsAbsent();
 
-    // having 2 caches simulates 2 tabs, each one accessing the same indexeddb
+    // Having 2 caches simulates 2 tabs, each one accessing the same indexeddb
     const indexedDB1 = new IndexedDB(CACHE_NAME, 1);
     const indexedDB2 = new IndexedDB(CACHE_NAME, 1);
 
@@ -67,7 +67,7 @@ test("two caches, read (2)", async () => {
     expect(await indexedDB2.read("mytable", "test")).toBe("value for 'test'");
 
     await indexedDB1.deleteDatabase();
-    await indexedDB2.deleteDatabase(); // deleting twice the same DB don't throw error !
+    await indexedDB2.deleteDatabase(); // Deleting twice the same DB don't throw error !
     await ensureDbIsAbsent();
 });
 
@@ -77,7 +77,7 @@ test("one cache, invalidate", async () => {
 
     const indexedDB = new IndexedDB(CACHE_NAME, 1);
 
-    // populate the table
+    // Populate the table
     await indexedDB.write("mytable", "test", "value for 'test'");
     await indexedDB.write("mytable", "test2", "value for 'test2'");
     expect(await indexedDB.read("mytable", "test")).toBe("value for 'test'");
@@ -97,7 +97,7 @@ test("one cache, invalidate multi-tables", async () => {
 
     const indexedDB = new IndexedDB(CACHE_NAME, 1);
 
-    // populate the table
+    // Populate the table
     await indexedDB.write("mytable", "test", "value for 'test'");
     await indexedDB.write("mytable", "test2", "value for 'test2'");
     await indexedDB.write("mytable2", "test", "value for 'test'");
@@ -123,7 +123,7 @@ test("one cache, invalidate all tables", async () => {
 
     const indexedDB = new IndexedDB(CACHE_NAME, 1);
 
-    // populate the table
+    // Populate the table
     await indexedDB.write("mytable", "test", "value for 'test'");
     await indexedDB.write("mytable2", "test2", "value for 'test2'");
     expect(await indexedDB.read("mytable", "test")).toBe("value for 'test'");
@@ -141,7 +141,7 @@ test("invalidate all tables, empty cache", async () => {
     onError(() => deleteCacheDB());
     await ensureDbIsAbsent();
 
-    //The indexedDB __DBVersion__ is not invalidated
+    // The indexedDB __DBVersion__ is not invalidated
     const indexedDB = new IndexedDB(CACHE_NAME, 1);
     await indexedDB.execute((db) => {
         expect([...db.objectStoreNames]).toEqual(["__DBVersion__"]);
@@ -180,7 +180,7 @@ test("invalidate non existing and existing table", async () => {
 
     const indexedDB = new IndexedDB(CACHE_NAME, 1);
 
-    // populate the table
+    // Populate the table
     await indexedDB.write("mytable", "test", "value for 'test'");
     await indexedDB.write("mytable", "test2", "value for 'test2'");
     expect(await indexedDB.read("mytable", "test")).toBe("value for 'test'");
@@ -198,11 +198,11 @@ test("two caches, invalidate", async () => {
     onError(() => deleteCacheDB());
     await ensureDbIsAbsent();
 
-    // having 2 caches simulates 2 tabs, each one accessing the same indexeddb
+    // Having 2 caches simulates 2 tabs, each one accessing the same indexeddb
     const indexedDB1 = new IndexedDB(CACHE_NAME, 1);
     const indexedDB2 = new IndexedDB(CACHE_NAME, 1);
 
-    // populate the table
+    // Populate the table
     await indexedDB1.write("mytable", "test", "value for 'test'");
     await indexedDB1.write("mytable", "test2", "value for 'test2'");
     expect(await indexedDB1.read("mytable", "test")).toBe("value for 'test'");
@@ -226,15 +226,15 @@ test("two caches, new DB version", async () => {
     await ensureDbIsAbsent();
 
     const indexedDB1 = new IndexedDB(CACHE_NAME, 1);
-    // populate the table
+    // Populate the table
     await indexedDB1.write("mytable", "test", "value for 'test'");
     await indexedDB1.write("mytable", "test2", "value for 'test2'");
     expect(await indexedDB1.read("mytable", "test")).toBe("value for 'test'");
     expect(await indexedDB1.read("mytable", "test2")).toBe("value for 'test2'");
 
-    // simulate a new page, with a new version number for the given databases
+    // Simulate a new page, with a new version number for the given databases
     const indexedDB2 = new IndexedDB(CACHE_NAME, 2);
-    // await new Promise((r) => setTimeout(r, 1));
+    // Await new Promise((r) => setTimeout(r, 1));
     // DB should not contain tables !
     await indexedDB2.execute((db) => {
         expect([...db.objectStoreNames]).toEqual(["__DBVersion__"]);
@@ -278,7 +278,7 @@ test("several caches, several tables", async () => {
     expect(await indexedDB2.read("table1", "test")).toBe("value for 'test'");
     expect(await indexedDB2.read("table2", "test")).toBe("value for 'test'");
 
-    // check that second table has been correctly setup
+    // Check that second table has been correctly setup
     const diskCache3 = new IndexedDB(CACHE_NAME, 1);
     expect(await diskCache3.read("table2", "test")).toBe("value for 'test'");
 

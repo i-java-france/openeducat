@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date
+
 from psycopg2.errors import CheckViolation
 
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import freeze_time
-from odoo.exceptions import AccessError, ValidationError
 from odoo.tools import mute_logger
 
 from odoo.addons.hr.tests.common import TestHrCommon

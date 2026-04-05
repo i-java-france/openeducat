@@ -1,8 +1,8 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { renderToElement } from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {renderToElement} from "@web/core/utils/render";
 
 /**
  * @typedef { Object } CookiesBarOptionShared
@@ -37,8 +37,9 @@ class CookiesBarOptionPlugin extends Plugin {
 export class SelectLayoutAction extends BuilderAction {
     static id = "selectLayout";
     static dependencies = ["CookiesBarOptionPlugin"];
-    apply({ editingElement, value: layout }) {
-        const savedSelectors = this.dependencies.CookiesBarOptionPlugin.getSavedSelectors();
+    apply({editingElement, value: layout}) {
+        const savedSelectors =
+            this.dependencies.CookiesBarOptionPlugin.getSavedSelectors();
         const templateEl = renderToElement(`website.cookies_bar.${layout}`, {
             websiteId: this.services.website.currentWebsite.id,
         });
@@ -90,7 +91,7 @@ export class SelectLayoutAction extends BuilderAction {
                 break;
         }
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         // See popup_option.xml > Position option
         const positionClasses = ["s_popup_top", "s_popup_middle", "s_popup_bottom"];
         // See popup_option.xml > Size option
@@ -103,4 +104,6 @@ export class SelectLayoutAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(CookiesBarOptionPlugin.id, CookiesBarOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(CookiesBarOptionPlugin.id, CookiesBarOptionPlugin);

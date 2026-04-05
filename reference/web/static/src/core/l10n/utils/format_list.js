@@ -1,4 +1,4 @@
-import { user } from "@web/core/user";
+import {user} from "@web/core/user";
 
 /**
  * @typedef {keyof typeof LIST_STYLES} FormatListStyle
@@ -74,7 +74,7 @@ const LIST_STYLES = {
  * }} [options]
  * @returns {string} formatted list.
  */
-export function formatList(values, { localeCode, style } = {}) {
+export function formatList(values, {localeCode, style} = {}) {
     const locale = localeCode || user.lang || "en-US";
     const formatter = new Intl.ListFormat(locale, LIST_STYLES[style || "standard"]);
     return formatter.format(Array.from(values, String));

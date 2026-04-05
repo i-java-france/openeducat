@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 import time
 from datetime import datetime, timedelta
 
-from odoo import api, models, Command
+from odoo import Command, api, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.misc import file_open
 

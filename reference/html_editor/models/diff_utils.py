@@ -1,10 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-
 from difflib import SequenceMatcher, unified_diff
-from bs4 import BeautifulSoup
 
+from bs4 import BeautifulSoup
 
 # ------------------------------------------------------------
 # Patch and comparison functions

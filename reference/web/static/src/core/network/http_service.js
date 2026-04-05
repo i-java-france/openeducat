@@ -1,5 +1,5 @@
-import { browser } from "@web/core/browser/browser";
-import { registry } from "../registry";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "../registry";
 
 function checkResponseStatus(response) {
     if (response.status === 502) {
@@ -11,7 +11,7 @@ function checkResponseStatus(response) {
 }
 
 export async function get(route, readMethod = "json") {
-    const response = await browser.fetch(route, { method: "GET" });
+    const response = await browser.fetch(route, {method: "GET"});
     checkResponseStatus(response);
     return response[readMethod]();
 }
@@ -41,7 +41,7 @@ export async function post(route, params = {}, readMethod = "json") {
 
 export const httpService = {
     start() {
-        return { get, post };
+        return {get, post};
     },
 };
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
@@ -8,12 +7,13 @@ from urllib.parse import urlparse
 from markupsafe import Markup
 
 from odoo import Command
-from odoo.addons.mail.models.mail_mail import _UNFOLLOW_REGEX
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.exceptions import AccessError
 from odoo.tests import tagged, users
 from odoo.tests.common import HttpCase
 from odoo.tools import mute_logger
+
+from odoo.addons.mail.models.mail_mail import _UNFOLLOW_REGEX
+from odoo.addons.mail.tests.common import MailCommon
 
 
 @tagged('mail_followers')
@@ -21,7 +21,7 @@ class BaseFollowersTest(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(BaseFollowersTest, cls).setUpClass()
+        super().setUpClass()
         cls.test_record = cls.env['mail.test.simple'].with_context(cls._test_context).create({'name': 'Test', 'email_from': 'ignasse@example.com'})
         cls._create_portal_user()
 
@@ -281,7 +281,7 @@ class AdvancedFollowersTest(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(AdvancedFollowersTest, cls).setUpClass()
+        super().setUpClass()
         cls._create_portal_user()
 
         cls.test_track = cls.env['mail.test.track'].with_user(cls.user_employee).create({
@@ -528,7 +528,7 @@ class AdvancedFollowersTest(MailCommon):
 class AdvancedResponsibleNotifiedTest(MailCommon):
 
     def setUp(self):
-        super(AdvancedResponsibleNotifiedTest, self).setUp()
+        super().setUp()
 
         # patch registry to simulate a ready environment so that _message_auto_subscribe_notify
         # will be executed with the associated notification
@@ -579,7 +579,7 @@ class RecipientsNotificationTest(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(RecipientsNotificationTest, cls).setUpClass()
+        super().setUpClass()
 
         # portal user for testing share status / internal subtypes
         cls.user_portal = cls._create_portal_user()
@@ -620,7 +620,7 @@ class RecipientsNotificationTest(MailCommon):
             record_ids = records.ids
         else:
             records, record_ids = [False], [0]
-        for record, record_id in zip(records, record_ids):
+        for record, record_id in zip(records, record_ids, strict=False):
             record_data = recipients_data[record_id]
             self.assertEqual(set(record_data.keys()), set(partners.ids))
             for partner in partners:
@@ -1025,7 +1025,7 @@ class UnfollowLinkTest(MailCommon, HttpCase):
                 # Test that the user receives an unfollow URL when following the record
                 test_record._message_subscribe(partner_ids=test_partners.ids)
                 unfollow_urls = self._message_post_and_get_unfollow_urls(test_record, test_partners)
-                for test_partner, unfollow_url, has_url in zip(test_partners, unfollow_urls, exp_has_url):
+                for test_partner, unfollow_url, has_url in zip(test_partners, unfollow_urls, exp_has_url, strict=False):
                     self.assertEqual(bool(unfollow_url), has_url)
 
                     # Test unfollowing URL when user is not logged
@@ -1042,7 +1042,7 @@ class UnfollowLinkTest(MailCommon, HttpCase):
                 # Test that the user doesn't receive the unfollow URL when not following the record
                 test_record.message_unsubscribe(partner_ids=test_partners.ids)
                 unfollow_urls = self._message_post_and_get_unfollow_urls(test_record, test_partners)
-                for test_partner, unfollow_url in zip(test_partners, unfollow_urls):
+                for test_partner, unfollow_url in zip(test_partners, unfollow_urls, strict=False):
                     self.assertFalse(unfollow_url)
 
     def test_unsubscribe_unreadable(self):

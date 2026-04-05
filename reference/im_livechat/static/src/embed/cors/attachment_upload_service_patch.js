@@ -1,7 +1,7 @@
-import { AttachmentUploadService } from "@mail/core/common/attachment_upload_service";
+import {AttachmentUploadService} from "@mail/core/common/attachment_upload_service";
 
-import { patch } from "@web/core/utils/patch";
-import { url } from "@web/core/utils/urls";
+import {patch} from "@web/core/utils/patch";
+import {url} from "@web/core/utils/urls";
 
 patch(AttachmentUploadService.prototype, {
     getUploadURL(thread) {

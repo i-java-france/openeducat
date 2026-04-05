@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
 
-from collections import Counter, defaultdict
 
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 
 class RegistrationEditor(models.TransientModel):
@@ -15,7 +12,7 @@ class RegistrationEditor(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(RegistrationEditor, self).default_get(fields)
+        res = super().default_get(fields)
         if not res.get('sale_order_id'):
             sale_order_id = res.get('sale_order_id', self.env.context.get('active_id'))
             res['sale_order_id'] = sale_order_id

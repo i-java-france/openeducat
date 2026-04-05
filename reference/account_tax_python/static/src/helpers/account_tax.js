@@ -1,7 +1,7 @@
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
-import { accountTaxHelpers } from "@account/helpers/account_tax";
-import { evaluateExpr } from "@web/core/py_js/py";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
+import {evaluateExpr} from "@web/core/py_js/py";
 
 // -------------------------------------------------------------------------
 // HELPERS IN BOTH PYTHON/JAVASCRIPT (account_tax.js / account_tax.py)

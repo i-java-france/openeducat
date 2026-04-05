@@ -7,7 +7,7 @@ import {
     useState,
     xml,
 } from "@odoo/owl";
-import { Cache } from "@web/core/utils/cache";
+import {Cache} from "@web/core/utils/cache";
 
 const svgCache = new Cache(async (src) => {
     let text;
@@ -32,11 +32,11 @@ const svgCache = new Cache(async (src) => {
 export class Img extends Component {
     static props = {
         src: String,
-        class: { type: String, optional: true },
-        style: { type: String, optional: true },
-        alt: { type: String, optional: true },
-        attrs: { type: Object, optional: true },
-        svgCheck: { type: Boolean, optional: true },
+        class: {type: String, optional: true},
+        style: {type: String, optional: true},
+        alt: {type: String, optional: true},
+        attrs: {type: Object, optional: true},
+        svgCheck: {type: Boolean, optional: true},
     };
     static defaultProps = {
         svgCheck: true,
@@ -64,7 +64,7 @@ export class Img extends Component {
     setup() {
         this.svgRef = useRef("svg");
         this.svg = {};
-        this.state = useState({ loaded: false });
+        this.state = useState({loaded: false});
 
         onWillStart(async () => this.handleImgLoad(this.props.src));
         onWillUpdateProps(async (nextProps) => {
@@ -74,7 +74,11 @@ export class Img extends Component {
         });
         useEffect(
             (imgLoaded) => {
-                if (imgLoaded && this.isSvg(this.props.src) && this.svg.children.length) {
+                if (
+                    imgLoaded &&
+                    this.isSvg(this.props.src) &&
+                    this.svg.children.length
+                ) {
                     // We can't use t-out with markup because it is parsed as HTML,
                     // but SVG need to be parsed as XML for all features to work.
                     const children = [];
@@ -109,8 +113,8 @@ export class Img extends Component {
     loadImage() {
         return new Promise((resolve, reject) => {
             const img = new Image();
-            img.onload = () => resolve({ status: "loaded" });
-            img.onerror = () => resolve({ status: "error" });
+            img.onload = () => resolve({status: "loaded"});
+            img.onerror = () => resolve({status: "error"});
             img.src = this.props.src;
         });
     }

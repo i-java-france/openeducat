@@ -1,4 +1,4 @@
-import { OdooCorePlugin } from "@spreadsheet/plugins";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
 
 export class IrMenuPlugin extends OdooCorePlugin {
     static getters = /** @type {const} */ (["getIrMenu"]);
@@ -15,7 +15,9 @@ export class IrMenuPlugin extends OdooCorePlugin {
     getIrMenu(menuId) {
         let menu = this.env.services.menu.getMenu(menuId);
         if (!menu) {
-            menu = this.env.services.menu.getAll().find((menu) => menu.xmlid === menuId);
+            menu = this.env.services.menu
+                .getAll()
+                .find((menu) => menu.xmlid === menuId);
         }
         return menu;
     }

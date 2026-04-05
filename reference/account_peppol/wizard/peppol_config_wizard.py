@@ -1,10 +1,11 @@
 from markupsafe import Markup
 
-from odoo import api, Command, fields, models, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
-
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 
 SELF_BILLING_DOCUMENT_TYPES = {
     'bis3_self_billing_invoice': 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:selfbilling:3.0::2.1',

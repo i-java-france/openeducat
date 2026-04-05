@@ -1,20 +1,20 @@
 // @ts-check
 
-import { EventBus, markRaw, toRaw } from "@odoo/owl";
-import { makeContext } from "@web/core/context";
-import { Domain } from "@web/core/domain";
-import { WarningDialog } from "@web/core/errors/error_dialogs";
-import { rpcBus } from "@web/core/network/rpc";
-import { shallowEqual } from "@web/core/utils/arrays";
-import { deepCopy, pick } from "@web/core/utils/objects";
-import { Deferred, KeepLast, Mutex } from "@web/core/utils/concurrency";
-import { orderByToString } from "@web/search/utils/order_by";
-import { Model } from "../model";
-import { DynamicGroupList } from "./dynamic_group_list";
-import { DynamicRecordList } from "./dynamic_record_list";
-import { Group } from "./group";
-import { Record as RelationalRecord } from "./record";
-import { StaticList } from "./static_list";
+import {EventBus, markRaw, toRaw} from "@odoo/owl";
+import {makeContext} from "@web/core/context";
+import {Domain} from "@web/core/domain";
+import {WarningDialog} from "@web/core/errors/error_dialogs";
+import {rpcBus} from "@web/core/network/rpc";
+import {shallowEqual} from "@web/core/utils/arrays";
+import {deepCopy, pick} from "@web/core/utils/objects";
+import {Deferred, KeepLast, Mutex} from "@web/core/utils/concurrency";
+import {orderByToString} from "@web/search/utils/order_by";
+import {Model} from "../model";
+import {DynamicGroupList} from "./dynamic_group_list";
+import {DynamicRecordList} from "./dynamic_record_list";
+import {Group} from "./group";
+import {Record as RelationalRecord} from "./record";
+import {StaticList} from "./static_list";
 import {
     extractInfoFromGroupData,
     getAggregateSpecifications,
@@ -24,7 +24,7 @@ import {
     getId,
     makeActiveField,
 } from "./utils";
-import { FetchRecordError } from "./errors";
+import {FetchRecordError} from "./errors";
 
 /**
  * @typedef {import("@web/core/context").Context} Context
@@ -107,7 +107,11 @@ const DEFAULT_HOOKS = {
 
 rpcBus.addEventListener("RPC:RESPONSE", (ev) => {
     if (ev.detail.data.params?.method === "unlink") {
-        rpcBus.trigger("CLEAR-CACHES", ["web_read", "web_search_read", "web_read_group"]);
+        rpcBus.trigger("CLEAR-CACHES", [
+            "web_read",
+            "web_search_read",
+            "web_read_group",
+        ]);
     }
 });
 
@@ -128,7 +132,7 @@ export class RelationalModel extends Model {
      * @param {RelationalModelParams} params
      * @param {Services} services
      */
-    setup(params, { action, dialog, notification }) {
+    setup(params, {action, dialog, notification}) {
         this.action = action;
         this.dialog = dialog;
         this.notification = notification;
@@ -151,7 +155,8 @@ export class RelationalModel extends Model {
 
         this.initialLimit = params.limit || this.constructor.DEFAULT_LIMIT;
         this.initialGroupsLimit = params.groupsLimit;
-        this.initialCountLimit = params.countLimit || this.constructor.DEFAULT_COUNT_LIMIT;
+        this.initialCountLimit =
+            params.countLimit || this.constructor.DEFAULT_COUNT_LIMIT;
         this.defaultOrderBy = params.defaultOrderBy;
         this.maxGroupByDepth = params.maxGroupByDepth;
         this.groupByInfo = params.groupByInfo || {};
@@ -170,7 +175,7 @@ export class RelationalModel extends Model {
     // -------------------------------------------------------------------------
 
     exportState() {
-        const config = { ...toRaw(this.config) };
+        const config = {...toRaw(this.config)};
         delete config.currentGroups;
         return {
             config,
@@ -209,7 +214,7 @@ export class RelationalModel extends Model {
         const cache = this._getCacheParams(config, rootLoadDef);
         const data = await this.keepLast.add(this._loadData(config, cache));
         this.root = this._createRoot(config, data);
-        rootLoadDef.resolve({ root: this.root, loadId: config.loadId });
+        rootLoadDef.resolve({root: this.root, loadId: config.loadId});
         this.config = config;
         await this.hooks.onRootLoaded(this.root);
     }
@@ -230,7 +235,7 @@ export class RelationalModel extends Model {
             config.resModel,
             "get_property_definition",
             [propertyFullName],
-            { context: config.context }
+            {context: config.context}
         );
         if (!result) {
             // the property might have been removed
@@ -239,7 +244,7 @@ export class RelationalModel extends Model {
             result.propertyName = result.name;
             result.name = propertyFullName; // "xxxxx" -> "property.xxxxx"
             // needed for _applyChanges
-            result.relatedPropertyField = { fieldName: propertyFullName.split(".")[0] };
+            result.relatedPropertyField = {fieldName: propertyFullName.split(".")[0]};
             result.relation = result.comodel; // match name on field
             config.fields[propertyFullName] = result;
         }
@@ -247,7 +252,7 @@ export class RelationalModel extends Model {
 
     async _askChanges() {
         const proms = [];
-        this.bus.trigger("NEED_LOCAL_CHANGES", { proms });
+        this.bus.trigger("NEED_LOCAL_CHANGES", {proms});
         await Promise.all([...proms, this.mutex.getUnlockedDef()]);
     }
 
@@ -261,9 +266,9 @@ export class RelationalModel extends Model {
     _createEmptyRoot(config) {
         if (!config.isMonoRecord) {
             if (config.groupBy.length) {
-                return this._createRoot(config, { groups: [], length: 0 });
+                return this._createRoot(config, {groups: [], length: 0});
             }
-            return this._createRoot(config, { records: [], length: 0 });
+            return this._createRoot(config, {records: [], length: 0});
         }
     }
 
@@ -289,7 +294,8 @@ export class RelationalModel extends Model {
         if (
             !this.isReady || // first load of the model
             // monorecord, loading a different id, or creating a new record (onchange)
-            (config.isMonoRecord && (this.root.config.resId !== config.resId || !config.resId))
+            (config.isMonoRecord &&
+                (this.root.config.resId !== config.resId || !config.resId))
         ) {
             return {
                 type: "disk",
@@ -298,7 +304,7 @@ export class RelationalModel extends Model {
                     if (!hasChanged) {
                         return;
                     }
-                    const { root, loadId } = await rootLoadDef;
+                    const {root, loadId} = await rootLoadDef;
                     if (root.id !== this.root.id) {
                         // The root id might have changed, either because:
                         //  1) the user already changed the domain and a second load has been done
@@ -311,7 +317,10 @@ export class RelationalModel extends Model {
                             this.useSampleModel = false;
                             if (this.root.config.groupBy.length) {
                                 delete this.root.config.currentGroups;
-                                result = await this._postprocessReadGroup(this.root.config, result);
+                                result = await this._postprocessReadGroup(
+                                    this.root.config,
+                                    result
+                                );
                             }
                             this.root._setData(result);
                         }
@@ -324,14 +333,14 @@ export class RelationalModel extends Model {
                     if (root.config.isMonoRecord) {
                         if (!root.config.resId) {
                             // result is the response of the onchange rpc
-                            return root._setData(result.value, { keepChanges: true });
+                            return root._setData(result.value, {keepChanges: true});
                         }
                         // result is the response of a web_read rpc
                         if (!result.length) {
                             // we read a record that no longer exists
                             throw new FetchRecordError([root.config.resId]);
                         }
-                        return root._setData(result[0], { keepChanges: true });
+                        return root._setData(result[0], {keepChanges: true});
                     }
 
                     // multi record case: either grouped or ungrouped
@@ -358,7 +367,7 @@ export class RelationalModel extends Model {
         const config = Object.assign({}, currentConfig);
 
         config.context = "context" in params ? params.context : config.context;
-        config.context = { ...config.context };
+        config.context = {...config.context};
         if (currentConfig.isMonoRecord) {
             config.resId = "resId" in params ? params.resId : config.resId;
             config.resIds = "resIds" in params ? params.resIds : config.resIds;
@@ -380,7 +389,10 @@ export class RelationalModel extends Model {
             // apply month granularity if none explicitly given
             // TODO: accept only explicit granularity
             config.groupBy = config.groupBy.map((g) => {
-                if (g in config.fields && ["date", "datetime"].includes(config.fields[g].type)) {
+                if (
+                    g in config.fields &&
+                    ["date", "datetime"].includes(config.fields[g].type)
+                ) {
                     return `${g}:month`;
                 }
                 return g;
@@ -402,7 +414,9 @@ export class RelationalModel extends Model {
                 delete config.groups;
             }
             if (!config.groupBy.length) {
-                config.orderBy = config.orderBy.filter((order) => order.name !== "__count");
+                config.orderBy = config.orderBy.filter(
+                    (order) => order.name !== "__count"
+                );
             }
         }
         if (!config.isMonoRecord && params.domain) {
@@ -435,33 +449,40 @@ export class RelationalModel extends Model {
         if (config.isMonoRecord) {
             const evalContext = getBasicEvalContext(config);
             if (!config.resId) {
-                return this._loadNewRecord(config, { evalContext, cache });
+                return this._loadNewRecord(config, {evalContext, cache});
             }
             const records = await this._loadRecords(config, evalContext, cache);
             return records[0];
         }
         if (config.resIds) {
             // static list
-            const resIds = config.resIds.slice(config.offset, config.offset + config.limit);
-            return this._loadRecords({ ...config, resIds });
+            const resIds = config.resIds.slice(
+                config.offset,
+                config.offset + config.limit
+            );
+            return this._loadRecords({...config, resIds});
         }
         if (config.groupBy.length) {
             return this._loadGroupedList(config, cache);
         }
         Object.assign(config, {
             limit: config.limit || this.initialLimit,
-            countLimit: "countLimit" in config ? config.countLimit : this.initialCountLimit,
+            countLimit:
+                "countLimit" in config ? config.countLimit : this.initialCountLimit,
             offset: config.offset || 0,
         });
         if (config.countLimit !== Number.MAX_SAFE_INTEGER) {
-            config.countLimit = Math.max(config.countLimit, config.offset + config.limit);
+            config.countLimit = Math.max(
+                config.countLimit,
+                config.offset + config.limit
+            );
         }
-        const { records, length } = await this._loadUngroupedList(config, cache);
+        const {records, length} = await this._loadUngroupedList(config, cache);
         if (config.offset && !records.length) {
             config.offset = 0;
             return this._loadData(config, cache);
         }
-        return { records, length };
+        return {records, length};
     }
 
     /**
@@ -482,7 +503,7 @@ export class RelationalModel extends Model {
         return this._postprocessReadGroup(config, response);
     }
 
-    async _postprocessReadGroup(config, { groups, length }) {
+    async _postprocessReadGroup(config, {groups, length}) {
         const commonConfig = {
             resModel: config.resModel,
             fields: config.fields,
@@ -561,7 +582,7 @@ export class RelationalModel extends Model {
                 if (nextLevelGroupBy.length) {
                     groupConfig.isFolded = !("__groups" in groupData);
                     if (!groupConfig.isFolded) {
-                        const { groups, length } = groupData.__groups;
+                        const {groups, length} = groupData.__groups;
                         group.groups = await extractGroups(groupConfig.list, groups);
                         group.length = length;
                     } else {
@@ -605,7 +626,9 @@ export class RelationalModel extends Model {
             currentGroups.forEach((group, index) => {
                 if (
                     config.groups[group.value] &&
-                    !groups.some((g) => JSON.stringify(g.value) === JSON.stringify(group.value))
+                    !groups.some(
+                        (g) => JSON.stringify(g.value) === JSON.stringify(group.value)
+                    )
                 ) {
                     const aggregates = Object.assign({}, group.aggregates);
                     for (const key in aggregates) {
@@ -615,14 +638,19 @@ export class RelationalModel extends Model {
                     groups.splice(
                         index,
                         0,
-                        Object.assign({}, group, { count: 0, length: 0, records: [], aggregates })
+                        Object.assign({}, group, {
+                            count: 0,
+                            length: 0,
+                            records: [],
+                            aggregates,
+                        })
                     );
                 }
             });
         }
-        config.currentGroups = { params, groups };
+        config.currentGroups = {params, groups};
 
-        return { groups, length };
+        return {groups, length};
     }
 
     /**
@@ -640,7 +668,7 @@ export class RelationalModel extends Model {
      * @param {Object} [cache]
      */
     async _loadRecords(config, evalContext = config.context, cache) {
-        const { resModel, activeFields, fields, context } = config;
+        const {resModel, activeFields, fields, context} = config;
         const resIds = config.resId ? [config.resId] : config.resIds;
         if (!resIds.length) {
             return [];
@@ -648,7 +676,7 @@ export class RelationalModel extends Model {
         const fieldSpec = getFieldsSpec(activeFields, fields, evalContext);
         if (Object.keys(fieldSpec).length > 0) {
             const kwargs = {
-                context: { bin_size: true, ...context },
+                context: {bin_size: true, ...context},
                 specification: fieldSpec,
             };
             const orm = cache ? this.orm.cache(cache) : this.orm;
@@ -659,7 +687,7 @@ export class RelationalModel extends Model {
 
             return records;
         } else {
-            return resIds.map((resId) => ({ id: resId }));
+            return resIds.map((resId) => ({id: resId}));
         }
     }
 
@@ -673,13 +701,19 @@ export class RelationalModel extends Model {
     async _loadUngroupedList(config, cache) {
         const orderBy = config.orderBy.filter((o) => o.name !== "__count");
         const kwargs = {
-            specification: getFieldsSpec(config.activeFields, config.fields, config.context),
+            specification: getFieldsSpec(
+                config.activeFields,
+                config.fields,
+                config.context
+            ),
             offset: config.offset,
             order: orderByToString(orderBy),
             limit: config.limit,
-            context: { bin_size: true, ...config.context },
+            context: {bin_size: true, ...config.context},
             count_limit:
-                config.countLimit !== Number.MAX_SAFE_INTEGER ? config.countLimit + 1 : undefined,
+                config.countLimit !== Number.MAX_SAFE_INTEGER
+                    ? config.countLimit + 1
+                    : undefined,
         };
         const orm = cache ? this.orm.cache(cache) : this.orm;
         return orm.webSearchRead(config.resModel, config.domain, kwargs);
@@ -692,20 +726,22 @@ export class RelationalModel extends Model {
      */
     async _onchange(
         config,
-        { changes = {}, fieldNames = [], evalContext = config.context, onError, cache }
+        {changes = {}, fieldNames = [], evalContext = config.context, onError, cache}
     ) {
-        const { fields, activeFields, resModel, resId } = config;
+        const {fields, activeFields, resModel, resId} = config;
         let context = config.context;
         if (fieldNames.length === 1) {
             const fieldContext = config.activeFields[fieldNames[0]].context;
             context = makeContext([context, fieldContext], evalContext);
         }
-        const spec = getFieldsSpec(activeFields, fields, evalContext, { withInvisible: true });
+        const spec = getFieldsSpec(activeFields, fields, evalContext, {
+            withInvisible: true,
+        });
         const args = [resId ? [resId] : [], changes, fieldNames, spec];
         let response;
         try {
             const orm = cache ? this.orm.cache(cache) : this.orm;
-            response = await orm.call(resModel, "onchange", args, { context });
+            response = await orm.call(resModel, "onchange", args, {context});
         } catch (e) {
             if (onError) {
                 return void onError(e);
@@ -713,10 +749,12 @@ export class RelationalModel extends Model {
             throw e;
         }
         if (response.warning) {
-            Promise.resolve(this.hooks.onWillDisplayOnchangeWarning(response.warning)).then(() => {
-                const { type, title, message, className, sticky } = response.warning;
+            Promise.resolve(
+                this.hooks.onWillDisplayOnchangeWarning(response.warning)
+            ).then(() => {
+                const {type, title, message, className, sticky} = response.warning;
                 if (type === "dialog") {
-                    this.dialog.add(WarningDialog, { title, message });
+                    this.dialog.add(WarningDialog, {title, message});
                 } else {
                     this.notification.add(message, {
                         className,
@@ -738,8 +776,8 @@ export class RelationalModel extends Model {
      *  reload?: boolean;
      * }} [options]
      */
-    async _updateConfig(config, patch, { reload = true, commit } = {}) {
-        const tmpConfig = { ...config, ...patch };
+    async _updateConfig(config, patch, {reload = true, commit} = {}) {
+        const tmpConfig = {...config, ...patch};
         markRaw(tmpConfig.activeFields);
         markRaw(tmpConfig.fields);
 
@@ -766,7 +804,9 @@ export class RelationalModel extends Model {
      */
     async _updateCount(config) {
         const count = await this.keepLast.add(
-            this.orm.searchCount(config.resModel, config.domain, { context: config.context })
+            this.orm.searchCount(config.resModel, config.domain, {
+                context: config.context,
+            })
         );
         config.countLimit = Number.MAX_SAFE_INTEGER;
         return count;
@@ -809,7 +849,7 @@ export class RelationalModel extends Model {
                         ? getGroupServerValue(field, group.value)
                         : group.value;
                 if (group.isFolded) {
-                    return { value, folded: group.isFolded };
+                    return {value, folded: group.isFolded};
                 } else {
                     return {
                         value,
@@ -826,15 +866,19 @@ export class RelationalModel extends Model {
             pick(config.fields, ...config.fieldsToAggregate)
         );
         const currentGroupInfos = getGroupInfo(config.groups);
-        const { activeFields, fields } = config;
+        const {activeFields, fields} = config;
         const evalContext = getBasicEvalContext(config);
-        const unfoldReadSpecification = getFieldsSpec(activeFields, fields, evalContext);
+        const unfoldReadSpecification = getFieldsSpec(
+            activeFields,
+            fields,
+            evalContext
+        );
 
         const groupByReadSpecification = {};
         for (const groupBy of config.groupBy) {
             const groupInfo = this.groupByInfo[groupBy];
             if (groupInfo) {
-                const { activeFields, fields } = this.groupByInfo[groupBy];
+                const {activeFields, fields} = this.groupByInfo[groupBy];
                 groupByReadSpecification[groupBy] = getFieldsSpec(
                     activeFields,
                     fields,
@@ -852,7 +896,7 @@ export class RelationalModel extends Model {
             unfold_read_specification: unfoldReadSpecification,
             unfold_read_default_limit: this.initialLimit,
             groupby_read_specification: groupByReadSpecification,
-            context: { read_group_expand: true, ...config.context },
+            context: {read_group_expand: true, ...config.context},
         };
         const orm = cache ? this.orm.cache(cache) : this.orm;
         const result = await orm.webReadGroup(

@@ -1,10 +1,17 @@
-import { Component, onMounted, onWillDestroy, useChildSubEnv, useRef, useState } from "@odoo/owl";
-import { toolbarButtonProps } from "@html_editor/main/toolbar/toolbar";
-import { AnimateOption } from "./animate_option";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { DependencyManager } from "@html_builder/core/dependency_manager";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { POSITION_BUS } from "@web/core/position/position_hook";
+import {
+    Component,
+    onMounted,
+    onWillDestroy,
+    useChildSubEnv,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {toolbarButtonProps} from "@html_editor/main/toolbar/toolbar";
+import {AnimateOption} from "./animate_option";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {DependencyManager} from "@html_builder/core/dependency_manager";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {POSITION_BUS} from "@web/core/position/position_hook";
 
 class AnimateTextPopover extends BaseOptionComponent {
     static template = "website_builder.AnimateTextPopover";
@@ -13,9 +20,9 @@ class AnimateTextPopover extends BaseOptionComponent {
         onReset: Function,
 
         // Popover service
-        close: { type: Function, optional: true },
+        close: {type: Function, optional: true},
     };
-    static components = { AnimateOption };
+    static components = {AnimateOption};
 
     setup() {
         super.setup();
@@ -36,7 +43,7 @@ export class AnimateText extends Component {
     static template = "website_builder.AnimateText";
     static props = {
         ...toolbarButtonProps,
-        config: { type: Object, shape: { editor: Object, editorBus: Object } },
+        config: {type: Object, shape: {editor: Object, editorBus: Object}},
         animateOptionProps: AnimateOption.props,
         getAnimatedTextOrCreateDefault: Function,
         isActive: Function,
@@ -71,7 +78,7 @@ export class AnimateText extends Component {
         if (this.popover.isOpen) {
             return;
         }
-        const { element, onReset } = this.props.getAnimatedTextOrCreateDefault();
+        const {element, onReset} = this.props.getAnimatedTextOrCreateDefault();
         if (!element) {
             return;
         }

@@ -1,7 +1,7 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { addProductLineToOrder } from "@pos_loyalty/../tests/unit/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {addProductLineToOrder} from "@pos_loyalty/../tests/unit/utils";
 
 definePosModels();
 
@@ -32,9 +32,9 @@ describe("pos.order.line - loyalty", () => {
         const programB = models["loyalty.program"].get(4);
 
         const line = await addProductLineToOrder(store, order);
-        line.update({ _e_wallet_program_id: programB });
+        line.update({_e_wallet_program_id: programB});
 
-        expect(line.ignoreLoyaltyPoints({ program: programA })).toBe(true);
+        expect(line.ignoreLoyaltyPoints({program: programA})).toBe(true);
     });
 
     test("getGiftCardOrEWalletBalance", async () => {

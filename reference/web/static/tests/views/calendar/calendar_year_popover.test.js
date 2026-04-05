@@ -1,9 +1,13 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { contains, mountWithCleanup, preloadBundle } from "@web/../tests/web_test_helpers";
-import { DEFAULT_DATE, FAKE_MODEL } from "./calendar_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {
+    contains,
+    mountWithCleanup,
+    preloadBundle,
+} from "@web/../tests/web_test_helpers";
+import {DEFAULT_DATE, FAKE_MODEL} from "./calendar_test_helpers";
 
-import { CalendarYearPopover } from "@web/views/calendar/calendar_year/calendar_year_popover";
+import {CalendarYearPopover} from "@web/views/calendar/calendar_year/calendar_year_popover";
 
 describe.current.tags("desktop");
 
@@ -17,29 +21,29 @@ const FAKE_RECORDS = [
     },
     {
         id: 2,
-        start: DEFAULT_DATE.set({ hours: 14 }),
-        end: DEFAULT_DATE.set({ hours: 16 }),
+        start: DEFAULT_DATE.set({hours: 14}),
+        end: DEFAULT_DATE.set({hours: 16}),
         isAllDay: false,
         title: "R2",
     },
     {
         id: 3,
-        start: DEFAULT_DATE.minus({ days: 1 }),
-        end: DEFAULT_DATE.plus({ days: 1 }),
+        start: DEFAULT_DATE.minus({days: 1}),
+        end: DEFAULT_DATE.plus({days: 1}),
         isAllDay: true,
         title: "R3",
     },
     {
         id: 4,
-        start: DEFAULT_DATE.minus({ days: 3 }),
-        end: DEFAULT_DATE.plus({ days: 1 }),
+        start: DEFAULT_DATE.minus({days: 3}),
+        end: DEFAULT_DATE.plus({days: 1}),
         isAllDay: true,
         title: "R4",
     },
     {
         id: 5,
-        start: DEFAULT_DATE.minus({ days: 1 }),
-        end: DEFAULT_DATE.plus({ days: 3 }),
+        start: DEFAULT_DATE.minus({days: 1}),
+        end: DEFAULT_DATE.plus({days: 3}),
         isAllDay: true,
         title: "R5",
     },
@@ -57,7 +61,7 @@ const FAKE_PROPS = {
 
 async function start(props = {}) {
     await mountWithCleanup(CalendarYearPopover, {
-        props: { ...FAKE_PROPS, ...props },
+        props: {...FAKE_PROPS, ...props},
     });
 }
 
@@ -65,14 +69,14 @@ preloadBundle("web.fullcalendar_lib");
 
 test(`canCreate is true`, async () => {
     await start({
-        model: { ...FAKE_MODEL, canCreate: true },
+        model: {...FAKE_MODEL, canCreate: true},
     });
     expect(`.o_cw_popover_create`).toHaveCount(1);
 });
 
 test(`canCreate is false`, async () => {
     await start({
-        model: { ...FAKE_MODEL, canCreate: false },
+        model: {...FAKE_MODEL, canCreate: false},
     });
     expect(`.o_cw_popover_create`).toHaveCount(0);
 });
@@ -80,7 +84,7 @@ test(`canCreate is false`, async () => {
 test(`click on create button`, async () => {
     await start({
         createRecord: () => expect.step("create"),
-        model: { ...FAKE_MODEL, canCreate: true },
+        model: {...FAKE_MODEL, canCreate: true},
     });
     expect(`.o_cw_popover_create`).toHaveCount(1);
 

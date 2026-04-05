@@ -1,8 +1,8 @@
-import { describe, expect, test, getFixture, beforeEach } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
-import { makeMockEnv, contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { DefaultDateValue } from "@spreadsheet/global_filters/components/default_date_value/default_date_value";
+import {beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {contains, makeMockEnv, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {DefaultDateValue} from "@spreadsheet/global_filters/components/default_date_value/default_date_value";
 
 describe.current.tags("desktop");
 defineSpreadsheetModels();
@@ -18,7 +18,7 @@ beforeEach(() => {
  * @param {{ model: Model, filter: object}} props
  */
 async function mountDefaultDateValue(env, props) {
-    await mountWithCleanup(DefaultDateValue, { props, env });
+    await mountWithCleanup(DefaultDateValue, {props, env});
 }
 
 test("Default date filter without initial value", async function () {

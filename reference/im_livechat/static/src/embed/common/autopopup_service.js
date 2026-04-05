@@ -1,6 +1,6 @@
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
 
 export class AutopopupService {
     static STORAGE_KEY = "im_livechat_auto_popup";
@@ -13,12 +13,15 @@ export class AutopopupService {
      * ui: typeof import("@web/core/ui/ui_service").uiService.start,
      * }} services
      */
-    constructor(env, { "im_livechat.livechat": livechatService, "mail.store": storeService, ui }) {
+    constructor(
+        env,
+        {"im_livechat.livechat": livechatService, "mail.store": storeService, ui}
+    ) {
         this.storeService = storeService;
         this.livechatService = livechatService;
         this.ui = ui;
 
-        storeService.isReady.then(() => { 
+        storeService.isReady.then(() => {
             browser.setTimeout(async () => {
                 await storeService.chatHub.initPromise;
                 if (this.allowAutoPopup) {

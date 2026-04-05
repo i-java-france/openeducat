@@ -1,10 +1,12 @@
-import { _t } from "@web/core/l10n/translation";
-import { useService, useOwnedDialogs } from "@web/core/utils/hooks";
-import { AllocationFormViewDialog } from "./view_dialog/allocation_form_view_dialog";
-import { useComponent } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService, useOwnedDialogs} from "@web/core/utils/hooks";
+import {AllocationFormViewDialog} from "./view_dialog/allocation_form_view_dialog";
+import {useComponent} from "@odoo/owl";
 
 export function formatNumber(lang, number, maxDecimals = 2) {
-    const numberFormat = new Intl.NumberFormat(lang, { maximumFractionDigits: maxDecimals });
+    const numberFormat = new Intl.NumberFormat(lang, {
+        maximumFractionDigits: maxDecimals,
+    });
     return numberFormat.format(number);
 }
 

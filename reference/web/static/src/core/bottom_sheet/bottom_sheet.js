@@ -3,14 +3,14 @@
  *
  * @class
  */
-import { Component, useState, useRef, onMounted, useExternalListener } from "@odoo/owl";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useForwardRefToParent } from "@web/core/utils/hooks";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
-import { compensateScrollbar } from "@web/core/utils/scrolling";
-import { getViewportDimensions, useViewportChange } from "@web/core/utils/dvu";
-import { clamp } from "@web/core/utils/numbers";
-import { browser } from "@web/core/browser/browser";
+import {Component, useState, useRef, onMounted, useExternalListener} from "@odoo/owl";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useForwardRefToParent} from "@web/core/utils/hooks";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
+import {compensateScrollbar} from "@web/core/utils/scrolling";
+import {getViewportDimensions, useViewportChange} from "@web/core/utils/dvu";
+import {clamp} from "@web/core/utils/numbers";
+import {browser} from "@web/core/browser/browser";
 
 export class BottomSheet extends Component {
     static template = "web.BottomSheet";
@@ -21,16 +21,16 @@ export class BottomSheet extends Component {
 
     static props = {
         // Main props
-        component: { type: Function },
-        componentProps: { optional: true, type: Object },
-        close: { type: Function },
+        component: {type: Function},
+        componentProps: {optional: true, type: Object},
+        close: {type: Function},
 
-        class: { optional: true },
-        role: { optional: true, type: String },
+        class: {optional: true},
+        role: {optional: true, type: String},
 
         // Technical props
-        ref: { optional: true, type: Function },
-        slots: { optional: true, type: Object },
+        ref: {optional: true, type: Function},
+        slots: {optional: true, type: Object},
     };
 
     setup() {
@@ -76,10 +76,10 @@ export class BottomSheet extends Component {
         // Handle mobile "back" gesture and "back" navigation button.
         // Push a history state when the BottomSheet opens, intercept the browser's
         // history events, prevents navigation by pushing another state and closes the sheet.
-        window.history.pushState({ bottomSheet: true }, "");
+        window.history.pushState({bottomSheet: true}, "");
         this.handlePopState = () => {
             if (this.state.isPositionedReady && !this.state.isDismissing) {
-                window.history.pushState({ bottomSheet: true }, "");
+                window.history.pushState({bottomSheet: true}, "");
                 this.slideOut();
             }
         };
@@ -91,7 +91,8 @@ export class BottomSheet extends Component {
                 browser.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
             this.prefersReducedMotion =
-                isReduced || getComputedStyle(this.containerRef.el).animationName === "none";
+                isReduced ||
+                getComputedStyle(this.containerRef.el).animationName === "none";
 
             this.initializeSheet();
             compensateScrollbar(this.scrollRailRef.el, true, true, "padding-right");
@@ -204,8 +205,14 @@ export class BottomSheet extends Component {
 
         // Set CSS variables for heights
         rail.style.setProperty("--sheet-height", `${heightPercent}dvh`);
-        rail.style.setProperty("--sheet-max-height", `${this.measurements.viewportHeight}px`);
-        rail.style.setProperty("--dismiss-height", `${this.measurements.initialHeight || 0}px`);
+        rail.style.setProperty(
+            "--sheet-max-height",
+            `${this.measurements.viewportHeight}px`
+        );
+        rail.style.setProperty(
+            "--dismiss-height",
+            `${this.measurements.initialHeight || 0}px`
+        );
     }
 
     /**
@@ -284,12 +291,20 @@ export class BottomSheet extends Component {
         if (this.prefersReducedMotion) {
             this.props.close?.();
         } else {
-            this.sheetRef.el?.addEventListener("animationend", () => this.props.close?.(), {
-                once: true,
-            });
-            this.sheetRef.el?.addEventListener("animationcancel", () => this.props.close?.(), {
-                once: true,
-            });
+            this.sheetRef.el?.addEventListener(
+                "animationend",
+                () => this.props.close?.(),
+                {
+                    once: true,
+                }
+            );
+            this.sheetRef.el?.addEventListener(
+                "animationcancel",
+                () => this.props.close?.(),
+                {
+                    once: true,
+                }
+            );
         }
 
         // Update state to trigger animation

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -13,7 +12,7 @@ class StockWarehouse(models.Model):
         'stock.rule', 'Repair MTO Rule', copy=False)
 
     def _get_sequence_values(self, name=False, code=False):
-        values = super(StockWarehouse, self)._get_sequence_values(name=name, code=code)
+        values = super()._get_sequence_values(name=name, code=code)
         values.update({
             'repair_type_id': {
                 'name': _('%(name)s Sequence repair', name=self.name),
@@ -25,7 +24,7 @@ class StockWarehouse(models.Model):
         return values
 
     def _get_picking_type_create_values(self, max_sequence):
-        data, next_sequence = super(StockWarehouse, self)._get_picking_type_create_values(max_sequence)
+        data, next_sequence = super()._get_picking_type_create_values(max_sequence)
         prod_location = self._get_production_location()
         scrap_location = self.env['stock.location'].search([
             ('usage', '=', 'inventory'),
@@ -52,7 +51,7 @@ class StockWarehouse(models.Model):
         return data, max_sequence + 2
 
     def _get_picking_type_update_values(self):
-        data = super(StockWarehouse, self)._get_picking_type_update_values()
+        data = super()._get_picking_type_update_values()
         data.update({
             'repair_type_id': {
                 'active': self.active,

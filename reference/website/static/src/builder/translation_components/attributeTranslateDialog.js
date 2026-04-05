@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
-import { WebsiteDialog } from "@website/components/dialog/dialog";
+import {Component} from "@odoo/owl";
+import {WebsiteDialog} from "@website/components/dialog/dialog";
 
 export class AttributeTranslateDialog extends Component {
-    static components = { WebsiteDialog };
+    static components = {WebsiteDialog};
     static template = "website_builder.AttributeTranslateDialog";
     static props = {
-        node: { validate: (p) => p.nodeType === Node.ELEMENT_NODE },
+        node: {validate: (p) => p.nodeType === Node.ELEMENT_NODE},
         elToTranslationInfoMap: Object,
         addStep: Function,
         applyCustomMutation: Function,
@@ -47,7 +47,8 @@ export class AttributeTranslateDialog extends Component {
             },
             revert: () => {
                 for (const attr of Object.keys(this.modifiedAttrs)) {
-                    this.translationInfos[attr].translation = oldValue[attr].translation;
+                    this.translationInfos[attr].translation =
+                        oldValue[attr].translation;
                 }
             },
         });

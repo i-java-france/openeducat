@@ -1,16 +1,16 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click, tick, waitFor, waitForNone } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { animationFrame } from "@odoo/hoot-mock";
-import { getContent, setContent, setSelection } from "./_helpers/selection";
-import { splitBlock, undo } from "./_helpers/user_actions";
-import { contains } from "@web/../tests/web_test_helpers";
-import { expectElementCount } from "./_helpers/ui_expectations";
-import { execCommand } from "./_helpers/userCommands";
-import { unformat } from "./_helpers/format";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, tick, waitFor, waitForNone} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {animationFrame} from "@odoo/hoot-mock";
+import {getContent, setContent, setSelection} from "./_helpers/selection";
+import {splitBlock, undo} from "./_helpers/user_actions";
+import {contains} from "@web/../tests/web_test_helpers";
+import {expectElementCount} from "./_helpers/ui_expectations";
+import {execCommand} from "./_helpers/userCommands";
+import {unformat} from "./_helpers/format";
 
 test("icon toolbar is displayed", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -31,7 +31,7 @@ test("icon toolbar is displayed", async () => {
 });
 
 test("icon toolbar is displayed (2)", async () => {
-    const { el } = await setupEditor(`<p>abc<span class="fa fa-glass"></span>def</p>`);
+    const {el} = await setupEditor(`<p>abc<span class="fa fa-glass"></span>def</p>`);
     expect(getContent(el)).toBe(
         `<p>abc\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeffdef</p>`
     );
@@ -52,7 +52,7 @@ test("icon toolbar is displayed (2)", async () => {
 });
 
 test("icon toolbar is displayed (3)", async () => {
-    const { el } = await setupEditor(`<p>abc<span class="fa fa-glass"></span>def</p>`);
+    const {el} = await setupEditor(`<p>abc<span class="fa fa-glass"></span>def</p>`);
     expect(getContent(el)).toBe(
         `<p>abc\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeffdef</p>`
     );
@@ -73,7 +73,7 @@ test("icon toolbar is displayed (3)", async () => {
 });
 
 test("icon toolbar is not displayed on rating stars", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -112,7 +112,7 @@ test("toolbar should not be namespaced for icon (2)", async () => {
 });
 
 test("Can resize an icon", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -146,7 +146,7 @@ test("Can resize an icon", async () => {
 });
 
 test("Can spin an icon", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -169,7 +169,7 @@ test("Can spin an icon", async () => {
 });
 
 test("Can set icon color", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-glass">[]</span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-glass">[]</span></p>`);
     await waitFor(".o-we-toolbar");
     expect(".o_font_color_selector").toHaveCount(0);
     await click(".o-select-color-foreground");
@@ -178,14 +178,14 @@ test("Can set icon color", async () => {
     await click(".o_color_button[data-color='#6BADDE']");
     await animationFrame();
     await expectElementCount(".o-we-toolbar", 1);
-    expect(".o_font_color_selector").toHaveCount(0); // selector closed
+    expect(".o_font_color_selector").toHaveCount(0); // Selector closed
     expect(getContent(el)).toBe(
         `<p>[<font style="color: rgb(107, 173, 222);">\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</font>]</p>`
     );
 });
 
 test("Can undo to 1x size after applying 2x size", async () => {
-    const { el, editor } = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
+    const {el, editor} = await setupEditor(`<p><span class="fa fa-glass"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -211,7 +211,7 @@ test("Can undo to 1x size after applying 2x size", async () => {
 });
 
 test("Can replace icon using toolbar", async () => {
-    const { el, editor } = await setupEditor(`<p><span class="fa fa-heart"></span></p>`);
+    const {el, editor} = await setupEditor(`<p><span class="fa fa-heart"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-heart" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -247,7 +247,7 @@ test("Can replace icon using toolbar", async () => {
 });
 
 test("Styles should be preserved when replacing icon", async () => {
-    const { el } = await setupEditor(`<p><span class="fa fa-heart fa-3x"></span></p>`);
+    const {el} = await setupEditor(`<p><span class="fa fa-heart fa-3x"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-heart fa-3x" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -272,7 +272,7 @@ test("Styles should be preserved when replacing icon", async () => {
 });
 
 test("Can replace a odoo icon", async () => {
-    const { editor, el } = await setupEditor(`<p><span class="oi oi-plus"></span></p>`);
+    const {editor, el} = await setupEditor(`<p><span class="oi oi-plus"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="oi oi-plus" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -297,7 +297,7 @@ test("Can replace a odoo icon", async () => {
 });
 
 test("Can replace a font awesome brand icon", async () => {
-    const { el, editor } = await setupEditor(`<p><span class="fab fa-opera"></span></p>`);
+    const {el, editor} = await setupEditor(`<p><span class="fab fa-opera"></span></p>`);
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fab fa-opera" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -322,7 +322,9 @@ test("Can replace a font awesome brand icon", async () => {
 });
 
 test("Can replace a font awesome duotone icon", async () => {
-    const { el, editor } = await setupEditor(`<p><span class="fad fa-bus-alt"></span></p>`);
+    const {el, editor} = await setupEditor(
+        `<p><span class="fad fa-bus-alt"></span></p>`
+    );
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fad fa-bus-alt" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -347,7 +349,9 @@ test("Can replace a font awesome duotone icon", async () => {
 });
 
 test("Can replace a font awesome regular icon", async () => {
-    const { el, editor } = await setupEditor(`<p><span class="far fa-money-bill-alt"></span></p>`);
+    const {el, editor} = await setupEditor(
+        `<p><span class="far fa-money-bill-alt"></span></p>`
+    );
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="far fa-money-bill-alt" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -372,7 +376,7 @@ test("Can replace a font awesome regular icon", async () => {
 });
 
 test("Should be able to undo after adding spin effect to an icon", async () => {
-    const { el, editor } = await setupEditor('<p><span class="fa fa-glass"></span></p>');
+    const {el, editor} = await setupEditor('<p><span class="fa fa-glass"></span></p>');
     expect(getContent(el)).toBe(
         `<p>\ufeff<span class="fa fa-glass" contenteditable="false">\u200b</span>\ufeff</p>`
     );
@@ -406,9 +410,11 @@ test("Should be able to undo after adding spin effect to an icon", async () => {
 
 describe("selection", () => {
     test("selection inside icon gets expanded to its outer boundaries", async () => {
-        const { el } = await setupEditor(`<p>abc<span class="fa fa-glass"></span>def</p>`);
+        const {el} = await setupEditor(
+            `<p>abc<span class="fa fa-glass"></span>def</p>`
+        );
         const icon = el.querySelector("span.fa-glass");
-        setSelection({ anchorNode: icon, anchorOffset: 0 });
+        setSelection({anchorNode: icon, anchorOffset: 0});
         await tick();
         expect(getContent(el)).toBe(
             `<p>abc\ufeff[<span class="fa fa-glass" contenteditable="false">\u200b</span>]\ufeffdef</p>`
@@ -416,11 +422,11 @@ describe("selection", () => {
     });
 
     test("selection inside icon gets expanded around it, but not around its contenteditable=false ancestor", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p contenteditable="false">abc<span class="fa fa-glass"></span>def</p>`
         );
         const icon = el.querySelector("span.fa-glass");
-        setSelection({ anchorNode: icon, anchorOffset: 0 });
+        setSelection({anchorNode: icon, anchorOffset: 0});
         await tick();
         expect(getContent(el)).toBe(
             '<p data-selection-placeholder=""><br></p>' +
@@ -431,7 +437,7 @@ describe("selection", () => {
 });
 
 test("should insert two empty paragraphs when Enter is pressed twice before the icon element", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         `<p>[]<span class="fa fa-glass" contenteditable="false"></span></p>`
     );
     splitBlock(editor);

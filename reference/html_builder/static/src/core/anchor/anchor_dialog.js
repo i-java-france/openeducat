@@ -1,22 +1,22 @@
-import { Component, useRef, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { Dialog } from "@web/core/dialog/dialog";
+import {Component, useRef, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dialog} from "@web/core/dialog/dialog";
 
 export class AnchorDialog extends Component {
     static template = "html_builder.AnchorDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
-        currentAnchorName: { type: String },
-        renameAnchor: { type: Function },
-        deleteAnchor: { type: Function },
-        formatAnchor: { type: Function },
-        close: { type: Function },
+        currentAnchorName: {type: String},
+        renameAnchor: {type: Function},
+        deleteAnchor: {type: Function},
+        formatAnchor: {type: Function},
+        close: {type: Function},
     };
 
     setup() {
         this.title = _t("Link Anchor");
         this.inputRef = useRef("anchor-input");
-        this.state = useState({ isValid: true });
+        this.state = useState({isValid: true});
     }
 
     async onConfirmClick() {

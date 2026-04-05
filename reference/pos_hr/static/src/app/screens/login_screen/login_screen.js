@@ -1,9 +1,9 @@
-import { useCashierSelector } from "@pos_hr/app/utils/select_cashier_mixin";
-import { _t } from "@web/core/l10n/translation";
-import { LoginScreen } from "@point_of_sale/app/screens/login_screen/login_screen";
-import { patch } from "@web/core/utils/patch";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { onWillUnmount, useExternalListener, useState } from "@odoo/owl";
+import {useCashierSelector} from "@pos_hr/app/utils/select_cashier_mixin";
+import {_t} from "@web/core/l10n/translation";
+import {LoginScreen} from "@point_of_sale/app/screens/login_screen/login_screen";
+import {patch} from "@web/core/utils/patch";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {onWillUnmount, useExternalListener, useState} from "@odoo/owl";
 
 patch(LoginScreen.prototype, {
     setup() {
@@ -62,20 +62,23 @@ patch(LoginScreen.prototype, {
                         "Only the cashier linked to the logged-in user (%s) can proceed to the Backend.",
                         this.pos.user.name
                     ),
-                    { type: "danger" }
+                    {type: "danger"}
                 );
             }
         }
     },
     get backBtnName() {
-        return this.pos.login && this.pos.config.module_pos_hr ? _t("Discard") : super.backBtnName;
+        return this.pos.login && this.pos.config.module_pos_hr
+            ? _t("Discard")
+            : super.backBtnName;
     },
     maskedInput(ev) {
         ev.preventDefault();
         const input = ev.target;
         const pin = this.state.pin || "";
         const maskedLen = input.value.length;
-        this.state.pin = maskedLen < pin.length ? pin.slice(0, maskedLen) : pin + (ev.data || "");
+        this.state.pin =
+            maskedLen < pin.length ? pin.slice(0, maskedLen) : pin + (ev.data || "");
 
         input.value = "•".repeat(this.state.pin.length);
     },

@@ -1,6 +1,6 @@
 :root {
-    --odoo-purple: #714B67
-} 
+    --odoo-purple: #714b67;
+}
 
 .color-primary {
     color: var(--odoo-purple);
@@ -17,35 +17,39 @@
 }
 
 .btn.btn-primary:hover {
-    background-color: #52374B !important;
-    border-color: #52374B !important;
+    background-color: #52374b !important;
+    border-color: #52374b !important;
 }
 
 .btn.btn-secondary {
     color: #374151 !important;
-    background-color: #E7E9ED !important;
-    border-color: #E7E9ED !important;
+    background-color: #e7e9ed !important;
+    border-color: #e7e9ed !important;
 }
 
 .btn.btn-secondary:hover {
-    color: #1F2937 !important;
-    background-color: #D8DADD !important;
-    border-color: #D8DADD !important;
+    color: #1f2937 !important;
+    background-color: #d8dadd !important;
+    border-color: #d8dadd !important;
 }
 
 .alert.alert-secondary {
-    color: #017E84 !important;
-    background-color: #017E8425 !important;
-    border-color: #017E8480 !important;
+    color: #017e84 !important;
+    background-color: #017e8425 !important;
+    border-color: #017e8480 !important;
 }
 
-.odoo-bg-primary, .bg-primary, .form-check-input:checked, .nav-pills .nav-link.active {
+.odoo-bg-primary,
+.bg-primary,
+.form-check-input:checked,
+.nav-pills .nav-link.active {
     background-color: var(--odoo-purple) !important;
     border-color: var(--odoo-purple) !important;
 }
 
-.odoo-bg-secondary, .bg-secondary {
-    background-color: #017E84 !important;
+.odoo-bg-secondary,
+.bg-secondary {
+    background-color: #017e84 !important;
 }
 
 .odoo-pill {
@@ -73,7 +77,7 @@
 }
 
 .background {
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
     height: 100vh;
 }
 

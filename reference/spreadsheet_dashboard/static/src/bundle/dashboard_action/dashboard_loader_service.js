@@ -1,9 +1,9 @@
-import { reactive } from "@odoo/owl";
-import { Model } from "@odoo/o-spreadsheet";
-import { registry } from "@web/core/registry";
-import { OdooDataProvider } from "@spreadsheet/data_sources/odoo_data_provider";
-import { createDefaultCurrency } from "@spreadsheet/currency/helpers";
-import { _t } from "@web/core/l10n/translation";
+import {reactive} from "@odoo/owl";
+import {Model} from "@odoo/o-spreadsheet";
+import {registry} from "@web/core/registry";
+import {OdooDataProvider} from "@spreadsheet/data_sources/odoo_data_provider";
+import {createDefaultCurrency} from "@spreadsheet/currency/helpers";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @type {{
@@ -67,7 +67,7 @@ export class DashboardLoader {
      * @param {Record<number, Dashboard>} state.dashboards
      * @param {number} state.activeDashboardId
      */
-    restoreFromState({ groups, dashboards, activeDashboardId }) {
+    restoreFromState({groups, dashboards, activeDashboardId}) {
         this.groups = groups;
         this.dashboards = dashboards;
         this.activeDashboardId = activeDashboardId;
@@ -144,7 +144,11 @@ export class DashboardLoader {
 
         return favoriteDashboards.length
             ? [
-                  { id: "favorites", name: _t("FAVORITES"), dashboards: favoriteDashboards },
+                  {
+                      id: "favorites",
+                      name: _t("FAVORITES"),
+                      dashboards: favoriteDashboards,
+                  },
                   ...dashboardGroups,
               ]
             : dashboardGroups;
@@ -164,7 +168,7 @@ export class DashboardLoader {
         const groups = await this.orm.webSearchRead(
             "spreadsheet.dashboard.group",
             [["published_dashboard_ids", "!=", false]],
-            { specification: this._getFetchGroupsSpecification() }
+            {specification: this._getFetchGroupsSpecification()}
         );
         return groups.records;
     }
@@ -172,7 +176,7 @@ export class DashboardLoader {
     _getFetchGroupsSpecification() {
         return {
             name: {},
-            published_dashboard_ids: { fields: { name: {}, is_favorite: {} } },
+            published_dashboard_ids: {fields: {name: {}, is_favorite: {}}},
         };
     }
 
@@ -200,7 +204,7 @@ export class DashboardLoader {
      */
     _getDashboard(id) {
         if (!this.dashboards[id]) {
-            this.dashboards[id] = { status: Status.NotLoaded, id, data: {} };
+            this.dashboards[id] = {status: Status.NotLoaded, id, data: {}};
         }
         return this.dashboards[id];
     }
@@ -216,8 +220,13 @@ export class DashboardLoader {
             const result = await this.env.services.http.get(
                 `/spreadsheet/dashboard/data/${dashboardId}`
             );
-            const { snapshot, revisions, default_currency, is_sample, translation_namespace } =
-                result;
+            const {
+                snapshot,
+                revisions,
+                default_currency,
+                is_sample,
+                translation_namespace,
+            } = result;
             dashboard.translationNamespace = translation_namespace;
             dashboard.model = this._createSpreadsheetModel(
                 snapshot,
@@ -262,10 +271,15 @@ export class DashboardLoader {
         const model = new Model(
             snapshot,
             {
-                custom: { env: this.env, orm: this.orm, odooDataProvider, translationNamespace },
+                custom: {
+                    env: this.env,
+                    orm: this.orm,
+                    odooDataProvider,
+                    translationNamespace,
+                },
                 mode: "dashboard",
                 defaultCurrency: createDefaultCurrency(currency),
-                external: { geoJsonService: this.geoJsonService },
+                external: {geoJsonService: this.geoJsonService},
             },
             revisions
         );
@@ -280,7 +294,11 @@ export class DashboardLoader {
 const dashboardLoaderService = {
     dependencies: ["orm", "geo_json_service"],
     start(env) {
-        const loader = new DashboardLoader(env, env.services.orm, env.services.geo_json_service);
+        const loader = new DashboardLoader(
+            env,
+            env.services.orm,
+            env.services.geo_json_service
+        );
         env.bus.addEventListener("ACTION_MANAGER:UPDATE", () => {
             loader.clear();
         });
@@ -288,4 +306,6 @@ const dashboardLoaderService = {
     },
 };
 
-registry.category("services").add("spreadsheet_dashboard_loader", dashboardLoaderService);
+registry
+    .category("services")
+    .add("spreadsheet_dashboard_loader", dashboardLoaderService);

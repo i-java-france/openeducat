@@ -1,10 +1,10 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { FontFamilySelector } from "@html_editor/main/font/font_family_selector";
-import { reactive } from "@odoo/owl";
-import { closestElement } from "../../utils/dom_traversal";
-import { withSequence } from "@html_editor/utils/resource";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {FontFamilySelector} from "@html_editor/main/font/font_family_selector";
+import {reactive} from "@odoo/owl";
+import {closestElement} from "../../utils/dom_traversal";
+import {withSequence} from "@html_editor/utils/resource";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 export const defaultFontFamily = {
     name: "Default system font",
@@ -13,9 +13,17 @@ export const defaultFontFamily = {
 };
 export const fontFamilyItems = [
     defaultFontFamily,
-    { name: "Arial (sans-serif)", nameShort: "Arial", fontFamily: "Arial, sans-serif" },
-    { name: "Verdana (sans-serif)", nameShort: "Verdana", fontFamily: "Verdana, sans-serif" },
-    { name: "Tahoma (sans-serif)", nameShort: "Tahoma", fontFamily: "Tahoma, sans-serif" },
+    {name: "Arial (sans-serif)", nameShort: "Arial", fontFamily: "Arial, sans-serif"},
+    {
+        name: "Verdana (sans-serif)",
+        nameShort: "Verdana",
+        fontFamily: "Verdana, sans-serif",
+    },
+    {
+        name: "Tahoma (sans-serif)",
+        nameShort: "Tahoma",
+        fontFamily: "Tahoma, sans-serif",
+    },
     {
         name: "Trebuchet MS (sans-serif)",
         nameShort: "Trebuchet MS",
@@ -31,7 +39,7 @@ export const fontFamilyItems = [
 export class FontFamilyPlugin extends Plugin {
     static id = "fontFamily";
     static dependencies = ["split", "selection", "dom", "format", "font"];
-    fontFamily = reactive({ displayName: defaultFontFamily.nameShort });
+    fontFamily = reactive({displayName: defaultFontFamily.nameShort});
     /** @type {import("plugins").EditorResources} */
     resources = {
         toolbar_items: [
@@ -52,7 +60,8 @@ export class FontFamilyPlugin extends Plugin {
                     },
                 },
                 isAvailable: (selection) =>
-                    isHtmlContentSupported(selection) && (this.config.allowFontFamily ?? true),
+                    isHtmlContentSupported(selection) &&
+                    (this.config.allowFontFamily ?? true),
             }),
         ],
         /** Handlers */
@@ -66,7 +75,9 @@ export class FontFamilyPlugin extends Plugin {
         if (!selelectionData.documentSelectionIsInEditable) {
             return;
         }
-        const anchorElement = closestElement(selelectionData.editableSelection.anchorNode);
+        const anchorElement = closestElement(
+            selelectionData.editableSelection.anchorNode
+        );
         const anchorElementFontFamily = getComputedStyle(anchorElement).fontFamily;
         const currentFontItem =
             anchorElementFontFamily &&

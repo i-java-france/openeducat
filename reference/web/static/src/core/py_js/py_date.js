@@ -1,4 +1,4 @@
-import { parseArgs } from "./py_parser";
+import {parseArgs} from "./py_parser";
 
 // -----------------------------------------------------------------------------
 // Errors
@@ -253,7 +253,7 @@ export class PyDate {
      * @returns {PyDate}
      */
     static create(...args) {
-        const { year, month, day } = parseArgs(args, ["year", "month", "day"]);
+        const {year, month, day} = parseArgs(args, ["year", "month", "day"]);
         return new PyDate(year, month, day);
     }
 
@@ -274,7 +274,11 @@ export class PyDate {
         if (!(other instanceof PyDate)) {
             return false;
         }
-        return this.year === other.year && this.month === other.month && this.day === other.day;
+        return (
+            this.year === other.year &&
+            this.month === other.month &&
+            this.day === other.day
+        );
     }
 
     /**
@@ -376,7 +380,7 @@ export class PyDateTime {
      * @returns {PyDateTime}
      */
     static combine(...args) {
-        const { date, time } = parseArgs(args, ["date", "time"]);
+        const {date, time} = parseArgs(args, ["date", "time"]);
         // not sure. should we go through constructor instead? what about args normalization?
         return PyDateTime.create(
             date.year,
@@ -422,7 +426,15 @@ export class PyDateTime {
             this.microsecond + timedelta.microseconds
         );
         // does not seem to closely follow python implementation.
-        return new PyDateTime(s.year, s.month, s.day, s.hour, s.minute, s.second, s.microsecond);
+        return new PyDateTime(
+            s.year,
+            s.month,
+            s.day,
+            s.hour,
+            s.minute,
+            s.second,
+            s.microsecond
+        );
     }
 
     /**
@@ -495,7 +507,7 @@ export class PyDateTime {
             this.minute,
             this.second
         );
-        const timedelta = PyTimeDelta.create({ minutes: d.getTimezoneOffset() });
+        const timedelta = PyTimeDelta.create({minutes: d.getTimezoneOffset()});
         return this.add(timedelta);
     }
 }
@@ -563,11 +575,12 @@ const DAYS_IN_YEAR = [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 366];
 const TIME_PERIODS = ["hour", "minute", "second"];
 const PERIODS = ["year", "month", "day", ...TIME_PERIODS];
 
-const RELATIVE_KEYS = "years months weeks days hours minutes seconds microseconds leapdays".split(
-    " "
-);
+const RELATIVE_KEYS =
+    "years months weeks days hours minutes seconds microseconds leapdays".split(" ");
 const ABSOLUTE_KEYS =
-    "year month day hour minute second microsecond weekday nlyearday yearday".split(" ");
+    "year month day hour minute second microsecond weekday nlyearday yearday".split(
+        " "
+    );
 
 const argsSpec = ["dt1", "dt2"]; // all other arguments are kwargs
 export class PyRelativeDelta {
@@ -672,14 +685,22 @@ export class PyRelativeDelta {
         // Determine the right return type:
         // First we look at the type of the incoming date object,
         // then we look at the actual time values held by the computed date.
-        const hasTime = Boolean(temp.hour || temp.minute || temp.second || temp.microsecond);
+        const hasTime = Boolean(
+            temp.hour || temp.minute || temp.second || temp.microsecond
+        );
         const returnDate =
-            !hasTime && date instanceof PyDate ? new PyDate(temp.year, temp.month, temp.day) : temp;
+            !hasTime && date instanceof PyDate
+                ? new PyDate(temp.year, temp.month, temp.day)
+                : temp;
 
         // Final pass: target the wanted day of the week (if necessary)
         if (delta.weekday !== null) {
             const wantedDow = delta.weekday + 1; // python: Monday is 0 ; JS: Monday is 1;
-            const _date = new Date(returnDate.year, returnDate.month - 1, returnDate.day);
+            const _date = new Date(
+                returnDate.year,
+                returnDate.month - 1,
+                returnDate.day
+            );
             const days = (7 - _date.getDay() + wantedDow) % 7;
             return returnDate.add(new PyTimeDelta(days, 0, 0));
         }
@@ -736,7 +757,8 @@ export class PyRelativeDelta {
     }
 }
 
-const TIME_DELTA_KEYS = "weeks days hours minutes seconds milliseconds microseconds".split(" ");
+const TIME_DELTA_KEYS =
+    "weeks days hours minutes seconds milliseconds microseconds".split(" ");
 
 /**
  * Returns a "pair" with the fractional and integer parts of x
@@ -768,7 +790,8 @@ export class PyTimeDelta {
         let us = 0; // ~ μs standard notation for microseconds
 
         const days = namedArgs.days + namedArgs.weeks * 7;
-        let seconds = namedArgs.seconds + 60 * namedArgs.minutes + 3600 * namedArgs.hours;
+        let seconds =
+            namedArgs.seconds + 60 * namedArgs.minutes + 3600 * namedArgs.hours;
         let microseconds = namedArgs.microseconds + 1000 * namedArgs.milliseconds;
 
         const [dFrac, dInt] = modf(days);
@@ -830,7 +853,7 @@ export class PyTimeDelta {
      */
     divide(n) {
         const us = (this.days * 24 * 3600 + this.seconds) * 1e6 + this.microseconds;
-        return PyTimeDelta.create({ microseconds: Math.floor(us / n) });
+        return PyTimeDelta.create({microseconds: Math.floor(us / n)});
     }
 
     /**

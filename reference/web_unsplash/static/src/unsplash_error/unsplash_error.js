@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { UnsplashCredentials } from "../unsplash_credentials/unsplash_credentials";
+import {Component} from "@odoo/owl";
+import {UnsplashCredentials} from "../unsplash_credentials/unsplash_credentials";
 
 export class UnsplashError extends Component {
     static template = "web_unsplash.UnsplashError";
@@ -10,7 +10,7 @@ export class UnsplashError extends Component {
         title: String,
         subtitle: String,
         showCredentials: Boolean,
-        submitCredentials: { type: Function, optional: true },
-        hasCredentialsError: { type: Boolean, optional: true },
+        submitCredentials: {type: Function, optional: true},
+        hasCredentialsError: {type: Boolean, optional: true},
     };
 }

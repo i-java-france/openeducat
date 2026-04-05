@@ -1,15 +1,16 @@
-# -*- coding: utf-8 -*-
 import contextlib
-
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests import Form, tagged, new_test_user
-from odoo import Command, fields
-from odoo.exceptions import UserError, RedirectWarning
+from collections import defaultdict
+from itertools import zip_longest
 
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
-from collections import defaultdict
-from itertools import zip_longest
+
+from odoo import Command, fields
+from odoo.exceptions import RedirectWarning, UserError
+from odoo.tests import Form, tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+
 
 @tagged('post_install', '-at_install')
 class TestAccountMove(AccountTestInvoicingCommon):
@@ -1158,7 +1159,7 @@ class TestAccountMove(AccountTestInvoicingCommon):
                 fields=['balance', 'cumulated_balance'],
                 order=order,
             )
-            for (balance, cumulated_balance), read_result in zip(expected, read_results):
+            for (balance, cumulated_balance), read_result in zip(expected, read_results, strict=False):
                 self.assertAlmostEqual(balance, read_result['balance'])
                 self.assertAlmostEqual(cumulated_balance, read_result['cumulated_balance'])
 

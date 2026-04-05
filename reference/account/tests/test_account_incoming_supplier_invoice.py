@@ -2,12 +2,11 @@ import base64
 import contextlib
 import textwrap
 import uuid
-
 from unittest.mock import patch
 
 from odoo import Command
 from odoo.exceptions import ValidationError
-from odoo.tests import tagged, RecordCapturer
+from odoo.tests import RecordCapturer, tagged
 from odoo.tools import file_open
 from odoo.tools.misc import mute_logger
 

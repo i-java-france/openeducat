@@ -1,4 +1,4 @@
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 
 export function confirm(confirmationText, button = ".btn-primary") {
     let trigger = `.modal:not(.o_inactive_modal) .modal-footer ${button}`;
@@ -11,7 +11,7 @@ export function confirm(confirmationText, button = ".btn-primary") {
         run: "click",
     };
 }
-export function cancel({ title } = {}) {
+export function cancel({title} = {}) {
     return {
         content: "cancel dialog",
         trigger: `.modal .modal-header${
@@ -27,7 +27,7 @@ export function discard() {
         run: "click",
     };
 }
-export function is({ title } = {}) {
+export function is({title} = {}) {
     let trigger = ".modal .modal-content";
     if (title) {
         trigger += ` .modal-header:contains("${title}")`;
@@ -38,7 +38,7 @@ export function is({ title } = {}) {
     };
 }
 export function isNot(...args) {
-    const { trigger } = is(...args);
+    const {trigger} = is(...args);
     return {
         content: "no dialog is open",
         trigger: negate(trigger),

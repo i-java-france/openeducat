@@ -1,10 +1,10 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { unique } from "@web/core/utils/arrays";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {unique} from "@web/core/utils/arrays";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component, useState, onWillStart } from "@odoo/owl";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
+import {Component, useState, onWillStart} from "@odoo/owl";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 
 class ResConfigInviteUsers extends Component {
     static template = "res_config_invite_users";
@@ -117,20 +117,24 @@ class ResConfigInviteUsers extends Component {
         try {
             this.validate();
         } catch (e) {
-            this.notification.add(e.message, { type: "danger" });
+            this.notification.add(e.message, {type: "danger"});
             return;
         }
 
         this.state.status = "inviting";
 
-        const pendingUserEmails = this.state.invite.pending_users.map((user) => user[1]);
+        const pendingUserEmails = this.state.invite.pending_users.map(
+            (user) => user[1]
+        );
         const emailsLeftToProcess = this.emails.filter(
             (email) => !pendingUserEmails.includes(email)
         );
 
         try {
             if (emailsLeftToProcess) {
-                await this.orm.call("res.users", "web_create_users", [emailsLeftToProcess]);
+                await this.orm.call("res.users", "web_create_users", [
+                    emailsLeftToProcess,
+                ]);
                 this.state.invite = await this.invite.fetchData(true);
             }
         } finally {

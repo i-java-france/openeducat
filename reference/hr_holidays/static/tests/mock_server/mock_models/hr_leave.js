@@ -1,4 +1,4 @@
-import { fields, models } from "@web/../tests/web_test_helpers";
+import {fields, models} from "@web/../tests/web_test_helpers";
 
 export class HrLeave extends models.Model {
     _name = "hr.leave";
@@ -8,7 +8,7 @@ export class HrLeave extends models.Model {
         relation: "hr.employee",
     });
     user_id = fields.Many2one({
-        relation: "res.users"
+        relation: "res.users",
     });
     department_id = fields.Many2one({
         relation: "hr.department",

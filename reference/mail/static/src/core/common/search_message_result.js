@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { MessageCardList } from "./message_card_list";
-import { _t } from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {MessageCardList} from "./message_card_list";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} Props
@@ -11,7 +11,7 @@ import { _t } from "@web/core/l10n/translation";
  */
 export class SearchMessageResult extends Component {
     static template = "mail.SearchMessageResult";
-    static components = { MessageCardList };
+    static components = {MessageCardList};
     static props = ["thread", "messageSearch", "onClickJump?"];
 
     get MESSAGE_FOUND() {
@@ -23,7 +23,9 @@ export class SearchMessageResult extends Component {
 
     onLoadMoreVisible() {
         const before = this.props.messageSearch?.messages
-            ? Math.min(...this.props.messageSearch.messages.map((message) => message.id))
+            ? Math.min(
+                  ...this.props.messageSearch.messages.map((message) => message.id)
+              )
             : false;
         this.props.messageSearch.search(before);
     }

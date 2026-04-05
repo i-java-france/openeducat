@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_student_progress_tree" model="ir.ui.view">
+        <field name="name">Student Progression List</field>
+        <field name="model">op.student.progression</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<list>
+    
+                    
+    <field name="name" optional="hide"/>
+    
+                    
+    <field name="student_id"/>
+    
+                    
+    <field name="date"/>
+    
+                    
+    <field name="created_by"/>
+    
+                    
+    <field name="state" string="Status" widget="badge" decoration-muted="state in ('draft')" decoration-success="state in ('done')" decoration-primary="state in ('open')" decoration-danger="state in ('cancel')" optional="show"/>
+    
+                    
+    <field name="active" widget="boolean_toggle" optional="hide"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</list>
+        </field>
+    </record>
+</odoo>

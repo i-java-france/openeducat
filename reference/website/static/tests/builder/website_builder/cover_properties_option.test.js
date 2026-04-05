@@ -1,6 +1,6 @@
-import { Builder } from "@html_builder/builder";
-import { expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
+import {Builder} from "@html_builder/builder";
+import {expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
 import {
     contains,
     dataURItoBlob,
@@ -56,20 +56,20 @@ test("Add image as cover", async () => {
     ]);
 
     onRpc("/html_editor/get_image_info", () => ({
-        attachment: { id: 1 },
-        original: { id: 1, image_src: "/web/image/hoot.png", mimetype: "image/png" },
+        attachment: {id: 1},
+        original: {id: 1, image_src: "/web/image/hoot.png", mimetype: "image/png"},
     }));
 
     onRpc("/web/image/hoot.png", () => {
         const base64Image =
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYIIA" +
-            "A".repeat(1000); // converted image won't be used if original is not larger
+            "A".repeat(1000); // Converted image won't be used if original is not larger
         return dataURItoBlob(base64Image);
     });
 
     const blogPostTitle = "Title of Test Post";
 
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="o_record_cover_container" data-res-model="blog.post" data-res-id="3">
             <div class="o_record_cover_image"/>
             <h1 data-oe-model="blog.post" data-oe-id="3" data-oe-field="name">${blogPostTitle}</h1>
@@ -92,15 +92,15 @@ test("Add image as cover", async () => {
     const encodedName = encodeURIComponent(expectedName).replace(/'/g, "%27");
     onRpc("/web_editor/attachment/add_data", async (request) => {
         expect.step("save attachment");
-        const { name } = (await request.json()).params;
+        const {name} = (await request.json()).params;
         expect(name).toBe(expectedName);
-        return { image_src: `/web/image/${encodedName}` };
+        return {image_src: `/web/image/${encodedName}`};
     });
-    onRpc("ir.ui.view", "save", ({ args }) => true);
-    onRpc("blog.post", "write", ({ args: [[id], { cover_properties }] }) => {
+    onRpc("ir.ui.view", "save", ({args}) => true);
+    onRpc("blog.post", "write", ({args: [[id], {cover_properties}]}) => {
         expect.step("save cover");
         expect(id).toBe(3);
-        const { "background-image": bg, resize_class } = JSON.parse(cover_properties);
+        const {"background-image": bg, resize_class} = JSON.parse(cover_properties);
         expect(bg).toBe(`url("/web/image/${encodedName}")`);
         expect(resize_class.split(" ")).toInclude("o_record_has_cover");
         return true;

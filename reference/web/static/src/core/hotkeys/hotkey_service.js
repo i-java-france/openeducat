@@ -1,7 +1,7 @@
-import { isMacOS } from "../browser/feature_detection";
-import { registry } from "../registry";
-import { browser } from "../browser/browser";
-import { getVisibleElements } from "../utils/ui";
+import {isMacOS} from "../browser/feature_detection";
+import {registry} from "../registry";
+import {browser} from "../browser/browser";
+import {getVisibleElements} from "../utils/ui";
 
 /**
  * @typedef {(context: { area: HTMLElement, target: EventTarget }) => void} HotkeyCallback
@@ -109,7 +109,7 @@ export const hotkeyService = {
     // Be aware that all odoo hotkeys are designed with this modifier in mind,
     // so changing the overlay modifier may conflict with some shortcuts.
     overlayModifier: "alt",
-    start(env, { ui }) {
+    start(env, {ui}) {
         /** @type {Map<number, HotkeyRegistration>} */
         const registrations = new Map();
         let nextToken = 0;
@@ -134,7 +134,11 @@ export const hotkeyService = {
          * @param {KeyboardEvent} event
          */
         function onKeydown(event) {
-            if (event.code && event.code.indexOf("Numpad") === 0 && /^\d$/.test(event.key)) {
+            if (
+                event.code &&
+                event.code.indexOf("Numpad") === 0 &&
+                /^\d$/.test(event.key)
+            ) {
                 // Ignore all number keys from the Keypad because of a certain input method
                 // of (advance-)ASCII characters on Windows OS: ALT+[numerical code from keypad]
                 // See https://support.microsoft.com/en-us/office/insert-ascii-or-unicode-latin-based-symbols-and-characters-d13f58d3-7bcb-44a7-a4d5-972ee12e50e0#bm1
@@ -145,7 +149,7 @@ export const hotkeyService = {
             if (!hotkey) {
                 return;
             }
-            const { activeElement, isBlocked } = ui;
+            const {activeElement, isBlocked} = ui;
 
             // Do not dispatch if UI is blocked
             if (isBlocked) {
@@ -180,10 +184,13 @@ export const hotkeyService = {
             // NB: except for ESC, which is always allowed as hotkey in editables.
             const targetIsEditable =
                 event.target instanceof HTMLElement &&
-                (/input|textarea/i.test(event.target.tagName) || event.target.isContentEditable) &&
+                (/input|textarea/i.test(event.target.tagName) ||
+                    event.target.isContentEditable) &&
                 !event.target.matches("input[type=checkbox], input[type=radio]");
             const shouldProtectEditable =
-                targetIsEditable && !event.target.dataset.allowHotkeys && singleKey !== "escape";
+                targetIsEditable &&
+                !event.target.dataset.allowHotkeys &&
+                singleKey !== "escape";
 
             // Finally, prepare and dispatch.
             const infos = {
@@ -226,7 +233,8 @@ export const hotkeyService = {
          * @returns {boolean} true if has been dispatched
          */
         function dispatch(infos) {
-            const { activeElement, hotkey, isRepeated, target, shouldProtectEditable } = infos;
+            const {activeElement, hotkey, isRepeated, target, shouldProtectEditable} =
+                infos;
 
             // Prepare registrations and the common filter
             const reversedRegistrations = Array.from(registrations.values()).reverse();
@@ -285,7 +293,10 @@ export const hotkeyService = {
                 .split("+")
                 .filter((key) => !overlayModParts.includes(key))
                 .join("+");
-            const elems = getVisibleElements(activeElement, `[data-hotkey='${cleanHotkey}' i]`);
+            const elems = getVisibleElements(
+                activeElement,
+                `[data-hotkey='${cleanHotkey}' i]`
+            );
             return elems.map((el) => ({
                 hotkey,
                 activeElement,
@@ -324,7 +335,7 @@ export const hotkeyService = {
             const hotkeysFromDomToHighlight = getVisibleElements(
                 activeElement,
                 "[data-hotkey]:not(:disabled)"
-            ).map((el) => ({ hotkey: el.dataset.hotkey, el }));
+            ).map((el) => ({hotkey: el.dataset.hotkey, el}));
 
             const items = [...hotkeysFromDomToHighlight, ...hotkeysFromHookToHighlight];
             for (const item of items) {
@@ -389,7 +400,9 @@ export const hotkeyService = {
         function registerHotkey(hotkey, callback, options = {}) {
             // Validate some informations
             if (!hotkey || hotkey.length === 0) {
-                throw new Error("You must specify an hotkey when registering a registration.");
+                throw new Error(
+                    "You must specify an hotkey when registering a registration."
+                );
             }
 
             if (!callback || typeof callback !== "function") {

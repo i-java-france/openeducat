@@ -1,9 +1,9 @@
-import { Message } from "@mail/core/common/message";
+import {Message} from "@mail/core/common/message";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(Message, {
-    components: { ...Message.components },
+    components: {...Message.components},
 });
 
 patch(Message.prototype, {

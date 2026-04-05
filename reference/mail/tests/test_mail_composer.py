@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
 
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.exceptions import AccessError
 from odoo.tests import Form, HttpCase, tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.mail.tests.common import MailCommon
 
 
 @tagged('mail_composer')
@@ -14,7 +14,7 @@ class TestMailComposer(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailComposer, cls).setUpClass()
+        super().setUpClass()
         cls.env['ir.config_parameter'].set_param('mail.restrict.template.rendering', True)
         cls.user_employee.group_ids -= cls.env.ref('mail.group_mail_template_editor')
         cls.test_record = cls.env['res.partner'].with_context(cls._test_context).create({
@@ -47,7 +47,7 @@ class TestMailComposerForm(TestMailComposer):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailComposerForm, cls).setUpClass()
+        super().setUpClass()
         cls.other_company = cls.env['res.company'].create({'name': 'Other Company'})
         cls.user_employee.write({
             'company_ids': [(4, cls.other_company.id)]

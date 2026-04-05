@@ -1,10 +1,11 @@
 import logging
+
 import pytz
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
-from ..tools import _mer_api_send, MojEracunServiceError
+from ..tools import MojEracunServiceError, _mer_api_send
 
 _logger = logging.getLogger(__name__)
 

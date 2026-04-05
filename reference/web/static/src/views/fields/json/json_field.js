@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "../standard_field_props";
-import { formatJson } from "@web/views/fields/formatters";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "../standard_field_props";
+import {formatJson} from "@web/views/fields/formatters";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class JsonField extends Component {
     static template = "web.JsonField";

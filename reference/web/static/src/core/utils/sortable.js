@@ -2,7 +2,7 @@ import {
     DRAGGED_CLASS,
     makeDraggableHook as nativeMakeDraggableHook,
 } from "@web/core/utils/draggable_hook_builder";
-import { pick } from "@web/core/utils/objects";
+import {pick} from "@web/core/utils/objects";
 
 /** @typedef {import("@web/core/utils/draggable_hook_builder").DraggableHandlerParams} DraggableHandlerParams */
 /** @typedef {DraggableHandlerParams & { group: HTMLElement | null }} SortableHandlerParams */
@@ -86,7 +86,7 @@ const hookParams = {
     },
     defaultParams: {
         connectGroups: false,
-        edgeScrolling: { speed: 20, threshold: 60 },
+        edgeScrolling: {speed: 20, threshold: 60},
         groupSelector: null,
         clone: true,
         placeholderClasses: [],
@@ -95,7 +95,7 @@ const hookParams = {
     },
 
     // Build steps
-    onComputeParams({ ctx, params }) {
+    onComputeParams({ctx, params}) {
         // Group selector
         ctx.groupSelector = params.groups || null;
         if (ctx.groupSelector) {
@@ -112,7 +112,7 @@ const hookParams = {
     },
 
     // Runtime steps
-    onDragStart({ ctx, addListener, addStyle, callHandler }) {
+    onDragStart({ctx, addListener, addStyle, callHandler}) {
         /**
          * Element "pointerenter" event handler.
          * @param {PointerEvent} ev
@@ -131,7 +131,7 @@ const hookParams = {
                     element.after(current.placeHolder);
                 }
             }
-            callHandler("onElementEnter", { element });
+            callHandler("onElementEnter", {element});
         };
 
         /**
@@ -140,7 +140,7 @@ const hookParams = {
          */
         const onElementPointerLeave = (ev) => {
             const element = ev.currentTarget;
-            callHandler("onElementLeave", { element });
+            callHandler("onElementLeave", {element});
         };
 
         const onElementComplexPointerEnter = (ev) => {
@@ -152,7 +152,8 @@ const hookParams = {
             const siblingArray = [...element.parentElement.children].filter(
                 (el) =>
                     el === current.placeHolder ||
-                    (el.matches(elementSelector) && !el.classList.contains(DRAGGED_CLASS))
+                    (el.matches(elementSelector) &&
+                        !el.classList.contains(DRAGGED_CLASS))
             );
             const elementIndex = siblingArray.indexOf(element);
             const placeholderIndex = siblingArray.indexOf(current.placeHolder);
@@ -181,7 +182,7 @@ const hookParams = {
                     }
                 }
             }
-            callHandler("onElementEnter", { element });
+            callHandler("onElementEnter", {element});
         };
 
         /**
@@ -201,7 +202,8 @@ const hookParams = {
             const siblingArray = [...element.parentElement.children].filter(
                 (el) =>
                     el === current.placeHolder ||
-                    (el.matches(elementSelector) && !el.classList.contains(DRAGGED_CLASS))
+                    (el.matches(elementSelector) &&
+                        !el.classList.contains(DRAGGED_CLASS))
             );
             const pointerOnSiblings = siblingArray.indexOf(relatedElement) > -1;
             const elementIndex = siblingArray.indexOf(element);
@@ -214,12 +216,16 @@ const hookParams = {
                 if (isFirst && isAbove && pos === Node.DOCUMENT_POSITION_PRECEDING) {
                     element.before(current.placeHolder);
                     ctx.haveAlreadyChanged = true;
-                } else if (isLast && isBelow && pos === Node.DOCUMENT_POSITION_FOLLOWING) {
+                } else if (
+                    isLast &&
+                    isBelow &&
+                    pos === Node.DOCUMENT_POSITION_FOLLOWING
+                ) {
                     element.after(current.placeHolder);
                     ctx.haveAlreadyChanged = true;
                 }
             }
-            callHandler("onElementLeave", { element });
+            callHandler("onElementLeave", {element});
         };
 
         /**
@@ -229,7 +235,7 @@ const hookParams = {
         const onGroupPointerEnter = (ev) => {
             const group = ev.currentTarget;
             group.appendChild(current.placeHolder);
-            callHandler("onGroupEnter", { group });
+            callHandler("onGroupEnter", {group});
         };
 
         /**
@@ -238,12 +244,12 @@ const hookParams = {
          */
         const onGroupPointerLeave = (ev) => {
             const group = ev.currentTarget;
-            callHandler("onGroupLeave", { group });
+            callHandler("onGroupLeave", {group});
         };
 
-        const { connectGroups, current, elementSelector, groupSelector, ref } = ctx;
+        const {connectGroups, current, elementSelector, groupSelector, ref} = ctx;
         if (ctx.placeholderClone) {
-            const { width, height } = current.elementRect;
+            const {width, height} = current.elementRect;
 
             // Adjusts size for the placeholder element
             addStyle(current.placeHolder, {
@@ -270,8 +276,16 @@ const hookParams = {
                     addListener(siblingEl, "pointerenter", onElementPointerEnter);
                     addListener(siblingEl, "pointerleave", onElementPointerLeave);
                 } else {
-                    addListener(siblingEl, "pointerenter", onElementComplexPointerEnter);
-                    addListener(siblingEl, "pointerleave", onElementComplexPointerLeave);
+                    addListener(
+                        siblingEl,
+                        "pointerenter",
+                        onElementComplexPointerEnter
+                    );
+                    addListener(
+                        siblingEl,
+                        "pointerleave",
+                        onElementComplexPointerLeave
+                    );
                 }
             }
         }
@@ -281,14 +295,14 @@ const hookParams = {
 
         return pick(current, "element", "group");
     },
-    onDrag({ ctx }) {
+    onDrag({ctx}) {
         ctx.haveAlreadyChanged = false;
     },
-    onDragEnd({ ctx }) {
+    onDragEnd({ctx}) {
         return pick(ctx.current, "element", "group");
     },
-    onDrop({ ctx }) {
-        const { current, groupSelector } = ctx;
+    onDrop({ctx}) {
+        const {current, groupSelector} = ctx;
         const previous = current.placeHolder.previousElementSibling;
         const next = current.placeHolder.nextElementSibling;
         if (previous !== current.element && next !== current.element) {
@@ -310,8 +324,8 @@ const hookParams = {
             };
         }
     },
-    onWillStartDrag({ ctx, addCleanup }) {
-        const { connectGroups, current, groupSelector } = ctx;
+    onWillStartDrag({ctx, addCleanup}) {
+        const {connectGroups, current, groupSelector} = ctx;
 
         if (groupSelector) {
             current.group = current.element.closest(groupSelector);
@@ -328,7 +342,9 @@ const hookParams = {
         current.placeHolder.classList.add(...ctx.placeholderClasses);
         current.element.classList.add(...ctx.followingElementClasses);
 
-        addCleanup(() => current.element.classList.remove(...ctx.followingElementClasses));
+        addCleanup(() =>
+            current.element.classList.remove(...ctx.followingElementClasses)
+        );
         addCleanup(() => current.placeHolder.remove());
 
         return pick(current, "element", "group");
@@ -337,7 +353,7 @@ const hookParams = {
 
 /** @type {(params: SortableParams) => SortableState} */
 export const useSortable = (sortableParams) => {
-    const { setupHooks } = sortableParams;
+    const {setupHooks} = sortableParams;
     delete sortableParams.setupHooks;
-    return nativeMakeDraggableHook({ ...hookParams, setupHooks })(sortableParams);
+    return nativeMakeDraggableHook({...hookParams, setupHooks})(sortableParams);
 };

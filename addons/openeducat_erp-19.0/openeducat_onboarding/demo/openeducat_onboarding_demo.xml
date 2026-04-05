@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Demo Data for Onboarding Plan -->
+    <record id="demo_onboarding_plan_1" model="oe.onboarding.plan">
+        <field name="name">OpenEduCat Institute Setup</field>
+    </record>
+
+    <!-- Demo Data for Onboarding Steps -->
+    <record id="demo_onboarding_step_1" model="oe.onboarding.steps">
+        <field name="step_name">Initialize Core Education Settings</field>
+        <field name="name">1</field>
+        <field name="plan_id" ref="demo_onboarding_plan_1"/>
+        <field name="doc_link">https://www.openeducat.org/openeducat-core-details</field>
+        <field name="image" type="base64" file="openeducat_onboarding/static/description/icon.png"/>
+        <field name="is_done" eval="False"/>
+        <field name="is_start" eval="True"/>
+    </record>
+
+    <record id="demo_onboarding_step_2" model="oe.onboarding.steps">
+        <field name="step_name">Configure Admissions Process</field>
+        <field name="name">2</field>
+        <field name="plan_id" ref="demo_onboarding_plan_1"/>
+        <field name="doc_link">https://www.openeducat.org/openeducat-admission-details</field>
+        <field name="image" type="base64" file="openeducat_admission/static/description/icon.png"/>
+        <field name="is_done" eval="False"/>
+        <field name="is_start" eval="False"/>
+    </record>
+    
+    <record id="demo_onboarding_step_3" model="oe.onboarding.steps">
+        <field name="step_name">Set up Physical Classrooms</field>
+        <field name="name">3</field>
+        <field name="plan_id" ref="demo_onboarding_plan_1"/>
+        <field name="doc_link">https://www.openeducat.org/openeducat-classroom-details</field>
+        <field name="image" type="base64" file="openeducat_classroom/static/description/icon.png"/>
+        <field name="is_done" eval="False"/>
+        <field name="is_start" eval="False"/>
+    </record>
+</odoo>

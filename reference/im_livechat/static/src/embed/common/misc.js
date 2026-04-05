@@ -1,4 +1,4 @@
-import { session } from "@web/session";
+import {session} from "@web/session";
 
 export function canLoadLivechat() {
     const sessionData = session.livechatData ?? {};

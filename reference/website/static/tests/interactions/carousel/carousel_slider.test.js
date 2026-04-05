@@ -1,7 +1,10 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAll } from "@odoo/hoot-dom";
-import { enableTransitions } from "@odoo/hoot-mock";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAll} from "@odoo/hoot-dom";
+import {enableTransitions} from "@odoo/hoot-mock";
 
 setupInteractionWhiteList("website.carousel_slider");
 beforeEach(enableTransitions);
@@ -9,7 +12,7 @@ beforeEach(enableTransitions);
 describe.current.tags("interaction_dev");
 
 test("carousel_slider updates min height of carousel items", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <section>
             <div id="slideshow_sample" class="carousel carousel-dark slide" data-bs-ride="false" data-bs-interval="0">
                 <div class="carousel-inner">
@@ -46,13 +49,13 @@ test("carousel_slider updates min height of carousel items", async () => {
 
     expect(core.interactions).toHaveLength(1);
     for (const itemEl of itemEls) {
-        expect(itemEl).toHaveStyle({ minHeight });
+        expect(itemEl).toHaveStyle({minHeight});
     }
 
     core.stopInteractions();
 
     expect(core.interactions).toHaveLength(0);
     for (const itemEl of itemEls) {
-        expect(itemEl).not.toHaveStyle({ minHeight });
+        expect(itemEl).not.toHaveStyle({minHeight});
     }
 });

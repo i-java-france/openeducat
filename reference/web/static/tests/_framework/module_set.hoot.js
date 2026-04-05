@@ -13,12 +13,12 @@ import {
     watchListeners,
 } from "@odoo/hoot";
 
-import { mockBrowserFactory } from "./mock_browser.hoot";
-import { mockCurrencyFactory } from "./mock_currency.hoot";
-import { mockIndexedDB } from "./mock_indexed_db.hoot";
-import { mockSessionFactory } from "./mock_session.hoot";
-import { makeTemplateFactory } from "./mock_templates.hoot";
-import { mockUserFactory } from "./mock_user.hoot";
+import {mockBrowserFactory} from "./mock_browser.hoot";
+import {mockCurrencyFactory} from "./mock_currency.hoot";
+import {mockIndexedDB} from "./mock_indexed_db.hoot";
+import {mockSessionFactory} from "./mock_session.hoot";
+import {makeTemplateFactory} from "./mock_templates.hoot";
+import {mockUserFactory} from "./mock_user.hoot";
 
 /**
  * @typedef {{
@@ -32,8 +32,8 @@ import { mockUserFactory } from "./mock_user.hoot";
  * }} ModuleSetParams
  */
 
-const { fetch: realFetch } = globals;
-const { define, loader } = odoo;
+const {fetch: realFetch} = globals;
+const {define, loader} = odoo;
 
 //-----------------------------------------------------------------------------
 // Internal
@@ -59,7 +59,9 @@ async function defineModuleSet(fileSuffix, entryPoints, additionalAddons) {
     if (additionalAddons.has("*")) {
         // Use all addons
         moduleSet.addonsKey = "*";
-        moduleSet.moduleNames = sortedModuleNames.filter((name) => !name.endsWith(fileSuffix));
+        moduleSet.moduleNames = sortedModuleNames.filter(
+            (name) => !name.endsWith(fileSuffix)
+        );
     } else {
         // Use subset of addons
         for (const entryPoint of entryPoints) {
@@ -80,7 +82,9 @@ async function defineModuleSet(fileSuffix, entryPoints, additionalAddons) {
         if (!moduleNamesCache.has(joinedAddons)) {
             moduleNamesCache.set(
                 joinedAddons,
-                sortedModuleNames.filter((name) => !name.endsWith(fileSuffix) && filter(name))
+                sortedModuleNames.filter(
+                    (name) => !name.endsWith(fileSuffix) && filter(name)
+                )
             );
         }
 
@@ -141,14 +145,21 @@ async function fetchDependencies(addons) {
             dependencyBatchPromise = Deferred.resolve().then(() => {
                 const module_names = [...new Set(dependencyBatch)];
                 dependencyBatch = [];
-                return unmockedOrm("ir.module.module.dependency", "all_dependencies", [], {
-                    module_names,
-                });
+                return unmockedOrm(
+                    "ir.module.module.dependency",
+                    "all_dependencies",
+                    [],
+                    {
+                        module_names,
+                    }
+                );
             });
         }
         dependencyBatch.push(...addonsToFetch);
         dependencyBatchPromise.then((allDependencies) => {
-            for (const [moduleName, dependencyNames] of Object.entries(allDependencies)) {
+            for (const [moduleName, dependencyNames] of Object.entries(
+                allDependencies
+            )) {
                 dependencyCache[moduleName] ||= new Deferred();
                 dependencyCache[moduleName].resolve();
 
@@ -292,9 +303,11 @@ function makeFixedFactory(name) {
  */
 function resolveAddonDependencies(dependencies) {
     const findJob = () =>
-        Object.entries(remaining).find(([, deps]) => deps.every((dep) => dep in solved));
+        Object.entries(remaining).find(([, deps]) =>
+            deps.every((dep) => dep in solved)
+        );
 
-    const remaining = { ...dependencies };
+    const remaining = {...dependencies};
     /** @type {T} */
     const solved = {};
 
@@ -320,10 +333,10 @@ function unfreezeModel(model) {
     const fields = Object.create(null);
     if (model.fields) {
         for (const [fieldName, field] of Object.entries(model.fields)) {
-            fields[fieldName] = { ...field };
+            fields[fieldName] = {...field};
         }
     }
-    return { ...model, fields };
+    return {...model, fields};
 }
 
 /**
@@ -353,7 +366,7 @@ async function __gcAndLogMemory(label, testCount) {
     textarea.remove();
 
     // Run garbage collection
-    await window.gc({ type: "major", execution: "async" });
+    await window.gc({type: "major", execution: "async"});
 
     // Log memory usage
     const logs = [
@@ -404,7 +417,7 @@ class ModuleSetLoader extends loader.constructor {
      * @param {string} name
      */
     canAddModule(name) {
-        const { filter } = this.moduleSet;
+        const {filter} = this.moduleSet;
         return !filter || filter(name) || R_DEFAULT_MODULE.test(name);
     }
 
@@ -575,7 +588,9 @@ export async function fetchModelDefinitions(modelNames) {
         });
         if (!response.ok) {
             const [s, some, does] =
-                namesList.length === 1 ? ["", "this", "does"] : ["s", "some or all of these", "do"];
+                namesList.length === 1
+                    ? ["", "this", "does"]
+                    : ["s", "some or all of these", "do"];
             const message = `Could not fetch definition${s} for server model${s} "${namesList.join(
                 `", "`
             )}": ${some} model${s} ${does} not exist`;
@@ -602,7 +617,9 @@ export async function fetchModelDefinitions(modelNames) {
  */
 export function globalCachedFetch(input, init) {
     if (init?.method && init.method.toLowerCase() !== "get") {
-        throw new Error(`cannot use a global cached fetch with HTTP method "${init.method}"`);
+        throw new Error(
+            `cannot use a global cached fetch with HTTP method "${init.method}"`
+        );
     }
     const key = String(input);
     if (!(key in globalFetchCache)) {
@@ -627,7 +644,7 @@ export function registerModelToFetch(modelName) {
  * @param {{ fileSuffix?: string }} [options]
  */
 export async function runTests(options) {
-    const { fileSuffix = "" } = options || {};
+    const {fileSuffix = ""} = options || {};
     // Find dependency issues
     const errors = loader.findErrors(loader.factories.keys());
     delete errors.unloaded; // Only a few modules have been loaded yet => irrelevant
@@ -640,7 +657,7 @@ export async function runTests(options) {
     const defs = {};
     /** @type {string[]} */
     const testModuleNames = [];
-    for (const [name, { deps }] of loader.factories) {
+    for (const [name, {deps}] of loader.factories) {
         // Register test module
         if (name.endsWith(fileSuffix)) {
             const baseName = name.slice(0, -fileSuffix.length);
@@ -648,7 +665,9 @@ export async function runTests(options) {
         }
 
         // Register module dependencies
-        const [modDef, ...depDefs] = [name, ...deps].map((dep) => (defs[dep] ||= new Deferred()));
+        const [modDef, ...depDefs] = [name, ...deps].map(
+            (dep) => (defs[dep] ||= new Deferred())
+        );
         Promise.all(depDefs).then(() => {
             sortedModuleNames.push(name);
             modDef.resolve();
@@ -658,7 +677,7 @@ export async function runTests(options) {
     await Promise.all(Object.values(defs));
 
     // Dry run
-    const { suites } = await dryRun(() => describeDrySuite(fileSuffix, testModuleNames));
+    const {suites} = await dryRun(() => describeDrySuite(fileSuffix, testModuleNames));
 
     // Run all test files
     const filteredSuitePaths = new Set(suites.map((s) => s.fullName));
@@ -682,8 +701,11 @@ export async function runTests(options) {
             if (moduleSetLoader.modules.has(TEMPLATE_MODULE_NAME)) {
                 // If templates module is available: set URL filter to filter out
                 // static templates and cleanup current processed templates.
-                const templateModule = moduleSetLoader.modules.get(TEMPLATE_MODULE_NAME);
-                templateModule.setUrlFilters(moduleSet.filter ? [moduleSet.filter] : []);
+                const templateModule =
+                    moduleSetLoader.modules.get(TEMPLATE_MODULE_NAME);
+                templateModule.setUrlFilters(
+                    moduleSet.filter ? [moduleSet.filter] : []
+                );
                 templateModule.clearProcessedTemplates();
             }
             currentAddonsKey = moduleSet.addonsKey;
@@ -742,14 +764,14 @@ export async function unmockedOrm(model, method, args, kwargs) {
             id: nextRpcId++,
             jsonrpc: "2.0",
             method: "call",
-            params: { args, kwargs, method, model },
+            params: {args, kwargs, method, model},
         }),
         headers: {
             "Content-Type": "application/json",
         },
         method: "POST",
     });
-    const { error, result } = await response.json();
+    const {error, result} = await response.json();
     if (error) {
         throw error;
     }

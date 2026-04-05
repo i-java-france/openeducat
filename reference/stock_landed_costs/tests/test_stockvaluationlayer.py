@@ -2,13 +2,15 @@
 
 """ Implementation of "INVENTORY VALUATION TESTS (With valuation layers)" spreadsheet. """
 
+import time
 from unittest import skip
+
+from freezegun import freeze_time
 
 from odoo import fields
 from odoo.tests import Form, tagged
+
 from odoo.addons.stock_landed_costs.tests.common import TestStockLandedCostsCommon
-from freezegun import freeze_time
-import time
 
 
 @skip('Temporary to fast merge new valuation')
@@ -363,7 +365,7 @@ class TestStockValuationLCAVCO(TestStockValuationLCCommon):
 class TestStockValuationLCFIFOVB(TestStockValuationLCCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockValuationLCFIFOVB, cls).setUpClass()
+        super().setUpClass()
         cls.vendor1 = cls.env['res.partner'].create({'name': 'vendor1'})
         cls.vendor1.property_account_payable_id = cls.company_data['default_account_payable']
         cls.vendor2 = cls.env['res.partner'].create({'name': 'vendor2'})

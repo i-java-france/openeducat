@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import base64
 import hashlib
 import json
 
 import pytz
+from asn1crypto import algos, cms, core, tsp, x509
 
-from asn1crypto import cms, core, x509, algos, tsp
-
-from odoo import models, fields, _
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 

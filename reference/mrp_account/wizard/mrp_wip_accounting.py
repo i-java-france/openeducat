@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import datetime, time
+
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, _, api, Command
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 
 

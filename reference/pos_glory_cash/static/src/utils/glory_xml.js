@@ -1,5 +1,5 @@
-import { parseXML } from "@web/core/utils/xml";
-import { GLORY_RESULT } from "./constants";
+import {parseXML} from "@web/core/utils/xml";
+import {GLORY_RESULT} from "./constants";
 
 /**
  * @param {Blob} xmlBlob
@@ -106,8 +106,14 @@ export function parseVerificationInfo(xmlResponse) {
     const collectionContainerInfos = Array.from(
         xmlResponse.getElementsByTagName("RequireVerifyCollectionContainer")
     );
-    const mixStackerInfos = Array.from(xmlResponse.getElementsByTagName("RequireVerifyMixStacker"));
-    const allInfos = [...denominationInfos, ...collectionContainerInfos, ...mixStackerInfos];
+    const mixStackerInfos = Array.from(
+        xmlResponse.getElementsByTagName("RequireVerifyMixStacker")
+    );
+    const allInfos = [
+        ...denominationInfos,
+        ...collectionContainerInfos,
+        ...mixStackerInfos,
+    ];
 
     const notesRequireVerify = allInfos.some(
         (info) => info.getAttribute("devid") === "1" && info.getAttribute("val") === "1"

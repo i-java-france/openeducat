@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 
 import ast
+
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class MaintenanceStage(models.Model):
@@ -117,7 +117,7 @@ class MaintenanceEquipment(models.Model):
         self.ensure_one()
         if 'owner_user_id' in init_values and self.owner_user_id:
             return self.env.ref('maintenance.mt_mat_assign')
-        return super(MaintenanceEquipment, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     @api.depends('serial_no')
     def _compute_display_name(self):
@@ -165,7 +165,7 @@ class MaintenanceEquipment(models.Model):
     def write(self, vals):
         if vals.get('owner_user_id'):
             self.message_subscribe(partner_ids=self.env['res.users'].browse(vals['owner_user_id']).partner_id.ids)
-        return super(MaintenanceEquipment, self).write(vals)
+        return super().write(vals)
 
     @api.model
     def _read_group_category_ids(self, categories, domain):
@@ -195,7 +195,7 @@ class MaintenanceRequest(models.Model):
         self.ensure_one()
         if 'stage_id' in init_values:
             return self.env.ref('maintenance.mt_req_status')
-        return super(MaintenanceRequest, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     def _get_default_team_id(self):
         MT = self.env['maintenance.team']
@@ -347,7 +347,7 @@ class MaintenanceRequest(models.Model):
                         'schedule_end': schedule_end,
                         'stage_id': request._default_stage().id,
                     })
-        res = super(MaintenanceRequest, self).write(vals)
+        res = super().write(vals)
         if vals.get('owner_user_id') or vals.get('user_id'):
             self._add_followers()
         if 'stage_id' in vals:

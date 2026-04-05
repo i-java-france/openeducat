@@ -5,7 +5,7 @@ from unittest import skip
 from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import Form, common
-from odoo.tools import float_compare, mute_logger
+from odoo.tools import mute_logger
 
 from odoo.addons.sale.tests.common import TestSaleCommon
 from odoo.addons.stock_account.tests.test_anglo_saxon_valuation_reconciliation_common import (

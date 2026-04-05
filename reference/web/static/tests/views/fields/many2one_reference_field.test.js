@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {runAllTimers} from "@odoo/hoot-mock";
 
 import {
     clickFieldDropdownItem,
@@ -26,8 +26,8 @@ class Partner extends models.Model {
     });
 
     _records = [
-        { id: 1, model: "partner.type", res_id: 10 },
-        { id: 2, res_id: false },
+        {id: 1, model: "partner.type", res_id: 10},
+        {id: 2, res_id: false},
     ];
 }
 
@@ -36,8 +36,8 @@ class PartnerType extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 10, name: "gold" },
-        { id: 14, name: "silver" },
+        {id: 10, name: "gold"},
+        {id: 14, name: "silver"},
     ];
 }
 
@@ -52,7 +52,7 @@ test("Many2OneReferenceField in form view", async () => {
         },
     });
 
-    onRpc("get_formview_action", ({ model, args }) => {
+    onRpc("get_formview_action", ({model, args}) => {
         expect.step(`opening ${model} ${args[0][0]}`);
         return false;
     });
@@ -70,7 +70,9 @@ test("Many2OneReferenceField in form view", async () => {
     expect(".o_field_widget input").toHaveValue("gold");
     expect(".o_field_widget[name=res_id] .o_external_button").toHaveCount(1);
 
-    await contains(".o_field_widget[name=res_id] .o_external_button", { visible: false }).click();
+    await contains(".o_field_widget[name=res_id] .o_external_button", {
+        visible: false,
+    }).click();
     expect.verifySteps(["opening partner.type 10", "doAction"]);
 });
 
@@ -109,8 +111,8 @@ test.tags("desktop");
 test("Many2OneReferenceField edition: unset", async () => {
     expect.assertions(4);
 
-    onRpc("web_save", ({ args }) => {
-        expect(args).toEqual([[2], { model: "partner.type", res_id: 14 }]);
+    onRpc("web_save", ({args}) => {
+        expect(args).toEqual([[2], {model: "partner.type", res_id: 14}]);
     });
 
     await mountView({
@@ -142,18 +144,18 @@ test("Many2OneReferenceField set value with search more", async () => {
         list: `<list><field name="name"/></list>`,
     };
     PartnerType._records = [
-        { id: 1, name: "type 1" },
-        { id: 2, name: "type 2" },
-        { id: 3, name: "type 3" },
-        { id: 4, name: "type 4" },
-        { id: 5, name: "type 5" },
-        { id: 6, name: "type 6" },
-        { id: 7, name: "type 7" },
-        { id: 8, name: "type 8" },
-        { id: 9, name: "type 9" },
+        {id: 1, name: "type 1"},
+        {id: 2, name: "type 2"},
+        {id: 3, name: "type 3"},
+        {id: 4, name: "type 4"},
+        {id: 5, name: "type 5"},
+        {id: 6, name: "type 6"},
+        {id: 7, name: "type 7"},
+        {id: 8, name: "type 8"},
+        {id: 9, name: "type 9"},
     ];
     Partner._records[0].res_id = 1;
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -174,19 +176,19 @@ test("Many2OneReferenceField set value with search more", async () => {
     expect(".o_dialog .o_list_view").toHaveCount(0);
     expect(".o_field_widget input").toHaveValue("type 7");
     expect.verifySteps([
-        "get_views", // form view
-        "web_read", // partner id 1
-        "web_name_search", // many2one
+        "get_views", // Form view
+        "web_read", // Partner id 1
+        "web_name_search", // Many2one
         "get_views", // Search more...
         "web_search_read", // SelectCreateDialog
         "has_group",
-        "web_read", // read selected value
+        "web_read", // Read selected value
     ]);
 });
 
 test.tags("desktop");
 test("Many2OneReferenceField: quick create a value", async () => {
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -202,7 +204,9 @@ test("Many2OneReferenceField: quick create a value", async () => {
 
     expect(".o_field_widget input").toHaveValue("gold");
 
-    await contains(".o_field_widget[name='res_id'] input").edit("new value", { confirm: false });
+    await contains(".o_field_widget[name='res_id'] input").edit("new value", {
+        confirm: false,
+    });
     await runAllTimers();
     expect(
         ".o_field_widget[name='res_id'] .dropdown-menu .o_m2o_dropdown_option_create"
@@ -224,7 +228,9 @@ test("Many2OneReferenceField with no_create option", async () => {
             </form>`,
     });
 
-    await contains(".o_field_widget[name='res_id'] input").edit("new value", { confirm: false });
+    await contains(".o_field_widget[name='res_id'] input").edit("new value", {
+        confirm: false,
+    });
     await runAllTimers();
     expect(
         ".o_field_widget[name='res_id'] .dropdown-menu .o_m2o_dropdown_option_create"

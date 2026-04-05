@@ -1,13 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command
-
 from datetime import datetime, timedelta
-from freezegun import freeze_time
 from unittest.mock import patch
 
-from odoo.tests.common import HttpCase, new_test_user, tagged
+from freezegun import freeze_time
+
+from odoo import Command
 from odoo.exceptions import UserError, ValidationError
+from odoo.tests.common import HttpCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")

@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ComboPage } from "@pos_self_order/app/pages/combo_page/combo_page";
-import { setupSelfPosEnv } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ComboPage} from "@pos_self_order/app/pages/combo_page/combo_page";
+import {setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -11,16 +11,16 @@ test("onChoiceClicked and selectItem", async () => {
     const models = store.models;
     const comboProduct = models["product.template"].get(7);
     const comp = await mountWithCleanup(ComboPage, {
-        props: { productTemplate: comboProduct },
+        props: {productTemplate: comboProduct},
     });
 
-    // click selected choice
+    // Click selected choice
     comp.onChoiceClicked(0);
     expect(comp.state.showResume).toBeEmpty();
     expect(comp.currentChoiceState.displayAttributesOfItem).toBeEmpty();
     expect(comp.state.selectedChoiceIndex).toBe(0);
 
-    // click next choice without seleting current
+    // Click next choice without seleting current
     comp.onChoiceClicked(1);
     expect(comp.state.selectedChoiceIndex).toBe(0);
 
@@ -36,7 +36,7 @@ test("getComboSelection", async () => {
     const models = store.models;
     const comboProduct = models["product.template"].get(7);
     const comp = await mountWithCleanup(ComboPage, {
-        props: { productTemplate: comboProduct },
+        props: {productTemplate: comboProduct},
     });
     {
         const item = models["product.combo.item"].get(2);
@@ -61,7 +61,7 @@ test("isBackVisible", async () => {
     const models = store.models;
     const comboProduct = models["product.template"].get(7);
     const comp = await mountWithCleanup(ComboPage, {
-        props: { productTemplate: comboProduct },
+        props: {productTemplate: comboProduct},
     });
 
     expect(comp.isBackVisible()).toBe(false);
@@ -77,7 +77,7 @@ test("isNextEnabled", async () => {
     const comboProduct = models["product.template"].get(7);
     models["product.combo"].get(1).qty_free = 1;
     const comp = await mountWithCleanup(ComboPage, {
-        props: { productTemplate: comboProduct },
+        props: {productTemplate: comboProduct},
     });
 
     expect(comp.isNextEnabled()).toBe(false);

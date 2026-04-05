@@ -1,6 +1,6 @@
-import { test, expect } from "@odoo/hoot";
-import { setupSelfPosEnv, getFilledSelfOrder } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {getFilledSelfOrder, setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -28,7 +28,7 @@ test("Self Order changes and unsentLines and lineChanges and recomputeChanges", 
     expect(order.unsentLines).toHaveLength(0);
     expect(order.uiState.lineChanges).toHaveLength(2);
 
-    // delete line
+    // Delete line
     line2.delete();
     expect(order.uiState.lineChanges).toHaveLength(2);
     order.recomputeChanges();

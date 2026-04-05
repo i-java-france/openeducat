@@ -1,4 +1,4 @@
-import { Record } from "@mail/model/record";
+import {Record} from "@mail/model/record";
 
 export class MailMessageSubtype extends Record {
     static id = "id";

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template
         id="website_sale.s_mega_menu_big_icons_subtitles"
         name="eCommerce: Menu - Big icons &amp; subtitles"
@@ -10,7 +9,10 @@
             class="s_mega_menu_big_icons_subtitles pt24 pb24 o_colored_level o_cc o_cc1"
             data-oe-shape-data="{'shape':'html_builder/Grids/07','colors':{'c5':'o-color-3'},'flip':[]}"
         >
-            <div class="o_we_shape o_html_builder_Grids_07" style="background-image: url('/html_editor/shape/html_builder/Grids/07.svg?c5=o-color-3');"/>
+            <div
+                class="o_we_shape o_html_builder_Grids_07"
+                style="background-image: url('/html_editor/shape/html_builder/Grids/07.svg?c5=o-color-3');"
+            />
             <div class="container">
                 <div class="row">
                     <t
@@ -33,7 +35,10 @@
                                             alt=""
                                         />
                                         <div class="flex-grow-1">
-                                            <h4 class="mt-0 mb-0" t-esc="category.name"/>
+                                            <h4
+                                                class="mt-0 mb-0"
+                                                t-esc="category.name"
+                                            />
                                         </div>
                                     </div>
                                 </a>
@@ -44,5 +49,4 @@
             </div>
         </section>
     </template>
-
 </odoo>

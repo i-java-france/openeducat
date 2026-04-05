@@ -1,17 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 import json
 import logging
+
 import requests
 from markupsafe import Markup
 from werkzeug.exceptions import Forbidden
 
-from odoo import http, tools, _
-from odoo.addons.iap.tools import iap_tools
+from odoo import _, http, tools
 from odoo.exceptions import AccessError
 from odoo.http import request
+
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger(__name__)
 

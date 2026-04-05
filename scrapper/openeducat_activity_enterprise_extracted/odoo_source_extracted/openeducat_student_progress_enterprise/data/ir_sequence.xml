@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="student_progrssion_sequence_view" model="ir.sequence">
+        <field name="name">Student Progression</field>
+        <field name="code">op.student.progression</field>
+        <field name="prefix">P</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">2</field>
+    </record>
+</odoo>

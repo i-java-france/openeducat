@@ -2,8 +2,11 @@
 from unittest.mock import patch
 
 from odoo.tests import tagged
+
 from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
 
@@ -87,9 +90,9 @@ class TestItAccountMoveSend(TestItEdi, TestAccountMoveSendCommon):
         self.assertFalse(invoice2.is_being_sent)
 
     def test_invoice_with_cig_or_cup_or_both(self):
-            
+
             self.italian_partner_a.write({'l10n_it_pa_index': '1234567'})
-            
+
             invoice_valid = self.init_invoice(self.italian_partner_a)
             invoice_cig_only = self.init_invoice(self.italian_partner_a)
             invoice_cup_only = self.init_invoice(self.italian_partner_a)
@@ -99,25 +102,25 @@ class TestItAccountMoveSend(TestItEdi, TestAccountMoveSendCommon):
                 'l10n_it_cig': '1234567',
                 'l10n_it_cup': '7654321',
                 'l10n_it_origin_document_type': 'purchase_order'
-            }) 
-            
+            })
+
             invoice_cig_only.write({
                 'l10n_it_cig': '1234567',
                 'l10n_it_cup': False,
                 'l10n_it_origin_document_type': False
-            }) 
-            
+            })
+
             invoice_cup_only.write({
                 'l10n_it_cig': False,
                 'l10n_it_cup': '7654321',
                 'l10n_it_origin_document_type': False
             })
-            
+
             invoice_cig_cup.write({
                 'l10n_it_cig': '1234567',
                 'l10n_it_cup': '7654321',
                 'l10n_it_origin_document_type': False
-            }) 
+            })
 
             valid = invoice_valid._l10n_it_edi_base_export_check()
             cig = invoice_cig_only._l10n_it_edi_base_export_check()

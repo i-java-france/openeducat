@@ -2,8 +2,8 @@
 import logging
 import subprocess
 from enum import Enum
-from odoo.addons.iot_drivers.tools import helpers
 
+from odoo.addons.iot_drivers.tools import helpers
 
 _logger = logging.getLogger(__name__)
 

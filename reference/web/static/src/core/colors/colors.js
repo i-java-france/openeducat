@@ -1,4 +1,4 @@
-import { clamp } from "@web/core/utils/numbers";
+import {clamp} from "@web/core/utils/numbers";
 /**
  * Lists of colors that contrast well with each other to be used in various
  * visualizations (eg. graphs/charts), both in bright and dark themes.

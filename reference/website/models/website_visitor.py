@@ -1,17 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import hashlib
 from datetime import datetime, timedelta
 
-import hashlib
 import pytz
 
 from odoo import api, fields, models
-from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import UserError
 from odoo.fields import Domain
-from odoo.tools import _, SQL
-from odoo.tools.misc import _format_time_ago
 from odoo.http import request
+from odoo.tools import SQL, _
+from odoo.tools.misc import _format_time_ago
+
+from odoo.addons.base.models.res_partner import _tz_get
 
 
 class WebsiteTrack(models.Model):

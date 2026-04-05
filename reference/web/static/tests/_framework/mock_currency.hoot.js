@@ -1,6 +1,6 @@
 // ! WARNING: this module cannot depend on modules not ending with ".hoot" (except libs) !
 
-import { onServerStateChange } from "./mock_server_state.hoot";
+import {onServerStateChange} from "./mock_server_state.hoot";
 
 //-----------------------------------------------------------------------------
 // Internal
@@ -9,9 +9,9 @@ import { onServerStateChange } from "./mock_server_state.hoot";
 /**
  * @param {import("./mock_server_state.hoot").ServerState} serverState
  */
-const makeCurrencies = ({ currencies }) =>
+const makeCurrencies = ({currencies}) =>
     Object.fromEntries(
-        currencies.map((currency) => [currency.id, { digits: [69, 2], ...currency }])
+        currencies.map((currency) => [currency.id, {digits: [69, 2], ...currency}])
     );
 
 //-----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ const makeCurrencies = ({ currencies }) =>
  * @param {string} name
  * @param {OdooModuleFactory} factory
  */
-export function mockCurrencyFactory(name, { fn }) {
+export function mockCurrencyFactory(name, {fn}) {
     return (requireModule, ...args) => {
         const currencyModule = fn(requireModule, ...args);
 

@@ -1,7 +1,7 @@
-import { KanbanController } from "@web/views/kanban/kanban_controller";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { registry } from "@web/core/registry";
-import { LivechatLookingForHelpReloadMixin } from "../livechat_looking_for_help_controller_mixin";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {registry} from "@web/core/registry";
+import {LivechatLookingForHelpReloadMixin} from "../livechat_looking_for_help_controller_mixin";
 
 class DiscussChannelKanbanLookingForHelpController extends LivechatLookingForHelpReloadMixin(
     KanbanController

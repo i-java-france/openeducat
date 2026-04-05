@@ -1,13 +1,13 @@
-import { test, expect } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { setFontSize, setFontSizeClassName, tripleClick } from "../_helpers/user_actions";
-import { Plugin } from "@html_editor/plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { animationFrame } from "@odoo/hoot-mock";
-import { execCommand } from "../_helpers/userCommands";
-import { press } from "@odoo/hoot-dom";
-import { getContent } from "../_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {setFontSize, setFontSizeClassName, tripleClick} from "../_helpers/user_actions";
+import {Plugin} from "@html_editor/plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {animationFrame} from "@odoo/hoot-mock";
+import {execCommand} from "../_helpers/userCommands";
+import {press} from "@odoo/hoot-dom";
+import {getContent} from "../_helpers/selection";
 
 test("should change the font size of a few characters", async () => {
     await testEditor({
@@ -38,10 +38,10 @@ test("should change the font size of a whole heading after a triple click", asyn
 });
 
 test("should get ready to type with a different font size", async () => {
-    const { editor } = await setupEditor('<p class="p">ab[]cd</p>');
-    execCommand(editor, "formatFontSize", { size: "36px" });
+    const {editor} = await setupEditor('<p class="p">ab[]cd</p>');
+    execCommand(editor, "formatFontSize", {size: "36px"});
     await animationFrame();
-    expect(".p span").toHaveStyle({ "font-size": "36px" });
+    expect(".p span").toHaveStyle({"font-size": "36px"});
     expect(".p span").toHaveAttribute("data-oe-zws-empty-inline", "");
 });
 
@@ -89,7 +89,8 @@ test("should change the font-size of a character with multiples inline ancestors
 
 test("should remove a redundant font-size", async () => {
     await testEditor({
-        contentBefore: '<p style="font-size: 10px">b<span style="font-size: 10px;">[c]</span>d</p>',
+        contentBefore:
+            '<p style="font-size: 10px">b<span style="font-size: 10px;">[c]</span>d</p>',
         stepFunction: setFontSize("10px"),
         contentAfter: '<p style="font-size: 10px">b[c]d</p>',
     });
@@ -164,14 +165,15 @@ test("should apply font size in unbreakable span without class", async () => {
     class AddUnsplittableRulePlugin extends Plugin {
         static id = "addUnsplittableRule";
         resources = {
-            unsplittable_node_predicates: (node) => node.getAttribute?.("t") === "unbreakable",
+            unsplittable_node_predicates: (node) =>
+                node.getAttribute?.("t") === "unbreakable",
         };
     }
     await testEditor({
         contentBefore: `<h1><span t="unbreakable">some [text]</span></h1>`,
         stepFunction: setFontSize("18px"),
         contentAfter: `<h1><span t="unbreakable">some <span style="font-size: 18px;">[text]</span></span></h1>`,
-        config: { Plugins: [...MAIN_PLUGINS, AddUnsplittableRulePlugin] },
+        config: {Plugins: [...MAIN_PLUGINS, AddUnsplittableRulePlugin]},
     });
 });
 
@@ -200,10 +202,12 @@ test("should apply font size on topmost `u` or `s` tags if multiple applied", as
 });
 
 test("should add style to br except line-break br", async () => {
-    const { editor, el } = await setupEditor("<p>[]abc<br><br></p>");
+    const {editor, el} = await setupEditor("<p>[]abc<br><br></p>");
     await press(["ctrl", "a"]);
-    execCommand(editor, "formatFontSize", { size: "36px" });
-    expect(getContent(el)).toBe(`<p><span style="font-size: 36px;">[abc]</span><br><br></p>`);
+    execCommand(editor, "formatFontSize", {size: "36px"});
+    expect(getContent(el)).toBe(
+        `<p><span style="font-size: 36px;">[abc]</span><br><br></p>`
+    );
 });
 
 test("should update the font size currectly if already has one", async () => {
@@ -216,9 +220,9 @@ test("should update the font size currectly if already has one", async () => {
 });
 
 test("should add style to br except line-break br (2)", async () => {
-    const { editor, el } = await setupEditor("<p>[]abc<br><br><br></p>");
+    const {editor, el} = await setupEditor("<p>[]abc<br><br><br></p>");
     await press(["ctrl", "a"]);
-    execCommand(editor, "formatFontSize", { size: "36px" });
+    execCommand(editor, "formatFontSize", {size: "36px"});
     expect(getContent(el)).toBe(
         `<p><span style="font-size: 36px;">[abc</span><br><span style="font-size: 36px;"><br>]</span><br></p>`
     );

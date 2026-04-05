@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getPieChartDatasets,
@@ -32,24 +32,26 @@ export class OdooPieChart extends OdooChart {
 
 chartRegistry.add("odoo_pie", {
     match: (type) => type === "odoo_pie",
-    createChart: (definition, sheetId, getters) => new OdooPieChart(definition, sheetId, getters),
+    createChart: (definition, sheetId, getters) =>
+        new OdooPieChart(definition, sheetId, getters),
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooPieChart.validateChartDefinition(validator, definition),
     transformDefinition: (definition) => OdooPieChart.transformDefinition(definition),
-    getChartDefinitionFromContextCreation: () => OdooPieChart.getDefinitionFromContextCreation(),
+    getChartDefinitionFromContextCreation: () =>
+        OdooPieChart.getDefinitionFromContextCreation(),
     name: _t("Pie"),
 });
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getData();
+    const {datasets, labels} = chart.dataSource.getData();
     const definition = chart.getDefinition();
-    definition.dataSets = datasets.map(() => ({ trend: definition.trend }));
+    definition.dataSets = datasets.map(() => ({trend: definition.trend}));
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale: getters.getLocale(),
         topPadding: getTopPaddingForDashboard(definition, getters),
     };
@@ -74,5 +76,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_op_activity_analysis"
+        name="Activity Analysis"
+        sequence="10"
+        parent="Students/Reporting"
+        action="ir.actions.act_window,1246"
+    />
+    <menuitem
+        id="menu_migration_report"
+        name="Migration Report"
+        sequence="20"
+        parent="SIS/Reporting"
+        action="ir.actions.act_window,1247"
+    />
+</odoo>

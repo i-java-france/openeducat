@@ -1,14 +1,14 @@
-import { setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { undo } from "@html_editor/../tests/_helpers/user_actions";
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {undo} from "@html_editor/../tests/_helpers/user_actions";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
 describe("replicate changes", () => {
     test("translated elements", async () => {
-        const { getEditor } = await setupHTMLBuilder("", {
+        const {getEditor} = await setupHTMLBuilder("", {
             headerContent: `
             <div class="test-1">
                 <span data-oe-model="ir.ui.view" data-oe-id="600" data-oe-field="arch_db" data-oe-translation-state="translated" data-oe-translation-source-sha="4242">Contactez-nous</span>
@@ -25,7 +25,7 @@ describe("replicate changes", () => {
     });
 
     test("link and non-link elements", async () => {
-        const { getEditor } = await setupHTMLBuilder(
+        const {getEditor} = await setupHTMLBuilder(
             `
             <div class="test-4">
                 <a data-oe-xpath="/t[1]/nav[1]/div[1]/div[1]/t[2]/ul[1]/li[2]/a[1]/" href="/blog/travel-1" data-oe-model="blog.blog" data-oe-id="1" data-oe-field="name" data-oe-type="char" data-oe-expression="nav_blog.name">Travel</a>
@@ -51,9 +51,9 @@ describe("replicate changes", () => {
         expect(":iframe .test-1 b").toHaveText("Travel Abroad");
         expect(":iframe .test-2 a").toHaveText("Travel Abroad");
         expect(":iframe .test-3 span").toHaveText("Travel Abroad");
-        expect(":iframe .test-4 a").toHaveInnerHTML("\u{FEFF}Travel Abroad\u{FEFF}"); // link in editable get feff
+        expect(":iframe .test-4 a").toHaveInnerHTML("\u{FEFF}Travel Abroad\u{FEFF}"); // Link in editable get feff
 
-        queryOne(":iframe .test-4 a").append("!"); // the feff should not be forwarded
+        queryOne(":iframe .test-4 a").append("!"); // The feff should not be forwarded
         editor.shared.history.addStep();
         expect(":iframe .test-1 b").toHaveText("Travel Abroad!");
         expect(":iframe .test-2 a").toHaveText("Travel Abroad!");
@@ -62,7 +62,7 @@ describe("replicate changes", () => {
     });
 
     test("menu items", async () => {
-        const { getEditor } = await setupHTMLBuilder("", {
+        const {getEditor} = await setupHTMLBuilder("", {
             headerContent: `
             <div class="test-1">
                 <span data-oe-model="website.menu" data-oe-id="5" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">Home</span>
@@ -82,7 +82,7 @@ describe("replicate changes", () => {
         onRpc(
             "ir.qweb.field.contact",
             "get_record_to_html",
-            ({ args: [[id]] }) => `<span>The contact info of ${id}</span>`
+            ({args: [[id]]}) => `<span>The contact info of ${id}</span>`
         );
         await setupHTMLBuilder("", {
             headerContent: `
@@ -124,7 +124,7 @@ describe("replicate changes", () => {
     });
 
     test("should not add o_dirty marks on the ones receiving the replicated changes", async () => {
-        const { getEditor } = await setupHTMLBuilder("", {
+        const {getEditor} = await setupHTMLBuilder("", {
             headerContent: `
             <div class="test-1">
                 <span data-oe-model="ir.ui.view" data-oe-id="600" data-oe-field="arch_db" data-oe-translation-state="translated" data-oe-translation-source-sha="4242">Contactez-nous</span>
@@ -164,7 +164,7 @@ describe("replicate changes", () => {
     });
 
     test("changing several of occurences at the same time should converge to the same value", async () => {
-        const { getEditor } = await setupHTMLBuilder("", {
+        const {getEditor} = await setupHTMLBuilder("", {
             headerContent: `
             <div class="test-1">
                 <span data-oe-model="ir.ui.view" data-oe-id="600" data-oe-field="arch_db" data-oe-translation-state="translated" data-oe-translation-source-sha="4242">Contactez-nous</span>
@@ -188,6 +188,6 @@ describe("replicate changes", () => {
         expect(span1).toHaveClass("o_dirty");
         expect(span2).toHaveClass("o_dirty");
         expect(span3).not.toHaveClass("o_dirty");
-        expect([span2, span3]).toHaveText(span1.textContent); // all the same text
+        expect([span2, span3]).toHaveText(span1.textContent); // All the same text
     });
 });

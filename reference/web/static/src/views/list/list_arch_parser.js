@@ -1,11 +1,11 @@
-import { exprToBoolean } from "@web/core/utils/strings";
-import { visitXML } from "@web/core/utils/xml";
-import { combineModifiers } from "@web/model/relational_model/utils";
-import { stringToOrderBy } from "@web/search/utils/order_by";
-import { Field } from "@web/views/fields/field";
-import { getActiveActions, getDecoration, processButton } from "@web/views/utils";
-import { encodeObjectForTemplate } from "@web/views/view_compiler";
-import { Widget } from "@web/views/widgets/widget";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {visitXML} from "@web/core/utils/xml";
+import {combineModifiers} from "@web/model/relational_model/utils";
+import {stringToOrderBy} from "@web/search/utils/order_by";
+import {Field} from "@web/views/fields/field";
+import {getActiveActions, getDecoration, processButton} from "@web/views/utils";
+import {encodeObjectForTemplate} from "@web/views/view_compiler";
+import {Widget} from "@web/views/widgets/widget";
 
 export class GroupListArchParser {
     parse(arch, models, modelName, jsClass) {
@@ -21,7 +21,13 @@ export class GroupListArchParser {
                 });
                 return false;
             } else if (node.tagName === "field") {
-                const fieldInfo = Field.parseFieldNode(node, models, modelName, "list", jsClass);
+                const fieldInfo = Field.parseFieldNode(
+                    node,
+                    models,
+                    modelName,
+                    "list",
+                    jsClass
+                );
                 if (!(fieldInfo.name in fieldNextIds)) {
                     fieldNextIds[fieldInfo.name] = 0;
                 }
@@ -31,7 +37,7 @@ export class GroupListArchParser {
                 return false;
             }
         });
-        return { fieldNodes, buttons };
+        return {fieldNodes, buttons};
     }
 }
 
@@ -96,7 +102,7 @@ export class ListArchParser {
                     };
                     columns.push(buttonGroup);
                     if (width) {
-                        buttonGroup.attrs = { width };
+                        buttonGroup.attrs = {width};
                         buttonGroup = undefined;
                     }
                 }
@@ -123,7 +129,9 @@ export class ListArchParser {
                         fieldInfo.field.label === false ||
                         exprToBoolean(fieldInfo.attrs.nolabel) === true
                     ),
-                    label: (fieldInfo.widget && label && label.toString()) || fieldInfo.string,
+                    label:
+                        (fieldInfo.widget && label && label.toString()) ||
+                        fieldInfo.string,
                 });
                 return false;
             } else if (node.tagName === "widget") {
@@ -136,7 +144,10 @@ export class ListArchParser {
                     name: widgetInfo.name,
                     // FIXME: this is dumb, we encode it into a weird object so that the widget
                     // can decode it later...
-                    node: encodeObjectForTemplate({ attrs: widgetInfo.attrs }).slice(1, -1),
+                    node: encodeObjectForTemplate({attrs: widgetInfo.attrs}).slice(
+                        1,
+                        -1
+                    ),
                     className: node.getAttribute("class") || "",
                     widgetInfo,
                 };
@@ -149,7 +160,11 @@ export class ListArchParser {
             } else if (node.tagName === "groupby" && node.getAttribute("name")) {
                 const fieldName = node.getAttribute("name");
                 const coModelName = fields[fieldName].relation;
-                const groupByArchInfo = groupListArchParser.parse(node, models, coModelName);
+                const groupByArchInfo = groupListArchParser.parse(
+                    node,
+                    models,
+                    coModelName
+                );
                 groupBy.buttons[fieldName] = groupByArchInfo.buttons;
                 groupBy.fields[fieldName] = {
                     fieldNodes: groupByArchInfo.fieldNodes,
@@ -189,9 +204,15 @@ export class ListArchParser {
                 const activeActions = {
                     ...getActiveActions(xmlDoc),
                     exportXlsx: exprToBoolean(xmlDoc.getAttribute("export_xlsx"), true),
-                    createGroup: exprToBoolean(xmlDoc.getAttribute("group_create"), true),
+                    createGroup: exprToBoolean(
+                        xmlDoc.getAttribute("group_create"),
+                        true
+                    ),
                     editGroup: exprToBoolean(xmlDoc.getAttribute("group_edit"), true),
-                    deleteGroup: exprToBoolean(xmlDoc.getAttribute("group_delete"), true),
+                    deleteGroup: exprToBoolean(
+                        xmlDoc.getAttribute("group_delete"),
+                        true
+                    ),
                 };
                 treeAttr.activeActions = activeActions;
 
@@ -228,7 +249,7 @@ export class ListArchParser {
                 // custom open action when clicking on record row
                 const action = xmlDoc.getAttribute("action");
                 const type = xmlDoc.getAttribute("type");
-                treeAttr.openAction = action && type ? { action, type } : null;
+                treeAttr.openAction = action && type ? {action, type} : null;
             }
         });
 

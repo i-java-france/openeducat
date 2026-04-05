@@ -1,16 +1,16 @@
-import { Component, useRef, useState, onWillUpdateProps, onMounted } from "@odoo/owl";
+import {Component, useRef, useState, onWillUpdateProps, onMounted} from "@odoo/owl";
 
-import { useAutoresize } from "@web/core/utils/autoresize";
+import {useAutoresize} from "@web/core/utils/autoresize";
 
 export class AutoresizeInput extends Component {
     static template = "mail.AutoresizeInput";
     static props = {
-        autofocus: { type: Boolean, optional: true },
-        className: { type: String, optional: true },
-        enabled: { optional: true },
-        onValidate: { type: Function, optional: true },
-        placeholder: { type: String, optional: true },
-        value: { type: String, optional: true },
+        autofocus: {type: Boolean, optional: true},
+        className: {type: String, optional: true},
+        enabled: {optional: true},
+        onValidate: {type: Function, optional: true},
+        placeholder: {type: String, optional: true},
+        value: {type: String, optional: true},
     };
     static defaultProps = {
         autofocus: false,

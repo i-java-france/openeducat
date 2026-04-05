@@ -1,14 +1,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
 from collections import defaultdict
 from datetime import timedelta
 from itertools import groupby, starmap
-from markupsafe import Markup
-import logging
 
-from odoo import api, fields, models, _
+from markupsafe import Markup
+
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Command, Domain
-from odoo.tools import float_is_zero, float_compare, frozendict, plaintext2html, split_every
+from odoo.tools import (
+    float_compare,
+    float_is_zero,
+    frozendict,
+    plaintext2html,
+    split_every,
+)
 from odoo.tools.constants import PREFETCH_MAX
 
 _logger = logging.getLogger(__name__)
@@ -1032,7 +1039,7 @@ class PosSession(models.Model):
 
         MoveLine.create(tax_vals)
         move_line_ids = MoveLine.create(list(starmap(self._get_sale_vals, sales.items())))
-        for key, ml_id in zip(sales.keys(), move_line_ids.ids):
+        for key, ml_id in zip(sales.keys(), move_line_ids.ids, strict=False):
             sales[key]['move_line_id'] = ml_id
         MoveLine.create(
             [self._get_stock_expense_vals(key, amounts['amount'], amounts['amount_converted']) for key, amounts in stock_expense.items()]

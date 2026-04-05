@@ -1,7 +1,7 @@
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 patch(OrderPaymentValidation.prototype, {
     shouldDownloadInvoice() {
@@ -11,9 +11,11 @@ patch(OrderPaymentValidation.prototype, {
     },
     async beforePostPushOrderResolve(order, order_server_ids) {
         if (this.pos.config.is_spanish) {
-            const invoiceName = await this.pos.data.call("pos.order", "get_invoice_name", [
-                order_server_ids,
-            ]);
+            const invoiceName = await this.pos.data.call(
+                "pos.order",
+                "get_invoice_name",
+                [order_server_ids]
+            );
             order.invoice_name = invoiceName;
         }
         return super.beforePostPushOrderResolve(...arguments);
@@ -53,7 +55,7 @@ patch(OrderPaymentValidation.prototype, {
                         this.order.setPricelist(setPricelist);
                     }
                     if (setFiscalPosition !== false) {
-                        this.order.update({ fiscal_position_id: setFiscalPosition });
+                        this.order.update({fiscal_position_id: setFiscalPosition});
                     }
                 }
             }

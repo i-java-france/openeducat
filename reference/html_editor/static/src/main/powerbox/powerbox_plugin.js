@@ -1,12 +1,12 @@
-import { Plugin } from "@html_editor/plugin";
-import { reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rotate } from "@web/core/utils/arrays";
-import { Powerbox } from "./powerbox";
-import { withSequence } from "@html_editor/utils/resource";
-import { omit, pick } from "@web/core/utils/objects";
-import { baseContainerGlobalSelector } from "@html_editor/utils/base_container";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {Plugin} from "@html_editor/plugin";
+import {reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rotate} from "@web/core/utils/arrays";
+import {Powerbox} from "./powerbox";
+import {withSequence} from "@html_editor/utils/resource";
+import {omit, pick} from "@web/core/utils/objects";
+import {baseContainerGlobalSelector} from "@html_editor/utils/base_container";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 /** @typedef { import("@html_editor/core/selection_plugin").EditorSelection } EditorSelection */
 /** @typedef { import("@html_editor/core/user_command_plugin").UserCommand } UserCommand */
@@ -110,9 +110,9 @@ export class PowerboxPlugin extends Plugin {
                 }),
         },
         powerbox_categories: [
-            withSequence(10, { id: "structure", name: _t("Structure") }),
-            withSequence(60, { id: "widget", name: _t("Widget") }),
-            withSequence(100, { id: "modules", name: _t("Modules") }),
+            withSequence(10, {id: "structure", name: _t("Structure")}),
+            withSequence(60, {id: "widget", name: _t("Widget")}),
+            withSequence(100, {id: "modules", name: _t("Modules")}),
         ],
         power_buttons: withSequence(100, {
             commandId: "openPowerbox",
@@ -150,8 +150,13 @@ export class PowerboxPlugin extends Plugin {
      */
     getAvailablePowerboxCommands() {
         const selection = this.dependencies.selection.getEditableSelection();
-        const blacklistSelector = this.getResource("powerbox_blacklist_selectors").join(", ");
-        if (blacklistSelector && closestElement(selection.anchorNode).matches(blacklistSelector)) {
+        const blacklistSelector = this.getResource("powerbox_blacklist_selectors").join(
+            ", "
+        );
+        if (
+            blacklistSelector &&
+            closestElement(selection.anchorNode).matches(blacklistSelector)
+        ) {
             return [];
         }
         return this.powerboxCommands.filter((cmd) => cmd.isAvailable(selection));
@@ -190,7 +195,12 @@ export class PowerboxPlugin extends Plugin {
      * @param {Function} [params.onApplyCommand=() => {}]
      * @param {Function} [params.onClose=() => {}]
      */
-    openPowerbox({ commands, categories, onApplyCommand = () => {}, onClose = () => {} } = {}) {
+    openPowerbox({
+        commands,
+        categories,
+        onApplyCommand = () => {},
+        onClose = () => {},
+    } = {}) {
         this.closePowerbox();
         if (!commands.length) {
             return;
@@ -219,7 +229,7 @@ export class PowerboxPlugin extends Plugin {
             commands,
             currentIndex: 0,
         });
-        this.overlay.open({ props: this.overlayProps });
+        this.overlay.open({props: this.overlayProps});
     }
 
     closePowerbox() {
@@ -249,13 +259,21 @@ export class PowerboxPlugin extends Plugin {
             case "ArrowUp": {
                 ev.preventDefault();
                 ev.stopImmediatePropagation();
-                this.state.currentIndex = rotate(this.state.currentIndex, this.state.commands, -1);
+                this.state.currentIndex = rotate(
+                    this.state.currentIndex,
+                    this.state.commands,
+                    -1
+                );
                 break;
             }
             case "ArrowDown": {
                 ev.preventDefault();
                 ev.stopImmediatePropagation();
-                this.state.currentIndex = rotate(this.state.currentIndex, this.state.commands, 1);
+                this.state.currentIndex = rotate(
+                    this.state.currentIndex,
+                    this.state.commands,
+                    1
+                );
                 break;
             }
             case "ArrowLeft":

@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command
 import odoo
+from odoo import Command
+
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestPoSWithFiscalPosition(TestPoSCommon):
@@ -14,7 +15,7 @@ class TestPoSWithFiscalPosition(TestPoSCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestPoSWithFiscalPosition, cls).setUpClass()
+        super().setUpClass()
 
         cls.config = cls.basic_config
         cls.company.tax_calculation_rounding_method = 'round_per_line'

@@ -5,13 +5,20 @@ import {
     patchWithCleanupImg,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { Builder } from "@html_builder/builder";
-import { SetupEditorPlugin } from "@html_builder/core/setup_editor_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { defineMailModels, startServer } from "@mail/../tests/mail_test_helpers";
-import { describe } from "@odoo/hoot";
-import { advanceTime, animationFrame, click, queryOne, tick, waitFor } from "@odoo/hoot-dom";
+import {Builder} from "@html_builder/builder";
+import {SetupEditorPlugin} from "@html_builder/core/setup_editor_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {defineMailModels, startServer} from "@mail/../tests/mail_test_helpers";
+import {describe} from "@odoo/hoot";
+import {
+    advanceTime,
+    animationFrame,
+    click,
+    queryOne,
+    tick,
+    waitFor,
+} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -23,21 +30,21 @@ import {
     patchWithCleanup,
     waitUntilIdle,
 } from "@web/../tests/web_test_helpers";
-import { loadBundle } from "@web/core/assets";
-import { isBrowserFirefox } from "@web/core/browser/feature_detection";
-import { registry } from "@web/core/registry";
-import { uniqueId } from "@web/core/utils/functions";
-import { WebClient } from "@web/webclient/webclient";
-import { EditInteractionPlugin } from "@website/builder/plugins/edit_interaction_plugin";
-import { WebsiteSessionPlugin } from "@website/builder/plugins/website_session_plugin";
-import { WebsiteBuilderClientAction } from "@website/client_actions/website_preview/website_builder_action";
-import { WebsiteSystrayItem } from "@website/client_actions/website_preview/website_systray_item";
-import { mockImageRequests } from "./image_test_helpers";
-import { getWebsiteSnippets } from "./snippets_getter.hoot";
-import { BaseOptionComponent, revertPreview } from "@html_builder/core/utils";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { WebsiteBuilder } from "@website/builder/website_builder";
-import { getTranslatedElements } from "./translated_elements_getter.hoot";
+import {loadBundle} from "@web/core/assets";
+import {isBrowserFirefox} from "@web/core/browser/feature_detection";
+import {registry} from "@web/core/registry";
+import {uniqueId} from "@web/core/utils/functions";
+import {WebClient} from "@web/webclient/webclient";
+import {EditInteractionPlugin} from "@website/builder/plugins/edit_interaction_plugin";
+import {WebsiteSessionPlugin} from "@website/builder/plugins/website_session_plugin";
+import {WebsiteBuilderClientAction} from "@website/client_actions/website_preview/website_builder_action";
+import {WebsiteSystrayItem} from "@website/client_actions/website_preview/website_systray_item";
+import {mockImageRequests} from "./image_test_helpers";
+import {getWebsiteSnippets} from "./snippets_getter.hoot";
+import {BaseOptionComponent, revertPreview} from "@html_builder/core/utils";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {WebsiteBuilder} from "@website/builder/website_builder";
+import {getTranslatedElements} from "./translated_elements_getter.hoot";
 
 class Website extends models.Model {
     _name = "website";
@@ -132,10 +139,10 @@ export async function setupWebsiteBuilder(
     let resolveIframeLoaded = async () => {};
     const bodyHTML = `${beforeWrapwrapContent}
         <div id="wrapwrap">${headerContent} <div id="wrap" class="oe_structure oe_empty" ${
-        translateMode
-            ? ""
-            : `data-oe-model="ir.ui.view" data-oe-id="${setupWebsiteBuilderOeId}" data-oe-field="arch"`
-    }>${websiteContent}</div> ${footerContent}</div>`;
+            translateMode
+                ? ""
+                : `data-oe-model="ir.ui.view" data-oe-id="${setupWebsiteBuilderOeId}" data-oe-field="arch"`
+        }>${websiteContent}</div> ${footerContent}</div>`;
     const iframeLoaded = new Promise((resolve) => {
         resolveIframeLoaded = async (el) => {
             const iframe = el;
@@ -197,7 +204,8 @@ export async function setupWebsiteBuilder(
 
             if (loadIframeBundles) {
                 await loadBundle("website.assets_inside_builder_iframe", {
-                    targetDoc: queryOne("iframe[data-src^='/website/force/1']").contentDocument,
+                    targetDoc: queryOne("iframe[data-src^='/website/force/1']")
+                        .contentDocument,
                     js: false,
                 });
             }
@@ -335,7 +343,7 @@ export function addPlugin(...Plugin) {
     patchWithCleanup(WebsiteBuilder.prototype, {
         get builderProps() {
             const props = super.builderProps;
-            return { ...props, Plugins: [...props.Plugins, ...Plugin] };
+            return {...props, Plugins: [...props.Plugins, ...Plugin]};
         },
     });
 }
@@ -344,9 +352,9 @@ export function addOption(option) {
     const pluginId = uniqueId("test-option");
     const BaseComponent = option.Component || BaseOptionComponent;
     class Option extends BaseComponent {
-        static components = { ...BaseComponent.components, BorderConfigurator };
+        static components = {...BaseComponent.components, BorderConfigurator};
     }
-    const staticProps = { ...option };
+    const staticProps = {...option};
     const sequence = staticProps.sequence;
     delete staticProps.Component;
     delete staticProps.sequence;
@@ -393,7 +401,9 @@ export async function setupWebsiteBuilderWithDummySnippet(content) {
             <div class="test_a"></div>
         </section>`;
     };
-    const snippetsDescription = () => [{ name: "Test", groupName: "a", content: getSnippetEl() }];
+    const snippetsDescription = () => [
+        {name: "Test", groupName: "a", content: getSnippetEl()},
+    ];
     const snippetsStructure = {
         snippets: {
             snippet_groups: [
@@ -404,16 +414,14 @@ export async function setupWebsiteBuilderWithDummySnippet(content) {
             ),
         },
     };
-    const { getEditor, getEditableContent, openBuilderSidebar } = await setupWebsiteBuilder(
-        content || "",
-        snippetsStructure
-    );
+    const {getEditor, getEditableContent, openBuilderSidebar} =
+        await setupWebsiteBuilder(content || "", snippetsStructure);
     const snippetContent = getSnippetEl(true);
 
-    return { getEditor, getEditableContent, openBuilderSidebar, snippetContent };
+    return {getEditor, getEditableContent, openBuilderSidebar, snippetContent};
 }
 
-export async function insertCategorySnippet({ group, snippet } = {}) {
+export async function insertCategorySnippet({group, snippet} = {}) {
     await contains(
         `.o-snippets-menu #snippet_groups .o_snippet${
             group ? `[data-snippet-group=${group}]` : ""

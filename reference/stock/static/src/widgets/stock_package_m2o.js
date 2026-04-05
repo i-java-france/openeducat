@@ -1,14 +1,14 @@
-import { Component } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
+import {Component} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
 import {
     buildM2OFieldDescription,
     extractM2OFieldProps,
     Many2OneField,
 } from "@web/views/fields/many2one/many2one_field";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
 
 class PackageFormDialog extends FormViewDialog {}
 
@@ -19,10 +19,10 @@ class Many2XStockPackageAutocomplete extends Many2XAutocomplete {
             ...packageFormDialog.defaultProps,
             onRecordSave: async (record) => {
                 // We need to reload to get the name computed from the backend.
-                const saved = await record.save({ reload: true });
+                const saved = await record.save({reload: true});
                 if (saved && this.props.update) {
                     // Without this, the package is named 'Unnamed' in the UI until the record is saved.
-                    this.props.update([{ ...record.data, id: record.resId }]);
+                    this.props.update([{...record.data, id: record.resId}]);
                 }
                 return saved;
             },
@@ -40,11 +40,11 @@ class StockPackageMany2OneReplacer extends Many2One {
 
 export class StockPackageMany2One extends Component {
     static template = "stock.StockPackageMany2One";
-    static components = { Many2One: StockPackageMany2OneReplacer };
+    static components = {Many2One: StockPackageMany2OneReplacer};
     static props = {
         ...Many2OneField.props,
-        displaySource: { type: Boolean },
-        displayDestination: { type: Boolean },
+        displaySource: {type: Boolean},
+        displayDestination: {type: Boolean},
     };
 
     setup() {

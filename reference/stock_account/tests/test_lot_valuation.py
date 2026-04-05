@@ -2,10 +2,11 @@
 
 from unittest import skip
 
-from odoo.addons.stock_account.tests.common import TestStockValuationCommon
+from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import Form
-from odoo import Command
+
+from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
 @skip('Temporary to fast merge new valuation')

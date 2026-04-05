@@ -1,7 +1,7 @@
-import { attClassObjectToString } from "@mail/utils/common/format";
-import { Component, useSubEnv } from "@odoo/owl";
-import { ResizablePanel } from "@web/core/resizable_panel/resizable_panel";
-import { useForwardRefToParent, useService } from "@web/core/utils/hooks";
+import {attClassObjectToString} from "@mail/utils/common/format";
+import {Component, useSubEnv} from "@odoo/owl";
+import {ResizablePanel} from "@web/core/resizable_panel/resizable_panel";
+import {useForwardRefToParent, useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -11,7 +11,7 @@ import { useForwardRefToParent, useService } from "@web/core/utils/hooks";
  */
 export class ActionPanel extends Component {
     static template = "mail.ActionPanel";
-    static components = { ResizablePanel };
+    static components = {ResizablePanel};
     static props = [
         "contentRef?",
         "icon?",
@@ -21,14 +21,14 @@ export class ActionPanel extends Component {
         "initialWidth?",
         "minWidth?",
     ];
-    static defaultProps = { contentPadding: true, resizable: true };
+    static defaultProps = {contentPadding: true, resizable: true};
 
     setup() {
         super.setup();
         this.store = useService("mail.store");
         this.ui = useService("ui");
         useForwardRefToParent("contentRef");
-        useSubEnv({ inDiscussActionPanel: true });
+        useSubEnv({inDiscussActionPanel: true});
     }
 
     get classNames() {

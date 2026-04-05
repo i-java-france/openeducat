@@ -14,12 +14,17 @@ import {
     startServer,
     triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
-import { asyncStep, serverState, waitForSteps, withUser } from "@web/../tests/web_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {
+    asyncStep,
+    serverState,
+    waitForSteps,
+    withUser,
+} from "@web/../tests/web_test_helpers";
 
-import { deserializeDateTime } from "@web/core/l10n/dates";
-import { rpc } from "@web/core/network/rpc";
-import { getOrigin } from "@web/core/utils/urls";
+import {deserializeDateTime} from "@web/core/l10n/dates";
+import {rpc} from "@web/core/network/rpc";
+import {getOrigin} from "@web/core/utils/urls";
 
 describe.current.tags("desktop");
 defineLivechatModels();
@@ -27,15 +32,19 @@ defineLivechatModels();
 test("internal users can upload file to temporary thread", async () => {
     const pyEnv = await startServer();
     await loadDefaultEmbedConfig();
-    const [partnerUser] = pyEnv["res.users"].search_read([["id", "=", serverState.partnerId]]);
-    await start({ authenticateAs: partnerUser });
+    const [partnerUser] = pyEnv["res.users"].search_read([
+        ["id", "=", serverState.partnerId],
+    ]);
+    await start({authenticateAs: partnerUser});
     await click(".o-livechat-LivechatButton");
-    const file = new File(["hello, world"], "text.txt", { type: "text/plain" });
+    const file = new File(["hello, world"], "text.txt", {type: "text/plain"});
     await contains(".o-mail-Composer");
     await click(".o-mail-Composer button[title='More Actions']");
     await contains(".dropdown-item:contains('Attach files')");
     await inputFiles(".o-mail-Composer .o_input_file", [file]);
-    await contains(".o-mail-AttachmentContainer:not(.o-isUploading):contains(text.txt) .fa-check");
+    await contains(
+        ".o-mail-AttachmentContainer:not(.o-isUploading):contains(text.txt) .fa-check"
+    );
     await triggerHotkey("Enter");
     await contains(".o-mail-Message .o-mail-AttachmentContainer:contains(text.txt)");
 });
@@ -43,10 +52,12 @@ test("internal users can upload file to temporary thread", async () => {
 test("Conversation name is operator livechat user name", async () => {
     const pyEnv = await startServer();
     await loadDefaultEmbedConfig();
-    pyEnv["res.partner"].write(serverState.partnerId, { user_livechat_username: "MitchellOp" });
-    await start({ authenticateAs: false });
+    pyEnv["res.partner"].write(serverState.partnerId, {
+        user_livechat_username: "MitchellOp",
+    });
+    await start({authenticateAs: false});
     await click(".o-livechat-LivechatButton");
-    await contains(".o-mail-ChatWindow-header", { text: "MitchellOp" });
+    await contains(".o-mail-ChatWindow-header", {text: "MitchellOp"});
 });
 
 test("Portal users should not be able to start a call", async () => {
@@ -63,18 +74,22 @@ test("Portal users should not be able to start a call", async () => {
         name: "Joel",
         user_ids: [joelUid],
     });
-    pyEnv["res.partner"].write(serverState.partnerId, { user_livechat_username: "MitchellOp" });
-    await start({ authenticateAs: { login: "joel", password: "joel" } });
+    pyEnv["res.partner"].write(serverState.partnerId, {
+        user_livechat_username: "MitchellOp",
+    });
+    await start({authenticateAs: {login: "joel", password: "joel"}});
     await click(".o-livechat-LivechatButton");
     await contains(".o-mail-ChatWindow-header:text('MitchellOp')");
     await insertText(".o-mail-Composer-input", "Hello MitchellOp!");
     await triggerHotkey("Enter");
     await contains(".o-mail-Message[data-persistent]:contains('Hello MitchellOp!')");
-    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button", { count: 2 });
+    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button", {count: 2});
     await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button[title='Fold']");
-    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button[title*='Close']");
-    await contains(".o-discuss-Call", { count: 0 });
-    // simulate operator starts call
+    await contains(
+        ".o-mail-ChatWindow-header .o-mail-ActionList-button[title*='Close']"
+    );
+    await contains(".o-discuss-Call", {count: 0});
+    // Simulate operator starts call
     const [channelId] = pyEnv["discuss.channel"].search([
         ["channel_type", "=", "livechat"],
         [
@@ -84,23 +99,29 @@ test("Portal users should not be able to start a call", async () => {
         ],
     ]);
     await withUser(serverState.userId, () =>
-        rpc("/mail/rtc/channel/join_call", { channel_id: channelId }, { silent: true })
+        rpc("/mail/rtc/channel/join_call", {channel_id: channelId}, {silent: true})
     );
-    await contains(".o-discuss-Call button", { count: 2 });
+    await contains(".o-discuss-Call button", {count: 2});
     await contains(".o-discuss-Call button[title='Join Video Call']");
     await contains(".o-discuss-Call button[title='Join Call']");
-    // still same actions in header
-    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button", { count: 2 });
+    // Still same actions in header
+    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button", {count: 2});
     await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button[title='Fold']");
-    await contains(".o-mail-ChatWindow-header .o-mail-ActionList-button[title*='Close']");
+    await contains(
+        ".o-mail-ChatWindow-header .o-mail-ActionList-button[title*='Close']"
+    );
 });
 
 test("avatar url contains access token for non-internal users", async () => {
     const pyEnv = await startServer();
     await loadDefaultEmbedConfig();
-    pyEnv["res.partner"].write(serverState.partnerId, { user_livechat_username: "MitchellOp" });
-    const [partner] = pyEnv["res.partner"].search_read([["id", "=", serverState.partnerId]]);
-    await start({ authenticateAs: false });
+    pyEnv["res.partner"].write(serverState.partnerId, {
+        user_livechat_username: "MitchellOp",
+    });
+    const [partner] = pyEnv["res.partner"].search_read([
+        ["id", "=", serverState.partnerId],
+    ]);
+    await start({authenticateAs: false});
     await click(".o-livechat-LivechatButton");
     await contains(
         `.o-mail-ChatWindow-threadAvatar img[data-src="${getOrigin()}/web/image/res.partner/${
@@ -135,7 +156,7 @@ test("can close confirm livechat with keyboard", async () => {
             asyncStep(route);
         }
     });
-    await start({ authenticateAs: false });
+    await start({authenticateAs: false});
     await click(".o-livechat-LivechatButton");
     await contains(".o-mail-ChatWindow");
     await insertText(".o-mail-Composer-input", "Hello");
@@ -146,14 +167,16 @@ test("can close confirm livechat with keyboard", async () => {
         text: "Leaving will end the live chat. Do you want to proceed?",
     });
     await triggerHotkey("Escape");
-    await contains(".o-livechat-CloseConfirmation", { count: 0 });
+    await contains(".o-livechat-CloseConfirmation", {count: 0});
     await triggerHotkey("Escape");
     await contains(".o-livechat-CloseConfirmation", {
         text: "Leaving will end the live chat. Do you want to proceed?",
     });
     await triggerHotkey("Enter");
     await waitForSteps(["/im_livechat/visitor_leave_session"]);
-    await contains(".o-mail-ChatWindow", { text: "Did we correctly answer your question?" });
+    await contains(".o-mail-ChatWindow", {
+        text: "Did we correctly answer your question?",
+    });
 });
 
 test("Should not show IM status of agents", async () => {
@@ -166,12 +189,12 @@ test("Should not show IM status of agents", async () => {
         login: "joel",
         password: "joel",
     });
-    pyEnv["res.partner"].create({ name: "Joel", user_ids: [joelUid] });
+    pyEnv["res.partner"].create({name: "Joel", user_ids: [joelUid]});
     pyEnv["res.partner"].write(serverState.partnerId, {
         im_status: "online",
         user_livechat_username: "MitchellOp",
     });
-    await start({ authenticateAs: { login: "joel", password: "joel" } });
+    await start({authenticateAs: {login: "joel", password: "joel"}});
     await click(".o-livechat-LivechatButton");
     await contains(".o-mail-ChatWindow-header:text('MitchellOp')");
     await insertText(".o-mail-Composer-input", "Hello MitchellOp!");

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -28,7 +27,7 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     def _compute_is_mto(self):
-        super(SaleOrderLine, self)._compute_is_mto()
+        super()._compute_is_mto()
         for line in self:
             if not line.display_qty_widget or line.is_mto:
                 continue
@@ -50,7 +49,7 @@ class SaleOrderLine(models.Model):
                 qty += po_line.product_uom_id._compute_quantity(po_line.product_qty, self.product_uom_id, rounding_method='HALF-UP')
             return qty
         else:
-            return super(SaleOrderLine, self)._get_qty_procurement(previous_product_uom_qty=previous_product_uom_qty)
+            return super()._get_qty_procurement(previous_product_uom_qty=previous_product_uom_qty)
 
     @api.depends('purchase_line_count')
     def _compute_product_updatable(self):

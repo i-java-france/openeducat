@@ -4,6 +4,7 @@ from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request
 from odoo.tools import consteq
+
 from odoo.addons.mail.controllers import mail
 
 
@@ -33,7 +34,7 @@ class MailController(mail.MailController):
         """
         # no model / res_id, meaning no possible record -> direct skip to super
         if not model or not res_id or model not in request.env:
-            return super(MailController, cls)._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
+            return super()._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
 
         if isinstance(request.env[model], request.env.registry['portal.mixin']):
             uid = request.session.uid or request.env.ref('base.public_user').id
@@ -53,7 +54,7 @@ class MailController(mail.MailController):
                             url_params.update([("pid", pid), ("hash", hash)])
                             url = url.replace(query=urls.url_encode(url_params, sort=True)).to_url()
                         return request.redirect(url)
-        return super(MailController, cls)._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
+        return super()._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
 
     # Add website=True to support the portal layout
     @http.route('/mail/unfollow', type='http', website=True)

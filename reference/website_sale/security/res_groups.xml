@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
-
     <!-- Feature groups -->
     <record id="group_show_uom_price" model="res.groups">
         <field name="name">UOM Price Display for eCommerce</field>
@@ -16,15 +15,20 @@
 
     <!-- Security groups -->
     <record id="base.group_user" model="res.groups">
-        <field name="implied_ids" eval="[
+        <field
+            name="implied_ids"
+            eval="[
             Command.link(ref('account.group_delivery_invoice_address')),
-        ]"/>
+        ]"
+        />
     </record>
 
     <record id="sales_team.group_sale_manager" model="res.groups">
-        <field name="implied_ids" eval="[
+        <field
+            name="implied_ids"
+            eval="[
             Command.link(ref('website.group_website_restricted_editor')),
-        ]"/>
+        ]"
+        />
     </record>
-
 </odoo>

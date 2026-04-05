@@ -1,8 +1,8 @@
-import { DiscussSidebarCallParticipants } from "@mail/discuss/call/public_web/discuss_sidebar_call_participants";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {DiscussSidebarCallParticipants} from "@mail/discuss/call/public_web/discuss_sidebar_call_participants";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
 
-import { usePopover } from "@web/core/popover/popover_hook";
-import { patch } from "@web/core/utils/patch";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {patch} from "@web/core/utils/patch";
 
 patch(DiscussSidebarCallParticipants.prototype, {
     setup() {
@@ -28,4 +28,4 @@ patch(DiscussSidebarCallParticipants.prototype, {
         }
     },
 });
-Object.assign(DiscussSidebarCallParticipants.components, { AvatarCardPopover });
+Object.assign(DiscussSidebarCallParticipants.components, {AvatarCardPopover});

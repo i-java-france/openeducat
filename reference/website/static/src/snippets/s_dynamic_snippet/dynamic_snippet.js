@@ -1,13 +1,13 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { rpc } from "@web/core/network/rpc";
-import { utils as uiUtils } from "@web/core/ui/ui_service";
-import { uniqueId } from "@web/core/utils/functions";
-import { renderToFragment } from "@web/core/utils/render";
-import { verifyHttpsUrl } from "@website/utils/misc";
+import {rpc} from "@web/core/network/rpc";
+import {utils as uiUtils} from "@web/core/ui/ui_service";
+import {uniqueId} from "@web/core/utils/functions";
+import {renderToFragment} from "@web/core/utils/render";
+import {verifyHttpsUrl} from "@website/utils/misc";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
 const DEFAULT_NUMBER_OF_ELEMENTS = 4;
 const DEFAULT_NUMBER_OF_ELEMENTS_SM = 1;
@@ -18,7 +18,7 @@ export class DynamicSnippet extends Interaction {
         "[data-url]": {
             "t-on-click": this.callToAction,
         },
-        _window: { "t-on-resize": this.throttled(this.render) },
+        _window: {"t-on-resize": this.throttled(this.render)},
         _root: {
             "t-att-class": () => ({
                 // Compatibility code: A dynamic snippet may end up with one,
@@ -53,7 +53,8 @@ export class DynamicSnippet extends Interaction {
 
     async willStart() {
         this.isSingleMode =
-            parseInt(this.el.dataset.numberOfRecords) === 1 && !this.el.dataset.filterId;
+            parseInt(this.el.dataset.numberOfRecords) === 1 &&
+            !this.el.dataset.filterId;
         await this.fetchData();
     }
 
@@ -77,7 +78,8 @@ export class DynamicSnippet extends Interaction {
         const isSingleModeConfigComplete =
             data.snippetModel && (!this.withSample ? data.snippetResId : true);
         return !!(
-            data.templateKey && (this.isSingleMode ? isSingleModeConfigComplete : data.filterId)
+            data.templateKey &&
+            (this.isSingleMode ? isSingleModeConfigComplete : data.filterId)
         );
     }
 
@@ -132,7 +134,10 @@ export class DynamicSnippet extends Interaction {
      * Prepare the content before rendering.
      */
     prepareContent() {
-        this.renderedContentNode = renderToFragment(this.templateKey, this.getQWebRenderOptions());
+        this.renderedContentNode = renderToFragment(
+            this.templateKey,
+            this.getQWebRenderOptions()
+        );
     }
 
     /**
@@ -145,11 +150,14 @@ export class DynamicSnippet extends Interaction {
         let numberOfElements;
         if (uiUtils.isSmall()) {
             numberOfElements =
-                parseInt(dataset.numberOfElementsSmallDevices) || DEFAULT_NUMBER_OF_ELEMENTS_SM;
+                parseInt(dataset.numberOfElementsSmallDevices) ||
+                DEFAULT_NUMBER_OF_ELEMENTS_SM;
         } else {
-            numberOfElements = parseInt(dataset.numberOfElements) || DEFAULT_NUMBER_OF_ELEMENTS;
+            numberOfElements =
+                parseInt(dataset.numberOfElements) || DEFAULT_NUMBER_OF_ELEMENTS;
         }
-        const chunkSize = numberOfRecords < numberOfElements ? numberOfRecords : numberOfElements;
+        const chunkSize =
+            numberOfRecords < numberOfElements ? numberOfRecords : numberOfElements;
         return {
             chunkSize: chunkSize,
             data: this.data,

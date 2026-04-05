@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("portal_compute_codice_fiscale", {
     steps: () => [
@@ -45,7 +45,8 @@ registry.category("web_tour.tours").add("portal_compute_codice_fiscale", {
         },
         {
             id: "o_country_id",
-            content: "Select country with code 'IT' to trigger compute of Codice Fiscale",
+            content:
+                "Select country with code 'IT' to trigger compute of Codice Fiscale",
             trigger: 'select[name="country_id"]',
             run: `selectByLabel Italy`,
         },

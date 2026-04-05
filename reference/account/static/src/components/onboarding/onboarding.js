@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 class AccountOnboardingWidget extends Component {
     static template = "account.Onboarding";
@@ -19,17 +19,22 @@ class AccountOnboardingWidget extends Component {
     }
 
     async onboardingLinkClicked(step) {
-        const action = await this.orm.call("onboarding.onboarding.step", step.action, [], {
-            context: {
-                journal_id: this.props.record.resId,
+        const action = await this.orm.call(
+            "onboarding.onboarding.step",
+            step.action,
+            [],
+            {
+                context: {
+                    journal_id: this.props.record.resId,
+                },
             }
-        });
+        );
         this.action.doAction(action);
     }
 }
 
 export const accountOnboarding = {
     component: AccountOnboardingWidget,
-}
+};
 
 registry.category("view_widgets").add("account_onboarding", accountOnboarding);

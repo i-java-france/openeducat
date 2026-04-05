@@ -1,14 +1,14 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
 import {
     addMobileOrders,
     fillRemovedItemGap,
     removeMobileOrders,
 } from "@html_builder/utils/column_layout_utils";
-import { isElementInViewport } from "@html_builder/utils/utils";
-import { scrollTo } from "@html_builder/utils/scrolling";
-import { localization } from "@web/core/l10n/localization";
+import {isElementInViewport} from "@html_builder/utils/utils";
+import {scrollTo} from "@html_builder/utils/scrolling";
+import {localization} from "@web/core/l10n/localization";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 /**
@@ -24,7 +24,7 @@ export class MovePlugin extends Plugin {
     static dependencies = ["visibility"];
     /** @type {import("plugins").BuilderResources} */
     resources = {
-        has_overlay_options: { hasOption: (el) => this.isMovable(el) },
+        has_overlay_options: {hasOption: (el) => this.isMovable(el)},
         get_overlay_buttons: withSequence(0, {
             getButtons: this.getActiveOverlayButtons.bind(this),
         }),
@@ -57,13 +57,15 @@ export class MovePlugin extends Plugin {
         const horizontalExclude = [];
         const noScrollSelector = [];
         for (const movableSelector of this.getResource("is_movable_selector")) {
-            const { selector, exclude, direction, noScroll } = movableSelector;
+            const {selector, exclude, direction, noScroll} = movableSelector;
             if (selector) {
-                const selectors = direction === "vertical" ? verticalSelector : horizontalSelector;
+                const selectors =
+                    direction === "vertical" ? verticalSelector : horizontalSelector;
                 selectors.push(selector);
             }
             if (exclude) {
-                const excludes = direction === "vertical" ? verticalExclude : horizontalExclude;
+                const excludes =
+                    direction === "vertical" ? verticalExclude : horizontalExclude;
                 excludes.push(exclude);
             }
             if (noScroll) {
@@ -77,9 +79,11 @@ export class MovePlugin extends Plugin {
         };
         this.horizontalMove = {
             selector: horizontalSelector.join(", "),
-            exclude: horizontalExclude.length > 0 ? horizontalExclude.join(", ") : false,
+            exclude:
+                horizontalExclude.length > 0 ? horizontalExclude.join(", ") : false,
         };
-        this.noScrollSelector = noScrollSelector.length > 0 ? noScrollSelector.join(", ") : false;
+        this.noScrollSelector =
+            noScrollSelector.length > 0 ? noScrollSelector.join(", ") : false;
 
         // Needed for compatibility (with already dropped snippets).
         // For each row, check if all its columns are either mobile ordered or
@@ -89,7 +93,10 @@ export class MovePlugin extends Plugin {
         for (const rowEl of rowEls) {
             const columnEls = [...rowEl.children];
             const orderedColumnEls = columnEls.filter((el) => el.style.order);
-            if (orderedColumnEls.length && orderedColumnEls.length !== columnEls.length) {
+            if (
+                orderedColumnEls.length &&
+                orderedColumnEls.length !== columnEls.length
+            ) {
                 removeMobileOrders(orderedColumnEls, this.config.mobileBreakpoint);
             }
         }
@@ -97,8 +104,10 @@ export class MovePlugin extends Plugin {
 
     isMovable(el) {
         return (
-            (el.matches(this.verticalMove.selector) && !el.matches(this.verticalMove.exclude)) ||
-            (el.matches(this.horizontalMove.selector) && !el.matches(this.horizontalMove.exclude))
+            (el.matches(this.verticalMove.selector) &&
+                !el.matches(this.verticalMove.exclude)) ||
+            (el.matches(this.horizontalMove.selector) &&
+                !el.matches(this.horizontalMove.exclude))
         );
     }
 
@@ -116,8 +125,9 @@ export class MovePlugin extends Plugin {
         }
         const rowRect = rowEl.getBoundingClientRect();
         const columnRect = el.getBoundingClientRect();
-        const { marginLeft, marginRight } = getComputedStyle(el);
-        const totalWidth = columnRect.width + parseFloat(marginLeft) + parseFloat(marginRight);
+        const {marginLeft, marginRight} = getComputedStyle(el);
+        const totalWidth =
+            columnRect.width + parseFloat(marginLeft) + parseFloat(marginRight);
         // Allow a small margin to cope with rounding.
         return totalWidth >= rowRect.width - 1;
     }
@@ -154,22 +164,26 @@ export class MovePlugin extends Plugin {
                     title: isVertical
                         ? _t("Move up")
                         : this.isEditableRTL
-                        ? _t("Move right")
-                        : _t("Move left"),
+                          ? _t("Move right")
+                          : _t("Move left"),
                     handler: this.onMoveClick.bind(this, "prev"),
                 };
                 buttons.push(button);
             }
 
             if (nextSiblingEl) {
-                const direction = isVertical ? "down" : reverseButtons ? "left" : "right";
+                const direction = isVertical
+                    ? "down"
+                    : reverseButtons
+                      ? "left"
+                      : "right";
                 const button = {
                     class: `fa fa-fw fa-angle-${direction}`,
                     title: isVertical
                         ? _t("Move down")
                         : this.isEditableRTL
-                        ? _t("Move left")
-                        : _t("Move right"),
+                          ? _t("Move left")
+                          : _t("Move right"),
                     handler: this.onMoveClick.bind(this, "next"),
                 };
                 buttons.push(button);
@@ -182,7 +196,7 @@ export class MovePlugin extends Plugin {
         return buttons;
     }
 
-    onCloned({ cloneEl, originalEl }) {
+    onCloned({cloneEl, originalEl}) {
         if (!this.isMovable(originalEl)) {
             return;
         }
@@ -208,7 +222,7 @@ export class MovePlugin extends Plugin {
         }
     }
 
-    onElementDropped({ droppedEl, dragState }) {
+    onElementDropped({droppedEl, dragState}) {
         if (!this.isMovable(droppedEl)) {
             return;
         }
@@ -217,7 +231,7 @@ export class MovePlugin extends Plugin {
         // If the dropped element has a mobile order and if it was dropped in
         // another snippet, fill the gap left in the starting snippet.
         const mobileOrder = droppedEl.style.order;
-        const { startParentEl } = dragState;
+        const {startParentEl} = dragState;
         if (mobileOrder && parentEl !== startParentEl) {
             fillRemovedItemGap(startParentEl, parseInt(mobileOrder));
         }
@@ -231,7 +245,9 @@ export class MovePlugin extends Plugin {
         const isGridItem = this.overlayTarget.classList.contains("o_grid_item");
         const siblingsEl = [...this.overlayTarget.parentNode.children];
         const visibleSiblingEl = siblingsEl.find(
-            (el) => el !== this.overlayTarget && window.getComputedStyle(el).display !== "none"
+            (el) =>
+                el !== this.overlayTarget &&
+                window.getComputedStyle(el).display !== "none"
         );
         // The arrows are not displayed if:
         // - the target has no visible siblings
@@ -282,7 +298,7 @@ export class MovePlugin extends Plugin {
 
         // Scroll to the element.
         if (!this.noScroll && !isElementInViewport(this.overlayTarget)) {
-            const { top, height } = this.overlayTarget.getBoundingClientRect();
+            const {top, height} = this.overlayTarget.getBoundingClientRect();
             const viewportHeight = this.document.defaultView.innerHeight;
             const heightDiff = viewportHeight - height;
             const isBottomHidden = heightDiff < top;

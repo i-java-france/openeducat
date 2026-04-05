@@ -1,6 +1,6 @@
 // @odoo-module ignore
 
-/* eslint-disable no-restricted-globals */
+
 const cacheName = "odoo-sw-cache";
 const homepageURL = "/odoo";
 const offLineURL = `${homepageURL}/offline`;
@@ -11,8 +11,10 @@ self.addEventListener("install", (event) => {
     event.waitUntil(
         Promise.all([
             // Needed because the sw is register after the initial fetch
-            fetch(homepageURL).then((res) => (res.ok ? storeDataOnCache(homepageURL, res) : null)),
-            // offLine Page
+            fetch(homepageURL).then((res) =>
+                res.ok ? storeDataOnCache(homepageURL, res) : null
+            ),
+            // OffLine Page
             caches.open(cacheName).then((cache) => cache.add(offLineURL)),
         ])
     );
@@ -28,12 +30,12 @@ const getTextFromResponse = async (response) => {
     const decoder = new TextDecoder();
     let result = "";
     async function read() {
-        const { value, done } = await reader.read();
+        const {value, done} = await reader.read();
         if (done) {
             reader.releaseLock();
             return;
         }
-        result += decoder.decode(value, { stream: true });
+        result += decoder.decode(value, {stream: true});
         await read();
     }
     await read();
@@ -42,7 +44,7 @@ const getTextFromResponse = async (response) => {
 
 const storeDataOnCache = async (url, response) => {
     const htmlBody = await getTextFromResponse(response);
-    // store on ram, the session info
+    // Store on ram, the session info
     sessionInfo = extractSessionInfo(htmlBody);
     const cache = await caches.open(cacheName);
     return cache.put(
@@ -59,7 +61,7 @@ const readDataOnCache = async (url) => {
     if (url === offLineURL) {
         return response;
     }
-    // if you come from /odoo to project the url is now /odoo/project, but it doesn't exist in cache so use /odoo instead
+    // If you come from /odoo to project the url is now /odoo/project, but it doesn't exist in cache so use /odoo instead
     if (!response) {
         return readDataOnCache(homepageURL);
     }
@@ -76,7 +78,9 @@ const fetchErrorMessages = [
 ];
 
 const navigateOrDisplayOfflinePage = async (request) => {
-    const isDebugAssets = new URL(request.url).searchParams.get("debug")?.includes("assets");
+    const isDebugAssets = new URL(request.url).searchParams
+        .get("debug")
+        ?.includes("assets");
     try {
         const response = await fetch(request);
         if (response.ok && !isDebugAssets) {
@@ -111,7 +115,9 @@ const serveShareTarget = (event) => {
         (async () => {
             // The page sends this message to tell the service worker it's ready to receive the file.
             await waitingMessage("odoo_share_target");
-            const client = await self.clients.get(event.resultingClientId || event.clientId);
+            const client = await self.clients.get(
+                event.resultingClientId || event.clientId
+            );
             const data = await event.request.formData();
             client.postMessage({
                 shared_files: data.getAll("externalMedia") || [],
@@ -129,8 +135,9 @@ self.addEventListener("fetch", (event) => {
         return serveShareTarget(event);
     }
     if (
-        (event.request.mode === "navigate" && event.request.destination === "document") ||
-        // request.mode = navigate isn't supported in all browsers => check for http header accept:text/html
+        (event.request.mode === "navigate" &&
+            event.request.destination === "document") ||
+        // Request.mode = navigate isn't supported in all browsers => check for http header accept:text/html
         event.request.headers.get("accept").includes("text/html")
     ) {
         event.respondWith(navigateOrDisplayOfflinePage(event.request));
@@ -145,7 +152,7 @@ const nextMessageMap = new Map();
 /**
  *
  * @param message : string
- * @return {Promise}
+ * @returns {Promise}
  */
 const waitingMessage = async (message) =>
     new Promise((resolve) => {

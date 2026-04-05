@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, Command, fields, models, _
-from odoo.addons.mail.tools.discuss import Store
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import get_lang
 from odoo.tools.sql import column_exists, create_column
+
+from odoo.addons.mail.tools.discuss import Store
 
 
 class WebsiteVisitor(models.Model):

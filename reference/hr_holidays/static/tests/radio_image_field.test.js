@@ -1,18 +1,25 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { clickSave, contains, defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    clickSave,
+    contains,
+    defineModels,
+    fields,
+    models,
+    mountView,
+} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    _records = [{ id: 1, product_id: false }];
+    _records = [{id: 1, product_id: false}];
 
-    product_id = fields.Many2one({ relation: "product" });
+    product_id = fields.Many2one({relation: "product"});
 }
 
 class Product extends models.Model {
     _records = [
-        { id: 1, name: "a" },
-        { id: 2, name: "b" },
-        { id: 3, name: "c" },
+        {id: 1, name: "a"},
+        {id: 2, name: "b"},
+        {id: 3, name: "c"},
     ];
 
     name = fields.Char();

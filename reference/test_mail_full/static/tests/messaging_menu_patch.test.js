@@ -1,7 +1,7 @@
-import { click, contains, start, startServer } from "@mail/../tests/mail_test_helpers";
-import { test } from "@odoo/hoot";
-import { defineTestMailFullModels } from "@test_mail_full/../tests/test_mail_full_test_helpers";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {click, contains, start, startServer} from "@mail/../tests/mail_test_helpers";
+import {test} from "@odoo/hoot";
+import {defineTestMailFullModels} from "@test_mail_full/../tests/test_mail_full_test_helpers";
+import {serverState} from "@web/../tests/web_test_helpers";
 
 defineTestMailFullModels();
 
@@ -24,15 +24,17 @@ test("rating value displayed on the preview", async () => {
     });
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
-    await contains(".o-mail-NotificationItem-text", { text: "Rating:" });
+    await contains(".o-mail-NotificationItem-text", {text: "Rating:"});
     await contains(".o-rating-preview-image[alt='top']");
-    await contains(".o-rating-preview-image[data-src='/rating/static/src/img/rating_5.png']");
+    await contains(
+        ".o-rating-preview-image[data-src='/rating/static/src/img/rating_5.png']"
+    );
 });
 
 test("rating value displayed on the needaction preview", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const ratingId = pyEnv["mail.test.rating"].create({ name: "Test rating" });
+    const ratingId = pyEnv["mail.test.rating"].create({name: "Test rating"});
     const messageId = pyEnv["mail.message"].create({
         model: "mail.test.rating",
         needaction: true,
@@ -55,7 +57,9 @@ test("rating value displayed on the needaction preview", async () => {
     ]);
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
-    await contains(".o-mail-NotificationItem-text", { text: "Rating:" });
+    await contains(".o-mail-NotificationItem-text", {text: "Rating:"});
     await contains(".o-rating-preview-image[alt='top']");
-    await contains(".o-rating-preview-image[data-src='/rating/static/src/img/rating_5.png']");
+    await contains(
+        ".o-rating-preview-image[data-src='/rating/static/src/img/rating_5.png']"
+    );
 });

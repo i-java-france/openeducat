@@ -1,8 +1,15 @@
-import { Component, onWillUnmount, useState, useSubEnv, useRef, onMounted } from "@odoo/owl";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { useService } from "@web/core/utils/hooks";
-import { AttributeSelection } from "@pos_self_order/app/components/attribute_selection/attribute_selection";
-import { useScrollShadow } from "../../utils/scroll_shadow_hook";
+import {
+    Component,
+    onWillUnmount,
+    useState,
+    useSubEnv,
+    useRef,
+    onMounted,
+} from "@odoo/owl";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {useService} from "@web/core/utils/hooks";
+import {AttributeSelection} from "@pos_self_order/app/components/attribute_selection/attribute_selection";
+import {useScrollShadow} from "../../utils/scroll_shadow_hook";
 import {
     getProductVariantByAttributes,
     getAttributeValues,
@@ -11,7 +18,7 @@ import {
 
 export class ProductPage extends Component {
     static template = "pos_self_order.ProductPage";
-    static components = { AttributeSelection };
+    static components = {AttributeSelection};
     static props = ["productTemplate"];
 
     setup() {
@@ -24,7 +31,7 @@ export class ProductPage extends Component {
         }
 
         const editedLine = this.selfOrder.editedLine;
-        useSubEnv({ selectedValues: {} });
+        useSubEnv({selectedValues: {}});
 
         this.selfOrder.lastEditedProductId = this.props.productTemplate.id;
         this.state = useState({
@@ -73,7 +80,8 @@ export class ProductPage extends Component {
             return false;
         }
         return (
-            el.scrollHeight > el.clientHeight && this.productTemplate.attribute_line_ids.length > 1
+            el.scrollHeight > el.clientHeight &&
+            this.productTemplate.attribute_line_ids.length > 1
         );
     }
 
@@ -100,7 +108,9 @@ export class ProductPage extends Component {
         if (!selection) {
             return true;
         }
-        return Boolean(selection.getMissingAttributeValue(this.productTemplate.attribute_line_ids));
+        return Boolean(
+            selection.getMissingAttributeValue(this.productTemplate.attribute_line_ids)
+        );
     }
 
     isAddToCartEnabled() {
@@ -122,7 +132,9 @@ export class ProductPage extends Component {
         const variantAttributeValueIds = selection
             .getAllSelectedAttributeValuesIds()
             .map((attr) => Number(attr));
-        return this.props.productTemplate._isArchivedCombination(variantAttributeValueIds);
+        return this.props.productTemplate._isArchivedCombination(
+            variantAttributeValueIds
+        );
     }
 
     getProductPrice() {
@@ -146,7 +158,7 @@ export class ProductPage extends Component {
             productVariant
         );
         const taxDetails = this.props.productTemplate.getTaxDetails({
-            overridedValues: { price_unit: price, quantity: this.state.qty },
+            overridedValues: {price_unit: price, quantity: this.state.qty},
         });
         return this.selfOrder.isTaxesIncludedInPrice()
             ? taxDetails.total_included
@@ -187,7 +199,7 @@ export class ProductPage extends Component {
         );
         document
             .getElementById(missingAttribute?.attribute_id?.id)
-            ?.scrollIntoView({ behavior: "smooth" });
+            ?.scrollIntoView({behavior: "smooth"});
     }
 
     /*

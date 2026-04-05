@@ -1,10 +1,10 @@
-import { Component, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { sortBy } from "@web/core/utils/arrays";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { useService } from "@web/core/utils/hooks";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { debounce } from "@web/core/utils/timing";
+import {Component, onWillStart, useEffect, useRef, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {sortBy} from "@web/core/utils/arrays";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {useService} from "@web/core/utils/hooks";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {debounce} from "@web/core/utils/timing";
 
 class Page {
     constructor(resModel, fieldDefs, options = {}) {
@@ -15,7 +15,8 @@ class Page {
             selectedName = null,
             isDebugMode,
             readProperty = false,
-            sortFn = (fieldDefs) => sortBy(Object.keys(fieldDefs), (key) => fieldDefs[key].string),
+            sortFn = (fieldDefs) =>
+                sortBy(Object.keys(fieldDefs), (key) => fieldDefs[key].string),
         } = options;
         this.previousPage = previousPage;
         this.selectedName = selectedName;
@@ -108,31 +109,35 @@ export class ModelFieldSelectorPopover extends Component {
     static template = "web.ModelFieldSelectorPopover";
     static props = {
         close: Function,
-        filter: { type: Function, optional: true },
-        sort: { type: Function, optional: true },
-        followRelations: { type: Boolean, optional: true },
-        showDebugInput: { type: Boolean, optional: true },
-        isDebugMode: { type: Boolean, optional: true },
-        path: { optional: true },
-        readProperty: { type: Boolean, optional: true },
+        filter: {type: Function, optional: true},
+        sort: {type: Function, optional: true},
+        followRelations: {type: Boolean, optional: true},
+        showDebugInput: {type: Boolean, optional: true},
+        isDebugMode: {type: Boolean, optional: true},
+        path: {optional: true},
+        readProperty: {type: Boolean, optional: true},
         resModel: String,
-        showSearchInput: { type: Boolean, optional: true },
+        showSearchInput: {type: Boolean, optional: true},
         update: Function,
     };
     static defaultProps = {
-        filter: (value) => value.searchable && value.type != "json" && value.type !== "separator",
+        filter: (value) =>
+            value.searchable && value.type != "json" && value.type !== "separator",
         isDebugMode: false,
         followRelations: true,
     };
 
     setup() {
         this.fieldService = useService("field");
-        this.state = useState({ page: null });
+        this.state = useState({page: null});
         this.keepLast = new KeepLast();
         this.debouncedSearchFields = debounce(this.searchFields.bind(this), 250);
 
         onWillStart(async () => {
-            this.state.page = await this.loadPages(this.props.resModel, this.props.path);
+            this.state.page = await this.loadPages(
+                this.props.resModel,
+                this.props.path
+            );
         });
 
         const rootRef = useRef("root");
@@ -142,7 +147,7 @@ export class ModelFieldSelectorPopover extends Component {
             );
             if (focusedElement) {
                 // current page can be empty (e.g. after a search)
-                focusedElement.scrollIntoView({ block: "center" });
+                focusedElement.scrollIntoView({block: "center"});
             }
         });
         useEffect(
@@ -184,14 +189,14 @@ export class ModelFieldSelectorPopover extends Component {
     }
 
     async followRelation(fieldDef) {
-        const { modelsInfo } = await this.keepLast.add(
+        const {modelsInfo} = await this.keepLast.add(
             this.fieldService.loadPath(
                 fieldDef.relation || this.state.page.resModel,
                 `${fieldDef.name}.*`
             )
         );
         this.state.page.selectedName = fieldDef.name;
-        const { resModel, fieldDefs } = modelsInfo.at(-1);
+        const {resModel, fieldDefs} = modelsInfo.at(-1);
         this.openPage(
             new Page(resModel, this.filter(fieldDefs, this.state.page.path, resModel), {
                 previousPage: this.state.page,
@@ -208,7 +213,9 @@ export class ModelFieldSelectorPopover extends Component {
     }
 
     async loadNewPath(path) {
-        const newPage = await this.keepLast.add(this.loadPages(this.props.resModel, path));
+        const newPage = await this.keepLast.add(
+            this.loadPages(this.props.resModel, path)
+        );
         this.openPage(newPage);
     }
 
@@ -221,12 +228,15 @@ export class ModelFieldSelectorPopover extends Component {
                 sortFn: this.props.sort,
             });
         }
-        const { isInvalid, modelsInfo, names } = await this.fieldService.loadPath(resModel, path);
+        const {isInvalid, modelsInfo, names} = await this.fieldService.loadPath(
+            resModel,
+            path
+        );
         switch (isInvalid) {
             case "model":
                 throw new Error(`Invalid model name: ${resModel}`);
             case "path": {
-                const { resModel, fieldDefs } = modelsInfo[0];
+                const {resModel, fieldDefs} = modelsInfo[0];
                 return new Page(resModel, this.filter(fieldDefs, path, resModel), {
                     selectedName: path,
                     isDebugMode: this.props.isDebugMode,
@@ -238,7 +248,7 @@ export class ModelFieldSelectorPopover extends Component {
                 let page = null;
                 for (let index = 0; index < names.length; index++) {
                     const name = names[index];
-                    const { resModel, fieldDefs } = modelsInfo[index];
+                    const {resModel, fieldDefs} = modelsInfo[index];
                     page = new Page(resModel, this.filter(fieldDefs, path, resModel), {
                         previousPage: page,
                         selectedName: name,
@@ -285,7 +295,7 @@ export class ModelFieldSelectorPopover extends Component {
 
     // @TODO should rework/improve this and maybe use hotkeys
     async onInputKeydown(ev) {
-        const { page } = this.state;
+        const {page} = this.state;
         switch (ev.key) {
             case "ArrowUp": {
                 if (ev.target.selectionStart === 0) {

@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { click, edit, queryFirst } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click, edit, queryFirst} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineModels, fields, models, mountView} from "@web/../tests/web_test_helpers";
 
 class Report extends models.Model {
     int_field = fields.Integer();
@@ -49,7 +49,7 @@ test("IframeWrapperField in form view with onchange", async () => {
         color: "rgb(255, 0, 0)",
     });
     await click(".o_field_widget[name=int_field] input");
-    await edit(264, { confirm: "enter" });
+    await edit(264, {confirm: "enter"});
     await animationFrame();
     expect(queryFirst("iframe:iframe .nice_div")).toHaveInnerHTML("<p>New content</p>");
 });

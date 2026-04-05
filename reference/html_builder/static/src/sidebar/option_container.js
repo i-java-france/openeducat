@@ -1,10 +1,10 @@
-import { BorderConfigurator } from "../plugins/border_configurator_option";
-import { ShadowOption } from "../plugins/shadow_option";
-import { getSnippetName, useOptionsSubEnv } from "@html_builder/utils/utils";
-import { onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { useOperation } from "../core/operation_plugin";
+import {BorderConfigurator} from "../plugins/border_configurator_option";
+import {ShadowOption} from "../plugins/shadow_option";
+import {getSnippetName, useOptionsSubEnv} from "@html_builder/utils/utils";
+import {onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {useOperation} from "../core/operation_plugin";
 import {
     BaseOptionComponent,
     useApplyVisibility,
@@ -12,28 +12,34 @@ import {
     useGetItemValue,
     useVisibilityObserver,
 } from "../core/utils";
-import { isRemovable } from "@html_builder/core/remove_plugin";
-import { isClonable } from "@html_builder/core/clone_plugin";
+import {isRemovable} from "@html_builder/core/remove_plugin";
+import {isClonable} from "@html_builder/core/clone_plugin";
 
 export class OptionsContainer extends BaseOptionComponent {
     static template = "html_builder.OptionsContainer";
-    static dependencies = ["builderOptions", "overlayButtons", "builderOverlay", "remove", "clone"];
+    static dependencies = [
+        "builderOptions",
+        "overlayButtons",
+        "builderOverlay",
+        "remove",
+        "clone",
+    ];
     static components = {
         BorderConfigurator,
         ShadowOption,
     };
     static props = {
-        snippetModel: { type: Object },
-        options: { type: Array },
+        snippetModel: {type: Object},
+        options: {type: Array},
         editingElement: true, // HTMLElement from iframe
         isRemovable: false,
-        removeDisabledReason: { type: String, optional: true },
+        removeDisabledReason: {type: String, optional: true},
         isClonable: false,
-        cloneDisabledReason: { type: String, optional: true },
-        optionTitleComponents: { type: Array, optional: true },
-        containerTopButtons: { type: Array },
-        containerTitle: { type: Object, optional: true },
-        headerMiddleButtons: { type: Array, optional: true },
+        cloneDisabledReason: {type: String, optional: true},
+        optionTitleComponents: {type: Array, optional: true},
+        containerTopButtons: {type: Array},
+        containerTitle: {type: Object, optional: true},
+        headerMiddleButtons: {type: Array, optional: true},
     };
     static defaultProps = {
         containerTitle: {},
@@ -53,7 +59,9 @@ export class OptionsContainer extends BaseOptionComponent {
         this.domState = useDomState((editingElement) => ({
             isRemovable: isRemovable(editingElement),
             removeDisabledReason:
-                this.dependencies.builderOptions.getRemoveDisabledReason(editingElement),
+                this.dependencies.builderOptions.getRemoveDisabledReason(
+                    editingElement
+                ),
             isClonable: isClonable(editingElement),
             cloneDisabledReason:
                 this.dependencies.builderOptions.getCloneDisabledReason(editingElement),

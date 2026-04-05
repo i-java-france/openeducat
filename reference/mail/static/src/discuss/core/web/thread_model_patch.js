@@ -1,11 +1,15 @@
-import { Thread } from "@mail/core/common/thread_model";
+import {Thread} from "@mail/core/common/thread_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(Thread.prototype, {
     onPinStateUpdated() {
         super.onPinStateUpdated();
-        if (!this.displayToSelf && !this.isLocallyPinned && this.eq(this.store.discuss.thread)) {
+        if (
+            !this.displayToSelf &&
+            !this.isLocallyPinned &&
+            this.eq(this.store.discuss.thread)
+        ) {
             if (this.store.discuss.isActive) {
                 const newThread =
                     this.store.discuss.channels.threads.find(

@@ -1,10 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import heapq
 import logging
-from collections import namedtuple
-
 from ast import literal_eval
-from collections import defaultdict
+from collections import defaultdict, namedtuple
+
 from markupsafe import escape
 from psycopg2 import Error
 
@@ -357,7 +356,7 @@ class StockQuant(models.Model):
                 return
             self = self.sudo()
             raise UserError(_("Quant's editing is restricted, you can't do this operation."))
-        return super(StockQuant, self).write(vals)
+        return super().write(vals)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_wrong_permission(self):

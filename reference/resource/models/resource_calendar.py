@@ -285,7 +285,7 @@ class ResourceCalendar(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", calendar.name)) for calendar, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", calendar.name)) for calendar, vals in zip(self, vals_list, strict=False)]
 
     # --------------------------------------------------
     # Actions
@@ -593,7 +593,7 @@ class ResourceCalendar(models.Model):
             # put it back to UTC
             work_intervals = [dt.astimezone(utc) for dt in work_intervals]
             # pick groups of two
-            work_intervals = list(zip(work_intervals[0::2], work_intervals[1::2]))
+            work_intervals = list(zip(work_intervals[0::2], work_intervals[1::2], strict=False))
             result[resource.id] = work_intervals
         return result
 

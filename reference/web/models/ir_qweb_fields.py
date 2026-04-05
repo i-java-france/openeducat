@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import hashlib
 from collections import OrderedDict
-from werkzeug.urls import url_quote
-from markupsafe import Markup
 
-from odoo import api, models, fields
+from markupsafe import Markup
+from werkzeug.urls import url_quote
+
+from odoo import api, fields, models
 from odoo.tools import html_escape as escape
 
 
@@ -93,7 +93,7 @@ class IrQwebFieldImage(models.AbstractModel):
         atts["width"] = options.get('width')
         atts["height"] = options.get('height')
         atts["alt"] = alt
-        atts["data-zoom"] = src_zoom and u'1' or None
+        atts["data-zoom"] = src_zoom and '1' or None
         atts["data-zoom-image"] = src_zoom
         atts["data-no-post-process"] = options.get('data-no-post-process')
 

@@ -1,11 +1,11 @@
-import { CARD_PARENT_HANDLERS } from "@website/builder/plugins/options/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { BOX_BORDER_SHADOW } from "@website/builder/option_sequence";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { ShadowOption } from "@html_builder/plugins/shadow_option";
+import {CARD_PARENT_HANDLERS} from "@website/builder/plugins/options/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {BOX_BORDER_SHADOW} from "@website/builder/option_sequence";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {ShadowOption} from "@html_builder/plugins/shadow_option";
 
 export class BorderOption extends BaseOptionComponent {
     static template = "website.BorderOption";

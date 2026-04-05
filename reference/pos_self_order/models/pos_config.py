@@ -1,16 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import uuid
 import base64
+import uuid
 import zipfile
+from io import BytesIO
+from urllib.parse import unquote
+
 import qrcode
 import qrcode.image.svg
-from io import BytesIO
-from typing import Optional, List, Dict
-from urllib.parse import unquote
-from odoo.exceptions import UserError, ValidationError, AccessError
 
-from odoo import api, fields, models, _, service
-from odoo.tools import file_open, split_every
+from odoo import _, api, fields, models, service
+from odoo.exceptions import AccessError, UserError, ValidationError
+from odoo.tools import split_every
 
 
 class PosConfig(models.Model):
@@ -242,7 +242,7 @@ class PosConfig(models.Model):
 
         return table_qr_code
 
-    def _get_self_order_route(self, table_id: Optional[int] = None) -> str:
+    def _get_self_order_route(self, table_id: int | None = None) -> str:
         self.ensure_one()
         base_route = f"/pos-self/{self.id}"
         table_route = ""
@@ -260,7 +260,7 @@ class PosConfig(models.Model):
 
         return f"{base_route}?access_token={self.access_token}{table_route}"
 
-    def _get_self_order_url(self, table_id: Optional[int] = None) -> str:
+    def _get_self_order_url(self, table_id: int | None = None) -> str:
         self.ensure_one()
         long_url = self.get_base_url() + self._get_self_order_route(table_id)
         return self.env['link.tracker'].search_or_create([{
@@ -342,7 +342,7 @@ class PosConfig(models.Model):
 
         return response
 
-    def _split_qr_codes_list(self, floors: List[Dict], cols: int) -> List[Dict]:
+    def _split_qr_codes_list(self, floors: list[dict], cols: int) -> list[dict]:
         """
         :param floors: the list of floors
         :param cols: the number of qr codes per row

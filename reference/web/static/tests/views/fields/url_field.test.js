@@ -1,6 +1,12 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryAllAttributes, queryAllTexts, queryFirst, click, middleClick } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {
+    click,
+    middleClick,
+    queryAllAttributes,
+    queryAllTexts,
+    queryFirst,
+} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     defineModels,
@@ -20,7 +26,7 @@ defineModels([Product]);
 onRpc("has_group", () => true);
 
 test("UrlField in form view", async () => {
-    Product._records = [{ id: 1, url: "https://www.example.com" }];
+    Product._records = [{id: 1, url: "https://www.example.com"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -35,7 +41,7 @@ test("UrlField in form view", async () => {
 });
 
 test("in form view (readonly)", async () => {
-    Product._records = [{ id: 1, url: "https://www.example.com" }];
+    Product._records = [{id: 1, url: "https://www.example.com"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -43,13 +49,16 @@ test("in form view (readonly)", async () => {
         arch: `<form><field name="url" widget="url" readonly="1"/></form>`,
     });
     expect("a.o_field_widget.o_form_uri").toHaveCount(1);
-    expect("a.o_field_widget.o_form_uri").toHaveAttribute("href", "https://www.example.com");
+    expect("a.o_field_widget.o_form_uri").toHaveAttribute(
+        "href",
+        "https://www.example.com"
+    );
     expect("a.o_field_widget.o_form_uri").toHaveAttribute("target", "_blank");
     expect("a.o_field_widget.o_form_uri").toHaveText("https://www.example.com");
 });
 
 test("it takes its text content from the text attribute", async () => {
-    Product._records = [{ id: 1, url: "https://www.example.com" }];
+    Product._records = [{id: 1, url: "https://www.example.com"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -85,16 +94,25 @@ test("href attribute and website_path option", async () => {
                 <field name="url4" widget="url" readonly="1"/>
             </form>`,
     });
-    expect(`.o_field_widget[name="url1"] a`).toHaveAttribute("href", "http://www.url1.com");
+    expect(`.o_field_widget[name="url1"] a`).toHaveAttribute(
+        "href",
+        "http://www.url1.com"
+    );
     expect(`.o_field_widget[name="url2"] a`).toHaveAttribute("href", "www.url2.com");
-    expect(`.o_field_widget[name="url3"] a`).toHaveAttribute("href", "http://www.url3.com");
-    expect(`.o_field_widget[name="url4"] a`).toHaveAttribute("href", "https://url4.com");
+    expect(`.o_field_widget[name="url3"] a`).toHaveAttribute(
+        "href",
+        "http://www.url3.com"
+    );
+    expect(`.o_field_widget[name="url4"] a`).toHaveAttribute(
+        "href",
+        "https://url4.com"
+    );
 });
 
 test("in editable list view", async () => {
     Product._records = [
-        { id: 1, url: "example.com" },
-        { id: 2, url: "odoo.com" },
+        {id: 1, url: "example.com"},
+        {id: 2, url: "odoo.com"},
     ];
     await mountView({
         type: "list",
@@ -103,10 +121,9 @@ test("in editable list view", async () => {
     });
     expect("tbody td:not(.o_list_record_selector) a").toHaveCount(2);
     expect(".o_field_url.o_field_widget[name='url'] a").toHaveCount(2);
-    expect(queryAllAttributes(".o_field_url.o_field_widget[name='url'] a", "href")).toEqual([
-        "http://example.com",
-        "http://odoo.com",
-    ]);
+    expect(
+        queryAllAttributes(".o_field_url.o_field_widget[name='url'] a", "href")
+    ).toEqual(["http://example.com", "http://odoo.com"]);
     expect(queryAllTexts(".o_field_url.o_field_widget[name='url'] a")).toEqual([
         "example.com",
         "odoo.com",
@@ -116,15 +133,14 @@ test("in editable list view", async () => {
     expect(cell.parentElement).toHaveClass("o_selected_row");
     expect(cell.querySelector("input")).toHaveValue("example.com");
     await fieldInput("url").edit("test");
-    await contains(getFixture()).click(); // click out
+    await contains(getFixture()).click(); // Click out
     cell = queryFirst("tbody td:not(.o_list_record_selector)");
     expect(cell.parentElement).not.toHaveClass("o_selected_row");
     expect("tbody td:not(.o_list_record_selector) a").toHaveCount(2);
     expect(".o_field_url.o_field_widget[name='url'] a").toHaveCount(2);
-    expect(queryAllAttributes(".o_field_url.o_field_widget[name='url'] a", "href")).toEqual([
-        "http://test",
-        "http://odoo.com",
-    ]);
+    expect(
+        queryAllAttributes(".o_field_url.o_field_widget[name='url'] a", "href")
+    ).toEqual(["http://test", "http://odoo.com"]);
     expect(queryAllTexts(".o_field_url.o_field_widget[name='url'] a")).toEqual([
         "test",
         "odoo.com",
@@ -132,7 +148,7 @@ test("in editable list view", async () => {
 });
 
 test("with falsy value", async () => {
-    Product._records = [{ id: 1, url: false }];
+    Product._records = [{id: 1, url: false}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -147,7 +163,7 @@ test("onchange scenario", async () => {
     Product._fields.url_source = fields.Char({
         onChange: (record) => (record.url = record.url_source),
     });
-    Product._records = [{ id: 1, url: "odoo.com", url_source: "another.com" }];
+    Product._records = [{id: 1, url: "odoo.com", url_source: "another.com"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -161,7 +177,7 @@ test("onchange scenario", async () => {
 });
 
 test("with placeholder", async () => {
-    Product._records = [{ id: 1 }];
+    Product._records = [{id: 1}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -192,7 +208,10 @@ test("with non falsy, but non url value", async () => {
         resModel: "product",
         arch: `<form><field name="url" widget="url"/></form>`,
     });
-    expect(".o_field_widget[name=url] a").toHaveAttribute("href", "http://odoo://hello");
+    expect(".o_field_widget[name=url] a").toHaveAttribute(
+        "href",
+        "http://odoo://hello"
+    );
 });
 
 test.tags("desktop");
@@ -202,8 +221,8 @@ test("in form x2many field, click/middleclick on the link should not open the re
         relation: "product",
     });
     Product._records = [
-        { id: 1, url: "https://www.example.com/1", p: [2] },
-        { id: 2, url: "http://www.example.com/2", p: [] },
+        {id: 1, url: "https://www.example.com/1", p: [2]},
+        {id: 2, url: "http://www.example.com/2", p: []},
     ];
     Product._views.list = `<list><field name="url" widget="url"/></list>`;
     await mountView({

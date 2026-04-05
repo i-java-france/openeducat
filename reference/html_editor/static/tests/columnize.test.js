@@ -1,12 +1,12 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { press, queryAllTexts, tick } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { getContent, setSelection } from "./_helpers/selection";
-import { insertText, redo, undo } from "./_helpers/user_actions";
-import { execCommand } from "./_helpers/userCommands";
-import { nodeSize } from "@html_editor/utils/position";
-import { unformat } from "./_helpers/format";
+import {describe, expect, test} from "@odoo/hoot";
+import {press, queryAllTexts, tick} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {getContent, setSelection} from "./_helpers/selection";
+import {insertText, redo, undo} from "./_helpers/user_actions";
+import {execCommand} from "./_helpers/userCommands";
+import {nodeSize} from "@html_editor/utils/position";
+import {unformat} from "./_helpers/format";
 
 function columnsContainer(contents) {
     return `<div class="container o_text_columns o-contenteditable-false"><div class="row">${contents}</div></div>`;
@@ -33,46 +33,57 @@ function columnize(numberOfColumns) {
 describe("2 columns", () => {
     test("should display hint for focused empty column.", async () => {
         await testEditor({
-            /* eslint-disable */
-            contentBefore:
-                columnsContainer(
-                    column(6, "<p>[]<br></p>") +
-                    column(6, "<p><br></p>")
-                ),
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(6, `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`) +
-                    columnDuringEdit(6, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
-            /* eslint-enable */
+
+            contentBefore: columnsContainer(
+                column(6, "<p>[]<br></p>") + column(6, "<p><br></p>")
+            ),
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(
+                    6,
+                    `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`
+                ) +
+                    columnDuringEdit(
+                        6,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
+
         });
     });
 
     test("should display the normal hint when cursor is in an empty cell of an empty table in one of the columns", async () => {
         await testEditor({
-            /* eslint-disable */
-            contentBefore:
-                columnsContainer(
-                    column(6, `<table><tbody><tr><td><p>[]<br></p></td><td><p><br></p></td></tr></tbody></table>`) +
-                    column(6, "<p><br></p>")
-                ),
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(6, `<p data-selection-placeholder=""><br></p><table><tbody><tr><td><p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p></td><td><p><br></p></td></tr></tbody></table><p data-selection-placeholder=""><br></p>`) +
-                    columnDuringEdit(6, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
-            /* eslint-enable */
+
+            contentBefore: columnsContainer(
+                column(
+                    6,
+                    `<table><tbody><tr><td><p>[]<br></p></td><td><p><br></p></td></tr></tbody></table>`
+                ) + column(6, "<p><br></p>")
+            ),
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(
+                    6,
+                    `<p data-selection-placeholder=""><br></p><table><tbody><tr><td><p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p></td><td><p><br></p></td></tr></tbody></table><p data-selection-placeholder=""><br></p>`
+                ) +
+                    columnDuringEdit(
+                        6,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
+
         });
     });
 
     test("should do nothing", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
             ),
             stepFunction: columnize(2),
             contentAfter: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
             ),
         });
     });
@@ -82,17 +93,18 @@ describe("2 columns", () => {
             contentBefore: "<p>[]abcd</p>",
             stepFunction: columnize(2),
             contentAfterEdit:
-            /* eslint-disable */
+
                 columsDuringEditContainer(
                     columnDuringEdit(6, "<p>[]abcd</p>") +
-                    columnDuringEdit(6, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
+                        columnDuringEdit(
+                            6,
+                            `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                        )
                 ),
-            contentAfter:
-                columnsContainer(
-                    column(6, "<p>[]abcd</p>") +
-                    column(6, "<p><br></p>")
-                )
-            /* eslint-enable */
+            contentAfter: columnsContainer(
+                column(6, "<p>[]abcd</p>") + column(6, "<p><br></p>")
+            ),
+
         });
     });
 
@@ -105,7 +117,8 @@ describe("2 columns", () => {
             ),
             stepFunction: columnize(2),
             contentAfter: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>e[]f</h1><ul><li>gh</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>e[]f</h1><ul><li>gh</li></ul>")
             ),
         });
     });
@@ -120,13 +133,14 @@ describe("2 columns", () => {
             ),
             stepFunction: columnize(2),
             contentAfter: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>ef</h1><ul><li>gh</li></ul><p>i[]j</p>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>ef</h1><ul><li>gh</li></ul><p>i[]j</p>")
             ),
         });
     });
 
     test("apply '2 columns' powerbox command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/2columns");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("2 columns");
@@ -149,19 +163,28 @@ describe("3 columns", () => {
     test("should do nothing", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(4, "<p>abcd</p>") + column(4, "<p><br></p>") + column(4, "<p>[]<br></p>")
+                column(4, "<p>abcd</p>") +
+                    column(4, "<p><br></p>") +
+                    column(4, "<p>[]<br></p>")
             ),
-            /* eslint-disable */
-            contentBeforeEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(4, "<p>abcd</p>") +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`) +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`)
-                ),
-            /* eslint-enable */
+
+            contentBeforeEdit: columsDuringEditContainer(
+                columnDuringEdit(4, "<p>abcd</p>") +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`
+                    )
+            ),
+
             stepFunction: columnize(3),
             contentAfter: columnsContainer(
-                column(4, "<p>abcd</p>") + column(4, "<p><br></p>") + column(4, "<p>[]<br></p>")
+                column(4, "<p>abcd</p>") +
+                    column(4, "<p><br></p>") +
+                    column(4, "<p>[]<br></p>")
             ),
         });
     });
@@ -170,27 +193,32 @@ describe("3 columns", () => {
         await testEditor({
             contentBefore: "<p>ab[]cd</p>",
             stepFunction: columnize(3),
-            /* eslint-disable */
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(4, "<p>ab[]cd</p>") +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`) +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
-            contentAfter:
-                columnsContainer(
-                    column(4, "<p>ab[]cd</p>") +
+
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(4, "<p>ab[]cd</p>") +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
+            contentAfter: columnsContainer(
+                column(4, "<p>ab[]cd</p>") +
                     column(4, "<p><br></p>") +
                     column(4, "<p><br></p>")
-                ),
-            /* eslint-enable */
+            ),
+
         });
     });
 
     test("should turn 2 columns into 3 columns", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>ef</h1><ul><li>g[]h</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>ef</h1><ul><li>g[]h</li></ul>")
             ),
             stepFunction: columnize(3),
             contentAfter: columnsContainer(
@@ -219,7 +247,7 @@ describe("3 columns", () => {
     });
 
     test("apply '3 columns' powerbox command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/3columns");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("3 columns");
@@ -274,7 +302,8 @@ describe("4 columns", () => {
     test("should turn 2 columns into 4 columns", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
             ),
             stepFunction: columnize(4),
             contentAfter: columnsContainer(
@@ -304,7 +333,7 @@ describe("4 columns", () => {
     });
 
     test("apply '4 columns' powerbox command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/4columns");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("4 columns");
@@ -336,7 +365,8 @@ describe("remove columns", () => {
     test("should turn 2 columns into text", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(6, "<p>abcd</p>") + column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
+                column(6, "<p>abcd</p>") +
+                    column(6, "<h1>[]ef</h1><ul><li>gh</li></ul>")
             ),
             stepFunction: columnize(0),
             contentAfter: "<p>abcd</p><h1>[]ef</h1><ul><li>gh</li></ul>",
@@ -364,12 +394,13 @@ describe("remove columns", () => {
                     column(3, "<p>[]<br></p>")
             ),
             stepFunction: columnize(0),
-            contentAfter: "<p>abcd</p><h1>ef</h1><ul><li>gh</li></ul><p>ij</p><p>[]<br></p>",
+            contentAfter:
+                "<p>abcd</p><h1>ef</h1><ul><li>gh</li></ul><p>ij</p><p>[]<br></p>",
         });
     });
 
     test("apply 'remove columns' powerbox command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/columns");
         await animationFrame();
         expect(queryAllTexts(".o-we-command-name")).toEqual([
@@ -378,7 +409,7 @@ describe("remove columns", () => {
             "4 columns",
         ]);
 
-        // add 2 columns
+        // Add 2 columns
         await press("enter");
         expect(getContent(el)).toBe(
             `<p data-selection-placeholder=""><br></p><div class="container o_text_columns o-contenteditable-false" contenteditable="false"><div class="row"><div class="col-6 o-contenteditable-true" contenteditable="true"><p>ab[]cd</p></div><div class="col-6 o-contenteditable-true" contenteditable="true"><p o-we-hint-text="Empty column" class="o-we-hint"><br></p></div></div></div><p data-selection-placeholder=""><br></p>`
@@ -419,7 +450,7 @@ describe("complex", () => {
             stepFunction: columnize(2),
             contentAfter:
                 '<div class="container o-contenteditable-false"><div class="row"><div class="col o-contenteditable-true">' +
-                '<div class="o_text_columns o-contenteditable-false"><div class="row">' + // no "container" class
+                '<div class="o_text_columns o-contenteditable-false"><div class="row">' + // No "container" class
                 '<div class="col-6 o-contenteditable-true">' +
                 "<p>ab[]cd</p>" +
                 "</div>" +
@@ -452,7 +483,9 @@ describe("undo", () => {
                 redo(editor);
                 await insertText(editor, "x");
             },
-            contentAfter: columnsContainer(column(6, "<p>x[]</p>") + column(6, "<p><br></p>")),
+            contentAfter: columnsContainer(
+                column(6, "<p>x[]</p>") + column(6, "<p><br></p>")
+            ),
         });
     });
     test("should create columns after undo", async () => {
@@ -497,8 +530,8 @@ describe("selection", () => {
                 const children = editable.querySelectorAll("p");
                 const lastP = children[children.length - 1];
                 lastP.innerHTML = "ab";
-                setSelection({ anchorNode: lastP.firstChild, anchorOffset: 0 });
-                await tick(); // wait for trailing placeholder to be persisted via selectionchange
+                setSelection({anchorNode: lastP.firstChild, anchorOffset: 0});
+                await tick(); // Wait for trailing placeholder to be persisted via selectionchange
                 await press(["shift", "arrowUp"]);
             },
             contentAfter:
@@ -517,10 +550,16 @@ describe("selection", () => {
                 const lastP = children[children.length - 1];
                 lastP.innerHTML = "ab";
                 // Persist the trailing placeholder
-                setSelection({ anchorNode: lastP.lastChild, anchorOffset: nodeSize(lastP) });
+                setSelection({
+                    anchorNode: lastP.lastChild,
+                    anchorOffset: nodeSize(lastP),
+                });
                 await tick();
                 const firstP = children[0];
-                setSelection({ anchorNode: firstP.lastChild, anchorOffset: nodeSize(firstP) });
+                setSelection({
+                    anchorNode: firstP.lastChild,
+                    anchorOffset: nodeSize(firstP),
+                });
                 await press(["shift", "arrowDown"]);
             },
             contentAfter:
@@ -535,18 +574,26 @@ describe("helper hint", () => {
     test("should display helper hint in first block of each column", async () => {
         await testEditor({
             /* eslint-disable */
-            contentBefore:
-                columnsContainer(
-                    column(4, "<p>[]<br></p>") +
+            contentBefore: columnsContainer(
+                column(4, "<p>[]<br></p>") +
                     column(4, "<h1><br></h1>" + "<h2><br></h2>") +
                     column(4, "<p><br></p>")
-                ),
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`) +
-                    columnDuringEdit(4, `<h1 o-we-hint-text="Heading 1" class="o-we-hint"><br></h1>` + "<h2><br></h2>") +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
+            ),
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(
+                    4,
+                    `<p o-we-hint-text="Empty column" class="o-we-hint">[]<br></p>`
+                ) +
+                    columnDuringEdit(
+                        4,
+                        `<h1 o-we-hint-text="Heading 1" class="o-we-hint"><br></h1>` +
+                            "<h2><br></h2>"
+                    ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
             /* eslint-enable */
         });
     });
@@ -554,18 +601,26 @@ describe("helper hint", () => {
     test("should not display hint in first block if cursor is inside different block in same column", async () => {
         await testEditor({
             /* eslint-disable */
-            contentBefore:
-                columnsContainer(
-                    column(4, "<p><br></p>") +
+            contentBefore: columnsContainer(
+                column(4, "<p><br></p>") +
                     column(4, "<h1><br></h1>" + "<h2>[]<br></h2>") +
                     column(4, "<p><br></p>")
-                ),
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`) +
-                    columnDuringEdit(4, "<h1><br></h1>" + `<h2 o-we-hint-text="Heading 2" class="o-we-hint">[]<br></h2>`) +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
+            ),
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(
+                    4,
+                    `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                ) +
+                    columnDuringEdit(
+                        4,
+                        "<h1><br></h1>" +
+                            `<h2 o-we-hint-text="Heading 2" class="o-we-hint">[]<br></h2>`
+                    ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
             /* eslint-enable */
         });
     });
@@ -573,18 +628,26 @@ describe("helper hint", () => {
     test("should display normal hint on focused paragraph if paragraph is not first block of column", async () => {
         await testEditor({
             /* eslint-disable */
-            contentBefore:
-                columnsContainer(
-                    column(4, "<p><br></p>" + "<p>[]<br></p>") +
+            contentBefore: columnsContainer(
+                column(4, "<p><br></p>" + "<p>[]<br></p>") +
                     column(4, "<p><br></p>") +
                     column(4, "<p><br></p>")
-                ),
-            contentAfterEdit:
-                columsDuringEditContainer(
-                    columnDuringEdit(4, "<p><br></p>" + `<p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p>`) +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`) +
-                    columnDuringEdit(4, `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`)
-                ),
+            ),
+            contentAfterEdit: columsDuringEditContainer(
+                columnDuringEdit(
+                    4,
+                    "<p><br></p>" +
+                        `<p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p>`
+                ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    ) +
+                    columnDuringEdit(
+                        4,
+                        `<p o-we-hint-text="Empty column" class="o-we-hint"><br></p>`
+                    )
+            ),
             /* eslint-enable */
         });
     });
@@ -592,7 +655,9 @@ describe("helper hint", () => {
     test("should display hint in first block of each column after an undo operation", async () => {
         await testEditor({
             contentBefore: columnsContainer(
-                column(4, "<p>[]<br></p>") + column(4, "<p><br></p>") + column(4, "<p><br></p>")
+                column(4, "<p>[]<br></p>") +
+                    column(4, "<p><br></p>") +
+                    column(4, "<p><br></p>")
             ),
             stepFunction: async (editor) => {
                 columnize(4)(editor);

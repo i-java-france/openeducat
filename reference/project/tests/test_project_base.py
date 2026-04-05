@@ -1,16 +1,16 @@
 from lxml import etree
 
 from odoo import Command, fields
+from odoo.exceptions import UserError
 from odoo.tests import Form, users
 from odoo.tests.common import TransactionCase
-from odoo.exceptions import UserError
 
 
 class TestProjectCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestProjectCommon, cls).setUpClass()
+        super().setUpClass()
         cls.env.company.resource_calendar_id.tz = "Europe/Brussels"
 
         user_group_partner_manager = cls.env.ref('base.group_partner_manager')

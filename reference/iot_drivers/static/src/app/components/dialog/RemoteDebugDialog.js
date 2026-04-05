@@ -1,14 +1,14 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { LoadingFullScreen } from "../LoadingFullScreen.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
+import {LoadingFullScreen} from "../LoadingFullScreen.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
 
-const { Component, xml, onWillStart, useState } = owl;
+const {Component, xml, onWillStart, useState} = owl;
 
 export class RemoteDebugDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog, LoadingFullScreen };
+    static components = {BootstrapDialog, LoadingFullScreen};
 
     setup() {
         this.store = useStore();
@@ -27,7 +27,7 @@ export class RemoteDebugDialog extends Component {
 
     async isNgrokEnabled() {
         try {
-            const data = await this.store.rpc({ url: "/iot_drivers/is_ngrok_enabled" });
+            const data = await this.store.rpc({url: "/iot_drivers/is_ngrok_enabled"});
             this.state.ngrok = data.enabled;
             if (!this.state.ngrok) {
                 this.state.ngrokToken = "";
@@ -103,7 +103,7 @@ export class RemoteDebugDialog extends Component {
                     and thus your entire local network. Only enable this for someone you trust.
                 </div>
                 <div t-else="" class="alert alert-danger fs-6" role="alert">
-                    Your IoT Box is currently accessible from the internet. 
+                    Your IoT Box is currently accessible from the internet.
                     The owner of the ngrok authtoken can access both the IoT Box and your local network.
                 </div>
                 <div class="d-flex flex-row gap-2 mb-4">

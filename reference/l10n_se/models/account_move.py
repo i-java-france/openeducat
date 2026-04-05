@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
 from stdnum import luhn
+
+from odoo import _, api, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class AccountMove(models.Model):
@@ -59,7 +59,7 @@ class AccountMove(models.Model):
         """ If Vendor Bill and Vendor OCR is set, add it. """
         if self.partner_id and self.move_type == 'in_invoice' and self.partner_id.l10n_se_default_vendor_payment_ref:
             self.payment_reference = self.partner_id.l10n_se_default_vendor_payment_ref
-        return super(AccountMove, self)._onchange_partner_id()
+        return super()._onchange_partner_id()
 
     @api.constrains('payment_reference', 'state')
     def _l10n_se_check_payment_reference(self):

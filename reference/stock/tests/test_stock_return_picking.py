@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 
 from odoo import Command
-from odoo.addons.stock.tests.common import TestStockCommon
 from odoo.tests import Form
+
+from odoo.addons.stock.tests.common import TestStockCommon
 
 
 class TestReturnPicking(TestStockCommon):

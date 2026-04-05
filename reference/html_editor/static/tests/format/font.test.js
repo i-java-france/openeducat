@@ -1,12 +1,12 @@
-import { waitFor } from "@odoo/hoot-dom";
-import { setupEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
-import { expect, test } from "@odoo/hoot";
-import { expandToolbar } from "../_helpers/toolbar";
-import { contains } from "@web/../tests/web_test_helpers";
+import {waitFor} from "@odoo/hoot-dom";
+import {setupEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {expandToolbar} from "../_helpers/toolbar";
+import {contains} from "@web/../tests/web_test_helpers";
 
 test("should change the containing block with the font", async () => {
-    const { el } = await setupEditor("<p>ab[cde]fg</p>");
+    const {el} = await setupEditor("<p>ab[cde]fg</p>");
     await waitFor(".btn[name='font']");
     expect(".btn[name='font']").toHaveText("Paragraph");
     await contains(".btn[name='font']").click();

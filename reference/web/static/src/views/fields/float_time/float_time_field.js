@@ -1,19 +1,19 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { formatFloatTime } from "../formatters";
-import { parseFloatTime } from "../parsers";
-import { useInputField } from "../input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
-import { useNumpadDecimal } from "../numpad_decimal_hook";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {formatFloatTime} from "../formatters";
+import {parseFloatTime} from "../parsers";
+import {useInputField} from "../input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
+import {useNumpadDecimal} from "../numpad_decimal_hook";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class FloatTimeField extends Component {
     static template = "web.FloatTimeField";
     static props = {
         ...standardFieldProps,
-        inputType: { type: String, optional: true },
-        displaySeconds: { type: Boolean, optional: true },
+        inputType: {type: String, optional: true},
+        displaySeconds: {type: Boolean, optional: true},
     };
     static defaultProps = {
         inputType: "text",
@@ -53,7 +53,7 @@ export const floatTimeField = {
     ],
     supportedTypes: ["float"],
     isEmpty: () => false,
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         displaySeconds: options.displaySeconds,
         inputType: options.type,
     }),

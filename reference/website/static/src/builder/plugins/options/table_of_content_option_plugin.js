@@ -1,8 +1,8 @@
-import { applyFunDependOnSelectorAndExclude } from "@html_builder/plugins/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {applyFunDependOnSelectorAndExclude} from "@html_builder/plugins/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * Returns the TOC id and the heading id from a header element.
@@ -15,9 +15,9 @@ function getTocAndHeadingId(headingEl) {
         headingEl && headingEl.getAttribute("id")
     );
     if (match) {
-        return { tocId: parseInt(match[1]), headingId: parseInt(match[2]) };
+        return {tocId: parseInt(match[1]), headingId: parseInt(match[2])};
     }
-    return { tocId: 0, headingId: 0 };
+    return {tocId: 0, headingId: 0};
 }
 
 export class TableOfContentOption extends BaseOptionComponent {
@@ -56,19 +56,26 @@ class TableOfContentOptionPlugin extends Plugin {
             }
             return true;
         },
-        is_unremovable_selector: ".s_table_of_content_navbar_wrap, .s_table_of_content_main",
+        is_unremovable_selector:
+            ".s_table_of_content_navbar_wrap, .s_table_of_content_main",
         content_not_editable_selectors: ".s_table_of_content_navbar",
     };
 
     normalize(root) {
-        applyFunDependOnSelectorAndExclude(this.updateTableOfContentNavbar.bind(this), root, {
-            selector: ".s_table_of_content_main",
-        });
+        applyFunDependOnSelectorAndExclude(
+            this.updateTableOfContentNavbar.bind(this),
+            root,
+            {
+                selector: ".s_table_of_content_main",
+            }
+        );
     }
 
     updateTableOfContentNavbar(tableOfContentMain) {
         const tableOfContent = tableOfContentMain.closest(".s_table_of_content");
-        const tableOfContentNavbar = tableOfContent.querySelector(".s_table_of_content_navbar");
+        const tableOfContentNavbar = tableOfContent.querySelector(
+            ".s_table_of_content_navbar"
+        );
         const currentNavbarItems = [...tableOfContentNavbar.children].map((el) => ({
             title: el.textContent,
             href: el.getAttribute("href"),
@@ -81,9 +88,11 @@ class TableOfContentOptionPlugin extends Plugin {
         }
 
         const targetedElements = "h1, h2";
-        const currentHeadingItems = [...tableOfContentMain.querySelectorAll(targetedElements)]
+        const currentHeadingItems = [
+            ...tableOfContentMain.querySelectorAll(targetedElements),
+        ]
             .filter((el) => !el.closest(".o_snippet_desktop_invisible"))
-            .map((el) => ({ title: el.textContent, id: `#${el.id}`, el }));
+            .map((el) => ({title: el.textContent, id: `#${el.id}`, el}));
 
         const headingHasChanged =
             currentNavbarItems.length !== currentHeadingItems.length ||
@@ -93,8 +102,10 @@ class TableOfContentOptionPlugin extends Plugin {
                     item.href !== currentHeadingItems[i].id
             );
 
-        const areVisibilityIdsEqual = currentHeadingItems.every(({ el }) => {
-            const visibilityId = el.closest("section").getAttribute("data-visibility-id");
+        const areVisibilityIdsEqual = currentHeadingItems.every(({el}) => {
+            const visibilityId = el
+                .closest("section")
+                .getAttribute("data-visibility-id");
             const matchingLinkEl = tableOfContentNavbar.querySelector(
                 `a[href="#${el.getAttribute("id")}"]`
             );
@@ -108,7 +119,9 @@ class TableOfContentOptionPlugin extends Plugin {
 
         const firstHeadingEl = currentHeadingItems[0]?.el;
         let tocId = firstHeadingEl ? getTocAndHeadingId(firstHeadingEl).tocId : 0;
-        const tocEls = this.editable.querySelectorAll("[data-snippet='s_table_of_content']");
+        const tocEls = this.editable.querySelectorAll(
+            "[data-snippet='s_table_of_content']"
+        );
         const otherTocEls = [...tocEls].filter((tocEl) => tocEl !== tableOfContent);
         const otherTocIds = otherTocEls.map((tocEl) => {
             const firstHeadingEl = tocEl.querySelector(targetedElements);
@@ -125,13 +138,15 @@ class TableOfContentOptionPlugin extends Plugin {
             return;
         }
 
-        const headingIds = currentHeadingItems.map(({ el }) => getTocAndHeadingId(el).headingId);
+        const headingIds = currentHeadingItems.map(
+            ({el}) => getTocAndHeadingId(el).headingId
+        );
         let maxHeadingIds = Math.max(0, ...headingIds);
 
         tableOfContentNavbar.textContent = "";
         const uniqueHeadingIds = new Set();
-        for (const { title, el } of currentHeadingItems) {
-            let { headingId } = getTocAndHeadingId(el);
+        for (const {title, el} of currentHeadingItems) {
+            let {headingId} = getTocAndHeadingId(el);
             if (headingId) {
                 // Reset headingId on duplicate.
                 if (uniqueHeadingIds.has(headingId)) {
@@ -160,18 +175,22 @@ class TableOfContentOptionPlugin extends Plugin {
 
 export class NavbarPositionAction extends BuilderAction {
     static id = "navbarPosition";
-    isApplied({ editingElement: navbarWrapEl, params: { mainParam: position } }) {
+    isApplied({editingElement: navbarWrapEl, params: {mainParam: position}}) {
         if (navbarWrapEl.classList.contains("s_table_of_content_horizontal_navbar")) {
             return position === "top";
         } else {
-            const mainContent = navbarWrapEl.parentNode.querySelector(".s_table_of_content_main");
+            const mainContent = navbarWrapEl.parentNode.querySelector(
+                ".s_table_of_content_main"
+            );
             const previousSibling = navbarWrapEl.previousElementSibling;
 
             return (previousSibling === mainContent ? "right" : "left") === position;
         }
     }
-    apply({ editingElement: navbarWrapEl, params: { mainParam: position } }) {
-        const mainContentEl = navbarWrapEl.parentElement.querySelector(".s_table_of_content_main");
+    apply({editingElement: navbarWrapEl, params: {mainParam: position}}) {
+        const mainContentEl = navbarWrapEl.parentElement.querySelector(
+            ".s_table_of_content_main"
+        );
         const navbarEl = navbarWrapEl.querySelector(".s_table_of_content_navbar");
 
         if (position === "top" || position === "left") {
@@ -181,36 +200,55 @@ export class NavbarPositionAction extends BuilderAction {
             }
         }
         if (position === "left" || position === "right") {
-            navbarWrapEl.classList.add("s_table_of_content_vertical_navbar", "col-lg-3");
+            navbarWrapEl.classList.add(
+                "s_table_of_content_vertical_navbar",
+                "col-lg-3"
+            );
             mainContentEl.classList.add("col-lg-9");
         }
         if (position === "right") {
             const nextSibling = navbarWrapEl.nextElementSibling;
             if (nextSibling) {
-                nextSibling.parentNode.insertBefore(navbarWrapEl, nextSibling.nextSibling);
+                nextSibling.parentNode.insertBefore(
+                    navbarWrapEl,
+                    nextSibling.nextSibling
+                );
             }
         }
         if (position === "top") {
-            navbarWrapEl.classList.add("s_table_of_content_horizontal_navbar", "col-lg-12");
+            navbarWrapEl.classList.add(
+                "s_table_of_content_horizontal_navbar",
+                "col-lg-12"
+            );
             navbarEl.classList.add("list-group-horizontal-md");
             mainContentEl.classList.add("col-lg-12");
         }
     }
-    clean({ editingElement: navbarWrapEl, params: { mainParam: position } }) {
-        const mainContentEl = navbarWrapEl.parentElement.querySelector(".s_table_of_content_main");
+    clean({editingElement: navbarWrapEl, params: {mainParam: position}}) {
+        const mainContentEl = navbarWrapEl.parentElement.querySelector(
+            ".s_table_of_content_main"
+        );
         const navbarEl = navbarWrapEl.querySelector(".s_table_of_content_navbar");
 
         if (position === "top") {
-            navbarWrapEl.classList.remove("s_table_of_content_horizontal_navbar", "col-lg-12");
+            navbarWrapEl.classList.remove(
+                "s_table_of_content_horizontal_navbar",
+                "col-lg-12"
+            );
             mainContentEl.classList.remove("col-lg-12");
             navbarEl.classList.remove("list-group-horizontal-md");
         }
 
         if (position === "left" || position === "right") {
-            navbarWrapEl.classList.remove("s_table_of_content_vertical_navbar", "col-lg-3");
+            navbarWrapEl.classList.remove(
+                "s_table_of_content_vertical_navbar",
+                "col-lg-3"
+            );
             mainContentEl.classList.remove("col-lg-9");
         }
     }
 }
 
-registry.category("website-plugins").add(TableOfContentOptionPlugin.id, TableOfContentOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(TableOfContentOptionPlugin.id, TableOfContentOptionPlugin);

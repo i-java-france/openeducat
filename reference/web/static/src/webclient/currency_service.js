@@ -1,12 +1,12 @@
-import { rpcBus } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { currencies } from "@web/core/currency";
-import { UPDATE_METHODS } from "@web/core/orm_service";
+import {rpcBus} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {currencies} from "@web/core/currency";
+import {UPDATE_METHODS} from "@web/core/orm_service";
 
 export const currencyService = {
     dependencies: ["orm"],
     async: ["reload_currencies"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         /**
          * Reload the currencies (initially given in session_info)
          */
@@ -18,13 +18,13 @@ export const currencyService = {
             Object.assign(currencies, result);
         }
         rpcBus.addEventListener("RPC:RESPONSE", (ev) => {
-            const { data, error } = ev.detail;
-            const { model, method } = data.params;
+            const {data, error} = ev.detail;
+            const {model, method} = data.params;
             if (!error && model === "res.currency" && UPDATE_METHODS.includes(method)) {
                 reloadCurrencies();
             }
         });
-        return { reloadCurrencies };
+        return {reloadCurrencies};
     },
 };
 

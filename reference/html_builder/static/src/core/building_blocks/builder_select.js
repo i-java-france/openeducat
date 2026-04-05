@@ -1,20 +1,20 @@
-import { Component, onMounted, useRef, useSubEnv, xml } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { Dropdown } from "@web/core/dropdown/dropdown";
+import {Component, onMounted, useRef, useSubEnv, xml} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dropdown} from "@web/core/dropdown/dropdown";
 import {
     basicContainerBuilderComponentProps,
     useVisibilityObserver,
     useApplyVisibility,
     useSelectableComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { setElementContent } from "@web/core/utils/html";
+import {BuilderComponent} from "./builder_component";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {setElementContent} from "@web/core/utils/html";
 
 export class WithIgnoreItem extends Component {
     static template = xml`<t t-slot="default"/>`;
     static props = {
-        slots: { type: Object },
+        slots: {type: Object},
     };
     setup() {
         useSubEnv({
@@ -27,19 +27,19 @@ export class BuilderSelect extends Component {
     static template = "html_builder.BuilderSelect";
     static props = {
         ...basicContainerBuilderComponentProps,
-        className: { type: String, optional: true },
-        dropdownContainerClass: { type: String, optional: true },
-        disabled: { type: Boolean, optional: true },
+        className: {type: String, optional: true},
+        dropdownContainerClass: {type: String, optional: true},
+        disabled: {type: Boolean, optional: true},
         slots: {
             type: Object,
             shape: {
                 default: Object, // Content is not optional
-                fixedButton: { type: Object, optional: true },
+                fixedButton: {type: Object, optional: true},
             },
         },
-        dropdownClass: { type: String, optional: true },
+        dropdownClass: {type: String, optional: true},
     };
-    static defaultProps = { dropdownClass: "o-hb-select-dropdown" };
+    static defaultProps = {dropdownClass: "o-hb-select-dropdown"};
     static components = {
         Dropdown,
         BuilderComponent,

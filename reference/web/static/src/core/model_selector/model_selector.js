@@ -1,23 +1,23 @@
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { useService } from "@web/core/utils/hooks";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { _t } from "@web/core/l10n/translation";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {useService} from "@web/core/utils/hooks";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {_t} from "@web/core/l10n/translation";
 
-import { Component, onWillStart } from "@odoo/owl";
+import {Component, onWillStart} from "@odoo/owl";
 
 export class ModelSelector extends Component {
     static template = "web.ModelSelector";
-    static components = { AutoComplete };
+    static components = {AutoComplete};
     static props = {
         onModelSelected: Function,
-        id: { type: String, optional: true },
-        value: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
+        id: {type: String, optional: true},
+        value: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
         // list of models technical name, if not set
         // we will fetch all models we have access to
-        models: { type: Array, optional: true },
-        nbVisibleModels: { type: Number, optional: true },
-        autofocus: { type: Boolean, optional: true },
+        models: {type: Array, optional: true},
+        nbVisibleModels: {type: Number, optional: true},
+        autofocus: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -77,7 +77,11 @@ export class ModelSelector extends Component {
             }
             return visibleModels;
         }
-        return fuzzyLookup(name, this.models, (model) => model.data.technical + model.label);
+        return fuzzyLookup(
+            name,
+            this.models,
+            (model) => model.data.technical + model.label
+        );
     }
 
     loadOptionsSource(request) {

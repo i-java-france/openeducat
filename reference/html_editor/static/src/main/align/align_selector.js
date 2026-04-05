@@ -1,9 +1,9 @@
-import { Component, useState } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { toolbarButtonProps } from "@html_editor/main/toolbar/toolbar";
-import { useDropdownAutoVisibility } from "@html_editor/dropdown_autovisibility_hook";
-import { useChildRef } from "@web/core/utils/hooks";
+import {Component, useState} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {toolbarButtonProps} from "@html_editor/main/toolbar/toolbar";
+import {useDropdownAutoVisibility} from "@html_editor/dropdown_autovisibility_hook";
+import {useChildRef} from "@web/core/utils/hooks";
 
 export class AlignSelector extends Component {
     static template = "html_editor.AlignSelector";
@@ -13,7 +13,7 @@ export class AlignSelector extends Component {
         onSelected: Function,
         ...toolbarButtonProps,
     };
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
 
     setup() {
         this.items = this.props.getItems();

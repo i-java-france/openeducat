@@ -1,34 +1,34 @@
-import { convertNumericToUnit, getHtmlStyle } from "@html_editor/utils/formatting";
-import { Component } from "@odoo/owl";
+import {convertNumericToUnit, getHtmlStyle} from "@html_editor/utils/formatting";
+import {Component} from "@odoo/owl";
 import {
     basicContainerBuilderComponentProps,
     useInputBuilderComponent,
     useBuilderComponent,
     useInputDebouncedCommit,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 import {
     BuilderTextInputBase,
     textInputBasePassthroughProps,
 } from "@html_builder/core/building_blocks/builder_text_input_base";
-import { useChildRef } from "@web/core/utils/hooks";
-import { pick } from "@web/core/utils/objects";
+import {useChildRef} from "@web/core/utils/hooks";
+import {pick} from "@web/core/utils/objects";
 
 export class BuilderNumberInput extends Component {
     static template = "html_builder.BuilderNumberInput";
     static props = {
         ...basicContainerBuilderComponentProps,
         ...textInputBasePassthroughProps,
-        default: { type: [Number, { value: null }], optional: true },
-        unit: { type: String, optional: true },
-        saveUnit: { type: String, optional: true },
-        step: { type: Number, optional: true },
-        min: { type: Number, optional: true },
-        max: { type: Number, optional: true },
-        composable: { type: Boolean, optional: true },
-        applyWithUnit: { type: Boolean, optional: true },
+        default: {type: [Number, {value: null}], optional: true},
+        unit: {type: String, optional: true},
+        saveUnit: {type: String, optional: true},
+        step: {type: Number, optional: true},
+        min: {type: Number, optional: true},
+        max: {type: Number, optional: true},
+        composable: {type: Boolean, optional: true},
+        applyWithUnit: {type: Boolean, optional: true},
     };
-    static components = { BuilderComponent, BuilderTextInputBase };
+    static components = {BuilderComponent, BuilderTextInputBase};
     static defaultProps = {
         composable: false,
         applyWithUnit: true,
@@ -41,9 +41,10 @@ export class BuilderNumberInput extends Component {
         }
 
         useBuilderComponent();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
-            defaultValue: this.props.default === null ? null : this.props.default?.toString(),
+            defaultValue:
+                this.props.default === null ? null : this.props.default?.toString(),
             formatRawValue: this.formatRawValue.bind(this),
             parseDisplayValue: this.parseDisplayValue.bind(this),
         });
@@ -75,7 +76,7 @@ export class BuilderNumberInput extends Component {
     formatRawValue(rawValue) {
         return this.convertSpaceSplitValues(rawValue, (value) => {
             const unit = this.props.unit;
-            const { savedValue, savedUnit } = value.match(
+            const {savedValue, savedUnit} = value.match(
                 /(?<savedValue>[\d.e+-]+)(?<savedUnit>\w*)/
             ).groups;
             if (savedUnit || this.props.saveUnit) {
@@ -127,10 +128,14 @@ export class BuilderNumberInput extends Component {
                 // Only keep "-" if it is at the start
                 .replace(/(?<!^)-/g, "")
                 // Only keep the first "."
-                .replace(/^([^.]*)\.?(.*)/, (_, a, b) => a + (b ? "." + b.replace(/\./g, "") : ""));
+                .replace(
+                    /^([^.]*)\.?(.*)/,
+                    (_, a, b) => a + (b ? "." + b.replace(/\./g, "") : "")
+                );
         }
         displayValue =
-            displayValue.split(" ").map(this.clampValue.bind(this)).join(" ") || this.props.default;
+            displayValue.split(" ").map(this.clampValue.bind(this)).join(" ") ||
+            this.props.default;
         return this.convertSpaceSplitValues(displayValue, (value) => {
             if (value === "") {
                 return value;
@@ -166,7 +171,9 @@ export class BuilderNumberInput extends Component {
         if (!["ArrowUp", "ArrowDown"].includes(e.key)) {
             return;
         }
-        const values = e.target.value.split(" ").map((number) => parseFloat(number) || 0);
+        const values = e.target.value
+            .split(" ")
+            .map((number) => parseFloat(number) || 0);
         if (e.key === "ArrowUp") {
             values.forEach((value, i) => {
                 values[i] = this.clampValue(value + (this.props.step || 1));

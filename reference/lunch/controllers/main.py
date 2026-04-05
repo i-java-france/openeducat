@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, http, fields
+from odoo import _, fields, http
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import float_round, float_repr
+from odoo.tools import float_repr, float_round
 
 
 class LunchController(http.Controller):

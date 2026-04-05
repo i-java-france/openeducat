@@ -1,11 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import uuid
+
 from odoo import fields
 from odoo.fields import Command
 from odoo.tests import Form, tagged
 from odoo.tools import format_date
+
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
-import uuid
 
 
 @tagged('post_install', '-at_install')

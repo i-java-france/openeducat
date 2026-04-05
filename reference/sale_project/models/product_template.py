@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _, SUPERUSER_ID
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 

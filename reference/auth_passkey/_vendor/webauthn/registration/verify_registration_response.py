@@ -1,6 +1,6 @@
 import hashlib
-from dataclasses import dataclass, asdict
-from typing import List, Mapping, Optional, Union
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass
 
 from ...webauthn.helpers import (
     aaguid_to_string,
@@ -8,8 +8,8 @@ from ...webauthn.helpers import (
     byteslike_to_bytes,
     decode_credential_public_key,
     parse_attestation_object,
-    parse_client_data_json,
     parse_backup_flags,
+    parse_client_data_json,
     parse_registration_credential_json,
 )
 from ...webauthn.helpers.cose import COSEAlgorithmIdentifier
@@ -66,13 +66,13 @@ expected_token_binding_statuses = [
 
 def verify_registration_response(
     *,
-    credential: Union[str, dict, RegistrationCredential],
+    credential: str | dict | RegistrationCredential,
     expected_challenge: bytes,
     expected_rp_id: str,
-    expected_origin: Union[str, List[str]],
+    expected_origin: str | list[str],
     require_user_verification: bool = False,
-    supported_pub_key_algs: List[COSEAlgorithmIdentifier] = default_supported_pub_key_algs,
-    pem_root_certs_bytes_by_fmt: Optional[Mapping[AttestationFormat, List[bytes]]] = None,
+    supported_pub_key_algs: list[COSEAlgorithmIdentifier] = default_supported_pub_key_algs,
+    pem_root_certs_bytes_by_fmt: Mapping[AttestationFormat, list[bytes]] | None = None,
 ) -> VerifiedRegistration:
     """Verify an authenticator's response to navigator.credentials.create()
 
@@ -192,7 +192,7 @@ def verify_registration_response(
         )
 
     # Prepare a list of possible root certificates for certificate chain validation
-    pem_root_certs_bytes: List[bytes] = []
+    pem_root_certs_bytes: list[bytes] = []
     if pem_root_certs_bytes_by_fmt:
         custom_certs = pem_root_certs_bytes_by_fmt.get(attestation_object.fmt)
         if custom_certs:

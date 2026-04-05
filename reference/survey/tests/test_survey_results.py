@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 
 from odoo.tests import tagged
 
+from odoo.addons.http_routing.tests.common import MockRequest
 from odoo.addons.survey.controllers.main import Survey
 from odoo.addons.survey.tests import common
-from odoo.addons.http_routing.tests.common import MockRequest
 
 
 @tagged("is_query_count")
@@ -17,7 +16,7 @@ class TestSurveyResults(common.TestSurveyResultsCommon):
     """
 
     def setUp(self):
-        super(TestSurveyResults, self).setUp()
+        super().setUp()
         self.SurveyController = Survey()
 
     def test_get_filters_from_post(self):

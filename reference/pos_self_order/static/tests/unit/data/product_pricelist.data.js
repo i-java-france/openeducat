@@ -1,4 +1,4 @@
-import { ProductPricelist } from "@point_of_sale/../tests/unit/data/product_pricelist.data";
+import {ProductPricelist} from "@point_of_sale/../tests/unit/data/product_pricelist.data";
 
 ProductPricelist._records = [
     ...ProductPricelist._records,

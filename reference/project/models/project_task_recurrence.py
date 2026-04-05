@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, Command, fields, models
-from odoo.exceptions import ValidationError
-
 from dateutil.relativedelta import relativedelta
+
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ProjectTaskRecurrence(models.Model):
@@ -99,7 +98,7 @@ class ProjectTaskRecurrence(models.Model):
             tasks,
             list_copy_data,
             list_fields_to_copy,
-            list_fields_to_postpone
+            list_fields_to_postpone, strict=False
         ):
             recurrence = recurrence_by_task[task]
             fields_to_postpone.pop('id', None)

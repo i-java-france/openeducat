@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 /** @typedef {import("./record").Record} Record */
 /** @typedef {import("./record_list").RecordList} RecordList */
@@ -81,7 +81,7 @@ export const fields = {
      * @returns {import("models").Models[M]}
      */
     One(targetModel, param1) {
-        return { ...param1, targetModel, [FIELD_DEFINITION_SYM]: true, [ONE_SYM]: true };
+        return {...param1, targetModel, [FIELD_DEFINITION_SYM]: true, [ONE_SYM]: true};
     },
     /**
      * @template {keyof import("models").Models} M
@@ -107,7 +107,7 @@ export const fields = {
      * @returns {import("models").Models[M][]}
      */
     Many(targetModel, param1) {
-        return { ...param1, targetModel, [FIELD_DEFINITION_SYM]: true, [MANY_SYM]: true };
+        return {...param1, targetModel, [FIELD_DEFINITION_SYM]: true, [MANY_SYM]: true};
     },
     /**
      * @template T
@@ -130,7 +130,12 @@ export const fields = {
      * @returns {T}
      */
     Attr(def, param1) {
-        return { ...param1, [FIELD_DEFINITION_SYM]: true, [ATTR_SYM]: true, default: def };
+        return {
+            ...param1,
+            [FIELD_DEFINITION_SYM]: true,
+            [ATTR_SYM]: true,
+            default: def,
+        };
     },
     /**
      * HTML fields are ATTR that are automatically markup when the data being inserted is a markup.

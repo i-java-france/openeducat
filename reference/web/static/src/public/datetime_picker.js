@@ -4,8 +4,8 @@ import {
     parseDate,
     parseDateTime,
 } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 export class DatetimePicker extends Interaction {
     static selector = "[data-widget='datetime-picker']";
@@ -18,7 +18,8 @@ export class DatetimePicker extends Interaction {
 
     start() {
         const parseFunction = this.type === "date" ? parseDate : parseDateTime;
-        const deserializeFunction = this.type === "date" ? deserializeDate : deserializeDateTime;
+        const deserializeFunction =
+            this.type === "date" ? deserializeDate : deserializeDateTime;
         this.registerCleanup(
             this.services.datetime_picker
                 .create({

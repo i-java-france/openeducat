@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -9,14 +8,14 @@ from unittest.mock import patch
 
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
-from unittest.mock import patch
+
+from odoo.exceptions import ValidationError
+from odoo.sql_db import Cursor
+from odoo.tests import Form, HttpCase, tagged, users
+from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.addons.mass_mailing.tests.common import MassMailCommon
-from odoo.exceptions import ValidationError
-from odoo.sql_db import Cursor
-from odoo.tests import Form, HttpCase, users, tagged
-from odoo.tools import mute_logger
 
 BASE_64_STRING = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='
 
@@ -26,7 +25,7 @@ class TestMassMailValues(MassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMassMailValues, cls).setUpClass()
+        super().setUpClass()
         cls._create_mailing_list()
 
     @users('user_marketing')
@@ -353,7 +352,7 @@ class TestMassMailValues(MassMailCommon):
             self.env.user.email_formatted,  # not matching from filter -> back to user from
         ]
 
-        for mail_server, expected_from in zip(servers, expected_from_all):
+        for mail_server, expected_from in zip(servers, expected_from_all, strict=False):
             with self.subTest(server_name=mail_server.name):
                 # When a mail server is set, we update the mass mailing
                 # settings to designate a dedicated outgoing email server
@@ -604,7 +603,7 @@ class TestMassMailFeatures(MassMailCommon, CronMixinCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMassMailFeatures, cls).setUpClass()
+        super().setUpClass()
         cls._create_mailing_list()
 
     @users('user_marketing')

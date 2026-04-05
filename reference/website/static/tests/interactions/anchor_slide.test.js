@@ -1,19 +1,19 @@
 import {
     isElementVerticallyInViewportOf,
-    startInteractions,
     setupInteractionWhiteList,
+    startInteractions,
 } from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
 setupInteractionWhiteList("website.anchor_slide");
 
 describe.current.tags("interaction_dev");
 
 test("anchor_slide does nothing if there is no href", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <a id="somewhere"/>
         </div>
@@ -22,7 +22,7 @@ test("anchor_slide does nothing if there is no href", async () => {
 });
 
 test("anchor_slide scrolls to targetted location", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; width: 500px; max-height: 500px;">
             <a href="#target">Click here</a>
             <div style="min-height: 2000px;">Tall stuff</div>
@@ -41,7 +41,7 @@ test("anchor_slide scrolls to targetted location", async () => {
 });
 
 test("without anchor_slide, instantly reach the targetted location", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; width: 500px; max-height: 100%;">
             <a href="#target">Click here</a>
             <div style="min-height: 2000px;">Tall stuff</div>
@@ -60,7 +60,7 @@ test("without anchor_slide, instantly reach the targetted location", async () =>
 });
 
 test("anchor_slide scrolls to targetted location - with non-ASCII7 characters", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; width: 500px; max-height: 500px;">
             <a href="#ok%C3%A9%25">Click here</a>
             <div style="min-height: 2000px;">Tall stuff</div>

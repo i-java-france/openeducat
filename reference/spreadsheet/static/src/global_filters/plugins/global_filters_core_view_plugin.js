@@ -9,27 +9,28 @@
  * @typedef {import("@spreadsheet").DateDefaultValue} DateDefaultValue
  */
 
-import { _t } from "@web/core/l10n/translation";
-import { Domain } from "@web/core/domain";
-import { user } from "@web/core/user";
+import {_t} from "@web/core/l10n/translation";
+import {Domain} from "@web/core/domain";
+import {user} from "@web/core/user";
 
-import { EvaluationError, helpers } from "@odoo/o-spreadsheet";
-import { CommandResult } from "@spreadsheet/o_spreadsheet/cancelled_reason";
+import {EvaluationError, helpers} from "@odoo/o-spreadsheet";
+import {CommandResult} from "@spreadsheet/o_spreadsheet/cancelled_reason";
 
 import {
     checkFilterValueIsValid,
     getDateDomain,
     getDateRange,
 } from "@spreadsheet/global_filters/helpers";
-import { OdooCoreViewPlugin } from "@spreadsheet/plugins";
-import { getItemId } from "../../helpers/model";
-import { serializeDate } from "@web/core/l10n/dates";
-import { getFilterCellValue, getFilterValueDomain } from "../helpers";
-import { deepEqual } from "@web/core/utils/objects";
+import {OdooCoreViewPlugin} from "@spreadsheet/plugins";
+import {getItemId} from "../../helpers/model";
+import {serializeDate} from "@web/core/l10n/dates";
+import {getFilterCellValue, getFilterValueDomain} from "../helpers";
+import {deepEqual} from "@web/core/utils/objects";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
-const { UuidGenerator, createEmptyExcelSheet, createEmptySheet, toXC, toNumber } = helpers;
+const {UuidGenerator, createEmptyExcelSheet, createEmptySheet, toXC, toNumber} =
+    helpers;
 const uuidGenerator = new UuidGenerator();
 
 export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
@@ -145,7 +146,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
                 return this._getDateValueFromDefaultValue(filter.defaultValue);
             case "relation":
                 if (filter.defaultValue.ids === "current_user") {
-                    return { ...filter.defaultValue, ids: [user.userId] };
+                    return {...filter.defaultValue, ids: [user.userId]};
                 }
                 return filter.defaultValue;
             default:
@@ -177,7 +178,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
         const filter = this.getGlobalFilterByName(filterName);
         if (!filter) {
             throw new EvaluationError(
-                _t(`Filter "%(filter_name)s" not found`, { filter_name: filterName })
+                _t(`Filter "%(filter_name)s" not found`, {filter_name: filterName})
             );
         }
         switch (filter.type) {
@@ -186,7 +187,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
             default: {
                 const value = this.getGlobalFilterValue(filter.id);
                 if (!value) {
-                    return [[{ value: "" }]];
+                    return [[{value: ""}]];
                 }
                 return getFilterCellValue(this.getters, filter, value);
             }
@@ -230,7 +231,9 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
         const uniqueFormattedValues = new Set();
         const uniqueValues = new Set();
         const allowedValues = cells
-            .filter((cell) => !["empty", "error"].includes(cell.type) && cell.value !== "")
+            .filter(
+                (cell) => !["empty", "error"].includes(cell.type) && cell.value !== ""
+            )
             .map((cell) => ({
                 value: cell.value.toString(),
                 formattedValue: cell.formattedValue,
@@ -244,9 +247,13 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
                 return true;
             });
         const additionalOptions = additionalOptionValues
-            .map((value) => ({ value, formattedValue: value }))
+            .map((value) => ({value, formattedValue: value}))
             .filter((cell) => {
-                if (cell.value === undefined || cell.value === "" || uniqueValues.has(cell.value)) {
+                if (
+                    cell.value === undefined ||
+                    cell.value === "" ||
+                    uniqueValues.has(cell.value)
+                ) {
                     return false;
                 }
                 uniqueValues.add(cell.value);
@@ -305,7 +312,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
     }
 
     _getDateFilterDisplayValue(filter) {
-        const { from, to } = getDateRange(this.getGlobalFilterValue(filter.id));
+        const {from, to} = getDateRange(this.getGlobalFilterValue(filter.id));
         const locale = this.getters.getLocale();
         const _from = {
             value: from ? toNumber(serializeDate(from), locale) : "",
@@ -330,14 +337,14 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
         const year = DateTime.local().year;
         switch (defaultValue) {
             case "this_year":
-                return { type: "year", year };
+                return {type: "year", year};
             case "this_month": {
                 const month = DateTime.local().month;
-                return { type: "month", year, month };
+                return {type: "month", year, month};
             }
             case "this_quarter": {
                 const quarter = Math.floor(new Date().getMonth() / 3) + 1;
-                return { type: "quarter", year, quarter };
+                return {type: "quarter", year, quarter};
             }
             case "today":
             case "yesterday":
@@ -373,7 +380,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
         const field = fieldMatching.chain;
         const type = /** @type {"date" | "datetime"} */ (fieldMatching.type);
         const offset = fieldMatching.offset || 0;
-        const { from, to } = getDateRange(this.getGlobalFilterValue(filter.id), offset);
+        const {from, to} = getDateRange(this.getGlobalFilterValue(filter.id), offset);
         return getDateDomain(from, to, field, type);
     }
 
@@ -415,7 +422,10 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
                     if (cell.value === undefined) {
                         continue;
                     }
-                    const xc = toXC(Number(colIndex) + 1, Number(rowIndex) + filterRowIndex);
+                    const xc = toXC(
+                        Number(colIndex) + 1,
+                        Number(rowIndex) + filterRowIndex
+                    );
                     cells[xc] = cell.value.toString();
                     if (cell.format) {
                         const formatId = getItemId(cell.format, data.formats);
@@ -425,7 +435,7 @@ export class GlobalFiltersCoreViewPlugin extends OdooCoreViewPlugin {
             }
             filterRowIndex += result[0].length;
         }
-        const styleId = getItemId({ bold: true }, data.styles);
+        const styleId = getItemId({bold: true}, data.styles);
 
         const sheet = {
             ...createEmptySheet(uuidGenerator.smallUuid(), _t("Active Filters")),

@@ -1,12 +1,12 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class PortalInvoicePagePayment extends Interaction {
     static selector = "#portal_pay";
 
     setup() {
         if (this.el.dataset.payment) {
-            (new Modal("#pay_with")).show();
+            new Modal("#pay_with").show();
         }
     }
 }

@@ -1,9 +1,9 @@
-import { ActivityListPopoverItem } from "@mail/core/web/activity_list_popover_item";
-import { compareDatetime } from "@mail/utils/common/misc";
+import {ActivityListPopoverItem} from "@mail/core/web/activity_list_popover_item";
+import {compareDatetime} from "@mail/utils/common/misc";
 
-import { Component, onWillUpdateProps } from "@odoo/owl";
+import {Component, onWillUpdateProps} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -16,7 +16,7 @@ import { useService } from "@web/core/utils/hooks";
  * @extends {Component<Props, Env>}
  */
 export class ActivityListPopover extends Component {
-    static components = { ActivityListPopoverItem };
+    static components = {ActivityListPopoverItem};
     static props = [
         "activityIds",
         "close",
@@ -42,7 +42,10 @@ export class ActivityListPopover extends Component {
         const allActivities = Object.values(this.store["mail.activity"].records);
         return allActivities
             .filter((activity) => this.props.activityIds.includes(activity.id))
-            .sort((a, b) => compareDatetime(a.date_deadline, b.date_deadline) || a.id - b.id);
+            .sort(
+                (a, b) =>
+                    compareDatetime(a.date_deadline, b.date_deadline) || a.id - b.id
+            );
     }
 
     onClickAddActivityButton() {

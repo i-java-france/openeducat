@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("crm_livechat.create_lead_from_chatbot", {
     steps: () => [
@@ -7,7 +7,8 @@ registry.category("web_tour.tours").add("crm_livechat.create_lead_from_chatbot",
             run: "click",
         },
         {
-            trigger: ".o-livechat-root:shadow .o-mail-Message:contains(Hello, how can I help you?)",
+            trigger:
+                ".o-livechat-root:shadow .o-mail-Message:contains(Hello, how can I help you?)",
         },
         {
             trigger: ".o-livechat-root:shadow .o-mail-Composer-input",

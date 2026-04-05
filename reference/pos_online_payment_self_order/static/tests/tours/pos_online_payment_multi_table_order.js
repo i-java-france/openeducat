@@ -6,10 +6,10 @@ import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_
 import * as ProductScreenPos from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as ProductScreenResto from "@pos_restaurant/../tests/tours/utils/product_screen_util";
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
+const Chrome = {...ChromePos, ...ChromeRestaurant};
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
 
 registry.category("web_tour.tours").add("OnlinePaymentWithMultiTables", {
     steps: () =>
@@ -29,22 +29,26 @@ registry.category("web_tour.tours").add("OnlinePaymentWithMultiTables", {
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("test_online_payment_self_multi_company_payment", {
-    steps: () => [
-        {
-            trigger: 'button[name="o_payment_submit_button"]:not(:disabled)',
-        },
-    ],
-});
+registry
+    .category("web_tour.tours")
+    .add("test_online_payment_self_multi_company_payment", {
+        steps: () => [
+            {
+                trigger: 'button[name="o_payment_submit_button"]:not(:disabled)',
+            },
+        ],
+    });
 
-registry.category("web_tour.tours").add("test_online_payment_pos_self_order_preparation_changes", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Chrome.clickOrders(),
-            TicketScreen.checkStatus("Self-order", "Ongoing"),
-            TicketScreen.selectOrder("Self-order"),
-            ProductScreen.clickReview(),
-            ProductScreen.orderlineIsToOrder("Fanta"),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_online_payment_pos_self_order_preparation_changes", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Chrome.clickOrders(),
+                TicketScreen.checkStatus("Self-order", "Ongoing"),
+                TicketScreen.selectOrder("Self-order"),
+                ProductScreen.clickReview(),
+                ProductScreen.orderlineIsToOrder("Fanta"),
+            ].flat(),
+    });

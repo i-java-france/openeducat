@@ -1,12 +1,12 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { url } from "@web/core/utils/urls";
-import { standardFieldProps } from "../standard_field_props";
-import { FileUploader } from "../file_handler";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {url} from "@web/core/utils/urls";
+import {standardFieldProps} from "../standard_field_props";
+import {FileUploader} from "../file_handler";
 
-import { Component, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
-import { hidePDFJSButtons } from "@web/core/utils/pdfjs";
+import {Component, onWillUpdateProps, useEffect, useRef, useState} from "@odoo/owl";
+import {hidePDFJSButtons} from "@web/core/utils/pdfjs";
 
 export class PdfViewerField extends Component {
     static template = "web.PdfViewerField";
@@ -63,8 +63,8 @@ export class PdfViewerField extends Component {
         return `/web/static/lib/pdfjs/web/viewer.html?file=${file}#page=${page}`;
     }
 
-    update({ data }) {
-        const changes = { [this.props.name]: data || false };
+    update({data}) {
+        const changes = {[this.props.name]: data || false};
         return this.props.record.update(changes);
     }
 
@@ -81,10 +81,10 @@ export class PdfViewerField extends Component {
         });
     }
 
-    onFileUploaded({ data, objectUrl }) {
+    onFileUploaded({data, objectUrl}) {
         this.state.isValid = true;
         this.state.objectUrl = objectUrl;
-        this.update({ data });
+        this.update({data});
     }
 
     onLoadFailed() {

@@ -1,11 +1,11 @@
-import { useState, onWillRender } from "@odoo/owl";
-import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { TextInputPopup } from "@point_of_sale/app/components/popups/text_input_popup/text_input_popup";
-import { _t } from "@web/core/l10n/translation";
-import { SelectionPopup } from "@point_of_sale/app/components/popups/selection_popup/selection_popup";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { patch } from "@web/core/utils/patch";
+import {useState, onWillRender} from "@odoo/owl";
+import {ControlButtons} from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {TextInputPopup} from "@point_of_sale/app/components/popups/text_input_popup/text_input_popup";
+import {_t} from "@web/core/l10n/translation";
+import {SelectionPopup} from "@point_of_sale/app/components/popups/selection_popup/selection_popup";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {patch} from "@web/core/utils/patch";
 
 patch(ControlButtons.prototype, {
     setup() {
@@ -30,7 +30,9 @@ patch(ControlButtons.prototype, {
         });
     },
     _getEWalletPrograms() {
-        return this.pos.models["loyalty.program"].filter((p) => p.program_type == "ewallet");
+        return this.pos.models["loyalty.program"].filter(
+            (p) => p.program_type == "ewallet"
+        );
     },
     async onClickWallet() {
         const order = this.pos.getOrder();
@@ -62,7 +64,8 @@ patch(ControlButtons.prototype, {
                 this.pos.addLineToCurrentOrder(
                     {
                         product_id: selectedProgram.trigger_product_ids[0],
-                        product_tmpl_id: selectedProgram.trigger_product_ids[0].product_tmpl_id,
+                        product_tmpl_id:
+                            selectedProgram.trigger_product_ids[0].product_tmpl_id,
                         _e_wallet_program_id: selectedProgram,
                         price_unit: -orderTotal,
                     },
@@ -76,9 +79,9 @@ patch(ControlButtons.prototype, {
             } else {
                 eWalletReward = await makeAwaitable(this.dialog, SelectionPopup, {
                     title: _t("Use eWallet to pay"),
-                    list: eWalletRewards.map(({ reward, coupon_id }) => ({
+                    list: eWalletRewards.map(({reward, coupon_id}) => ({
                         id: reward.id,
-                        item: { reward, coupon_id },
+                        item: {reward, coupon_id},
                         label: `${reward.description} (${reward.program_id.name})`,
                     })),
                 });
@@ -109,7 +112,7 @@ patch(ControlButtons.prototype, {
                 if (code !== "") {
                     const res = await this.pos.activateCode(code);
                     if (res !== true) {
-                        this.notification.add(res, { type: "danger" });
+                        this.notification.add(res, {type: "danger"});
                     }
                 }
             },
@@ -124,12 +127,16 @@ patch(ControlButtons.prototype, {
         if (order) {
             const claimableRewards = order.getClaimableRewards();
             rewards = claimableRewards.filter(
-                ({ reward }) => reward.program_id.program_type !== "ewallet"
+                ({reward}) => reward.program_id.program_type !== "ewallet"
             );
         }
         const result = {};
-        const discountRewards = rewards.filter(({ reward }) => reward.reward_type == "discount");
-        const freeProductRewards = rewards.filter(({ reward }) => reward.reward_type == "product");
+        const discountRewards = rewards.filter(
+            ({reward}) => reward.reward_type == "discount"
+        );
+        const freeProductRewards = rewards.filter(
+            ({reward}) => reward.reward_type == "product"
+        );
         const potentialFreeProductRewards = this.pos.getPotentialFreeProductRewards();
         const avaiRewards = [
             ...potentialFreeProductRewards,
@@ -171,7 +178,8 @@ patch(ControlButtons.prototype, {
             args["product"] = selectedProduct;
         }
         if (
-            (reward.reward_type == "product" && reward.program_id.applies_on !== "both") ||
+            (reward.reward_type == "product" &&
+                reward.program_id.applies_on !== "both") ||
             (reward.program_id.applies_on == "both" && potentialQty)
         ) {
             const product = args["product"] || reward.reward_product_ids[0];

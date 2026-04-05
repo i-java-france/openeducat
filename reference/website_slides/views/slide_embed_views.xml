@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <record id="slide_embed_view_tree" model="ir.ui.view">
@@ -6,9 +6,9 @@
             <field name="model">slide.embed</field>
             <field name="arch" type="xml">
                 <list string="Embed Views" create="0" edit="0">
-                    <field name="website_name" string="External Website"/>
-                    <field name="count_views"/>
-                    <field name="slide_id" string="Content" optional="hide"/>
+                    <field name="website_name" string="External Website" />
+                    <field name="count_views" />
+                    <field name="slide_id" string="Content" optional="hide" />
                 </list>
             </field>
         </record>
@@ -18,7 +18,7 @@
             <field name="model">slide.embed</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="slide_id" string="Content"/>
+                    <field name="slide_id" string="Content" />
                 </search>
             </field>
         </record>

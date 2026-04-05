@@ -1,12 +1,23 @@
 import base64
+
 import markupsafe
 import requests
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.addons.l10n_ro_edi_stock.models.stock_picking import OPERATION_TYPES, OPERATION_SCOPES, OPERATION_TYPE_TO_ALLOWED_SCOPE_CODES, LOCATION_TYPES, LOCATION_TYPE_MAP, BORDER_CROSSING_POINTS, CUSTOMS_OFFICES, STATE_CODES
-from odoo.addons.l10n_ro_edi_stock.models.l10n_ro_edi_stock_document import DOCUMENT_STATES
+
 from odoo.addons.l10n_ro_edi_stock.models.etransport_api import ETransportAPI
+from odoo.addons.l10n_ro_edi_stock.models.l10n_ro_edi_stock_document import (
+    DOCUMENT_STATES,
+)
+from odoo.addons.l10n_ro_edi_stock.models.stock_picking import (
+    BORDER_CROSSING_POINTS,
+    CUSTOMS_OFFICES,
+    LOCATION_TYPES,
+    OPERATION_SCOPES,
+    OPERATION_TYPE_TO_ALLOWED_SCOPE_CODES,
+    OPERATION_TYPES,
+)
 
 
 class StockPickingBatch(models.Model):

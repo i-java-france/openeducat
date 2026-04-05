@@ -3,12 +3,12 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BuilderTextInput } from "@html_builder/core/building_blocks/builder_text_input";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { expect, test, describe } from "@odoo/hoot";
-import { reactive, useState, xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BuilderTextInput} from "@html_builder/core/building_blocks/builder_text_input";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {reactive, useState, xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -34,7 +34,7 @@ test("hide/display base on applyTo", async () => {
         },
     });
 
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><div class="child-target">b</div></div>`
     );
     const editableContent = getEditableContent();
@@ -57,12 +57,12 @@ test("hide/display base on applyTo", async () => {
 test("update default prop", async () => {
     const defaultValueA = "Default Value A";
     const defaultValueB = "Default Value B";
-    const state = reactive({ default: defaultValueA });
+    const state = reactive({default: defaultValueA});
     addBuilderOption(
         class extends BaseOptionComponent {
             static selector = ".parent-target";
             static template = xml`<BuilderTextInput action="'customAction'" default="state.default"/>`;
-            static components = { BuilderTextInput };
+            static components = {BuilderTextInput};
 
             setup() {
                 this.state = useState(state);
@@ -72,10 +72,10 @@ test("update default prop", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ editingElement: el, value }) {
+            apply({editingElement: el, value}) {
                 el.textContent = value;
             }
-            getValue({ editingElement: el }) {
+            getValue({editingElement: el}) {
                 return el.textContent;
             }
         },

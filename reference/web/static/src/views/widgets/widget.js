@@ -1,7 +1,7 @@
-import { evaluateExpr, evaluateBooleanExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
+import {evaluateExpr, evaluateBooleanExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
 
-import { Component, xml } from "@odoo/owl";
+import {Component, xml} from "@odoo/owl";
 const viewWidgetRegistry = registry.category("view_widgets");
 
 const supportedInfoValidation = {
@@ -11,13 +11,13 @@ const supportedInfoValidation = {
         label: String,
         name: String,
         type: String,
-        availableTypes: { type: Array, element: String, optional: true },
-        default: { type: String, optional: true },
-        help: { type: String, optional: true },
+        availableTypes: {type: Array, element: String, optional: true},
+        default: {type: String, optional: true},
+        help: {type: String, optional: true},
         choices: /* choices if type == selection */ {
             type: Array,
             element: Object,
-            shape: { label: String, value: String },
+            shape: {label: String, value: String},
             optional: true,
         },
     },
@@ -25,11 +25,14 @@ const supportedInfoValidation = {
 };
 
 viewWidgetRegistry.addValidation({
-    component: { validate: (c) => c.prototype instanceof Component },
-    extractProps: { type: Function, optional: true },
-    additionalClasses: { type: Array, element: String, optional: true },
+    component: {validate: (c) => c.prototype instanceof Component},
+    extractProps: {type: Function, optional: true},
+    additionalClasses: {type: Array, element: String, optional: true},
     fieldDependencies: {
-        type: [Function, { type: Array, element: Object, shape: { name: String, type: String } }],
+        type: [
+            Function,
+            {type: Array, element: Object, shape: {name: String, type: String}},
+        ],
         optional: true,
     },
     listViewWidth: {
@@ -57,7 +60,7 @@ viewWidgetRegistry.addValidation({
  * It supports instancing components from the "view_widgets" registry.
  */
 export class Widget extends Component {
-    static template = xml/*xml*/ `
+    static template = xml /*xml*/ `
         <div t-att-class="classNames" t-att-style="props.style">
             <t t-component="widget.component" t-props="widgetProps" />
         </div>`;
@@ -72,7 +75,7 @@ export class Widget extends Component {
             attrs: {},
         };
 
-        for (const { name, value } of node.attributes) {
+        for (const {name, value} of node.attributes) {
             if (["name", "widget"].includes(name)) {
                 // avoid adding name and widget to attrs
                 continue;

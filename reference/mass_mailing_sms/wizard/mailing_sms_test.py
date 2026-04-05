@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import Markup
 from uuid import uuid4
 
-from odoo import fields, models, _
+from markupsafe import Markup
+
+from odoo import _, fields, models
 from odoo.tools.urls import urljoin as url_join
 
 
@@ -43,8 +43,8 @@ class MailingSmsTest(models.TransientModel):
 
         numbers = [number.strip() for number in self.numbers.splitlines()]
         sanitized_numbers = [self.env.user._phone_format(number=number) for number in numbers]
-        valid_numbers = [number for sanitized, number in zip(sanitized_numbers, numbers) if sanitized]
-        invalid_numbers = [number for sanitized, number in zip(sanitized_numbers, numbers) if not sanitized]
+        valid_numbers = [number for sanitized, number in zip(sanitized_numbers, numbers, strict=False) if sanitized]
+        invalid_numbers = [number for sanitized, number in zip(sanitized_numbers, numbers, strict=False) if not sanitized]
 
         record = self.env[self.mailing_id.mailing_model_real].search([], limit=1)
         body = self.mailing_id.body_plaintext

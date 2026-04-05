@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from odoo import _, api, models
 from odoo.exceptions import UserError
@@ -26,7 +25,7 @@ class AccountTax(models.Model):
                         'You must close the POS sessions before modifying the tax.'
                     ))
                 lines_chunk.invalidate_recordset(['tax_ids'])
-        return super(AccountTax, self).write(vals)
+        return super().write(vals)
 
     def _hook_compute_is_used(self, taxes_to_compute):
         # OVERRIDE in order to fetch taxes used in pos

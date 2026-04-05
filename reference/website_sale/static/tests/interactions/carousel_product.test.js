@@ -1,14 +1,17 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, queryOne } from "@odoo/hoot-dom";
-import { defineStyle } from "@web/../tests/web_test_helpers";
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, queryOne} from "@odoo/hoot-dom";
+import {defineStyle} from "@web/../tests/web_test_helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
 setupInteractionWhiteList(["website_sale.carousel_product"]);
 describe.current.tags("interaction_dev");
 
 test("scroll miniatures", async () => {
-    defineStyle(/* css */`li { min-width: 64px !important; }`);
-    const { core } = await startInteractions(`
+    defineStyle(/* css */ `li { min-width: 64px !important; }`);
+    const {core} = await startInteractions(`
         <div class="o_wsale_product_images position-relative" style="width: 600px" data-image-amount="16">
             <div id="o-carousel-product" data-bs-ride="true" class="o_carousel_not_single carousel slide position-sticky mb-3 overflow-hidden" data-name="Product Carousel">
                 <div class="o_carousel_product_outer carousel-outer position-relative d-flex align-items-center w-100 overflow-hidden">

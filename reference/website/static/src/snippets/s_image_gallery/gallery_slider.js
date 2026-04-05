@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { isVisible } from "@html_editor/utils/dom_info";
+import {isVisible} from "@html_editor/utils/dom_info";
 
 /**
  * This interaction is kept for compatibility with snippets dropped before 18.0.
@@ -47,7 +47,8 @@ export class GallerySlider extends Interaction {
                     if (!isVisible(indicatorParentEl)) {
                         if (!indicatorParentEl.style.display) {
                             indicatorParentEl.style.display = "block";
-                            indicatorWidth = this.indicatorEl.getBoundingClientRect().width;
+                            indicatorWidth =
+                                this.indicatorEl.getBoundingClientRect().width;
                             indicatorParentEl.style.display = "";
                         }
                         break;
@@ -92,7 +93,9 @@ export class GallerySlider extends Interaction {
             for (const liEl of this.liEls) {
                 liEl.classList.remove("active");
             }
-            const selectedLiEl = [...this.liEls].find((el) => el.dataset.bsSlideTo === `${index}`);
+            const selectedLiEl = [...this.liEls].find(
+                (el) => el.dataset.bsSlideTo === `${index}`
+            );
             selectedLiEl?.classList.add("active");
         }, 0);
     }
@@ -108,7 +111,9 @@ export class GallerySlider extends Interaction {
         }
         this.page += dispatchedEl.classList.contains("o_indicators_left") ? -1 : 1;
         this.page = Math.max(0, Math.min(this.nbPages - 1, this.page)); // should not be necessary
-        window.Carousel.getOrCreateInstance(this.carouselEl).to(this.page * this.realNbPerPage);
+        window.Carousel.getOrCreateInstance(this.carouselEl).to(
+            this.page * this.realNbPerPage
+        );
         // We dont use hide() before the slide animation in the editor because there is a traceback
         // TO DO: fix this traceback
         if (this.hideOnClickIndicator) {
@@ -143,7 +148,9 @@ export class GallerySlider extends Interaction {
 
     onSlidCarousel() {
         if (this.liEls) {
-            const active = [...this.liEls].filter((el) => el.classList.contains("active"));
+            const active = [...this.liEls].filter((el) =>
+                el.classList.contains("active")
+            );
             const index = active.length ? [...this.liEls].indexOf(active[0]) : 0;
             this.page = Math.floor(index / this.realNbPerPage);
         }

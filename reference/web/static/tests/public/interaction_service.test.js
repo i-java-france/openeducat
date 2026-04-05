@@ -1,11 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { Component, xml } from "@odoo/owl";
-import { makeMockEnv } from "@web/../tests/web_test_helpers";
-import { Interaction } from "@web/public/interaction";
-import { startInteraction } from "./helpers";
+import {Component, xml} from "@odoo/owl";
+import {makeMockEnv} from "@web/../tests/web_test_helpers";
+import {Interaction} from "@web/public/interaction";
+import {startInteraction} from "./helpers";
 
 describe.current.tags("interaction_dev");
 
@@ -35,7 +35,7 @@ test("starting interactions twice should only actually do it once", async () => 
         }
     }
 
-    const { core } = await startInteraction(Test, `<div class="test"></div>`);
+    const {core} = await startInteraction(Test, `<div class="test"></div>`);
 
     expect(n).toBe(1);
     core.startInteractions();
@@ -66,7 +66,7 @@ test("start interactions even if there is a crash", async () => {
         }
     }
 
-    const { core } = await startInteraction([Boom, NotBoom], `<div class="test"></div>`, {
+    const {core} = await startInteraction([Boom, NotBoom], `<div class="test"></div>`, {
         waitForStart: false,
     });
     await expect(core.isReady).rejects.toThrow("boom");
@@ -94,7 +94,7 @@ test("start interactions even if there is a crash when evaluating selector", asy
         }
     }
 
-    const { core } = await startInteraction([Boom, NotBoom], `<div class="test"></div>`, {
+    const {core} = await startInteraction([Boom, NotBoom], `<div class="test"></div>`, {
         waitForStart: false,
     });
 
@@ -124,7 +124,7 @@ test("start interactions even if there is a crash when evaluating selectorHas", 
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         [Boom, NotBoom],
         `<div class="test"><div></div></div>`,
         {
@@ -148,7 +148,7 @@ test("start interactions with selectorHas", async () => {
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         Test,
         `
         <div class="test"><div class="inner"></div></div>
@@ -174,7 +174,7 @@ test("stop interactions with selectorHas", async () => {
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         Test,
         `
         <div class="test"><div class="inner"></div><div class="other"></div></div>
@@ -183,7 +183,7 @@ test("stop interactions with selectorHas", async () => {
     expect.verifySteps(["start"]);
 
     queryOne(".inner").remove();
-    core.stopInteractions(queryOne(".other")); // on sub-element of the Interaction root
+    core.stopInteractions(queryOne(".other")); // On sub-element of the Interaction root
     expect.verifySteps(["destroy"]);
 });
 
@@ -207,7 +207,7 @@ test("start interactions even if there is a crash when evaluating selectorNotHas
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         [Boom, NotBoom],
         `<div class="test"><div></div></div>`,
         {
@@ -231,7 +231,7 @@ test("start interactions with selectorNotHas", async () => {
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         Test,
         `
         <div class="test"><div class="inner"></div></div>
@@ -240,7 +240,9 @@ test("start interactions with selectorNotHas", async () => {
     );
     expect(core.interactions).toHaveLength(1);
     expect.verifySteps(["start"]);
-    expect(core.interactions[0].interaction.el).toBe(queryOne(".test:not(:has(.inner))"));
+    expect(core.interactions[0].interaction.el).toBe(
+        queryOne(".test:not(:has(.inner))")
+    );
 });
 
 test("stop interactions with selectorNotHas", async () => {
@@ -257,13 +259,13 @@ test("stop interactions with selectorNotHas", async () => {
         }
     }
 
-    const { core } = await startInteraction(Test, `<div class="test"></div>`);
+    const {core} = await startInteraction(Test, `<div class="test"></div>`);
     expect.verifySteps(["start"]);
 
     const div = document.createElement("div");
     div.className = "inner";
     queryOne(".test").appendChild(div);
-    core.stopInteractions(div); // on sub-element of the Interaction root (added node)
+    core.stopInteractions(div); // On sub-element of the Interaction root (added node)
     expect.verifySteps(["destroy"]);
 });
 
@@ -318,7 +320,7 @@ test("interactions are stopped in reverse order", async () => {
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         Test,
         `<div class="test"></div><div class="test"></div>`
     );
@@ -333,7 +335,7 @@ test("can mount a component", async () => {
         static template = xml`owl component`;
         static props = {};
     }
-    const { core } = await startInteraction(Test, `<div class="test"></div>`);
+    const {core} = await startInteraction(Test, `<div class="test"></div>`);
     expect(".test").toHaveInnerHTML(
         `<owl-root contenteditable="false" data-oe-protected="true" style="display: contents;">owl component</owl-root>`
     );
@@ -346,7 +348,7 @@ test("can start interaction in specific el", async () => {
     class Test extends Interaction {
         static selector = ".test";
         dynamicContent = {
-            _root: { "t-att-a": () => "b" },
+            _root: {"t-att-a": () => "b"},
         };
 
         setup() {
@@ -354,7 +356,7 @@ test("can start interaction in specific el", async () => {
         }
     }
 
-    const { core } = await startInteraction(Test, `<p></p>`);
+    const {core} = await startInteraction(Test, `<p></p>`);
 
     expect(n).toBe(0);
     const p = queryOne("p");
@@ -380,7 +382,7 @@ test("can start and stop interaction in specific el", async () => {
         }
     }
 
-    const { core } = await startInteraction(
+    const {core} = await startInteraction(
         Test,
         `
         <p>
@@ -421,7 +423,7 @@ test("does not start interaction in el if not attached", async () => {
         }
     }
 
-    const { core } = await startInteraction(Test, `<p><span class="test"></span></p>`);
+    const {core} = await startInteraction(Test, `<p><span class="test"></span></p>`);
     expect(n).toBe(1);
     const span = queryOne("span.test");
     core.stopInteractions(span);

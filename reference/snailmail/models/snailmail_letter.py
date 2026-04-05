@@ -1,20 +1,20 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import re
 import base64
 import io
+import re
 
-from reportlab.platypus import Frame, Paragraph, KeepInFrame
-from reportlab.lib.units import mm
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import mm
 from reportlab.pdfgen.canvas import Canvas
+from reportlab.platypus import Frame, KeepInFrame, Paragraph
 
-from odoo import fields, models, api, _
-from odoo.addons.iap.tools import iap_tools
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.tools.pdf import PdfFileReader, PdfFileWriter
 from odoo.tools.safe_eval import safe_eval
+
+from odoo.addons.iap.tools import iap_tools
 
 DEFAULT_ENDPOINT = 'https://iap-snailmail.odoo.com'
 PRINT_ENDPOINT = '/iap/snailmail/1/print'

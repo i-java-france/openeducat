@@ -1,6 +1,7 @@
-from odoo.addons.event_crm.tests.common import TestEventCrmCommon
 from odoo.fields import Command
 from odoo.tests import HttpCase, tagged
+
+from odoo.addons.event_crm.tests.common import TestEventCrmCommon
 
 
 @tagged('post_install', '-at_install')

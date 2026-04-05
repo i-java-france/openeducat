@@ -1,8 +1,8 @@
-import { rpc } from "@web/core/network/rpc";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
-import { _t } from "@web/core/l10n/translation";
-import { EventBus, Component, markup, useEffect, useState } from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {sprintf} from "@web/core/utils/strings";
+import {_t} from "@web/core/l10n/translation";
+import {EventBus, Component, markup, useEffect, useState} from "@odoo/owl";
 
 export class WebsiteLoader extends Component {
     static props = {
@@ -50,8 +50,8 @@ export class WebsiteLoader extends Component {
             ...initialState,
         });
         this.waitingMessages = useState(defaultMessages);
-        this.currentWaitingMessage = useState({ ...defaultMessages[0] });
-        this.featuresInstallInfo = { nbInstalled: 0, total: undefined };
+        this.currentWaitingMessage = useState({...defaultMessages[0]});
+        this.featuresInstallInfo = {nbInstalled: 0, total: undefined};
 
         useEffect(
             (selectedFeatures) => {
@@ -59,7 +59,9 @@ export class WebsiteLoader extends Component {
                     const messagesToDisplay = [...defaultMessages]; // Start with defaultMessages
                     if (selectedFeatures.length > 0) {
                         // Merge defaultMessages with the relevant waitingMessages
-                        messagesToDisplay.push(...this.getWaitingMessages(selectedFeatures));
+                        messagesToDisplay.push(
+                            ...this.getWaitingMessages(selectedFeatures)
+                        );
                     }
 
                     this.waitingMessages.splice(
@@ -105,8 +107,14 @@ export class WebsiteLoader extends Component {
         useEffect(
             (isVisible) => {
                 if (isVisible) {
-                    window.addEventListener("beforeunload", this.showRefreshConfirmation);
-                    if (!this.state.selectedFeatures || this.state.selectedFeatures.length === 0) {
+                    window.addEventListener(
+                        "beforeunload",
+                        this.showRefreshConfirmation
+                    );
+                    if (
+                        !this.state.selectedFeatures ||
+                        this.state.selectedFeatures.length === 0
+                    ) {
                         // If there is no feature selected, we fake the progress
                         // for theme installation and configurator_apply. If
                         // there is at least 1 feature selected, the progress
@@ -114,11 +122,17 @@ export class WebsiteLoader extends Component {
                         this.initProgressBar();
                     }
                 } else {
-                    window.removeEventListener("beforeunload", this.showRefreshConfirmation);
+                    window.removeEventListener(
+                        "beforeunload",
+                        this.showRefreshConfirmation
+                    );
                 }
 
                 return () => {
-                    window.removeEventListener("beforeunload", this.showRefreshConfirmation);
+                    window.removeEventListener(
+                        "beforeunload",
+                        this.showRefreshConfirmation
+                    );
                     clearInterval(this.updateProgressInterval);
                 };
             },
@@ -218,7 +232,7 @@ export class WebsiteLoader extends Component {
                 selected_features: selectedFeatures,
                 total_features: this.featuresInstallInfo.total,
             },
-            { silent: true }
+            {silent: true}
         );
         if (
             !this.featuresInstallInfo.total ||
@@ -228,7 +242,10 @@ export class WebsiteLoader extends Component {
         }
         this.initProgressBar();
         if (this.featuresInstallInfo.nbInstalled !== this.featuresInstallInfo.total) {
-            this.trackModulesTimeout = setTimeout(() => this.trackModules(selectedFeatures), 1000);
+            this.trackModulesTimeout = setTimeout(
+                () => this.trackModules(selectedFeatures),
+                1000
+            );
         }
     }
 

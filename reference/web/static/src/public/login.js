@@ -1,12 +1,12 @@
-import { Interaction } from "./interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "./interaction";
+import {registry} from "@web/core/registry";
 
-import { addLoadingEffect } from "@web/core/utils/ui";
+import {addLoadingEffect} from "@web/core/utils/ui";
 
 export class Login extends Interaction {
     static selector = ".oe_login_form";
     dynamicContent = {
-        _root: { "t-on-submit": this.onSubmit },
+        _root: {"t-on-submit": this.onSubmit},
     };
 
     /**
@@ -31,6 +31,4 @@ export class Login extends Interaction {
     }
 }
 
-registry
-    .category("public.interactions")
-    .add("public.login", Login);
+registry.category("public.interactions").add("public.login", Login);

@@ -1,7 +1,7 @@
-import { Notification } from "./notification";
-import { Transition } from "@web/core/transition";
+import {Notification} from "./notification";
+import {Transition} from "@web/core/transition";
 
-import { Component, xml, useState } from "@odoo/owl";
+import {Component, xml, useState} from "@odoo/owl";
 
 export class NotificationContainer extends Component {
     static props = {
@@ -16,7 +16,7 @@ export class NotificationContainer extends Component {
                 </Transition>
             </t>
         </div>`;
-    static components = { Notification, Transition };
+    static components = {Notification, Transition};
 
     setup() {
         this.notifications = useState(this.props.notifications);

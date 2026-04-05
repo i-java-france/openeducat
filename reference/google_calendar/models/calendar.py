@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from uuid import uuid4
+
 import pytz
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
-from uuid import uuid4
 
-from odoo import api, fields, models, tools, _
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 
@@ -214,7 +215,7 @@ class CalendarEvent(models.Model):
             existing_attendees = event.attendee_ids
         attendees_by_emails = {tools.email_normalize(a.email): a for a in existing_attendees}
         partners = self._get_sync_partner(emails)
-        for attendee in zip(emails, partners, google_attendees):
+        for attendee in zip(emails, partners, google_attendees, strict=False):
             email = attendee[0]
             if email in attendees_by_emails:
                 # Update existing attendees

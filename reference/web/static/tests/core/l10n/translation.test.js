@@ -1,6 +1,6 @@
 /* eslint no-restricted-syntax: 0 */
-import { after, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
+import {after, describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 import {
     defineParams,
     makeMockEnv,
@@ -10,12 +10,16 @@ import {
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { _t as basic_t, translatedTerms, translationLoaded } from "@web/core/l10n/translation";
-import { IndexedDB } from "@web/core/utils/indexed_db";
-import { session } from "@web/session";
+import {
+    _t as basic_t,
+    translatedTerms,
+    translationLoaded,
+} from "@web/core/l10n/translation";
+import {IndexedDB} from "@web/core/utils/indexed_db";
+import {session} from "@web/session";
 
-import { Component, markup, xml } from "@odoo/owl";
-const { DateTime } = luxon;
+import {Component, markup, xml} from "@odoo/owl";
+const {DateTime} = luxon;
 
 function _t() {
     odoo.translationContext = "web";
@@ -26,7 +30,7 @@ function _t() {
 
 let id = 0;
 
-const frenchTerms = { Hello: "Bonjour" };
+const frenchTerms = {Hello: "Bonjour"};
 class TestComponent extends Component {
     // For performance reasons, HOOT caches the compiled templates
     // (with the terms already translated).
@@ -43,7 +47,7 @@ class TestComponent extends Component {
 /**
  * Patches the 'lang' of the user session and context.
  *
- * @param {string} lang
+ * @param {String} lang
  * @returns {Promise<void>}
  */
 async function mockLang(lang) {
@@ -126,7 +130,7 @@ test("[cache] write into the cache", async () => {
             thousands_sep: ",",
             week_start: 7,
         },
-        modules: { web: { messages: [{ id: "Hello", string: "Bonjour" }] } },
+        modules: {web: {messages: [{id: "Hello", string: "Bonjour"}]}},
         multi_lang: false,
         hash: "ab5379cf",
     };
@@ -152,7 +156,7 @@ test("[cache] read from cache, and don't wait to render", async () => {
                     thousands_sep: ",",
                     week_start: 7,
                 },
-                modules: { web: { messages: [{ id: "Hello", string: "Bonjour" }] } },
+                modules: {web: {messages: [{id: "Hello", string: "Bonjour"}]}},
                 multi_lang: false,
                 hash: "30b70a0e",
             };
@@ -168,10 +172,10 @@ test("[cache] read from cache, and don't wait to render", async () => {
         translations: frenchTerms,
     });
     await mountWithCleanup(TestComponent);
-    expect("#main").toHaveText("Bonjour"); //Don't wait the end of the fetch to render
+    expect("#main").toHaveText("Bonjour"); // Don't wait the end of the fetch to render
     def.resolve();
     await animationFrame();
-    expect.verifySteps(["hash: 30b70a0e"]); //Fetch with the hash of the translation in cache
+    expect.verifySteps(["hash: 30b70a0e"]); // Fetch with the hash of the translation in cache
 });
 
 test("[cache] update the cache if hash are different - template", async () => {
@@ -188,7 +192,9 @@ test("[cache] update the cache if hash are different - template", async () => {
                     thousands_sep: ",",
                     week_start: 7,
                 },
-                modules: { web: { messages: [{ id: "Hello", string: "Different Bonjour" }] } },
+                modules: {
+                    web: {messages: [{id: "Hello", string: "Different Bonjour"}]},
+                },
                 multi_lang: false,
                 hash: "30b",
             };
@@ -209,7 +215,7 @@ test("[cache] update the cache if hash are different - template", async () => {
         translations: frenchTerms,
     });
     const component = await mountWithCleanup(TestComponent);
-    expect("#main").toHaveText("Different Bonjour"); //Value came from the cache!
+    expect("#main").toHaveText("Different Bonjour"); // Value came from the cache!
     def.resolve();
     await animationFrame();
     const expectedValue = {
@@ -223,12 +229,12 @@ test("[cache] update the cache if hash are different - template", async () => {
             thousands_sep: ",",
             week_start: 7,
         },
-        modules: { web: { messages: [{ id: "Hello", string: "Bonjour" }] } }, // value was updated in the cache
+        modules: {web: {messages: [{id: "Hello", string: "Bonjour"}]}}, // Value was updated in the cache
         multi_lang: false,
-        hash: "ab5379cf", // hash was updated in the cache
+        hash: "ab5379cf", // Hash was updated in the cache
     };
     expect.verifySteps([
-        "hash: 30b", //Fetch with the hash of the translation in cache
+        "hash: 30b", // Fetch with the hash of the translation in cache
         "table: /web/webclient/translations",
         'key: {"lang":"en"}',
         `value: ${JSON.stringify(expectedValue)}`,
@@ -257,7 +263,7 @@ test("[cache] update the cache if hash are different - js", async () => {
                 },
                 modules: {
                     web: {
-                        messages: [{ id: "Hi", string: "Different Salut" }],
+                        messages: [{id: "Hi", string: "Different Salut"}],
                     },
                 },
                 multi_lang: false,
@@ -285,7 +291,7 @@ test("[cache] update the cache if hash are different - js", async () => {
     }
 
     defineParams({
-        translations: { Hi: "Salut" },
+        translations: {Hi: "Salut"},
     });
     const component = await mountWithCleanup(MyTestComponent);
     // The cached translated terms are used
@@ -306,14 +312,14 @@ test("[cache] update the cache if hash are different - js", async () => {
         },
         modules: {
             web: {
-                messages: [{ id: "Hi", string: "Salut" }],
+                messages: [{id: "Hi", string: "Salut"}],
             },
-        }, // value was updated in the cache
+        }, // Value was updated in the cache
         multi_lang: false,
-        hash: "5a528fc2", // hash was updated in the cache
+        hash: "5a528fc2", // Hash was updated in the cache
     };
     expect.verifySteps([
-        "hash: 30b", //Fetch with the hash of the translation in cache
+        "hash: 30b", // Fetch with the hash of the translation in cache
         "table: /web/webclient/translations",
         'key: {"lang":"en"}',
         `value: ${JSON.stringify(expectedValue)}`,
@@ -348,55 +354,73 @@ test("luxon is configured in the correct lang", async () => {
 test.tags("headless");
 test("arabic has the correct numbering system (generic)", async () => {
     await mockLang("ar_001");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("١٠/١٢/٢٠٢١ ١٢:٠٠:٠٠");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "١٠/١٢/٢٠٢١ ١٢:٠٠:٠٠"
+    );
 });
 
 test.tags("headless");
 test("arabic has the correct numbering system (Algeria)", async () => {
     await mockLang("ar_DZ");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("10/12/2021 12:00:00");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "10/12/2021 12:00:00"
+    );
 });
 
 test.tags("headless");
 test("arabic has the correct numbering system (Lybia)", async () => {
     await mockLang("ar_LY");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("10/12/2021 12:00:00");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "10/12/2021 12:00:00"
+    );
 });
 
 test.tags("headless");
 test("arabic has the correct numbering system (Morocco)", async () => {
     await mockLang("ar_MA");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("10/12/2021 12:00:00");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "10/12/2021 12:00:00"
+    );
 });
 
 test.tags("headless");
 test("arabic has the correct numbering system (Saudi Arabia)", async () => {
     await mockLang("ar_SA");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("١٠/١٢/٢٠٢١ ١٢:٠٠:٠٠");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "١٠/١٢/٢٠٢١ ١٢:٠٠:٠٠"
+    );
 });
 
 test.tags("headless");
 test("arabic has the correct numbering system (Tunisia)", async () => {
     await mockLang("ar_TN");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("10/12/2021 12:00:00");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "10/12/2021 12:00:00"
+    );
 });
 
 test.tags("headless");
 test("bengalese has the correct numbering system", async () => {
     await mockLang("bn");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("১০/১২/২০২১ ১২:০০:০০");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "১০/১২/২০২১ ১২:০০:০০"
+    );
 });
 
 test.tags("headless");
 test("punjabi (gurmukhi) has the correct numbering system", async () => {
     await mockLang("pa_IN");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("੧੦/੧੨/੨੦੨੧ ੧੨:੦੦:੦੦");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "੧੦/੧੨/੨੦੨੧ ੧੨:੦੦:੦੦"
+    );
 });
 
 test.tags("headless");
 test("tamil has the correct numbering system", async () => {
     await mockLang("ta");
-    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe("௧௦/௧௨/௨௦௨௧ ௧௨:௦௦:௦௦");
+    expect(DateTime.utc(2021, 12, 10).toFormat("dd/MM/yyyy hh:mm:ss")).toBe(
+        "௧௦/௧௨/௨௦௨௧ ௧௨:௦௦:௦௦"
+    );
 });
 
 test.tags("headless");
@@ -445,7 +469,8 @@ describe.tags("headless");
 describe("_t with markups", () => {
     test("non-markup values are escaped", () => {
         translatedTerms[translationLoaded] = true;
-        const maliciousUserInput = "<script>alert('This should've been escaped')</script>";
+        const maliciousUserInput =
+            "<script>alert('This should've been escaped')</script>";
         const translatedStr = _t(
             "FREE %(blink_start)sROBUX%(blink_end)s, please contact %(email)s",
             {
@@ -461,7 +486,8 @@ describe("_t with markups", () => {
     });
     test("translations are escaped", () => {
         translatedTerms[translationLoaded] = true;
-        const maliciousTranslation = "<script>document.write('pizza hawai')</script> %s";
+        const maliciousTranslation =
+            "<script>document.write('pizza hawai')</script> %s";
         patchTranslations({
             web: {
                 "I love %s": maliciousTranslation,

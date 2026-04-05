@@ -1,9 +1,9 @@
-import { CalendarSidePanel } from "@web/views/calendar/calendar_side_panel/calendar_side_panel";
-import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
-import { Cache } from "@web/core/utils/cache";
-import { useService } from "@web/core/utils/hooks";
-import { useState, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { TimeOffCalendarFilterSection } from "../filter_section/calendar_filter_section";
+import {CalendarSidePanel} from "@web/views/calendar/calendar_side_panel/calendar_side_panel";
+import {serializeDate, serializeDateTime} from "@web/core/l10n/dates";
+import {Cache} from "@web/core/utils/cache";
+import {useService} from "@web/core/utils/hooks";
+import {useState, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {TimeOffCalendarFilterSection} from "../filter_section/calendar_filter_section";
 
 export class TimeOffCalendarSidePanel extends CalendarSidePanel {
     static components = {
@@ -21,10 +21,14 @@ export class TimeOffCalendarSidePanel extends CalendarSidePanel {
             const s = "short";
             const isSameDay = start.hasSame(end, "days");
             if (isSameDay) {
-                return start.toLocaleString({ month: s, day: n, year: n });
+                return start.toLocaleString({month: s, day: n, year: n});
             }
-            return start.toLocaleString({ month: s, day: n, year: n }) + " - " + end.toLocaleString({ month: s, day: n, year: n });
-        };;
+            return (
+                start.toLocaleString({month: s, day: n, year: n}) +
+                " - " +
+                end.toLocaleString({month: s, day: n, year: n})
+            );
+        };
         this.leaveState = useState({
             mandatoryDays: [],
             bankHolidays: [],
@@ -54,7 +58,7 @@ export class TimeOffCalendarSidePanel extends CalendarSidePanel {
     }
 
     async updateSpecialDays() {
-        const { rangeStart, rangeEnd } = this.props.model;
+        const {rangeStart, rangeEnd} = this.props.model;
         const specialDays = await this._specialDaysCache.read(rangeStart, rangeEnd);
         specialDays["bankHolidays"].forEach((bankHoliday) => {
             bankHoliday.start = luxon.DateTime.fromISO(bankHoliday.start);

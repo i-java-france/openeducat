@@ -1,9 +1,15 @@
-import { beforeEach, describe, destroy, expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { click, edit, queryOne } from "@odoo/hoot-dom";
-import { Command, mountView, MockServer, mockService, onRpc } from "@web/../tests/web_test_helpers";
+import {beforeEach, describe, destroy, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {click, edit, queryOne} from "@odoo/hoot-dom";
+import {
+    Command,
+    MockServer,
+    mockService,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, ProjectTask } from "./project_models";
+import {ProjectTask, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 
@@ -129,16 +135,20 @@ test("project.task (kanban): check subtask list", async () => {
         type: "kanban",
     });
 
-    expect(".o_field_name_with_subtask_count:contains('(1/4 sub-tasks)')").toHaveCount(1, {
-        message:
-            "Task title should also display the number of (closed) sub-tasks linked to the task",
-    });
+    expect(".o_field_name_with_subtask_count:contains('(1/4 sub-tasks)')").toHaveCount(
+        1,
+        {
+            message:
+                "Task title should also display the number of (closed) sub-tasks linked to the task",
+        }
+    );
     expect(".subtask_list_button").toHaveCount(1, {
         message:
             "Only kanban boxes of parent tasks having open subtasks should have the drawdown button, in this case this is 1",
     });
     expect(".subtask_list").toHaveCount(0, {
-        message: "If the drawdown button is not clicked, the subtasks list should be hidden",
+        message:
+            "If the drawdown button is not clicked, the subtasks list should be hidden",
     });
 
     await click(".subtask_list_button");
@@ -148,7 +158,8 @@ test("project.task (kanban): check subtask list", async () => {
             "Clicking on the button should make the subtask list render, in this case we are expectig 1 list",
     });
     expect(".subtask_list_row").toHaveCount(3, {
-        message: "The list rendered should show the open subtasks of the task, in this case 3",
+        message:
+            "The list rendered should show the open subtasks of the task, in this case 3",
     });
     expect(".subtask_state_widget_col").toHaveCount(3, {
         message:
@@ -173,7 +184,7 @@ test("project.task (kanban): check subtask list", async () => {
 
 test("project.task (kanban): check closed subtask count update", async () => {
     let checkSteps = false;
-    onRpc(({ method, model }) => {
+    onRpc(({method, model}) => {
         if (checkSteps) {
             expect.step(`${model}/${method}`);
         }
@@ -212,15 +223,15 @@ test("project.task (kanban): check closed subtask count update", async () => {
 
 test("project.task (kanban): check subtask creation", async () => {
     let checkSteps = false;
-    onRpc(({ args, method, model }) => {
+    onRpc(({args, method, model}) => {
         if (checkSteps) {
             expect.step(`${model}/${method}`);
         }
         if (model === "project.task" && method === "create") {
-            const [{ display_name, parent_id, sequence }] = args[0];
+            const [{display_name, parent_id, sequence}] = args[0];
             expect(display_name).toBe("New Subtask");
             expect(parent_id).toBe(1);
-            expect(sequence).toBe(11, { message: "Sequence should be 11" });
+            expect(sequence).toBe(11, {message: "Sequence should be 11"});
             const newSubtaskId = MockServer.env["project.task"].create({
                 name: display_name,
                 parent_id,
@@ -245,7 +256,7 @@ test("project.task (kanban): check subtask creation", async () => {
     await click(".subtask_create");
     await animationFrame();
     await click(".subtask_create_input input");
-    await edit("New Subtask", { confirm: "enter" });
+    await edit("New Subtask", {confirm: "enter"});
     await animationFrame();
     expect(".subtask_list_row").toHaveCount(4, {
         message:
@@ -287,7 +298,8 @@ test("project.task (form): check focus on new subtask's name", async () => {
     await click(".o_field_x2many_list_row_add a");
     await animationFrame();
     expect(".o_field_char input").toBeFocused({
-        message: "Upon clicking on 'Add a line', the new subtask's name should be focused.",
+        message:
+            "Upon clicking on 'Add a line', the new subtask's name should be focused.",
     });
 });
 
@@ -332,7 +344,9 @@ test("project.task: Parent id is set when creating new task from subtask form's 
         resId: 1,
         type: "form",
     });
-    await click("tbody .o_data_row:nth-child(1) .o_list_record_open_form_view button.btn-link");
+    await click(
+        "tbody .o_data_row:nth-child(1) .o_list_record_open_form_view button.btn-link"
+    );
     // Destroying this view for sanicity of display
     destroy(taskFormView);
     await animationFrame();

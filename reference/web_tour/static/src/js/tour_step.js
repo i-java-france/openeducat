@@ -1,7 +1,7 @@
-import { session } from "@web/session";
-import { utils } from "@web/core/ui/ui_service";
+import {session} from "@web/session";
+import {utils} from "@web/core/ui/ui_service";
 import * as hoot from "@odoo/hoot-dom";
-import { pick } from "@web/core/utils/objects";
+import {pick} from "@web/core/utils/objects";
 
 /**
  * @typedef TourStep
@@ -29,12 +29,21 @@ export class TourStep {
         this.checkHasTour();
         const mode = this.tour.mode;
         const isSmall = utils.isSmall();
-        const standardKeyWords = ["enterprise", "community", "mobile", "desktop", "auto", "manual"];
+        const standardKeyWords = [
+            "enterprise",
+            "community",
+            "mobile",
+            "desktop",
+            "auto",
+            "manual",
+        ];
         const isActiveArray = Array.isArray(this.isActive) ? this.isActive : [];
         if (isActiveArray.length === 0) {
             return true;
         }
-        const selectors = isActiveArray.filter((key) => !standardKeyWords.includes(key));
+        const selectors = isActiveArray.filter(
+            (key) => !standardKeyWords.includes(key)
+        );
         if (selectors.length) {
             // if one of selectors is not found, step is skipped
             for (const selector of selectors) {
@@ -48,10 +57,13 @@ export class TourStep {
             isActiveArray.includes(mode) ||
             (!isActiveArray.includes("manual") && !isActiveArray.includes("auto"));
         const edition =
-            (session.server_version_info || "").at(-1) === "e" ? "enterprise" : "community";
+            (session.server_version_info || "").at(-1) === "e"
+                ? "enterprise"
+                : "community";
         const checkEdition =
             isActiveArray.includes(edition) ||
-            (!isActiveArray.includes("enterprise") && !isActiveArray.includes("community"));
+            (!isActiveArray.includes("enterprise") &&
+                !isActiveArray.includes("community"));
         const onlyForMobile = isActiveArray.includes("mobile") && isSmall;
         const onlyForDesktop = isActiveArray.includes("desktop") && !isSmall;
         const checkDevice =

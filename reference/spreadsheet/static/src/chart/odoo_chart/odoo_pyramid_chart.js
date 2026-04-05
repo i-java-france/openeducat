@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     CHART_COMMON_OPTIONS,
@@ -39,7 +39,8 @@ chartRegistry.add("odoo_pyramid", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooPyramidChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooPyramidChart.transformDefinition(definition),
+    transformDefinition: (definition) =>
+        OdooPyramidChart.transformDefinition(definition),
     getChartDefinitionFromContextCreation: () =>
         OdooPyramidChart.getDefinitionFromContextCreation(),
     name: _t("Pyramid"),
@@ -47,16 +48,16 @@ chartRegistry.add("odoo_pyramid", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getData();
+    const {datasets, labels} = chart.dataSource.getData();
 
     const pyramidDatasets = [];
     if (datasets[0]) {
         const pyramidData = datasets[0].data.map((value) => (value > 0 ? value : 0));
-        pyramidDatasets.push({ ...datasets[0], data: pyramidData });
+        pyramidDatasets.push({...datasets[0], data: pyramidData});
     }
     if (datasets[1]) {
         const pyramidData = datasets[1].data.map((value) => (value > 0 ? -value : 0));
-        pyramidDatasets.push({ ...datasets[1], data: pyramidData });
+        pyramidDatasets.push({...datasets[1], data: pyramidData});
     }
 
     const definition = chart.getDefinition();
@@ -64,7 +65,7 @@ function createOdooChartRuntime(chart, getters) {
 
     const chartData = {
         labels,
-        dataSetsValues: pyramidDatasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: pyramidDatasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
     };
 
@@ -90,5 +91,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

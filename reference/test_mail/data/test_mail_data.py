@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 MAIL_TEMPLATE = """Return-Path: {return_path}
@@ -375,7 +374,7 @@ Content-Type: text/html; charset="UTF-8"
 --00000000000005d9da05fa394cc0
 Content-Type: text/xml; charset="US-ASCII";
  name="bis3_with_error_encoding_address.xml"
-Content-Disposition: attachment; 
+Content-Disposition: attachment;
 	filename="bis3_with_error_encoding_address.xml"
 Content-Transfer-Encoding: base64
 Content-ID: <f_lgxgdqx40>
@@ -1242,7 +1241,7 @@ OyI+T2RvbzwvYT4uCjwvcD4KPC9kaXY+CiAgICAgICAg
 MAIL_BOUNCE_QP_RFC822_HEADERS = """\
 Received: by mailserver.odoo.com (Postfix)
         id EA0B917B8E4; Tue, 29 Feb 2023 11:11:11 +0100 (CET)
-From: {email_from} 
+From: {email_from}
 Subject: Undelivered Mail Returned to Sender
 To: {email_to}
 Auto-Submitted: auto-replied
@@ -1328,7 +1327,7 @@ Delivered-To: catchall@xxxx.xxxx
 Received: from in66.mail.ovh.net (unknown [10.101.4.66])
     by vr38.mail.ovh.net (Postfix) with ESMTP id 4GLCGr70Kyz1myr75
     for <catchall@xxxx.xxxx>; Thu,  8 Jul 2021 10:30:12 +0000 (UTC)
-X-Comment: SPF check N/A for local connections - client-ip=213.186.33.59; helo=mail663.ha.ovh.net; envelope-from={email_from}; receiver=catchall@xxxx.xxxx 
+X-Comment: SPF check N/A for local connections - client-ip=213.186.33.59; helo=mail663.ha.ovh.net; envelope-from={email_from}; receiver=catchall@xxxx.xxxx
 Authentication-Results: in66.mail.ovh.net; dkim=none; dkim-atps=neutral
 Delivered-To: xxxx.xxxx-{email_to}
 X-ME-Helo: opme11oxm23aub.bagnolet.francetelecom.fr
@@ -1337,13 +1336,13 @@ X-ME-Date: Thu, 08 Jul 2021 12:30:11 +0200
 X-ME-IP: 86.221.151.111
 Date: Thu, 8 Jul 2021 12:30:11 +0200 (CEST)
 From: =?UTF-8?Q?Fr=C3=A9d=C3=A9ric_BLACHON?= <{email_from}>
-Reply-To: 
+Reply-To:
     =?UTF-8?Q?Fr=C3=A9d=C3=A9ric_BLACHON?= <{email_from}>
 To: {email_to}
 Message-ID: <1024471522.82574.1625740211606.JavaMail.open-xchange@opme11oxm23aub.bagnolet.francetelecom.fr>
 Subject: transport autorisation 19T
 MIME-Version: 1.0
-Content-Type: multipart/mixed; 
+Content-Type: multipart/mixed;
     boundary="----=_Part_82573_178179506.1625740211587"
 
 ------=_Part_82573_178179506.1625740211587
@@ -1364,7 +1363,7 @@ Delivered-To: catchall@xxxx.xxxx
 Received: from in58.mail.ovh.net (unknown [10.101.4.58])
 	by vr46.mail.ovh.net (Postfix) with ESMTP id 4GvFsq2QLYz1t0N7r
 	for <catchall@xxxx.xxxx>; Tue, 24 Aug 2021 17:07:43 +0000 (UTC)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=46.105.72.169; helo=40.mo36.mail-out.ovh.net; envelope-from=bounce-md_9656353.6125275c.v1-f28f7746389e45f0bfbf9faefe9e0dc8@mandrillapp.com; receiver=catchall@xxxx.xxxx 
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=46.105.72.169; helo=40.mo36.mail-out.ovh.net; envelope-from=bounce-md_9656353.6125275c.v1-f28f7746389e45f0bfbf9faefe9e0dc8@mandrillapp.com; receiver=catchall@xxxx.xxxx
 Authentication-Results: in58.mail.ovh.net;
 	dkim=pass (1024-bit key; unprotected) header.d=mandrillapp.com header.i=bounces-noreply@mandrillapp.com header.b="TDzUcdJs";
 	dkim=pass (1024-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="MyjddTY5";

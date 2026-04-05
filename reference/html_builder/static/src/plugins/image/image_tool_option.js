@@ -1,9 +1,9 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { ImageShapeOption } from "@html_builder/plugins/image/image_shape_option";
-import { ImageFilterOption } from "@html_builder/plugins/image/image_filter_option";
-import { ImageFormatOption } from "@html_builder/plugins/image/image_format_option";
-import { ImageTransformOption } from "./image_transform_option";
-import { dynamicSVGSelector } from "../utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {ImageShapeOption} from "@html_builder/plugins/image/image_shape_option";
+import {ImageFilterOption} from "@html_builder/plugins/image/image_filter_option";
+import {ImageFormatOption} from "@html_builder/plugins/image/image_format_option";
+import {ImageTransformOption} from "./image_transform_option";
+import {dynamicSVGSelector} from "../utils";
 
 export class ImageToolOption extends BaseOptionComponent {
     static template = "html_builder.ImageToolOption";
@@ -21,7 +21,8 @@ export class ImageToolOption extends BaseOptionComponent {
         this.state = useDomState((editingElement) => ({
             isImageAnimated: editingElement.classList.contains("o_animate"),
             isDynamicSVG: editingElement.matches(dynamicSVGSelector),
-            isImageBinaryField: editingElement.parentElement.matches("[data-oe-type=image]"),
+            isImageBinaryField:
+                editingElement.parentElement.matches("[data-oe-type=image]"),
         }));
     }
 }

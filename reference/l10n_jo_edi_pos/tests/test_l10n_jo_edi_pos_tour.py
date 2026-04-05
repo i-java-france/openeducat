@@ -1,4 +1,5 @@
 from odoo.tests import tagged
+
 from odoo.addons.l10n_jo_edi_pos.tests.jo_edi_pos_common import JoEdiPosCommon
 
 

@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 import logging
-
 from datetime import datetime
 
 from odoo import api, fields, models
@@ -69,7 +67,7 @@ class MailMessageSchedule(models.Model):
                 records = [self.env['mail.thread']] * len(schedules)
                 existing = records
 
-            for record, schedule in zip(records, schedules):
+            for record, schedule in zip(records, schedules, strict=False):
                 if record not in existing:
                     continue
                 notify_kwargs = dict(default_notify_kwargs or {}, skip_existing=True)

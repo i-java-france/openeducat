@@ -1,10 +1,10 @@
-import { PivotArchParser } from "@web/views/pivot/pivot_arch_parser";
-import { OdooPivot } from "@spreadsheet/pivot/odoo_pivot";
-import { getBasicPivotArch, getPyEnv } from "@spreadsheet/../tests/helpers/data";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { helpers } from "@odoo/o-spreadsheet";
-const { parseDimension, isDateOrDatetimeField } = helpers;
+import {PivotArchParser} from "@web/views/pivot/pivot_arch_parser";
+import {OdooPivot} from "@spreadsheet/pivot/odoo_pivot";
+import {getBasicPivotArch, getPyEnv} from "@spreadsheet/../tests/helpers/data";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {helpers} from "@odoo/o-spreadsheet";
+const {parseDimension, isDateOrDatetimeField} = helpers;
 
 /**
  * @typedef {import("@spreadsheet").OdooSpreadsheetModel} OdooSpreadsheetModel
@@ -13,7 +13,10 @@ const { parseDimension, isDateOrDatetimeField } = helpers;
 
 function addEmptyGranularity(dimensions, fields) {
     return dimensions.map((dimension) => {
-        if (dimension.fieldName !== "id" && isDateOrDatetimeField(fields[dimension.fieldName])) {
+        if (
+            dimension.fieldName !== "id" &&
+            isDateOrDatetimeField(fields[dimension.fieldName])
+        ) {
             return {
                 granularity: "month",
                 ...dimension,
@@ -30,7 +33,7 @@ async function insertStaticPivot(model, pivotId, params) {
     }
     const [col, row] = params.anchor || [0, 0];
     await ds.load();
-    const { cols, rows, measures, fieldsType } = ds.getExpandedTableStructure().export();
+    const {cols, rows, measures, fieldsType} = ds.getExpandedTableStructure().export();
     const table = {
         cols,
         rows,
@@ -115,15 +118,15 @@ export async function insertPivotInSpreadsheet(model, pivotId, params) {
  * @returns {Promise<{ model: OdooSpreadsheetModel, env: object, pivotId: string}>}
  */
 export async function createSpreadsheetWithPivot(params = {}) {
-    const { model, env } = await createModelWithDataSource({
+    const {model, env} = await createModelWithDataSource({
         mockRPC: params.mockRPC,
         serverData: params.serverData,
     });
     const arch = params.arch || getBasicPivotArch();
     const pivotId = "PIVOT#1";
-    await insertPivotInSpreadsheet(model, pivotId, { arch, pivotType: params.pivotType });
+    await insertPivotInSpreadsheet(model, pivotId, {arch, pivotType: params.pivotType});
     await waitForDataLoaded(model);
-    return { model, env, pivotId };
+    return {model, env, pivotId};
 }
 
 /**
@@ -148,8 +151,8 @@ export function getZoneOfInsertedDataSource(model, dataSourceType, id) {
     for (const position of positions) {
         const cellDataSourceId =
             dataSourceType === "pivot"
-                ? model.getters.getPivotIdFromPosition({ sheetId, ...position })
-                : model.getters.getListIdFromPosition({ sheetId, ...position });
+                ? model.getters.getPivotIdFromPosition({sheetId, ...position})
+                : model.getters.getListIdFromPosition({sheetId, ...position});
         if (id !== cellDataSourceId) {
             continue;
         }
@@ -158,5 +161,5 @@ export function getZoneOfInsertedDataSource(model, dataSourceType, id) {
         bottom = Math.max(bottom, position.row);
         right = Math.max(right, position.col);
     }
-    return { top, bottom, left, right };
+    return {top, bottom, left, right};
 }

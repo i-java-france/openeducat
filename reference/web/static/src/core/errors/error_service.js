@@ -1,7 +1,7 @@
-import { browser } from "../browser/browser";
-import { registry } from "../registry";
-import { completeUncaughtError, getErrorTechnicalName } from "./error_utils";
-import { isBrowserFirefox, isBrowserChrome } from "@web/core/browser/feature_detection";
+import {browser} from "../browser/browser";
+import {registry} from "../registry";
+import {completeUncaughtError, getErrorTechnicalName} from "./error_utils";
+import {isBrowserFirefox, isBrowserChrome} from "@web/core/browser/feature_detection";
 
 export class HTMLElementLoadingError extends Error {
     static message = "Error loading an HTML Element";
@@ -64,7 +64,9 @@ export const errorService = {
             while (originalError instanceof Error && "cause" in originalError) {
                 originalError = originalError.cause;
             }
-            for (const [name, handler] of registry.category("error_handlers").getEntries()) {
+            for (const [name, handler] of registry
+                .category("error_handlers")
+                .getEntries()) {
                 try {
                     if (handler(env, uncaughtError, originalError)) {
                         break;
@@ -89,7 +91,7 @@ export const errorService = {
         }
 
         browser.addEventListener("error", async (ev) => {
-            const { colno, error, filename, lineno, message } = ev;
+            const {colno, error, filename, lineno, message} = ev;
             // We never want to display the following ResizeObserver error to the end-user. It
             // simply indicates that the browser delayed notifications to the next frame to prevent
             // infinite loop, which is how he's supposed to behave. However, it would be interesting
@@ -105,7 +107,8 @@ export const errorService = {
             const isThirdPartyScriptError =
                 isRedactedError ||
                 // Firefox doesn't hide details of errors occuring in third-party scripts, check origin explicitly
-                (isBrowserFirefox() && new URL(filename).origin !== window.location.origin);
+                (isBrowserFirefox() &&
+                    new URL(filename).origin !== window.location.origin);
             // Don't display error dialogs for third party script errors unless we are in debug mode
             if (isThirdPartyScriptError && !odoo.debug) {
                 return;
@@ -185,4 +188,4 @@ export const errorService = {
     },
 };
 
-registry.category("services").add("error", errorService, { sequence: 1 });
+registry.category("services").add("error", errorService, {sequence: 1});

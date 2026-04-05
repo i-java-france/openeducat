@@ -3,19 +3,25 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent, useGetItemValue } from "@html_builder/core/utils";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
-import { xml } from "@odoo/owl";
-import { contains, defineModels, fields, models, onRpc } from "@web/../tests/web_test_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent, useGetItemValue} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {xml} from "@odoo/owl";
+import {
+    contains,
+    defineModels,
+    fields,
+    models,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
 class Test extends models.Model {
     _name = "test";
     _records = [
-        { id: 1, name: "First" },
-        { id: 2, name: "Second" },
-        { id: 3, name: "Third" },
+        {id: 1, name: "First"},
+        {id: 2, name: "Second"},
+        {id: 3, name: "Third"},
     ];
     name = fields.Char();
 }
@@ -37,16 +43,16 @@ test("many2one: async load", async () => {
             setup() {
                 this.preview = false;
             }
-            async load({ value }) {
+            async load({value}) {
                 expect.step("load");
                 await defWillLoad;
                 return value;
             }
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 editingElement.dataset.test = value;
                 defDidApply.resolve();
             }
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
         },
@@ -57,7 +63,7 @@ test("many2one: async load", async () => {
             static template = xml`<BuilderMany2One action="'testAction'" model="'test'" limit="10"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="test-options-target">b</div>`
     );
     const editableContent = getEditableContent();
@@ -88,10 +94,10 @@ test("dependency definition should not be outdated", async () => {
     addBuilderAction({
         testAction: class extends BuilderAction {
             static id = "testAction";
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 editingElement.dataset.test = value;
             }
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
         },
@@ -138,11 +144,11 @@ test("BuilderMany2One: add null_text option in website builder dropdown", async 
     addBuilderAction({
         testAction: class extends BuilderAction {
             static id = "testAction";
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 editingElement.textContent = JSON.parse(value).name;
                 editingElement.dataset.test = value;
             }
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
         },
@@ -153,7 +159,7 @@ test("BuilderMany2One: add null_text option in website builder dropdown", async 
             static template = xml`<BuilderMany2One action="'testAction'" model="'test'" limit="10" nullText="'Remote'"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(`
+    const {getEditableContent} = await setupHTMLBuilder(`
         <div class="test-options-target">b</div>
     `);
     const editableContent = getEditableContent();

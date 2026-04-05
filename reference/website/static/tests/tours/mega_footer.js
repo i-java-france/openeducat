@@ -23,11 +23,12 @@ registerWebsitePreviewTour(
                     .classList.add("if_this_is_here_this_is_the_old_footer");
             },
         },
-        ...clickOnSnippet({ id: "o_footer", name: "Footer" }),
+        ...clickOnSnippet({id: "o_footer", name: "Footer"}),
         ...changeOptionInPopover("Footer", "Template", "Mega"),
         {
             content: "Check that the footer has been replaced",
-            trigger: ":iframe footer:not(:has(.if_this_is_here_this_is_the_old_footer))",
+            trigger:
+                ":iframe footer:not(:has(.if_this_is_here_this_is_the_old_footer))",
         },
         ...clickToolbarButton(
             "copyright and company name text",

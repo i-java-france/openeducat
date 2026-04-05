@@ -12,7 +12,7 @@ class TestMembership(TestSalesCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMembership, cls).setUpClass()
+        super().setUpClass()
         cls.new_team = cls.env['crm.team'].create({
             'name': 'Test Specific',
             'sequence': 10,

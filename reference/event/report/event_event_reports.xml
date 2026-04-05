@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="paperformat_event_badge" model="report.paperformat">
         <field name="name">Custom Paperformat for the Event Badge report</field>
-        <field name="default" eval="False"/>
-        <field name="disable_shrinking" eval="True"/>
+        <field name="default" eval="False" />
+        <field name="disable_shrinking" eval="True" />
         <field name="format">A4</field>
         <field name="page_height">0</field>
         <field name="page_width">0</field>
@@ -17,9 +16,11 @@
     </record>
 
     <record id="paperformat_event_full_page_ticket" model="report.paperformat">
-        <field name="name">Custom Paperformat for the Event Full Page Ticket report</field>
-        <field name="default" eval="False"/>
-        <field name="disable_shrinking" eval="True"/>
+        <field
+            name="name"
+        >Custom Paperformat for the Event Full Page Ticket report</field>
+        <field name="default" eval="False" />
+        <field name="disable_shrinking" eval="True" />
         <field name="format">A4</field>
         <field name="page_height">0</field>
         <field name="page_width">0</field>
@@ -37,28 +38,43 @@
     as an "official" ticket that the attendee can show to the registration desk where all
     the information are available (event name, organizer, SO reference, barcode, footer with
     sponsors, ...). -->
-    <record id="action_report_event_registration_full_page_ticket" model="ir.actions.report">
+    <record
+        id="action_report_event_registration_full_page_ticket"
+        model="ir.actions.report"
+    >
         <field name="name">Full Page Ticket</field>
         <field name="model">event.registration</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">event.event_registration_report_template_full_page_ticket</field>
-        <field name="report_file">event.event_registration_report_template_full_page_ticket</field>
-        <field name="print_report_name">'Full Page Ticket - %s - %s' % ((object.event_id.name or 'Event').replace('/',''), (object.name or '').replace('/',''))</field>
-        <field name="binding_model_id" ref="model_event_registration"/>
+        <field
+            name="report_name"
+        >event.event_registration_report_template_full_page_ticket</field>
+        <field
+            name="report_file"
+        >event.event_registration_report_template_full_page_ticket</field>
+        <field
+            name="print_report_name"
+        >'Full Page Ticket - %s - %s' % ((object.event_id.name or 'Event').replace('/',''), (object.name or '').replace('/',''))</field>
+        <field name="binding_model_id" ref="model_event_registration" />
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="paperformat_event_full_page_ticket"/>
+        <field name="paperformat_id" ref="paperformat_event_full_page_ticket" />
     </record>
 
     <record id="action_report_event_event_full_page_ticket" model="ir.actions.report">
         <field name="name">Full Page Ticket Example</field>
         <field name="model">event.event</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">event.event_event_report_template_full_page_ticket</field>
-        <field name="report_file">event.event_event_report_template_full_page_ticket</field>
-        <field name="print_report_name">'Full Page Ticket - %s' % (object.name or 'Event').replace('/','')</field>
-        <field name="binding_model_id" ref="model_event_event"/>
+        <field
+            name="report_name"
+        >event.event_event_report_template_full_page_ticket</field>
+        <field
+            name="report_file"
+        >event.event_event_report_template_full_page_ticket</field>
+        <field
+            name="print_report_name"
+        >'Full Page Ticket - %s' % (object.name or 'Event').replace('/','')</field>
+        <field name="binding_model_id" ref="model_event_event" />
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="paperformat_event_full_page_ticket"/>
+        <field name="paperformat_id" ref="paperformat_event_full_page_ticket" />
     </record>
 
     <record id="action_report_event_registration_badge" model="ir.actions.report">
@@ -67,10 +83,12 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">event.event_registration_report_template_badge</field>
         <field name="report_file">event.event_registration_report_template_badge</field>
-        <field name="print_report_name">'Badge - %s - %s' % ((object.event_id.name or 'Event').replace('/',''), (object.name or '').replace('/',''))</field>
-        <field name="binding_model_id" ref="model_event_registration"/>
+        <field
+            name="print_report_name"
+        >'Badge - %s - %s' % ((object.event_id.name or 'Event').replace('/',''), (object.name or '').replace('/',''))</field>
+        <field name="binding_model_id" ref="model_event_registration" />
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="paperformat_event_badge"/>
+        <field name="paperformat_id" ref="paperformat_event_badge" />
     </record>
 
     <record id="action_report_event_event_badge" model="ir.actions.report">
@@ -79,27 +97,36 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">event.event_event_report_template_badge</field>
         <field name="report_file">event.event_event_report_template_badge</field>
-        <field name="print_report_name">'Badge - %s' % (object.name or 'Event').replace('/','')</field>
-        <field name="binding_model_id" ref="model_event_event"/>
+        <field
+            name="print_report_name"
+        >'Badge - %s' % (object.name or 'Event').replace('/','')</field>
+        <field name="binding_model_id" ref="model_event_event" />
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="paperformat_event_badge"/>
+        <field name="paperformat_id" ref="paperformat_event_badge" />
     </record>
 
-    <record id="action_report_event_registration_responsive_html_ticket" model="ir.actions.report">
+    <record
+        id="action_report_event_registration_responsive_html_ticket"
+        model="ir.actions.report"
+    >
         <field name="name">Responsive Html Full Page Ticket</field>
         <field name="model">event.registration</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">event.event_registration_report_template_responsive_html_ticket</field>
-        <field name="report_file">event.event_registration_report_template_responsive_html_ticket</field>
+        <field
+            name="report_name"
+        >event.event_registration_report_template_responsive_html_ticket</field>
+        <field
+            name="report_file"
+        >event.event_registration_report_template_responsive_html_ticket</field>
     </record>
-    
+
     <record id="action_report_event_event_attendee_list" model="ir.actions.report">
         <field name="name">Attendee List</field>
         <field name="model">event.event</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">event.event_event_attendee_list</field>
         <field name="report_file">event.event_event_attendee_list</field>
-        <field name="binding_model_id" ref="event.model_event_event"/>
+        <field name="binding_model_id" ref="event.model_event_event" />
         <field name="binding_type">report</field>
         <field name="print_report_name">'Attendee List - %s' % (object.name)</field>
     </record>

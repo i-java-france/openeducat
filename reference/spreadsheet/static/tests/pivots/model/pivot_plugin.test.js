@@ -1,15 +1,15 @@
-import { describe, expect, test, Deferred } from "@odoo/hoot";
-import { animationFrame, mockDate } from "@odoo/hoot-mock";
+import {Deferred, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, mockDate} from "@odoo/hoot-mock";
 import {
     defineSpreadsheetActions,
     defineSpreadsheetModels,
     getBasicServerData,
 } from "@spreadsheet/../tests/helpers/data";
 import {
+    allowTranslations,
     fields,
     makeServerError,
     onRpc,
-    allowTranslations,
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
@@ -26,29 +26,29 @@ import {
     getCellFormula,
     getCellValue,
     getEvaluatedCell,
-    getFormattedValueGrid,
     getEvaluatedGrid,
+    getFormattedValueGrid,
 } from "@spreadsheet/../tests/helpers/getters";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/helpers/pivot";
-import { CommandResult } from "@spreadsheet/o_spreadsheet/cancelled_reason";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {createSpreadsheetWithPivot} from "@spreadsheet/../tests/helpers/pivot";
+import {CommandResult} from "@spreadsheet/o_spreadsheet/cancelled_reason";
 
-import { localization } from "@web/core/l10n/localization";
-import { user } from "@web/core/user";
+import {localization} from "@web/core/l10n/localization";
+import {user} from "@web/core/user";
 
-import { Model } from "@odoo/o-spreadsheet";
+import {Model} from "@odoo/o-spreadsheet";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { Partner, Product } from "../../helpers/data";
-const { toZone } = spreadsheet.helpers;
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {Partner, Product} from "../../helpers/data";
+const {toZone} = spreadsheet.helpers;
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 defineSpreadsheetActions();
 
 test("can get a pivotId from cell formula", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -57,12 +57,12 @@ test("can get a pivotId from cell formula", async function () {
                 </pivot>`,
     });
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("can get a pivotId from cell formula with '-' before the formula", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -75,12 +75,12 @@ test("can get a pivotId from cell formula with '-' before the formula", async fu
         text: `=-PIVOT.VALUE("1","probability","bar","false","foo","2")`,
     });
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("can get a pivotId from cell formula with other numerical values", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -93,12 +93,12 @@ test("can get a pivotId from cell formula with other numerical values", async fu
         text: `=3*PIVOT.VALUE("1","probability","bar","false","foo","2")+2`,
     });
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("can get a pivotId from cell formula where pivot is in a function call", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="product_id" type="col"/>
@@ -111,34 +111,42 @@ test("can get a pivotId from cell formula where pivot is in a function call", as
         text: `=SUM(PIVOT.VALUE("1","probability","bar","false","foo","2"),PIVOT.VALUE("1","probability","bar","false","foo","2"))`,
     });
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("can get a pivotId from cell formula where the id is a reference", async function () {
-    const { model } = await createSpreadsheetWithPivot();
-    setCellContent(model, "C3", `=PIVOT.VALUE(G10,"probability","bar","false","foo","2")+2`);
+    const {model} = await createSpreadsheetWithPivot();
+    setCellContent(
+        model,
+        "C3",
+        `=PIVOT.VALUE(G10,"probability","bar","false","foo","2")+2`
+    );
     setCellContent(model, "G10", "1");
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("can get a Pivot from cell formula where the id is a reference in an inactive sheet", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const firstSheetId = model.getters.getActiveSheetId();
-    model.dispatch("CREATE_SHEET", { sheetId: "2" });
-    model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: firstSheetId, sheetIdTo: "2" });
+    model.dispatch("CREATE_SHEET", {sheetId: "2"});
+    model.dispatch("ACTIVATE_SHEET", {sheetIdFrom: firstSheetId, sheetIdTo: "2"});
     setCellContent(model, "A1", "1");
     setCellContent(model, "A2", '=PIVOT.VALUE(A1,"probability")');
-    model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "2", sheetIdTo: firstSheetId });
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId: "2", col: 0, row: 1 });
+    model.dispatch("ACTIVATE_SHEET", {sheetIdFrom: "2", sheetIdTo: firstSheetId});
+    const pivotId = model.getters.getPivotIdFromPosition({
+        sheetId: "2",
+        col: 0,
+        row: 1,
+    });
     expect(pivotId).toBe("PIVOT#1");
 });
 
 test("can get a pivotId from cell formula (Mix of test scenarios above)", async function () {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                     <pivot>
                         <field name="product_id" type="col"/>
                         <field name="foo" type="row"/>
@@ -150,12 +158,12 @@ test("can get a pivotId from cell formula (Mix of test scenarios above)", async 
         text: `=3*SUM(PIVOT.VALUE("1","probability","bar","false","foo","2"),PIVOT.VALUE("1","probability","bar","false","foo","2"))+2*PIVOT.VALUE("1","probability","bar","false","foo","2")`,
     });
     const sheetId = model.getters.getActiveSheetId();
-    const pivotId = model.getters.getPivotIdFromPosition({ sheetId, col: 2, row: 2 });
+    const pivotId = model.getters.getPivotIdFromPosition({sheetId, col: 2, row: 2});
     expect(pivotId).toBe(model.getters.getPivotId("1"));
 });
 
 test("Can remove a pivot with undo after editing a cell", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     expect(getCellContent(model, "A1").startsWith("=PIVOT(")).toBe(true);
     setCellContent(model, "G10", "should be undoable");
     model.dispatch("REQUEST_UNDO");
@@ -168,7 +176,7 @@ test("Can remove a pivot with undo after editing a cell", async function () {
 });
 
 test("rename pivot with empty name is refused", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     const result = model.dispatch("RENAME_PIVOT", {
         pivotId,
         name: "",
@@ -177,7 +185,7 @@ test("rename pivot with empty name is refused", async () => {
 });
 
 test("rename pivot with incorrect id is refused", async () => {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const result = model.dispatch("RENAME_PIVOT", {
         pivotId: "invalid",
         name: "name",
@@ -186,8 +194,8 @@ test("rename pivot with incorrect id is refused", async () => {
 });
 
 test("Renaming a pivot does not retrigger RPCs", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
-        mockRPC: function (route, { model, method, kwargs }) {
+    const {model, pivotId} = await createSpreadsheetWithPivot({
+        mockRPC: function (route, {model, method, kwargs}) {
             switch (method) {
                 case "formatted_read_grouping_sets":
                     expect.step("formatted_read_grouping_sets");
@@ -196,14 +204,14 @@ test("Renaming a pivot does not retrigger RPCs", async () => {
         },
     });
     expect.verifySteps(["formatted_read_grouping_sets"]);
-    updatePivot(model, pivotId, { name: "name" });
+    updatePivot(model, pivotId, {name: "name"});
     await animationFrame();
     expect.verifySteps([]);
 });
 
 test("Renaming a pivot with a matching global filter does not retrigger RPCs", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
-        mockRPC: function (route, { model, method, kwargs }) {
+    const {model, pivotId} = await createSpreadsheetWithPivot({
+        mockRPC: function (route, {model, method, kwargs}) {
             switch (method) {
                 case "formatted_read_grouping_sets":
                     expect.step("formatted_read_grouping_sets");
@@ -218,23 +226,23 @@ test("Renaming a pivot with a matching global filter does not retrigger RPCs", a
             id: "42",
             type: "relation",
             label: "test",
-            defaultValue: { operator: "in", ids: [41] },
+            defaultValue: {operator: "in", ids: [41]},
             modelName: undefined,
         },
         {
-            pivot: { [pivotId]: { chain: "product_id", type: "many2one" } },
+            pivot: {[pivotId]: {chain: "product_id", type: "many2one"}},
         }
     );
     expect.verifySteps(["formatted_read_grouping_sets"]);
-    updatePivot(model, pivotId, { name: "name" });
+    updatePivot(model, pivotId, {name: "name"});
     await animationFrame();
     expect.verifySteps([]);
 });
 
 test("Undo/Redo for RENAME_PIVOT", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     expect(model.getters.getPivotName(pivotId)).toBe("Partner Pivot");
-    model.dispatch("RENAME_PIVOT", { pivotId, name: "test" });
+    model.dispatch("RENAME_PIVOT", {pivotId, name: "test"});
     expect(model.getters.getPivotName(pivotId)).toBe("test");
     model.dispatch("REQUEST_UNDO");
     expect(model.getters.getPivotName(pivotId)).toBe("Partner Pivot");
@@ -243,8 +251,8 @@ test("Undo/Redo for RENAME_PIVOT", async function () {
 });
 
 test("Can delete pivot", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
-    model.dispatch("REMOVE_PIVOT", { pivotId });
+    const {model, pivotId} = await createSpreadsheetWithPivot();
+    model.dispatch("REMOVE_PIVOT", {pivotId});
     expect(model.getters.getPivotIds().length).toBe(0);
     const A1 = getEvaluatedCell(model, "A1");
     expect(A1.message).toBe(`There is no pivot with id "1"`);
@@ -252,9 +260,9 @@ test("Can delete pivot", async function () {
 });
 
 test("Can undo/redo a delete pivot", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     const value = getEvaluatedCell(model, "A1").value;
-    model.dispatch("REMOVE_PIVOT", { pivotId });
+    model.dispatch("REMOVE_PIVOT", {pivotId});
     model.dispatch("REQUEST_UNDO");
     await animationFrame();
     expect(model.getters.getPivotIds().length).toBe(1);
@@ -268,19 +276,23 @@ test("Can undo/redo a delete pivot", async function () {
 });
 
 test("Format header displays an error for non-existing field", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     setCellContent(model, "G10", `=PIVOT.HEADER("1", "measure", "non-existing")`);
     setCellContent(model, "G11", `=PIVOT.HEADER("1", "non-existing", "bla")`);
     await animationFrame();
     expect(getCellValue(model, "G10")).toBe("#ERROR");
     expect(getCellValue(model, "G11")).toBe("#ERROR");
-    expect(getEvaluatedCell(model, "G10").message).toBe("Field non-existing does not exist");
-    expect(getEvaluatedCell(model, "G11").message).toBe("Field non-existing does not exist");
+    expect(getEvaluatedCell(model, "G10").message).toBe(
+        "Field non-existing does not exist"
+    );
+    expect(getEvaluatedCell(model, "G11").message).toBe(
+        "Field non-existing does not exist"
+    );
 });
 
 test("invalid group dimensions", async function () {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="product_id" type="row"/>
                     <field name="foo" type="col"/>
@@ -289,31 +301,31 @@ test("invalid group dimensions", async function () {
                 </pivot>`,
     });
     const invalids = [
-        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false, "foo", 1)', // inverted col dimensions
-        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false, "f"&"oo", 1)', // inverted col dimensions, "foo" computed
-        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false)', // missing first col dimension
+        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false, "foo", 1)', // Inverted col dimensions
+        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false, "f"&"oo", 1)', // Inverted col dimensions, "foo" computed
+        '=PIVOT.VALUE(1,"probability:avg", "product_id", 1, "bar", false)', // Missing first col dimension
         '=PIVOT.VALUE(1,"probability:avg", "#product_id", 1, "#bar", 1, "#foo", 1)',
-        '=PIVOT.VALUE(1,"probability:avg", "bar", false, "foo", 1, "product_id", 1)', // columns before rows
+        '=PIVOT.VALUE(1,"probability:avg", "bar", false, "foo", 1, "product_id", 1)', // Columns before rows
 
-        '=PIVOT.HEADER(1, "product_id", 1, "bar", false, "foo", 1)', // inverted col dimensions
-        '=PIVOT.HEADER(1, "product_id", 1, "bar", false)', // missing first col dimension
+        '=PIVOT.HEADER(1, "product_id", 1, "bar", false, "foo", 1)', // Inverted col dimensions
+        '=PIVOT.HEADER(1, "product_id", 1, "bar", false)', // Missing first col dimension
         '=PIVOT.HEADER(1, "#product_id", 1, "#bar", 1, "#foo", 1)',
-        '=PIVOT.HEADER(1, "bar", false, "foo", 1, "product_id", 47)', // columns before rows
+        '=PIVOT.HEADER(1, "bar", false, "foo", 1, "product_id", 47)', // Columns before rows
     ];
     for (const formula of invalids) {
         setCellContent(model, "G10", formula);
-        expect(getCellValue(model, "G10")).toBe("#ERROR", { message: formula });
+        expect(getCellValue(model, "G10")).toBe("#ERROR", {message: formula});
         expect(getEvaluatedCell(model, "G10").message).toInclude(
             "Dimensions don't match the pivot definition",
-            { message: formula }
+            {message: formula}
         );
     }
 });
 
 test("user context is combined with pivot context to fetch data", async function () {
     serverState.companies = [
-        { id: 15, name: "Hermit" },
-        { id: 16, name: "Craft" },
+        {id: 15, name: "Hermit"},
+        {id: 16, name: "Craft"},
     ];
     serverState.timezone = "bx";
     serverState.lang = "FR";
@@ -331,11 +343,11 @@ test("user context is combined with pivot context to fetch data", async function
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ fieldName: "probability" }],
+                measures: [{fieldName: "probability"}],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
                 context: {
                     allowed_company_ids: [16],
                     default_stage_id: 9,
@@ -355,9 +367,9 @@ test("user context is combined with pivot context to fetch data", async function
         lang: "FR",
         uid: serverState.userId,
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
-        mockRPC: function (route, { model, method, kwargs }) {
+        mockRPC: function (route, {model, method, kwargs}) {
             if (model !== "partner") {
                 return;
             }
@@ -388,14 +400,14 @@ test("Context is purged from PivotView related keys", async function (assert) {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
-                rows: [{ fieldName: "bar" }],
+                columns: [{fieldName: "foo"}],
+                rows: [{fieldName: "bar"}],
                 domain: [],
-                measures: [{ fieldName: "probability" }],
+                measures: [{fieldName: "probability"}],
                 model: "partner",
                 context: {
                     pivot_measures: ["__count"],
-                    // inverse row and col group bys
+                    // Inverse row and col group bys
                     pivot_row_groupby: ["test"],
                     pivot_column_groupby: ["check"],
                     dummyKey: "true",
@@ -404,9 +416,9 @@ test("Context is purged from PivotView related keys", async function (assert) {
         },
     };
 
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
-        mockRPC: function (route, { model, method, kwargs }) {
+        mockRPC: function (route, {model, method, kwargs}) {
             if (model === "partner" && method === "formatted_read_grouping_sets") {
                 expect.step(`pop`);
                 const hasBadKeys = [
@@ -436,27 +448,33 @@ test("fetch metadata only once per model", async function () {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
                 context: {},
             },
             2: {
                 type: "ODOO",
-                columns: [{ fieldName: "bar" }],
+                columns: [{fieldName: "bar"}],
                 domain: [],
-                measures: [{ field: "probability", operator: "max" }],
+                measures: [{field: "probability", operator: "max"}],
                 model: "partner",
-                rows: [{ fieldName: "foo" }],
+                rows: [{fieldName: "foo"}],
                 context: {},
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
-        mockRPC: function (route, { model, method, kwargs }) {
+        mockRPC: function (route, {model, method, kwargs}) {
             if (model === "partner" && method === "fields_get") {
                 expect.step(`${model}/${method}`);
             } else if (model === "ir.model" && method === "search_read") {
@@ -469,10 +487,10 @@ test("fetch metadata only once per model", async function () {
 });
 
 test("An error is displayed if the pivot has invalid model", async function () {
-    const { model, env, pivotId } = await createSpreadsheetWithPivot({
-        mockRPC: async function (route, { model, method, kwargs }) {
+    const {model, env, pivotId} = await createSpreadsheetWithPivot({
+        mockRPC: async function (route, {model, method, kwargs}) {
             if (model === "unknown" && method === "fields_get") {
-                throw makeServerError({ code: 404 });
+                throw makeServerError({code: 404});
             }
         },
     });
@@ -487,7 +505,9 @@ test("An error is displayed if the pivot has invalid model", async function () {
     setCellContent(model, "A1", `=PIVOT.VALUE("1", "probability:avg")`);
     await animationFrame();
     expect(getCellValue(model, "A1")).toBe("#ERROR");
-    expect(getEvaluatedCell(model, "A1").message).toBe(`The model "unknown" does not exist.`);
+    expect(getEvaluatedCell(model, "A1").message).toBe(
+        `The model "unknown" does not exist.`
+    );
 });
 
 test("don't fetch pivot data if no formula use it", async function () {
@@ -495,17 +515,23 @@ test("don't fetch pivot data if no formula use it", async function () {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
-        mockRPC: function (route, { model, method, kwargs }) {
+        mockRPC: function (route, {model, method, kwargs}) {
             if (!["partner", "ir.model"].includes(model)) {
                 return;
             }
@@ -521,13 +547,13 @@ test("don't fetch pivot data if no formula use it", async function () {
 });
 
 test("An error is displayed if the pivot has invalid field", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     const pivot = model.getters.getPivotCoreDefinition(pivotId);
     model.dispatch("UPDATE_PIVOT", {
         pivotId,
         pivot: {
             ...pivot,
-            columns: [{ fieldName: "unknown" }],
+            columns: [{fieldName: "unknown"}],
         },
     });
     setCellContent(model, "A1", `=PIVOT.VALUE("1", "probability:avg")`);
@@ -537,10 +563,10 @@ test("An error is displayed if the pivot has invalid field", async function () {
 });
 
 test("Datasources are in error when their RPC fails", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
-        mockRPC: async function (route, { model, method, kwargs }) {
+    const {model, pivotId} = await createSpreadsheetWithPivot({
+        mockRPC: async function (route, {model, method, kwargs}) {
             if (model === "unknown" && method === "fields_get") {
-                throw makeServerError({ code: 404 });
+                throw makeServerError({code: 404});
             }
         },
     });
@@ -555,32 +581,46 @@ test("Datasources are in error when their RPC fails", async function () {
     setCellContent(model, "A1", `=PIVOT.VALUE("1", "probability:avg")`);
     await animationFrame();
     expect(getCellValue(model, "A1")).toBe("#ERROR");
-    expect(getEvaluatedCell(model, "A1").message).toBe(`The model "unknown" does not exist.`);
+    expect(getEvaluatedCell(model, "A1").message).toBe(
+        `The model "unknown" does not exist.`
+    );
 });
 
 test("evaluates only once when two pivots are loading", async function () {
     const spreadsheetData = {
-        sheets: [{ id: "sheet1" }],
+        sheets: [{id: "sheet1"}],
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
             },
             2: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
     });
     model.config.custom.odooDataProvider.addEventListener("data-source-updated", () =>
@@ -593,31 +633,37 @@ test("evaluates only once when two pivots are loading", async function () {
     await animationFrame();
     expect(getCellValue(model, "A1")).toBe(131);
     expect(getCellValue(model, "A2")).toBe(131);
-    // evaluation after both pivots are loaded
+    // Evaluation after both pivots are loaded
     expect.verifySteps(["data-source-notified"]);
 });
 
 test("concurrently load the same pivot twice", async function () {
     const spreadsheetData = {
-        sheets: [{ id: "sheet1" }],
+        sheets: [{id: "sheet1"}],
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "foo" }],
+                columns: [{fieldName: "foo"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
     });
-    // the data loads first here, when we insert the first pivot function
+    // The data loads first here, when we insert the first pivot function
     setCellContent(model, "A1", '=PIVOT.VALUE("1", "probability:sum")');
     expect(getCellValue(model, "A1")).toBe("Loading...");
-    // concurrently reload the same pivot
+    // Concurrently reload the same pivot
     model.dispatch("REFRESH_ALL_DATA_SOURCES");
     await animationFrame();
     expect(getCellValue(model, "A1")).toBe(131);
@@ -640,32 +686,42 @@ test("display loading while data is not fully available", async function () {
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "product_id" }],
+                columns: [{fieldName: "product_id"}],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 rows: [],
             },
         },
     };
-    onRpc("partner", "fields_get", async ({ method, model }) => {
+    onRpc("partner", "fields_get", async ({method, model}) => {
         expect.step(`${model}/${method}`);
         await metadataPromise;
     });
-    onRpc("partner", "formatted_read_grouping_sets", async ({ kwargs, method, model }) => {
-        expect.step(`${model}/${method}`);
-        await dataPromise;
-    });
+    onRpc(
+        "partner",
+        "formatted_read_grouping_sets",
+        async ({kwargs, method, model}) => {
+            expect.step(`${model}/${method}`);
+            await dataPromise;
+        }
+    );
     onRpc("product", "read", () => {
         throw new Error("should not be called because data is put in cache");
     });
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     expect(getCellValue(model, "A1")).toBe("Loading...");
     expect(getCellValue(model, "A2")).toBe("Loading...");
     expect(getCellValue(model, "A3")).toBe("Loading...");
     metadataPromise.resolve();
     await animationFrame();
-    setCellContent(model, "A10", "1"); // trigger a new evaluation (might also be caused by other async formulas resolving)
+    setCellContent(model, "A10", "1"); // Trigger a new evaluation (might also be caused by other async formulas resolving)
     expect(getCellValue(model, "A1")).toBe("Loading...");
     expect(getCellValue(model, "A2")).toBe("Loading...");
     expect(getCellValue(model, "A3")).toBe("Loading...");
@@ -681,14 +737,14 @@ test("display loading while data is not fully available", async function () {
 test("pivot grouped by char field which represents numbers", async function () {
     const serverData = getBasicServerData();
     serverData.models.partner.records = [
-        { name: "111", probability: 11 },
-        { name: "000111", probability: 15 },
-        { name: "14.0", probability: 16 },
+        {name: "111", probability: 11},
+        {name: "000111", probability: 15},
+        {name: "14.0", probability: 16},
     ];
 
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
                 <pivot>
                     <field name="name" type="row"/>
                     <field name="probability" type="measure"/>
@@ -701,17 +757,23 @@ test("pivot grouped by char field which represents numbers", async function () {
     expect(getEvaluatedCell(model, "A3").value).toBe("000111");
     expect(getEvaluatedCell(model, "A4").value).toBe("111");
     expect(getEvaluatedCell(model, "A5").value).toBe("14.0");
-    expect(getCell(model, "B3").content).toBe('=PIVOT.VALUE(1,"probability:avg","name","000111")');
-    expect(getCell(model, "B4").content).toBe('=PIVOT.VALUE(1,"probability:avg","name","111")');
-    expect(getCell(model, "B5").content).toBe('=PIVOT.VALUE(1,"probability:avg","name","14.0")');
+    expect(getCell(model, "B3").content).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","name","000111")'
+    );
+    expect(getCell(model, "B4").content).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","name","111")'
+    );
+    expect(getCell(model, "B5").content).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","name","14.0")'
+    );
     expect(getEvaluatedCell(model, "B3").value).toBe(15);
     expect(getEvaluatedCell(model, "B4").value).toBe(11);
     expect(getEvaluatedCell(model, "B5").value).toBe(16);
 });
 
 test("relational PIVOT.HEADER with missing id", async function () {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="product_id" type="col"/>
                     <field name="bar" type="row"/>
@@ -732,8 +794,8 @@ test("relational PIVOT.HEADER with missing id", async function () {
 });
 
 test("relational PIVOT.HEADER with undefined id", async function () {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="foo" type="col"/>
                     <field name="product_id" type="row"/>
@@ -741,7 +803,9 @@ test("relational PIVOT.HEADER with undefined id", async function () {
                 </pivot>`,
     });
     setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
-    expect(getCell(model, "A25")).toBe(undefined, { message: "the cell should be empty" });
+    expect(getCell(model, "A25")).toBe(undefined, {
+        message: "the cell should be empty",
+    });
     await waitForDataLoaded(model);
     const F10 = getEvaluatedCell(model, "F10");
     expect(F10.value).toBe("#ERROR");
@@ -749,7 +813,7 @@ test("relational PIVOT.HEADER with undefined id", async function () {
 });
 
 test("Verify pivot measures are correctly computed :)", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     expect(getCellValue(model, "B4")).toBe(11);
     expect(getCellValue(model, "C3")).toBe(15);
     expect(getCellValue(model, "D4")).toBe(10);
@@ -757,8 +821,8 @@ test("Verify pivot measures are correctly computed :)", async function () {
 });
 
 test("__count measure", async function () {
-    const { model } = await createSpreadsheetWithPivot({
-        arch: /*xml*/ `
+    const {model} = await createSpreadsheetWithPivot({
+        arch: /* xml*/ `
                 <pivot>
                     <field name="product_id" type="row"/>
                     <field name="__count" type="measure"/>
@@ -771,7 +835,7 @@ test("__count measure", async function () {
 });
 
 test("invalid pivot measure", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -781,23 +845,23 @@ test("invalid pivot measure", async function () {
     });
     const formula = '=PIVOT.VALUE(1, "count")';
     setCellContent(model, "F10", formula);
-    expect(getCellValue(model, "F10")).toBe("#ERROR", { message: formula });
+    expect(getCellValue(model, "F10")).toBe("#ERROR", {message: formula});
     expect(getEvaluatedCell(model, "F10").message).toBe(
         "The argument count is not a valid measure. Here are the measures: (probability:avg)",
-        { message: formula }
+        {message: formula}
     );
 });
 
 test("aggregate to 0", async function () {
     const serverData = getBasicServerData();
     serverData.models.partner.records = [
-        { id: 1, name: "A", probability: 10 },
-        { id: 2, name: "B", probability: -10 },
+        {id: 1, name: "A", probability: 10},
+        {id: 2, name: "B", probability: -10},
     ];
 
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
                 <pivot>
                     <field name="name" type="row"/>
                     <field name="probability" type="measure"/>
@@ -813,11 +877,11 @@ test("aggregate to 0", async function () {
 
 test("pivot formula for total should return empty string instead of 'FALSE' when pivot doesn't match any data", async function () {
     const serverData = getBasicServerData();
-    serverData.models.partner.records = [{ id: 1, name: "A", probability: 10 }];
+    serverData.models.partner.records = [{id: 1, name: "A", probability: 10}];
 
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
                 <pivot>
                     <field name="name" type="row"/>
                     <field name="probability" type="measure"/>
@@ -860,14 +924,20 @@ test("can import (export) contextual domain", async () => {
                 type: "ODOO",
                 columns: [],
                 domain: '[("foo", "=", uid)]',
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 rows: [],
                 name: "A pivot",
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
         mockRPC: function (route, args) {
             if (args.method === "formatted_read_grouping_sets") {
@@ -876,7 +946,7 @@ test("can import (export) contextual domain", async () => {
             }
         },
     });
-    setCellContent(model, "A1", '=PIVOT.VALUE(1, "probability:sum")'); // load the data (and check the rpc domain)
+    setCellContent(model, "A1", '=PIVOT.VALUE(1, "probability:sum")'); // Load the data (and check the rpc domain)
     await animationFrame();
     expect(model.exportData().pivots[1].domain).toBe('[("foo", "=", uid)]', {
         message: "the domain is exported with the dynamic parts",
@@ -890,14 +960,20 @@ test("Adding a measure should trigger a reload", async () => {
             1: {
                 type: "ODOO",
                 columns: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 rows: [],
                 name: "A pivot",
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
         mockRPC: function (route, args) {
             if (args.method === "formatted_read_grouping_sets") {
@@ -908,11 +984,14 @@ test("Adding a measure should trigger a reload", async () => {
     });
     setCellContent(model, "A1", '=PIVOT.VALUE(1, "probability:sum")');
     await animationFrame();
-    expect.verifySteps([["probability:sum", "__count"], "formatted_read_grouping_sets"]);
+    expect.verifySteps([
+        ["probability:sum", "__count"],
+        "formatted_read_grouping_sets",
+    ]);
     updatePivot(model, 1, {
         measures: [
-            { id: "probability:sum", fieldName: "probability", aggregator: "sum" },
-            { id: "probability:avg", fieldName: "probability", aggregator: "avg" },
+            {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            {id: "probability:avg", fieldName: "probability", aggregator: "avg"},
         ],
     });
     await animationFrame();
@@ -922,9 +1001,9 @@ test("Adding a measure should trigger a reload", async () => {
     ]);
     updatePivot(model, 1, {
         measures: [
-            { id: "probability:sum", fieldName: "probability", aggregator: "sum" },
-            { id: "probability:avg", fieldName: "probability", aggregator: "avg" },
-            { id: "__count", fieldName: "__count", aggregator: "sum" },
+            {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            {id: "probability:avg", fieldName: "probability", aggregator: "avg"},
+            {id: "__count", fieldName: "__count", aggregator: "sum"},
         ],
     });
     await animationFrame();
@@ -939,15 +1018,21 @@ test("Updating dimensions with undefined values does not trigger a new rpc", asy
         pivots: {
             1: {
                 type: "ODOO",
-                columns: [{ fieldName: "date" }],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                columns: [{fieldName: "date"}],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
                 rows: [],
                 name: "A pivot",
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
         mockRPC: function (route, args) {
             if (args.method === "formatted_read_grouping_sets") {
@@ -959,14 +1044,14 @@ test("Updating dimensions with undefined values does not trigger a new rpc", asy
     await animationFrame();
     expect.verifySteps(["formatted_read_grouping_sets"]);
     updatePivot(model, 1, {
-        columns: [{ fieldName: "date", granularity: undefined, order: undefined }],
+        columns: [{fieldName: "date", granularity: undefined, order: undefined}],
     });
     await animationFrame();
     expect.verifySteps([]);
 });
 
 test("Can group by many2many field ", async () => {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="foo" type="col"/>
@@ -1015,7 +1100,7 @@ test("pivot grouped by ID displays values correctly", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                rows: [{ fieldName: "id" }],
+                rows: [{fieldName: "id"}],
                 columns: [],
                 domain: [],
                 measures: [
@@ -1030,7 +1115,7 @@ test("pivot grouped by ID displays values correctly", async () => {
         },
     };
 
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
 
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#id",1)`);
     await waitForDataLoaded(model);
@@ -1043,7 +1128,7 @@ test("pivot grouped by ID in a chain displays values correctly", async () => {
         pivots: {
             1: {
                 type: "ODOO",
-                rows: [{ fieldName: "product_id.id" }],
+                rows: [{fieldName: "product_id.id"}],
                 columns: [],
                 domain: [],
                 measures: [
@@ -1058,7 +1143,7 @@ test("pivot grouped by ID in a chain displays values correctly", async () => {
         },
     };
 
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
 
     setCellContent(model, "A1", `=PIVOT.HEADER(1,"#product_id.id",1)`);
     await waitForDataLoaded(model);
@@ -1067,11 +1152,11 @@ test("pivot grouped by ID in a chain displays values correctly", async () => {
 });
 
 test("Can group by many2one_reference field ", async () => {
-    onRpc("partner", "formatted_read_grouping_sets", ({ kwargs }) => {
+    onRpc("partner", "formatted_read_grouping_sets", ({kwargs}) => {
         // The mock server doesn't support well many2one_reference.
         // It is fixed in master/saas-19.1, but for now we have to mock the correct output ourselves.
         return [
-            [{ __count: 3, "probability:avg": 11, __extra_domain: [] }],
+            [{__count: 3, "probability:avg": 11, __extra_domain: []}],
             [
                 {
                     res_id: 2,
@@ -1091,7 +1176,7 @@ test("Can group by many2one_reference field ", async () => {
                     __count: 1,
                     "probability:avg": 13,
                 },
-            ]
+            ],
         ];
     });
     Partner._fields = {
@@ -1120,7 +1205,7 @@ test("Can group by many2one_reference field ", async () => {
             probability: 13,
         },
     ];
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         pivotType: "static",
         arch: /* xml */ `
             <pivot>
@@ -1131,9 +1216,15 @@ test("Can group by many2one_reference field ", async () => {
     expect(getCellFormula(model, "A3")).toBe('=PIVOT.HEADER(1,"res_id",2)');
     expect(getCellFormula(model, "A4")).toBe('=PIVOT.HEADER(1,"res_id",3)');
     expect(getCellFormula(model, "A5")).toBe('=PIVOT.HEADER(1,"res_id",FALSE)');
-    expect(getCellFormula(model, "B3")).toBe('=PIVOT.VALUE(1,"probability:avg","res_id",2)');
-    expect(getCellFormula(model, "B4")).toBe('=PIVOT.VALUE(1,"probability:avg","res_id",3)');
-    expect(getCellFormula(model, "B5")).toBe('=PIVOT.VALUE(1,"probability:avg","res_id",FALSE)');
+    expect(getCellFormula(model, "B3")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","res_id",2)'
+    );
+    expect(getCellFormula(model, "B4")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","res_id",3)'
+    );
+    expect(getCellFormula(model, "B5")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","res_id",FALSE)'
+    );
 
     expect(getCellValue(model, "A3")).toBe(2);
     expect(getCellValue(model, "A4")).toBe(3);
@@ -1144,11 +1235,11 @@ test("Can group by many2one_reference field ", async () => {
 });
 
 test("Can group by reference field ", async () => {
-    onRpc("partner", "formatted_read_grouping_sets", ({ kwargs }) => {
+    onRpc("partner", "formatted_read_grouping_sets", ({kwargs}) => {
         // The mock server doesn't support well reference.
         // It is fixed in master/saas-19.1, but for now we have to mock the correct output ourselves.
         return [
-            [{ __count: 3, "probability:avg": 11, __extra_domain: [] }],
+            [{__count: 3, "probability:avg": 11, __extra_domain: []}],
             [
                 {
                     ref: "partner,2",
@@ -1168,7 +1259,7 @@ test("Can group by reference field ", async () => {
                     __count: 1,
                     "probability:avg": 13,
                 },
-            ]
+            ],
         ];
     });
     Partner._fields = {
@@ -1193,7 +1284,7 @@ test("Can group by reference field ", async () => {
             probability: 13,
         },
     ];
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         pivotType: "static",
         arch: /* xml */ `
             <pivot>
@@ -1204,9 +1295,15 @@ test("Can group by reference field ", async () => {
     expect(getCellFormula(model, "A3")).toBe('=PIVOT.HEADER(1,"ref","partner,2")');
     expect(getCellFormula(model, "A4")).toBe('=PIVOT.HEADER(1,"ref","partner,3")');
     expect(getCellFormula(model, "A5")).toBe('=PIVOT.HEADER(1,"ref",FALSE)');
-    expect(getCellFormula(model, "B3")).toBe('=PIVOT.VALUE(1,"probability:avg","ref","partner,2")');
-    expect(getCellFormula(model, "B4")).toBe('=PIVOT.VALUE(1,"probability:avg","ref","partner,3")');
-    expect(getCellFormula(model, "B5")).toBe('=PIVOT.VALUE(1,"probability:avg","ref",FALSE)');
+    expect(getCellFormula(model, "B3")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","ref","partner,2")'
+    );
+    expect(getCellFormula(model, "B4")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","ref","partner,3")'
+    );
+    expect(getCellFormula(model, "B5")).toBe(
+        '=PIVOT.VALUE(1,"probability:avg","ref",FALSE)'
+    );
 
     expect(getCellValue(model, "A3")).toBe("partner,2");
     expect(getCellValue(model, "A4")).toBe("partner,3");
@@ -1217,7 +1314,7 @@ test("Can group by reference field ", async () => {
 });
 
 test("PIVOT.HEADER grouped by date field without value", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="year" type="col"/>
@@ -1226,7 +1323,7 @@ test("PIVOT.HEADER grouped by date field without value", async function () {
     });
     for (const granularity of ["day", "week", "month", "quarter"]) {
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "date", granularity, order: "asc" }],
+            columns: [{fieldName: "date", granularity, order: "asc"}],
         });
         await animationFrame();
         setCellContent(model, "A1", `=PIVOT.HEADER(1, "date:${granularity}", "false")`);
@@ -1235,7 +1332,7 @@ test("PIVOT.HEADER grouped by date field without value", async function () {
 });
 
 test("PIVOT functions can accept spreadsheet dates", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="date" interval="quarter" type="col"/>
@@ -1252,7 +1349,7 @@ test("PIVOT functions can accept spreadsheet dates", async function () {
     );
     expect(getCellValue(model, "A1")).toBe(10);
 
-    // not the first day of the quarter
+    // Not the first day of the quarter
     setCellContent(
         model,
         "A1",
@@ -1262,7 +1359,7 @@ test("PIVOT functions can accept spreadsheet dates", async function () {
 });
 
 test("PIVOT formulas are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -1276,7 +1373,7 @@ test("PIVOT formulas are correctly formatted at evaluation", async function () {
 });
 
 test("PIVOT formulas with monetary measure are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -1289,7 +1386,7 @@ test("PIVOT formulas with monetary measure are correctly formatted at evaluation
 });
 
 test("PIVOT day_of_month are correctly formatted at evaluation", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1297,11 +1394,15 @@ test("PIVOT day_of_month are correctly formatted at evaluation", async function 
                 </pivot>`,
     });
     updatePivot(model, pivotId, {
-        columns: [{ fieldName: "date", granularity: "day_of_month", order: "asc" }],
+        columns: [{fieldName: "date", granularity: "day_of_month", order: "asc"}],
     });
     await animationFrame();
     setCellContent(model, "B1", `=PIVOT.HEADER(1, "date:day_of_month", 1)`);
-    setCellContent(model, "B2", `=PIVOT.VALUE(1, "probability:avg", "date:day_of_month", 11)`);
+    setCellContent(
+        model,
+        "B2",
+        `=PIVOT.VALUE(1, "probability:avg", "date:day_of_month", 11)`
+    );
     expect(getEvaluatedCell(model, "B1").format).toBe("0");
     expect(getEvaluatedCell(model, "B1").value).toBe(1);
     expect(getEvaluatedCell(model, "B1").formattedValue).toBe("1");
@@ -1311,7 +1412,7 @@ test("PIVOT day_of_month are correctly formatted at evaluation", async function 
 });
 
 test("PIVOT day are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1327,16 +1428,16 @@ test("PIVOT day are correctly formatted at evaluation", async function () {
 });
 
 test("PIVOT day_of_week with same user and spreadsheet week start", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="date" interval="day" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        mockRPC: function (route, { method, kwargs }) {
+        mockRPC: function (route, {method, kwargs}) {
             if (method === "formatted_read_grouping_sets") {
                 return [
-                    [{ __count: 1, "probability:avg": 11, __extra_domain: [] }],
+                    [{__count: 1, "probability:avg": 11, __extra_domain: []}],
                     [
                         {
                             "date:day_of_week": 3, // Wednesday
@@ -1359,23 +1460,27 @@ test("PIVOT day_of_week with same user and spreadsheet week start", async functi
         },
     });
     updatePivot(model, pivotId, {
-        rows: [{ fieldName: "date", granularity: "day_of_week" }],
+        rows: [{fieldName: "date", granularity: "day_of_week"}],
     });
     setCellContent(model, "B1", '=PIVOT.HEADER(1, "date:day_of_week", 3)');
-    setCellContent(model, "B2", '=PIVOT.VALUE(1, "probability:avg", "date:day_of_week", 3)');
+    setCellContent(
+        model,
+        "B2",
+        '=PIVOT.VALUE(1, "probability:avg", "date:day_of_week", 3)'
+    );
     await animationFrame();
     expect(getEvaluatedCell(model, "B1").value).toBe("Wednesday");
     expect(getEvaluatedCell(model, "B2").value).toBe(11);
 });
 
 test("PIVOT day_of_week with user week start and spreadsheet week start different", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="date" interval="day" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-        mockRPC: function (route, { method, kwargs }) {
+        mockRPC: function (route, {method, kwargs}) {
             if (
                 method === "formatted_read_grouping_sets" &&
                 kwargs.groupby?.includes("date:day_of_week")
@@ -1401,17 +1506,21 @@ test("PIVOT day_of_week with user week start and spreadsheet week start differen
         },
     });
     updatePivot(model, pivotId, {
-        rows: [{ fieldName: "date", granularity: "day_of_week" }],
+        rows: [{fieldName: "date", granularity: "day_of_week"}],
     });
     setCellContent(model, "B1", '=PIVOT.HEADER(1, "date:day_of_week", 5)');
-    setCellContent(model, "B2", '=PIVOT.VALUE(1, "probability:avg", "date:day_of_week", 5)');
+    setCellContent(
+        model,
+        "B2",
+        '=PIVOT.VALUE(1, "probability:avg", "date:day_of_week", 5)'
+    );
     await animationFrame();
     expect(getEvaluatedCell(model, "B1").value).toBe("Wednesday");
     expect(getEvaluatedCell(model, "B2").value).toBe(11);
 });
 
 test("PIVOT iso_week_number are correctly formatted at evaluation", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1419,11 +1528,15 @@ test("PIVOT iso_week_number are correctly formatted at evaluation", async functi
                 </pivot>`,
     });
     updatePivot(model, pivotId, {
-        columns: [{ fieldName: "date", granularity: "iso_week_number", order: "asc" }],
+        columns: [{fieldName: "date", granularity: "iso_week_number", order: "asc"}],
     });
     await animationFrame();
     setCellContent(model, "B1", `=PIVOT.HEADER(1, "date:iso_week_number", 1)`);
-    setCellContent(model, "B2", `=PIVOT.VALUE(1, "probability:avg", "date:iso_week_number", 15)`);
+    setCellContent(
+        model,
+        "B2",
+        `=PIVOT.VALUE(1, "probability:avg", "date:iso_week_number", 15)`
+    );
     expect(getEvaluatedCell(model, "B1").format).toBe("0");
     expect(getEvaluatedCell(model, "B1").value).toBe(1);
     expect(getEvaluatedCell(model, "B1").formattedValue).toBe("1");
@@ -1433,7 +1546,7 @@ test("PIVOT iso_week_number are correctly formatted at evaluation", async functi
 });
 
 test("PIVOT week are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="week" type="col"/>
@@ -1450,7 +1563,7 @@ test("PIVOT week are correctly formatted at evaluation", async function () {
 
 test("PIVOT week invalid values", async function () {
     mockDate("2017-10-08");
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="week" type="col"/>
@@ -1458,7 +1571,11 @@ test("PIVOT week invalid values", async function () {
                 </pivot>`,
     });
     setCellContent(model, "A1", '=PIVOT.VALUE(1,"probability:avg", "date:week", 456)');
-    setCellContent(model, "A2", '=PIVOT.VALUE(1,"probability:avg", "date:week", "hello/there")');
+    setCellContent(
+        model,
+        "A2",
+        '=PIVOT.VALUE(1,"probability:avg", "date:week", "hello/there")'
+    );
     expect(getEvaluatedCell(model, "A1").message).toBe(
         'Week value must be a string in the format "52/2017", but received 456 instead.'
     );
@@ -1468,7 +1585,7 @@ test("PIVOT week invalid values", async function () {
 });
 
 test("PIVOT month_number are correctly formatted at evaluation", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1476,11 +1593,15 @@ test("PIVOT month_number are correctly formatted at evaluation", async function 
                 </pivot>`,
     });
     updatePivot(model, pivotId, {
-        columns: [{ fieldName: "date", granularity: "month_number", order: "asc" }],
+        columns: [{fieldName: "date", granularity: "month_number", order: "asc"}],
     });
     await animationFrame();
     setCellContent(model, "B1", `=PIVOT.HEADER(1, "date:month_number", 1)`);
-    setCellContent(model, "B2", `=PIVOT.VALUE(1, "probability:avg", "date:month_number", 4)`);
+    setCellContent(
+        model,
+        "B2",
+        `=PIVOT.VALUE(1, "probability:avg", "date:month_number", 4)`
+    );
     expect(getEvaluatedCell(model, "B1").format).toBe("@");
     expect(getEvaluatedCell(model, "B1").value).toBe("January");
     expect(getEvaluatedCell(model, "B1").formattedValue).toBe("January");
@@ -1490,7 +1611,7 @@ test("PIVOT month_number are correctly formatted at evaluation", async function 
 });
 
 test("PIVOT month are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="month" type="col"/>
@@ -1506,7 +1627,7 @@ test("PIVOT month are correctly formatted at evaluation", async function () {
 });
 
 test("PIVOT quarter_number are correctly formatted at evaluation", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1514,11 +1635,15 @@ test("PIVOT quarter_number are correctly formatted at evaluation", async functio
                 </pivot>`,
     });
     updatePivot(model, pivotId, {
-        columns: [{ fieldName: "date", granularity: "quarter_number", order: "asc" }],
+        columns: [{fieldName: "date", granularity: "quarter_number", order: "asc"}],
     });
     await animationFrame();
     setCellContent(model, "B1", `=PIVOT.HEADER(1, "date:quarter_number", 1)`);
-    setCellContent(model, "B2", `=PIVOT.VALUE(1, "probability:avg", "date:quarter_number", 2)`);
+    setCellContent(
+        model,
+        "B2",
+        `=PIVOT.VALUE(1, "probability:avg", "date:quarter_number", 2)`
+    );
     expect(getEvaluatedCell(model, "B1").format).toBe("@");
     expect(getEvaluatedCell(model, "B1").value).toBe("Q1");
     expect(getEvaluatedCell(model, "B1").formattedValue).toBe("Q1");
@@ -1528,7 +1653,7 @@ test("PIVOT quarter_number are correctly formatted at evaluation", async functio
 });
 
 test("PIVOT quarter are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="quarter" type="col"/>
@@ -1544,7 +1669,7 @@ test("PIVOT quarter are correctly formatted at evaluation", async function () {
 });
 
 test("PIVOT year are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="year" type="col"/>
@@ -1560,7 +1685,7 @@ test("PIVOT year are correctly formatted at evaluation", async function () {
 });
 
 test("PIVOT.HEADER formulas are correctly formatted at evaluation", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" interval="day" type="col"/>
@@ -1574,7 +1699,7 @@ test("PIVOT.HEADER formulas are correctly formatted at evaluation", async functi
 });
 
 test("can edit pivot domain with UPDATE_ODOO_PIVOT_DOMAIN", async () => {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const [pivotId] = model.getters.getPivotIds();
     expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([]);
     expect(getCellValue(model, "B4")).toBe(11);
@@ -1582,7 +1707,9 @@ test("can edit pivot domain with UPDATE_ODOO_PIVOT_DOMAIN", async () => {
         pivotId,
         domain: [["foo", "in", [55]]],
     });
-    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([["foo", "in", [55]]]);
+    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([
+        ["foo", "in", [55]],
+    ]);
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(null);
     model.dispatch("REQUEST_UNDO");
@@ -1591,13 +1718,15 @@ test("can edit pivot domain with UPDATE_ODOO_PIVOT_DOMAIN", async () => {
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(11);
     model.dispatch("REQUEST_REDO");
-    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([["foo", "in", [55]]]);
+    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([
+        ["foo", "in", [55]],
+    ]);
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(null);
 });
 
 test("can edit pivot domain with UPDATE_PIVOT", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([]);
     expect(getCellValue(model, "B4")).toBe(11);
     model.dispatch("UPDATE_PIVOT", {
@@ -1607,7 +1736,9 @@ test("can edit pivot domain with UPDATE_PIVOT", async () => {
             domain: [["foo", "in", [55]]],
         },
     });
-    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([["foo", "in", [55]]]);
+    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([
+        ["foo", "in", [55]],
+    ]);
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(null);
     model.dispatch("REQUEST_UNDO");
@@ -1616,13 +1747,15 @@ test("can edit pivot domain with UPDATE_PIVOT", async () => {
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(11);
     model.dispatch("REQUEST_REDO");
-    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([["foo", "in", [55]]]);
+    expect(model.getters.getPivotCoreDefinition(pivotId).domain).toEqual([
+        ["foo", "in", [55]],
+    ]);
     await waitForDataLoaded(model);
     expect(getCellValue(model, "B4")).toBe(null);
 });
 
 test("updating a pivot without changing anything rejects the command", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     const result = model.dispatch("UPDATE_PIVOT", {
         pivotId,
         pivot: {
@@ -1633,7 +1766,7 @@ test("updating a pivot without changing anything rejects the command", async () 
 });
 
 test("edited domain is exported", async () => {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const [pivotId] = model.getters.getPivotIds();
     model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
         pivotId,
@@ -1643,11 +1776,11 @@ test("edited domain is exported", async () => {
 });
 
 test("can edit pivot groups", async () => {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const [pivotId] = model.getters.getPivotIds();
     let definition = model.getters.getPivotCoreDefinition(pivotId);
-    expect(definition.columns).toEqual([{ fieldName: "foo" }]);
-    expect(definition.rows).toEqual([{ fieldName: "bar" }]);
+    expect(definition.columns).toEqual([{fieldName: "foo"}]);
+    expect(definition.rows).toEqual([{fieldName: "bar"}]);
     model.dispatch("UPDATE_PIVOT", {
         pivotId,
         pivot: {
@@ -1661,23 +1794,23 @@ test("can edit pivot groups", async () => {
     expect(definition.rows).toEqual([]);
     model.dispatch("REQUEST_UNDO");
     definition = model.getters.getPivotCoreDefinition(pivotId);
-    expect(definition.columns).toEqual([{ fieldName: "foo" }]);
-    expect(definition.rows).toEqual([{ fieldName: "bar" }]);
+    expect(definition.columns).toEqual([{fieldName: "foo"}]);
+    expect(definition.rows).toEqual([{fieldName: "bar"}]);
 });
 
 test("field matching is removed when filter is deleted", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     await addGlobalFilter(
         model,
         {
             id: "42",
             type: "relation",
             label: "test",
-            defaultValue: { operator: "in", ids: [41] },
+            defaultValue: {operator: "in", ids: [41]},
             modelName: undefined,
         },
         {
-            pivot: { [pivotId]: { chain: "product_id", type: "many2one" } },
+            pivot: {[pivotId]: {chain: "product_id", type: "many2one"}},
         }
     );
     const [filter] = model.getters.getGlobalFilters();
@@ -1693,7 +1826,8 @@ test("field matching is removed when filter is deleted", async function () {
         id: filter.id,
     });
     expect(model.getters.getPivotFieldMatching(pivotId, filter.id)).toBe(undefined, {
-        message: "it should have removed the pivot and its fieldMatching and datasource altogether",
+        message:
+            "it should have removed the pivot and its fieldMatching and datasource altogether",
     });
     expect(model.getters.getPivot(pivotId).getDomainWithGlobalFilters()).toEqual([]);
     model.dispatch("REQUEST_UNDO");
@@ -1713,9 +1847,15 @@ test("ignore sorted column if not part of measures", async () => {
                 type: "ODOO",
                 columns: [],
                 domain: [],
-                measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+                measures: [
+                    {
+                        id: "probability:sum",
+                        fieldName: "probability",
+                        aggregator: "sum",
+                    },
+                ],
                 model: "partner",
-                rows: [{ fieldName: "bar" }],
+                rows: [{fieldName: "bar"}],
                 sortedColumn: {
                     measure: "foo",
                     order: "asc",
@@ -1728,7 +1868,7 @@ test("ignore sorted column if not part of measures", async () => {
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", "=PIVOT(1)");
     await waitForDataLoaded(model);
     expect(model.getters.getPivot(1).getCollapsedTableStructure().isSorted).toBe(false);
@@ -1736,14 +1876,14 @@ test("ignore sorted column if not part of measures", async () => {
 
 test("Load pivot spreadsheet with models that cannot be accessed", async function () {
     let hasAccessRights = true;
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         mockRPC: async function (route, args) {
             if (
                 args.model === "partner" &&
                 args.method === "formatted_read_grouping_sets" &&
                 !hasAccessRights
             ) {
-                throw makeServerError({ description: "ya done!" });
+                throw makeServerError({description: "ya done!"});
             }
         },
         pivotType: "static",
@@ -1769,13 +1909,13 @@ test("Load pivot spreadsheet with models that cannot be accessed", async functio
 });
 
 test("can add a calculated measure", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="probability" type="measure"/>
             </pivot>
         `,
-        mockRPC: async function (route, { model, method, kwargs }) {
+        mockRPC: async function (route, {model, method, kwargs}) {
             if (model === "partner" && method === "formatted_read_grouping_sets") {
                 expect.step("formatted_read_grouping_sets");
                 expect(kwargs.aggregates).toEqual(["probability:avg", "__count"]);
@@ -1786,12 +1926,12 @@ test("can add a calculated measure", async function () {
     expect.verifySteps(["formatted_read_grouping_sets"]);
     updatePivot(model, pivotId, {
         measures: [
-            { id: "probability", fieldName: "probability", aggregator: "avg" },
+            {id: "probability", fieldName: "probability", aggregator: "avg"},
             {
                 id: "probability*2",
                 fieldName: "probability*2",
                 aggregator: "avg",
-                computedBy: { sheetId, formula: "=probability*2" },
+                computedBy: {sheetId, formula: "=probability*2"},
             },
         ],
     });
@@ -1804,7 +1944,7 @@ test("can add a calculated measure", async function () {
 });
 
 test("can aggregate a calculated measure grouped by relational field", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="probability" type="measure"/>
@@ -1820,7 +1960,7 @@ test("can aggregate a calculated measure grouped by relational field", async fun
                 id: "calculated",
                 fieldName: "calculated",
                 aggregator: "sum",
-                computedBy: { sheetId, formula: "=10" },
+                computedBy: {sheetId, formula: "=10"},
             },
         ],
     });
@@ -1832,7 +1972,7 @@ test("can aggregate a calculated measure grouped by relational field", async fun
 });
 
 test("calculated measure is recomputed when dependency changes", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="probability" type="measure"/>
@@ -1845,7 +1985,7 @@ test("calculated measure is recomputed when dependency changes", async function 
             {
                 id: "computed",
                 fieldName: "computed",
-                computedBy: { sheetId, formula: "=A10*2" },
+                computedBy: {sheetId, formula: "=A10*2"},
                 aggregator: "sum",
             },
         ],
@@ -1874,11 +2014,11 @@ test("can import a pivot with a calculated field", async function () {
                 columns: [],
                 domain: [],
                 measures: [
-                    { id: "probability", fieldName: "probability", aggregator: "avg" },
+                    {id: "probability", fieldName: "probability", aggregator: "avg"},
                     {
                         id: "probability*2",
                         fieldName: "probability*2",
-                        computedBy: { sheetId: "sheet1", formula: "=probability*2" },
+                        computedBy: {sheetId: "sheet1", formula: "=probability*2"},
                     },
                 ],
                 model: "partner",
@@ -1887,9 +2027,9 @@ test("can import a pivot with a calculated field", async function () {
             },
         },
     };
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData,
-        mockRPC: function (route, { model, method, kwargs }) {
+        mockRPC: function (route, {model, method, kwargs}) {
             if (model === "partner" && method === "formatted_read_grouping_sets") {
                 expect.step("formatted_read_grouping_sets");
                 expect(kwargs.aggregates).toEqual(["probability:avg", "__count"]);
@@ -1903,19 +2043,19 @@ test("can import a pivot with a calculated field", async function () {
 });
 
 test("Can duplicate a pivot", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
-    const matching = { chain: "product_id", type: "many2one" };
+    const {model, pivotId} = await createSpreadsheetWithPivot();
+    const matching = {chain: "product_id", type: "many2one"};
     const filter = {
         id: "42",
         type: "relation",
         modelName: "product",
         label: "Product",
-        defaultValue: { operator: "in", ids: [41] },
+        defaultValue: {operator: "in", ids: [41]},
     };
     await addGlobalFilter(model, filter, {
-        pivot: { [pivotId]: matching },
+        pivot: {[pivotId]: matching},
     });
-    model.dispatch("DUPLICATE_PIVOT", { pivotId, newPivotId: "2" });
+    model.dispatch("DUPLICATE_PIVOT", {pivotId, newPivotId: "2"});
 
     const pivotIds = model.getters.getPivotIds();
     expect(model.getters.getPivotIds().length).toBe(2);
@@ -1925,14 +2065,18 @@ test("Can duplicate a pivot", async () => {
 
     expect(model.getters.getPivotFieldMatching(pivotId, "42")).toEqual(matching);
     expect(model.getters.getPivotFieldMatching("2", "42")).toEqual(matching);
-    expect(model.getters.getPivotComputedDomain(pivotId)).toEqual([["product_id", "in", [41]]]);
-    expect(model.getters.getPivotComputedDomain("2")).toEqual([["product_id", "in", [41]]]);
+    expect(model.getters.getPivotComputedDomain(pivotId)).toEqual([
+        ["product_id", "in", [41]],
+    ]);
+    expect(model.getters.getPivotComputedDomain("2")).toEqual([
+        ["product_id", "in", [41]],
+    ]);
 });
 
 test("Duplicate pivot respects the formula id increment", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
-    model.dispatch("DUPLICATE_PIVOT", { pivotId, newPivotId: "second" });
-    model.dispatch("DUPLICATE_PIVOT", { pivotId, newPivotId: "third" });
+    const {model, pivotId} = await createSpreadsheetWithPivot();
+    model.dispatch("DUPLICATE_PIVOT", {pivotId, newPivotId: "second"});
+    model.dispatch("DUPLICATE_PIVOT", {pivotId, newPivotId: "third"});
     expect(model.getters.getPivotFormulaId("second")).toBe("2");
     expect(model.getters.getPivotFormulaId("third")).toBe("3");
 });
@@ -1950,10 +2094,10 @@ test("Spreadsheet pivot table ignored by global fiter plugin", () => {
     allowTranslations();
 
     const model = new Model();
-    model.selection.selectZone({ cell: { col: 0, row: 0 }, zone: toZone("A1:A4") });
+    model.selection.selectZone({cell: {col: 0, row: 0}, zone: toZone("A1:A4")});
     const pivotId = "pivot1";
     const sheetId = model.getters.getActiveSheetId();
-    model.dispatch("INSERT_NEW_PIVOT", { pivotId, sheetId });
+    model.dispatch("INSERT_NEW_PIVOT", {pivotId, sheetId});
     model.dispatch("DUPLICATE_PIVOT", {
         pivotId,
         newPivotId: "new",
@@ -1961,16 +2105,16 @@ test("Spreadsheet pivot table ignored by global fiter plugin", () => {
     const pivotIds = model.getters.getPivotIds();
     const pivotDef = model.getters.getPivotCoreDefinition(pivotId);
     const dupPivotDef = model.getters.getPivotCoreDefinition(pivotIds[1]);
-    expect(dupPivotDef).toEqual({ ...pivotDef, name: pivotDef.name + " (copy)" });
+    expect(dupPivotDef).toEqual({...pivotDef, name: pivotDef.name + " (copy)"});
 });
 
 test("isPivotUnused getter", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot();
+    const {model, pivotId} = await createSpreadsheetWithPivot();
     const sheetId = model.getters.getActiveSheetId();
     expect(model.getters.isPivotUnused(pivotId)).toBe(false);
 
-    model.dispatch("CREATE_SHEET", { sheetId: "2" });
-    model.dispatch("DELETE_SHEET", { sheetId: sheetId });
+    model.dispatch("CREATE_SHEET", {sheetId: "2"});
+    model.dispatch("DELETE_SHEET", {sheetId: sheetId});
     expect(model.getters.isPivotUnused(pivotId)).toBe(true);
 
     setCellContent(model, "A1", "=PIVOT.HEADER(1)");
@@ -2006,7 +2150,7 @@ test("Data are fetched with the correct aggregator", async () => {
 });
 
 test("changing measure aggregates", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2022,7 +2166,9 @@ test("changing measure aggregates", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
         },
     });
     await animationFrame();
@@ -2031,7 +2177,7 @@ test("changing measure aggregates", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            measures: [{ fieldName: "foo", aggregator: "sum" }],
+            measures: [{fieldName: "foo", aggregator: "sum"}],
         },
     });
     await animationFrame();
@@ -2039,7 +2185,7 @@ test("changing measure aggregates", async () => {
 });
 
 test("Manipulating a computed measure does not trigger a RPC", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2057,12 +2203,12 @@ test("Manipulating a computed measure does not trigger a RPC", async () => {
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
             measures: [
-                { id: "probability:avg", fieldName: "probability", aggregator: "avg" },
+                {id: "probability:avg", fieldName: "probability", aggregator: "avg"},
                 {
                     id: "probability*2",
                     fieldName: "probability*2",
                     aggregator: "avg",
-                    computedBy: { sheetId, formula: "=probability*2" },
+                    computedBy: {sheetId, formula: "=probability*2"},
                 },
             ],
         },
@@ -2073,7 +2219,9 @@ test("Manipulating a computed measure does not trigger a RPC", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            measures: [{ id: "probability:avg", fieldName: "probability", aggregator: "avg" }],
+            measures: [
+                {id: "probability:avg", fieldName: "probability", aggregator: "avg"},
+            ],
         },
     });
     await animationFrame();
@@ -2081,7 +2229,7 @@ test("Manipulating a computed measure does not trigger a RPC", async () => {
 });
 
 test("many2one measures are aggregated with count_distinct by default", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2097,7 +2245,7 @@ test("many2one measures are aggregated with count_distinct by default", async ()
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            measures: [{ id: "product_id", fieldName: "product_id" }], // no aggregator specified
+            measures: [{id: "product_id", fieldName: "product_id"}], // No aggregator specified
         },
     });
     setCellContent(model, "A1", '=PIVOT.VALUE(1, "product_id")');
@@ -2107,7 +2255,7 @@ test("many2one measures are aggregated with count_distinct by default", async ()
 });
 
 test("changing measure aggregates changes the format", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2133,7 +2281,7 @@ test("changing measure aggregates changes the format", async () => {
 });
 
 test("changing order of group by", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="foo" type="col"/>
@@ -2150,11 +2298,11 @@ test("changing order of group by", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            columns: [{ fieldName: "foo", order: "asc" }],
+            columns: [{fieldName: "foo", order: "asc"}],
         },
     });
     expect(model.getters.getPivotCoreDefinition(pivotId).columns).toEqual([
-        { fieldName: "foo", order: "asc" },
+        {fieldName: "foo", order: "asc"},
     ]);
     await animationFrame();
     expect.verifySteps(["foo asc"]);
@@ -2162,7 +2310,7 @@ test("changing order of group by", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            columns: [{ fieldName: "foo" }],
+            columns: [{fieldName: "foo"}],
         },
     });
     await animationFrame();
@@ -2170,7 +2318,7 @@ test("changing order of group by", async () => {
 });
 
 test("change date order", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2187,8 +2335,8 @@ test("change date order", async () => {
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
             columns: [
-                { fieldName: "date", granularity: "year", order: "asc" },
-                { fieldName: "date", granularity: "month", order: "desc" },
+                {fieldName: "date", granularity: "year", order: "asc"},
+                {fieldName: "date", granularity: "month", order: "desc"},
             ],
         },
     });
@@ -2197,7 +2345,7 @@ test("change date order", async () => {
 });
 
 test("Order are set for all dimensions", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="probability" type="measure"/>
@@ -2214,8 +2362,8 @@ test("Order are set for all dimensions", async () => {
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
             columns: [
-                { fieldName: "date", granularity: "year", order: "asc" },
-                { fieldName: "foo" },
+                {fieldName: "date", granularity: "year", order: "asc"},
+                {fieldName: "foo"},
             ],
         },
     });
@@ -2225,8 +2373,8 @@ test("Order are set for all dimensions", async () => {
 
 test("duplicated dimension on col and row with different granularity", async () => {
     const serverData = getBasicServerData();
-    serverData.models.partner.records = [{ id: 1, date: "2024-03-30", probability: 11 }];
-    const { model } = await createSpreadsheetWithPivot({
+    serverData.models.partner.records = [{id: 1, date: "2024-03-30", probability: 11}];
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
         arch: /* xml */ `
                 <pivot>
@@ -2241,13 +2389,17 @@ test("duplicated dimension on col and row with different granularity", async () 
         "A1",
         '=PIVOT.VALUE(1,"probability:avg","date:month","3/2024","date:year",2024)'
     );
-    setCellContent(model, "A2", '=PIVOT.VALUE(1,"probability:avg","#date:month",1,"#date:year",1)'); // positional
+    setCellContent(
+        model,
+        "A2",
+        '=PIVOT.VALUE(1,"probability:avg","#date:month",1,"#date:year",1)'
+    ); // Positional
     expect(getEvaluatedCell(model, "A1").value).toBe(11);
     expect(getEvaluatedCell(model, "A2").value).toBe(11);
 });
 
 test("changing granularity of group by", async () => {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="date" type="col"/>
@@ -2265,18 +2417,18 @@ test("changing granularity of group by", async () => {
         pivotId,
         pivot: {
             ...model.getters.getPivotCoreDefinition(pivotId),
-            columns: [{ fieldName: "date", granularity: "day" }],
+            columns: [{fieldName: "date", granularity: "day"}],
         },
     });
     expect(model.getters.getPivotCoreDefinition(pivotId).columns).toEqual([
-        { fieldName: "date", granularity: "day" },
+        {fieldName: "date", granularity: "day"},
     ]);
     await animationFrame();
     expect.verifySteps(["date:day"]);
 });
 
 test("pivot.getPossibleFieldValues does not ignore falsy values", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -2287,13 +2439,13 @@ test("pivot.getPossibleFieldValues does not ignore falsy values", async function
     const pivot = model.getters.getPivot(model.getters.getPivotIds()[0]);
     const barField = pivot.definition.rows[0];
     expect(pivot.getPossibleFieldValues(barField)).toEqual([
-        { value: false, label: "No" },
-        { value: true, label: "Yes" },
+        {value: false, label: "No"},
+        {value: true, label: "Yes"},
     ]);
 });
 
 test("pivot.getPossibleFieldValues do not throw when the pivot is error", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -2303,19 +2455,19 @@ test("pivot.getPossibleFieldValues do not throw when the pivot is error", async 
     });
     const pivot = model.getters.getPivot(model.getters.getPivotIds()[0]);
     updatePivot(model, pivotId, {
-        measures: [{ id: "__count:sum", fieldName: "__count", aggregator: "sum" }],
+        measures: [{id: "__count:sum", fieldName: "__count", aggregator: "sum"}],
     });
     const barField = pivot.definition.rows[0];
     expect(pivot.getPossibleFieldValues(barField)).toEqual([]);
     await animationFrame();
     expect(pivot.getPossibleFieldValues(barField)).toEqual([
-        { value: false, label: "No" },
-        { value: true, label: "Yes" },
+        {value: false, label: "No"},
+        {value: true, label: "Yes"},
     ]);
 });
 
 test("Can change display type of a measure", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -2323,7 +2475,7 @@ test("Can change display type of a measure", async function () {
                     <field name="probability" type="measure"/>
                 </pivot>`,
     });
-    // prettier-ignore
+    // Prettier-ignore
     expect(getFormattedValueGrid(model, "A1:D5")).toEqual({
         A1: "Partner Pivot",      B1: "xphone",       C1: "xpad",         D1: "Total",
         A2: "",                   B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -2333,10 +2485,12 @@ test("Can change display type of a measure", async function () {
     });
 
     const pivotId = model.getters.getPivotIds()[0];
-    updatePivotMeasureDisplay(model, pivotId, "probability:avg", { type: "%_of_grand_total" });
+    updatePivotMeasureDisplay(model, pivotId, "probability:avg", {
+        type: "%_of_grand_total",
+    });
     await waitForDataLoaded(model);
 
-    // prettier-ignore
+    // Prettier-ignore
     expect(getFormattedValueGrid(model, "A1:D5")).toEqual({
         A1: "Partner Pivot",      B1: "xphone",       C1: "xpad",         D1: "Total",
         A2: "",                   B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -2352,7 +2506,7 @@ test("Can change display type of a measure", async function () {
     });
     await waitForDataLoaded(model);
 
-    // prettier-ignore
+    // Prettier-ignore
     expect(getFormattedValueGrid(model, "A1:D5")).toEqual({
         A1: "Partner Pivot",      B1: "xphone",       C1: "xpad",         D1: "Total",
         A2: "",                   B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -2366,7 +2520,7 @@ test("can group by property", async () => {
     Product._records = [
         {
             id: 1,
-            properties_definitions: [{ name: "dbfc", type: "char", string: "prop 1" }],
+            properties_definitions: [{name: "dbfc", type: "char", string: "prop 1"}],
         },
     ];
     Partner._records = [
@@ -2382,10 +2536,10 @@ test("can group by property", async () => {
         type: "char",
         string: "prop 1",
     }));
-    onRpc("partner", "formatted_read_grouping_sets", ({ kwargs }) =>
-        // the generic mock server doesn't support group by properties
+    onRpc("partner", "formatted_read_grouping_sets", ({kwargs}) =>
+        // The generic mock server doesn't support group by properties
         [
-            [{ __count: 1, __extra_domain: [] }],
+            [{__count: 1, __extra_domain: []}],
             [
                 {
                     "partner_properties.dbfc": "hello",
@@ -2395,12 +2549,12 @@ test("can group by property", async () => {
             ],
         ]
     );
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     const pivotId = model.getters.getPivotIds()[0];
     updatePivot(model, pivotId, {
         rows: [],
-        columns: [{ fieldName: "partner_properties.dbfc" }],
-        measures: [{ id: "__count:sum", fieldName: "__count", aggregator: "sum" }],
+        columns: [{fieldName: "partner_properties.dbfc"}],
+        measures: [{id: "__count:sum", fieldName: "__count", aggregator: "sum"}],
     });
     setCellContent(model, "A1", '=PIVOT.HEADER(1, "partner_properties.dbfc", "hello")');
     setCellContent(
@@ -2449,9 +2603,9 @@ test("date are between two years are correctly grouped by weeks", async () => {
             date: "2025-01-01",
         },
     ];
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <pivot string="Partners">
                 <field name="date:year" type="col"/>
                 <field name="date:week" type="col"/>
@@ -2459,7 +2613,7 @@ test("date are between two years are correctly grouped by weeks", async () => {
             </pivot>`,
     });
 
-    // prettier-ignore
+    // Prettier-ignore
     expect(getFormattedValueGrid(model, "B1:D4")).toEqual({
             B1: "2024",     C1: "",         D1: "2025",
             B2: "W1 2024",  C2: "W1 2025",  D2: "W1 2025",
@@ -2504,9 +2658,9 @@ test("date are between two years are correctly grouped by weeks and days", async
             date: "2025-01-01",
         },
     ];
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         serverData,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <pivot string="Partners">
                 <field name="date:year" type="col"/>
                 <field name="date:week" type="col"/>
@@ -2515,7 +2669,7 @@ test("date are between two years are correctly grouped by weeks and days", async
             </pivot>`,
     });
 
-    // prettier-ignore
+    // Prettier-ignore
     expect(getFormattedValueGrid(model, "B1:E5")).toEqual({
             B1: "2024",         C1: "",             D1: "",            E1: "2025",
             B2: "W1 2024",      C2: "W1 2025",      D2: "",            E2: "W1 2025",
@@ -2526,31 +2680,39 @@ test("date are between two years are correctly grouped by weeks and days", async
 });
 
 test("Pivot headers day of week are still correct after updating the locale's week start day", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
             <pivot>
                 <field name="date" interval="day_of_week" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
     });
-    patchWithCleanup(localization, { weekStart: 1 /* Monday */ });
+    patchWithCleanup(localization, {weekStart: 1 /* Monday */});
     model.dispatch("UPDATE_LOCALE", {
-        locale: { ...model.getters.getLocale(), weekStart: 1 /* Monday */ },
+        locale: {...model.getters.getLocale(), weekStart: 1 /* Monday */},
     });
     await waitForDataLoaded(model);
 
     setCellContent(model, "A20", "=PIVOT(1)");
-    expect(getEvaluatedGrid(model, "A22:A24")).toEqual([["Sunday"], ["Wednesday"], ["Thursday"]]);
+    expect(getEvaluatedGrid(model, "A22:A24")).toEqual([
+        ["Sunday"],
+        ["Wednesday"],
+        ["Thursday"],
+    ]);
 
     model.dispatch("UPDATE_LOCALE", {
-        locale: { ...model.getters.getLocale(), weekStart: 7 /* Sunday */ },
+        locale: {...model.getters.getLocale(), weekStart: 7 /* Sunday */},
     });
     await waitForDataLoaded(model);
-    expect(getEvaluatedGrid(model, "A22:A24")).toEqual([["Sunday"], ["Wednesday"], ["Thursday"]]);
+    expect(getEvaluatedGrid(model, "A22:A24")).toEqual([
+        ["Sunday"],
+        ["Wednesday"],
+        ["Thursday"],
+    ]);
 });
 
 test("`getPivotCellFromPosition` should not throw on missing company default currency", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         mockRPC: async function (route, args) {
             if (args.method === "get_company_currency_for_spreadsheet") {
                 return false;
@@ -2574,6 +2736,6 @@ test("`getPivotCellFromPosition` should not throw on missing company default cur
     });
     await animationFrame();
     expect(() => {
-        model.getters.getPivotCellFromPosition({ sheetId, col: 0, row: 0 });
+        model.getters.getPivotCellFromPosition({sheetId, col: 0, row: 0});
     }).not.toThrow();
 });

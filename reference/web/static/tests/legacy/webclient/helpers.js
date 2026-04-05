@@ -1,18 +1,18 @@
 /** @odoo-module alias=@web/../tests/webclient/helpers default=false */
 
-import { dialogService } from "@web/core/dialog/dialog_service";
-import { notificationService } from "@web/core/notifications/notification_service";
-import { ormService } from "@web/core/orm_service";
-import { popoverService } from "@web/core/popover/popover_service";
-import { registry } from "@web/core/registry";
-import { viewService } from "@web/views/view_service";
-import { actionService } from "@web/webclient/actions/action_service";
-import { effectService } from "@web/core/effects/effect_service";
-import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
-import { menuService } from "@web/webclient/menus/menu_service";
-import { WebClient } from "@web/webclient/webclient";
-import { registerCleanup } from "../helpers/cleanup";
-import { makeTestEnv } from "../helpers/mock_env";
+import {dialogService} from "@web/core/dialog/dialog_service";
+import {notificationService} from "@web/core/notifications/notification_service";
+import {ormService} from "@web/core/orm_service";
+import {popoverService} from "@web/core/popover/popover_service";
+import {registry} from "@web/core/registry";
+import {viewService} from "@web/views/view_service";
+import {actionService} from "@web/webclient/actions/action_service";
+import {effectService} from "@web/core/effects/effect_service";
+import {hotkeyService} from "@web/core/hotkeys/hotkey_service";
+import {menuService} from "@web/webclient/menus/menu_service";
+import {WebClient} from "@web/webclient/webclient";
+import {registerCleanup} from "../helpers/cleanup";
+import {makeTestEnv} from "../helpers/mock_env";
 import {
     fakeTitleService,
     makeFakePwaService,
@@ -20,17 +20,17 @@ import {
     makeFakeHTTPService,
     makeFakeBarcodeService,
 } from "../helpers/mock_services";
-import { getFixture, mount, nextTick } from "../helpers/utils";
-import { uiService } from "@web/core/ui/ui_service";
-import { commandService } from "@web/core/commands/command_service";
-import { CustomFavoriteItem } from "@web/search/custom_favorite_item/custom_favorite_item";
-import { overlayService } from "@web/core/overlay/overlay_service";
+import {getFixture, mount, nextTick} from "../helpers/utils";
+import {uiService} from "@web/core/ui/ui_service";
+import {commandService} from "@web/core/commands/command_service";
+import {CustomFavoriteItem} from "@web/search/custom_favorite_item/custom_favorite_item";
+import {overlayService} from "@web/core/overlay/overlay_service";
 
-import { Component, onMounted, xml } from "@odoo/owl";
-import { fieldService } from "@web/core/field_service";
-import { nameService } from "@web/core/name_service";
-import { datetimePickerService } from "@web/core/datetime/datetimepicker_service";
-import { treeProcessorService } from "@web/core/tree_editor/tree_processor";
+import {Component, onMounted, xml} from "@odoo/owl";
+import {fieldService} from "@web/core/field_service";
+import {nameService} from "@web/core/name_service";
+import {datetimePickerService} from "@web/core/datetime/datetimepicker_service";
+import {treeProcessorService} from "@web/core/tree_editor/tree_processor";
 
 const actionRegistry = registry.category("actions");
 const serviceRegistry = registry.category("services");
@@ -46,11 +46,11 @@ const favoriteMenuRegistry = registry.category("favoriteMenu");
 export function setupWebClientRegistries() {
     const favoriveMenuItems = {
         "custom-favorite-item": {
-            value: { Component: CustomFavoriteItem, groupNumber: 3 },
-            options: { sequence: 0 },
+            value: {Component: CustomFavoriteItem, groupNumber: 3},
+            options: {sequence: 0},
         },
     };
-    for (const [key, { value, options }] of Object.entries(favoriveMenuItems)) {
+    for (const [key, {value, options}] of Object.entries(favoriveMenuItems)) {
         if (!favoriteMenuRegistry.contains(key)) {
             favoriteMenuRegistry.add(key, value, options);
         }
@@ -105,8 +105,8 @@ export async function createWebClient(params) {
 
     const WebClientClass = params.WebClientClass || WebClient;
     const target = params && params.target ? params.target : getFixture();
-    const wc = await mount(WebClientClass, target, { env });
-    odoo.__WOWL_DEBUG__ = { root: wc };
+    const wc = await mount(WebClientClass, target, {env});
+    odoo.__WOWL_DEBUG__ = {root: wc};
     target.classList.add("o_web_client"); // necessary for the stylesheet
     registerCleanup(() => {
         target.classList.remove("o_web_client");
@@ -144,11 +144,25 @@ export function getActionManagerServerData() {
     actionRegistry.add("__test__client__action__", TestClientAction);
 
     const menus = {
-        root: { id: "root", children: [0, 1, 2], name: "root", appID: "root" },
+        root: {id: "root", children: [0, 1, 2], name: "root", appID: "root"},
         // id:0 is a hack to not load anything at webClient mount
-        0: { id: 0, children: [], name: "UglyHack", appID: 0, xmlid: "menu_0" },
-        1: { id: 1, children: [], name: "App1", appID: 1, actionID: 1001, xmlid: "menu_1" },
-        2: { id: 2, children: [], name: "App2", appID: 2, actionID: 1002, xmlid: "menu_2" },
+        0: {id: 0, children: [], name: "UglyHack", appID: 0, xmlid: "menu_0"},
+        1: {
+            id: 1,
+            children: [],
+            name: "App1",
+            appID: 1,
+            actionID: 1001,
+            xmlid: "menu_1",
+        },
+        2: {
+            id: 2,
+            children: [],
+            name: "App2",
+            appID: 2,
+            actionID: 1002,
+            xmlid: "menu_2",
+        },
     };
     const actionsArray = [
         {
@@ -310,14 +324,14 @@ export function getActionManagerServerData() {
             tag: "__test__client__action__",
             target: "main",
             type: "ir.actions.client",
-            params: { description: "Id 1" },
+            params: {description: "Id 1"},
         },
         {
             id: 1002,
             tag: "__test__client__action__",
             target: "main",
             type: "ir.actions.client",
-            params: { description: "Id 2" },
+            params: {description: "Id 2"},
         },
         {
             xmlId: "wowl.client_action",
@@ -325,7 +339,7 @@ export function getActionManagerServerData() {
             tag: "__test__client__action__",
             target: "main",
             type: "ir.actions.client",
-            params: { description: "xmlId" },
+            params: {description: "xmlId"},
         },
     ];
     const actions = {};
@@ -383,19 +397,26 @@ export function getActionManagerServerData() {
     const models = {
         partner: {
             fields: {
-                id: { string: "Id", type: "integer" },
-                foo: { string: "Foo", type: "char" },
-                bar: { string: "Bar", type: "many2one", relation: "partner" },
+                id: {string: "Id", type: "integer"},
+                foo: {string: "Foo", type: "char"},
+                bar: {string: "Bar", type: "many2one", relation: "partner"},
                 o2m: {
                     string: "One2Many",
                     type: "one2many",
                     relation: "partner",
                     relation_field: "bar",
                 },
-                m2o: { string: "Many2one", type: "many2one", relation: "partner" },
+                m2o: {string: "Many2one", type: "many2one", relation: "partner"},
             },
             records: [
-                { id: 1, display_name: "First record", foo: "yop", bar: 2, o2m: [2, 3], m2o: 3 },
+                {
+                    id: 1,
+                    display_name: "First record",
+                    foo: "yop",
+                    bar: 2,
+                    o2m: [2, 3],
+                    m2o: 3,
+                },
                 {
                     id: 2,
                     display_name: "Second record",
@@ -404,20 +425,41 @@ export function getActionManagerServerData() {
                     o2m: [1, 4, 5],
                     m2o: 3,
                 },
-                { id: 3, display_name: "Third record", foo: "gnap", bar: 1, o2m: [], m2o: 1 },
-                { id: 4, display_name: "Fourth record", foo: "plop", bar: 2, o2m: [], m2o: 1 },
-                { id: 5, display_name: "Fifth record", foo: "zoup", bar: 2, o2m: [], m2o: 1 },
+                {
+                    id: 3,
+                    display_name: "Third record",
+                    foo: "gnap",
+                    bar: 1,
+                    o2m: [],
+                    m2o: 1,
+                },
+                {
+                    id: 4,
+                    display_name: "Fourth record",
+                    foo: "plop",
+                    bar: 2,
+                    o2m: [],
+                    m2o: 1,
+                },
+                {
+                    id: 5,
+                    display_name: "Fifth record",
+                    foo: "zoup",
+                    bar: 2,
+                    o2m: [],
+                    m2o: 1,
+                },
             ],
         },
         pony: {
             fields: {
-                id: { string: "Id", type: "integer" },
-                name: { string: "Name", type: "char" },
+                id: {string: "Id", type: "integer"},
+                name: {string: "Name", type: "char"},
             },
             records: [
-                { id: 4, name: "Twilight Sparkle" },
-                { id: 6, name: "Applejack" },
-                { id: 9, name: "Fluttershy" },
+                {id: 4, name: "Twilight Sparkle"},
+                {id: 6, name: "Applejack"},
+                {id: 9, name: "Fluttershy"},
             ],
         },
     };

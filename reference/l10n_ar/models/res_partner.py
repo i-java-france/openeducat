@@ -1,9 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError, ValidationError
-import stdnum.ar
-import re
 import logging
+import re
+
+import stdnum.ar
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 

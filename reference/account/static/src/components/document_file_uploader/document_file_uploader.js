@@ -1,8 +1,8 @@
-import { useService } from "@web/core/utils/hooks";
-import { FileUploader } from "@web/views/fields/file_handler";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
+import {useService} from "@web/core/utils/hooks";
+import {FileUploader} from "@web/views/fields/file_handler";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 
-import { Component, markup } from "@odoo/owl";
+import {Component, markup} from "@odoo/owl";
 
 export class DocumentFileUploader extends Component {
     static template = "account.DocumentFileUploader";
@@ -11,9 +11,9 @@ export class DocumentFileUploader extends Component {
     };
     static props = {
         ...standardWidgetProps,
-        record: { type: Object, optional: true },
-        slots: { type: Object, optional: true },
-        resModel: { type: String, optional: true },
+        record: {type: Object, optional: true},
+        slots: {type: Object, optional: true},
+        resModel: {type: String, optional: true},
     };
 
     setup() {
@@ -36,8 +36,14 @@ export class DocumentFileUploader extends Component {
             datas: file.data,
         };
         // clean the context to ensure the `create` call doesn't fail from unknown `default_*` context
-        const cleanContext = Object.fromEntries(Object.entries(this.env.searchModel.context).filter(([key]) => !key.startsWith('default_')));
-        const [att_id] = await this.orm.create("ir.attachment", [att_data], {context: cleanContext});
+        const cleanContext = Object.fromEntries(
+            Object.entries(this.env.searchModel.context).filter(
+                ([key]) => !key.startsWith("default_")
+            )
+        );
+        const [att_id] = await this.orm.create("ir.attachment", [att_data], {
+            context: cleanContext,
+        });
         this.attachmentIdsToProcess.push(att_id);
     }
 
@@ -54,7 +60,7 @@ export class DocumentFileUploader extends Component {
                 resModal,
                 "create_document_from_attachment",
                 ["", this.attachmentIdsToProcess],
-                { context: { ...this.extraContext, ...this.env.searchModel.context } }
+                {context: {...this.extraContext, ...this.env.searchModel.context}}
             );
         } finally {
             // ensures attachments are cleared on success as well as on error

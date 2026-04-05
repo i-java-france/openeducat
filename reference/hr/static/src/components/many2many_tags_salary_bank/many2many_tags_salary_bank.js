@@ -2,9 +2,9 @@ import {
     many2ManyTagsFieldColorEditable,
     Many2ManyTagsFieldColorEditable,
 } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { registry } from "@web/core/registry";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {useService} from "@web/core/utils/hooks";
 
 export class FieldMany2ManyTagsSalaryBankTagsList extends TagsList {
     static template = "web.TagsList";
@@ -35,7 +35,8 @@ export class FieldMany2ManyTagsSalaryBank extends Many2ManyTagsFieldColorEditabl
     getTagProps(record) {
         var text = record.data?.display_name;
         const amount = record.data?.employee_salary_amount;
-        const has_multiple_bank_accounts = this.props.record.data["has_multiple_bank_accounts"];
+        const has_multiple_bank_accounts =
+            this.props.record.data["has_multiple_bank_accounts"];
         if (has_multiple_bank_accounts && amount) {
             const symbol = record.data?.currency_symbol;
             if (record.data?.employee_salary_amount_is_percentage) {
@@ -43,7 +44,9 @@ export class FieldMany2ManyTagsSalaryBank extends Many2ManyTagsFieldColorEditabl
                     (amount && amount <= 100 ? `(${amount.toFixed(0)}%) ` : "") +
                     record.data?.display_name;
             } else if (amount) {
-                text = `(${amount.toFixed(2)}${symbol ? symbol : ""}) ` + record.data?.display_name;
+                text =
+                    `(${amount.toFixed(2)}${symbol ? symbol : ""}) ` +
+                    record.data?.display_name;
             }
         }
         return {
@@ -57,18 +60,18 @@ export const fieldMany2ManyTagsSalaryBank = {
     ...many2ManyTagsFieldColorEditable,
     component: FieldMany2ManyTagsSalaryBank,
     relatedFields: () => [
-        { name: "employee_salary_amount" },
-        { name: "employee_salary_amount_is_percentage" },
-        { name: "display_name" },
-        { name: "currency_symbol" },
+        {name: "employee_salary_amount"},
+        {name: "employee_salary_amount_is_percentage"},
+        {name: "display_name"},
+        {name: "currency_symbol"},
     ],
     additionalClasses: [
         ...(many2ManyTagsFieldColorEditable.additionalClasses || []),
         "o_field_many2many_tags",
     ],
-    extractProps({ options, attrs, string, placeholder }, dynamicInfo) {
+    extractProps({options, attrs, string, placeholder}, dynamicInfo) {
         const props = many2ManyTagsFieldColorEditable.extractProps(
-            { options, attrs, string, placeholder },
+            {options, attrs, string, placeholder},
             dynamicInfo
         );
         props.nameCreateField = "acc_number";
@@ -76,4 +79,6 @@ export const fieldMany2ManyTagsSalaryBank = {
     },
 };
 
-registry.category("fields").add("many2many_tags_salary_bank", fieldMany2ManyTagsSalaryBank);
+registry
+    .category("fields")
+    .add("many2many_tags_salary_bank", fieldMany2ManyTagsSalaryBank);

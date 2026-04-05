@@ -2,15 +2,15 @@
 
 import itertools
 from collections import defaultdict
-from datetime import datetime, date, time, timedelta
-import pytz
+from datetime import date, datetime, time, timedelta
 
+import pytz
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _, SUPERUSER_ID
+from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Command, Domain
-from odoo.tools import ormcache, float_is_zero
+from odoo.tools import float_is_zero, ormcache
 from odoo.tools.intervals import Intervals
 
 

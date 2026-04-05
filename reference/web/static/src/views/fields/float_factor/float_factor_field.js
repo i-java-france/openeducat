@@ -1,11 +1,11 @@
-import { registry } from "@web/core/registry";
-import { floatField, FloatField } from "../float/float_field";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {floatField, FloatField} from "../float/float_field";
+import {_t} from "@web/core/l10n/translation";
 
 export class FloatFactorField extends FloatField {
     static props = {
         ...FloatField.props,
-        factor: { type: Number, optional: true },
+        factor: {type: Number, optional: true},
     };
     static defaultProps = {
         ...FloatField.defaultProps,
@@ -32,7 +32,7 @@ export const floatFactorField = {
             type: "number",
         },
     ],
-    extractProps({ options }) {
+    extractProps({options}) {
         const props = floatField.extractProps(...arguments);
         props.factor = options.factor;
         return props;

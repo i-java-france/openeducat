@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+
 from dateutil import relativedelta
 
-from odoo import api, Command, fields, models, _
+from odoo import Command, _, api, fields, models
 from odoo.fields import Domain
 
 
@@ -98,23 +99,23 @@ class StockWarehouse(models.Model):
         return rules
 
     def _get_all_routes(self):
-        routes = super(StockWarehouse, self)._get_all_routes()
+        routes = super()._get_all_routes()
         routes |= self.filtered(lambda self: self.buy_to_resupply and self.buy_pull_id and self.buy_pull_id.route_id).mapped('buy_pull_id').mapped('route_id')
         return routes
 
     def get_rules_dict(self):
-        result = super(StockWarehouse, self).get_rules_dict()
+        result = super().get_rules_dict()
         for warehouse in self:
             result[warehouse.id].update(warehouse._get_receive_rules_dict())
         return result
 
     def _get_routes_values(self):
-        routes = super(StockWarehouse, self)._get_routes_values()
+        routes = super()._get_routes_values()
         routes.update(self._get_receive_routes_values('buy_to_resupply'))
         return routes
 
     def _update_name_and_code(self, name=False, code=False):
-        res = super(StockWarehouse, self)._update_name_and_code(name, code)
+        res = super()._update_name_and_code(name, code)
         warehouse = self[0]
         #change the buy stock rule name
         if warehouse.buy_pull_id and name:

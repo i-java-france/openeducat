@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { CustomerFilterOption } from "./customer_filter_option";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {CustomerFilterOption} from "./customer_filter_option";
 
 export class CustomerFilterOptionPlugin extends Plugin {
     static id = "customerFilterOption";
@@ -10,4 +10,6 @@ export class CustomerFilterOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(CustomerFilterOptionPlugin.id, CustomerFilterOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(CustomerFilterOptionPlugin.id, CustomerFilterOptionPlugin);

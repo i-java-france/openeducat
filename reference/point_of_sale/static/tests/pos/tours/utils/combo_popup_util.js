@@ -1,4 +1,4 @@
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 
 const productTrigger = (productName) =>
     `article.product:has(.product-name:contains("${productName}"))`;
@@ -56,8 +56,8 @@ export function checkProductQty(productName, expectedQty) {
         content: `Check that product ${productName} has quantity ${expectedQty}`,
         trigger: `.modal article:has(.product-name:contains("${productName}")):has(input[name="pos_quantity"])`,
         run: () => {
-            const article = [...document.querySelectorAll(".modal article")].find((el) =>
-                el.textContent.includes(productName)
+            const article = [...document.querySelectorAll(".modal article")].find(
+                (el) => el.textContent.includes(productName)
             );
             const input = article.querySelector('input[name="pos_quantity"]');
             if (input.value != expectedQty) {

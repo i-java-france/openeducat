@@ -4,14 +4,16 @@ import hashlib
 import logging
 import secrets
 import uuid
+
 import werkzeug.urls
 
-from odoo import api, fields, models, _
-from odoo.addons.iap.tools import iap_tools
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.modules import module
 from odoo.tools import get_lang
 from odoo.tools.urls import urljoin as url_join
+
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger(__name__)
 

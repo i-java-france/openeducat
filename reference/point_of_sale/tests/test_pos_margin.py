@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 
 from unittest import skip
 
 import odoo
+
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 
 
@@ -14,7 +14,7 @@ class TestPosMargin(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPosMargin, self).setUp()
+        super().setUp()
         self.config = self.basic_config
 
         self.stock_location = self.env['stock.warehouse'].create({

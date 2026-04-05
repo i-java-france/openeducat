@@ -1,12 +1,12 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { useTagNavigation } from "@web/core/record_selectors/tag_navigation_hook";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { useService } from "@web/core/utils/hooks";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {useTagNavigation} from "@web/core/record_selectors/tag_navigation_hook";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {useService} from "@web/core/utils/hooks";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
 
 /**
  * @typedef {Object} Props
@@ -16,7 +16,7 @@ import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
 export class ExpertiseTagsAutocomplete extends Component {
     static template = "im_livechat.ExpertiseTagsAutocomplete";
     static props = ["channel", "disabled?"];
-    static components = { TagsList, Many2XAutocomplete };
+    static components = {TagsList, Many2XAutocomplete};
 
     setup() {
         super.setup(...arguments);
@@ -61,7 +61,9 @@ export class ExpertiseTagsAutocomplete extends Component {
         if (!toAdd.length) {
             return;
         }
-        this.writeExpertises(toAdd.map((expertise) => x2ManyCommands.link(expertise.id)));
+        this.writeExpertises(
+            toAdd.map((expertise) => x2ManyCommands.link(expertise.id))
+        );
     }
 
     get placeholder() {
@@ -80,6 +82,8 @@ export class ExpertiseTagsAutocomplete extends Component {
     }
 
     isSelected(expertiseId) {
-        return this.props.channel.livechat_expertise_ids.some((e) => e.id === expertiseId);
+        return this.props.channel.livechat_expertise_ids.some(
+            (e) => e.id === expertiseId
+        );
     }
 }

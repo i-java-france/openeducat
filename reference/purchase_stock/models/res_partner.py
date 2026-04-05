@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta, datetime, time
 from collections import defaultdict
+from datetime import timedelta
 
 from odoo import api, fields, models
 
@@ -55,7 +54,7 @@ class ResPartner(models.Model):
         order_lines.read(['date_planned', 'partner_id', 'product_uom_qty'], load='')
         moves.read(['purchase_line_id', 'date'], load='')
         moves = moves.filtered(lambda m: m.date.date() <= m.purchase_line_id.date_planned.date())
-        for move, quantity in zip(moves, moves.mapped('quantity')):
+        for move, quantity in zip(moves, moves.mapped('quantity'), strict=False):
             lines_quantity[move.purchase_line_id.id] += quantity
         partner_dict = {}
         for line in order_lines:

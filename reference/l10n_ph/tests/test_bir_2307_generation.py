@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import io
-import xlrd
 import base64
+import io
+
+import xlrd
 
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_ph.tests.common import TestPhCommon
 
 
@@ -80,7 +82,7 @@ class TestBIR2307Generation(TestPhCommon):
         sheet = xls.sheet_by_index(0)
         for row, values in expected_values.items():
             row_values = sheet.row_values(row)
-            for row_value, expected_value in zip(row_values, values):
+            for row_value, expected_value in zip(row_values, values, strict=False):
                 self.assertEqual(row_value, expected_value)
 
     def test_01_no_atc(self):

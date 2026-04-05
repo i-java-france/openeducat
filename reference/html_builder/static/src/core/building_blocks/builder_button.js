@@ -1,29 +1,29 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 import {
     clickableBuilderComponentProps,
     useActionInfo,
     useSelectableItemComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
-import { Img } from "../img";
+import {BuilderComponent} from "./builder_component";
+import {Img} from "../img";
 
 export class BuilderButton extends Component {
     static template = "html_builder.BuilderButton";
-    static components = { BuilderComponent, Img };
+    static components = {BuilderComponent, Img};
     static props = {
         ...clickableBuilderComponentProps,
 
-        title: { type: String, optional: true },
-        label: { type: String, optional: true },
-        iconImg: { type: String, optional: true },
-        iconImgAlt: { type: String, optional: true },
-        icon: { type: String, optional: true },
-        className: { type: String, optional: true },
-        classActive: { type: String, optional: true },
-        style: { type: String, optional: true },
-        type: { type: String, optional: true },
+        title: {type: String, optional: true},
+        label: {type: String, optional: true},
+        iconImg: {type: String, optional: true},
+        iconImgAlt: {type: String, optional: true},
+        icon: {type: String, optional: true},
+        className: {type: String, optional: true},
+        classActive: {type: String, optional: true},
+        style: {type: String, optional: true},
+        type: {type: String, optional: true},
 
-        slots: { type: Object, optional: true },
+        slots: {type: Object, optional: true},
     };
 
     static defaultProps = {
@@ -32,7 +32,7 @@ export class BuilderButton extends Component {
 
     setup() {
         this.info = useActionInfo();
-        const { state, operation } = useSelectableItemComponent(this.props.id);
+        const {state, operation} = useSelectableItemComponent(this.props.id);
         this.state = state;
         this.onClick = operation.commit;
         this.onPointerEnter = operation.preview;

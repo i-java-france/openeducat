@@ -1,5 +1,5 @@
-import { ConnectionLostError } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
+import {ConnectionLostError} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
 
 const errorHandlerRegistry = registry.category("error_handlers");
 
@@ -16,13 +16,20 @@ const fetchErrorMessages = [
  * @returns {boolean}
  */
 export function offlineFailToFetchErrorHandler(env, error, originalError) {
-    if (originalError instanceof TypeError && fetchErrorMessages.includes(originalError.message)) {
+    if (
+        originalError instanceof TypeError &&
+        fetchErrorMessages.includes(originalError.message)
+    ) {
         Promise.resolve().then(() => {
             throw new ConnectionLostError();
         });
         return true;
     }
 }
-errorHandlerRegistry.add("offlineFailToFetchErrorHandler", offlineFailToFetchErrorHandler, {
-    sequence: 96,
-});
+errorHandlerRegistry.add(
+    "offlineFailToFetchErrorHandler",
+    offlineFailToFetchErrorHandler,
+    {
+        sequence: 96,
+    }
+);

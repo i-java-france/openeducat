@@ -1,7 +1,7 @@
-import { after, onTimeZoneChange } from "@odoo/hoot";
-import { patch } from "@web/core/utils/patch";
+import {after, onTimeZoneChange} from "@odoo/hoot";
+import {patch} from "@web/core/utils/patch";
 
-const { FixedOffsetZone, IANAZone, Settings } = luxon;
+const {FixedOffsetZone, IANAZone, Settings} = luxon;
 
 onTimeZoneChange((tz) => {
     let defaultZone;
@@ -11,7 +11,7 @@ onTimeZoneChange((tz) => {
         const offset = new Date().getTimezoneOffset();
         defaultZone = FixedOffsetZone.instance(-offset);
     }
-    patchWithCleanup(Settings, { defaultZone });
+    patchWithCleanup(Settings, {defaultZone});
 });
 
 //-----------------------------------------------------------------------------

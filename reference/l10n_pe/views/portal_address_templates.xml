@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template id="address_form_fields" inherit_id="portal.address_form_fields">
         <div id="div_state" position="after">
             <t t-if="res_company.country_id.code == 'PE'">
@@ -10,7 +9,12 @@
                     t-att-style="(country and country.code != 'PE') and 'display:none;'"
                 >
                     <label class="col-form-label" for="city_id">City</label>
-                    <select id="city_id" name="city_id" class="form-select" data-init="1">
+                    <select
+                        id="city_id"
+                        name="city_id"
+                        class="form-select"
+                        data-init="1"
+                    >
                         <option value="">City...</option>
                         <option
                             t-foreach="state_cities"
@@ -27,7 +31,10 @@
                     class="col-lg-6 mb-3"
                     t-att-style="((country and country.code != 'PE') or not city) and 'display:none;'"
                 >
-                    <label class="col-form-label" for="l10n_pe_district">District</label>
+                    <label
+                        class="col-form-label"
+                        for="l10n_pe_district"
+                    >District</label>
                     <select
                         id="l10n_pe_district"
                         name="l10n_pe_district"
@@ -47,5 +54,4 @@
             </t>
         </div>
     </template>
-
 </odoo>

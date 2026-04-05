@@ -2,10 +2,11 @@
 
 ## Technical details
 
-API: [Redirection API](https://paymentservices-reference.payfort.com/docs/api/build/index.html#redirection)
+API:
+[Redirection API](https://paymentservices-reference.payfort.com/docs/api/build/index.html#redirection)
 
-This module integrates Amazon Payment Services using the generic payment with redirection flow based
-on form submission provided by the `payment` module.
+This module integrates Amazon Payment Services using the generic payment with
+redirection flow based on form submission provided by the `payment` module.
 
 ## Supported features
 

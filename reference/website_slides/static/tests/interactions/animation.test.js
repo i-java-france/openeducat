@@ -1,15 +1,15 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
 import {
-    startInteractions,
     setupInteractionWhiteList,
+    startInteractions,
 } from "@web/../tests/public/helpers";
 
 setupInteractionWhiteList("website.animation");
 describe.current.tags("interaction_dev");
 
 test("on scroll animation changes based on scroll", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; max-height: 100%;">
             <div style="min-height: 2000px;">Tall stuff</div>
             <div class="o_wslide_fs_article_content">

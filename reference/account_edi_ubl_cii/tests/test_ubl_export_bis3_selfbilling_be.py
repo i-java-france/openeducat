@@ -1,6 +1,7 @@
 from odoo import Command
-from .common import TestUblBis3Common, TestUblCiiBECommon
 from odoo.tests import tagged
+
+from .common import TestUblBis3Common, TestUblCiiBECommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install', *TestUblBis3Common.extra_tags)

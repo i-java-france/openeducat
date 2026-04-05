@@ -1,15 +1,15 @@
 // Part of Odoo. See LICENSE file for full copyright and licensing details.
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { formatDate } from "@web/core/l10n/dates";
-import { localization } from "@web/core/l10n/localization";
-import { NumericInput } from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {formatDate} from "@web/core/l10n/dates";
+import {localization} from "@web/core/l10n/localization";
+import {NumericInput} from "@point_of_sale/app/components/inputs/numeric_input/numeric_input";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class EventSlotSelectionPopup extends Component {
     static template = "pos_event.EventSlotSelectionPopup";
@@ -27,7 +27,7 @@ export class EventSlotSelectionPopup extends Component {
         });
     }
     get dialogTitle() {
-        return _t("Select a slot for %(event)s", { event: this.props.event.name });
+        return _t("Select a slot for %(event)s", {event: this.props.event.name});
     }
     get slots() {
         const slots = {};
@@ -35,7 +35,7 @@ export class EventSlotSelectionPopup extends Component {
             if (slot.start_datetime < DateTime.now()) {
                 return false;
             }
-            const date = formatDate(slot.date, { format: "MMM dd yyyy, EEEE" });
+            const date = formatDate(slot.date, {format: "MMM dd yyyy, EEEE"});
             if (!slots[date]) {
                 slots[date] = [];
             }

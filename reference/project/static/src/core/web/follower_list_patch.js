@@ -1,9 +1,9 @@
-import { FollowerList } from "@mail/core/web/follower_list";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {FollowerList} from "@mail/core/web/follower_list";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 const followerListPatch = {
     setup() {

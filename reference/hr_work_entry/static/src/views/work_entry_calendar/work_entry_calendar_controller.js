@@ -1,10 +1,9 @@
-import { WorkEntryCalendarMultiSelectionButtons } from "@hr_work_entry/views/work_entry_calendar/work_entry_multi_selection_buttons";
-import { useWorkEntry } from "@hr_work_entry/views/work_entry_hook";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { CalendarController } from "@web/views/calendar/calendar_controller";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-
+import {WorkEntryCalendarMultiSelectionButtons} from "@hr_work_entry/views/work_entry_calendar/work_entry_multi_selection_buttons";
+import {useWorkEntry} from "@hr_work_entry/views/work_entry_hook";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {CalendarController} from "@web/views/calendar/calendar_controller";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
 
 export class WorkEntryCalendarController extends CalendarController {
     static components = {
@@ -14,7 +13,7 @@ export class WorkEntryCalendarController extends CalendarController {
 
     setup() {
         super.setup();
-        const { onRegenerateWorkEntries } = useWorkEntry({
+        const {onRegenerateWorkEntries} = useWorkEntry({
             getEmployeeIds: this.getEmployeeIds.bind(this),
             getRange: this.model.computeRange.bind(this.model),
             onClose: this.model.load.bind(this.model),
@@ -41,10 +40,12 @@ export class WorkEntryCalendarController extends CalendarController {
                     return true;
                 },
                 context: {
-                    form_view_ref: "hr_work_entry.hr_work_entry_calendar_gantt_view_form",
+                    form_view_ref:
+                        "hr_work_entry.hr_work_entry_calendar_gantt_view_form",
                     default_duration: record.rawRecord.duration / 2,
                     default_name: record.rawRecord.name,
-                    default_work_entry_type_id: record.rawRecord.work_entry_type_id?.[0],
+                    default_work_entry_type_id:
+                        record.rawRecord.work_entry_type_id?.[0],
                     default_employee_id: record.rawRecord.employee_id?.[0],
                     default_date: record.rawRecord.date,
                 },
@@ -71,7 +72,9 @@ export class WorkEntryCalendarController extends CalendarController {
     getEmployeeIds() {
         return [
             ...new Set(
-                Object.values(this.model.records).map((rec) => rec.rawRecord.employee_id[0])
+                Object.values(this.model.records).map(
+                    (rec) => rec.rawRecord.employee_id[0]
+                )
             ),
         ];
     }
@@ -89,7 +92,8 @@ export class WorkEntryCalendarController extends CalendarController {
     prepareMultiSelectionButtonsReactive() {
         const result = super.prepareMultiSelectionButtonsReactive();
         result.userFavoritesWorkEntries = this.model.userFavoritesWorkEntries || [];
-        result.onQuickReplace = (values) => this.onMultiReplace(values, this.selectedCells);
+        result.onQuickReplace = (values) =>
+            this.onMultiReplace(values, this.selectedCells);
         result.onQuickReset = () => this.onResetWorkEntries(this.selectedCells);
         return result;
     }
@@ -99,7 +103,8 @@ export class WorkEntryCalendarController extends CalendarController {
      */
     updateMultiSelection() {
         super.updateMultiSelection(...arguments);
-        this.multiSelectionButtonsReactive.userFavoritesWorkEntries = this.model.userFavoritesWorkEntries || [];
+        this.multiSelectionButtonsReactive.userFavoritesWorkEntries =
+            this.model.userFavoritesWorkEntries || [];
     }
 
     getDatesWithoutValidatedWorkEntry(selectedCells, records) {

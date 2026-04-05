@@ -1,15 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from unittest.mock import Mock, patch
 
 from werkzeug.test import EnvironBuilder
 from werkzeug.urls import url_encode
 
-from unittest.mock import patch, Mock
 from odoo import tests
 from odoo.tools.misc import mute_logger, submap
-from odoo.addons.website.controllers.main import Website
+
 from odoo.addons.http_routing.tests.common import MockRequest
+from odoo.addons.website.controllers.main import Website
 
 
 @tests.tagged('post_install', '-at_install')

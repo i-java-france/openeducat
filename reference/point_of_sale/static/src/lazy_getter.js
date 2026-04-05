@@ -1,5 +1,5 @@
-import { effect } from "@web/core/utils/reactive";
-import { getDisabler } from "./proxy_trap";
+import {effect} from "@web/core/utils/reactive";
+import {getDisabler} from "./proxy_trap";
 
 function getAllGetters(proto) {
     const getters = new Map();
@@ -119,9 +119,9 @@ function lazyComputed(obj, propName, compute) {
 }
 
 export class WithLazyGetterTrap {
-    constructor({ traps = {} }) {
+    constructor({traps = {}}) {
         const Class = this.constructor;
-        const instance = new Proxy(this, { get: defineLazyGetterTrap(Class), ...traps });
+        const instance = new Proxy(this, {get: defineLazyGetterTrap(Class), ...traps});
         for (const [lazyName, func] of getLazyGetters(Class).values()) {
             lazyComputed(instance, lazyName, func);
         }

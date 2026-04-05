@@ -5,11 +5,15 @@ on:
     branches:
       - "master"
       - "19.0*"
+    paths-ignore:
+      - 'reference/**'
   push:
     branches:
       - "master"
       - "19.0"
       - "19.0-ocabot-*"
+    paths-ignore:
+      - 'reference/**'
 
 jobs:
   unreleased-deps:
@@ -53,6 +57,7 @@ jobs:
           - 5432:5432
     env:
       OCA_ENABLE_CHECKLOG_ODOO: "1"
+      ADDONS_DIR: addons
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,9 +65,9 @@ jobs:
       - name: Install addons and dependencies
         run: oca_install_addons
       - name: Check licenses
-        run: manifestoo -d . check-licenses
+        run: manifestoo -d addons check-licenses
       - name: Check development status
-        run: manifestoo -d . check-dev-status --default-dev-status=Beta
+        run: manifestoo -d addons check-dev-status --default-dev-status=Beta
       - name: Initialize test db
         run: oca_init_test_database
       - name: Run tests

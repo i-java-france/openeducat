@@ -1,28 +1,34 @@
-import { _t } from "@web/core/l10n/translation";
-import { evaluateExpr, evaluateBooleanExpr } from "@web/core/py_js/py";
-import { user } from "@web/core/user";
-import { unique } from "@web/core/utils/arrays";
-import { useService } from "@web/core/utils/hooks";
-import { omit } from "@web/core/utils/objects";
-import { useSetupAction } from "@web/search/action_hook";
-import { ActionMenus, STATIC_ACTIONS_GROUP_NUMBER } from "@web/search/action_menus/action_menus";
-import { Layout } from "@web/search/layout";
-import { usePager } from "@web/search/pager_hook";
-import { useModelWithSampleData } from "@web/model/model";
-import { DynamicRecordList } from "@web/model/relational_model/dynamic_record_list";
-import { extractFieldsFromArchInfo } from "@web/model/relational_model/utils";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { MultiRecordViewButton } from "@web/views/view_button/multi_record_view_button";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { executeButtonCallback, useViewButtons } from "@web/views/view_button/view_button_hook";
-import { ListConfirmationDialog } from "./list_confirmation_dialog";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
-import { session } from "@web/session";
-import { ListCogMenu } from "./list_cog_menu";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { SelectionBox } from "@web/views/view_components/selection_box";
-import { useExportRecords, useDeleteRecords } from "@web/views/view_hook";
+import {_t} from "@web/core/l10n/translation";
+import {evaluateExpr, evaluateBooleanExpr} from "@web/core/py_js/py";
+import {user} from "@web/core/user";
+import {unique} from "@web/core/utils/arrays";
+import {useService} from "@web/core/utils/hooks";
+import {omit} from "@web/core/utils/objects";
+import {useSetupAction} from "@web/search/action_hook";
+import {
+    ActionMenus,
+    STATIC_ACTIONS_GROUP_NUMBER,
+} from "@web/search/action_menus/action_menus";
+import {Layout} from "@web/search/layout";
+import {usePager} from "@web/search/pager_hook";
+import {useModelWithSampleData} from "@web/model/model";
+import {DynamicRecordList} from "@web/model/relational_model/dynamic_record_list";
+import {extractFieldsFromArchInfo} from "@web/model/relational_model/utils";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {MultiRecordViewButton} from "@web/views/view_button/multi_record_view_button";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {
+    executeButtonCallback,
+    useViewButtons,
+} from "@web/views/view_button/view_button_hook";
+import {ListConfirmationDialog} from "./list_confirmation_dialog";
+import {SearchBar} from "@web/search/search_bar/search_bar";
+import {useSearchBarToggler} from "@web/search/search_bar/search_bar_toggler";
+import {session} from "@web/session";
+import {ListCogMenu} from "./list_cog_menu";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {SelectionBox} from "@web/views/view_components/selection_box";
+import {useExportRecords, useDeleteRecords} from "@web/views/view_hook";
 
 import {
     Component,
@@ -51,11 +57,11 @@ export class ListController extends Component {
     };
     static props = {
         ...standardViewProps,
-        allowSelectors: { type: Boolean, optional: true },
-        onSelectionChanged: { type: Function, optional: true },
-        readonly: { type: Boolean, optional: true },
-        showButtons: { type: Boolean, optional: true },
-        allowOpenAction: { type: Boolean, optional: true },
+        allowSelectors: {type: Boolean, optional: true},
+        onSelectionChanged: {type: Function, optional: true},
+        readonly: {type: Boolean, optional: true},
+        showButtons: {type: Boolean, optional: true},
+        allowOpenAction: {type: Boolean, optional: true},
         Model: Function,
         Renderer: Function,
         buttonTemplate: String,
@@ -81,7 +87,11 @@ export class ListController extends Component {
         this.editable = (!this.props.readonly && this.archInfo.editable) || false;
         this.hasOpenFormViewButton = this.editable ? this.archInfo.openFormView : false;
         this.model = useState(
-            useModelWithSampleData(this.props.Model, this.modelParams, this.modelOptions)
+            useModelWithSampleData(
+                this.props.Model,
+                this.modelParams,
+                this.modelOptions
+            )
         );
 
         // In multi edition, we save or notify invalidity directly when a field is updated, which
@@ -109,15 +119,15 @@ export class ListController extends Component {
             "active" in this.props.fields
                 ? !this.props.fields.active.readonly
                 : "x_active" in this.props.fields
-                ? !this.props.fields.x_active.readonly
-                : false;
-        useSubEnv({ model: this.model }); // do this in useModelWithSampleData?
+                  ? !this.props.fields.x_active.readonly
+                  : false;
+        useSubEnv({model: this.model}); // do this in useModelWithSampleData?
         useViewButtons(this.rootRef, {
             beforeExecuteAction: this.beforeExecuteActionButton.bind(this),
             afterExecuteAction: this.afterExecuteActionButton.bind(this),
             reload: () => this.model.load(),
         });
-        const { setScrollFromState } = useSetupAction({
+        const {setScrollFromState} = useSetupAction({
             rootRef: this.rootRef,
             beforeLeave: this.beforeLeave.bind(this),
             beforeUnload: this.beforeUnload.bind(this),
@@ -140,9 +150,10 @@ export class ListController extends Component {
                     if (this.env.isSmall) {
                         setScrollFromState();
                     } else {
-                        const { rendererScrollPositions } = this.props.state || {};
+                        const {rendererScrollPositions} = this.props.state || {};
                         if (rendererScrollPositions) {
-                            const renderer = this.rootRef.el.querySelector(".o_list_renderer");
+                            const renderer =
+                                this.rootRef.el.querySelector(".o_list_renderer");
                             renderer.scrollLeft = rendererScrollPositions.left;
                             renderer.scrollTop = rendererScrollPositions.top;
                         }
@@ -156,24 +167,26 @@ export class ListController extends Component {
             if (this.model.useSampleModel) {
                 return;
             }
-            const { count, hasLimitedCount, isGrouped, limit, offset } = this.model.root;
+            const {count, hasLimitedCount, isGrouped, limit, offset} = this.model.root;
             return {
                 offset: offset,
                 limit: limit,
                 total: count,
-                onUpdate: async ({ offset, limit }, hasNavigated) => {
+                onUpdate: async ({offset, limit}, hasNavigated) => {
                     if (this.editedRecord) {
                         if (!(await this.editedRecord.save())) {
                             return;
                         }
                     }
-                    await this.model.root.load({ limit, offset });
+                    await this.model.root.load({limit, offset});
                     if (hasNavigated) {
                         this.onPageChangeScroll();
                     }
                 },
                 updateTotal:
-                    !isGrouped && hasLimitedCount ? () => this.model.root.fetchCount() : undefined,
+                    !isGrouped && hasLimitedCount
+                        ? () => this.model.root.fetchCount()
+                        : undefined,
             };
         });
 
@@ -195,8 +208,8 @@ export class ListController extends Component {
     }
 
     get modelParams() {
-        const { rawExpand } = this.archInfo;
-        const { activeFields, fields } = extractFieldsFromArchInfo(
+        const {rawExpand} = this.archInfo;
+        const {activeFields, fields} = extractFieldsFromArchInfo(
             this.archInfo,
             this.props.fields
         );
@@ -204,14 +217,16 @@ export class ListController extends Component {
         for (const fieldName in this.archInfo.groupBy.fields) {
             const fieldNodes = this.archInfo.groupBy.fields[fieldName].fieldNodes;
             const fields = this.archInfo.groupBy.fields[fieldName].fields;
-            groupByInfo[fieldName] = extractFieldsFromArchInfo({ fieldNodes }, fields);
+            groupByInfo[fieldName] = extractFieldsFromArchInfo({fieldNodes}, fields);
         }
 
         const modelConfig = this.props.state?.modelState?.config || {
             resModel: this.props.resModel,
             fields,
             activeFields,
-            openGroupsByDefault: rawExpand ? evaluateExpr(rawExpand, this.props.context) : false,
+            openGroupsByDefault: rawExpand
+                ? evaluateExpr(rawExpand, this.props.context)
+                : false,
         };
 
         return {
@@ -251,7 +266,7 @@ export class ListController extends Component {
             items: this.actionMenuItems,
             isDomainSelected: this.model.root.isDomainSelected,
             resModel: this.model.root.resModel,
-            onActionExecuted: ({ noReload } = {}) => {
+            onActionExecuted: ({noReload} = {}) => {
                 if (!noReload) {
                     return this.model.load();
                 }
@@ -272,7 +287,10 @@ export class ListController extends Component {
             this.props.archInfo.columns
                 .filter((col) => col.type === "field")
                 .filter((col) => !col.optional || this.optionalActiveFields[col.name])
-                .filter((col) => !evaluateBooleanExpr(col.column_invisible, this.props.context))
+                .filter(
+                    (col) =>
+                        !evaluateBooleanExpr(col.column_invisible, this.props.context)
+                )
                 .map((col) => this.props.fields[col.name])
                 .filter((field) => field.exportable !== false)
                 .filter((field) => field.type !== "properties")
@@ -320,7 +338,7 @@ export class ListController extends Component {
      */
     async onWillSaveRecord(record) {}
 
-    async createRecord({ group } = {}) {
+    async createRecord({group} = {}) {
         if (!this.model.isReady && !this.model.config.groupBy.length && this.editable) {
             // If the view isn't grouped and the list is editable, a new record row will be added,
             // in edition. In this situation, we must wait for the model to be ready.
@@ -341,7 +359,7 @@ export class ListController extends Component {
         }
     }
 
-    async openRecord(record, { force, newWindow } = { force: false }) {
+    async openRecord(record, {force, newWindow} = {force: false}) {
         const dirty = await record.isDirty();
         if (dirty) {
             await record.save();
@@ -364,8 +382,10 @@ export class ListController extends Component {
                 }
             );
         } else {
-            const activeIds = this.model.root.records.map((datapoint) => datapoint.resId);
-            this.props.selectRecord(record.resId, { activeIds, force, newWindow });
+            const activeIds = this.model.root.records.map(
+                (datapoint) => datapoint.resId
+            );
+            this.props.selectRecord(record.resId, {activeIds, force, newWindow});
         }
     }
 
@@ -375,7 +395,7 @@ export class ListController extends Component {
 
     async onClickDiscard() {
         return executeButtonCallback(this.rootRef.el, () =>
-            this.model.root.leaveEditMode({ discard: true })
+            this.model.root.leaveEditMode({discard: true})
         );
     }
 
@@ -401,7 +421,7 @@ export class ListController extends Component {
                 }
                 this.nextActionAfterMouseup = null;
             },
-            { capture: true, once: true }
+            {capture: true, once: true}
         );
     }
 
@@ -410,7 +430,8 @@ export class ListController extends Component {
             if (this.env.isSmall) {
                 this.rootRef.el.scrollTop = 0;
             } else {
-                this.rootRef.el.querySelector(".o_content .o_list_renderer").scrollTop = 0;
+                this.rootRef.el.querySelector(".o_content .o_list_renderer").scrollTop =
+                    0;
             }
         }
     }
@@ -437,7 +458,10 @@ export class ListController extends Component {
                 icon: "oi oi-archive",
                 description: _t("Archive"),
                 callback: () =>
-                    this.model.root.toggleArchiveWithConfirmation(true, this.archiveDialogProps),
+                    this.model.root.toggleArchiveWithConfirmation(
+                        true,
+                        this.archiveDialogProps
+                    ),
             },
             unarchive: {
                 isAvailable: () => this.archiveEnabled,
@@ -458,13 +482,18 @@ export class ListController extends Component {
     }
 
     get actionMenuItems() {
-        const { actionMenus } = this.props.info;
+        const {actionMenus} = this.props.info;
         const staticActionItems = Object.entries(this.getStaticActionMenuItems())
-            .filter(([key, item]) => item.isAvailable === undefined || item.isAvailable())
-            .sort(([k1, item1], [k2, item2]) => (item1.sequence || 0) - (item2.sequence || 0))
+            .filter(
+                ([key, item]) => item.isAvailable === undefined || item.isAvailable()
+            )
+            .sort(
+                ([k1, item1], [k2, item2]) =>
+                    (item1.sequence || 0) - (item2.sequence || 0)
+            )
             .map(([key, item]) =>
                 Object.assign(
-                    { key, groupNumber: STATIC_ACTIONS_GROUP_NUMBER },
+                    {key, groupNumber: STATIC_ACTIONS_GROUP_NUMBER},
                     omit(item, "isAvailable")
                 )
             );
@@ -492,7 +521,7 @@ export class ListController extends Component {
     }
 
     get display() {
-        const { controlPanel } = this.props.display;
+        const {controlPanel} = this.props.display;
         if (!controlPanel) {
             return this.props.display;
         }
@@ -522,7 +551,7 @@ export class ListController extends Component {
     onAskMultiSaveConfirmation(changes, validSelectedRecords) {
         if (this.model.root.selection.length > 1 && validSelectedRecords.length > 0) {
             const record = validSelectedRecords[0];
-            const { isDomainSelected, selection } = this.model.root;
+            const {isDomainSelected, selection} = this.model.root;
             return new Promise((resolve) => {
                 const dialogProps = {
                     confirm: () => resolve(true),
@@ -546,7 +575,8 @@ export class ListController extends Component {
                     record,
                 };
 
-                const focusedCellBeforeDialog = document.activeElement.closest(".o_data_cell");
+                const focusedCellBeforeDialog =
+                    document.activeElement.closest(".o_data_cell");
                 this.dialogService.add(ListConfirmationDialog, dialogProps, {
                     onClose: () => {
                         if (focusedCellBeforeDialog) {
@@ -562,7 +592,8 @@ export class ListController extends Component {
 
     onWillSaveMulti(editedRecord, changes) {
         if (this.hasMousedownDiscard) {
-            this.nextActionAfterMouseup = () => this.model.root.multiSave(editedRecord, changes);
+            this.nextActionAfterMouseup = () =>
+                this.model.root.multiSave(editedRecord, changes);
             return false;
         }
         return true;

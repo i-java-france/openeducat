@@ -1,11 +1,17 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { fields, getKwArgs, makeKwArgs, models, serverState } from "@web/../tests/web_test_helpers";
-import { Domain } from "@web/core/domain";
-import { deserializeDate, serializeDate, today } from "@web/core/l10n/dates";
-import { groupBy, sortBy, unique } from "@web/core/utils/arrays";
+import {
+    fields,
+    getKwArgs,
+    makeKwArgs,
+    models,
+    serverState,
+} from "@web/../tests/web_test_helpers";
+import {Domain} from "@web/core/domain";
+import {deserializeDate, serializeDate, today} from "@web/core/l10n/dates";
+import {groupBy, sortBy, unique} from "@web/core/utils/arrays";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class MailActivity extends models.ServerModel {
     _name = "mail.activity";
@@ -16,14 +22,21 @@ export class MailActivity extends models.ServerModel {
             return this.env["mail.activity.type"][0].id;
         },
     });
-    user_id = fields.Many2one({ relation: "res.users", default: () => serverState.userId });
-    chaining_type = fields.Generic({ default: "suggest" });
-    activity_category = fields.Generic({ related: false }); // removes related from server to ease creating activities
-    res_model = fields.Char({ string: "Related Document Model", related: false }); // removes related from server to ease creating activities
+    user_id = fields.Many2one({
+        relation: "res.users",
+        default: () => serverState.userId,
+    });
+    chaining_type = fields.Generic({default: "suggest"});
+    activity_category = fields.Generic({related: false}); // removes related from server to ease creating activities
+    res_model = fields.Char({string: "Related Document Model", related: false}); // removes related from server to ease creating activities
 
     /** @param {number[]} ids */
     action_feedback(ids) {
-        this.write(ids, { active: false, date_done: serializeDate(today()), state: "done" });
+        this.write(ids, {
+            active: false,
+            date_done: serializeDate(today()),
+            state: "done",
+        });
     }
 
     /** @param {number[]} ids */
@@ -66,13 +79,15 @@ export class MailActivity extends models.ServerModel {
             if (activityType) {
                 data.display_name = activityType.name;
                 data.icon = activityType.icon;
-                data.mail_template_ids = activityType.mail_template_ids.map((template_id) => {
-                    const [template] = MailTemplate.browse(template_id);
-                    return {
-                        id: template.id,
-                        name: template.name,
-                    };
-                });
+                data.mail_template_ids = activityType.mail_template_ids.map(
+                    (template_id) => {
+                        const [template] = MailTemplate.browse(template_id);
+                        return {
+                            id: template.id,
+                            name: template.name,
+                        };
+                    }
+                );
             }
             if (data.summary) {
                 data.display_name = data.summary;
@@ -119,7 +134,14 @@ export class MailActivity extends models.ServerModel {
      * @param {boolean} fetch_done
      */
     get_activity_data(res_model, domain, limit = 0, offset = 0, fetch_done) {
-        const kwargs = getKwArgs(arguments, "res_model", "domain", "limit", "offset", "fetch_done");
+        const kwargs = getKwArgs(
+            arguments,
+            "res_model",
+            "domain",
+            "limit",
+            "offset",
+            "fetch_done"
+        );
         res_model = kwargs.res_model;
         domain = kwargs.domain;
         limit = kwargs.limit || 0;
@@ -151,7 +173,7 @@ export class MailActivity extends models.ServerModel {
         if (isFiltered) {
             activityDomain.push(["res_id", "in", domainResIds]);
         }
-        const allActivities = this._filter(activityDomain, { active_test: !res_model });
+        const allActivities = this._filter(activityDomain, {active_test: !res_model});
         const allOngoing = allActivities.filter((a) => a.active);
         const allCompleted = allActivities.filter((a) => !a.active);
         // 2. Get attachment of completed activities
@@ -159,14 +181,22 @@ export class MailActivity extends models.ServerModel {
         if (allCompleted.length) {
             const attachmentIds = allCompleted.map((a) => a.attachment_ids).flat();
             attachmentsById = attachmentIds.length
-                ? Object.fromEntries(IrAttachment.browse(attachmentIds).map((a) => [a.id, a]))
+                ? Object.fromEntries(
+                      IrAttachment.browse(attachmentIds).map((a) => [a.id, a])
+                  )
                 : {};
         } else {
             attachmentsById = {};
         }
         // 3. Group activities per records and activity type
-        const groupedCompleted = groupBy(allCompleted, (a) => [a.res_id, a.activity_type_id]);
-        const groupedOngoing = groupBy(allOngoing, (a) => [a.res_id, a.activity_type_id]);
+        const groupedCompleted = groupBy(allCompleted, (a) => [
+            a.res_id,
+            a.activity_type_id,
+        ]);
+        const groupedOngoing = groupBy(allOngoing, (a) => [
+            a.res_id,
+            a.activity_type_id,
+        ]);
         // 4. Format data
         const resIdToDeadline = {};
         const resIdToDateDone = {};
@@ -175,7 +205,9 @@ export class MailActivity extends models.ServerModel {
             ...Object.keys(groupedCompleted),
             ...Object.keys(groupedOngoing),
         ])) {
-            const [resId, activityTypeId] = resIdStrTuple.split(",").map((n) => Number(n));
+            const [resId, activityTypeId] = resIdStrTuple
+                .split(",")
+                .map((n) => Number(n));
             const ongoing = groupedOngoing[resIdStrTuple] || [];
             const completed = groupedCompleted[resIdStrTuple] || [];
             const dateDone = completed.length
@@ -186,13 +218,15 @@ export class MailActivity extends models.ServerModel {
                 : false;
             if (
                 dateDeadline &&
-                (resIdToDeadline[resId] === undefined || dateDeadline < resIdToDeadline[resId])
+                (resIdToDeadline[resId] === undefined ||
+                    dateDeadline < resIdToDeadline[resId])
             ) {
                 resIdToDeadline[resId] = dateDeadline;
             }
             if (
                 dateDone &&
-                (resIdToDateDone[resId] === undefined || dateDone > resIdToDateDone[resId])
+                (resIdToDateDone[resId] === undefined ||
+                    dateDone > resIdToDateDone[resId])
             ) {
                 resIdToDateDone[resId] = dateDone;
             }
@@ -229,21 +263,30 @@ export class MailActivity extends models.ServerModel {
                     ...Object.fromEntries(
                         Object.entries(
                             groupBy(ongoing, (a) =>
-                                this._compute_state_from_date(deserializeDate(a.date_deadline))
+                                this._compute_state_from_date(
+                                    deserializeDate(a.date_deadline)
+                                )
                             )
                         ).map(([state, activities]) => [state, activities.length])
                     ),
-                    ...(completed.length ? { done: completed.length } : {}),
+                    ...(completed.length ? {done: completed.length} : {}),
                 },
                 ids: ongoing.map((a) => a.id).concat(completed.map((a) => a.id)),
-                reporting_date: reportingDate ? reportingDate.toFormat("yyyy-LL-dd") : false,
-                state: ongoing.length ? this._compute_state_from_date(dateDeadline) : "done",
+                reporting_date: reportingDate
+                    ? reportingDate.toFormat("yyyy-LL-dd")
+                    : false,
+                state: ongoing.length
+                    ? this._compute_state_from_date(dateDeadline)
+                    : "done",
                 user_assigned_ids: userAssignedIds,
                 summaries: ongoing.map((a) => (a.summary ? a.summary : "")),
                 ...attachmentsInfo,
             };
         }
-        const ongoingResIds = sortBy(Object.keys(resIdToDeadline), (item) => resIdToDeadline[item]);
+        const ongoingResIds = sortBy(
+            Object.keys(resIdToDeadline),
+            (item) => resIdToDeadline[item]
+        );
         const completedResIds = sortBy(
             Object.keys(resIdToDateDone).filter((resId) => !(resId in resIdToDeadline)),
             (item) => resIdToDateDone[item]
@@ -251,8 +294,8 @@ export class MailActivity extends models.ServerModel {
         return {
             activity_types: activityTypes.map((type) => {
                 const templates = (type.mail_template_ids || []).map((template_id) => {
-                    const { id, name } = MailTemplate.browse(template_id)[0];
-                    return { id, name };
+                    const {id, name} = MailTemplate.browse(template_id)[0];
+                    return {id, name};
                 });
                 return {
                     id: type.id,
@@ -260,7 +303,9 @@ export class MailActivity extends models.ServerModel {
                     template_ids: templates,
                 };
             }),
-            activity_res_ids: ongoingResIds.concat(completedResIds).map((idStr) => Number(idStr)),
+            activity_res_ids: ongoingResIds
+                .concat(completedResIds)
+                .map((idStr) => Number(idStr)),
             grouped_activities: groupedActivities,
         };
     }

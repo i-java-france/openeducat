@@ -1,9 +1,9 @@
-import { Message } from "@mail/core/common/message";
-import { useVisible } from "@mail/utils/common/hooks";
+import {Message} from "@mail/core/common/message";
+import {useVisible} from "@mail/utils/common/hooks";
 
-import { Component, useSubEnv } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {Component, useSubEnv} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -19,7 +19,7 @@ import { useService } from "@web/core/utils/hooks";
  * @extends {Component<Props, Env>}
  */
 export class MessageCardList extends Component {
-    static components = { Message };
+    static components = {Message};
     static props = [
         "emptyText?",
         "messages",
@@ -37,7 +37,7 @@ export class MessageCardList extends Component {
         super.setup();
         this.ui = useService("ui");
         this.store = useService("mail.store");
-        useSubEnv({ messageCard: true });
+        useSubEnv({messageCard: true});
         useVisible("load-more", (isVisible) => {
             if (isVisible) {
                 this.props.onLoadMoreVisible?.();
@@ -59,7 +59,9 @@ export class MessageCardList extends Component {
             this.env.inMeetingView?.openChat();
         }
         // Give the time for menus to close before scrolling to the message.
-        await new Promise((resolve) => setTimeout(() => requestAnimationFrame(resolve)));
+        await new Promise((resolve) =>
+            setTimeout(() => requestAnimationFrame(resolve))
+        );
         await this.env.messageHighlight?.highlightMessage(message, this.props.thread);
     }
 

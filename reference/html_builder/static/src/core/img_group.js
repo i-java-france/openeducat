@@ -1,5 +1,5 @@
-import { Component, useSubEnv, xml } from "@odoo/owl";
-import { batched } from "@web/core/utils/timing";
+import {Component, useSubEnv, xml} from "@odoo/owl";
+import {batched} from "@web/core/utils/timing";
 
 export class ImgGroup extends Component {
     static template = xml`<t><t t-slot="default"/></t>`;

@@ -1,15 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
 import uuid
 from datetime import datetime, timedelta
 
-from odoo.tools import consteq, get_lang
+import pytz
+
 from odoo import _, api, fields, models
-from odoo.http import request
-from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import UserError
+from odoo.http import request
+from odoo.tools import consteq, get_lang
 from odoo.tools.misc import limited_field_access_token
+
+from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.mail.tools.discuss import Store
 
 

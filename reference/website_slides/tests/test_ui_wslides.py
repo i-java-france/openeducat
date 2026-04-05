@@ -5,13 +5,13 @@ import logging
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import http, tests
-from odoo.addons.base.tests.common import HttpCaseWithUserPortal
-from odoo.addons.gamification.tests.common import HttpCaseGamification
+from odoo import tests
 from odoo.fields import Command, Datetime
 from odoo.tools import mute_logger
 from odoo.tools.misc import file_open
-import unittest
+
+from odoo.addons.base.tests.common import HttpCaseWithUserPortal
+from odoo.addons.gamification.tests.common import HttpCaseGamification
 
 _logger = logging.getLogger(__name__)
 
@@ -300,7 +300,7 @@ class TestUiPublisher(HttpCaseGamification):
 class TestUiMemberInvited(TestUICommon):
 
     def setUp(self):
-        super(TestUiMemberInvited, self).setUp()
+        super().setUp()
         self.channel_partner_portal = self.env['slide.channel.partner'].create({
             'channel_id': self.channel.id,
             'partner_id': self.user_portal.partner_id.id,

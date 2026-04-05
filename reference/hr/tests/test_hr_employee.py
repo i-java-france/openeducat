@@ -1,16 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from psycopg2.errors import UniqueViolation
-from freezegun import freeze_time
 
-from odoo import fields, Command
-from odoo.fields import Domain
-from odoo.tests import Form, users, new_test_user, HttpCase, tagged, TransactionCase
-from odoo.addons.hr.tests.common import TestHrCommon
-from odoo.tools import mute_logger
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+from psycopg2.errors import NotNullViolation, UniqueViolation
+
+from odoo import Command, fields
 from odoo.exceptions import ValidationError
-from psycopg2.errors import NotNullViolation
+from odoo.fields import Domain
+from odoo.tests import Form, HttpCase, TransactionCase, new_test_user, tagged, users
+from odoo.tools import mute_logger
+
+from odoo.addons.hr.tests.common import TestHrCommon
+
 
 class TestHrEmployee(TestHrCommon):
 

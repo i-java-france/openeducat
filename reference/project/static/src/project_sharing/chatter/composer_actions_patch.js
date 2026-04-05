@@ -1,9 +1,9 @@
-import { ComposerAction } from "@mail/core/common/composer_actions";
+import {ComposerAction} from "@mail/core/common/composer_actions";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(ComposerAction.prototype, {
-    _condition({ owner }) {
+    _condition({owner}) {
         if (this.id === "open-full-composer" && owner.env.projectSharingId) {
             return false;
         }

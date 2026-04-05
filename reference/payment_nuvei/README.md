@@ -2,10 +2,11 @@
 
 ## Technical details
 
-API: [Payment Page API](https://docs.nuvei.com/documentation/accept-payment/payment-page/quick-start-for-payment-page/)
+API:
+[Payment Page API](https://docs.nuvei.com/documentation/accept-payment/payment-page/quick-start-for-payment-page/)
 
-This module integrates Nuvei using the generic payment with redirection flow based on form
-submission provided by the `payment` module.
+This module integrates Nuvei using the generic payment with redirection flow based on
+form submission provided by the `payment` module.
 
 ## Supported features
 
@@ -19,7 +20,6 @@ submission provided by the `payment` module.
 - [Full and partial manual capture](https://docs.nuvei.com/documentation/features/financial-operations/auth-and-settle/)
 - [Full and partial refunds](https://docs.nuvei.com/documentation/features/financial-operations/refund/)
 
-
 ## Module history
 
 - `18.0`
@@ -29,10 +29,11 @@ submission provided by the `payment` module.
 
 ### Card Transactions
 
-For transactions *above* 99 you must use the 3D-Secure cards listed here:
+For transactions _above_ 99 you must use the 3D-Secure cards listed here:
 https://docs.nuvei.com/documentation/integration/testing/testing-cards/#3d-secure-v2-test-scenarios
-(You must match the card number and cardholder name to what is listed in frictionless/etc depending
-on what you are testing and then follow the expiration date/security code information from below)
+(You must match the card number and cardholder name to what is listed in
+frictionless/etc depending on what you are testing and then follow the expiration
+date/security code information from below)
 
 ### VISA (up to $99)
 

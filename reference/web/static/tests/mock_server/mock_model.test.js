@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     MockServer,
     defineModels,
@@ -37,8 +37,8 @@ test("model name can be implicitly extracted from its constructor name", async (
 
     await makeMockServer();
 
-    expect(MockServer.env["anonymous"]).toBeInstanceOf(AnonymousClass);
-    expect(MockServer.env["foo"]).toBeInstanceOf(Foo);
+    expect(MockServer.env.anonymous).toBeInstanceOf(AnonymousClass);
+    expect(MockServer.env.foo).toBeInstanceOf(Foo);
     expect(MockServer.env["project.task"]).toBeInstanceOf(ResCurrency);
     expect(MockServer.env["res.partner"]).toBeInstanceOf(ResPartner);
 
@@ -50,7 +50,9 @@ test("model name can be implicitly extracted from its constructor name", async (
 test("model should be defined on the mock server", async () => {
     await makeMockEnv();
 
-    await expect(getService("orm").searchRead("oui", [], ["id", "name"])).resolves.toEqual([
+    await expect(
+        getService("orm").searchRead("oui", [], ["id", "name"])
+    ).resolves.toEqual([
         {
             id: 1,
             name: "John Doe",
@@ -117,20 +119,22 @@ test("models can be extended by having the same name", async () => {
     expect(MockServer.env["same.model"]._fields.description.type).toBe("text");
     expect(MockServer.env["same.model"]._fields.title.type).toBe("char");
 
-    await expect(orm.call("same.model", "same_method")).resolves.toBe("overridden by 3");
+    await expect(orm.call("same.model", "same_method")).resolves.toBe(
+        "overridden by 3"
+    );
     await expect(orm.call("same.model", "second_method")).resolves.toBe("added by 2");
     await expect(orm.call("same.model", "third_method")).resolves.toBe("added by 3");
 });
 
 test("cannot access _records on models after init", async () => {
     expect(Oui._records).toHaveLength(1);
-    expect(() => MockServer.env["oui"]).toThrow();
+    expect(() => MockServer.env.oui).toThrow();
 
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
 
     expect(Oui._records).toHaveLength(0);
-    expect(env["oui"]).toBe(MockServer.env["oui"]);
-    expect(env["oui"]).toHaveLength(1);
+    expect(env.oui).toBe(MockServer.env.oui);
+    expect(env.oui).toHaveLength(1);
 });
 
 describe("level 1", () => {
@@ -158,7 +162,11 @@ describe("level 1", () => {
         await makeMockEnv();
 
         await expect(
-            getService("orm").searchRead("oui", [], ["id", "name", "age", "surname", "create_date"])
+            getService("orm").searchRead(
+                "oui",
+                [],
+                ["id", "name", "age", "surname", "create_date"]
+            )
         ).resolves.toEqual([
             {
                 id: 1,

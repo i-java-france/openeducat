@@ -1,13 +1,13 @@
-import { useState, onMounted, onWillUnmount, onPatched } from "@odoo/owl";
-import { debounce } from "@web/core/utils/timing";
+import {useState, onMounted, onWillUnmount, onPatched} from "@odoo/owl";
+import {debounce} from "@web/core/utils/timing";
 
 export function useScrollShadow(scrollContainerRef, options = {}) {
     if (!scrollContainerRef) {
         return;
     }
 
-    const { threshold = 5 } = options;
-    const shadows = useState({ top: 0, bottom: 0 });
+    const {threshold = 5} = options;
+    const shadows = useState({top: 0, bottom: 0});
 
     const updateShadows = () => {
         try {
@@ -15,7 +15,7 @@ export function useScrollShadow(scrollContainerRef, options = {}) {
             if (!el) {
                 return;
             }
-            const { scrollTop, scrollHeight, clientHeight } = el;
+            const {scrollTop, scrollHeight, clientHeight} = el;
             shadows.top = scrollTop > 0;
             shadows.bottom = scrollTop + clientHeight < scrollHeight - threshold;
         } catch {
@@ -27,11 +27,15 @@ export function useScrollShadow(scrollContainerRef, options = {}) {
     return shadows;
 }
 
-export function useHorizontalScrollShadow(scrollContainerRef, classContainerRef, options = {}) {
+export function useHorizontalScrollShadow(
+    scrollContainerRef,
+    classContainerRef,
+    options = {}
+) {
     if (!scrollContainerRef || !classContainerRef) {
         return;
     }
-    const { threshold = 5 } = options;
+    const {threshold = 5} = options;
 
     const updateShadows = () => {
         try {
@@ -43,10 +47,14 @@ export function useHorizontalScrollShadow(scrollContainerRef, classContainerRef,
             }
             const hasLeft = scrollEl.scrollLeft > 0;
             const hasRight =
-                scrollEl.scrollLeft + scrollEl.clientWidth < scrollEl.scrollWidth - threshold;
+                scrollEl.scrollLeft + scrollEl.clientWidth <
+                scrollEl.scrollWidth - threshold;
             classEl.classList.toggle("left-shadow", hasLeft);
             classEl.classList.toggle("right-shadow", hasRight);
-            classEl.classList.toggle("has-scroll", scrollEl.clientWidth < scrollEl.scrollWidth);
+            classEl.classList.toggle(
+                "has-scroll",
+                scrollEl.clientWidth < scrollEl.scrollWidth
+            );
         } catch {
             // Ignore error
         }
@@ -59,7 +67,7 @@ function initScrollShadow(scrollContainerRef, updateFn, options = {}) {
     if (!scrollContainerRef) {
         return;
     }
-    const { resizeDebounce = 100 } = options;
+    const {resizeDebounce = 100} = options;
     let scheduled = false;
 
     const handleScroll = () => {

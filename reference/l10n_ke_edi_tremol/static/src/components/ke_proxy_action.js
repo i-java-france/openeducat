@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { KEProxyDialog } from "./ke_proxy_dialog";
+import {registry} from "@web/core/registry";
+import {KEProxyDialog} from "./ke_proxy_dialog";
 
 export function KESendInvoiceClientAction(env, action) {
     return new Promise((resolve) => {
@@ -10,7 +10,7 @@ export function KESendInvoiceClientAction(env, action) {
             },
             {
                 onClose: () => {
-                    resolve({ type: "ir.actions.act_window_close" });
+                    resolve({type: "ir.actions.act_window_close"});
                 },
             }
         );

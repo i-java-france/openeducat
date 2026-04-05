@@ -1,12 +1,12 @@
-import { Gif } from "@mail/core/common/gif";
-import { useOnBottomScrolled, useSequential } from "@mail/utils/common/hooks";
+import {Gif} from "@mail/core/common/gif";
+import {useOnBottomScrolled, useSequential} from "@mail/utils/common/hooks";
 
-import { Component, onWillStart, useState, useEffect } from "@odoo/owl";
-import { user } from "@web/core/user";
-import { useService, useAutofocus } from "@web/core/utils/hooks";
-import { useDebounced } from "@web/core/utils/timing";
-import { rpc } from "@web/core/network/rpc";
-import { PICKER_PROPS, usePicker } from "@web/core/emoji_picker/emoji_picker";
+import {Component, onWillStart, useState, useEffect} from "@odoo/owl";
+import {user} from "@web/core/user";
+import {useService, useAutofocus} from "@web/core/utils/hooks";
+import {useDebounced} from "@web/core/utils/timing";
+import {rpc} from "@web/core/network/rpc";
+import {PICKER_PROPS, usePicker} from "@web/core/emoji_picker/emoji_picker";
 
 export function useGifPicker(...args) {
     return usePicker(GifPicker, ...args);
@@ -55,7 +55,7 @@ export function useGifPicker(...args) {
 export class GifPicker extends Component {
     static template = "discuss.GifPicker";
     static props = PICKER_PROPS;
-    static components = { Gif };
+    static components = {Gif};
 
     setup() {
         super.setup();
@@ -152,17 +152,17 @@ export class GifPicker extends Component {
             return;
         }
         try {
-            let { language, region } = new Intl.Locale(user.lang);
+            let {language, region} = new Intl.Locale(user.lang);
             if (!region && language === "sr") {
                 region = "RS";
             }
-            const { tags } = await rpc(
+            const {tags} = await rpc(
                 "/discuss/gif/categories",
                 {
                     country: region,
                     locale: `${language}_${region}`,
                 },
-                { silent: true }
+                {silent: true}
             );
             if (tags) {
                 this.state.categories = tags;
@@ -188,7 +188,7 @@ export class GifPicker extends Component {
             return;
         }
         try {
-            let { language, region } = new Intl.Locale(user.lang);
+            let {language, region} = new Intl.Locale(user.lang);
             if (!region && language === "sr") {
                 region = "RS";
             }
@@ -209,7 +209,7 @@ export class GifPicker extends Component {
                 return res;
             });
             if (res) {
-                const { next, results } = res;
+                const {next, results} = res;
                 this.next = next;
                 for (const gif of results) {
                     this.pushGif(gif);
@@ -265,13 +265,19 @@ export class GifPicker extends Component {
     async onClickFavorite(gif) {
         if (!this.isFavorite(gif)) {
             this.state.favorites.gifs.push(gif);
-            await this.orm.silent.create("discuss.gif.favorite", [{ tenor_gif_id: gif.id }]);
+            await this.orm.silent.create("discuss.gif.favorite", [
+                {tenor_gif_id: gif.id},
+            ]);
         } else {
-            const index = this.state.favorites.gifs.findIndex(({ id }) => id === gif.id);
+            const index = this.state.favorites.gifs.findIndex(({id}) => id === gif.id);
             if (index >= 0) {
                 this.state.favorites.gifs.splice(index, 1);
             }
-            await rpc("/discuss/gif/remove_favorite", { tenor_gif_id: gif.id }, { silent: true });
+            await rpc(
+                "/discuss/gif/remove_favorite",
+                {tenor_gif_id: gif.id},
+                {silent: true}
+            );
         }
     }
 
@@ -283,8 +289,8 @@ export class GifPicker extends Component {
         try {
             const [results] = await rpc(
                 "/discuss/gif/favorites",
-                { offset: this.offset },
-                { silent: true }
+                {offset: this.offset},
+                {silent: true}
             );
             this.offset += 20;
             this.state.favorites.gifs.push(...results);
@@ -298,7 +304,9 @@ export class GifPicker extends Component {
      * @param {TenorGif} gif
      */
     isFavorite(gif) {
-        return this.state.favorites.gifs.map((favorite) => favorite.id).includes(gif.id);
+        return this.state.favorites.gifs
+            .map((favorite) => favorite.id)
+            .includes(gif.id);
     }
 
     onClickFavoritesCategory() {

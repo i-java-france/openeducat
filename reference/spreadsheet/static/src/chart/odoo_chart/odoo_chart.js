@@ -1,5 +1,8 @@
-import { AbstractChart, CommandResult } from "@odoo/o-spreadsheet";
-import { ChartDataSource, chartTypeToDataSourceMode } from "../data_source/chart_data_source";
+import {AbstractChart, CommandResult} from "@odoo/o-spreadsheet";
+import {
+    ChartDataSource,
+    chartTypeToDataSourceMode,
+} from "../data_source/chart_data_source";
 
 /**
  * @typedef {import("@web/search/search_model").SearchParams} SearchParams

@@ -2,9 +2,8 @@
 import io
 import re
 
-from odoo.tools.misc import format_date
 from odoo.tools import html2plaintext
-
+from odoo.tools.misc import format_date
 
 COLUMN_HEADER_MAP = {
     "Reporting_Month": "invoice_date",

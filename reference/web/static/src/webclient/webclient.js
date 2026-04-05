@@ -1,17 +1,23 @@
-import { useOwnDebugContext } from "@web/core/debug/debug_context";
-import { Deferred } from "@web/core/utils/concurrency";
-import { DebugMenu } from "@web/core/debug/debug_menu";
-import { localization } from "@web/core/l10n/localization";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { registry } from "@web/core/registry";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { ActionContainer } from "./actions/action_container";
-import { NavBar } from "./navbar/navbar";
+import {useOwnDebugContext} from "@web/core/debug/debug_context";
+import {Deferred} from "@web/core/utils/concurrency";
+import {DebugMenu} from "@web/core/debug/debug_menu";
+import {localization} from "@web/core/l10n/localization";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {registry} from "@web/core/registry";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {ActionContainer} from "./actions/action_container";
+import {NavBar} from "./navbar/navbar";
 
-import { Component, onMounted, onWillStart, useExternalListener, useState } from "@odoo/owl";
-import { router, routerBus } from "@web/core/browser/router";
-import { browser } from "@web/core/browser/browser";
-import { rpcBus } from "@web/core/network/rpc";
+import {
+    Component,
+    onMounted,
+    onWillStart,
+    useExternalListener,
+    useState,
+} from "@odoo/owl";
+import {router, routerBus} from "@web/core/browser/router";
+import {browser} from "@web/core/browser/browser";
+import {rpcBus} from "@web/core/network/rpc";
 
 export class WebClient extends Component {
     static template = "web.WebClient";
@@ -26,14 +32,14 @@ export class WebClient extends Component {
         this.menuService = useService("menu");
         this.actionService = useService("action");
         this.title = useService("title");
-        useOwnDebugContext({ categories: ["default"] });
+        useOwnDebugContext({categories: ["default"]});
         if (this.env.debug) {
             registry.category("systray").add(
                 "web.debug_mode_menu",
                 {
                     Component: DebugMenu,
                 },
-                { sequence: 100 }
+                {sequence: 100}
             );
         }
         this.localization = localization;
@@ -48,7 +54,7 @@ export class WebClient extends Component {
                 document.body.style.pointerEvents = "auto";
             }
         });
-        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", ({ detail: mode }) => {
+        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", ({detail: mode}) => {
             if (mode !== "new") {
                 this.state.fullscreen = mode === "fullscreen";
             }
@@ -60,7 +66,7 @@ export class WebClient extends Component {
             // order to initialize themselves:
             this.env.bus.trigger("WEB_CLIENT_READY");
         });
-        useExternalListener(window, "click", this.onGlobalClick, { capture: true });
+        useExternalListener(window, "click", this.onGlobalClick, {capture: true});
         this.serviceWorkerActivatedDeferred = new Deferred();
         onWillStart(this.registerServiceWorker);
     }
@@ -75,13 +81,13 @@ export class WebClient extends Component {
             // Find all menus that match this action
             const matchingMenus = this.menuService
                 .getAll()
-                .filter((m) => m.actionID === firstAction || m.actionPath === firstAction);
+                .filter(
+                    (m) => m.actionID === firstAction || m.actionPath === firstAction
+                );
 
             if (matchingMenus.length > 0) {
                 // Use sessionStorage context to determine the correct menu
-                menuId = matchingMenus.find(m => 
-                    m.appID === storedMenuId
-                )?.appID;
+                menuId = matchingMenus.find((m) => m.appID === storedMenuId)?.appID;
                 if (!menuId) {
                     menuId = matchingMenus[0]?.appID;
                 }
@@ -99,7 +105,7 @@ export class WebClient extends Component {
             const menu = this.menuService.getAll().find((m) => menuId === m.id);
             const actionId = menu && menu.actionID;
             if (actionId) {
-                await this.actionService.doAction(actionId, { clearBreadcrumbs: true });
+                await this.actionService.doAction(actionId, {clearBreadcrumbs: true});
                 stateLoaded = true;
             }
         }
@@ -109,7 +115,9 @@ export class WebClient extends Component {
             // Determines the current menu based on the current action
             const currentController = this.actionService.currentController;
             const actionId = currentController && currentController.action.id;
-            menuId = this.menuService.getAll().find((m) => m.actionID === actionId)?.appID;
+            menuId = this.menuService
+                .getAll()
+                .find((m) => m.actionID === actionId)?.appID;
             if (!menuId) {
                 // Setting the menu based on the session storage if no other menu was found
                 menuId = storedMenuId;
@@ -160,7 +168,8 @@ export class WebClient extends Component {
             (ev.ctrlKey || ev.metaKey) &&
             !ev.target.isContentEditable &&
             ((ev.target instanceof HTMLAnchorElement && ev.target.href) ||
-                (ev.target instanceof HTMLElement && ev.target.closest("a[href]:not([href=''])")))
+                (ev.target instanceof HTMLElement &&
+                    ev.target.closest("a[href]:not([href=''])")))
         ) {
             ev.stopImmediatePropagation();
             return;
@@ -170,13 +179,18 @@ export class WebClient extends Component {
     registerServiceWorker() {
         if (navigator.serviceWorker) {
             navigator.serviceWorker
-                .register("/web/service-worker.js", { scope: "/odoo" })
+                .register("/web/service-worker.js", {scope: "/odoo"})
                 .then((registration) => {
-                    if (registration.active && registration.active.state === "activated") {
+                    if (
+                        registration.active &&
+                        registration.active.state === "activated"
+                    ) {
                         this.serviceWorkerActivatedDeferred.resolve();
                     } else {
                         const sw =
-                            registration.installing || registration.waiting || registration.active;
+                            registration.installing ||
+                            registration.waiting ||
+                            registration.active;
                         sw.addEventListener("statechange", (e) => {
                             if (e.target.state === "activated") {
                                 this.serviceWorkerActivatedDeferred.resolve();

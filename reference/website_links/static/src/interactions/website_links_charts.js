@@ -1,19 +1,19 @@
-import { Interaction } from "@web/public/interaction";
-import { _t } from "@web/core/l10n/translation";
-import { deserializeDate } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { loadBundle } from "@web/core/assets";
-const { DateTime } = luxon;
+import {Interaction} from "@web/public/interaction";
+import {_t} from "@web/core/l10n/translation";
+import {deserializeDate} from "@web/core/l10n/dates";
+import {registry} from "@web/core/registry";
+import {loadBundle} from "@web/core/assets";
+const {DateTime} = luxon;
 
 class WebsiteLinksCharts extends Interaction {
     static selector = ".o_website_links_chart";
     dynamicContent = {
         "#all_time_charts, #last_month_charts, #last_week_charts": {
-            "t-att-class": () => ({ "d-none": !!this.error }),
+            "t-att-class": () => ({"d-none": !!this.error}),
         },
         ".website_links_charts_error": {
             "t-out": () => this.error || "",
-            "t-att-class": () => ({ "d-none": !this.error }),
+            "t-att-class": () => ({"d-none": !this.error}),
         },
         "#all_time_clicks_chart > .title": {
             "t-out": () => `${this.numAllTimeClicks} ${_t("clicks")}`,
@@ -30,14 +30,16 @@ class WebsiteLinksCharts extends Interaction {
             "t-out": (el) =>
                 `${this.pieChartsData[el.parentNode.id].numCountries} ${_t("countries")}`,
         },
-        "#all_time_countries_charts, #last_month_countries_charts, #last_week_countries_charts": {
-            "t-att-style": (el) => ({
-                height: `${Math.max(
-                    this.pieChartsData[el.id].data.length * (this.chartWidth > 750 ? 1 : 2),
-                    20
-                )}em`,
-            }),
-        },
+        "#all_time_countries_charts, #last_month_countries_charts, #last_week_countries_charts":
+            {
+                "t-att-style": (el) => ({
+                    height: `${Math.max(
+                        this.pieChartsData[el.id].data.length *
+                            (this.chartWidth > 750 ? 1 : 2),
+                        20
+                    )}em`,
+                }),
+            },
     };
 
     setup() {
@@ -103,14 +105,14 @@ class WebsiteLinksCharts extends Interaction {
             endDate,
             formattedClicksByDay
         );
-        beginDate = endDate.minus({ days: 30 });
+        beginDate = endDate.minus({days: 30});
         this.numLastMonthClicks = this.createLineChart(
             "#last_month_clicks_chart",
             beginDate,
             endDate,
             formattedClicksByDay
         );
-        beginDate = endDate.minus({ days: 7 });
+        beginDate = endDate.minus({days: 7});
         this.numLastWeekClicks = this.createLineChart(
             "#last_week_clicks_chart",
             beginDate,
@@ -120,7 +122,10 @@ class WebsiteLinksCharts extends Interaction {
 
         for (const pieChartId of Object.keys(this.pieChartsData)) {
             const pieChartData = this.pieChartsData[pieChartId];
-            pieChartData.numCountries = this.createPieChart(`#${pieChartId}`, pieChartData.data);
+            pieChartData.numCountries = this.createPieChart(
+                `#${pieChartId}`,
+                pieChartData.data
+            );
         }
         this.updateContent();
     }
@@ -164,7 +169,7 @@ class WebsiteLinksCharts extends Interaction {
         beginDate = beginDate.startOf("day");
         endDate = endDate.startOf("day");
         if (beginDate.toISO() === endDate.toISO()) {
-            endDate = endDate.plus({ days: 1 });
+            endDate = endDate.plus({days: 1});
         }
         const numDays = Math.ceil(endDate.diff(beginDate).as("days"));
         let totalClicks = 0;
@@ -177,7 +182,7 @@ class WebsiteLinksCharts extends Interaction {
             const numClicks = dateKey in dates ? dates[dateKey] : 0;
             data.push(numClicks);
             totalClicks += numClicks;
-            currentDate = currentDate.plus({ days: 1 });
+            currentDate = currentDate.plus({days: 1});
         }
         const config = {
             type: "line",

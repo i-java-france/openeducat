@@ -1,22 +1,23 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
 import datetime
+import json
 import math
 import re
-
 from ast import literal_eval
 from collections import defaultdict
+
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
-from odoo.addons.web.controllers.utils import clean_action
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
 from odoo.tools import SQL, format_datetime
-from odoo.tools.misc import OrderedSet, format_date, groupby as tools_groupby, topological_sort
+from odoo.tools.misc import OrderedSet, format_date, topological_sort
+from odoo.tools.misc import groupby as tools_groupby
 
 from odoo.addons.stock.models.stock_move import PROCUREMENT_PRIORITIES
+from odoo.addons.web.controllers.utils import clean_action
 
 SIZE_BACK_ORDER_NUMERING = 3
 
@@ -1013,7 +1014,7 @@ class MrpProduction(models.Model):
                     production.name = picking_type.sequence_id.next_by_id()
                     moves_to_reassign |= production.move_raw_ids
 
-        res = super(MrpProduction, self).write(vals)
+        res = super().write(vals)
 
         for production in self:
             if 'date_start' in vals and not self.env.context.get('force_date', False):
@@ -1067,7 +1068,7 @@ class MrpProduction(models.Model):
         res = super().create(vals_list)
         # Make sure that the date passed in vals_list are taken into account and not modified by a compute
         reference_vals_list = []
-        for rec, vals in zip(res, vals_list):
+        for rec, vals in zip(res, vals_list, strict=False):
             (rec.move_raw_ids | rec.move_finished_ids).production_group_id = rec.production_group_id
             if not rec.reference_ids:
                 reference_vals_list.append({
@@ -1103,7 +1104,7 @@ class MrpProduction(models.Model):
         workorders_to_delete = self.workorder_ids.filtered(lambda wo: wo.state != 'done')
         if workorders_to_delete:
             workorders_to_delete.unlink()
-        return super(MrpProduction, self).unlink()
+        return super().unlink()
 
     @api.ondelete(at_uninstall=True)
     def _unlink_if_not_done(self):
@@ -1113,7 +1114,7 @@ class MrpProduction(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for production, vals in zip(self, vals_list):
+        for production, vals in zip(self, vals_list, strict=False):
             # covers at least 2 cases: backorders generation (follow default logic for moves copying)
             # and copying a done MO via the form (i.e. copy only the non-cancelled moves since no backorder = cancelled finished moves)
             if not default or 'move_finished_ids' not in default:
@@ -2037,7 +2038,7 @@ class MrpProduction(models.Model):
         # However it could be slower (due to `stock.quant` update) and could
         # create inconsistencies in mass production if a new lot higher in a
         # FIFO strategy arrives between the reservation and the backorder creation
-        for move, backorder_move in zip(moves, backorder_moves):
+        for move, backorder_move in zip(moves, backorder_moves, strict=False):
             move_to_backorder_moves[move] |= backorder_move
 
         move_lines_vals = []
@@ -2402,7 +2403,7 @@ class MrpProduction(models.Model):
         self = self.with_context(
             empty_list_help_document_name=_("manufacturing order"),
         )
-        return super(MrpProduction, self).get_empty_list_help(help_message)
+        return super().get_empty_list_help(help_message)
 
     def _log_downside_manufactured_quantity(self, moves_modification, cancel=False):
 
@@ -3124,7 +3125,7 @@ class MrpProduction(models.Model):
 
     def _post_run_manufacture(self, post_production_values):
         note_subtype_id = self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note')
-        for production, procurement in zip(self, post_production_values):
+        for production, procurement in zip(self, post_production_values, strict=False):
             if group_id := procurement.values.get('production_group_id'):
                 production.production_group_id.parent_ids = [Command.link(group_id)]
             orderpoint = production.orderpoint_id

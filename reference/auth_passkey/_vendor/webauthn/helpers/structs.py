@@ -1,9 +1,8 @@
-from enum import Enum
 from dataclasses import dataclass, field
-from typing import List, Literal, Optional, Union
+from enum import Enum
+from typing import Literal
 
 from .cose import COSEAlgorithmIdentifier
-
 
 ################
 #
@@ -164,7 +163,7 @@ class TokenBinding:
     """
 
     status: TokenBindingStatus
-    id: Optional[str] = None
+    id: str | None = None
 
 
 @dataclass
@@ -179,7 +178,7 @@ class PublicKeyCredentialRpEntity:
     """
 
     name: str
-    id: Optional[str] = None
+    id: str | None = None
 
 
 @dataclass
@@ -228,7 +227,7 @@ class PublicKeyCredentialDescriptor:
 
     id: bytes
     type: Literal[PublicKeyCredentialType.PUBLIC_KEY] = PublicKeyCredentialType.PUBLIC_KEY
-    transports: Optional[List[AuthenticatorTransport]] = None
+    transports: list[AuthenticatorTransport] | None = None
 
 
 @dataclass
@@ -244,12 +243,10 @@ class AuthenticatorSelectionCriteria:
     https://www.w3.org/TR/webauthn-2/#dictdef-authenticatorselectioncriteria
     """
 
-    authenticator_attachment: Optional[AuthenticatorAttachment] = None
-    resident_key: Optional[ResidentKeyRequirement] = None
-    require_resident_key: Optional[bool] = False
-    user_verification: Optional[
-        UserVerificationRequirement
-    ] = UserVerificationRequirement.PREFERRED
+    authenticator_attachment: AuthenticatorAttachment | None = None
+    resident_key: ResidentKeyRequirement | None = None
+    require_resident_key: bool | None = False
+    user_verification: UserVerificationRequirement | None = UserVerificationRequirement.PREFERRED
 
 
 @dataclass
@@ -269,8 +266,8 @@ class CollectedClientData:
     type: ClientDataType
     challenge: bytes
     origin: str
-    cross_origin: Optional[bool] = None
-    token_binding: Optional[TokenBinding] = None
+    cross_origin: bool | None = None
+    token_binding: TokenBinding | None = None
 
 
 ################
@@ -300,10 +297,10 @@ class PublicKeyCredentialCreationOptions:
     rp: PublicKeyCredentialRpEntity
     user: PublicKeyCredentialUserEntity
     challenge: bytes
-    pub_key_cred_params: List[PublicKeyCredentialParameters]
-    timeout: Optional[int] = None
-    exclude_credentials: Optional[List[PublicKeyCredentialDescriptor]] = None
-    authenticator_selection: Optional[AuthenticatorSelectionCriteria] = None
+    pub_key_cred_params: list[PublicKeyCredentialParameters]
+    timeout: int | None = None
+    exclude_credentials: list[PublicKeyCredentialDescriptor] | None = None
+    authenticator_selection: AuthenticatorSelectionCriteria | None = None
     attestation: AttestationConveyancePreference = AttestationConveyancePreference.NONE
 
 
@@ -322,7 +319,7 @@ class AuthenticatorAttestationResponse:
     client_data_json: bytes
     attestation_object: bytes
     # Optional in L2, but becomes required in L3. Play it safe until L3 becomes Recommendation
-    transports: Optional[List[AuthenticatorTransport]] = None
+    transports: list[AuthenticatorTransport] | None = None
 
 
 @dataclass
@@ -341,7 +338,7 @@ class RegistrationCredential:
     id: str
     raw_id: bytes
     response: AuthenticatorAttestationResponse
-    authenticator_attachment: Optional[AuthenticatorAttachment] = None
+    authenticator_attachment: AuthenticatorAttachment | None = None
     type: Literal[PublicKeyCredentialType.PUBLIC_KEY] = PublicKeyCredentialType.PUBLIC_KEY
 
 
@@ -356,13 +353,13 @@ class AttestationStatement:
     attestation format.
     """
 
-    sig: Optional[bytes] = None
-    x5c: Optional[List[bytes]] = None
-    response: Optional[bytes] = None
-    alg: Optional[COSEAlgorithmIdentifier] = None
-    ver: Optional[str] = None
-    cert_info: Optional[bytes] = None
-    pub_area: Optional[bytes] = None
+    sig: bytes | None = None
+    x5c: list[bytes] | None = None
+    response: bytes | None = None
+    alg: COSEAlgorithmIdentifier | None = None
+    ver: str | None = None
+    cert_info: bytes | None = None
+    pub_area: bytes | None = None
 
 
 @dataclass
@@ -423,8 +420,8 @@ class AuthenticatorData:
     rp_id_hash: bytes
     flags: AuthenticatorDataFlags
     sign_count: int
-    attested_credential_data: Optional[AttestedCredentialData] = None
-    extensions: Optional[bytes] = None
+    attested_credential_data: AttestedCredentialData | None = None
+    extensions: bytes | None = None
 
 
 @dataclass
@@ -466,12 +463,10 @@ class PublicKeyCredentialRequestOptions:
     """
 
     challenge: bytes
-    timeout: Optional[int] = None
-    rp_id: Optional[str] = None
-    allow_credentials: Optional[List[PublicKeyCredentialDescriptor]] = None
-    user_verification: Optional[
-        UserVerificationRequirement
-    ] = UserVerificationRequirement.PREFERRED
+    timeout: int | None = None
+    rp_id: str | None = None
+    allow_credentials: list[PublicKeyCredentialDescriptor] | None = None
+    user_verification: UserVerificationRequirement | None = UserVerificationRequirement.PREFERRED
 
 
 @dataclass
@@ -490,7 +485,7 @@ class AuthenticatorAssertionResponse:
     client_data_json: bytes
     authenticator_data: bytes
     signature: bytes
-    user_handle: Optional[bytes] = None
+    user_handle: bytes | None = None
 
 
 @dataclass
@@ -509,7 +504,7 @@ class AuthenticationCredential:
     id: str
     raw_id: bytes
     response: AuthenticatorAssertionResponse
-    authenticator_attachment: Optional[AuthenticatorAttachment] = None
+    authenticator_attachment: AuthenticatorAttachment | None = None
     type: Literal[PublicKeyCredentialType.PUBLIC_KEY] = PublicKeyCredentialType.PUBLIC_KEY
 
 

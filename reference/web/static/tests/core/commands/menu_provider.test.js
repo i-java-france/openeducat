@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { press, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {press, queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 import {
     contains,
     defineActions,
@@ -11,12 +11,12 @@ import {
     useTestClientAction,
 } from "@web/../tests/web_test_helpers";
 
-import { Dialog } from "@web/core/dialog/dialog";
-import { WebClient } from "@web/webclient/webclient";
+import {Dialog} from "@web/core/dialog/dialog";
+import {WebClient} from "@web/webclient/webclient";
 
 defineMenus([
-    { id: 0 }, // prevents auto-loading the first action
-    { id: 1, name: "Contact", actionID: 1001 },
+    {id: 0}, // Prevents auto-loading the first action
+    {id: 1, name: "Contact", actionID: 1001},
     {
         id: 2,
         name: "Sales",
@@ -40,9 +40,9 @@ defineMenus([
 ]);
 const testAction = useTestClientAction();
 defineActions([
-    { ...testAction, id: 1001, params: { description: "Id 1" } },
-    { ...testAction, id: 1003, params: { description: "Info" } },
-    { ...testAction, id: 1004, params: { description: "Report" } },
+    {...testAction, id: 1001, params: {description: "Id 1"}},
+    {...testAction, id: 1003, params: {description: "Info"}},
+    {...testAction, id: 1004, params: {description: "Report"}},
 ]);
 
 test.tags("desktop");
@@ -52,7 +52,7 @@ test("displays only apps if the search value is '/'", async () => {
 
     await press(["control", "k"]);
     await animationFrame();
-    await contains(".o_command_palette_search input").edit("/", { confirm: false });
+    await contains(".o_command_palette_search input").edit("/", {confirm: false});
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command_category").toHaveCount(1);
@@ -66,11 +66,15 @@ test("displays apps and menu items if the search value is not only '/'", async (
 
     await press(["control", "k"]);
     await animationFrame();
-    await contains(".o_command_palette_search input").edit("/sal", { confirm: false });
+    await contains(".o_command_palette_search input").edit("/sal", {confirm: false});
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command").toHaveCount(3);
-    expect(queryAllTexts(".o_command_name")).toEqual(["Sales", "Sales / Info", "Sales / Report"]);
+    expect(queryAllTexts(".o_command_name")).toEqual([
+        "Sales",
+        "Sales / Info",
+        "Sales / Report",
+    ]);
 });
 
 test.tags("desktop");
@@ -80,13 +84,13 @@ test("opens an app", async () => {
 
     await press(["control", "k"]);
     await animationFrame();
-    await contains(".o_command_palette_search input").edit("/", { confirm: false });
+    await contains(".o_command_palette_search input").edit("/", {confirm: false});
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
 
     await press("enter");
     await animationFrame();
-    // empty screen for now, wait for actual action to show up
+    // Empty screen for now, wait for actual action to show up
     await animationFrame();
     expect(".o_menu_brand").toHaveText("Contact");
     expect(".test_client_action").toHaveText("ClientAction_Id 1");
@@ -99,14 +103,14 @@ test("opens a menu items", async () => {
 
     await press(["control", "k"]);
     await animationFrame();
-    await contains(".o_command_palette_search input").edit("/sal", { confirm: false });
+    await contains(".o_command_palette_search input").edit("/sal", {confirm: false});
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command_category").toHaveCount(2);
 
     await contains("#o_command_2").click();
     await animationFrame();
-    // empty screen for now, wait for actual action to show up
+    // Empty screen for now, wait for actual action to show up
     await animationFrame();
     expect(".o_menu_brand").toHaveText("Sales");
     expect(".test_client_action").toHaveText("ClientAction_Report");
@@ -116,7 +120,7 @@ test.tags("desktop");
 test("open a menu item when a dialog is displayed", async () => {
     class CustomDialog extends Component {
         static template = xml`<Dialog contentClass="'test'">content</Dialog>`;
-        static components = { Dialog };
+        static components = {Dialog};
         static props = ["*"];
     }
 
@@ -130,7 +134,7 @@ test("open a menu item when a dialog is displayed", async () => {
 
     await press(["control", "k"]);
     await animationFrame();
-    await contains(".o_command_palette_search input").edit("/sal", { confirm: false });
+    await contains(".o_command_palette_search input").edit("/sal", {confirm: false});
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".modal .test").toHaveCount(1);

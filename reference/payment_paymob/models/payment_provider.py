@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-
 from datetime import datetime
 
 from odoo import _, api, fields, models
@@ -10,7 +9,6 @@ from odoo.fields import Command
 
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_paymob import const
-
 
 _logger = get_payment_logger(__name__)
 

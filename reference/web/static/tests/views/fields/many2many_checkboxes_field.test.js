@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {runAllTimers} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -12,22 +12,22 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    int_field = fields.Integer({ sortable: true });
-    timmy = fields.Many2many({ string: "pokemon", relation: "partner.type" });
+    int_field = fields.Integer({sortable: true});
+    timmy = fields.Many2many({string: "pokemon", relation: "partner.type"});
     p = fields.One2many({
         string: "one2many field",
         relation: "partner",
         relation_field: "trululu",
     });
-    trululu = fields.Many2one({ relation: "partner" });
-    _records = [{ id: 1, int_field: 10, p: [1] }];
+    trululu = fields.Many2one({relation: "partner"});
+    _records = [{id: 1, int_field: 10, p: [1]}];
 }
 
 class PartnerType extends models.Model {
     name = fields.Char();
     _records = [
-        { id: 12, name: "gold" },
-        { id: 14, name: "silver" },
+        {id: 12, name: "gold"},
+        {id: 14, name: "silver"},
     ];
 }
 
@@ -59,13 +59,13 @@ test("Many2ManyCheckBoxesField", async () => {
 
     expect("div.o_field_widget div.form-check input:disabled").toHaveCount(0);
 
-    // add a m2m value by clicking on input
+    // Add a m2m value by clicking on input
     await contains("div.o_field_widget div.form-check input:eq(1)").click();
     await runAllTimers();
     await clickSave();
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(2);
 
-    // remove a m2m value by clinking on label
+    // Remove a m2m value by clinking on label
     await contains("div.o_field_widget div.form-check > label").click();
     await runAllTimers();
     await clickSave();
@@ -120,18 +120,27 @@ test("Many2ManyCheckBoxesField does not read added record", async () => {
     });
 
     expect("div.o_field_widget div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(0);
 
     await contains("div.o_field_widget div.form-check input").click();
     await runAllTimers();
     expect("div.o_field_widget div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(1);
 
     await clickSave();
     expect("div.o_field_widget div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(1);
 
     expect.verifySteps(["get_views", "web_read", "name_search", "web_save"]);
@@ -163,7 +172,7 @@ test("Many2ManyCheckBoxesField: many2many read, field context is properly sent",
     onRpc((args) => {
         expect.step(args.method);
         if (args.method === "web_read") {
-            expect(args.kwargs.specification.timmy.context).toEqual({ hello: "world" });
+            expect(args.kwargs.specification.timmy.context).toEqual({hello: "world"});
         } else if (args.method === "name_search") {
             expect(args.kwargs.context.hello).toEqual("world");
         }
@@ -220,7 +229,7 @@ test("Many2ManyCheckBoxesField with 40+ values", async () => {
     PartnerType._records = records;
     Partner._records[0].timmy = records.map((r) => r.id);
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].timmy).toEqual([[3, records[records.length - 1].id]]);
     });
     await mountView({
@@ -233,14 +242,18 @@ test("Many2ManyCheckBoxesField with 40+ values", async () => {
             </form>`,
     });
 
-    expect(".o_field_widget[name='timmy'] input[type='checkbox']:checked").toHaveCount(90);
+    expect(".o_field_widget[name='timmy'] input[type='checkbox']:checked").toHaveCount(
+        90
+    );
 
-    // toggle the last value
+    // Toggle the last value
     await contains(".o_field_widget[name='timmy'] input[type='checkbox']:last").click();
     await runAllTimers();
 
     await clickSave();
-    expect(".o_field_widget[name='timmy'] input[type='checkbox']:last").not.toBeChecked();
+    expect(
+        ".o_field_widget[name='timmy'] input[type='checkbox']:last"
+    ).not.toBeChecked();
 });
 
 test("Many2ManyCheckBoxesField with 100+ values", async () => {
@@ -260,7 +273,7 @@ test("Many2ManyCheckBoxesField with 100+ values", async () => {
     }
     PartnerType._records = records;
     Partner._records[0].timmy = records.map((r) => r.id);
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].timmy).toEqual([[3, records[0].id]]);
         expect.step("web_save");
     });
@@ -281,22 +294,24 @@ test("Many2ManyCheckBoxesField with 100+ values", async () => {
     expect(".o_field_widget[name='timmy'] input[type='checkbox']").toHaveCount(100);
     expect(".o_field_widget[name='timmy'] input[type='checkbox']").toBeChecked();
 
-    // toggle the first value
+    // Toggle the first value
     await contains(".o_field_widget[name='timmy'] input[type='checkbox']").click();
     await runAllTimers();
 
     await clickSave();
-    expect(".o_field_widget[name='timmy'] input[type='checkbox']:first").not.toBeChecked();
+    expect(
+        ".o_field_widget[name='timmy'] input[type='checkbox']:first"
+    ).not.toBeChecked();
     expect.verifySteps(["name_search", "web_save"]);
 });
 
 test("Many2ManyCheckBoxesField in a one2many", async () => {
     expect.assertions(3);
 
-    PartnerType._records.push({ id: 15, name: "bronze" });
+    PartnerType._records.push({id: 15, name: "bronze"});
     Partner._records[0].timmy = [14, 15];
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             p: [
                 [
@@ -330,7 +345,7 @@ test("Many2ManyCheckBoxesField in a one2many", async () => {
 
     await contains(".o_data_cell").click();
 
-    // edit the timmy field by (un)checking boxes on the widget
+    // Edit the timmy field by (un)checking boxes on the widget
     await contains(".modal .form-check-input:eq(0)").click();
     expect(".modal .form-check-input:eq(0)").toBeChecked();
     await contains(".modal .form-check-input:eq(1)").click();
@@ -348,9 +363,9 @@ test("Many2ManyCheckBoxesField with default values", async () => {
         relation: "partner.type",
         default: [[4, 3]],
     });
-    PartnerType._records.push({ id: 3, name: "bronze" });
+    PartnerType._records.push({id: 3, name: "bronze"});
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].timmy).toEqual([[4, 12]], {
             message: "correct values should have been sent to create",
         });
@@ -388,7 +403,7 @@ test("Many2ManyCheckBoxesField batches successive changes", async () => {
         onChange: () => {},
     });
     Partner._records[0].timmy = [];
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -404,14 +419,17 @@ test("Many2ManyCheckBoxesField batches successive changes", async () => {
     });
 
     expect("div.o_field_widget div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(0);
 
     await contains("div.o_field_widget div.form-check input:eq(0)").click();
     await contains("div.o_field_widget div.form-check input:eq(1)").click();
-    // checkboxes are updated directly
+    // Checkboxes are updated directly
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(2);
-    // but no onchanges has been fired yet
+    // But no onchanges has been fired yet
     expect.verifySteps(["get_views", "web_read", "name_search"]);
     await runAllTimers();
     expect.verifySteps(["onchange"]);
@@ -424,7 +442,7 @@ test("Many2ManyCheckBoxesField sends batched changes on save", async () => {
         onChange: () => {},
     });
     Partner._records[0].timmy = [];
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -440,24 +458,27 @@ test("Many2ManyCheckBoxesField sends batched changes on save", async () => {
     });
 
     expect("div.o_field_widget div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(0);
 
     await contains("div.o_field_widget div.form-check input:eq(0)").click();
     await contains("div.o_field_widget div.form-check input:eq(1)").click();
-    // checkboxes are updated directly
+    // Checkboxes are updated directly
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(2);
-    // but no onchanges has been fired yet
+    // But no onchanges has been fired yet
     expect.verifySteps(["get_views", "web_read", "name_search"]);
     await runAllTimers();
-    // save
+    // Save
     await clickSave();
     expect.verifySteps(["onchange", "web_save"]);
 });
 
 test("Many2ManyCheckBoxesField in a notebook tab", async () => {
     Partner._records[0].timmy = [];
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -479,18 +500,23 @@ test("Many2ManyCheckBoxesField in a notebook tab", async () => {
 
     expect("div.o_field_widget[name=timmy]").toHaveCount(1);
     expect("div.o_field_widget[name=timmy] div.form-check").toHaveCount(2);
-    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual(["gold", "silver"]);
-    expect("div.o_field_widget[name=timmy] div.form-check input:checked").toHaveCount(0);
+    expect(queryAllTexts(".o_field_widget .form-check-label")).toEqual([
+        "gold",
+        "silver",
+    ]);
+    expect("div.o_field_widget[name=timmy] div.form-check input:checked").toHaveCount(
+        0
+    );
 
     await contains("div.o_field_widget div.form-check input:eq(0)").click();
     await contains("div.o_field_widget div.form-check input:eq(1)").click();
-    // checkboxes are updated directly
+    // Checkboxes are updated directly
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(2);
-    // go to the other tab
+    // Go to the other tab
     await contains(".o_notebook .nav-link:eq(1)").click();
     expect("div.o_field_widget[name=timmy]").toHaveCount(0);
     expect("div.o_field_widget[name=int_field]").toHaveCount(1);
-    // save
+    // Save
     await clickSave();
     expect.verifySteps(["get_views", "web_read", "name_search", "web_save"]);
 });

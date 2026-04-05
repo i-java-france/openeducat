@@ -2,15 +2,18 @@
 
 import json
 from datetime import datetime, timedelta
+
 from freezegun import freeze_time
+
 try:
     import websocket as ws
 except ImportError:
     ws = None
 
 from odoo.tests import new_test_user, tagged
-from odoo.addons.bus.tests.common import WebsocketCase
+
 from odoo.addons.bus.models.bus import channel_with_db, json_dump
+from odoo.addons.bus.tests.common import WebsocketCase
 from odoo.addons.mail.models.mail_presence import AWAY_TIMER
 
 

@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 import itertools
 import logging
 import re
+
 from dateutil.relativedelta import relativedelta
 
-import odoo
-from odoo import api, fields, models, tools, _
-from odoo.addons.iap.tools import iap_tools
-from odoo.addons.crm.models import crm_stage
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
+
+from odoo.addons.crm.models import crm_stage
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger(__name__)
 
@@ -163,7 +163,7 @@ class CrmRevealRule(models.Model):
                         # Remove country because rule doesn't apply to any state
                         states.remove((state_id.country_id.code, False))
                     states += [(state_id.country_id.code, state_id.code)]
-                
+
             rules.append({
                 'id': rule.id,
                 'regex': regex_url,

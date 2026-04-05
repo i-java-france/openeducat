@@ -1,7 +1,10 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { onRpc } from "@web/../tests/web_test_helpers";
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {onRpc} from "@web/../tests/web_test_helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
 setupInteractionWhiteList("website.form");
 describe.current.tags("interaction_dev");

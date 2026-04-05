@@ -1,20 +1,23 @@
-import { Component } from "@odoo/owl";
-import { pick } from "@web/core/utils/objects";
-import { BuilderTextInputBase, textInputBasePassthroughProps } from "./builder_text_input_base";
+import {Component} from "@odoo/owl";
+import {pick} from "@web/core/utils/objects";
+import {
+    BuilderTextInputBase,
+    textInputBasePassthroughProps,
+} from "./builder_text_input_base";
 import {
     basicContainerBuilderComponentProps,
     useInputBuilderComponent,
     useBuilderComponent,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderTextInput extends Component {
     static template = "html_builder.BuilderTextInput";
     static props = {
         ...basicContainerBuilderComponentProps,
         ...textInputBasePassthroughProps,
-        prefix: { type: String, optional: true },
-        default: { type: String, optional: true },
+        prefix: {type: String, optional: true},
+        default: {type: String, optional: true},
     };
     static components = {
         BuilderComponent,
@@ -23,7 +26,7 @@ export class BuilderTextInput extends Component {
 
     setup() {
         useBuilderComponent();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
             defaultValue: this.props.default,
         });

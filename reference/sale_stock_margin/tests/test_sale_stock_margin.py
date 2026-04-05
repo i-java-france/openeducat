@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+
 from freezegun import freeze_time
 
 from odoo import fields
 from odoo.tests import Form, tagged
+
 from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
@@ -336,7 +338,7 @@ class TestSaleStockMargin(TestStockValuationCommon):
         having its `purchase_price` and `margin` + `margin_percent` fields correctly calculated.
         """
         products = [self._create_product() for _ in range(2)]
-        for product, cost, price in zip(products, [20, 10], [25, 20]):
+        for product, cost, price in zip(products, [20, 10], [25, 20], strict=False):
             product.categ_id.property_cost_method = 'standard'
             product.write({
                 'standard_price': cost,

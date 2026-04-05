@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class MegaMenuDropdown extends Interaction {
     static selector = "header#top";
@@ -40,7 +40,9 @@ export class MegaMenuDropdown extends Interaction {
         const megaMenuEls = this.el.querySelectorAll(".o_mega_menu");
         let matchingLink = null;
         megaMenuEls.forEach((megaMenuEl, position) => {
-            const linkEls = Array.from(megaMenuEl.querySelectorAll(`a[href]:not([href="#"])`));
+            const linkEls = Array.from(
+                megaMenuEl.querySelectorAll(`a[href]:not([href="#"])`)
+            );
             matchingLink = linkEls.find((linkEl) => {
                 try {
                     const url = new URL(linkEl.href);
@@ -73,7 +75,8 @@ export class MegaMenuDropdown extends Interaction {
      * @param {HTMLElement} megaMenuToggleEl
      */
     moveMegaMenu(megaMenuToggleEl) {
-        const hasMegaMenu = !!megaMenuToggleEl.parentElement.querySelector(".o_mega_menu");
+        const hasMegaMenu =
+            !!megaMenuToggleEl.parentElement.querySelector(".o_mega_menu");
         if (hasMegaMenu) {
             return;
         }
@@ -87,7 +90,8 @@ export class MegaMenuDropdown extends Interaction {
 
         const megaMenuToggleIndex = currentNavbarToggleEls.indexOf(megaMenuToggleEl);
         const previousMegaMenuToggleEl = otherNavbarToggleEls[megaMenuToggleIndex];
-        const megaMenuEl = previousMegaMenuToggleEl.parentElement.querySelector(".o_mega_menu");
+        const megaMenuEl =
+            previousMegaMenuToggleEl.parentElement.querySelector(".o_mega_menu");
 
         // Hiding the dropdown where the mega menu comes from before moving it,
         // so everything is in a consistent state.
@@ -143,4 +147,6 @@ export class MegaMenuDropdown extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.mega_menu_dropdown", MegaMenuDropdown);
+registry
+    .category("public.interactions")
+    .add("website.mega_menu_dropdown", MegaMenuDropdown);

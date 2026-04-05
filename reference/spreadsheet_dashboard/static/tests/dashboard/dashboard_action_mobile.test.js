@@ -1,11 +1,11 @@
-import { describe, expect, test, getFixture } from "@odoo/hoot";
-import { getBasicData } from "@spreadsheet/../tests/helpers/data";
-import { createSpreadsheetDashboard } from "@spreadsheet_dashboard/../tests/helpers/dashboard_action";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {getBasicData} from "@spreadsheet/../tests/helpers/data";
+import {createSpreadsheetDashboard} from "@spreadsheet_dashboard/../tests/helpers/dashboard_action";
 import {
     defineSpreadsheetDashboardModels,
     getDashboardServerData,
 } from "@spreadsheet_dashboard/../tests/helpers/data";
-import { contains } from "@web/../tests/web_test_helpers";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("mobile");
 defineSpreadsheetDashboardModels();
@@ -36,10 +36,15 @@ function getServerData(spreadsheetData) {
 }
 
 test("Search input can be toggled", async () => {
-    const productFilter = { id: "1", type: "relation", label: "Product", modelName: "product" };
-    const spreadsheetData = { globalFilters: [productFilter] };
+    const productFilter = {
+        id: "1",
+        type: "relation",
+        label: "Product",
+        modelName: "product",
+    };
+    const spreadsheetData = {globalFilters: [productFilter]};
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     expect(".o_searchview_input").toHaveCount(0);
 
@@ -54,9 +59,9 @@ test("Search input is not focusable in mobile", async () => {
         label: "Product",
         modelName: "product",
     };
-    const spreadsheetData = { globalFilters: [productFilter] };
+    const spreadsheetData = {globalFilters: [productFilter]};
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     await contains(".o_search_toggler button").click();
     await contains(".o_searchview_input").click();

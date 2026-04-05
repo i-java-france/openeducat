@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
+import {Component} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
 
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export class CallPermissionDialog extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         close: Function,
         media: {
@@ -22,21 +22,21 @@ export class CallPermissionDialog extends Component {
     }
 
     async onClickUseMicrophone() {
-        if (await this.rtc.askForBrowserPermission({ audio: true })) {
+        if (await this.rtc.askForBrowserPermission({audio: true})) {
             await this.props.useMicrophone();
         }
         this.props.close();
     }
 
     async onClickUseCamera() {
-        if (await this.rtc.askForBrowserPermission({ video: true })) {
+        if (await this.rtc.askForBrowserPermission({video: true})) {
             await this.props.useCamera();
         }
         this.props.close();
     }
 
     async onClickUseMicAndCamera() {
-        if (await this.rtc.askForBrowserPermission({ audio: true, video: true })) {
+        if (await this.rtc.askForBrowserPermission({audio: true, video: true})) {
             await Promise.all([this.props.useMicrophone(), this.props.useCamera()]);
         }
         this.props.close();

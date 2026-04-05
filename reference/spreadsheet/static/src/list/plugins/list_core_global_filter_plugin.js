@@ -1,7 +1,7 @@
-import { CommandResult } from "../../o_spreadsheet/cancelled_reason";
-import { checkFilterFieldMatching } from "@spreadsheet/global_filters/helpers";
-import { deepCopy } from "@web/core/utils/objects";
-import { OdooCorePlugin } from "@spreadsheet/plugins";
+import {CommandResult} from "../../o_spreadsheet/cancelled_reason";
+import {checkFilterFieldMatching} from "@spreadsheet/global_filters/helpers";
+import {deepCopy} from "@web/core/utils/objects";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
 
 /**
  * @typedef GFLocalList
@@ -11,7 +11,10 @@ import { OdooCorePlugin } from "@spreadsheet/plugins";
  */
 
 export class ListCoreGlobalFilterPlugin extends OdooCorePlugin {
-    static getters = /** @type {const} */ (["getListFieldMatch", "getListFieldMatching"]);
+    static getters = /** @type {const} */ ([
+        "getListFieldMatch",
+        "getListFieldMatching",
+    ]);
     constructor(config) {
         super(config);
 
@@ -50,7 +53,7 @@ export class ListCoreGlobalFilterPlugin extends OdooCorePlugin {
                 break;
             }
             case "DUPLICATE_ODOO_LIST": {
-                const { listId, newListId } = cmd;
+                const {listId, newListId} = cmd;
                 const fieldMatch = deepCopy(this.fieldMatchings[listId]);
                 this._addList(newListId, fieldMatch);
                 break;
@@ -99,7 +102,7 @@ export class ListCoreGlobalFilterPlugin extends OdooCorePlugin {
      * @param {Record<string,FieldMatching>} listFieldMatches
      */
     _setListFieldMatching(filterId, listFieldMatches) {
-        const fieldMatchings = { ...this.fieldMatchings };
+        const fieldMatchings = {...this.fieldMatchings};
         for (const [listId, fieldMatch] of Object.entries(listFieldMatches)) {
             fieldMatchings[listId][filterId] = fieldMatch;
         }
@@ -107,7 +110,7 @@ export class ListCoreGlobalFilterPlugin extends OdooCorePlugin {
     }
 
     _onFilterDeletion(filterId) {
-        const fieldMatchings = { ...this.fieldMatchings };
+        const fieldMatchings = {...this.fieldMatchings};
         for (const listId in fieldMatchings) {
             this.history.update("fieldMatchings", listId, filterId, undefined);
         }

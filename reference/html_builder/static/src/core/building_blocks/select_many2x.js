@@ -1,10 +1,10 @@
-import { Component, useState, onWillUpdateProps, onWillDestroy } from "@odoo/owl";
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { useCachedModel } from "@html_builder/core/cached_model_utils";
-import { _t } from "@web/core/l10n/translation";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { useDropdownCloser } from "@web/core/dropdown/dropdown_hooks";
-import { shallowEqual } from "@web/core/utils/arrays";
+import {Component, useState, onWillUpdateProps, onWillDestroy} from "@odoo/owl";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {useCachedModel} from "@html_builder/core/cached_model_utils";
+import {_t} from "@web/core/l10n/translation";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {useDropdownCloser} from "@web/core/dropdown/dropdown_hooks";
+import {shallowEqual} from "@web/core/utils/arrays";
 
 class SelectMany2XCreate extends Component {
     static template = "html_builder.SelectMany2XCreate";
@@ -28,20 +28,20 @@ export class SelectMany2X extends Component {
     static template = "html_builder.SelectMany2X";
     static props = {
         model: String,
-        fields: { type: Array, element: String, optional: true },
-        domain: { type: Array, optional: true },
-        limit: { type: Number, optional: true },
+        fields: {type: Array, element: String, optional: true},
+        domain: {type: Array, optional: true},
+        limit: {type: Number, optional: true},
         selected: {
             type: Array,
-            element: { type: Object, shape: { id: [Number, String], "*": true } },
+            element: {type: Object, shape: {id: [Number, String], "*": true}},
         },
         select: Function,
-        preview: { type: Function, optional: true },
-        revert: { type: Function, optional: true },
-        closeOnEnterKey: { type: Boolean, optional: true },
-        message: { type: String, optional: true },
-        create: { type: Function, optional: true },
-        nullText: { type: String, optional: true },
+        preview: {type: Function, optional: true},
+        revert: {type: Function, optional: true},
+        closeOnEnterKey: {type: Boolean, optional: true},
+        message: {type: String, optional: true},
+        create: {type: Function, optional: true},
+        nullText: {type: String, optional: true},
     };
     static defaultProps = {
         fields: [],
@@ -50,7 +50,7 @@ export class SelectMany2X extends Component {
         closeOnEnterKey: true,
         message: _t("Choose a record..."),
     };
-    static components = { SelectMenu, SelectMany2XCreate };
+    static components = {SelectMenu, SelectMany2XCreate};
 
     setup() {
         this.orm = useService("orm");
@@ -63,7 +63,10 @@ export class SelectMany2X extends Component {
             limit: this.props.limit,
         });
         onWillUpdateProps(async (newProps) => {
-            if (this.searchInvalidationKey(this.props) !== this.searchInvalidationKey(newProps)) {
+            if (
+                this.searchInvalidationKey(this.props) !==
+                this.searchInvalidationKey(newProps)
+            ) {
                 this.prevSelectedIds = undefined;
                 this.prevSearchValue = undefined;
                 this.state.searchResults = [];
@@ -161,7 +164,9 @@ export class SelectMany2X extends Component {
         this.prevSearchValue = searchValue;
         this.prevSelectedIds = selectedIds;
         await this.search(searchValue);
-        this.state.nameToCreate = (await this.canCreate(searchValue)) ? searchValue : "";
+        this.state.nameToCreate = (await this.canCreate(searchValue))
+            ? searchValue
+            : "";
     }
 
     preview(value) {

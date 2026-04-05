@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <record id="quant_subcontracting_search_view" model="ir.ui.view">
@@ -7,10 +7,14 @@
             <field name="inherit_id" ref="stock.quant_search_view" />
             <field name="arch" type="xml">
                 <xpath expr="//filter[@name='transit_loc']" position="after">
-                    <filter string="Subcontracting Locations" name="is_subcontract" domain="[('is_subcontract', '=', True)]" groups="mrp.group_mrp_user"/>
+                    <filter
+                        string="Subcontracting Locations"
+                        name="is_subcontract"
+                        domain="[('is_subcontract', '=', True)]"
+                        groups="mrp.group_mrp_user"
+                    />
                 </xpath>
             </field>
         </record>
     </data>
 </odoo>
-

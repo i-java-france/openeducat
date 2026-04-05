@@ -1,5 +1,5 @@
-import { bp } from "./py_parser";
-import { PyDate, PyDateTime } from "./py_date";
+import {bp} from "./py_parser";
+import {PyDate, PyDateTime} from "./py_date";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -22,26 +22,26 @@ import { PyDate, PyDateTime } from "./py_date";
 export function toPyValue(value) {
     switch (typeof value) {
         case "string":
-            return { type: 1 /* String */, value };
+            return {type: 1 /* String */, value};
         case "number":
-            return { type: 0 /* Number */, value };
+            return {type: 0 /* Number */, value};
         case "boolean":
-            return { type: 2 /* Boolean */, value };
+            return {type: 2 /* Boolean */, value};
         case "object":
             if (Array.isArray(value)) {
-                return { type: 4 /* List */, value: value.map(toPyValue) };
+                return {type: 4 /* List */, value: value.map(toPyValue)};
             } else if (value === null) {
-                return { type: 3 /* None */ };
+                return {type: 3 /* None */};
             } else if (value instanceof Date) {
-                return { type: 1, value: PyDateTime.convertDate(value) };
+                return {type: 1, value: PyDateTime.convertDate(value)};
             } else if (value instanceof PyDate || value instanceof PyDateTime) {
-                return { type: 1, value };
+                return {type: 1, value};
             } else {
                 const content = {};
                 for (const key in value) {
                     content[key] = toPyValue(value[key]);
                 }
-                return { type: 11 /* Dictionary */, value: content };
+                return {type: 11 /* Dictionary */, value: content};
             }
         default:
             throw new Error("Invalid type");
@@ -90,7 +90,7 @@ export function formatAST(ast, lbp = 0) {
             return `${formatAST(ast.target)}[${formatAST(ast.key)}]`;
         }
         case 13 /* If */: {
-            const { ifTrue, condition, ifFalse } = ast;
+            const {ifTrue, condition, ifFalse} = ast;
             return `${formatAST(ifTrue)} if ${formatAST(condition)} else ${formatAST(ifFalse)}`;
         }
         case 14 /* BooleanOperator */: {

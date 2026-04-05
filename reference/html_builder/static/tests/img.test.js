@@ -1,14 +1,14 @@
-import { Img } from "@html_builder/core/img";
-import { ImgGroup } from "@html_builder/core/img_group";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test, describe } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {Img} from "@html_builder/core/img";
+import {ImgGroup} from "@html_builder/core/img_group";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
-defineMailModels(); // meh
+defineMailModels(); // Meh
 test("ImgGroup's inner Img components should not be blocked before src load", async () => {
     const defs = {
         img1: new Deferred(),
@@ -22,7 +22,7 @@ test("ImgGroup's inner Img components should not be blocked before src load", as
         },
     });
     class Container extends Component {
-        static components = { ImgGroup, Img };
+        static components = {ImgGroup, Img};
         static template = xml`
             <ImgGroup>
                 <t t-foreach="Object.keys(defs)" t-as="key" t-key="key">

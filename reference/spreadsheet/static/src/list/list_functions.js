@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { helpers, registries, EvaluationError } from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {helpers, registries, EvaluationError} from "@odoo/o-spreadsheet";
 
-const { arg, toString, toNumber } = helpers;
-const { functionRegistry } = registries;
+const {arg, toString, toNumber} = helpers;
+const {functionRegistry} = registries;
 
 //--------------------------------------------------------------------------
 // Spreadsheet functions

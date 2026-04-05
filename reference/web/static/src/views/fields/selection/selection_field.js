@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { useSpecialData } from "@web/views/fields/relational_utils";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { standardFieldProps } from "../standard_field_props";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {useSpecialData} from "@web/views/fields/relational_utils";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {standardFieldProps} from "../standard_field_props";
 
 export class SelectionField extends Component {
     static components = {
@@ -14,10 +14,10 @@ export class SelectionField extends Component {
     static template = "web.SelectionField";
     static props = {
         ...standardFieldProps,
-        placeholder: { type: String, optional: true },
-        required: { type: Boolean, optional: true },
-        domain: { type: [Array, Function], optional: true },
-        autosave: { type: Boolean, optional: true },
+        placeholder: {type: String, optional: true},
+        required: {type: Boolean, optional: true},
+        domain: {type: [Array, Function], optional: true},
+        autosave: {type: Boolean, optional: true},
     };
     static defaultProps = {
         autosave: false,
@@ -27,7 +27,7 @@ export class SelectionField extends Component {
         this.type = this.props.record.fields[this.props.name].type;
         if (this.type === "many2one") {
             this.specialData = useSpecialData((orm, props) => {
-                const { relation } = props.record.fields[props.name];
+                const {relation} = props.record.fields[props.name];
                 const domain = getFieldDomain(props.record, props.name, props.domain);
                 return orm.call(relation, "name_search", ["", domain]);
             });
@@ -35,7 +35,7 @@ export class SelectionField extends Component {
     }
 
     get choices() {
-        return this.options.map(([value, label]) => ({ value, label }));
+        return this.options.map(([value, label]) => ({value, label}));
     }
     get isBottomSheet() {
         return this.env.isSmall && hasTouch();
@@ -60,7 +60,9 @@ export class SelectionField extends Component {
                     : "";
             case "selection":
                 return this.props.record.data[this.props.name] !== false
-                    ? this.options.find((o) => o[0] === this.props.record.data[this.props.name])[1]
+                    ? this.options.find(
+                          (o) => o[0] === this.props.record.data[this.props.name]
+                      )[1]
                     : "";
             default:
                 return "";
@@ -80,23 +82,23 @@ export class SelectionField extends Component {
             case "many2one":
                 if (value === null) {
                     this.props.record.update(
-                        { [this.props.name]: false },
-                        { save: this.props.autosave }
+                        {[this.props.name]: false},
+                        {save: this.props.autosave}
                     );
                 } else {
                     const option = this.options.find((option) => option[0] === value);
                     this.props.record.update(
                         {
-                            [this.props.name]: { id: option[0], display_name: option[1] },
+                            [this.props.name]: {id: option[0], display_name: option[1]},
                         },
-                        { save: this.props.autosave }
+                        {save: this.props.autosave}
                     );
                 }
                 break;
             case "selection":
                 this.props.record.update(
-                    { [this.props.name]: value ?? false },
-                    { save: this.props.autosave }
+                    {[this.props.name]: value ?? false},
+                    {save: this.props.autosave}
                 );
                 break;
         }
@@ -116,7 +118,7 @@ export const selectionField = {
     ],
     supportedTypes: ["many2one", "selection"],
     isEmpty: (record, fieldName) => record.data[fieldName] === false,
-    extractProps({ viewType, placeholder }, dynamicInfo) {
+    extractProps({viewType, placeholder}, dynamicInfo) {
         const props = {
             autosave: viewType === "kanban",
             placeholder,

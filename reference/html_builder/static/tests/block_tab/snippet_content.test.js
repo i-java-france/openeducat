@@ -1,22 +1,22 @@
 import {
-    setupHTMLBuilder,
     getDragHelper,
+    setupHTMLBuilder,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { BuilderOptionsPlugin } from "@html_builder/core/builder_options_plugin";
-import { Operation } from "@html_builder/core/operation";
-import { describe, expect, test } from "@odoo/hoot";
+import {BuilderOptionsPlugin} from "@html_builder/core/builder_options_plugin";
+import {Operation} from "@html_builder/core/operation";
+import {describe, expect, test} from "@odoo/hoot";
 import {
+    Deferred,
     animationFrame,
     click,
-    Deferred,
     queryAll,
     queryAllTexts,
     queryOne,
     waitFor,
 } from "@odoo/hoot-dom";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { loadBundle } from "@web/core/assets";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {loadBundle} from "@web/core/assets";
 
 describe.current.tags("desktop");
 
@@ -43,7 +43,10 @@ test("Display inner content snippet", async () => {
     });
     const snippetInnerContentSelector = ".o-snippets-menu #snippet_content .o_snippet";
     expect(snippetInnerContentSelector).toHaveCount(2);
-    expect(queryAllTexts(snippetInnerContentSelector)).toEqual(["Button A", "Button B"]);
+    expect(queryAllTexts(snippetInnerContentSelector)).toEqual([
+        "Button A",
+        "Button B",
+    ]);
     const thumbnailImgUrls = queryAll(
         `${snippetInnerContentSelector} .o_snippet_thumbnail_img`
     ).map((thumbnail) => thumbnail.style.backgroundImage);
@@ -51,14 +54,14 @@ test("Display inner content snippet", async () => {
 });
 
 test("Drag & drop inner content block", async () => {
-    const { contentEl } = await setupHTMLBuilder("<div><p>Text</p></div>", {
+    const {contentEl} = await setupHTMLBuilder("<div><p>Text</p></div>", {
         snippetContent,
         dropzoneSelectors,
     });
     expect(contentEl).toHaveInnerHTML(`<div><p>Text</p></div>`);
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button A'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -80,7 +83,7 @@ test("Drag & drop inner content block", async () => {
 });
 
 test("Drag & drop inner content block + undo/redo", async () => {
-    const { contentEl } = await setupHTMLBuilder("<div><p>Text</p></div>", {
+    const {contentEl} = await setupHTMLBuilder("<div><p>Text</p></div>", {
         snippetContent,
         dropzoneSelectors,
     });
@@ -89,7 +92,7 @@ test("Drag & drop inner content block + undo/redo", async () => {
     expect(".o-website-builder_sidebar .fa-repeat").not.toBeEnabled();
 
     await click(".o-website-builder_sidebar .fa-undo");
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button A'] .o_snippet_thumbnail"
     ).drag();
     await moveTo(":iframe .oe_drop_zone");
@@ -110,13 +113,13 @@ test("Drag & drop inner content block + undo/redo", async () => {
 });
 
 test("Drag inner content and drop it outside of a dropzone", async () => {
-    const { contentEl, builderEl } = await setupHTMLBuilder("<div><p>Text</p></div>", {
+    const {contentEl, builderEl} = await setupHTMLBuilder("<div><p>Text</p></div>", {
         snippetContent,
         dropzoneSelectors,
     });
     expect(contentEl).toHaveInnerHTML(`<div><p>Text</p></div>`);
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Button A'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -130,7 +133,7 @@ test("Drag inner content and drop it outside of a dropzone", async () => {
 });
 
 test("A snippet should appear disabled if there is nowhere to drop it", async () => {
-    const { contentEl } = await setupHTMLBuilder("", {
+    const {contentEl} = await setupHTMLBuilder("", {
         snippetContent,
         dropzoneSelectors,
     });
@@ -148,7 +151,9 @@ test("click just after drop is redispatched in next operation", async () => {
                 await originalFn();
                 nextDef.resolve();
             };
-            expect.step(`next${args[0]?.shouldInterceptClick ? " should intercept" : ""}`);
+            expect.step(
+                `next${args[0]?.shouldInterceptClick ? " should intercept" : ""}`
+            );
             const res = super.next(fn, ...args);
             return res;
         },
@@ -164,7 +169,7 @@ test("click just after drop is redispatched in next operation", async () => {
         },
     });
     await setupHTMLBuilder("", {
-        styleContent: /*css*/ `
+        styleContent: /* css*/ `
             .o_loading_screen {
                 position: absolute;
                 inset: 0;
@@ -176,7 +181,9 @@ test("click just after drop is redispatched in next operation", async () => {
 
     // TODO: the next lines replicate website's `insertCategorySnippet` helper.
     // It should be moved to html_builder.
-    await contains(".o-snippets-menu #snippet_groups .o_snippet_thumbnail_area").click();
+    await contains(
+        ".o-snippets-menu #snippet_groups .o_snippet_thumbnail_area"
+    ).click();
     await animationFrame();
     await loadBundle("html_builder.iframe_add_dialog", {
         targetDoc: queryOne("iframe.o_add_snippet_iframe").contentDocument,
@@ -190,7 +197,7 @@ test("click just after drop is redispatched in next operation", async () => {
     expect.verifySteps(["next should intercept"]); // On snippet selected
 
     await waitFor(":iframe .o_loading_screen");
-    await click(":iframe", { position: { x: 200, y: 50 }, relative: true });
+    await click(":iframe", {position: {x: 200, y: 50}, relative: true});
     expect.verifySteps(["next"]); // On click
     await nextDef;
     expect.verifySteps(["updateContainers"]); // End of drop, on addStep()

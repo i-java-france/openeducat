@@ -1,5 +1,5 @@
-import { Chart } from "./chart";
-import { registry } from "@web/core/registry";
+import {Chart} from "./chart";
+import {registry} from "@web/core/registry";
 
 const ChartEdit = (I) =>
     class extends I {

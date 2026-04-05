@@ -1,9 +1,9 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { computeM2OProps, Many2One } from "./many2one";
-import { standardFieldProps } from "../standard_field_props";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {computeM2OProps, Many2One} from "./many2one";
+import {standardFieldProps} from "../standard_field_props";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
 
 /** @type {import("registries").FieldsRegistryItemShape["supportedOptions"]} */
 export const m2oSupportedOptions = [
@@ -69,10 +69,14 @@ export function buildM2OFieldDescription(component) {
 }
 
 export function extractM2OFieldProps(staticInfo, dynamicInfo) {
-    const { attrs, context, decorations, options, string, placeholder } = staticInfo;
+    const {attrs, context, decorations, options, string, placeholder} = staticInfo;
 
-    const hasCreatePermission = attrs.can_create ? evaluateBooleanExpr(attrs.can_create) : true;
-    const hasWritePermission = attrs.can_write ? evaluateBooleanExpr(attrs.can_write) : true;
+    const hasCreatePermission = attrs.can_create
+        ? evaluateBooleanExpr(attrs.can_create)
+        : true;
+    const hasWritePermission = attrs.can_write
+        ? evaluateBooleanExpr(attrs.can_write)
+        : true;
     const canCreate = options.no_create ? false : hasCreatePermission;
     return {
         canCreate,
@@ -94,24 +98,24 @@ export function extractM2OFieldProps(staticInfo, dynamicInfo) {
 
 export class Many2OneField extends Component {
     static template = "web.Many2OneField";
-    static components = { Many2One };
+    static components = {Many2One};
     static props = {
         ...standardFieldProps,
-        canCreate: { type: Boolean, optional: true },
-        canCreateEdit: { type: Boolean, optional: true },
-        canOpen: { type: Boolean, optional: true },
-        canQuickCreate: { type: Boolean, optional: true },
-        canScanBarcode: { type: Boolean, optional: true },
-        canWrite: { type: Boolean, optional: true },
-        context: { type: Object, optional: true },
-        decorations: { type: Object, optional: true },
-        domain: { type: [Array, Function], optional: true },
-        nameCreateField: { type: String, optional: true },
-        openActionContext: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
-        searchLimit: { type: Number, optional: true },
-        searchThreshold: { type: Number, optional: true },
-        string: { type: String, optional: true },
+        canCreate: {type: Boolean, optional: true},
+        canCreateEdit: {type: Boolean, optional: true},
+        canOpen: {type: Boolean, optional: true},
+        canQuickCreate: {type: Boolean, optional: true},
+        canScanBarcode: {type: Boolean, optional: true},
+        canWrite: {type: Boolean, optional: true},
+        context: {type: Object, optional: true},
+        decorations: {type: Object, optional: true},
+        domain: {type: [Array, Function], optional: true},
+        nameCreateField: {type: String, optional: true},
+        openActionContext: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
+        searchLimit: {type: Number, optional: true},
+        searchThreshold: {type: Number, optional: true},
+        string: {type: String, optional: true},
     };
 
     get m2oProps() {

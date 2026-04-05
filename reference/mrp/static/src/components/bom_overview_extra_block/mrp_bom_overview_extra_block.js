@@ -1,7 +1,7 @@
-import { useBus } from "@web/core/utils/hooks";
-import { BomOverviewLine } from "../bom_overview_line/mrp_bom_overview_line";
-import { BomOverviewSpecialLine } from "../bom_overview_special_line/mrp_bom_overview_special_line";
-import { Component, onWillUnmount, onWillUpdateProps, useState } from "@odoo/owl";
+import {useBus} from "@web/core/utils/hooks";
+import {BomOverviewLine} from "../bom_overview_line/mrp_bom_overview_line";
+import {BomOverviewSpecialLine} from "../bom_overview_special_line/mrp_bom_overview_special_line";
+import {Component, onWillUnmount, onWillUpdateProps, useState} from "@odoo/owl";
 
 export class BomOverviewExtraBlock extends Component {
     static template = "mrp.BomOverviewExtraBlock";
@@ -10,7 +10,7 @@ export class BomOverviewExtraBlock extends Component {
         BomOverviewSpecialLine,
     };
     static props = {
-        unfoldAll: { type: Boolean, optional: true },
+        unfoldAll: {type: Boolean, optional: true},
         type: {
             type: String,
             validate: (t) => ["operations", "byproducts"].includes(t),
@@ -26,12 +26,12 @@ export class BomOverviewExtraBlock extends Component {
             isFolded: !this.props.unfoldAll,
         });
         if (this.props.unfoldAll) {
-            this.props.changeFolded({ ids: [this.identifier], isFolded: false });
+            this.props.changeFolded({ids: [this.identifier], isFolded: false});
         }
 
         useBus(this.env.overviewBus, "toggle-fold-all", () => this._toggleFoldAll());
 
-        onWillUpdateProps(newProps => {
+        onWillUpdateProps((newProps) => {
             if (this.props.data.product_id != newProps.data.product_id) {
                 this.state.isFolded = true;
             }
@@ -39,7 +39,7 @@ export class BomOverviewExtraBlock extends Component {
 
         onWillUnmount(() => {
             // Need to notify main component that the block was folded so it doesn't appear on the PDF.
-            this.props.changeFolded({ ids: [this.identifier], isFolded: true });
+            this.props.changeFolded({ids: [this.identifier], isFolded: true});
         });
     }
 
@@ -48,12 +48,15 @@ export class BomOverviewExtraBlock extends Component {
     onToggleFolded() {
         const newState = !this.state.isFolded;
         this.state.isFolded = newState;
-        this.props.changeFolded({ ids: [this.identifier], isFolded: newState });
+        this.props.changeFolded({ids: [this.identifier], isFolded: newState});
     }
 
     _toggleFoldAll() {
         this.state.isFolded = !this.state.isFolded;
-        this.props.changeFolded({ ids: [this.identifier], isFolded: this.state.isFolded });
+        this.props.changeFolded({
+            ids: [this.identifier],
+            isFolded: this.state.isFolded,
+        });
     }
 
     //---- Getters ----

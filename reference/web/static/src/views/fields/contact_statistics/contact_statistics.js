@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "../standard_field_props";
-import { _t } from "@web/core/l10n/translation";
-import { Component } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
 
 export class ContactStatisticsField extends Component {
     static template = "web.ContactStatisticsField";

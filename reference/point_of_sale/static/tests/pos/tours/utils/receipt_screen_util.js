@@ -9,7 +9,8 @@ export function clickNextOrder() {
         {
             isActive: ["mobile"],
             content: "go to next screen",
-            trigger: ".receipt-screen .btn-switchpane.validation-button.highlight[name='done']",
+            trigger:
+                ".receipt-screen .btn-switchpane.validation-button.highlight[name='done']",
             run: "click",
         },
     ];
@@ -160,7 +161,9 @@ export function trackingMethodIsLot(lot) {
             trigger: `li.lot-number:contains("Lot Number ${lot}")`,
             run: function () {
                 if (document.querySelectorAll("li.lot-number").length !== 1) {
-                    throw new Error(`Expected exactly one 'Lot Number ${lot}' element.`);
+                    throw new Error(
+                        `Expected exactly one 'Lot Number ${lot}' element.`
+                    );
                 }
             },
         },
@@ -188,7 +191,10 @@ export function shippingDateExists() {
 
 export function shippingDateIsToday() {
     // format the date in US, the language used by the tests
-    const expectedDelivery = new Date().toLocaleString("en-US", luxon.DateTime.DATE_SHORT);
+    const expectedDelivery = new Date().toLocaleString(
+        "en-US",
+        luxon.DateTime.DATE_SHORT
+    );
 
     return [
         {

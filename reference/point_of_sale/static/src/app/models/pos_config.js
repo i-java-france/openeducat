@@ -1,10 +1,10 @@
-import { registry } from "@web/core/registry";
-import { imageUrl } from "@web/core/utils/urls";
-import { Base } from "./related_models";
-import { getImageDataUrl } from "@point_of_sale/utils";
-import { logPosMessage } from "../utils/pretty_console_log";
-import { PosOrderlineAccounting } from "./accounting/pos_order_line_accounting";
-import { PosOrderAccounting } from "./accounting/pos_order_accounting";
+import {registry} from "@web/core/registry";
+import {imageUrl} from "@web/core/utils/urls";
+import {Base} from "./related_models";
+import {getImageDataUrl} from "@point_of_sale/utils";
+import {logPosMessage} from "../utils/pretty_console_log";
+import {PosOrderlineAccounting} from "./accounting/pos_order_line_accounting";
+import {PosOrderAccounting} from "./accounting/pos_order_accounting";
 
 const CONSOLE_COLOR = "#F5B427";
 
@@ -51,8 +51,12 @@ export class PosConfig extends Base {
         };
 
         lineModel.addEventListener("create", (data) => updateLinePrices(data.ids));
-        lineModel.addEventListener("update", (data) => updateLinePrices([data.id], data.fields));
-        orderModel.addEventListener("update", (data) => updateOrderPrices(data.id, data.fields));
+        lineModel.addEventListener("update", (data) =>
+            updateLinePrices([data.id], data.fields)
+        );
+        orderModel.addEventListener("update", (data) =>
+            updateOrderPrices(data.id, data.fields)
+        );
     }
 
     get hasCashRounding() {
@@ -107,7 +111,9 @@ export class PosConfig extends Base {
 
     async cacheReceiptLogo() {
         try {
-            this.uiState.receiptLogoDataUrl = await getImageDataUrl(this.receiptCompanyLogoUrl);
+            this.uiState.receiptLogoDataUrl = await getImageDataUrl(
+                this.receiptCompanyLogoUrl
+            );
         } catch (error) {
             logPosMessage(
                 "PosConfig",

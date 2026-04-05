@@ -1,5 +1,5 @@
-import { _t } from "@web/core/l10n/translation";
-import { clickOnElement } from '@website/js/tours/tour_utils';
+import {_t} from "@web/core/l10n/translation";
+import {clickOnElement} from "@website/js/tours/tour_utils";
 
 export function addToCart({
     productName,
@@ -23,57 +23,71 @@ export function addToCart({
         run: "click",
     });
     if (productHasVariants) {
-        steps.push(clickOnElement('Continue Shopping', 'button:contains("Continue Shopping")'));
+        steps.push(
+            clickOnElement("Continue Shopping", 'button:contains("Continue Shopping")')
+        );
     }
     return steps;
 }
 
-export function assertCartAmounts({taxes = false, untaxed = false, total = false, delivery = false}) {
+export function assertCartAmounts({
+    taxes = false,
+    untaxed = false,
+    total = false,
+    delivery = false,
+}) {
     let steps = [];
     if (taxes) {
         steps.push({
-            content: 'Check if the tax is correct',
+            content: "Check if the tax is correct",
             trigger: `tr[name="o_order_total_taxes"] .oe_currency_value:text(${taxes})`,
         });
     }
     if (untaxed) {
         steps.push({
-            content: 'Check if the subtotal is correct',
+            content: "Check if the subtotal is correct",
             trigger: `tr[name="o_order_total_untaxed"] .oe_currency_value:text(${untaxed})`,
         });
     }
     if (total) {
         steps.push({
-            content: 'Check if the total is correct',
+            content: "Check if the total is correct",
             trigger: `tr[name="o_order_total"] .oe_currency_value:text(${total})`,
         });
     }
     if (delivery) {
         steps.push({
-            content: 'Check if the delivery is correct',
+            content: "Check if the delivery is correct",
             trigger: `tr[name='o_order_delivery'] .oe_currency_value:text(${delivery})`,
         });
     }
-    return steps
+    return steps;
 }
 
-export function assertCartContains({productName, backend, notContains = false, combinationName = false} = {}) {
+export function assertCartContains({
+    productName,
+    backend,
+    notContains = false,
+    combinationName = false,
+} = {}) {
     let trigger = `h6:contains(${productName})`;
 
     if (notContains) {
         trigger = `:not(${trigger})`;
     }
-    let steps = [{
-        content: `Checking if ${productName} is in the cart`,
-        trigger: `${backend ? ":iframe" : ""} ${trigger}`,
-    }];
+    let steps = [
+        {
+            content: `Checking if ${productName} is in the cart`,
+            trigger: `${backend ? ":iframe" : ""} ${trigger}`,
+        },
+    ];
 
     if (combinationName) {
         const combination_trigger = `span[class*=h6]:contains(${combinationName})`;
         steps.push({
             content: `Checking if ${combinationName} is the chosen combination in the cart`,
             trigger: `${backend ? ":iframe" : ""} ${combination_trigger}`,
-        })
+        });
     }
 
     return steps;
@@ -138,26 +152,26 @@ export function goToCart({
 
 export function goToCheckout() {
     return {
-        content: 'Checkout your order',
+        content: "Checkout your order",
         trigger: 'a[href^="/shop/checkout"]',
-        run: 'click',
+        run: "click",
         expectUnloadPage: true,
     };
 }
 
 export function confirmOrder() {
     return {
-        content: 'Confirm',
+        content: "Confirm",
         trigger: 'a[href^="/shop/payment"]',
-        run: 'click',
+        run: "click",
         expectUnloadPage: true,
     };
 }
 
-export function pay({ expectUnloadPage = false, waitFinalizeYourPayment = false } = {}) {
+export function pay({expectUnloadPage = false, waitFinalizeYourPayment = false} = {}) {
     const steps = [
         {
-            content: 'Pay',
+            content: "Pay",
             //Either there are multiple payment methods, and one is checked, either there is only one, and therefore there are no radio inputs
             trigger: 'button[name="o_payment_submit_button"]',
             run: "click",
@@ -174,16 +188,19 @@ export function pay({ expectUnloadPage = false, waitFinalizeYourPayment = false 
 }
 
 export function payWithDemo() {
-    return [{
-        content: 'eCommerce: add card number',
-        trigger: 'input[name="customer_input"]',
-        run: "edit 4242424242424242",
-    },
-    ...pay({expectUnloadPage: true}),
-    {
-        content: 'eCommerce: check that the payment is successful',
-        trigger: '[name="order_confirmation"]:contains("Your payment has been processed.")',
-    }]
+    return [
+        {
+            content: "eCommerce: add card number",
+            trigger: 'input[name="customer_input"]',
+            run: "edit 4242424242424242",
+        },
+        ...pay({expectUnloadPage: true}),
+        {
+            content: "eCommerce: check that the payment is successful",
+            trigger:
+                '[name="order_confirmation"]:contains("Your payment has been processed.")',
+        },
+    ];
 }
 
 export function payWithTransfer({
@@ -193,13 +210,14 @@ export function payWithTransfer({
 } = {}) {
     const first_step = {
         content: "Select `Wire Transfer` payment method",
-        trigger: 'input[name="o_payment_radio"][data-payment-method-code="wire_transfer"]',
+        trigger:
+            'input[name="o_payment_radio"][data-payment-method-code="wire_transfer"]',
         run: "click",
-    }
+    };
     if (!redirect) {
         return [
             first_step,
-            ...pay({ expectUnloadPage, waitFinalizeYourPayment }),
+            ...pay({expectUnloadPage, waitFinalizeYourPayment}),
             {
                 content: "Last step",
                 trigger:
@@ -210,14 +228,14 @@ export function payWithTransfer({
     } else {
         return [
             first_step,
-            ...pay({ expectUnloadPage, waitFinalizeYourPayment }),
+            ...pay({expectUnloadPage, waitFinalizeYourPayment}),
             {
                 content: "Last step",
                 trigger:
                     '[name="order_confirmation"]:contains("Please use the following transfer details")',
                 timeout: 30000,
                 run() {
-                    window.location.href = '/contactus'; // Redirect in JS to avoid the RPC loop (20x1sec)
+                    window.location.href = "/contactus"; // Redirect in JS to avoid the RPC loop (20x1sec)
                 },
                 expectUnloadPage: true,
             },
@@ -229,7 +247,7 @@ export function payWithTransfer({
     }
 }
 
-export function searchProduct(productName, { select = false } = {}) {
+export function searchProduct(productName, {select = false} = {}) {
     const steps = [
         {
             content: "Search for the product",

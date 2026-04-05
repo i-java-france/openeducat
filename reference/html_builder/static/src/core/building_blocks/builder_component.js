@@ -1,10 +1,10 @@
-import { Component, xml } from "@odoo/owl";
-import { useDomState } from "../utils";
+import {Component, xml} from "@odoo/owl";
+import {useDomState} from "../utils";
 
 export class BuilderComponent extends Component {
     static template = xml`<t t-if="this.state.isVisible"><t t-slot="default"/></t>`;
     static props = {
-        slots: { type: Object },
+        slots: {type: Object},
     };
 
     setup() {
@@ -12,7 +12,7 @@ export class BuilderComponent extends Component {
             (editingElement) => ({
                 isVisible: !!editingElement,
             }),
-            { checkEditingElement: false }
+            {checkEditingElement: false}
         );
     }
 }

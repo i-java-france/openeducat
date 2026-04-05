@@ -1,14 +1,14 @@
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { HtmlViewer } from "@html_editor/components/html_viewer/html_viewer";
-import { EditorVersionPlugin } from "@html_editor/core/editor_version_plugin";
-import { localization } from "@web/core/l10n/localization";
-import { patch } from "@web/core/utils/patch";
-import { PropertyValue } from "@web/views/fields/properties/property_value";
-import { HtmlUpgradeManager } from "@html_editor/html_migrations/html_upgrade_manager";
-import { normalizeHTML } from "@html_editor/utils/html";
-import { Wysiwyg } from "@html_editor/wysiwyg";
-import { user } from "@web/core/user";
-import { useState, onWillStart, onWillUpdateProps } from "@odoo/owl";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {HtmlViewer} from "@html_editor/components/html_viewer/html_viewer";
+import {EditorVersionPlugin} from "@html_editor/core/editor_version_plugin";
+import {localization} from "@web/core/l10n/localization";
+import {patch} from "@web/core/utils/patch";
+import {PropertyValue} from "@web/views/fields/properties/property_value";
+import {HtmlUpgradeManager} from "@html_editor/html_migrations/html_upgrade_manager";
+import {normalizeHTML} from "@html_editor/utils/html";
+import {Wysiwyg} from "@html_editor/wysiwyg";
+import {user} from "@web/core/user";
+import {useState, onWillStart, onWillUpdateProps} from "@odoo/owl";
 
 patch(PropertyValue.prototype, {
     setup() {
@@ -17,7 +17,7 @@ patch(PropertyValue.prototype, {
         onWillStart(async () => {
             this.htmlState.isPortalUser = await user.hasGroup("base.group_portal");
         });
-        this.htmlState = useState({ isPortalUser: false, key: 0 });
+        this.htmlState = useState({isPortalUser: false, key: 0});
 
         onWillUpdateProps((newProps) => {
             const newValueStr = newProps.value?.toString();
@@ -64,7 +64,9 @@ patch(PropertyValue.prototype, {
             const toRemove = ["file", "media"];
             plugins = plugins.filter(
                 (plugin) =>
-                    !toRemove.some((p) => plugin.id === p || plugin.dependencies.includes(p))
+                    !toRemove.some(
+                        (p) => plugin.id === p || plugin.dependencies.includes(p)
+                    )
             );
         }
 
@@ -78,8 +80,8 @@ patch(PropertyValue.prototype, {
             dropImageAsAttachment: true,
             allowVideo: false,
             getRecordInfo: () => {
-                const { resModel, resId, data, fields, id } = this.props.record;
-                return { resModel, resId, data, fields, id };
+                const {resModel, resId, data, fields, id} = this.props.record;
+                return {resModel, resId, data, fields, id};
             },
         };
     },
@@ -93,4 +95,4 @@ patch(PropertyValue.prototype, {
     },
 });
 
-PropertyValue.components = { ...PropertyValue.components, HtmlViewer, Wysiwyg };
+PropertyValue.components = {...PropertyValue.components, HtmlViewer, Wysiwyg};

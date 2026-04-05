@@ -1,14 +1,14 @@
-import { scrollTo } from "@html_builder/utils/scrolling";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {scrollTo} from "@html_builder/utils/scrolling";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { ReCaptcha } from "@google_recaptcha/js/recaptcha";
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { post } from "@web/core/network/http_service";
-import { user } from "@web/core/user";
-import { delay } from "@web/core/utils/concurrency";
-import { session } from "@web/session";
+import {ReCaptcha} from "@google_recaptcha/js/recaptcha";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {post} from "@web/core/network/http_service";
+import {user} from "@web/core/user";
+import {delay} from "@web/core/utils/concurrency";
+import {session} from "@web/session";
 import {
     formatDate,
     formatDateTime,
@@ -19,13 +19,14 @@ import {
 } from "@web/core/l10n/dates";
 import wUtils from "@website/js/utils";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class Form extends Interaction {
     static selector = ".s_website_form form, form.s_website_form"; // !compatibility
     dynamicSelectors = {
         ...this.dynamicSelectors,
-        _endMessage: () => this.el.parentNode.querySelector(".s_website_form_end_message"),
+        _endMessage: () =>
+            this.el.parentNode.querySelector(".s_website_form_end_message"),
     };
     dynamicContent = {
         ".s_website_form_send, .o_website_form_send": {
@@ -42,17 +43,18 @@ export class Form extends Interaction {
                 "d-none": !this.isHidden,
             }),
         },
-        "input[type=file]": { "t-on-change": this.changeFile },
-        "input.o_add_files_button": { "t-on-click": this.clickAddFilesButton },
-        ".s_website_form_field[data-type=binary]": { "t-on-click": this.clickFileDelete }, // delegate on ".o_file_delete"
+        "input[type=file]": {"t-on-change": this.changeFile},
+        "input.o_add_files_button": {"t-on-click": this.clickAddFilesButton},
+        ".s_website_form_field[data-type=binary]": {"t-on-click": this.clickFileDelete}, // delegate on ".o_file_delete"
         ".s_website_form_field": {
             "t-on-input": this.debounced(this.onFieldInput, 300),
-            "t-att-class": (el) => ({ "d-none": !this.isFieldVisible(el) }),
+            "t-att-class": (el) => ({"d-none": !this.isFieldVisible(el)}),
         },
         // Do not disable inputs that are required for the model.
-        ".s_website_form_field:not(.s_website_form_model_required) .s_website_form_input": {
-            "t-att-disabled": (el) => !this.isInputVisible(el) || undefined,
-        },
+        ".s_website_form_field:not(.s_website_form_model_required) .s_website_form_input":
+            {
+                "t-att-disabled": (el) => !this.isInputVisible(el) || undefined,
+            },
         ".s_website_form_datetime, .o_website_form_datetime, .s_website_form_date, .o_website_form_date":
             {
                 "t-att-class": () => ({
@@ -102,7 +104,9 @@ export class Form extends Interaction {
 
         // Prepare visibility data and update field visibilities
         const visibilityFunctionsByFieldName = new Map();
-        for (const fieldEl of this.el.querySelectorAll("[data-visibility-dependency]")) {
+        for (const fieldEl of this.el.querySelectorAll(
+            "[data-visibility-dependency]"
+        )) {
             const inputName = fieldEl.querySelector(".s_website_form_input").name;
             if (!visibilityFunctionsByFieldName.has(inputName)) {
                 visibilityFunctionsByFieldName.set(inputName, []);
@@ -112,7 +116,9 @@ export class Form extends Interaction {
             this.visibilityFunctionByFieldEl.set(fieldEl, func);
         }
         for (const [name, funcs] of visibilityFunctionsByFieldName.entries()) {
-            this.visibilityFunctionByFieldName.set(name, () => funcs.some((func) => func()));
+            this.visibilityFunctionByFieldName.set(name, () =>
+                funcs.some((func) => func())
+            );
         }
     }
 
@@ -153,7 +159,9 @@ export class Form extends Interaction {
 
         // Apply default values
         this.el
-            .querySelectorAll(`input[type="text"], input[type="email"], input[type="number"]`)
+            .querySelectorAll(
+                `input[type="text"], input[type="email"], input[type="number"]`
+            )
             .forEach((el) => {
                 let value = el.getAttribute("value");
                 if (value) {
@@ -167,7 +175,9 @@ export class Form extends Interaction {
                     el.value = value;
                 }
             });
-        this.el.querySelectorAll("textarea").forEach((el) => (el.value = el.textContent));
+        this.el
+            .querySelectorAll("textarea")
+            .forEach((el) => (el.value = el.textContent));
 
         // Remove saving of the error colors
         for (const errorEl of this.el.querySelectorAll(".o_has_error")) {
@@ -178,7 +188,9 @@ export class Form extends Interaction {
         }
 
         // Remove the status message
-        this.el.querySelector("#s_website_form_result, #o_website_form_result")?.replaceChildren(); // !compatibility
+        this.el
+            .querySelector("#s_website_form_result, #o_website_form_result")
+            ?.replaceChildren(); // !compatibility
 
         // Restore disabled attribute
         for (const inputEl of this.inputEls) {
@@ -224,12 +236,16 @@ export class Form extends Interaction {
                     .create({
                         target: inputEl,
                         onChange: () =>
-                            inputEl.dispatchEvent(new Event("input", { bubbles: true })),
+                            inputEl.dispatchEvent(new Event("input", {bubbles: true})),
                         pickerProps: {
-                            type: fieldEl.matches(".s_website_form_date, .o_website_form_date")
+                            type: fieldEl.matches(
+                                ".s_website_form_date, .o_website_form_date"
+                            )
                                 ? "date"
                                 : "datetime",
-                            value: defaultValue && DateTime.fromSeconds(parseInt(defaultValue)),
+                            value:
+                                defaultValue &&
+                                DateTime.fromSeconds(parseInt(defaultValue)),
                         },
                     })
                     .enable()
@@ -256,7 +272,12 @@ export class Form extends Interaction {
         if (dataForValues || Object.keys(this.preFillValues).length) {
             dataForValues = dataForValues || {};
             const fieldNames = [...this.el.querySelectorAll("[name]")]
-                .filter((el) => !["submit", "button", "image", "reset", "file"].includes(el.type))
+                .filter(
+                    (el) =>
+                        !["submit", "button", "image", "reset", "file"].includes(
+                            el.type
+                        )
+                )
                 .map((el) => el.name);
 
             // All types of inputs do not have a value property (eg:hidden),
@@ -304,7 +325,9 @@ export class Form extends Interaction {
     }
 
     async send() {
-        this.el.querySelector("#s_website_form_result, #o_website_form_result")?.replaceChildren(); // !compatibility
+        this.el
+            .querySelector("#s_website_form_result, #o_website_form_result")
+            ?.replaceChildren(); // !compatibility
         this.removeErrorMessages();
         if (!this.checkErrorFields({})) {
             this.updateStatus("error", _t("Please fill in the form correctly."));
@@ -324,11 +347,13 @@ export class Form extends Interaction {
         new FormData(this.el).forEach((value, key) => {
             const inputElement = this.el.querySelector(`[name="${CSS.escape(key)}"]`);
             if (inputElement && inputElement.type !== "file") {
-                formFields.push({ name: key, value: value });
+                formFields.push({name: key, value: value});
             }
         });
         let outerIndex = 0;
-        for (const inputEl of this.el.querySelectorAll("input[type=file]:not([disabled])")) {
+        for (const inputEl of this.el.querySelectorAll(
+            "input[type=file]:not([disabled])"
+        )) {
             let index = 0;
             for (const file of inputEl.files) {
                 // Index field name as ajax won't accept arrays of files
@@ -370,19 +395,23 @@ export class Form extends Interaction {
                 ".s_website_form_date, .s_website_form_datetime"
             )) {
                 const inputEl = dateEl.querySelector("input");
-                const { value } = inputEl;
+                const {value} = inputEl;
                 if (!value) {
                     continue;
                 }
 
-                formValues[inputEl.getAttribute("name")] = dateEl.matches(".s_website_form_date")
+                formValues[inputEl.getAttribute("name")] = dateEl.matches(
+                    ".s_website_form_date"
+                )
                     ? serializeDate(parseDate(value))
                     : serializeDateTime(parseDateTime(value));
             }
         }
 
         if (this.recaptchaLoaded) {
-            const tokenObj = await this.waitFor(this.recaptcha.getToken("website_form"));
+            const tokenObj = await this.waitFor(
+                this.recaptcha.getToken("website_form")
+            );
             if (tokenObj.token) {
                 formValues["recaptcha_token_response"] = tokenObj.token;
             } else if (tokenObj.error) {
@@ -409,7 +438,10 @@ export class Form extends Interaction {
             .then(async (resultData) => {
                 if (!resultData.id) {
                     // Failure, the server didn't return the created record ID
-                    this.updateStatus("error", resultData.error ? resultData.error : false);
+                    this.updateStatus(
+                        "error",
+                        resultData.error ? resultData.error : false
+                    );
                     if (resultData.error_fields) {
                         // If the server return a list of bad fields, show these fields for users
                         this.checkErrorFields(resultData.error_fields);
@@ -446,8 +478,11 @@ export class Form extends Interaction {
                                     hashIndex++;
                                 }
                                 if (
-                                    [successPage, "/" + session.lang_url_code + successPage].some(
-                                        (link) => link.startsWith(currentUrlPath + "#")
+                                    [
+                                        successPage,
+                                        "/" + session.lang_url_code + successPage,
+                                    ].some((link) =>
+                                        link.startsWith(currentUrlPath + "#")
                                     )
                                 ) {
                                     successPage = successPage.substring(hashIndex);
@@ -524,7 +559,9 @@ export class Form extends Interaction {
         this.el.querySelectorAll("input[type=file]").forEach((inputEl) => {
             const fieldEl = inputEl.closest(".s_website_form_field");
             fieldEl.querySelectorAll(".o_files_zone").forEach((el) => el.remove());
-            fieldEl.querySelectorAll(".o_add_files_button").forEach((el) => el.remove());
+            fieldEl
+                .querySelectorAll(".o_add_files_button")
+                .forEach((el) => el.remove());
             inputEl.classList.remove("d-none");
             delete inputEl.fileList;
         });
@@ -533,12 +570,16 @@ export class Form extends Interaction {
     checkErrorFields(errorFields) {
         let formValid = true;
         // Loop on all fields
-        for (const fieldEl of this.el.querySelectorAll(".form-field, .s_website_form_field")) {
+        for (const fieldEl of this.el.querySelectorAll(
+            ".form-field, .s_website_form_field"
+        )) {
             // !compatibility
             // FIXME that seems broken, "for" does not contain the field
             // but this is used to retrieve errors sent from the server...
             // need more investigation.
-            const fieldName = fieldEl.querySelector(".col-form-label")?.getAttribute("for");
+            const fieldName = fieldEl
+                .querySelector(".col-form-label")
+                ?.getAttribute("for");
 
             // Validate inputs for this field
             const inputEls = [
@@ -572,13 +613,19 @@ export class Form extends Interaction {
                     // was made)... need more investigation (if restored,
                     // consider checking the date inputs are not disabled before
                     // saying they are invalid (see checkValidity used here))
-                } else if (inputEl.matches(".s_website_form_date, .o_website_form_date")) {
+                } else if (
+                    inputEl.matches(".s_website_form_date, .o_website_form_date")
+                ) {
                     // !compatibility
                     const date = parseDate(inputEl.value);
                     if (!date || !date.isValid) {
                         return true;
                     }
-                } else if (inputEl.matches(".s_website_form_datetime, .o_website_form_datetime")) {
+                } else if (
+                    inputEl.matches(
+                        ".s_website_form_datetime, .o_website_form_datetime"
+                    )
+                ) {
                     // !compatibility
                     const date = parseDateTime(inputEl.value);
                     if (!date || !date.isValid) {
@@ -633,7 +680,9 @@ export class Form extends Interaction {
     }
 
     updateStatus(status, message) {
-        const resultEl = this.el.querySelector("#s_website_form_result, #o_website_form_result"); // !compatibility
+        const resultEl = this.el.querySelector(
+            "#s_website_form_result, #o_website_form_result"
+        ); // !compatibility
 
         if (status === "error" && !message) {
             message = _t("An error has occured, the form has not been sent.");
@@ -721,7 +770,7 @@ export class Form extends Interaction {
                 if (file.size / bytesInMegabyte > maxFileSize) {
                     const errorMessage = _t(
                         "Please fill in the form correctly. The file “%(fileName)s” is too large. (Maximum %(max)s MB)",
-                        { fileName: file.name, max: maxFileSize }
+                        {fileName: file.name, max: maxFileSize}
                     );
                     this.updateStatusInline(errorMessage, inputEl);
                     return false;
@@ -854,7 +903,9 @@ export class Form extends Interaction {
                 return false;
             }
 
-            const currentValueOfDependency = ["contains", "!contains"].includes(comparator)
+            const currentValueOfDependency = ["contains", "!contains"].includes(
+                comparator
+            )
                 ? this.lastFormData.getAll(dependencyName).join()
                 : this.lastFormData.get(dependencyName);
             return this.compareTo(
@@ -930,7 +981,7 @@ export class Form extends Interaction {
     createFileBlock(fileDetails, filesZoneEl) {
         this.renderAt(
             "website.file_block",
-            { fileName: fileDetails.name },
+            {fileName: fileDetails.name},
             filesZoneEl,
             "beforeend",
             (els) => (els[0].fileDetails = fileDetails)
@@ -1010,7 +1061,11 @@ export class Form extends Interaction {
                 )
             ) {
                 fileInputEl.fileList.items.add(newFile);
-                const fileDetails = { name: newFile.name, size: newFile.size, type: newFile.type };
+                const fileDetails = {
+                    name: newFile.name,
+                    size: newFile.size,
+                    type: newFile.type,
+                };
                 this.createFileBlock(fileDetails, filesZoneEl);
             }
         }
@@ -1046,7 +1101,7 @@ export class Form extends Interaction {
             }
         }
         // Update the input lists and remove the file block.
-        Object.assign(fileInputEl, { fileList: newFileList, files: newFileList.files });
+        Object.assign(fileInputEl, {fileList: newFileList, files: newFileList.files});
         fileBlockEl.remove();
 
         // Restore the file input if there are no files uploaded and update

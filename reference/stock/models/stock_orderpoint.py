@@ -1,19 +1,26 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-from pytz import timezone, UTC
 from collections import defaultdict
 from datetime import datetime, time
+
 from dateutil import relativedelta
 from psycopg2 import OperationalError
+from pytz import UTC, timezone
 
 from odoo import SUPERUSER_ID, _, api, fields, models
-from odoo.addons.stock.models.stock_rule import ProcurementException
 from odoo.exceptions import RedirectWarning, UserError, ValidationError
-from odoo.modules.registry import Registry
 from odoo.fields import Domain
+from odoo.modules.registry import Registry
 from odoo.sql_db import BaseCursor
-from odoo.tools import float_compare, float_is_zero, frozendict, split_every, format_date
+from odoo.tools import (
+    float_compare,
+    format_date,
+    frozendict,
+    split_every,
+)
+
+from odoo.addons.stock.models.stock_rule import ProcurementException
 
 _logger = logging.getLogger(__name__)
 
@@ -566,7 +573,7 @@ class StockWarehouseOrderpoint(models.Model):
                 location=loc.id,
                 to_date=today + relativedelta.relativedelta(days=days)
             ).read(['virtual_available'])
-            for (product, qty) in zip(products, qties):
+            for (product, qty) in zip(products, qties, strict=False):
                 if product.uom_id.compare(qty['virtual_available'], 0) < 0:
                     to_refill[(qty['id'], loc.id)] = qty['virtual_available']
                     product_ids.add(qty['id'])

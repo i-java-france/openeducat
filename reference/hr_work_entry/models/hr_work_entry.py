@@ -243,7 +243,7 @@ class HrWorkEntry(models.Model):
         company_by_employee_id = {}
         for vals in vals_list:
             if (
-                not 'amount_rate' in vals
+                'amount_rate' not in vals
                 and (work_entry_type_id := vals.get('work_entry_type_id'))
             ):
                 work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)

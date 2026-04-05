@@ -1,7 +1,7 @@
-import { Component, useRef, useState, useEffect } from "@odoo/owl";
+import {Component, useRef, useState, useEffect} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
-import { debounce } from "@web/core/utils/timing";
+import {useService} from "@web/core/utils/hooks";
+import {debounce} from "@web/core/utils/timing";
 
 export class LivechatButton extends Component {
     static template = "im_livechat.LivechatButton";
@@ -12,11 +12,15 @@ export class LivechatButton extends Component {
         this.store = useService("mail.store");
         /** @type {import('@im_livechat/embed/common/livechat_service').LivechatService} */
         this.livechatService = useService("im_livechat.livechat");
-        this.onClick = debounce(this.onClick.bind(this), LivechatButton.DEBOUNCE_DELAY, {
-            leading: true,
-        });
+        this.onClick = debounce(
+            this.onClick.bind(this),
+            LivechatButton.DEBOUNCE_DELAY,
+            {
+                leading: true,
+            }
+        );
         this.ref = useRef("button");
-        this.state = useState({ animateNotification: this.isShown });
+        this.state = useState({animateNotification: this.isShown});
         useEffect(
             (isShown, rootNodeClassList) => {
                 if (isShown && rootNodeClassList) {

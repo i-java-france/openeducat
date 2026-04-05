@@ -1,13 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import requests
 from http import HTTPStatus
 from unittest.mock import patch
 
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+import requests
+
 from odoo.tests.common import JsonRpcException, new_test_user, tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 SAMPLE = {
     "text": "<p>Al mal tiempo, buena cara.</p>",

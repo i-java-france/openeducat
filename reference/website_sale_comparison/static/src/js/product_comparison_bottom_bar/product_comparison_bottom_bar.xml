@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="website_sale_comparison.ProductComparisonBottomBar">
-        <div class="o_not_editable position-absolute top-0 start-0 bottom-0 end-0 d-flex align-items-end justify-content-end p-0 pe-none">
+        <div
+            class="o_not_editable position-absolute top-0 start-0 bottom-0 end-0 d-flex align-items-end justify-content-end p-0 pe-none"
+        >
             <div
                 t-if="state.products.size"
                 class="o_wsale_comparison_bottom_bar sticky-bottom flex-shrink-0 w-100 bg-body pe-auto"
@@ -16,7 +18,7 @@
                                 t-key="product.id"
                                 class="list-group-item d-flex align-items-start justify-content-between gap-2 px-0 py-3"
                             >
-                                <ProductRow t-props="product"/>
+                                <ProductRow t-props="product" />
                             </li>
                         </ul>
                     </div>
@@ -30,9 +32,11 @@
                             aria-controls="comparisonCollapse"
                             aria-label="Show products added to comparison"
                         >
-                            <i class="oi oi-chevron-up" role="presentation"/>
+                            <i class="oi oi-chevron-up" role="presentation" />
                         </button>
-                        <ul class="list-unstyled d-none d-xl-flex flex-grow-1 flex-shrink-1 gap-3 overflow-hidden me-auto mb-0">
+                        <ul
+                            class="list-unstyled d-none d-xl-flex flex-grow-1 flex-shrink-1 gap-3 overflow-hidden me-auto mb-0"
+                        >
                             <li
                                 t-foreach="state.products.values()"
                                 t-as="product"
@@ -40,12 +44,16 @@
                                 class="flex-basis-25 overflow-hidden"
                                 t-att-class="{'border-end pe-3': !product_last}"
                             >
-                                <ProductRow t-props="product"/>
+                                <ProductRow t-props="product" />
                             </li>
                         </ul>
 
-                        <div class="d-flex gap-2 justify-content-end flex-grow-1 flex-xl-grow-0 flex-shrink-0">
-                            <t t-call="website_sale_comparison.ProductComparisonBottomBar.Actions"/>
+                        <div
+                            class="d-flex gap-2 justify-content-end flex-grow-1 flex-xl-grow-0 flex-shrink-0"
+                        >
+                            <t
+                                t-call="website_sale_comparison.ProductComparisonBottomBar.Actions"
+                            />
                         </div>
                     </div>
                 </div>
@@ -63,7 +71,7 @@
             title="Compare products"
         >
             Compare
-            <span t-if="productCount" t-out="productCount" class="badge ms-2"/>
+            <span t-if="productCount" t-out="productCount" class="badge ms-2" />
         </a>
         <button
             t-on-click="clearAllProducts"

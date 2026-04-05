@@ -2,7 +2,8 @@
 
 ## Technical details
 
-API: [Recurring Payments API](https://razorpay.com/docs/api/payments/recurring-payments/)
+API:
+[Recurring Payments API](https://razorpay.com/docs/api/payments/recurring-payments/)
 version `1`
 
 ## Supported features
@@ -20,9 +21,11 @@ version `1`
 ## Module history
 
 - `17.0`
-  - The previous Hosted Checkout API that allowed for redirect payments is replaced by the Recurring
-    Payments API that supports direct payments and tokenization. odoo/odoo#143525
-  - OAuth support is added in addition to the credentials-based authentication. odoo/odoo#158578
+  - The previous Hosted Checkout API that allowed for redirect payments is replaced by
+    the Recurring Payments API that supports direct payments and tokenization.
+    odoo/odoo#143525
+  - OAuth support is added in addition to the credentials-based authentication.
+    odoo/odoo#158578
 - `16.0`
   - The first version of the module is merged. odoo/odoo#92848
 

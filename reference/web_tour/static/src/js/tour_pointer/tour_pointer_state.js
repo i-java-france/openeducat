@@ -1,7 +1,7 @@
-import { reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { TourPointer } from "@web_tour/js/tour_pointer/tour_pointer";
-import { getScrollParent } from "@web_tour/js/utils/tour_utils";
+import {reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {TourPointer} from "@web_tour/js/tour_pointer/tour_pointer";
+import {getScrollParent} from "@web_tour/js/utils/tour_utils";
 
 /**
  * @typedef {import("@web/core/position/position_hook").Direction} Direction
@@ -110,7 +110,7 @@ export function createPointerState() {
     const pointTo = (anchor, step, isZone) => {
         intersection.setTarget(anchor);
         if (anchor) {
-            let { tooltipPosition, content } = step;
+            let {tooltipPosition, content} = step;
             switch (intersection.targetPosition) {
                 case "unknown": {
                     // Do nothing for unknown target position.
@@ -132,7 +132,7 @@ export function createPointerState() {
                 }
                 default: {
                     const onClick = () => {
-                        anchor.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                        anchor.scrollIntoView({behavior: "smooth", block: "nearest"});
                         hide();
                     };
 
@@ -148,11 +148,12 @@ export function createPointerState() {
                         });
                         return;
                     }
-                    let { x, y, width, height } = scrollParent.getBoundingClientRect();
+                    let {x, y, width, height} = scrollParent.getBoundingClientRect();
 
                     // If the scrolling element is within an iframe the offsets
                     // must be computed taking into account the iframe.
-                    const iframeEl = scrollParent.ownerDocument.defaultView.frameElement;
+                    const iframeEl =
+                        scrollParent.ownerDocument.defaultView.frameElement;
                     if (iframeEl) {
                         const iframeOffset = iframeEl.getBoundingClientRect();
                         x += iframeOffset.x;
@@ -199,11 +200,11 @@ export function createPointerState() {
     };
 
     function hide() {
-        setState({ content: "", isVisible: false, isOpen: false });
+        setState({content: "", isVisible: false, isOpen: false});
     }
 
     function showContent(isOpen) {
-        setState({ isOpen });
+        setState({isOpen});
     }
 
     function destroy() {
@@ -219,5 +220,5 @@ export function createPointerState() {
     const floatingAnchor = document.createElement("div");
     floatingAnchor.className = "position-fixed";
 
-    return { state, setState, showContent, pointTo, hide, destroy };
+    return {state, setState, showContent, pointTo, hide, destroy};
 }

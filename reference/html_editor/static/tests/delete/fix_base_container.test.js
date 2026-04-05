@@ -1,7 +1,7 @@
-import { describe, test } from "@odoo/hoot";
-import { testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { deleteBackward } from "../_helpers/user_actions";
+import {describe, test} from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {deleteBackward} from "../_helpers/user_actions";
 
 describe("Adjust base container on delete", () => {
     test("should remove empty o-paragraph block", async () => {
@@ -35,7 +35,7 @@ describe("Adjust base container on delete", () => {
                 </div>
                 <p data-selection-placeholder=""><br></p>
             `),
-            config: { cleanEmptyStructuralContainers: false },
+            config: {cleanEmptyStructuralContainers: false},
         });
     });
 

@@ -1,4 +1,4 @@
-import { SearchPanel } from "@web/search/search_panel/search_panel";
+import {SearchPanel} from "@web/search/search_panel/search_panel";
 
 export class StockReportSearchPanel extends SearchPanel {
     static template = "stock.StockReportSearchPanel";

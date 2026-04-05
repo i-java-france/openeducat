@@ -1,10 +1,10 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {mountView, onRpc} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, ProjectProject } from "./project_models";
+import {ProjectProject, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 beforeEach(() => {
@@ -29,10 +29,10 @@ beforeEach(() => {
 });
 
 test("Check is_favorite field is still editable even if the record/view is in readonly.", async () => {
-    onRpc("project.project", "web_save", ({ args }) => {
+    onRpc("project.project", "web_save", ({args}) => {
         const [ids, vals] = args;
         expect(ids).toEqual([1]);
-        expect(vals).toEqual({ is_favorite: true });
+        expect(vals).toEqual({is_favorite: true});
         expect.step("web_save");
     });
 
@@ -53,7 +53,7 @@ test("Check is_favorite field is readonly if the field is readonly", async () =>
         expect.step("web_save");
     });
 
-    ProjectProject._views["kanban"] = ProjectProject._views["kanban"].replace(
+    ProjectProject._views.kanban = ProjectProject._views.kanban.replace(
         'widget="project_is_favorite"',
         'widget="project_is_favorite" readonly="1"'
     );

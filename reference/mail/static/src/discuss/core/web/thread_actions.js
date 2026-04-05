@@ -1,9 +1,9 @@
-import { registerThreadAction } from "@mail/core/common/thread_actions";
+import {registerThreadAction} from "@mail/core/common/thread_actions";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 registerThreadAction("expand-discuss", {
-    condition: ({ owner, store, thread }) =>
+    condition: ({owner, store, thread}) =>
         thread &&
         owner.props.chatWindow?.isOpen &&
         thread.model === "discuss.channel" &&
@@ -11,7 +11,7 @@ registerThreadAction("expand-discuss", {
         !owner.isDiscussSidebarChannelActions,
     icon: "fa fa-fw fa-expand",
     name: _t("Open in Discuss"),
-    open({ owner, store, thread }) {
+    open({owner, store, thread}) {
         store.env.services.action.doAction(
             {
                 type: "ir.actions.client",
@@ -19,7 +19,7 @@ registerThreadAction("expand-discuss", {
             },
             {
                 clearBreadcrumbs: owner.env.services["home_menu"]?.hasHomeMenu,
-                additionalContext: { active_id: thread.id },
+                additionalContext: {active_id: thread.id},
             }
         );
     },
@@ -27,8 +27,8 @@ registerThreadAction("expand-discuss", {
     sequenceGroup: 5,
 });
 registerThreadAction("advanced-settings", {
-    condition: ({ owner, thread }) => thread && owner.isDiscussSidebarChannelActions,
-    open: ({ owner, store, thread }) => {
+    condition: ({owner, thread}) => thread && owner.isDiscussSidebarChannelActions,
+    open: ({owner, store, thread}) => {
         store.env.services.action.doAction({
             type: "ir.actions.act_window",
             res_model: "discuss.channel",

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.tools import SQL
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import SQL
 
 
 class AccountAnalyticDistributionModel(models.Model):
@@ -46,7 +45,7 @@ class AccountAnalyticDistributionModel(models.Model):
               JOIN account_analytic_account account
                 ON ARRAY[account.id::text] && %s
              WHERE account.company_id IS NOT NULL AND model.id = ANY(%s)
-               AND (model.company_id IS NULL 
+               AND (model.company_id IS NULL
                 OR model.company_id != account.company_id)
             """,
             self._query_analytic_accounts('model'),

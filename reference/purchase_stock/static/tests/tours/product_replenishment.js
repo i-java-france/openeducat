@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("test_product_replenishment", {
     steps: () => [
@@ -11,7 +11,7 @@ registry.category("web_tour.tours").add("test_product_replenishment", {
         {
             content: "Show route column",
             trigger: '.o-dropdown-item input[name="route_id"]',
-            run: async ({ anchor }) => {
+            run: async ({anchor}) => {
                 // We need this condition because `route_id` field is hidden by
                 // default except if `purchase_mrp` is installed.
                 if (!anchor.checked) {

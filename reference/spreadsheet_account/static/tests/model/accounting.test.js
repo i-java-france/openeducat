@@ -1,32 +1,32 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { getCellValue, getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { camelToSnakeObject } from "@spreadsheet/helpers/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {getCellValue, getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {camelToSnakeObject} from "@spreadsheet/helpers/helpers";
 import {
     defineSpreadsheetAccountModels,
     getAccountingData,
 } from "@spreadsheet_account/../tests/accounting_test_data";
-import { parseAccountingDate } from "@spreadsheet_account/accounting_functions";
-import { makeServerError } from "@web/../tests/web_test_helpers";
-import { sprintf } from "@web/core/utils/strings";
+import {parseAccountingDate} from "@spreadsheet_account/accounting_functions";
+import {makeServerError} from "@web/../tests/web_test_helpers";
+import {sprintf} from "@web/core/utils/strings";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 describe.current.tags("headless");
 defineSpreadsheetAccountModels();
 
-const { DEFAULT_LOCALE: locale } = spreadsheet.constants;
+const {DEFAULT_LOCALE: locale} = spreadsheet.constants;
 
 const serverData = getAccountingData();
 
 test("Basic evaluation", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
                 expect.step("spreadsheet_fetch_debit_credit");
-                return [{ debit: 42, credit: 16 }];
+                return [{debit: 42, credit: 16}];
             }
         },
     });
@@ -41,7 +41,7 @@ test("Basic evaluation", async () => {
 });
 
 test("evaluation with reference to a month period", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
                 expect(args.args[0]).toEqual([
@@ -57,7 +57,7 @@ test("evaluation with reference to a month period", async () => {
                     },
                 ]);
                 expect.step("spreadsheet_fetch_debit_credit");
-                return [{ debit: 42, credit: 16 }];
+                return [{debit: 42, credit: 16}];
             }
         },
     });
@@ -74,7 +74,7 @@ test("evaluation with reference to a month period", async () => {
 });
 
 test("Functions are correctly formatted", async () => {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(model, "A1", `=ODOO.CREDIT("100", "2022")`);
     setCellContent(model, "A2", `=ODOO.DEBIT("100", "2022")`);
     setCellContent(model, "A3", `=ODOO.BALANCE("100", "2022")`);
@@ -85,7 +85,7 @@ test("Functions are correctly formatted", async () => {
 });
 
 test("Functions with a wrong company id is correctly in error", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "get_company_currency_for_spreadsheet") {
                 return false;
@@ -94,16 +94,18 @@ test("Functions with a wrong company id is correctly in error", async () => {
     });
     setCellContent(model, "A1", `=ODOO.CREDIT("100", "2022", 0, 123456)`);
     await waitForDataLoaded(model);
-    expect(getEvaluatedCell(model, "A1").message).toBe("Currency not available for this company.");
+    expect(getEvaluatedCell(model, "A1").message).toBe(
+        "Currency not available for this company."
+    );
 });
 
 test("formula with invalid date", async () => {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(model, "A1", `=ODOO.CREDIT("100",)`);
     setCellContent(model, "A2", `=ODOO.DEBIT("100", 0)`);
     setCellContent(model, "A3", `=ODOO.BALANCE("100", -1)`);
     setCellContent(model, "A4", `=ODOO.BALANCE("100", "not a valid period")`);
-    setCellContent(model, "A5", `=ODOO.BALANCE("100", 1900)`); // this should be ok
+    setCellContent(model, "A5", `=ODOO.BALANCE("100", 1900)`); // This should be ok
     setCellContent(model, "A6", `=ODOO.BALANCE("100", 1900, -1)`);
     setCellContent(model, "A7", `=ODOO.DEBIT("100", 1899)`);
     await waitForDataLoaded(model);
@@ -111,18 +113,20 @@ test("formula with invalid date", async () => {
     expect(getEvaluatedCell(model, "A1").message).toBe("0 is not a valid year.");
     expect(getEvaluatedCell(model, "A2").message).toBe("0 is not a valid year.");
     expect(getEvaluatedCell(model, "A3").message).toBe("-1 is not a valid year.");
-    expect(getEvaluatedCell(model, "A4").message).toBe(sprintf(errorMessage, "not a valid period"));
+    expect(getEvaluatedCell(model, "A4").message).toBe(
+        sprintf(errorMessage, "not a valid period")
+    );
     expect(getEvaluatedCell(model, "A5").value).toBe(0);
     expect(getEvaluatedCell(model, "A6").message).toBe("1899 is not a valid year.");
     expect(getEvaluatedCell(model, "A7").message).toBe("1899 is not a valid year.");
 });
 
 test("Evaluation with multiple account codes", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
                 expect.step("spreadsheet_fetch_debit_credit");
-                return [{ debit: 142, credit: 26 }];
+                return [{debit: 142, credit: 26}];
             }
         },
     });
@@ -130,7 +134,7 @@ test("Evaluation with multiple account codes", async () => {
     setCellContent(model, "A2", `=ODOO.DEBIT("100,200", "2022")`);
     setCellContent(model, "A3", `=ODOO.BALANCE("100,200", "2022")`);
 
-    // with spaces
+    // With spaces
     setCellContent(model, "B1", `=ODOO.CREDIT("100 , 200", "2022")`);
     setCellContent(model, "B2", `=ODOO.DEBIT("100 , 200", "2022")`);
     setCellContent(model, "B3", `=ODOO.BALANCE("100 , 200", "2022")`);
@@ -147,10 +151,10 @@ test("Evaluation with multiple account codes", async () => {
 });
 
 test("Handle error evaluation", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
-                throw makeServerError({ description: "a nasty error" });
+                throw makeServerError({description: "a nasty error"});
             }
         },
     });
@@ -162,14 +166,14 @@ test("Handle error evaluation", async () => {
 });
 
 test("Server requests", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
                 const blobs = args.args[0];
                 for (const blob of blobs) {
                     expect.step(blob);
                 }
-                return new Array(blobs.length).fill({ credit: 0, debit: 0 });
+                return new Array(blobs.length).fill({credit: 0, debit: 0});
             }
         },
     });
@@ -177,7 +181,7 @@ test("Server requests", async () => {
     setCellContent(model, "A2", `=ODOO.CREDIT("100", "01/2022")`);
     setCellContent(model, "A3", `=ODOO.DEBIT("100","Q2/2022")`);
     setCellContent(model, "A4", `=ODOO.BALANCE("10", "2021")`);
-    setCellContent(model, "A5", `=ODOO.CREDIT("10", "2022", -1)`); // same payload as A4: should only be called once
+    setCellContent(model, "A5", `=ODOO.CREDIT("10", "2022", -1)`); // Same payload as A4: should only be called once
     setCellContent(model, "A6", `=ODOO.DEBIT("5", "2021", 0, 2)`);
     setCellContent(model, "A7", `=ODOO.DEBIT("5", "05/04/2021", 1)`);
     setCellContent(model, "A8", `=ODOO.BALANCE("5", "2022",,,FALSE)`);
@@ -187,55 +191,55 @@ test("Server requests", async () => {
 
     expect.verifySteps([
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["100"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "01/2022" }, locale),
+            dateRange: parseAccountingDate({value: "01/2022"}, locale),
             codes: ["100"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "Q2/2022" }, locale),
+            dateRange: parseAccountingDate({value: "Q2/2022"}, locale),
             codes: ["100"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2021" }, locale),
+            dateRange: parseAccountingDate({value: "2021"}, locale),
             codes: ["10"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2021" }, locale),
+            dateRange: parseAccountingDate({value: "2021"}, locale),
             codes: ["5"],
             companyId: 2,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "05/04/2022" }, locale),
+            dateRange: parseAccountingDate({value: "05/04/2022"}, locale),
             codes: ["5"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["5"],
             companyId: null,
             includeUnposted: false,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "05/05/2022" }, locale),
+            dateRange: parseAccountingDate({value: "05/05/2022"}, locale),
             codes: ["100"],
             companyId: null,
             includeUnposted: true,
         }),
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2019" }, locale),
+            dateRange: parseAccountingDate({value: "2019"}, locale),
             codes: ["33"],
             companyId: null,
             includeUnposted: false,
@@ -244,7 +248,7 @@ test("Server requests", async () => {
 });
 
 test("Server requests with multiple account codes", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
                 expect.step("spreadsheet_fetch_debit_credit");
@@ -263,7 +267,7 @@ test("Server requests with multiple account codes", async () => {
     expect.verifySteps([
         "spreadsheet_fetch_debit_credit",
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["100", "200"],
             companyId: null,
             includeUnposted: false,
@@ -272,7 +276,7 @@ test("Server requests with multiple account codes", async () => {
 });
 
 test("account group formula as input to balance formula", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         serverData,
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
@@ -294,7 +298,7 @@ test("account group formula as input to balance formula", async () => {
     expect.verifySteps([
         "spreadsheet_fetch_debit_credit",
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["100104", "200104"],
             companyId: null,
             includeUnposted: false,
@@ -303,7 +307,7 @@ test("account group formula as input to balance formula", async () => {
 });
 
 test("two concurrent requests on different accounts", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         serverData,
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_debit_credit") {
@@ -316,8 +320,8 @@ test("two concurrent requests on different accounts", async () => {
         },
     });
     setCellContent(model, "A1", `=ODOO.ACCOUNT.GROUP("income")`);
-    setCellContent(model, "A2", `=ODOO.BALANCE(A1, 2022)`); // batched only when A1 resolves
-    setCellContent(model, "A3", `=ODOO.BALANCE("100", 2022)`); // batched directly
+    setCellContent(model, "A2", `=ODOO.BALANCE(A1, 2022)`); // Batched only when A1 resolves
+    setCellContent(model, "A3", `=ODOO.BALANCE("100", 2022)`); // Batched directly
     expect(getCellValue(model, "A1")).toBe("Loading...");
     expect(getCellValue(model, "A2")).toBe("Loading...");
     expect(getCellValue(model, "A3")).toBe("Loading...");
@@ -332,14 +336,14 @@ test("two concurrent requests on different accounts", async () => {
     expect.verifySteps([
         "spreadsheet_fetch_debit_credit",
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["100"],
             companyId: null,
             includeUnposted: false,
         }),
         "spreadsheet_fetch_debit_credit",
         camelToSnakeObject({
-            dateRange: parseAccountingDate({ value: "2022" }, locale),
+            dateRange: parseAccountingDate({value: "2022"}, locale),
             codes: ["100104", "200104"],
             companyId: null,
             includeUnposted: false,
@@ -348,8 +352,8 @@ test("two concurrent requests on different accounts", async () => {
 });
 
 test("date with non-standard locale", async () => {
-    const { model } = await createModelWithDataSource({
-        mockRPC: async function (route, { method, args }) {
+    const {model} = await createModelWithDataSource({
+        mockRPC: async function (route, {method, args}) {
             if (method === "spreadsheet_fetch_debit_credit") {
                 expect.step("spreadsheet_fetch_debit_credit");
                 expect(args).toEqual([
@@ -367,12 +371,12 @@ test("date with non-standard locale", async () => {
                         },
                     ],
                 ]);
-                return [{ debit: 142, credit: 26 }];
+                return [{debit: 142, credit: 26}];
             }
         },
     });
-    const myLocale = { ...locale, dateFormat: "d/mmm/yyyy" };
-    model.dispatch("UPDATE_LOCALE", { locale: myLocale });
+    const myLocale = {...locale, dateFormat: "d/mmm/yyyy"};
+    model.dispatch("UPDATE_LOCALE", {locale: myLocale});
     setCellContent(model, "A1", "=DATE(2002, 2, 1)");
     setCellContent(model, "A2", "=ODOO.BALANCE(100, A1)");
     setCellContent(model, "A3", "=ODOO.CREDIT(100, A1)");
@@ -386,34 +390,34 @@ test("date with non-standard locale", async () => {
 });
 
 test("parseAccountingDate", () => {
-    expect(parseAccountingDate({ value: "2022" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "2022"}, locale)).toEqual({
         rangeType: "year",
         year: 2022,
     });
-    expect(parseAccountingDate({ value: "11/10/2022" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "11/10/2022"}, locale)).toEqual({
         rangeType: "day",
         year: 2022,
         month: 11,
         day: 10,
     });
-    expect(parseAccountingDate({ value: "10/2022" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "10/2022"}, locale)).toEqual({
         rangeType: "month",
         year: 2022,
         month: 10,
     });
-    expect(parseAccountingDate({ value: "Q1/2022" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "Q1/2022"}, locale)).toEqual({
         rangeType: "quarter",
         year: 2022,
         quarter: 1,
     });
-    expect(parseAccountingDate({ value: "q4/2022" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "q4/2022"}, locale)).toEqual({
         rangeType: "quarter",
         year: 2022,
         quarter: 4,
     });
     // A number below 3000 is interpreted as a year.
     // It's interpreted as a regular spreadsheet date otherwise
-    expect(parseAccountingDate({ value: "3005" }, locale)).toEqual({
+    expect(parseAccountingDate({value: "3005"}, locale)).toEqual({
         rangeType: "day",
         year: 1908,
         month: 3,

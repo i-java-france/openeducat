@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -25,15 +25,15 @@ test("Change dynamic SVG colors", async () => {
     // SVG being downloaded from the server when the <img> src attribute is modified.
     const colorPreviewButton = await waitFor(
         '[data-label="Dynamic Colors"] button.o_we_color_preview',
-        { timeout: 1000 }
+        {timeout: 1000}
     );
     const expectColors = async (expectedHex, expectedRgb, expectedParam) => {
         await waitFor(
             `[data-label="Dynamic Colors"] button.o_we_color_preview[style="background-color: ${expectedHex}"]`,
-            { timeout: 1000 }
+            {timeout: 1000}
         );
         expect(svg).toHaveAttribute("src", `${imgPath}?c1=${expectedParam}`);
-        expect(colorPreviewButton).toHaveStyle({ backgroundColor: expectedRgb });
+        expect(colorPreviewButton).toHaveStyle({backgroundColor: expectedRgb});
     };
     await expectColors("#000000", "rgb(0, 0, 0)", "%23000000");
 

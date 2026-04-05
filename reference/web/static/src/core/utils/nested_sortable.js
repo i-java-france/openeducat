@@ -1,5 +1,5 @@
-import { localization } from "@web/core/l10n/localization";
-import { makeDraggableHook } from "@web/core/utils/draggable_hook_builder_owl";
+import {localization} from "@web/core/l10n/localization";
+import {makeDraggableHook} from "@web/core/utils/draggable_hook_builder_owl";
 
 /** @typedef {import("@web/core/utils/draggable_hook_builder").DraggableHandlerParams} DraggableHandlerParams */
 /** @typedef {DraggableHandlerParams & { group: HTMLElement | null }} NestedSortableHandlerParams */
@@ -62,7 +62,7 @@ export const useNestedSortable = makeDraggableHook({
         connectGroups: false,
         currentGroup: null,
         cursor: "grabbing",
-        edgeScrolling: { speed: 20, threshold: 60 },
+        edgeScrolling: {speed: 20, threshold: 60},
         elements: "li",
         groupSelector: null,
         nest: false,
@@ -74,7 +74,7 @@ export const useNestedSortable = makeDraggableHook({
     },
 
     // Set the parameters.
-    onComputeParams({ ctx, params }) {
+    onComputeParams({ctx, params}) {
         // Group selector
         ctx.groupSelector = params.groups || null;
         if (ctx.groupSelector) {
@@ -97,7 +97,7 @@ export const useNestedSortable = makeDraggableHook({
 
     // Set the current group and create the placeholder row that will take the
     // place of the moving row.
-    onWillStartDrag({ ctx, addCleanup }) {
+    onWillStartDrag({ctx, addCleanup}) {
         if (ctx.groupSelector) {
             ctx.currentGroup = ctx.current.element.closest(ctx.groupSelector);
             if (!ctx.connectGroups) {
@@ -112,8 +112,12 @@ export const useNestedSortable = makeDraggableHook({
         ctx.current.placeHolder.removeAttribute("id");
         ctx.current.placeHolder.classList.add("w-100", "d-block");
         if (ctx.useElementSize) {
-            ctx.current.placeHolder.style.height = getComputedStyle(ctx.current.element).height;
-            ctx.current.placeHolder.classList.add("o_nested_sortable_placeholder_realsize");
+            ctx.current.placeHolder.style.height = getComputedStyle(
+                ctx.current.element
+            ).height;
+            ctx.current.placeHolder.classList.add(
+                "o_nested_sortable_placeholder_realsize"
+            );
         } else {
             ctx.current.placeHolder.classList.add("o_nested_sortable_placeholder");
         }
@@ -123,7 +127,7 @@ export const useNestedSortable = makeDraggableHook({
     // Make the placeholder take the place of the moving row, and add style on
     // different elements to provide feedback that there is an ongoing dragging
     // sequence.
-    onDragStart({ ctx, addStyle }) {
+    onDragStart({ctx, addStyle}) {
         // Horizontal position which will be used to detect row changes when moving vertically, so that
         // we do not need to be on the row to trigger row changes (only the vertical position matters).
         // Nested rows are shorter than "root" rows, and do not start at the same horizontal position.
@@ -135,15 +139,17 @@ export const useNestedSortable = makeDraggableHook({
 
         // Placeholder is initially added right after the current element.
         ctx.current.element.after(ctx.current.placeHolder);
-        addStyle(ctx.current.element, { opacity: 0.5 });
+        addStyle(ctx.current.element, {opacity: 0.5});
 
         // Remove pointer-events style added by draggable_hook_builder and set
         // it on the view elements instead as in our case we want to show the
         // ctx.cursor style on the whole screen, not only in the ref el.
-        addStyle(document.body, { "pointer-events": "auto" });
-        addStyle(document.querySelector(".o_navbar"), { "pointer-events": "none" });
-        addStyle(document.querySelector(".o_action_manager"), { "pointer-events": "none" });
-        addStyle(ctx.current.container, { "pointer-events": "auto" });
+        addStyle(document.body, {"pointer-events": "auto"});
+        addStyle(document.querySelector(".o_navbar"), {"pointer-events": "none"});
+        addStyle(document.querySelector(".o_action_manager"), {
+            "pointer-events": "none",
+        });
+        addStyle(ctx.current.container, {"pointer-events": "auto"});
 
         // Calls "onDragStart" handler
         return {
@@ -155,7 +161,10 @@ export const useNestedSortable = makeDraggableHook({
         let result = 0;
         const childSelector = `${ctx.listTagName} ${ctx.elementSelector}`;
         for (const childNode of node.querySelectorAll(childSelector)) {
-            result = Math.max(this._getDeepestChildLevel(ctx, childNode, depth + 1), result);
+            result = Math.max(
+                this._getDeepestChildLevel(ctx, childNode, depth + 1),
+                result
+            );
         }
         return depth ? result + 1 : result;
     },
@@ -173,12 +182,13 @@ export const useNestedSortable = makeDraggableHook({
     },
     _isAllowedNodeMove(ctx) {
         return (
-            !this._hasReachMaxAllowedLevel(ctx) && ctx.isAllowed(ctx.current, ctx.elementSelector)
+            !this._hasReachMaxAllowedLevel(ctx) &&
+            ctx.isAllowed(ctx.current, ctx.elementSelector)
         );
     },
     // Check if the cursor moved enough to trigger a move. If it did, move the
     // placeholder accordingly.
-    onDrag({ ctx, callHandler }) {
+    onDrag({ctx, callHandler}) {
         const onMove = (prevPos) => {
             if (!ctx.isAllowed(ctx.current, ctx.elementSelector)) {
                 ctx.current.placeHolder.classList.add("d-none");
@@ -329,7 +339,10 @@ export const useNestedSortable = makeDraggableHook({
                     // Recenter the pointer coordinates to this step
                     ctx.prevNestX = ctx.pointer.x;
                 }
-            } else if (currentTop - eRect.y > 15 && pos === Node.DOCUMENT_POSITION_FOLLOWING) {
+            } else if (
+                currentTop - eRect.y > 15 &&
+                pos === Node.DOCUMENT_POSITION_FOLLOWING
+            ) {
                 // Place placeholder after the hovered element in its parent's
                 // list if the cursor is not in the upper part of the
                 // element and if the placeholder is currently before the
@@ -368,7 +381,10 @@ export const useNestedSortable = makeDraggableHook({
                 }
                 // Recenter the pointer coordinates to this step
                 ctx.prevNestX = ctx.pointer.x;
-                callHandler("onGroupEnter", { group, placeholder: ctx.current.placeHolder });
+                callHandler("onGroupEnter", {
+                    group,
+                    placeholder: ctx.current.placeHolder,
+                });
                 callHandler("onGroupLeave", {
                     group: position.group,
                     placeholder: ctx.current.placeHolder,
@@ -378,7 +394,7 @@ export const useNestedSortable = makeDraggableHook({
     },
     // If the drop position is different from the starting position, run the
     // onDrop handler from the parameters.
-    onDrop({ ctx }) {
+    onDrop({ctx}) {
         if (!this._isAllowedNodeMove(ctx)) {
             return;
         }
@@ -390,14 +406,18 @@ export const useNestedSortable = makeDraggableHook({
                 group: ctx.currentGroup,
                 previous,
                 next,
-                newGroup: ctx.groupSelector && ctx.current.placeHolder.closest(ctx.groupSelector),
-                parent: ctx.current.placeHolder.parentElement.closest(ctx.elementSelector),
+                newGroup:
+                    ctx.groupSelector &&
+                    ctx.current.placeHolder.closest(ctx.groupSelector),
+                parent: ctx.current.placeHolder.parentElement.closest(
+                    ctx.elementSelector
+                ),
                 placeholder: ctx.current.placeHolder,
             };
         }
     },
     // Run the onDragEnd handler from the parameters.
-    onDragEnd({ ctx }) {
+    onDragEnd({ctx}) {
         return {
             element: ctx.current.element,
             group: ctx.currentGroup,

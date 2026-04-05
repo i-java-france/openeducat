@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from odoo import api, models, fields
+from odoo import api, fields, models
 
 
 class AccountSetupBankManualConfig(models.TransientModel):

@@ -1,11 +1,17 @@
-import { useNativeDraggable } from "@html_editor/utils/drag_and_drop";
-import { childNodeIndex, endPos, leftPos, nodeSize, rightPos } from "@html_editor/utils/position";
-import { xml } from "@odoo/owl";
-import { Plugin } from "../plugin";
-import { closestElement } from "../utils/dom_traversal";
-import { _t } from "@web/core/l10n/translation";
-import { baseContainerGlobalSelector } from "@html_editor/utils/base_container";
-import { getDeepestPosition, isContentEditable } from "@html_editor/utils/dom_info";
+import {useNativeDraggable} from "@html_editor/utils/drag_and_drop";
+import {
+    childNodeIndex,
+    endPos,
+    leftPos,
+    nodeSize,
+    rightPos,
+} from "@html_editor/utils/position";
+import {xml} from "@odoo/owl";
+import {Plugin} from "../plugin";
+import {closestElement} from "../utils/dom_traversal";
+import {_t} from "@web/core/l10n/translation";
+import {baseContainerGlobalSelector} from "@html_editor/utils/base_container";
+import {getDeepestPosition, isContentEditable} from "@html_editor/utils/dom_info";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 
@@ -23,7 +29,13 @@ const ALLOWED_ELEMENTS = "h1, h2, h3, p, hr, pre, blockquote, li";
 
 export class MoveNodePlugin extends Plugin {
     static id = "movenode";
-    static dependencies = ["baseContainer", "selection", "history", "position", "localOverlay"];
+    static dependencies = [
+        "baseContainer",
+        "selection",
+        "history",
+        "position",
+        "localOverlay",
+    ];
     /** @type {import("plugins").EditorResources} */
     resources = {
         layout_geometry_change_handlers: () => {
@@ -63,8 +75,9 @@ export class MoveNodePlugin extends Plugin {
             "oe-movenode-helper-container"
         );
         // This container contains drop zones. They are the zones that handle where the drop should happen.
-        this.dropzonesContainer =
-            this.dependencies.localOverlay.makeLocalOverlay("oe-dropzones-container");
+        this.dropzonesContainer = this.dependencies.localOverlay.makeLocalOverlay(
+            "oe-dropzones-container"
+        );
         // This container contains drop hint. The final rectangle showed to the user.
         this.dropzoneHintContainer = this.dependencies.localOverlay.makeLocalOverlay(
             "oe-dropzone-hint-container"
@@ -124,7 +137,8 @@ export class MoveNodePlugin extends Plugin {
         const editableStyles = getComputedStyle(this.editable);
         this.editableRect = this.editable.getBoundingClientRect();
         const paddingLeft = parseInt(editableStyles.paddingLeft, 10) || 0;
-        this.editableRect.x = this.editableRect.x + paddingLeft - (WIDGET_CONTAINER_WIDTH + 5);
+        this.editableRect.x =
+            this.editableRect.x + paddingLeft - (WIDGET_CONTAINER_WIDTH + 5);
         this.editableRect.width =
             this.editableRect.width - paddingLeft + (WIDGET_CONTAINER_WIDTH + 5);
         const containerRect = this.widgetHookContainer.getBoundingClientRect();
@@ -162,7 +176,9 @@ export class MoveNodePlugin extends Plugin {
 
         const visibleElements = [...this.visibleMovableElements];
         // Prevent layout thrashing by computing all the rects in advance.
-        const elementRects = visibleElements.map((element) => element.getBoundingClientRect());
+        const elementRects = visibleElements.map((element) =>
+            element.getBoundingClientRect()
+        );
         for (const index in visibleElements) {
             const element = visibleElements[index];
             const elementRect = elementRects[index];
@@ -183,7 +199,10 @@ export class MoveNodePlugin extends Plugin {
                 // For <li>, move hookBox to the left to avoid blocking
                 // checkboxes — needed for proper list item interaction.
                 hookBox = new DOMRect(
-                    elementRect.x - containerRect.left - WIDGET_CONTAINER_WIDTH - WIDGET_MOVE_SIZE,
+                    elementRect.x -
+                        containerRect.left -
+                        WIDGET_CONTAINER_WIDTH -
+                        WIDGET_MOVE_SIZE,
                     elementRect.y - containerRect.top - marginTop,
                     WIDGET_CONTAINER_WIDTH,
                     elementRect.height + marginTop + marginBottom
@@ -306,7 +325,7 @@ export class MoveNodePlugin extends Plugin {
             // TODO: This should be made more generic, one hook for the entire
             // editable with each element handled.
             this.smoothScrollOnDrag = useNativeDraggable(simpleDraggableHook, {
-                ref: { el: this.widgetContainer },
+                ref: {el: this.widgetContainer},
                 elements: ".oe-sidewidget-move",
                 onDragStart: () => this.startDropzones(movableElement, containerRect),
                 onDragEnd: () => this._stopDropzones(movableElement),
@@ -398,27 +417,35 @@ export class MoveNodePlugin extends Plugin {
                     const currentDropHintSizeHalf = currentDropHintSize / 2;
 
                     if (direction === "north") {
-                        this._currentDropHint.style["top"] = `-${currentDropHintSizeHalf}px`;
+                        this._currentDropHint.style["top"] =
+                            `-${currentDropHintSizeHalf}px`;
                         this._currentDropHint.style["width"] = `100%`;
-                        this._currentDropHint.style["height"] = `${currentDropHintSize}px`;
+                        this._currentDropHint.style["height"] =
+                            `${currentDropHintSize}px`;
                         dropzoneHintBox.append(this._currentDropHint);
                         this._currentDropHintElementPosition = ["top", element];
                     } else if (direction === "south") {
-                        this._currentDropHint.style["bottom"] = `-${currentDropHintSizeHalf}px`;
+                        this._currentDropHint.style["bottom"] =
+                            `-${currentDropHintSizeHalf}px`;
                         this._currentDropHint.style["width"] = `100%`;
-                        this._currentDropHint.style["height"] = `${currentDropHintSize}px`;
+                        this._currentDropHint.style["height"] =
+                            `${currentDropHintSize}px`;
                         dropzoneHintBox.append(this._currentDropHint);
                         this._currentDropHintElementPosition = ["bottom", element];
                     } else if (direction === "west") {
-                        this._currentDropHint.style["left"] = `-${currentDropHintSizeHalf}px`;
+                        this._currentDropHint.style["left"] =
+                            `-${currentDropHintSizeHalf}px`;
                         this._currentDropHint.style["height"] = `100%`;
-                        this._currentDropHint.style["width"] = `${currentDropHintSize}px`;
+                        this._currentDropHint.style["width"] =
+                            `${currentDropHintSize}px`;
                         dropzoneHintBox.append(this._currentDropHint);
                         this._currentDropHintElementPosition = ["left", element];
                     } else if (direction === "east") {
-                        this._currentDropHint.style["right"] = `-${currentDropHintSizeHalf}px`;
+                        this._currentDropHint.style["right"] =
+                            `-${currentDropHintSizeHalf}px`;
                         this._currentDropHint.style["height"] = `100%`;
-                        this._currentDropHint.style["width"] = `${currentDropHintSize}px`;
+                        this._currentDropHint.style["width"] =
+                            `${currentDropHintSize}px`;
                         dropzoneHintBox.append(this._currentDropHint);
                         this._currentDropHintElementPosition = ["right", element];
                     }
@@ -450,7 +477,9 @@ export class MoveNodePlugin extends Plugin {
             this._currentDropHintElementPosition = undefined;
             const previousParent = movableElement.parentElement;
 
-            const isFocusInsideList = ["UL", "OL"].includes(focusElelement?.parentElement?.tagName);
+            const isFocusInsideList = ["UL", "OL"].includes(
+                focusElelement?.parentElement?.tagName
+            );
             if (movableElement.tagName === "LI" && !isFocusInsideList) {
                 // If LI is moved outside a list, wrap it in UL/OL (previous parent)
                 const wrapperList = previousParent.cloneNode(false);
@@ -471,7 +500,8 @@ export class MoveNodePlugin extends Plugin {
                 if (["UL", "OL"].includes(previousParent.tagName)) {
                     previousParent.remove();
                 } else {
-                    const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                    const baseContainer =
+                        this.dependencies.baseContainer.createBaseContainer();
                     const br = document.createElement("br");
                     baseContainer.append(br);
                     previousParent.append(baseContainer);
@@ -506,7 +536,9 @@ export class MoveNodePlugin extends Plugin {
         }
     }
     isNodeMovable(node) {
-        const blacklistSelectors = this.getResource("move_node_blacklist_selectors").join(", ");
+        const blacklistSelectors = this.getResource(
+            "move_node_blacklist_selectors"
+        ).join(", ");
         if (blacklistSelectors && node.matches(blacklistSelectors)) {
             return false;
         }
@@ -525,13 +557,13 @@ const simpleDraggableHook = {
     acceptedParams: {
         helper: [Function],
     },
-    edgeScrolling: { enable: true },
-    onComputeParams({ ctx, params }) {
+    edgeScrolling: {enable: true},
+    onComputeParams({ctx, params}) {
         ctx.helper = params.helper;
         ctx.followCursor = false;
         ctx.tolerance = 0;
     },
-    onDragStart({ ctx }) {
+    onDragStart({ctx}) {
         ctx.current.element = ctx.helper();
         ctx.current.element.style.left = `${ctx.pointer.x + 10}px`;
         ctx.current.element.style.top = `${ctx.pointer.y + 10}px`;
@@ -541,11 +573,11 @@ const simpleDraggableHook = {
         document.body.style.cursor = "grabbing";
         return ctx.current;
     },
-    onDrag({ ctx }) {
+    onDrag({ctx}) {
         ctx.current.element.style.left = `${ctx.pointer.x}px`;
         ctx.current.element.style.top = `${ctx.pointer.y}px`;
     },
-    onDragEnd({ ctx }) {
+    onDragEnd({ctx}) {
         ctx.current.element.remove();
         if (document.body.style.cursor === "grabbing") {
             document.body.style.cursor = "";

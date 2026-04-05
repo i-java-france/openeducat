@@ -3,13 +3,17 @@
 import base64
 import re
 import uuid
-
 from urllib.parse import urljoin
 
 from odoo import api, fields, models
-from odoo.addons.l10n_tw_edi_ecpay.utils import call_ecpay_api, transfer_time, convert_utc_time_to_tw_time
 from odoo.exceptions import UserError
 from odoo.tools import float_round
+
+from odoo.addons.l10n_tw_edi_ecpay.utils import (
+    call_ecpay_api,
+    convert_utc_time_to_tw_time,
+    transfer_time,
+)
 
 
 class AccountMove(models.Model):

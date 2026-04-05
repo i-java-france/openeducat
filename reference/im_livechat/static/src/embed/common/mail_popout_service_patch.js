@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { loadAssets } from "@im_livechat/embed/common/boot_helpers";
-import { mailPopoutService } from "@mail/core/common/mail_popout_service";
+import {patch} from "@web/core/utils/patch";
+import {loadAssets} from "@im_livechat/embed/common/boot_helpers";
+import {mailPopoutService} from "@mail/core/common/mail_popout_service";
 
 const popoutPatch = {
     async addAssets(window) {
@@ -10,7 +10,7 @@ const popoutPatch = {
             if (window.document.readyState === "complete") {
                 resolve();
             } else {
-                window.addEventListener("load", resolve, { once: true });
+                window.addEventListener("load", resolve, {once: true});
             }
         });
         // FIXME: without this, fonts detected on the document are incorrect,

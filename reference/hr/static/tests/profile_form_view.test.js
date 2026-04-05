@@ -5,14 +5,14 @@ import {
     mockService,
     mountView,
 } from "@web/../tests/web_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { defineHrModels } from "@hr/../tests/hr_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {defineHrModels} from "@hr/../tests/hr_test_helpers";
 
 describe.current.tags("desktop");
 defineHrModels();
 
 test("editing the 'lang' field and saving it triggers a 'reload_context'", async function () {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const userId = env["fake.user"].create({
         name: "Aline",
         lang: "fr",

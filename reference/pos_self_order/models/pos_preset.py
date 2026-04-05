@@ -1,4 +1,4 @@
-from odoo import models, api, fields
+from odoo import api, fields, models
 
 
 class PosPreset(models.Model):
@@ -11,7 +11,7 @@ class PosPreset(models.Model):
         default="counter",
         required=True,
     )
-    
+
     mail_template_id = fields.Many2one(
         string="Email Confirmation",
         comodel_name='mail.template',
@@ -28,7 +28,7 @@ class PosPreset(models.Model):
         params = super()._load_pos_self_data_fields(config)
         params.extend(['service_at', 'mail_template_id'])
         return params
-    
+
     @api.model
     def _load_pos_data_fields(self, config):
         params = super()._load_pos_data_fields(config)

@@ -5,8 +5,9 @@ from werkzeug.exceptions import NotFound
 
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.mail.controllers.webclient import WebclientController
-from odoo.addons.mail.tools.discuss import add_guest_to_context, Store
+from odoo.addons.mail.tools.discuss import Store, add_guest_to_context
 
 
 class DiscussChannelWebclientController(WebclientController):

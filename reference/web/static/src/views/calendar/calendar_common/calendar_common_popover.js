@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dialog } from "@web/core/dialog/dialog";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { is24HourFormat } from "@web/core/l10n/time";
-import { registry } from "@web/core/registry";
-import { Field } from "@web/views/fields/field";
-import { Record } from "@web/model/record";
-import { getFormattedDateSpan } from "@web/views/calendar/utils";
+import {_t} from "@web/core/l10n/translation";
+import {Dialog} from "@web/core/dialog/dialog";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {is24HourFormat} from "@web/core/l10n/time";
+import {registry} from "@web/core/registry";
+import {Field} from "@web/views/fields/field";
+import {Record} from "@web/model/record";
+import {getFormattedDateSpan} from "@web/views/calendar/utils";
 
-import { Component, useExternalListener } from "@odoo/owl";
+import {Component, useExternalListener} from "@odoo/owl";
 
 export class CalendarCommonPopover extends Component {
     static template = "web.CalendarCommonPopover";
@@ -36,7 +36,9 @@ export class CalendarCommonPopover extends Component {
         this.date = null;
         this.dateDuration = null;
 
-        useExternalListener(window, "pointerdown", (e) => e.preventDefault(), { capture: true });
+        useExternalListener(window, "pointerdown", (e) => e.preventDefault(), {
+            capture: true,
+        });
 
         this.computeDateTimeAndDuration();
     }
@@ -58,7 +60,10 @@ export class CalendarCommonPopover extends Component {
     }
 
     isInvisible(fieldNode, record) {
-        return evaluateBooleanExpr(fieldNode.invisible, record.evalContextWithVirtualIds);
+        return evaluateBooleanExpr(
+            fieldNode.invisible,
+            record.evalContextWithVirtualIds
+        );
     }
 
     getFormattedValue(fieldName, record) {
@@ -76,7 +81,7 @@ export class CalendarCommonPopover extends Component {
 
     computeDateTimeAndDuration() {
         const record = this.props.record;
-        const { start, end } = record;
+        const {start, end} = record;
         const isSameDay = start.hasSame(end, "day");
 
         if (!record.isTimeHidden && !record.isAllDay && isSameDay) {
@@ -103,7 +108,7 @@ export class CalendarCommonPopover extends Component {
                 if (isSameDay) {
                     this.dateDuration = _t("All day");
                 } else {
-                    const duration = end.plus({ day: 1 }).diff(start, "days");
+                    const duration = end.plus({day: 1}).diff(start, "days");
                     this.dateDuration = duration.toFormat(`d '${_t("days")}'`);
                 }
             }

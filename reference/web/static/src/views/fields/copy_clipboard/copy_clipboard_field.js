@@ -1,21 +1,21 @@
-import { _t } from "@web/core/l10n/translation";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
-import { omit } from "@web/core/utils/objects";
+import {_t} from "@web/core/l10n/translation";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
+import {omit} from "@web/core/utils/objects";
 
-import { CopyButton } from "@web/core/copy_button/copy_button";
-import { CharField } from "../char/char_field";
-import { standardFieldProps } from "../standard_field_props";
-import { UrlField } from "../url/url_field";
+import {CopyButton} from "@web/core/copy_button/copy_button";
+import {CharField} from "../char/char_field";
+import {standardFieldProps} from "../standard_field_props";
+import {UrlField} from "../url/url_field";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 class CopyClipboardField extends Component {
     static template = "web.CopyClipboardField";
     static props = {
         ...standardFieldProps,
-        string: { type: String, optional: true },
-        disabledExpr: { type: String, optional: true },
+        string: {type: String, optional: true},
+        disabledExpr: {type: String, optional: true},
     };
 
     setup() {
@@ -44,10 +44,10 @@ class CopyClipboardField extends Component {
 
 export class CopyClipboardButtonField extends CopyClipboardField {
     static template = "web.CopyClipboardButtonField";
-    static components = { CopyButton };
+    static components = {CopyButton};
     static props = {
         ...CopyClipboardField.props,
-        btnClass: { type: String, optional: true },
+        btnClass: {type: String, optional: true},
     };
     static defaultProps = {
         ...CopyClipboardField.defaultProps,
@@ -60,7 +60,7 @@ export class CopyClipboardButtonField extends CopyClipboardField {
 }
 
 export class CopyClipboardCharField extends CopyClipboardField {
-    static components = { Field: CharField, CopyButton };
+    static components = {Field: CharField, CopyButton};
 
     get copyButtonIcon() {
         return "fa-clipboard";
@@ -68,7 +68,7 @@ export class CopyClipboardCharField extends CopyClipboardField {
 }
 
 export class CopyClipboardURLField extends CopyClipboardField {
-    static components = { Field: UrlField, CopyButton };
+    static components = {Field: UrlField, CopyButton};
 
     get copyButtonIcon() {
         return "fa-link";
@@ -77,7 +77,7 @@ export class CopyClipboardURLField extends CopyClipboardField {
 
 // ----------------------------------------------------------------------------
 
-function extractProps({ string, attrs }) {
+function extractProps({string, attrs}) {
     return {
         string,
         disabledExpr: attrs.disabled,

@@ -1,7 +1,7 @@
-import { busParametersService } from "@bus/bus_parameters_service";
+import {busParametersService} from "@bus/bus_parameters_service";
 
-import { patch } from "@web/core/utils/patch";
-import { session } from "@web/session";
+import {patch} from "@web/core/utils/patch";
+import {session} from "@web/session";
 
 patch(busParametersService, {
     start() {

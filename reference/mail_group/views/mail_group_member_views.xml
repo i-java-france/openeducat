@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="mail_group_member_view_tree" model="ir.ui.view">
         <field name="name">mail.group.member.view.list</field>
@@ -6,15 +6,16 @@
         <field name="arch" type="xml">
             <list editable="top" sample="1">
                 <header>
-                    <button name="%(mail_group.mail_compose_message_action_mail_group)d" type="action" string="Email" />
+                    <button
+                        name="%(mail_group.mail_compose_message_action_mail_group)d"
+                        type="action"
+                        string="Email"
+                    />
                 </header>
-                <field name="email"
-                    force_save="1"
-                    required="1"
-                    readonly="partner_id"/>
-                <field name="email_normalized" column_invisible="True" force_save="1"/>
-                <field name="partner_id"/>
-                <field name="mail_group_id"/>
+                <field name="email" force_save="1" required="1" readonly="partner_id" />
+                <field name="email_normalized" column_invisible="True" force_save="1" />
+                <field name="partner_id" />
+                <field name="mail_group_id" />
             </list>
         </field>
     </record>
@@ -24,8 +25,8 @@
         <field name="arch" type="xml">
             <search string="Search Mail Group Member">
                 <field name="email" required="1" />
-                <field name="partner_id"/>
-                <field name="mail_group_id"/>
+                <field name="partner_id" />
+                <field name="mail_group_id" />
             </search>
         </field>
     </record>

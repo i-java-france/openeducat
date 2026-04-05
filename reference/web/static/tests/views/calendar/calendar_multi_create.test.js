@@ -1,5 +1,5 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, edit, keyDown, keyUp, queryAllTexts, queryAll } from "@odoo/hoot-dom";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, edit, keyDown, keyUp, queryAll, queryAllTexts} from "@odoo/hoot-dom";
 import {
     advanceTime,
     animationFrame,
@@ -20,24 +20,24 @@ import {
     preloadBundle,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { selectDateRange } from "./calendar_test_helpers";
+import {selectDateRange} from "./calendar_test_helpers";
 
-import { Domain } from "@web/core/domain";
-import { notificationService } from "@web/core/notifications/notification_service";
-import { CalendarModel } from "@web/views/calendar/calendar_model";
-import { WebClient } from "@web/webclient/webclient";
+import {Domain} from "@web/core/domain";
+import {notificationService} from "@web/core/notifications/notification_service";
+import {CalendarModel} from "@web/views/calendar/calendar_model";
+import {WebClient} from "@web/webclient/webclient";
 
 class Event extends models.Model {
     name = fields.Char();
     date_start = fields.Date();
     datetime_start = fields.Datetime();
     datetime_end = fields.Datetime();
-    type = fields.Many2one({ relation: "event.type" });
-    user_id = fields.Many2one({ relation: "calendar.user" });
-    user_ids = fields.Many2many({ relation: "calendar.user" });
+    type = fields.Many2one({relation: "event.type"});
+    user_id = fields.Many2one({relation: "calendar.user"});
+    user_ids = fields.Many2many({relation: "calendar.user"});
 
     // FIXME: needed for the filter to work
-    filter_user_id = fields.Many2one({ relation: "calendar.user" });
+    filter_user_id = fields.Many2one({relation: "calendar.user"});
 
     _records = [
         {
@@ -129,10 +129,10 @@ class Event extends models.Model {
                 <!-- Popover -->
                 <field name="name"/>
                 <field name="type"/>
-                
+
                 <!-- Filter -->
                 <field name="user_id" write_model="filter.user" write_field="filter_user_id" filter_field="is_checked"/>
-            
+
                 <!-- For filter to work -->
                 <field name="date_start" invisible="1"/>
                 <field name="filter_user_id" invisible="1"/>
@@ -168,9 +168,9 @@ class EventType extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Event Type 1" },
-        { id: 2, name: "Event Type 2" },
-        { id: 3, name: "Event Type 3" },
+        {id: 1, name: "Event Type 1"},
+        {id: 2, name: "Event Type 2"},
+        {id: 3, name: "Event Type 3"},
     ];
 }
 
@@ -178,21 +178,21 @@ class CalendarUser extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "user 1" },
-        { id: 2, name: "user 2" },
-        { id: 3, name: "user 3" },
-        { id: 7, name: "user 7" },
+        {id: 1, name: "user 1"},
+        {id: 2, name: "user 2"},
+        {id: 3, name: "user 3"},
+        {id: 7, name: "user 7"},
     ];
 }
 
 class FilterUser extends models.Model {
-    filter_user_id = fields.Many2one({ relation: "calendar.user" });
-    user_id = fields.Many2one({ relation: "calendar.user" });
+    filter_user_id = fields.Many2one({relation: "calendar.user"});
+    user_id = fields.Many2one({relation: "calendar.user"});
     is_checked = fields.Boolean();
 
     _records = [
-        { id: 1, filter_user_id: 1, user_id: serverState.userId, is_checked: true },
-        { id: 2, filter_user_id: 3, user_id: serverState.userId, is_checked: true },
+        {id: 1, filter_user_id: 1, user_id: serverState.userId, is_checked: true},
+        {id: 2, filter_user_id: 3, user_id: serverState.userId, is_checked: true},
     ];
 }
 
@@ -219,7 +219,7 @@ async function multiCreatePopoverClickAddButton() {
 
 test.tags("desktop");
 test("multi_create: render and basic creation (simple use case)", async () => {
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             expect.step(`${record.name}_${record.date_start}`);
         }
@@ -242,7 +242,7 @@ test("multi_create: render and basic creation (simple use case)", async () => {
         message: "No filters should be visible",
     });
 
-    const { drop, moveTo } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop, moveTo} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await moveTo(".fc-day[data-date='2019-03-14']");
     await animationFrame();
     expect(".fc-day.o-highlight").toHaveCount(8);
@@ -281,7 +281,7 @@ test("multi_create: render and basic creation (simple use case)", async () => {
 
 test.tags("desktop");
 test("multi_create: render and basic functionalities (complex with filters use case)", async () => {
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             if (record.name !== "Time off" || record.type !== 3) {
                 expect.step("error");
@@ -293,12 +293,12 @@ test("multi_create: render and basic functionalities (complex with filters use c
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
     });
 
-    expect(".fc .fc-event").toHaveCount(4, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(4, {message: "events should be filter"});
 
-    const { drop, moveTo } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop, moveTo} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await moveTo(".fc-day[data-date='2019-03-14']");
     await animationFrame();
     expect(".fc-day.o-highlight").toHaveCount(8);
@@ -308,9 +308,12 @@ test("multi_create: render and basic functionalities (complex with filters use c
     await multiCreateClickAddButton();
 
     expect(".o_multi_create_popover .o_form_view").toBeVisible();
-    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue("Sick", {
-        message: "should have a default value from the context",
-    });
+    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue(
+        "Sick",
+        {
+            message: "should have a default value from the context",
+        }
+    );
     await click(".o_multi_create_popover .o_form_view [name='name'] input");
     await edit("Time off");
     await contains(".o_multi_create_popover .o_form_view [name='type'] input").click();
@@ -356,39 +359,41 @@ test("multi_create: render and basic functionalities (complex with filters use c
     await click(".o_calendar_filter_item[data-value='3'] input");
     await animationFrame();
     await advanceTime(CalendarModel.DEBOUNCED_LOAD_DELAY);
-    expect(".fc .fc-event").toHaveCount(10, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(10, {message: "events should be filter"});
 });
 
 test.tags("desktop");
 test("multi_create: basic creation (datetime field)", async () => {
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             if (record.name !== "Time off" || record.type !== 3) {
                 expect.step("error");
             }
-            expect.step(`${record.user_id}_${record.datetime_start}_${record.datetime_end}`);
+            expect.step(
+                `${record.user_id}_${record.datetime_start}_${record.datetime_end}`
+            );
         }
     });
 
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
         arch: `
             <calendar date_start="datetime_start" date_stop="datetime_end" scales="month" multi_create_view="multi_create_form" aggregate="id:count">
                 <!-- Popover -->
                 <field name="name"/>
                 <field name="type"/>
-                
+
                 <!-- Filter -->
                 <field name="user_id" write_model="filter.user" write_field="filter_user_id" filter_field="is_checked"/>
             </calendar>
         `,
     });
 
-    expect(".fc .fc-event").toHaveCount(3, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(3, {message: "events should be filter"});
 
-    const { drop, moveTo } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop, moveTo} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await moveTo(".fc-day[data-date='2019-03-14']");
     await animationFrame();
     expect(".fc-day.o-highlight").toHaveCount(8);
@@ -412,9 +417,12 @@ test("multi_create: basic creation (datetime field)", async () => {
     await animationFrame();
 
     expect(".o_multi_create_popover .o_form_view").toBeVisible();
-    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue("Sick", {
-        message: "should have a default value from the context",
-    });
+    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue(
+        "Sick",
+        {
+            message: "should have a default value from the context",
+        }
+    );
     await click(".o_multi_create_popover .o_form_view [name='name'] input");
     await edit("Time off");
     await contains(".o_multi_create_popover .o_form_view [name='type'] input").click();
@@ -469,7 +477,7 @@ test("multi_create: basic creation (datetime field)", async () => {
     await click(".o_calendar_filter_item[data-value='3'] input");
     await animationFrame();
     await advanceTime(CalendarModel.DEBOUNCED_LOAD_DELAY);
-    expect(".fc .fc-event").toHaveCount(10, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(10, {message: "events should be filter"});
 });
 
 test.tags("desktop");
@@ -482,29 +490,31 @@ test("multi_create: input validation (datetime field)", async () => {
         }),
     });
 
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
-            expect.step(`${record.user_id}_${record.datetime_start}_${record.datetime_end}`);
+            expect.step(
+                `${record.user_id}_${record.datetime_start}_${record.datetime_end}`
+            );
         }
     });
 
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
         arch: `
             <calendar date_start="datetime_start" date_stop="datetime_end" scales="month" multi_create_view="multi_create_form" aggregate="id:count">
                 <!-- Popover -->
                 <field name="name"/>
                 <field name="type"/>
-                
+
                 <!-- Filter -->
                 <field name="user_id" write_model="filter.user" write_field="filter_user_id" filter_field="is_checked"/>
             </calendar>
         `,
     });
 
-    const { drop } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await animationFrame();
     await drop();
     await animationFrame();
@@ -513,7 +523,7 @@ test("multi_create: input validation (datetime field)", async () => {
 
     // No time range
     await click(".o_time_picker_input:eq(1)");
-    await edit("", { confirm: "enter" });
+    await edit("", {confirm: "enter"});
 
     await multiCreatePopoverClickAddButton();
 
@@ -551,7 +561,7 @@ test("multi_create: input validation (datetime field)", async () => {
 
 test.tags("desktop");
 test("multi_create: use state to keep values of inputs", async () => {
-    onRpc("event.type", "get_formview_action", ({ args, model }) => ({
+    onRpc("event.type", "get_formview_action", ({args, model}) => ({
         type: "ir.actions.act_window",
         res_model: model,
         target: "current",
@@ -567,7 +577,7 @@ test("multi_create: use state to keep values of inputs", async () => {
         views: [["calendar_state", "calendar"]],
     });
 
-    let { drop } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    let {drop} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await animationFrame();
     await drop();
     await animationFrame();
@@ -591,9 +601,13 @@ test("multi_create: use state to keep values of inputs", async () => {
     await contains(".o_multi_create_popover .o_form_view [name='type'] input").click();
     await contains(".o-autocomplete--dropdown-item:contains('Event Type 3')").click();
 
-    await contains(".o_multi_create_popover .o_form_view [name='user_ids'] input").click();
+    await contains(
+        ".o_multi_create_popover .o_form_view [name='user_ids'] input"
+    ).click();
     await contains(".o-autocomplete--dropdown-item:contains('user 1')").click();
-    await contains(".o_multi_create_popover .o_form_view [name='user_ids'] input").click();
+    await contains(
+        ".o_multi_create_popover .o_form_view [name='user_ids'] input"
+    ).click();
     await contains(".o-autocomplete--dropdown-item:contains('user 3')").click();
 
     // Navigate to the many2one record
@@ -605,7 +619,7 @@ test("multi_create: use state to keep values of inputs", async () => {
     await click(".breadcrumb-item");
     await animationFrame();
 
-    ({ drop } = await contains(".fc-day[data-date='2019-03-04']").drag());
+    ({drop} = await contains(".fc-day[data-date='2019-03-04']").drag());
     await animationFrame();
     await drop();
     await animationFrame();
@@ -616,19 +630,22 @@ test("multi_create: use state to keep values of inputs", async () => {
     expect(".o_time_picker_input:eq(1)").toHaveValue("8:00");
     expect(".o_form_view [name='name'] input").toHaveValue("Test state");
     expect(".o_form_view [name='type'] input").toHaveValue("Event Type 3");
-    expect(queryAllTexts(".o_form_view [name='user_ids'] .o_tag")).toEqual(["user 1", "user 3"]);
+    expect(queryAllTexts(".o_form_view [name='user_ids'] .o_tag")).toEqual([
+        "user 1",
+        "user 3",
+    ]);
 });
 
 test.tags("desktop");
 test("multi_create: delete", async () => {
-    onRpc("event", "unlink", ({ args: [ids] }) => {
+    onRpc("event", "unlink", ({args: [ids]}) => {
         expect.step(ids);
     });
 
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
     });
 
     await click(".fc-event[data-event-id='2']");
@@ -639,7 +656,7 @@ test("multi_create: delete", async () => {
     await click(".o_calendar_header"); // Hide the popover
     await animationFrame();
 
-    const { drop } = await contains(".fc-day[data-date='2019-02-26']").drag();
+    const {drop} = await contains(".fc-day[data-date='2019-02-26']").drag();
     await drop(".fc-day[data-date='2019-04-03']");
     await animationFrame();
 
@@ -652,12 +669,14 @@ test("multi_create: delete", async () => {
     await animationFrame();
 
     expect.verifySteps([[2, 3, 5]]);
-    expect(".fc .fc-event").toHaveCount(1, { message: "selected events should be deleted" });
+    expect(".fc .fc-event").toHaveCount(1, {
+        message: "selected events should be deleted",
+    });
 
     await click(".o_calendar_filter_item[data-value='3'] input");
     await animationFrame();
     await advanceTime(CalendarModel.DEBOUNCED_LOAD_DELAY);
-    expect(".fc .fc-event").toHaveCount(0, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(0, {message: "events should be filter"});
 });
 
 test.tags("desktop");
@@ -665,7 +684,7 @@ test("multi_create: test onChange on form with no blur (input text)", async () =
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
     });
 
     await click(".fc-day[data-date='2019-03-04']");
@@ -695,29 +714,31 @@ test("multi_create: test onChange on TimePicker with no blur (input text)", asyn
         }),
     });
 
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
-            expect.step(`${record.user_id}_${record.datetime_start}_${record.datetime_end}`);
+            expect.step(
+                `${record.user_id}_${record.datetime_start}_${record.datetime_end}`
+            );
         }
     });
 
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
         arch: `
             <calendar date_start="datetime_start" date_stop="datetime_end" scales="month" multi_create_view="multi_create_form" aggregate="id:count">
                 <!-- Popover -->
                 <field name="name"/>
                 <field name="type"/>
-                
+
                 <!-- Filter -->
                 <field name="user_id" write_model="filter.user" write_field="filter_user_id" filter_field="is_checked"/>
             </calendar>
         `,
     });
 
-    const { drop } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await animationFrame();
     await drop();
     await animationFrame();
@@ -815,7 +836,7 @@ test("multi_create: test required attribute in form", async () => {
         }),
     });
 
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             expect.step(`${record.name}_${record.date_start}`);
         }
@@ -826,16 +847,18 @@ test("multi_create: test required attribute in form", async () => {
         type: "calendar",
     });
 
-    const { drop } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await animationFrame();
     await drop();
     await animationFrame();
     await multiCreateClickAddButton();
     await multiCreatePopoverClickAddButton();
-    expect(".o_multi_create_popover .o_form_view [name='name']").toHaveClass("o_required_modifier");
+    expect(".o_multi_create_popover .o_form_view [name='name']").toHaveClass(
+        "o_required_modifier"
+    );
     expect.verifySteps(["Missing required fields"]);
 
-    const { drop: dropOk } = await contains(".fc-day[data-date='2019-03-04']").drag();
+    const {drop: dropOk} = await contains(".fc-day[data-date='2019-03-04']").drag();
     await animationFrame();
     await dropOk();
     await animationFrame();
@@ -862,7 +885,7 @@ test(`multi_create: no button "Delete" if no record selected`, async () => {
 
 test.tags("desktop");
 test("multi_create: selection with ctrl", async () => {
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             if (record.name !== "Time off" || record.type !== 3) {
                 expect.step("error");
@@ -874,10 +897,10 @@ test("multi_create: selection with ctrl", async () => {
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
     });
 
-    expect(".fc .fc-event").toHaveCount(4, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(4, {message: "events should be filter"});
 
     await selectDateRange("2019-03-04", "2019-03-14");
 
@@ -892,9 +915,12 @@ test("multi_create: selection with ctrl", async () => {
     await multiCreateClickAddButton();
 
     expect(".o_multi_create_popover .o_form_view").toBeVisible();
-    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue("Sick", {
-        message: "should have a default value from the context",
-    });
+    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue(
+        "Sick",
+        {
+            message: "should have a default value from the context",
+        }
+    );
     await click(".o_multi_create_popover .o_form_view [name='name'] input");
     await edit("Time off");
     await contains(".o_multi_create_popover .o_form_view [name='type'] input").click();
@@ -938,7 +964,7 @@ test("multi_create: selection with ctrl", async () => {
 
 test.tags("desktop");
 test("multi_create: selection with shift", async () => {
-    onRpc("event", "create", ({ args: [records] }) => {
+    onRpc("event", "create", ({args: [records]}) => {
         for (const record of records) {
             if (record.name !== "Time off" || record.type !== 3) {
                 expect.step("error");
@@ -950,10 +976,10 @@ test("multi_create: selection with shift", async () => {
     await mountView({
         resModel: "event",
         type: "calendar",
-        context: { default_name: "Sick" },
+        context: {default_name: "Sick"},
     });
 
-    expect(".fc .fc-event").toHaveCount(4, { message: "events should be filter" });
+    expect(".fc .fc-event").toHaveCount(4, {message: "events should be filter"});
 
     await keyDown("Shift");
     await contains(".fc-day[data-date='2019-03-20']").click();
@@ -972,9 +998,12 @@ test("multi_create: selection with shift", async () => {
     await multiCreateClickAddButton();
 
     expect(".o_multi_create_popover .o_form_view").toBeVisible();
-    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue("Sick", {
-        message: "should have a default value from the context",
-    });
+    expect(".o_multi_create_popover .o_form_view [name='name'] input").toHaveValue(
+        "Sick",
+        {
+            message: "should have a default value from the context",
+        }
+    );
     await click(".o_multi_create_popover .o_form_view [name='name'] input");
     await edit("Time off");
     await contains(".o_multi_create_popover .o_form_view [name='type'] input").click();
@@ -1040,5 +1069,7 @@ test("multi_create: selection with shift", async () => {
     await contains(".fc-day[data-date='2019-03-13']").click();
 
     expect(".o_selection_box").toHaveText("1\nselected");
-    expect(queryAll(".fc-day.o-highlight").map((el) => el.dataset.date)).toEqual(["2019-03-13"]);
+    expect(queryAll(".fc-day.o-highlight").map((el) => el.dataset.date)).toEqual([
+        "2019-03-13",
+    ]);
 });

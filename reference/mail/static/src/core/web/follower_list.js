@@ -1,10 +1,10 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { useVisible } from "@mail/utils/common/hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { Follower } from "@mail/core/web/follower";
-import { FollowerSubtypeDialog } from "@mail/core/web/follower_subtype_dialog";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {useVisible} from "@mail/utils/common/hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {Follower} from "@mail/core/web/follower";
+import {FollowerSubtypeDialog} from "@mail/core/web/follower_subtype_dialog";
 
 /**
  * @typedef {Object} Props
@@ -16,7 +16,7 @@ import { FollowerSubtypeDialog } from "@mail/core/web/follower_subtype_dialog";
 
 export class FollowerList extends Component {
     static template = "mail.FollowerList";
-    static components = { DropdownItem, Follower };
+    static components = {DropdownItem, Follower};
     static props = ["onAddFollowers?", "onFollowerChanged?", "thread", "dropdown"];
 
     setup() {

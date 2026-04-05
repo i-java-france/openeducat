@@ -1,14 +1,19 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryAll, queryOne, tick } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAll, queryOne, tick} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
 setupInteractionWhiteList("website.countdown");
 
 describe.current.tags("interaction_dev");
 
-const getTemplate = function (options = { endAction: "nothing", endTime: "98765432100" }) {
+const getTemplate = function (
+    options = {endAction: "nothing", endTime: "98765432100"}
+) {
     return `
         <div style="background-color: white;">
             <section class="s_countdown pt48 pb48 ${
@@ -70,7 +75,7 @@ const wasDataChanged = function (data1, data2, l) {
 };
 
 test("countdown is started when there is an element .s_countdown", async () => {
-    const { core } = await startInteractions(getTemplate());
+    const {core} = await startInteractions(getTemplate());
     expect(core.interactions).toHaveLength(1);
 });
 
@@ -89,7 +94,7 @@ test("[time] countdown display is updated correctly when time pass", async () =>
     const canvasHoursCtx = canvasHours.getContext("2d");
     const canvasSecondsCtx = canvasSeconds.getContext("2d");
 
-    // time T
+    // Time T
     const data1Hours = canvasHoursCtx.getImageData(
         0,
         0,
@@ -103,7 +108,7 @@ test("[time] countdown display is updated correctly when time pass", async () =>
         canvasSeconds.height
     ).data;
 
-    // time T + 1s
+    // Time T + 1s
     await advanceTime(1000);
     const data2Hours = canvasHoursCtx.getImageData(
         0,
@@ -118,7 +123,7 @@ test("[time] countdown display is updated correctly when time pass", async () =>
         canvasSeconds.height
     ).data;
 
-    // time T + 2s
+    // Time T + 2s
     await advanceTime(1000);
     const data3Hours = canvasHoursCtx.getImageData(
         0,
@@ -144,8 +149,16 @@ test("[time] countdown display is updated correctly when time pass", async () =>
 
     const hoursUpdate12 = wasDataChanged(data1Hours, data2Hours, dataHoursLength);
     const hoursUpdate23 = wasDataChanged(data2Hours, data3Hours, dataHoursLength);
-    const secondsUpdate12 = wasDataChanged(data1Seconds, data2Seconds, dataSecondsLength);
-    const secondsUpdate23 = wasDataChanged(data2Seconds, data3Seconds, dataSecondsLength);
+    const secondsUpdate12 = wasDataChanged(
+        data1Seconds,
+        data2Seconds,
+        dataSecondsLength
+    );
+    const secondsUpdate23 = wasDataChanged(
+        data2Seconds,
+        data3Seconds,
+        dataSecondsLength
+    );
 
     // Hour canvas must not have changed twice
     expect(hoursUpdate12 && hoursUpdate23).toBe(false);
@@ -155,7 +168,7 @@ test("[time] countdown display is updated correctly when time pass", async () =>
 });
 
 test("countdown is stopped correctly", async () => {
-    const { core } = await startInteractions(getTemplate());
+    const {core} = await startInteractions(getTemplate());
     await advanceTime(0);
     expect(queryAll(".s_countdown_canvas_flex")).toHaveLength(4);
     core.stopInteractions();
@@ -186,26 +199,28 @@ test("Countdown snippet exists, when the colors are not defined", async () => {
                     </div>
                 </div>
             </section>`;
-    const { core } = await startInteractions(countdownEl);
+    const {core} = await startInteractions(countdownEl);
     expect(".o_error_dialog").toHaveCount(0);
     expect(core.interactions).toHaveLength(1);
 });
 
 test("past date: redirect end message is shown", async () => {
-    await startInteractions(getTemplate({ endAction: "redirect", endTime: 1 }));
+    await startInteractions(getTemplate({endAction: "redirect", endTime: 1}));
     await tick();
     expect(".s_countdown_end_redirect_message").toHaveCount(1);
 });
 
 test("past date: end message is shown", async () => {
-    await startInteractions(getTemplate({ endAction: "message", endTime: 1 }));
+    await startInteractions(getTemplate({endAction: "message", endTime: 1}));
     await tick();
     expect(".s_countdown_end_message:not(.d-none)").toHaveCount(1);
     expect(".s_countdown_canvas_flex canvas:not(.d-none)").toHaveCount(4);
 });
 
 test("past date: end message is shown without countdown", async () => {
-    await startInteractions(getTemplate({ endAction: "message_no_countdown", endTime: 1 }));
+    await startInteractions(
+        getTemplate({endAction: "message_no_countdown", endTime: 1})
+    );
     await tick();
     expect(".s_countdown_end_message:not(.d-none)").toHaveCount(1);
     expect(".s_countdown_canvas_flex canvas:not(.d-none)").toHaveCount(0);

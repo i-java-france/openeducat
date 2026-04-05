@@ -3,7 +3,7 @@ import {
     openLinkPopup,
     registerWebsitePreviewTour,
 } from "@website/js/tours/tour_utils";
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 // Opening the system's file selector is not possible programmatically, so we
 // mock the upload service.
@@ -15,7 +15,7 @@ const patchStep = {
         const uploadService = odoo.__WOWL_DEBUG__.root.env.services.uploadLocalFiles;
         unpatch = patch(uploadService, {
             async upload() {
-                return [{ id: 1, name: "file.txt", public: true, checksum: "123" }];
+                return [{id: 1, name: "file.txt", public: true, checksum: "123"}];
             },
         });
     },
@@ -98,7 +98,8 @@ registerWebsitePreviewTour(
         ...saveLinkPopup(),
         {
             content: "Check if auto-download is disabled",
-            trigger: ":iframe #wrap .s_banner a:nth-child(1):not([href$='download=true'])",
+            trigger:
+                ":iframe #wrap .s_banner a:nth-child(1):not([href$='download=true'])",
         },
     ]
 );

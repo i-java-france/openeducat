@@ -1,16 +1,16 @@
-import { Component, useState, validate } from "@odoo/owl";
-import { omit, pick } from "@web/core/utils/objects";
+import {Component, useState, validate} from "@odoo/owl";
+import {omit, pick} from "@web/core/utils/objects";
 
 export class Toolbar extends Component {
     static template = "html_editor.Toolbar";
     static props = {
-        class: { type: String, optional: true },
+        class: {type: String, optional: true},
         getSelection: Function,
         focusEditable: Function,
         state: {
             type: Object,
             shape: {
-                namespace: { type: String, optional: true },
+                namespace: {type: String, optional: true},
                 buttonGroups: {
                     type: Array,
                     element: {
@@ -31,14 +31,14 @@ export class Toolbar extends Component {
                                             validate(button, {
                                                 ...base,
                                                 Component: Function,
-                                                props: { type: Object, optional: true },
+                                                props: {type: Object, optional: true},
                                             });
                                         } else {
                                             validate(button, {
                                                 ...base,
                                                 run: Function,
-                                                icon: { type: String, optional: true },
-                                                text: { type: String, optional: true },
+                                                icon: {type: String, optional: true},
+                                                text: {type: String, optional: true},
                                                 isActive: Boolean,
                                             });
                                         }

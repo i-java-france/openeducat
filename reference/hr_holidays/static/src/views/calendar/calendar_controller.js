@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { CalendarController } from "@web/views/calendar/calendar_controller";
+import {_t} from "@web/core/l10n/translation";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {CalendarController} from "@web/views/calendar/calendar_controller";
 
-import { serializeDate } from "@web/core/l10n/dates";
+import {serializeDate} from "@web/core/l10n/dates";
 
-import { TimeOffCalendarSidePanel } from "./calendar_side_panel/calendar_side_panel";
-import { TimeOffCalendarMobileFilterPanel } from "./calendar_filter_panel/calendar_mobile_filter_panel";
-import { TimeOffFormViewDialog } from "../view_dialog/form_view_dialog";
-import { useLeaveCancelWizard } from "../hooks";
-import { EventBus, useSubEnv } from "@odoo/owl";
+import {TimeOffCalendarSidePanel} from "./calendar_side_panel/calendar_side_panel";
+import {TimeOffCalendarMobileFilterPanel} from "./calendar_filter_panel/calendar_mobile_filter_panel";
+import {TimeOffFormViewDialog} from "../view_dialog/form_view_dialog";
+import {useLeaveCancelWizard} from "../hooks";
+import {EventBus, useSubEnv} from "@odoo/owl";
 
 export class TimeOffCalendarController extends CalendarController {
     static components = {
@@ -31,18 +31,21 @@ export class TimeOffCalendarController extends CalendarController {
 
     newTimeOffRequest() {
         const context = {};
-        if (this.props.context.active_id && this.props.context.active_model === "hr.employee") {
+        if (
+            this.props.context.active_id &&
+            this.props.context.active_model === "hr.employee"
+        ) {
             context["default_employee_id"] = this.props.context.active_id;
         } else if (this.employeeId) {
             context["default_employee_id"] = this.employeeId;
         }
         if (this.model.meta.scale == "day") {
             context["default_date_from"] = serializeDate(
-                this.model.data.range.start.set({ hours: 7 }),
+                this.model.data.range.start.set({hours: 7}),
                 "datetime"
             );
             context["default_date_to"] = serializeDate(
-                this.model.data.range.end.set({ hours: 19 }),
+                this.model.data.range.end.set({hours: 19}),
                 "datetime"
             );
         }
@@ -107,7 +110,7 @@ export class TimeOffCalendarController extends CalendarController {
                     onLeaveCancelled: onDialogClosed,
                     size: "md",
                 },
-                { onClose: () => resolve() }
+                {onClose: () => resolve()}
             );
         });
     }
@@ -119,6 +122,6 @@ export class TimeOffCalendarController extends CalendarController {
 
 export class TimeOffReportCalendarController extends TimeOffCalendarController {
     async editRecord(record, context = {}) {
-        return this._editRecord(record, context, { canExpand: false });
+        return this._editRecord(record, context, {canExpand: false});
     }
 }

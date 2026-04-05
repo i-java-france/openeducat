@@ -1,10 +1,16 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { parseFloatTime } from "@web/views/fields/parsers";
-import { useInputField } from "@web/views/fields/input_field_hook";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { Component, useState, onWillUpdateProps, onWillStart, onWillDestroy } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {parseFloatTime} from "@web/views/fields/parsers";
+import {useInputField} from "@web/views/fields/input_field_hook";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {
+    Component,
+    useState,
+    onWillUpdateProps,
+    onWillStart,
+    onWillDestroy,
+} from "@odoo/owl";
 
 function formatMinutes(value) {
     if (value === false) {
@@ -24,10 +30,10 @@ function formatMinutes(value) {
 export class MrpTimer extends Component {
     static template = "mrp.MrpTimer";
     static props = {
-        value: { type: Number },
-        ongoing: { type: Boolean, optional: true },
+        value: {type: Number},
+        ongoing: {type: Boolean, optional: true},
     };
-    static defaultProps = { ongoing: false };
+    static defaultProps = {ongoing: false};
 
     setup() {
         this.state = useState({
@@ -82,7 +88,7 @@ export class MrpTimer extends Component {
 
 class MrpTimerField extends Component {
     static template = "mrp.MrpTimerField";
-    static components = { MrpTimer };
+    static components = {MrpTimer};
     static props = standardFieldProps;
 
     setup() {
@@ -94,22 +100,26 @@ class MrpTimerField extends Component {
         });
 
         useRecordObserver(async (record) => {
-            if (!this.props.record.model.useSampleModel && record.data.state === "progress") {
-                this.duration = await this.orm.call(
-                    "mrp.workorder",
-                    "get_duration",
-                    [this.props.record.resId]
-                );
+            if (
+                !this.props.record.model.useSampleModel &&
+                record.data.state === "progress"
+            ) {
+                this.duration = await this.orm.call("mrp.workorder", "get_duration", [
+                    this.props.record.resId,
+                ]);
             } else {
                 this.duration = record.data[this.props.name];
             }
-        })
+        });
 
         onWillDestroy(() => clearTimeout(this.timer));
     }
 
     get durationFormatted() {
-        if (this.props.record.data[this.props.name] != this.duration && this.props.record.dirty) {
+        if (
+            this.props.record.data[this.props.name] != this.duration &&
+            this.props.record.dirty
+        ) {
             this.duration = this.props.record.data[this.props.name];
         }
         return formatMinutes(this.duration);

@@ -1,6 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { getService, makeMockEnv, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
+import {expect, test} from "@odoo/hoot";
+import {
+    getService,
+    makeMockEnv,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
 
 test("execute an 'ir.actions.act_url' action with target 'self'", async () => {
     patchWithCleanup(browser.location, {
@@ -25,7 +29,7 @@ test("execute an 'ir.actions.act_url' action with onClose option", async () => {
     const options = {
         onClose: () => expect.step("onClose"),
     };
-    await getService("action").doAction({ type: "ir.actions.act_url" }, options);
+    await getService("action").doAction({type: "ir.actions.act_url"}, options);
     expect.verifySteps(["browser open", "onClose"]);
 });
 

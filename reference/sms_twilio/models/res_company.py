@@ -1,6 +1,6 @@
 import re
 
-from odoo import fields, models, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 from odoo.addons.sms_twilio.tools.sms_api import SmsApiTwilio

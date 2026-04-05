@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, press } from "@odoo/hoot-dom";
-import { Deferred } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame, press} from "@odoo/hoot-dom";
+import {Deferred} from "@odoo/hoot-mock";
 import {
     contains,
     makeMockEnv,
@@ -8,16 +8,16 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { scanBarcode } from "@web/core/barcode/barcode_dialog";
-import { BarcodeVideoScanner } from "@web/core/barcode/barcode_video_scanner";
-import { WebClient } from "@web/webclient/webclient";
+import {browser} from "@web/core/browser/browser";
+import {scanBarcode} from "@web/core/barcode/barcode_dialog";
+import {BarcodeVideoScanner} from "@web/core/barcode/barcode_video_scanner";
+import {WebClient} from "@web/webclient/webclient";
 
 /* global ZXing */
 
 test("Barcode scanner crop overlay", async () => {
     const env = await makeMockEnv();
-    await mountWithCleanup(WebClient, { env });
+    await mountWithCleanup(WebClient, {env});
 
     const firstBarcodeValue = "Odoo";
     const secondBarcodeValue = "OCDTEST";
@@ -54,7 +54,7 @@ test("Barcode scanner crop overlay", async () => {
         }
         return stream;
     }
-    // simulate an environment with a camera/webcam
+    // Simulate an environment with a camera/webcam
     patchWithCleanup(browser.navigator, {
         mediaDevices: {
             getUserMedia: mockUserMedia,
@@ -103,9 +103,9 @@ test("Barcode scanner crop overlay", async () => {
     });
 
     expect.verifySteps([
-        { x: 25, y: 100, width: 200, height: 50 },
-        { x: 0, y: 0, width: 250, height: 250 },
-        { x: 0, y: 0, width: 250, height: 250 },
+        {x: 25, y: 100, width: 200, height: 50},
+        {x: 0, y: 0, width: 250, height: 250},
+        {x: 0, y: 0, width: 250, height: 250},
     ]);
 });
 
@@ -142,7 +142,7 @@ test("BarcodeVideoScanner onReady props", async () => {
 
 test("Closing barcode scanner before camera loads should not throw an error", async () => {
     const env = await makeMockEnv();
-    await mountWithCleanup(WebClient, { env });
+    await mountWithCleanup(WebClient, {env});
     const cameraReady = new Deferred();
 
     patchWithCleanup(browser.navigator, {
@@ -158,22 +158,22 @@ test("Closing barcode scanner before camera loads should not throw an error", as
     scanBarcode(env);
 
     await animationFrame();
-    expect(".o-barcode-modal").toHaveCount(1)
+    expect(".o-barcode-modal").toHaveCount(1);
 
     await press("escape");
 
     await animationFrame();
-    expect(".o-barcode-modal").toHaveCount(0)
+    expect(".o-barcode-modal").toHaveCount(0);
 
     cameraReady.resolve();
 
-    await animationFrame()
-    expect(".o_error_dialog").toHaveCount(0)
+    await animationFrame();
+    expect(".o_error_dialog").toHaveCount(0);
 });
 
 test("Closing barcode scanner while video is loading should not cause errors", async () => {
     const env = await makeMockEnv();
-    await mountWithCleanup(WebClient, { env });
+    await mountWithCleanup(WebClient, {env});
 
     patchWithCleanup(browser.navigator, {
         mediaDevices: {
@@ -187,13 +187,13 @@ test("Closing barcode scanner while video is loading should not cause errors", a
     scanBarcode(env);
 
     await animationFrame();
-    expect(".o-barcode-modal").toHaveCount(1)
+    expect(".o-barcode-modal").toHaveCount(1);
 
     await press("escape");
 
     await animationFrame();
-    expect(".o-barcode-modal").toHaveCount(0)
+    expect(".o-barcode-modal").toHaveCount(0);
 
-    await animationFrame()
-    expect(".o_error_dialog").toHaveCount(0)
+    await animationFrame();
+    expect(".o_error_dialog").toHaveCount(0);
 });

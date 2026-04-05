@@ -2,7 +2,6 @@
 
 from odoo import _, api, models
 from odoo.fields import Domain
-from odoo.http import request
 
 
 class ResPartner(models.Model):

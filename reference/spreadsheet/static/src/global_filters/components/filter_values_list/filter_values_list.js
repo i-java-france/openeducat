@@ -1,15 +1,15 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
-import { _t } from "@web/core/l10n/translation";
-import { getOperatorLabel } from "@web/core/tree_editor/tree_editor_operator_editor";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {FilterValue} from "@spreadsheet/global_filters/components/filter_value/filter_value";
+import {_t} from "@web/core/l10n/translation";
+import {getOperatorLabel} from "@web/core/tree_editor/tree_editor_operator_editor";
 import {
     getDefaultValue,
     getEmptyFilterValue,
     getFilterTypeOperators,
 } from "@spreadsheet/global_filters/helpers";
-import { useService } from "@web/core/utils/hooks";
-import { isEmptyFilterValue } from "../../helpers";
-import { deepEqual } from "@web/core/utils/objects";
+import {useService} from "@web/core/utils/hooks";
+import {isEmptyFilterValue} from "../../helpers";
+import {deepEqual} from "@web/core/utils/objects";
 
 /**
  * This component is used to display a list of all the global filters of a
@@ -18,22 +18,24 @@ import { deepEqual } from "@web/core/utils/objects";
  */
 export class FilterValuesList extends Component {
     static template = "spreadsheet_dashboard.FilterValuesList";
-    static components = { FilterValue };
+    static components = {FilterValue};
 
     static props = {
         close: Function,
         model: Object,
-        openFiltersEditor: { type: Function, optional: true },
+        openFiltersEditor: {type: Function, optional: true},
     };
 
     setup() {
         this.orm = useService("orm");
         this.state = useState({
             filtersAndValues: this.globalFilters.map((globalFilter) => {
-                const value = this.props.model.getters.getGlobalFilterValue(globalFilter.id);
+                const value = this.props.model.getters.getGlobalFilterValue(
+                    globalFilter.id
+                );
                 return {
                     globalFilter,
-                    value: value ? { ...value } : getDefaultValue(globalFilter.type),
+                    value: value ? {...value} : getDefaultValue(globalFilter.type),
                 };
             }),
         });
@@ -64,7 +66,10 @@ export class FilterValuesList extends Component {
 
     getOperators(filter) {
         const operators = getFilterTypeOperators(filter.type);
-        if (filter.type === "relation" && !this.searchableParentRelations[filter.modelName]) {
+        if (
+            filter.type === "relation" &&
+            !this.searchableParentRelations[filter.modelName]
+        ) {
             return operators.filter((op) => op !== "child_of");
         }
         return filter.type === "boolean" ? [undefined, ...operators] : operators;
@@ -96,20 +101,27 @@ export class FilterValuesList extends Component {
     }
 
     clearFilter(filterId) {
-        const node = this.state.filtersAndValues.find((node) => node.globalFilter.id === filterId);
+        const node = this.state.filtersAndValues.find(
+            (node) => node.globalFilter.id === filterId
+        );
         if (node && node.value) {
-            const emptyValue = getEmptyFilterValue(node.globalFilter, node.value.operator);
+            const emptyValue = getEmptyFilterValue(
+                node.globalFilter,
+                node.value.operator
+            );
             node.value =
                 typeof emptyValue === "object"
-                    ? { ...emptyValue, operator: node.value.operator }
+                    ? {...emptyValue, operator: node.value.operator}
                     : emptyValue;
         }
     }
 
     onConfirm() {
         for (const node of this.state.filtersAndValues) {
-            const { globalFilter, value } = node;
-            const originalValue = this.props.model.getters.getGlobalFilterValue(globalFilter.id);
+            const {globalFilter, value} = node;
+            const originalValue = this.props.model.getters.getGlobalFilterValue(
+                globalFilter.id
+            );
 
             if (deepEqual(originalValue, value)) {
                 continue;
@@ -131,7 +143,7 @@ export class FilterValuesList extends Component {
             .filter((filter) => filter.type === "relation")
             .map((filter) => filter.modelName);
         return this.orm
-            .cache({ type: "disk" })
+            .cache({type: "disk"})
             .call("ir.model", "has_searchable_parent_relation", [models]);
     }
 }

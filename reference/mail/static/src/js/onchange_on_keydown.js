@@ -1,9 +1,9 @@
-import { useEffect } from "@odoo/owl";
-import { patch } from "@web/core/utils/patch";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { useDebounced } from "@web/core/utils/timing";
-import { charField, CharField } from "@web/views/fields/char/char_field";
-import { textField, TextField } from "@web/views/fields/text/text_field";
+import {useEffect} from "@odoo/owl";
+import {patch} from "@web/core/utils/patch";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {useDebounced} from "@web/core/utils/timing";
+import {charField, CharField} from "@web/views/fields/char/char_field";
+import {textField, TextField} from "@web/views/fields/text/text_field";
 
 /**
  * Support a key-based onchange in text fields.
@@ -44,14 +44,14 @@ patch(TextField.prototype, onchangeOnKeydownMixin());
 
 CharField.props = {
     ...CharField.props,
-    onchangeOnKeydown: { type: Boolean, optional: true },
-    keydownDebounceDelay: { type: Number, optional: true },
+    onchangeOnKeydown: {type: Boolean, optional: true},
+    keydownDebounceDelay: {type: Number, optional: true},
 };
 
 TextField.props = {
     ...TextField.props,
-    onchangeOnKeydown: { type: Boolean, optional: true },
-    keydownDebounceDelay: { type: Number, optional: true },
+    onchangeOnKeydown: {type: Boolean, optional: true},
+    keydownDebounceDelay: {type: Number, optional: true},
 };
 
 const charExtractProps = charField.extractProps;

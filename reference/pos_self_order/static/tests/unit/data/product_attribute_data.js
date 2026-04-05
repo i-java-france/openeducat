@@ -1,4 +1,4 @@
-import { ProductAttribute } from "@point_of_sale/../tests/unit/data/product_attribute.data";
+import {ProductAttribute} from "@point_of_sale/../tests/unit/data/product_attribute.data";
 
 ProductAttribute._records = [
     ...ProductAttribute._records,

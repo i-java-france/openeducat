@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getFunnelChartDatasets,
@@ -39,15 +39,17 @@ chartRegistry.add("odoo_funnel", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooFunnelChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooFunnelChart.transformDefinition(definition),
-    getChartDefinitionFromContextCreation: () => OdooFunnelChart.getDefinitionFromContextCreation(),
+    transformDefinition: (definition) =>
+        OdooFunnelChart.transformDefinition(definition),
+    getChartDefinitionFromContextCreation: () =>
+        OdooFunnelChart.getDefinitionFromContextCreation(),
     name: _t("Funnel"),
 });
 
 function createOdooChartRuntime(chart, getters) {
     const definition = chart.getDefinition();
     const background = chart.background || "#FFFFFF";
-    let { datasets, labels } = chart.dataSource.getData();
+    let {datasets, labels} = chart.dataSource.getData();
     if (definition.cumulative) {
         datasets = makeDatasetsCumulative(datasets, "desc");
     }
@@ -56,7 +58,7 @@ function createOdooChartRuntime(chart, getters) {
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
     };
 
@@ -73,7 +75,7 @@ function createOdooChartRuntime(chart, getters) {
             scales: getFunnelChartScales(definition, chartData),
             plugins: {
                 title: getChartTitle(definition, getters),
-                legend: { display: false },
+                legend: {display: false},
                 tooltip: getFunnelChartTooltip(definition, chartData),
                 chartShowValuesPlugin: getChartShowValues(definition, chartData),
             },
@@ -82,5 +84,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

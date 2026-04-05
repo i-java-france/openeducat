@@ -1,28 +1,28 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { undo } from "./_helpers/user_actions";
+import {describe, expect, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {undo} from "./_helpers/user_actions";
 
 function cut(editor) {
     const clipboardData = new DataTransfer();
-    const cutEvent = new ClipboardEvent("cut", { clipboardData });
+    const cutEvent = new ClipboardEvent("cut", {clipboardData});
     editor.editable.dispatchEvent(cutEvent);
     return clipboardData;
 }
 
 describe("range collapsed", () => {
     test("should ignore cutting an empty selection with empty clipboardData", async () => {
-        const { editor } = await setupEditor("<p>[]</p>");
+        const {editor} = await setupEditor("<p>[]</p>");
         const clipboardData = cut(editor);
         // Check that nothing was set as clipboard content
         expect(clipboardData.types.length).toBe(0);
     });
 
     test("should ignore cutting an empty selection with clipboardData", async () => {
-        const { editor } = await setupEditor("<p>[]</p>");
+        const {editor} = await setupEditor("<p>[]</p>");
         const clipboardData = new DataTransfer();
         clipboardData.setData("text/plain", "should stay");
-        const cutEvent = new ClipboardEvent("cut", { clipboardData });
+        const cutEvent = new ClipboardEvent("cut", {clipboardData});
         editor.editable.dispatchEvent(cutEvent);
         // Check that clipboard data was not overwritten
         expect(clipboardData.getData("text/plain")).toBe("should stay");
@@ -64,7 +64,9 @@ describe("range not collapsed", () => {
         await testEditor({
             contentBefore: "<p>a[bcd]e</p>",
             stepFunction: async (editor) => {
-                const history = editor.plugins.find((p) => p.constructor.id === "history");
+                const history = editor.plugins.find(
+                    (p) => p.constructor.id === "history"
+                );
                 const historyStepsCount = history.steps.length;
                 cut(editor);
                 expect(history.steps.length).toBe(historyStepsCount + 1);

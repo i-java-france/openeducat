@@ -1,20 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 from collections import defaultdict
 from datetime import datetime
+
 from lxml.builder import E
 from markupsafe import Markup
 
-from odoo import api, exceptions, models, tools, _
-from odoo.addons.mail.tools.alias_error import AliasError
+from odoo import _, api, exceptions, models, tools
 from odoo.tools import parse_contact_from_email
 from odoo.tools.mail import email_normalize, email_split_and_format
 from odoo.tools.sql import column_exists
 
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
-
-import logging
+from odoo.addons.mail.tools.alias_error import AliasError
 
 _logger = logging.getLogger(__name__)
 

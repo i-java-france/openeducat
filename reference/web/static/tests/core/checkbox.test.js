@@ -1,9 +1,9 @@
-import { expect, test } from "@odoo/hoot";
-import { check, uncheck } from "@odoo/hoot-dom";
-import { Component, useState, xml } from "@odoo/owl";
-import { contains, defineParams, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {check, uncheck} from "@odoo/hoot-dom";
+import {Component, useState, xml} from "@odoo/owl";
+import {contains, defineParams, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { CheckBox } from "@web/core/checkbox/checkbox";
+import {CheckBox} from "@web/core/checkbox/checkbox";
 
 test("can be rendered", async () => {
     await mountWithCleanup(CheckBox);
@@ -13,10 +13,10 @@ test("can be rendered", async () => {
 });
 
 test("has a slot for translatable text", async () => {
-    defineParams({ translations: { ragabadabadaba: "rugubudubudubu" } });
+    defineParams({translations: {ragabadabadaba: "rugubudubudubu"}});
 
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<div t-translation-context="web"><CheckBox>ragabadabadaba</CheckBox></div>`;
     }
@@ -24,13 +24,13 @@ test("has a slot for translatable text", async () => {
     await mountWithCleanup(Parent);
 
     expect(`.form-check`).toHaveCount(1);
-    expect(`.form-check`).toHaveText("rugubudubudubu", { exact: true });
+    expect(`.form-check`).toHaveText("rugubudubudubu", {exact: true});
 });
 
 test("call onChange prop when some change occurs", async () => {
     let value = false;
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<CheckBox onChange="onChange" />`;
         onChange(checked) {
@@ -53,7 +53,7 @@ test("call onChange prop when some change occurs", async () => {
 
 test("checkbox with props disabled", async () => {
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<CheckBox disabled="true" />`;
     }
@@ -67,12 +67,12 @@ test("checkbox with props disabled", async () => {
 test.tags("desktop");
 test("can toggle value by pressing ENTER", async () => {
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<CheckBox onChange.bind="onChange" value="state.value" />`;
 
         setup() {
-            this.state = useState({ value: false });
+            this.state = useState({value: false});
         }
 
         onChange(checked) {
@@ -97,12 +97,12 @@ test("can toggle value by pressing ENTER", async () => {
 test.tags("desktop");
 test("toggling through multiple ways", async () => {
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<CheckBox onChange.bind="onChange" value="state.value" />`;
 
         setup() {
-            this.state = useState({ value: false });
+            this.state = useState({value: false});
         }
 
         onChange(checked) {
@@ -120,7 +120,7 @@ test("toggling through multiple ways", async () => {
 
     expect(`.o-checkbox input`).toBeChecked();
 
-    await contains(".o-checkbox > .form-check-label", { visible: false }).uncheck();
+    await contains(".o-checkbox > .form-check-label", {visible: false}).uncheck();
 
     expect(`.o-checkbox input`).not.toBeChecked();
 
@@ -136,7 +136,7 @@ test("toggling through multiple ways", async () => {
 
 test("checkbox with props indeterminate", async () => {
     class Parent extends Component {
-        static components = { CheckBox };
+        static components = {CheckBox};
         static props = {};
         static template = xml`<CheckBox indeterminate="true" />`;
     }
@@ -144,5 +144,5 @@ test("checkbox with props indeterminate", async () => {
     await mountWithCleanup(Parent);
 
     expect(`.o-checkbox input`).toHaveCount(1);
-    expect(`.o-checkbox input`).toBeChecked({ indeterminate: true });
+    expect(`.o-checkbox input`).toBeChecked({indeterminate: true});
 });

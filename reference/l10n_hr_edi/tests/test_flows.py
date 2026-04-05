@@ -1,7 +1,8 @@
-from contextlib import contextmanager
 import json
-from lxml import etree
+from contextlib import contextmanager
+
 import requests
+from lxml import etree
 
 from odoo import Command, fields
 from odoo.exceptions import UserError

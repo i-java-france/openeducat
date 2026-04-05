@@ -1,14 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+
 from markupsafe import Markup
 
-from odoo import api, fields, models, _
-from odoo.addons.mail.tools.parser import parse_res_ids
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import html2plaintext
 from odoo.tools.misc import format_date
+
+from odoo.addons.mail.tools.parser import parse_res_ids
+
 _logger = logging.getLogger(__name__)
 
 

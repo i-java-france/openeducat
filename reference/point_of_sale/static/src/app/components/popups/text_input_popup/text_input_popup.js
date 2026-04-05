@@ -1,16 +1,16 @@
-import { Component, onMounted, useRef, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
+import {Component, onMounted, useRef, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
 
 export class TextInputPopup extends Component {
     static template = "point_of_sale.TextInputPopup";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         title: String,
-        size: { type: String, optional: true },
-        buttons: { type: Array, optional: true },
-        startingValue: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
-        rows: { type: Number, optional: true },
+        size: {type: String, optional: true},
+        buttons: {type: Array, optional: true},
+        startingValue: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
+        rows: {type: Number, optional: true},
         getPayload: Function,
         close: Function,
     };
@@ -23,7 +23,7 @@ export class TextInputPopup extends Component {
     };
 
     setup() {
-        this.state = useState({ inputValue: this.props.startingValue });
+        this.state = useState({inputValue: this.props.startingValue});
         this.inputRef = useRef("input");
         onMounted(this.onMounted);
     }
@@ -43,7 +43,9 @@ export class TextInputPopup extends Component {
     buttonClick(button) {
         const lines = this.state.inputValue.split("\n").filter((line) => line !== "");
         if (lines.includes(button.label)) {
-            this.state.inputValue = lines.filter((line) => line !== button.label).join("\n");
+            this.state.inputValue = lines
+                .filter((line) => line !== button.label)
+                .join("\n");
             button.isSelected = false;
         } else {
             this.state.inputValue = lines.join("\n");

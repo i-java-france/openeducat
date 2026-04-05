@@ -1,5 +1,5 @@
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { useBus } from "@web/core/utils/hooks";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {useBus} from "@web/core/utils/hooks";
 
 export class FormStatusIndicator extends Component {
     static template = "web.FormStatusIndicator";
@@ -37,7 +37,7 @@ export class FormStatusIndicator extends Component {
     }
 
     get indicatorMode() {
-        const { isNew, isValid } = this.props.model.root;
+        const {isNew, isValid} = this.props.model.root;
         const isDirty = this.props.model.root.dirty || this.state.fieldIsDirty;
         if (isNew || isDirty) {
             return isValid ? "dirty" : "invalid";

@@ -1,7 +1,7 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 class CompanyTeamShapesWidthOption extends BaseOptionComponent {
     static selector = ".s_company_team_shapes";
@@ -15,4 +15,6 @@ export class CompanyTeamOptionPlugin extends Plugin {
     };
 }
 
-registry.category("mass_mailing-plugins").add(CompanyTeamOptionPlugin.id, CompanyTeamOptionPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(CompanyTeamOptionPlugin.id, CompanyTeamOptionPlugin);

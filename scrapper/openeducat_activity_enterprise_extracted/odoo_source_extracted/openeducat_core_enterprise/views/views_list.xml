@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="op_student_badge_tree_view" model="ir.ui.view">
+        <field name="name">Badge list</field>
+        <field name="model">op.gamification.badge</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="description"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_academic_plan_stages_tree" model="ir.ui.view">
+        <field name="name">op.academic.plan.stages.list</field>
+        <field name="model">op.academic.plan.stages</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Marks Detail Line">
+    
+                    
+    <field name="sequence" widget="handle"/>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="state"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_area_tree" model="ir.ui.view">
+        <field name="name">op.area.list</field>
+        <field name="model">op.area</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Area">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="company_id"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_assessment_type_tree" model="ir.ui.view">
+        <field name="name">op.assessment.type.list</field>
+        <field name="model">op.assessment.type</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Marks Detail Line">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="parent_id"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_board_affiliation_tree" model="ir.ui.view">
+        <field name="name">op.board.affiliation.list</field>
+        <field name="model">op.board.affiliation</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_course_category_tree" model="ir.ui.view">
+        <field name="name">op.course.category.list</field>
+        <field name="model">op.course.category</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="desc"/>
+    
+                    
+    <field name="icon" optional="hide"/>
+    
+                    
+    <field name="parent_id" optional="hide"/>
+    
+                    
+    <field name="active" widget="boolean_toggle" optional="hide"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_course_plan_tree" model="ir.ui.view">
+        <field name="name">op.course.plan.list</field>
+        <field name="model">op.course.plan</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Course Plan">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="course_id"/>
+    
+                    
+    <field name="academic_term_id"/>
+    
+                    
+    <field name="academic_plan_id" optional="show"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_intake_year_tree" model="ir.ui.view">
+        <field name="name">op.intake.year.list</field>
+        <field name="model">op.intake.year</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Intake Year">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="academic_year_id"/>
+    
+                    
+    <field name="start_date"/>
+    
+                    
+    <field name="end_date"/>
+    
+                    
+    <field name="company_id"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_section_tree" model="ir.ui.view">
+        <field name="name">op.section.list</field>
+        <field name="model">op.section</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list>
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="subject_id"/>
+    
+                    
+    <field name="course_ids"/>
+    
+                    
+    <field name="batch_ids"/>
+    
+                    
+    <field name="student_course_ids" widget="many2many_tags"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_specialization_tree" model="ir.ui.view">
+        <field name="name">op.specialization.list</field>
+        <field name="model">op.specialization</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Specializations">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="area_id"/>
+    
+                    
+    <field name="company_id"/>
+    
+                
+</list>
+        </field>
+    </record>
+
+    <record id="viewop_subject_faculty_tree" model="ir.ui.view">
+        <field name="name">op.subject.faculty.list</field>
+        <field name="model">op.subject.faculty</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list string="Course Plan">
+    
+                    
+    <field name="subject_id"/>
+    
+                    
+    <field name="credit"/>
+    
+                    
+    <field name="sequence"/>
+    
+                    
+    <field name="faculty_id"/>
+    
+                    
+    <field name="academic_plan_id"/>
+    
+                    
+    <field name="total_lectures"/>
+    
+                    
+    <field name="total_lab"/>
+    
+                    
+    <field name="tuition"/>
+    
+                    
+    <field name="total_marks"/>
+    
+                    
+    <field name="subject_type"/>
+    
+                    
+    <field name="course_plan_id"/>
+    
+                    
+    <!-- <field name="company_id" groups="base.group_multi_company" optional="show"
+                    /> -->
+    
+
+                
+</list>
+        </field>
+    </record>
+
+    <record id="academic_calendar_tree_view" model="ir.ui.view">
+        <field name="name">calendar.event.inherited.tree.view</field>
+        <field name="model">calendar.event</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="calendar.event.list"/>
+        <field name="arch" type="xml">
+<field name="description" position="after">
+    
+                    
+    <field name="academic_calendar" optional="hide"/>
+    
+                    
+    <field name="course_ids" widget="many2many_tags" optional="hide"/>
+    
+                    
+    <field name="batch_ids" widget="many2many_tags" optional="hide"/>
+    
+                
+</field>
+        </field>
+    </record>
+
+    <record id="view_academic_plan_tree" model="ir.ui.view">
+        <field name="name">op.academic.plan.list</field>
+        <field name="model">op.academic.plan</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<list string="Academic Plan">
+    
+                
+    <field name="sequence"/>
+    
+                
+    <field name="name"/>
+    
+                
+    <field name="program_id"/>
+    
+                
+    <!-- <field name="course_id"/> -->
+    
+                
+    <field name="academic_year_id"/>
+    
+                
+    <field name="start_date"/>
+    
+                
+    <field name="end_date"/>
+    
+                
+    <!-- <field name="academic_term_id"/> -->
+    
+                
+    <field name="state"/>
+    
+            
+</list>
+        </field>
+    </record>
+
+    <record id="view_op_batch_inherited_tree_view" model="ir.ui.view">
+        <field name="name">op.batch.list</field>
+        <field name="model">op.batch</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.batch.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='course_id']" position="after">
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</xpath>
+        </field>
+    </record>
+
+    <record id="view_op_course_inherited_tree_view" model="ir.ui.view">
+        <field name="name">op.course.list</field>
+        <field name="model">op.course</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.course.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='subject_ids']" position="after">
+    
+                
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+            
+</xpath>
+        </field>
+    </record>
+
+    <record id="op_faculty_tree_view_inherited" model="ir.ui.view">
+        <field name="name">op.faculty.tree.view.inherited</field>
+        <field name="model">op.faculty</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.faculty.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='emergency_contact']" position="after">
+    
+                
+    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+    
+            
+</xpath>
+        </field>
+    </record>
+
+    <record id="view_op_program_tree_inherit" model="ir.ui.view">
+        <field name="name">op.program.list.inherit</field>
+        <field name="model">op.program</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.program.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='department_id']" position="after">
+    
+                    
+    <field name="company_id"/>
+    
+                
+</xpath>
+        </field>
+    </record>
+
+    <record id="view_op_student_inherited_tree_view" model="ir.ui.view">
+        <field name="name">op.student.list</field>
+        <field name="model">op.student</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.student.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='lang']" position="after">
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</xpath>
+        </field>
+    </record>
+
+    <record id="op_subject_tree_view_inherited" model="ir.ui.view">
+        <field name="name">op.subject.tree.inherited</field>
+        <field name="model">op.subject</field>
+        <field name="type">list</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.subject.list"/>
+        <field name="arch" type="xml">
+<xpath expr="//field[@name='grade_weightage']" position="after">
+    
+                    
+    <field name="course_id" optional="hide"/>
+    
+                    
+    <field name="credit_point" optional="hide"/>
+    
+                    
+    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+    
+                
+</xpath>
+        </field>
+    </record>
+</odoo>

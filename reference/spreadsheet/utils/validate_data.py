@@ -1,10 +1,9 @@
-from collections import defaultdict
-from itertools import chain
 import json
 import re
+from collections import defaultdict
+from itertools import chain
 
 from odoo.tools.view_validation import get_domain_value_names
-
 
 markdown_link_regex = r"^\[([^\[]+)\]\((.+)\)$"
 

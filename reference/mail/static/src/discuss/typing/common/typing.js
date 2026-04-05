@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} Props
@@ -21,7 +21,7 @@ export class Typing extends Component {
     get text() {
         const typingMemberNames = this.props.member
             ? [this.props.member.name]
-            : this.props.channel.otherTypingMembers.map(({ name }) => name);
+            : this.props.channel.otherTypingMembers.map(({name}) => name);
         if (typingMemberNames.length === 1) {
             return _t("%s is typing...", typingMemberNames[0]);
         }

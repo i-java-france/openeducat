@@ -1,4 +1,4 @@
-import { makeErrorFromResponse } from "@web/core/network/rpc";
+import {makeErrorFromResponse} from "@web/core/network/rpc";
 
 /**
  * @typedef {{
@@ -59,7 +59,9 @@ export function getKwArgs(allArgs, ...argNames) {
     const args = [...allArgs];
     const kwargs = args.at(-1)?.[KWARGS_SYMBOL] ? args.pop() : makeKwArgs({});
     if (args.length > argNames.length) {
-        throw new MockServerError("More positional arguments than there are given argument names");
+        throw new MockServerError(
+            "More positional arguments than there are given argument names"
+        );
     }
     for (let i = 0; i < args.length; i++) {
         if (args[i] !== null && args[i] !== undefined) {

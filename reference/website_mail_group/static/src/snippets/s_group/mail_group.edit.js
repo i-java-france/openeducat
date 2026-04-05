@@ -1,6 +1,6 @@
-import { MailGroup } from "@mail_group/interactions/mail_group";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {MailGroup} from "@mail_group/interactions/mail_group";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 // TODO should probably have a better way to handle this, maybe the invisible
 // block system could be extended to handle this kind of things. Here we only
@@ -18,8 +18,6 @@ export class MailGroupEdit extends Interaction {
     };
 }
 
-registry
-    .category("public.interactions.edit")
-    .add("website_mail_group.mail_group", {
-        Interaction: MailGroupEdit,
-    });
+registry.category("public.interactions.edit").add("website_mail_group.mail_group", {
+    Interaction: MailGroupEdit,
+});

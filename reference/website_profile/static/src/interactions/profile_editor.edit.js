@@ -1,10 +1,11 @@
-import { ProfileEditor } from "./profile_editor";
-import { registry } from "@web/core/registry";
+import {ProfileEditor} from "./profile_editor";
+import {registry} from "@web/core/registry";
 
-const ProfileEditorEdit = I => class extends I {
-    setup() { }
-    async willStart() { }
-};
+const ProfileEditorEdit = (I) =>
+    class extends I {
+        setup() {}
+        async willStart() {}
+    };
 
 registry
     .category("public.interactions.edit")

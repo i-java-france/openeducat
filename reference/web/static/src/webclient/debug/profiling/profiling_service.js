@@ -1,26 +1,34 @@
-import { registry } from "@web/core/registry";
-import { ProfilingItem } from "./profiling_item";
-import { session } from "@web/session";
-import { profilingSystrayItem } from "./profiling_systray_item";
+import {registry} from "@web/core/registry";
+import {ProfilingItem} from "./profiling_item";
+import {session} from "@web/session";
+import {profilingSystrayItem} from "./profiling_systray_item";
 
-import { EventBus, reactive } from "@odoo/owl";
+import {EventBus, reactive} from "@odoo/owl";
 
 const systrayRegistry = registry.category("systray");
 
 export const profilingService = {
     dependencies: ["orm"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         // Only set up profiling when in debug mode
         if (!env.debug) {
             return;
         }
 
         function notify() {
-            if (systrayRegistry.contains("web.profiling") && state.isEnabled === false) {
+            if (
+                systrayRegistry.contains("web.profiling") &&
+                state.isEnabled === false
+            ) {
                 systrayRegistry.remove("web.profiling");
             }
-            if (!systrayRegistry.contains("web.profiling") && state.isEnabled === true) {
-                systrayRegistry.add("web.profiling", profilingSystrayItem, { sequence: 99 });
+            if (
+                !systrayRegistry.contains("web.profiling") &&
+                state.isEnabled === true
+            ) {
+                systrayRegistry.add("web.profiling", profilingSystrayItem, {
+                    sequence: 99,
+                });
             }
             bus.trigger("UPDATE");
         }
@@ -64,18 +72,21 @@ export const profilingService = {
             return {
                 type: "component",
                 Component: ProfilingItem,
-                props: { bus },
+                props: {bus},
                 sequence: 570,
                 section: "tools",
             };
         }
 
-        registry.category("debug").category("default").add("profilingItem", profilingItem);
+        registry
+            .category("debug")
+            .category("default")
+            .add("profilingItem", profilingItem);
 
         return {
             state,
             async toggleProfiling() {
-                await setProfiling({ profile: !state.isEnabled });
+                await setProfiling({profile: !state.isEnabled});
             },
             async toggleCollector(collector) {
                 const nextCollectors = state.collectors.slice();
@@ -85,12 +96,12 @@ export const profilingService = {
                 } else {
                     nextCollectors.push(collector);
                 }
-                await setProfiling({ collectors: nextCollectors });
+                await setProfiling({collectors: nextCollectors});
             },
             async setParam(key, value) {
                 const nextParams = Object.assign({}, state.params);
                 nextParams[key] = value;
-                await setProfiling({ params: nextParams });
+                await setProfiling({params: nextParams});
             },
             isCollectorEnabled(collector) {
                 return state.collectors.includes(collector);

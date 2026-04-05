@@ -1,4 +1,4 @@
-import { before, destroy, expect, getFixture, test } from "@odoo/hoot";
+import {before, destroy, expect, getFixture, test} from "@odoo/hoot";
 import {
     manuallyDispatchProgrammaticEvent,
     queryOne,
@@ -6,16 +6,20 @@ import {
     resize,
     scroll,
 } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
-import { Component, onMounted, useRef, xml } from "@odoo/owl";
-import { defineParams, defineStyle, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {Component, onMounted, useRef, xml} from "@odoo/owl";
+import {
+    defineParams,
+    defineStyle,
+    mountWithCleanup,
+} from "@web/../tests/web_test_helpers";
 
-import { usePosition } from "@web/core/position/position_hook";
+import {usePosition} from "@web/core/position/position_hook";
 
 before(
     () =>
         document.readyState === "complete" ||
-        new Promise((resolve) => window.addEventListener("load", resolve, { once: true }))
+        new Promise((resolve) => window.addEventListener("load", resolve, {once: true}))
 );
 
 function getTestComponent(popperOptions, styles = {}, target = false) {
@@ -56,7 +60,7 @@ test("default position is bottom-middle", async () => {
     expect.assertions(1);
 
     const TestComp = getTestComponent({
-        onPositioned: (el, { direction, variant }) => {
+        onPositioned: (el, {direction, variant}) => {
             expect(`${direction}-${variant}`).toBe("bottom-middle");
         },
     });
@@ -92,31 +96,40 @@ test("can add margin", async () => {
     // With/without additional margin (default direction is bottom)
     let [popBox, targetBox] = await _mountTestComponentAndDestroy();
     expect(popBox.top).toBe(targetBox.bottom + SHEET_MARGINS.top);
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ margin: 10 });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({margin: 10});
     expect(popBox.top).toBe(targetBox.bottom + SHEET_MARGINS.top + 10);
 
     // With/without additional margin, direction is top
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "top" });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({position: "top"});
     expect(popBox.top).toBe(targetBox.top - popBox.height - SHEET_MARGINS.bottom);
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "top", margin: 10 });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({
+        position: "top",
+        margin: 10,
+    });
     expect(popBox.top).toBe(targetBox.top - popBox.height - SHEET_MARGINS.bottom - 10);
 
     // With/without additional margin, direction is left
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "left" });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({position: "left"});
     expect(popBox.left).toBe(targetBox.left - popBox.width - SHEET_MARGINS.right);
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "left", margin: 10 });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({
+        position: "left",
+        margin: 10,
+    });
     expect(popBox.left).toBe(targetBox.left - popBox.width - SHEET_MARGINS.right - 10);
 
     // With/without additional margin, direction is right
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "right" });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({position: "right"});
     expect(popBox.left).toBe(targetBox.right + SHEET_MARGINS.left);
-    [popBox, targetBox] = await _mountTestComponentAndDestroy({ position: "right", margin: 10 });
+    [popBox, targetBox] = await _mountTestComponentAndDestroy({
+        position: "right",
+        margin: 10,
+    });
     expect(popBox.left).toBe(targetBox.right + SHEET_MARGINS.left + 10);
 });
 
 test("should flip direction and store it", async () => {
     const TestComp = getTestComponent({
-        onPositioned: (el, { direction, variant }) => {
+        onPositioned: (el, {direction, variant}) => {
             expect.step(`${direction}-${variant}`);
         },
     });
@@ -141,7 +154,7 @@ test("should flip direction and store it", async () => {
 test("can disable auto-flipping", async () => {
     const TestComp = getTestComponent({
         flip: false,
-        onPositioned: (el, { direction, variant }) => {
+        onPositioned: (el, {direction, variant}) => {
             expect.step(`${direction}-${variant}`);
         },
     });
@@ -165,7 +178,7 @@ test("can offset", async () => {
         variantOffset: 0,
     };
     const TestComp = getTestComponent({
-        onPositioned: (el, { direction, variant, variantOffset }) => {
+        onPositioned: (el, {direction, variant, variantOffset}) => {
             expect(direction).toBe(expected.direction);
             expect(variant).toBe(expected.variant);
             expect(variantOffset).toBe(expected.variantOffset);
@@ -211,18 +224,18 @@ test("has no effect when component is destroyed", async () => {
     });
 
     const comp = await mountWithCleanup(TestComp);
-    // onPositioned called when component mounted
+    // OnPositioned called when component mounted
     expect.verifySteps(["onPositioned called"]);
 
-    await scroll(queryOne("#scroll-container"), { y: 100 });
+    await scroll(queryOne("#scroll-container"), {y: 100});
     await animationFrame();
-    // onPositioned called when container scroll
+    // OnPositioned called when container scroll
     expect.verifySteps(["onPositioned called"]);
 
-    await scroll(queryOne("#scroll-container"), { y: 100 });
+    await scroll(queryOne("#scroll-container"), {y: 100});
     destroy(comp);
     await animationFrame();
-    // onPositioned not called even if scroll happened right before the component destroys
+    // OnPositioned not called even if scroll happened right before the component destroys
     expect.verifySteps([]);
 });
 
@@ -234,11 +247,11 @@ test("reposition popper when a load event occurs", async () => {
     });
 
     await mountWithCleanup(TestComp);
-    // onPositioned called when component mounted
+    // OnPositioned called when component mounted
     expect.verifySteps(["onPositioned called"]);
     manuallyDispatchProgrammaticEvent(queryOne("#popper"), "load");
     await animationFrame();
-    // onPositioned called when load event is triggered
+    // OnPositioned called when load event is triggered
     expect.verifySteps(["onPositioned called"]);
 });
 
@@ -258,21 +271,21 @@ test("reposition popper when a scroll event occurs", async () => {
     );
 
     await mountWithCleanup(TestComp);
-    // onPositioned called when component mounted
+    // OnPositioned called when component mounted
     expect.verifySteps(["onPositioned called"]);
-    await scroll(queryOne("#popper"), { y: 10 });
+    await scroll(queryOne("#popper"), {y: 10});
     await animationFrame();
-    // onPositioned not called when scroll event is triggered inside popper
+    // OnPositioned not called when scroll event is triggered inside popper
     expect.verifySteps([]);
-    await scroll(queryOne("#scroll-container"), { y: 10 });
+    await scroll(queryOne("#scroll-container"), {y: 10});
     await animationFrame();
-    // onPositioned called when container scroll (parent of popper)
+    // OnPositioned called when container scroll (parent of popper)
     expect.verifySteps(["onPositioned called"]);
 });
 
 test("is positioned relative to its containing block", async () => {
     const fixtureBox = getFixture().getBoundingClientRect();
-    // offset the container
+    // Offset the container
     const margin = 15;
     let pos1, pos2;
     let TestComp = getTestComponent(
@@ -311,10 +324,10 @@ test("is positioned relative to its containing block", async () => {
     const popBox2 = queryOne("#popper").getBoundingClientRect();
     destroy(popper);
 
-    // best positions are not the same relative to their containing block
+    // Best positions are not the same relative to their containing block
     expect(pos1.top).toBe(pos2.top + margin + fixtureBox.top);
     expect(pos1.left).toBe(pos2.left + margin + fixtureBox.left);
-    // best positions are the same relative to the viewport
+    // Best positions are the same relative to the viewport
     expect(popBox1.top).toBe(popBox2.top);
     expect(popBox1.left).toBe(popBox2.left);
 });
@@ -373,13 +386,13 @@ test("iframe: popper is outside, target inside", async () => {
         {
             container,
             onPositioned: (el, solution) => {
-                onPositionedArgs = { el, solution };
+                onPositionedArgs = {el, solution};
                 expect.step(`${solution.direction}-${solution.variant}`);
             },
         },
         popperTarget
     );
-    await mountWithCleanup(Popper, { target: container, noMainContainer: true });
+    await mountWithCleanup(Popper, {target: container, noMainContainer: true});
 
     expect.verifySteps(["bottom-middle"]);
 
@@ -390,12 +403,15 @@ test("iframe: popper is outside, target inside", async () => {
     expect(":iframe #target").toHaveCount(1);
 
     // Check the expected position
-    const { top: iframeTop, left: iframeLeft } = iframe.getBoundingClientRect();
+    const {top: iframeTop, left: iframeLeft} = iframe.getBoundingClientRect();
     let targetBox = popperTarget.getBoundingClientRect();
     let popperBox = onPositionedArgs.el.getBoundingClientRect();
     let expectedTop = iframeTop + targetBox.top + popperTarget.offsetHeight;
     let expectedLeft =
-        iframeLeft + targetBox.left + popperTarget.offsetWidth / 2 - popperBox.width / 2;
+        iframeLeft +
+        targetBox.left +
+        popperTarget.offsetWidth / 2 -
+        popperBox.width / 2;
 
     expect(popperBox.top).toBe(expectedTop);
     expect(popperBox.top).toBe(onPositionedArgs.solution.top);
@@ -406,16 +422,22 @@ test("iframe: popper is outside, target inside", async () => {
     // Scrolling inside the iframe should reposition the popover accordingly
     const previousPositionSolution = onPositionedArgs.solution;
     const scrollOffset = 100;
-    await scroll(":iframe html", { y: scrollOffset }, { scrollable: false });
+    await scroll(":iframe html", {y: scrollOffset}, {scrollable: false});
     await animationFrame();
     expect.verifySteps(["bottom-middle"]);
-    expect(previousPositionSolution.top).toBe(onPositionedArgs.solution.top + scrollOffset);
+    expect(previousPositionSolution.top).toBe(
+        onPositionedArgs.solution.top + scrollOffset
+    );
 
     // Check the expected position
     targetBox = popperTarget.getBoundingClientRect();
     popperBox = onPositionedArgs.el.getBoundingClientRect();
     expectedTop = iframeTop + targetBox.top + popperTarget.offsetHeight;
-    expectedLeft = iframeLeft + targetBox.left + popperTarget.offsetWidth / 2 - popperBox.width / 2;
+    expectedLeft =
+        iframeLeft +
+        targetBox.left +
+        popperTarget.offsetWidth / 2 -
+        popperBox.width / 2;
 
     expect(popperBox.top).toBe(expectedTop);
     expect(popperBox.top).toBe(onPositionedArgs.solution.top);
@@ -460,12 +482,12 @@ test("iframe: popper is outside, target and container inside", async () => {
         {
             container,
             onPositioned: (el, solution) => {
-                onPositionedArgs = { el, solution };
+                onPositionedArgs = {el, solution};
             },
         },
         popperTarget
     );
-    await mountWithCleanup(Popper, { target: container, noMainContainer: true });
+    await mountWithCleanup(Popper, {target: container, noMainContainer: true});
 
     expect("#popper").toHaveCount(1);
     expect("#target").toHaveCount(0);
@@ -473,12 +495,15 @@ test("iframe: popper is outside, target and container inside", async () => {
     expect(":iframe #popper").toHaveCount(0);
     expect(":iframe #target").toHaveCount(1);
 
-    const { top: iframeTop, left: iframeLeft } = iframe.getBoundingClientRect();
+    const {top: iframeTop, left: iframeLeft} = iframe.getBoundingClientRect();
     const targetBox = popperTarget.getBoundingClientRect();
     const popperBox = onPositionedArgs.el.getBoundingClientRect();
     const expectedTop = iframeTop + targetBox.top;
     const expectedLeft =
-        iframeLeft + targetBox.left + popperTarget.offsetWidth / 2 - popperBox.width / 2;
+        iframeLeft +
+        targetBox.left +
+        popperTarget.offsetWidth / 2 -
+        popperBox.width / 2;
 
     expect(popperBox.bottom).toBe(expectedTop);
     expect(popperBox.top).toBe(onPositionedArgs.solution.top);
@@ -527,12 +552,12 @@ test("iframe: both popper and target inside", async () => {
     const Popper = getTestComponent({
         container: innerContainer,
         onPositioned: (el, solution) => {
-            onPositionedArgs = { el, solution };
+            onPositionedArgs = {el, solution};
             expect.step(`${solution.direction}-${solution.variant}`);
         },
     });
 
-    await mountWithCleanup(Popper, { noMainContainer: true, target: innerContainer });
+    await mountWithCleanup(Popper, {noMainContainer: true, target: innerContainer});
     expect.verifySteps(["bottom-middle"]);
 
     // Check everything is rendered where it should be
@@ -545,7 +570,8 @@ test("iframe: both popper and target inside", async () => {
     let targetBox = popperTarget.getBoundingClientRect();
     let popperBox = onPositionedArgs.el.getBoundingClientRect();
     let expectedTop = targetBox.top + popperTarget.offsetHeight;
-    let expectedLeft = targetBox.left + popperTarget.offsetWidth / 2 - popperBox.width / 2;
+    let expectedLeft =
+        targetBox.left + popperTarget.offsetWidth / 2 - popperBox.width / 2;
 
     expect(popperBox.top).toBe(expectedTop);
     expect(popperBox.top).toBe(onPositionedArgs.solution.top);
@@ -556,10 +582,12 @@ test("iframe: both popper and target inside", async () => {
     // Scrolling inside the iframe should reposition the popover accordingly
     const previousPositionSolution = onPositionedArgs.solution;
     const scrollOffset = 100;
-    await scroll(":iframe html", { y: scrollOffset }, { scrollable: false });
+    await scroll(":iframe html", {y: scrollOffset}, {scrollable: false});
     await animationFrame();
     expect.verifySteps(["bottom-middle"]);
-    expect(previousPositionSolution.top).toBe(onPositionedArgs.solution.top + scrollOffset);
+    expect(previousPositionSolution.top).toBe(
+        onPositionedArgs.solution.top + scrollOffset
+    );
 
     // Check the expected position
     targetBox = popperTarget.getBoundingClientRect();
@@ -579,10 +607,10 @@ test("iframe: default container is the popper owner's document", async () => {
     // Prepare an outer iframe, that will hold the popper element
     let def = new Deferred();
     const outerIframe = document.createElement("iframe");
-    Object.assign(outerIframe.style, { height: "450px", width: "450px" });
+    Object.assign(outerIframe.style, {height: "450px", width: "450px"});
     outerIframe.onload = () => def.resolve();
     getFixture().prepend(outerIframe);
-    // registerCleanup(() => outerIframe.remove());
+    // RegisterCleanup(() => outerIframe.remove());
     await def;
     Object.assign(outerIframe.contentDocument.body.style, {
         display: "flex",
@@ -605,7 +633,7 @@ test("iframe: default container is the popper owner's document", async () => {
             }
         `;
     outerIframe.contentDocument.head.appendChild(iframeSheet);
-    await def; // wait for the iframe's stylesheet to be loaded
+    await def; // Wait for the iframe's stylesheet to be loaded
 
     // Prepare the inner iframe, that will hold the target element
     def = new Deferred();
@@ -643,9 +671,9 @@ test("iframe: default container is the popper owner's document", async () => {
         setup() {
             usePosition("popper", () => target, {
                 position: "top-start",
-                onPositioned: (_, { direction, variant }) => {
+                onPositioned: (_, {direction, variant}) => {
                     expect(`${direction}-${variant}`).toBe("top-start");
-                    // the style setup in this test leaves enough space in the inner iframe
+                    // The style setup in this test leaves enough space in the inner iframe
                     // for the popper to be positioned at top-middle, but this is exactly
                     // what we want to avoid: the popper's base container should not be the
                     // inner iframe, but the outer iframe, so the popper should be positioned
@@ -654,7 +682,7 @@ test("iframe: default container is the popper owner's document", async () => {
             });
         }
     }
-    await mountWithCleanup(Popper, { target: outerIframe.contentDocument.body });
+    await mountWithCleanup(Popper, {target: outerIframe.contentDocument.body});
 });
 
 test("popper as child of another", async () => {
@@ -668,11 +696,11 @@ test("popper as child of another", async () => {
         static props = ["*"];
         setup() {
             const ref = useRef("ref");
-            usePosition("popper", () => ref.el, { position: "left" });
+            usePosition("popper", () => ref.el, {position: "left"});
         }
     }
     class Parent extends Component {
-        static components = { Child };
+        static components = {Child};
         static template = /* xml */ xml`
             <div id="container" t-ref="container" style="background-color: salmon; display: flex; align-items: center; justify-content: center; width: 450px; height: 450px; margin: 25px; overflow: auto">
                 <div id="target" t-ref="target" style="background-color: tomato; width: 200px; height: 600px"/>
@@ -697,7 +725,7 @@ test("popper as child of another", async () => {
     const childRect = queryRect("#child .popper");
     const scrollTop = container.scrollHeight - container.offsetHeight;
 
-    await scroll("#container", { top: scrollTop });
+    await scroll("#container", {top: scrollTop});
 
     expect("#popper").toHaveRect({
         x: parentRect.x,
@@ -817,35 +845,35 @@ function shrinkPopperTest(position, offset, onPositioned, popperStyle = {}) {
 
 test(
     "max height to prevent container overflow - top",
-    shrinkPopperTest("top", 10, ({ c, p, t }) => {
+    shrinkPopperTest("top", 10, ({c, p, t}) => {
         expect(p.top).toBe(c.top);
         expect(p.bottom).toBe(t.top);
     })
 );
 test(
     "max height to prevent container overflow - bottom",
-    shrinkPopperTest("bottom", -10, ({ c, p, t }) => {
+    shrinkPopperTest("bottom", -10, ({c, p, t}) => {
         expect(p.top).toBe(t.bottom);
         expect(p.bottom).toBe(c.bottom);
     })
 );
 test(
     "max height to prevent container overflow - right-start",
-    shrinkPopperTest("right-start", 0, ({ c, p, t }) => {
+    shrinkPopperTest("right-start", 0, ({c, p, t}) => {
         expect(p.top).toBe(t.top);
         expect(p.bottom).toBe(c.bottom);
     })
 );
 test(
     "max height to prevent container overflow - right-middle",
-    shrinkPopperTest("right-middle", 0, ({ c, p }) => {
+    shrinkPopperTest("right-middle", 0, ({c, p}) => {
         expect(p.top).toBe(c.top);
         expect(p.bottom).toBe(c.bottom);
     })
 );
 test(
     "max height to prevent container overflow - right-end",
-    shrinkPopperTest("right-end", 0, ({ c, p, t }) => {
+    shrinkPopperTest("right-end", 0, ({c, p, t}) => {
         expect(p.bottom).toBe(t.bottom);
         expect(p.top).toBe(c.top);
     })
@@ -855,12 +883,12 @@ test(
     shrinkPopperTest(
         "top",
         10,
-        ({ c, p, t }) => {
+        ({c, p, t}) => {
             expect(p.height).toBe(100);
             expect(p.top).toBe(t.top - 100);
             expect(p.bottom).toBe(t.top);
         },
-        { "max-height": "100px" }
+        {"max-height": "100px"}
     )
 );
 
@@ -869,12 +897,12 @@ test(
     shrinkPopperTest(
         "top",
         10,
-        ({ c, p, t }) => {
+        ({c, p, t}) => {
             expect(p.height).not.toBe(900);
             expect(p.top).toBe(c.top);
             expect(p.bottom).toBe(t.top);
         },
-        { "max-height": "900px" }
+        {"max-height": "900px"}
     )
 );
 
@@ -885,7 +913,7 @@ function getPositionTest(position, positionToCheck) {
         const [d, v = "middle"] = positionToCheck.split("-");
         const TestComp = getTestComponent({
             position,
-            onPositioned: (el, { direction, variant }) => {
+            onPositioned: (el, {direction, variant}) => {
                 expect(d).toBe(direction);
                 expect(v).toBe(variant);
             },
@@ -940,13 +968,13 @@ test("position RTL left-middle", getPositionTestRTL("left-middle"));
 test("position RTL left-end", getPositionTestRTL("left-end"));
 
 const CONTAINER_STYLE_MAP = {
-    top: { alignItems: "flex-start" },
-    bottom: { alignItems: "flex-end" },
-    left: { justifyContent: "flex-start" },
-    right: { justifyContent: "flex-end" },
-    slimfit: { height: "100px", width: "100px" }, // height and width of popper
-    h125: { height: "125px" }, // height of popper + 1/2 target
-    w125: { width: "125px" }, // width of popper + 1/2 target
+    top: {alignItems: "flex-start"},
+    bottom: {alignItems: "flex-end"},
+    left: {justifyContent: "flex-start"},
+    right: {justifyContent: "flex-end"},
+    slimfit: {height: "100px", width: "100px"}, // Height and width of popper
+    h125: {height: "125px"}, // Height of popper + 1/2 target
+    w125: {width: "125px"}, // Width of popper + 1/2 target
 };
 
 function getRepositionTest(from, to, containerStyleChanges, extendedFlipping = false) {
@@ -954,7 +982,7 @@ function getRepositionTest(from, to, containerStyleChanges, extendedFlipping = f
         const TestComp = getTestComponent({
             extendedFlipping,
             position: from,
-            onPositioned: (el, { direction, variant }) => {
+            onPositioned: (el, {direction, variant}) => {
                 expect.step(`${direction}-${variant}`);
             },
         });
@@ -964,10 +992,16 @@ function getRepositionTest(from, to, containerStyleChanges, extendedFlipping = f
 
         // Change container style and force update
         for (const styleToApply of containerStyleChanges.split(" ")) {
-            Object.assign(queryOne("#container").style, CONTAINER_STYLE_MAP[styleToApply]);
-            Object.assign(queryOne("#scroll-container").style, CONTAINER_STYLE_MAP[styleToApply]);
+            Object.assign(
+                queryOne("#container").style,
+                CONTAINER_STYLE_MAP[styleToApply]
+            );
+            Object.assign(
+                queryOne("#scroll-container").style,
+                CONTAINER_STYLE_MAP[styleToApply]
+            );
         }
-        await scroll("#scroll-container", { y: 1 });
+        await scroll("#scroll-container", {y: 1});
         await animationFrame();
 
         [d, v = "middle"] = to.split("-");
@@ -976,7 +1010,10 @@ function getRepositionTest(from, to, containerStyleChanges, extendedFlipping = f
 }
 
 // -----------------------------------------------------------------------------
-test("reposition from top-start to top", getRepositionTest("top-start", "bottom-start", "top"));
+test(
+    "reposition from top-start to top",
+    getRepositionTest("top-start", "bottom-start", "top")
+);
 test(
     "reposition from top-start to top right",
     getRepositionTest("top-start", "bottom-end", "top right")
@@ -985,9 +1022,15 @@ test(
     "reposition from top-start to slimfit bottom",
     getRepositionTest("top-start", "top-start", "slimfit bottom")
 );
-test("reposition from top-start to right", getRepositionTest("top-start", "top-end", "right"));
+test(
+    "reposition from top-start to right",
+    getRepositionTest("top-start", "top-end", "right")
+);
 // -----------------------------------------------------------------------------
-test("reposition from top-middle to top", getRepositionTest("top-middle", "bottom-middle", "top"));
+test(
+    "reposition from top-middle to top",
+    getRepositionTest("top-middle", "bottom-middle", "top")
+);
 test(
     "reposition from top-middle to slimfit bottom",
     getRepositionTest("top-middle", "top-middle", "slimfit bottom")
@@ -997,14 +1040,23 @@ test(
     "reposition from top-end to top left",
     getRepositionTest("top-end", "bottom-start", "top left")
 );
-test("reposition from top-end to top", getRepositionTest("top-end", "bottom-end", "top"));
-test("reposition from top-end to left", getRepositionTest("top-end", "top-start", "left"));
+test(
+    "reposition from top-end to top",
+    getRepositionTest("top-end", "bottom-end", "top")
+);
+test(
+    "reposition from top-end to left",
+    getRepositionTest("top-end", "top-start", "left")
+);
 test(
     "reposition from top-end to slimfit bottom",
     getRepositionTest("top-end", "top-end", "slimfit bottom")
 );
 // -----------------------------------------------------------------------------
-test("reposition from left-start to left", getRepositionTest("left-start", "right-start", "left"));
+test(
+    "reposition from left-start to left",
+    getRepositionTest("left-start", "right-start", "left")
+);
 test(
     "reposition from left-start to left bottom",
     getRepositionTest("left-start", "right-end", "left bottom")
@@ -1013,7 +1065,10 @@ test(
     "reposition from left-start to slimfit top",
     getRepositionTest("left-start", "left-start", "slimfit top")
 );
-test("reposition from left-start to bottom", getRepositionTest("left-start", "left-end", "bottom"));
+test(
+    "reposition from left-start to bottom",
+    getRepositionTest("left-start", "left-end", "bottom")
+);
 // -----------------------------------------------------------------------------
 test(
     "reposition from left-middle to left",
@@ -1028,8 +1083,14 @@ test(
     "reposition from left-end to left top",
     getRepositionTest("left-end", "right-start", "left top")
 );
-test("reposition from left-end to left", getRepositionTest("left-end", "right-end", "left"));
-test("reposition from left-end to top", getRepositionTest("left-end", "left-start", "top"));
+test(
+    "reposition from left-end to left",
+    getRepositionTest("left-end", "right-end", "left")
+);
+test(
+    "reposition from left-end to top",
+    getRepositionTest("left-end", "left-start", "top")
+);
 test(
     "reposition from left-end to slimfit bottom",
     getRepositionTest("left-end", "left-end", "slimfit bottom")
@@ -1061,7 +1122,10 @@ test(
     getRepositionTest("bottom-middle", "top-middle", "bottom")
 );
 // -----------------------------------------------------------------------------
-test("reposition from bottom-end to left", getRepositionTest("bottom-end", "bottom-start", "left"));
+test(
+    "reposition from bottom-end to left",
+    getRepositionTest("bottom-end", "bottom-start", "left")
+);
 test(
     "reposition from bottom-end to slimfit top",
     getRepositionTest("bottom-end", "bottom-end", "slimfit top")
@@ -1070,7 +1134,10 @@ test(
     "reposition from bottom-end to bottom left",
     getRepositionTest("bottom-end", "top-start", "bottom left")
 );
-test("reposition from bottom-end to bottom", getRepositionTest("bottom-end", "top-end", "bottom"));
+test(
+    "reposition from bottom-end to bottom",
+    getRepositionTest("bottom-end", "top-end", "bottom")
+);
 // -----------------------------------------------------------------------------
 test(
     "reposition from right-start to slimfit top",
@@ -1098,7 +1165,10 @@ test(
     getRepositionTest("right-middle", "left-middle", "right")
 );
 // -----------------------------------------------------------------------------
-test("reposition from right-end to top", getRepositionTest("right-end", "right-start", "top"));
+test(
+    "reposition from right-end to top",
+    getRepositionTest("right-end", "right-start", "top")
+);
 test(
     "reposition from right-end to slimfit bottom",
     getRepositionTest("right-end", "right-end", "slimfit bottom")
@@ -1107,7 +1177,10 @@ test(
     "reposition from right-end to right top",
     getRepositionTest("right-end", "left-start", "right top")
 );
-test("reposition from right-end to right", getRepositionTest("right-end", "left-end", "right"));
+test(
+    "reposition from right-end to right",
+    getRepositionTest("right-end", "left-end", "right")
+);
 // Reposition with all flipping directions allowed
 test(
     "extended reposition from top-start to slimfit bottom",
@@ -1192,24 +1265,45 @@ test(
 
 function getFittingTest(position, styleAttribute) {
     return async () => {
-        const TestComp = getTestComponent({ position });
+        const TestComp = getTestComponent({position});
         await mountWithCleanup(TestComp);
         expect("#popper").toHaveStyle(`${styleAttribute}: 50px`);
     };
 }
 
-test("reposition from bottom-fit to top-fit", getRepositionTest("bottom-fit", "top-fit", "bottom"));
-test("reposition from top-fit to bottom-fit", getRepositionTest("top-fit", "bottom-fit", "top"));
-test("reposition from right-fit to left-fit", getRepositionTest("right-fit", "left-fit", "right"));
-test("reposition from left-fit to right-fit", getRepositionTest("left-fit", "right-fit", "left"));
-test("bottom-fit has the same width as the target", getFittingTest("bottom-fit", "width"));
+test(
+    "reposition from bottom-fit to top-fit",
+    getRepositionTest("bottom-fit", "top-fit", "bottom")
+);
+test(
+    "reposition from top-fit to bottom-fit",
+    getRepositionTest("top-fit", "bottom-fit", "top")
+);
+test(
+    "reposition from right-fit to left-fit",
+    getRepositionTest("right-fit", "left-fit", "right")
+);
+test(
+    "reposition from left-fit to right-fit",
+    getRepositionTest("left-fit", "right-fit", "left")
+);
+test(
+    "bottom-fit has the same width as the target",
+    getFittingTest("bottom-fit", "width")
+);
 test("top-fit has the same width as the target", getFittingTest("top-fit", "width"));
-test("left-fit has the same height as the target", getFittingTest("left-fit", "height"));
-test("right-fit has the same height as the target", getFittingTest("right-fit", "height"));
+test(
+    "left-fit has the same height as the target",
+    getFittingTest("left-fit", "height")
+);
+test(
+    "right-fit has the same height as the target",
+    getFittingTest("right-fit", "height")
+);
 
 test("popper with the fit variant and a large content inside is resized to match the toggler - horizontally", async () => {
     const TestComp = getTestComponent(
-        { position: "bottom-fit" },
+        {position: "bottom-fit"},
         {
             content: {
                 width: "500px",
@@ -1221,12 +1315,12 @@ test("popper with the fit variant and a large content inside is resized to match
     );
     await mountWithCleanup(TestComp);
     expect(queryOne("#target").getBoundingClientRect().left).toBe(225);
-    expect("#popper").toHaveStyle({ left: "225px", width: "50px" });
+    expect("#popper").toHaveStyle({left: "225px", width: "50px"});
 });
 
 test("popper with the fit variant and a large content inside is resized to match the toggler - vertically", async () => {
     const TestComp = getTestComponent(
-        { position: "right-fit" },
+        {position: "right-fit"},
         {
             content: {
                 height: "500px",
@@ -1238,5 +1332,5 @@ test("popper with the fit variant and a large content inside is resized to match
     );
     await mountWithCleanup(TestComp);
     expect(queryOne("#target").getBoundingClientRect().top).toBe(225);
-    expect("#popper").toHaveStyle({ top: "225px", height: "50px" });
+    expect("#popper").toHaveStyle({top: "225px", height: "50px"});
 });

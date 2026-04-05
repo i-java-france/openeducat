@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { computeScore } from "./password_policy";
-import { Component, xml } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {computeScore} from "./password_policy";
+import {Component, xml} from "@odoo/owl";
 
 export class Meter extends Component {
     static template = xml`
@@ -13,23 +13,23 @@ export class Meter extends Component {
         </div>
     `;
     static props = {
-        password: { type: String },
+        password: {type: String},
         required: Object,
         recommended: Object,
     };
 
     get passwordStrengthParams() {
         const strengthRanges = [
-            { upperLimit: 0.5, className: "text-danger", text: _t("Weak") },
-            { upperLimit: 0.99, className: "text-warning", text: _t("Medium") },
-            { upperLimit: 1, className: "text-success", text: _t("Strong") },
+            {upperLimit: 0.5, className: "text-danger", text: _t("Weak")},
+            {upperLimit: 0.99, className: "text-warning", text: _t("Medium")},
+            {upperLimit: 1, className: "text-success", text: _t("Strong")},
         ];
 
         // Finding the appropriate strength range
-        const { className, text } = strengthRanges.find(
-            ({ upperLimit }) => this.value <= upperLimit
+        const {className, text} = strengthRanges.find(
+            ({upperLimit}) => this.value <= upperLimit
         );
-        return { className, text };
+        return {className, text};
     }
 
     get title() {
@@ -40,6 +40,10 @@ export class Meter extends Component {
     }
 
     get value() {
-        return computeScore(this.props.password, this.props.required, this.props.recommended);
+        return computeScore(
+            this.props.password,
+            this.props.required,
+            this.props.recommended
+        );
     }
 }

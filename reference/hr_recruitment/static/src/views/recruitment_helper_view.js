@@ -1,6 +1,6 @@
-import { useService } from "@web/core/utils/hooks";
-import { user } from "@web/core/user";
-import { Component, onWillStart, useState } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {user} from "@web/core/user";
+import {Component, onWillStart, useState} from "@odoo/owl";
 
 export class RecruitmentActionHelper extends Component {
     static template = "hr_recruitment.RecruitmentActionHelper";
@@ -12,10 +12,16 @@ export class RecruitmentActionHelper extends Component {
             hasDemoData: false,
         });
         onWillStart(async () => {
-            const categoryTags = await this.orm.searchRead("hr.applicant.category", [], ["name"]);
+            const categoryTags = await this.orm.searchRead(
+                "hr.applicant.category",
+                [],
+                ["name"]
+            );
             const demoTag = categoryTags.filter((tag) => tag.name === "Demo");
             this.state.hasDemoData = demoTag.length === 1;
-            this.isRecruitmentUser = await user.hasGroup("hr_recruitment.group_hr_recruitment_user");
+            this.isRecruitmentUser = await user.hasGroup(
+                "hr_recruitment.group_hr_recruitment_user"
+            );
         });
     }
 
@@ -24,6 +30,6 @@ export class RecruitmentActionHelper extends Component {
     }
 
     actionCreateJobPosition() {
-        this.actionService.doAction("hr.action_create_job_position")
+        this.actionService.doAction("hr.action_create_job_position");
     }
 }

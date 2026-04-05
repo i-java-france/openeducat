@@ -1,12 +1,15 @@
-import { expect, test, describe } from "@odoo/hoot";
-import { createRelatedModels, Base } from "@point_of_sale/app/models/related_models";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { SERIALIZED_UI_STATE_PROP } from "@point_of_sale/app/models/related_models/utils";
-import { getModelDefinitions, getRelatedModelsInstance } from "../data/get_model_definitions";
-import { makeMockServer } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {Base, createRelatedModels} from "@point_of_sale/app/models/related_models";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {SERIALIZED_UI_STATE_PROP} from "@point_of_sale/app/models/related_models/utils";
+import {
+    getModelDefinitions,
+    getRelatedModelsInstance,
+} from "../data/get_model_definitions";
+import {makeMockServer} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "../data/generate_model_definitions";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 definePosModels();
 
@@ -51,7 +54,7 @@ describe("Related Model", () => {
         expect(order.raw.extraField).toBe("Value");
         expect(order.extraField).toBe(undefined);
         expect(order.raw._extra).toBe("1");
-        expect(order._extra).toBe("1"); //shortcut to raw data
+        expect(order._extra).toBe("1"); // Shortcut to raw data
 
         // Update (same order id)
         models.connectNewData({
@@ -128,7 +131,7 @@ describe("Related Model", () => {
             id: 11,
         });
 
-        const order = models["pos.order"].create({ id: 99, lines: [11], name: "Hello" });
+        const order = models["pos.order"].create({id: 99, lines: [11], name: "Hello"});
         const line = order.lines[0];
         expect(line.id).toBe(11);
         expect(order.name).toBe("Hello");
@@ -156,12 +159,15 @@ describe("Related Model", () => {
         const order = models["pos.order"].create({});
 
         // Add line top order
-        models["pos.order.line"].create({ order_id: order, full_product_name: "Line 1" });
+        models["pos.order.line"].create({order_id: order, full_product_name: "Line 1"});
         expect(order.lines.length).toBe(1);
         expect(order.lines[0].full_product_name).toBe("Line 1");
 
         // Use order id to link the line
-        models["pos.order.line"].create({ order_id: order.id, full_product_name: "Line 2" });
+        models["pos.order.line"].create({
+            order_id: order.id,
+            full_product_name: "Line 2",
+        });
         expect(order.lines.length).toBe(2);
         expect(order.lines[1].full_product_name).toBe("Line 2");
 
@@ -179,7 +185,7 @@ describe("Related Model", () => {
         expect(order.lines.length).toBe(0);
         expect(order2.lines[0].full_product_name).toBe("Line 2");
 
-        line.order_id = order2.id; //Assign by id
+        line.order_id = order2.id; // Assign by id
         expect(order2.lines.length).toBe(2);
         expect(order2.lines[1].full_product_name).toBe("Line 1");
     });
@@ -197,49 +203,49 @@ describe("Related Model", () => {
     test("one2many update", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const line1 = models["pos.order.line"].create({ full_product_name: "Line 1" });
-        const line2 = models["pos.order.line"].create({ full_product_name: "Line 2" });
-        const line3 = models["pos.order.line"].create({ full_product_name: "Line 3" });
+        const line1 = models["pos.order.line"].create({full_product_name: "Line 1"});
+        const line2 = models["pos.order.line"].create({full_product_name: "Line 2"});
+        const line3 = models["pos.order.line"].create({full_product_name: "Line 3"});
 
-        const order = models["pos.order"].create({ lines: [["link", line1, line2]] });
+        const order = models["pos.order"].create({lines: [["link", line1, line2]]});
         expect(order.lines.length).toBe(2);
         expect(order.lines[0].order_id).toBe(order);
 
         // Unlink
-        order.update({ lines: [["unlink", line1]] });
+        order.update({lines: [["unlink", line1]]});
         expect(order.lines.length).toBe(1);
         expect(line1.order_id).toBeEmpty();
 
         // Link
-        order.update({ lines: [["link", line1]] }); //add a line
+        order.update({lines: [["link", line1]]}); // Add a line
         expect(order.lines.length).toBe(2);
         expect(order.lines[1].full_product_name).toBe("Line 1");
         expect(order.lines[1].order_id).toBe(order);
 
         // Clear
-        order.update({ lines: [["clear"]] });
+        order.update({lines: [["clear"]]});
         expect(order.lines.length).toBe(0);
         expect(line1.order_id).toBeEmpty();
 
         // Set
-        order.update({ lines: [["link", line1]] });
+        order.update({lines: [["link", line1]]});
         expect(order.lines.length).toBe(1);
-        order.update({ lines: [["set", line2, line3]] });
+        order.update({lines: [["set", line2, line3]]});
         expect(order.lines.length).toBe(2);
         expect(order.lines[0].full_product_name).toBe("Line 2");
         expect(order.lines[0].order_id).toBe(order);
         expect(order.lines[1].full_product_name).toBe("Line 3");
         expect(order.lines[1].order_id).toBe(order);
-        expect(line1.order_id).toBeEmpty(); //line 1 disconnected
+        expect(line1.order_id).toBeEmpty(); // Line 1 disconnected
 
         // Create
-        order.update({ lines: [["create", { full_product_name: "Line new" }]] });
+        order.update({lines: [["create", {full_product_name: "Line new"}]]});
         expect(order.lines.length).toBe(3);
         expect(order.lines[2].full_product_name).toBe("Line new");
         expect(order.lines[2].order_id).toBe(order);
 
         // Test set default value
-        order.update({ lines: [line1] });
+        order.update({lines: [line1]});
         expect(order.lines.length).toBe(1);
     });
 
@@ -247,7 +253,7 @@ describe("Related Model", () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
         const order = models["pos.order"].create({});
-        const line = models["pos.order.line"].create({ order_id: order, name: "Line 1" });
+        const line = models["pos.order.line"].create({order_id: order, name: "Line 1"});
         expect(order.lines.length).toBe(1);
 
         expect(models["pos.order.line"].get(line.id)).not.toBeEmpty();
@@ -303,8 +309,8 @@ describe("Related Model", () => {
             // Assign attribute upon creation using create command
             const o1 = models["pos.order"].create({
                 lines: [
-                    ["create", { full_product_name: "Line 1" }],
-                    ["create", { full_product_name: "Line 2" }],
+                    ["create", {full_product_name: "Line 1"}],
+                    ["create", {full_product_name: "Line 2"}],
                 ],
             });
             expect(o1.lines.length).toBe(2);
@@ -313,22 +319,22 @@ describe("Related Model", () => {
         {
             // Manage attribute_ids using the update method
             const o1 = models["pos.order"].create({});
-            const line = models["pos.order.line"].create({ full_product_name: "Line 1" });
-            line.update({ order_id: o1 });
+            const line = models["pos.order.line"].create({full_product_name: "Line 1"});
+            line.update({order_id: o1});
             expect(line.order_id).toBe(o1);
 
             const l1 = models["pos.order.line"].create({});
             const l2 = models["pos.order.line"].create({});
-            o1.update({ lines: [["set", l1, l2]] });
+            o1.update({lines: [["set", l1, l2]]});
             expect(o1.lines.length).toBe(2);
             expect(o1.lines).toInclude(l1);
             expect(o1.lines).toInclude(l2);
 
-            o1.update({ lines: [["unlink", l1]] });
+            o1.update({lines: [["unlink", l1]]});
             expect(o1.lines.length).toBe(1);
             expect(o1.lines).toInclude(l2);
 
-            l2.update({ order_id: [] });
+            l2.update({order_id: []});
             expect(o1.lines.length).toBe(0);
         }
     });
@@ -336,11 +342,17 @@ describe("Related Model", () => {
     test("x2many allow setter", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const line1 = models["pos.order.line"].create({ id: 11, full_product_name: "Line 1" });
-        const line2 = models["pos.order.line"].create({ id: 12, full_product_name: "Line 2" });
+        const line1 = models["pos.order.line"].create({
+            id: 11,
+            full_product_name: "Line 1",
+        });
+        const line2 = models["pos.order.line"].create({
+            id: 12,
+            full_product_name: "Line 2",
+        });
 
         {
-            //Link command
+            // Link command
             const order = models["pos.order"].create({});
             order.lines = [["link", line1, line2.id]];
             expect(order.lines.length).toBe(2);
@@ -364,7 +376,11 @@ describe("Related Model", () => {
         {
             // MIX
             const order = models["pos.order"].create({});
-            order.lines = [line1, ["link", line2.id], ["create", { full_product_name: "Line 3" }]];
+            order.lines = [
+                line1,
+                ["link", line2.id],
+                ["create", {full_product_name: "Line 3"}],
+            ];
             expect(order.lines.length).toBe(3);
             expect(order.lines[0]).toBe(line1);
             expect(order.lines[1]).toBe(line2);
@@ -427,7 +443,12 @@ describe("Related Model", () => {
         expect(line2.order_id).toBe(order);
         models.loadConnectedData({
             "pos.order": [
-                { id: 1, total: 10, lines: [12], uuid: "42eb4cc3-2ec8-4a0b-9bca-0a2d8a98178c" },
+                {
+                    id: 1,
+                    total: 10,
+                    lines: [12],
+                    uuid: "42eb4cc3-2ec8-4a0b-9bca-0a2d8a98178c",
+                },
             ],
             "pos.order.line": [
                 {
@@ -439,7 +460,7 @@ describe("Related Model", () => {
             ],
         });
 
-        //The same order object
+        // The same order object
         const order2 = models["pos.order"].get(1);
         expect(order2).toBe(order);
         expect(order2.lines.length).toBe(1);
@@ -521,7 +542,7 @@ describe("Related Model", () => {
     });
 
     test("Load data: connect records without many2one", async () => {
-        // lines without order_id
+        // Lines without order_id
 
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
@@ -575,14 +596,14 @@ describe("Related Model", () => {
         const line = models["pos.order.line"].get(12);
         expect(line.order_id).toBe(order);
 
-        expect(order.lines.length).toBe(1); // line 13 is not yet loaded
+        expect(order.lines.length).toBe(1); // Line 13 is not yet loaded
         expect(order.lines[0].id).toBe(12);
     });
 
     test("Update newly created records with server data", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ total: 30 });
+        const order = models["pos.order"].create({total: 30});
         const line = models["pos.order.line"].create({
             order_id: order,
             full_product_name: "Line 1",
@@ -597,7 +618,7 @@ describe("Related Model", () => {
         expect(models["pos.order"].get(oldOrderId)).not.toBeEmpty();
 
         models.connectNewData({
-            "pos.order": [{ id: 100, amount_total: 50, lines: [12], uuid: order.uuid }],
+            "pos.order": [{id: 100, amount_total: 50, lines: [12], uuid: order.uuid}],
             "pos.order.line": [
                 {
                     id: 12,
@@ -616,7 +637,7 @@ describe("Related Model", () => {
         expect(order.lines[0].id).toBe(12);
         expect(order.lines[0].full_product_name).toBe("Line 1111");
 
-        //Find by ids, uuids
+        // Find by ids, uuids
         expect(models["pos.order"].get(oldOrderId)).toBe(undefined);
         expect(models["pos.order"].get(order.id)).toBe(order);
         expect(models["pos.order"].getBy("uuid", order.uuid)).toBe(order);
@@ -629,13 +650,13 @@ describe("Related Model", () => {
     test("Disallow record id update", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ total: 30 });
+        const order = models["pos.order"].create({total: 30});
         expect(order.isSynced).toBe(false);
         expect(models["pos.order"].get(order.id)).toBe(order);
         expect(models["pos.order"].getBy("uuid", order.uuid)).toBe(order);
 
         const oldId = order.id;
-        order.update({ id: 12 });
+        order.update({id: 12});
         expect(order.id).toBe(oldId);
 
         expect(() => {
@@ -646,13 +667,13 @@ describe("Related Model", () => {
     test("Ignoring update for unknown field", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ total: 30 });
+        const order = models["pos.order"].create({total: 30});
 
         expect(() => {
-            order.update({ fake_field: 1 });
+            order.update({fake_field: 1});
         }).toThrow();
 
-        order.update({ fake_field: 1 }, { omitUnknownField: true });
+        order.update({fake_field: 1}, {omitUnknownField: true});
         expect(order.fake_field).toBe(undefined);
         expect(order.raw.fake_field).toBe(undefined);
     });
@@ -660,9 +681,15 @@ describe("Related Model", () => {
     test("Deleting the root record must disconnect its child records", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ total: 30 });
-        const line1 = models["pos.order.line"].create({ order_id: order, name: "Line 1" });
-        const line2 = models["pos.order.line"].create({ order_id: order, name: "Line 2" });
+        const order = models["pos.order"].create({total: 30});
+        const line1 = models["pos.order.line"].create({
+            order_id: order,
+            name: "Line 1",
+        });
+        const line2 = models["pos.order.line"].create({
+            order_id: order,
+            name: "Line 2",
+        });
 
         expect(models["pos.order"].get(order.id)).toBe(order);
         expect(models["pos.order"].getBy("uuid", order.uuid)).toBe(order);
@@ -679,23 +706,26 @@ describe("Related Model", () => {
     test("DateTime in raw data must be stored in server format", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const orderDate = DateTime.now().set({ second: 0, millisecond: 0 });
+        const orderDate = DateTime.now().set({second: 0, millisecond: 0});
 
         {
-            const order = models["pos.order"].create({ total: 30, date_order: orderDate });
+            const order = models["pos.order"].create({
+                total: 30,
+                date_order: orderDate,
+            });
             // Stored as server date
             expect(order.raw.date_order).toBe(serializeDateTime(orderDate));
             expect(order.date_order.toMillis()).toBe(orderDate.toMillis());
 
             // Update date
-            const newDate = orderDate.plus({ hours: 1 });
-            order.update({ date_order: newDate });
+            const newDate = orderDate.plus({hours: 1});
+            order.update({date_order: newDate});
             expect(order.date_order.toMillis()).toBe(newDate.toMillis());
         }
 
         {
-            //Create with server date
-            const newOrderDate = orderDate.plus({ hours: 2 });
+            // Create with server date
+            const newOrderDate = orderDate.plus({hours: 2});
             const serverValue = serializeDateTime(newOrderDate);
             const order = models["pos.order"].create({
                 total: 30,
@@ -737,7 +767,7 @@ describe("Related Model", () => {
         const line = models["pos.order.line"].get(12);
         expect(line.order_id).toBe(order);
 
-        expect(order.lines.length).toBe(1); // line 13 is not yet loaded  ...
+        expect(order.lines.length).toBe(1); // Line 13 is not yet loaded  ...
 
         models.connectNewData({
             "pos.order.line": [
@@ -754,7 +784,7 @@ describe("Related Model", () => {
         expect(order.lines[1]).toBe(models["pos.order.line"].get(13));
 
         const lineOrder2 = models["pos.order.line"].get(99);
-        expect(lineOrder2.order_id).toBeEmpty(); //order 2 is not loaded
+        expect(lineOrder2.order_id).toBeEmpty(); // Order 2 is not loaded
 
         models.connectNewData({
             "pos.order": [
@@ -765,7 +795,7 @@ describe("Related Model", () => {
             ],
         });
         const order2 = models["pos.order"].get(2);
-        expect(lineOrder2.order_id).toBe(order2); //order 2 is not loaded
+        expect(lineOrder2.order_id).toBe(order2); // Order 2 is not loaded
         expect(order2.lines[0]).toBe(lineOrder2);
     });
 
@@ -774,8 +804,8 @@ describe("Related Model", () => {
         const models = getRelatedModelsInstance(false);
         models.loadConnectedData({
             "product.template.attribute.value": [
-                { id: 91, name: "Att 1" },
-                { id: 92, name: "Att 2" },
+                {id: 91, name: "Att 1"},
+                {id: 92, name: "Att 2"},
             ],
 
             "pos.order.line": [
@@ -821,7 +851,7 @@ describe("Related Model", () => {
             expect(lines[0]).toBe(line1);
 
             // New Line
-            const line3 = models["pos.order.line"].create({ attribute_value_ids: [91] });
+            const line3 = models["pos.order.line"].create({attribute_value_ids: [91]});
             lines = att1.backLink("<-pos.order.line.attribute_value_ids");
             expect(lines.length).toBe(2);
             expect(lines[1]).toBe(line3);
@@ -861,10 +891,10 @@ describe("Related Model", () => {
 
         models.loadConnectedData({
             "product.template": [
-                { id: 91, pos_categ_ids: [12, 13] },
-                { id: 92, pos_categ_ids: [12] },
+                {id: 91, pos_categ_ids: [12, 13]},
+                {id: 92, pos_categ_ids: [12]},
             ],
-            "pos.category": [{ id: 12 }, { id: 13 }],
+            "pos.category": [{id: 12}, {id: 13}],
         });
 
         let records = models["product.template"].readAllBy("pos_categ_ids");
@@ -894,10 +924,10 @@ describe("Related Model", () => {
         const models = getRelatedModelsInstance(false);
         models.loadConnectedData({
             "product.template": [
-                { id: 91, pos_categ_ids: [] },
-                { id: 92, pos_categ_ids: [] },
+                {id: 91, pos_categ_ids: []},
+                {id: 92, pos_categ_ids: []},
             ],
-            "pos.category": [{ id: 12 }, { id: 13 }],
+            "pos.category": [{id: 12}, {id: 13}],
         });
 
         let records = models["product.template"].getAllBy("pos_categ_ids");
@@ -932,7 +962,7 @@ describe("Related Model", () => {
         expect(records[12]).toInclude(product);
         expect(records[12]).toInclude(models["product.template"].get(94));
 
-        // backend updated
+        // Backend updated
         models.connectNewData({
             "product.template": [
                 {
@@ -996,7 +1026,7 @@ describe("Related Model", () => {
         }
 
         expect(() => {
-            createRelatedModels(getModelDefinitions(), { "pos.order": PosOrder }, {});
+            createRelatedModels(getModelDefinitions(), {"pos.order": PosOrder}, {});
         }).toThrow(/pos.order/i);
     });
 
@@ -1009,7 +1039,7 @@ describe("Related Model", () => {
                 name: "Hello",
             });
 
-            const order = models["pos.order"].create({ id: 99, lines: [11] });
+            const order = models["pos.order"].create({id: 99, lines: [11]});
             expect(order.lines).toInclude(line1);
         });
 
@@ -1112,16 +1142,16 @@ describe("Related Model", () => {
                 type: "char",
             },
         };
-        const { models } = createRelatedModels(
-            { "pos.order.dummy": defDummyOrder },
-            { "pos.order.dummy": PosOrderDummy },
+        const {models} = createRelatedModels(
+            {"pos.order.dummy": defDummyOrder},
+            {"pos.order.dummy": PosOrderDummy},
             {
                 dynamicModels: ["pos.order.dummy"],
                 databaseIndex: {
                     "pos.order.dummy": ["uuid"],
                 },
                 databaseTable: {
-                    "pos.order.dummy": { key: "uuid" },
+                    "pos.order.dummy": {key: "uuid"},
                 },
             }
         );
@@ -1162,9 +1192,9 @@ describe("Related Model", () => {
             []
         );
         expect(calls).toEqual(["setup", "restoreState"]);
-        expect(order1.uiState).toEqual({ test: true });
+        expect(order1.uiState).toEqual({test: true});
 
-        //Loading new data
+        // Loading new data
         calls = [];
         models.loadConnectedData(
             {

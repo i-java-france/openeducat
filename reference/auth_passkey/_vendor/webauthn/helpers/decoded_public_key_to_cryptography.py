@@ -1,5 +1,4 @@
 import codecs
-from typing import Union
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric.ec import (
@@ -20,8 +19,8 @@ from .exceptions import UnsupportedPublicKey
 
 
 def decoded_public_key_to_cryptography(
-    public_key: Union[DecodedOKPPublicKey, DecodedEC2PublicKey, DecodedRSAPublicKey]
-) -> Union[Ed25519PublicKey, EllipticCurvePublicKey, RSAPublicKey]:
+    public_key: DecodedOKPPublicKey | DecodedEC2PublicKey | DecodedRSAPublicKey
+) -> Ed25519PublicKey | EllipticCurvePublicKey | RSAPublicKey:
     """Convert raw decoded public key parameters (crv, x, y, n, e, etc...) into
     public keys using primitives from the cryptography.io library
     """

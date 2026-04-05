@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates>
-
     <t t-name="account.TaxGroupComponent">
         <tr>
             <td class="o_td_label">
-                <label class="o_form_label o_tax_total_label" t-out="props.taxGroup.group_name"/>
+                <label
+                    class="o_form_label o_tax_total_label"
+                    t-out="props.taxGroup.group_name"
+                />
             </td>
 
-            <td  class="o_tax_group">
+            <td class="o_tax_group">
                 <t t-if="!props.isReadonly">
                     <t t-if="['edit', 'disable'].includes(state.value)">
                         <span class="o_tax_group_edit_input" t-ref="numpadDecimal">
@@ -18,20 +20,30 @@
                                 o_field_number o_input"
                                 t-att-disabled="state.value === 'disable'"
                                 t-on-change.prevent="_onChangeTaxValue"
-                                t-on-blur="_onChangeTaxValue"/>
+                                t-on-blur="_onChangeTaxValue"
+                            />
                         </span>
                     </t>
                     <t t-else="">
-                        <span class="o_tax_group_edit" t-on-click.prevent="() => this.setState('edit')">
+                        <span
+                            class="o_tax_group_edit"
+                            t-on-click.prevent="() => this.setState('edit')"
+                        >
                             <span class="o_tax_group_amount_value o_list_monetary">
-                                <i class="fa fa-pencil me-2"/> <t t-out="formatMonetary(props.taxGroup.tax_amount_currency)"/>
+                                <i class="fa fa-pencil me-2" />
+                                <t
+                                    t-out="formatMonetary(props.taxGroup.tax_amount_currency)"
+                                />
                             </span>
                         </span>
                     </t>
                 </t>
                 <t t-else="">
                     <span class="o_tax_group_amount_value o_list_monetary">
-                        <t t-out="formatMonetary(props.taxGroup.tax_amount_currency)" style="white-space: nowrap;"/>
+                        <t
+                            t-out="formatMonetary(props.taxGroup.tax_amount_currency)"
+                            style="white-space: nowrap;"
+                        />
                     </span>
                 </t>
             </td>
@@ -44,17 +56,26 @@
                 <t t-foreach="totals.subtotals" t-as="subtotal" t-key="subtotal_index">
                     <tr>
                         <td class="o_td_label">
-                            <label class="o_form_label o_tax_total_label" t-out="subtotal.name"/>
+                            <label
+                                class="o_form_label o_tax_total_label"
+                                t-out="subtotal.name"
+                            />
                         </td>
 
                         <td class="o_list_monetary">
-                            <span t-att-name="subtotal.name"
-                                  style="white-space: nowrap; font-weight: bold;"
-                                  t-out="formatMonetary(subtotal.base_amount_currency)"/>
+                            <span
+                                t-att-name="subtotal.name"
+                                style="white-space: nowrap; font-weight: bold;"
+                                t-out="formatMonetary(subtotal.base_amount_currency)"
+                            />
                         </td>
                     </tr>
 
-                    <t t-foreach="subtotal.tax_groups" t-as="taxGroup" t-key="taxGroup_index">
+                    <t
+                        t-foreach="subtotal.tax_groups"
+                        t-as="taxGroup"
+                        t-key="taxGroup_index"
+                    >
                         <TaxGroupComponent
                             totals="totals"
                             subtotal="subtotal"

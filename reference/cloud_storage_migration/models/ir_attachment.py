@@ -2,18 +2,19 @@
 
 import logging
 import time
-import requests
-
 from datetime import timedelta
 
-from odoo.tools import SQL, config
-from odoo.http import request
-from odoo import models, fields, _
+import requests
+
+from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.http import request
+from odoo.tools import SQL, config
 
 from odoo.addons.base.models.ir_module import assert_log_admin_access
-from odoo.addons.cloud_storage.models.res_config_settings import DEFAULT_CLOUD_STORAGE_MIN_FILE_SIZE
-
+from odoo.addons.cloud_storage.models.res_config_settings import (
+    DEFAULT_CLOUD_STORAGE_MIN_FILE_SIZE,
+)
 
 _logger = logging.getLogger(__name__)
 

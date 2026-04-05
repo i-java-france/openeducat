@@ -1,4 +1,4 @@
-import { isElement, isTextNode } from "@html_editor/utils/dom_info";
+import {isElement, isTextNode} from "@html_editor/utils/dom_info";
 import {
     Component,
     onMounted,
@@ -14,9 +14,9 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { useBus } from "@web/core/utils/hooks";
-import { effect } from "@web/core/utils/reactive";
-import { useDebounced } from "@web/core/utils/timing";
+import {useBus} from "@web/core/utils/hooks";
+import {effect} from "@web/core/utils/reactive";
+import {useDebounced} from "@web/core/utils/timing";
 
 /**
  * @typedef { import("../../../../html_editor/static/src/editor").EditorContext } EditorContext
@@ -26,7 +26,7 @@ function isConnectedElement(el) {
     return el && el.isConnected && !!el.ownerDocument.defaultView;
 }
 
-export function useDomState(getState, { checkEditingElement = true } = {}) {
+export function useDomState(getState, {checkEditingElement = true} = {}) {
     const env = useEnv();
     const isValid = (el) => (!el && !checkEditingElement) || isConnectedElement(el);
     const handler = async (ev) => {
@@ -108,7 +108,10 @@ export function useBuilderComponent() {
         }
     });
     onWillDestroy(() => {
-        oldEnv.editorBus.removeEventListener("UPDATE_EDITING_ELEMENT", updateEditingElements);
+        oldEnv.editorBus.removeEventListener(
+            "UPDATE_EDITING_ELEMENT",
+            updateEditingElements
+        );
     });
     newEnv.getEditingElements = () => editingElements;
     newEnv.getEditingElement = () => editingElements[0];
@@ -119,11 +122,11 @@ export function useBuilderComponent() {
         }
     }
     if (Object.keys(weContext).length) {
-        newEnv.weContext = { ...comp.env.weContext, ...weContext };
+        newEnv.weContext = {...comp.env.weContext, ...weContext};
     }
     useSubEnv(newEnv);
 }
-export function useDependencyDefinition(id, item, { onReady } = {}) {
+export function useDependencyDefinition(id, item, {onReady} = {}) {
     const comp = useComponent();
     const ignore = comp.env.ignoreBuilderItem;
     if (onReady) {
@@ -232,10 +235,12 @@ export function useGetItemValue() {
     };
 }
 
-export function useSelectableComponent(id, { onItemChange } = {}) {
+export function useSelectableComponent(id, {onItemChange} = {}) {
     useBuilderComponent();
     const selectableItems = [];
-    const refreshCurrentItemDebounced = useDebounced(refreshCurrentItem, 0, { immediate: true });
+    const refreshCurrentItemDebounced = useDebounced(refreshCurrentItem, 0, {
+        immediate: true,
+    });
     const env = useEnv();
 
     const state = reactive({
@@ -298,8 +303,8 @@ export function useSelectableComponent(id, { onItemChange } = {}) {
     });
 }
 
-export function useSelectableItemComponent(id, { getLabel = () => {} } = {}) {
-    const { operation, isApplied, getActions, priority, clean, onReady } =
+export function useSelectableItemComponent(id, {getLabel = () => {}} = {}) {
+    const {operation, isApplied, getActions, priority, clean, onReady} =
         useClickableBuilderComponent();
     const env = useEnv();
 
@@ -329,7 +334,7 @@ export function useSelectableItemComponent(id, { getLabel = () => {} } = {}) {
             isActive: false,
         });
         effect(
-            ({ currentSelectedItem }) => {
+            ({currentSelectedItem}) => {
                 state.isActive =
                     toRaw(currentSelectedItem) === selectableItem ||
                     (id && currentSelectedItem?.id === id);
@@ -358,11 +363,11 @@ export function useSelectableItemComponent(id, { getLabel = () => {} } = {}) {
                 getActions,
                 cleanSelectedItem: env.selectableContext?.cleanSelectedItem,
             },
-            { onReady }
+            {onReady}
         );
     }
 
-    return { state, operation };
+    return {state, operation};
 }
 
 function usePrepareAction(getAllActions) {
@@ -373,7 +378,7 @@ function usePrepareAction(getAllActions) {
         if (descr.actionId) {
             const action = getAction(descr.actionId);
             if (action.has("prepare")) {
-                asyncActions.push({ action, descr });
+                asyncActions.push({action, descr});
             }
         }
     }
@@ -387,7 +392,7 @@ function usePrepareAction(getAllActions) {
             await Promise.all(asyncActions.map((obj) => obj.action.prepare(obj.descr)));
             resolve();
         });
-        onWillUpdateProps(async ({ actionParam, actionValue }) => {
+        onWillUpdateProps(async ({actionParam, actionValue}) => {
             onReady = new Promise((r) => {
                 resolve = r;
             });
@@ -419,7 +424,7 @@ function useReloadAction(getAllActions) {
             }
         }
     }
-    return { reload };
+    return {reload};
 }
 
 export function useHasPreview(getAllActions) {
@@ -487,13 +492,14 @@ export function revertPreview(editor) {
 export function useClickableBuilderComponent() {
     useBuilderComponent();
     const comp = useComponent();
-    const { getAllActions, callOperation, isApplied } = getAllActionsAndOperations(comp);
+    const {getAllActions, callOperation, isApplied} = getAllActionsAndOperations(comp);
     const getAction = comp.env.editor.shared.builderActions.getAction;
 
     const onReady = usePrepareAction(getAllActions);
-    const { reload } = useReloadAction(getAllActions);
+    const {reload} = useReloadAction(getAllActions);
 
-    const applyOperation = comp.env.editor.shared.history.makePreviewableAsyncOperation(callApply);
+    const applyOperation =
+        comp.env.editor.shared.history.makePreviewableAsyncOperation(callApply);
     const inheritedActionIds =
         comp.props.inheritedActions || comp.env.weContext.inheritedActions || [];
 
@@ -550,7 +556,7 @@ export function useClickableBuilderComponent() {
 
     function clean(nextApplySpecs, isPreviewing) {
         const proms = [];
-        for (const { actionId, actionParam, actionValue } of getAllActions()) {
+        for (const {actionId, actionParam, actionValue} of getAllActions()) {
             for (const editingElement of comp.env.getEditingElements()) {
                 let nextAction;
                 proms.push(
@@ -581,7 +587,9 @@ export function useClickableBuilderComponent() {
     async function callApply(applySpecs, isPreviewing) {
         await comp.env.selectableContext?.cleanSelectedItem(applySpecs, isPreviewing);
         const cleans = inheritedActionIds
-            .map((actionId) => comp.env.dependencyManager.get(actionId).cleanSelectedItem)
+            .map(
+                (actionId) => comp.env.dependencyManager.get(actionId).cleanSelectedItem
+            )
             .filter(Boolean);
         const cleanPromises = [];
         for (const clean of new Set(cleans)) {
@@ -647,19 +655,23 @@ export function useClickableBuilderComponent() {
 function useOperationWithReload(callApply, reload) {
     const env = useEnv();
     return async (...args) => {
-        const { editingElement } = args[0][0];
+        const {editingElement} = args[0][0];
         await callApply(...args);
         env.editor.shared.history.addStep();
         await env.editor.shared.savePlugin.save();
-        const target = env.editor.shared.builderOptions.getReloadSelector(editingElement);
+        const target =
+            env.editor.shared.builderOptions.getReloadSelector(editingElement);
         const url = reload.getReloadUrl?.();
-        await env.editor.config.reloadEditor({ target, url });
+        await env.editor.config.reloadEditor({target, url});
     };
 }
 
 function getValueWithDefault(userInputValue, defaultValue, formatRawValue) {
     if (defaultValue !== undefined) {
-        if (!userInputValue || (typeof userInputValue === "string" && !userInputValue.trim())) {
+        if (
+            !userInputValue ||
+            (typeof userInputValue === "string" && !userInputValue.trim())
+        ) {
             return formatRawValue(defaultValue);
         }
     }
@@ -673,12 +685,12 @@ export function useInputBuilderComponent({
     parseDisplayValue = (displayValue) => displayValue,
 } = {}) {
     const comp = useComponent();
-    const { getAllActions, callOperation } = getAllActionsAndOperations(comp);
+    const {getAllActions, callOperation} = getAllActionsAndOperations(comp);
     const getAction = comp.env.editor.shared.builderActions.getAction;
     const state = useDomState(getState);
 
     const onReady = usePrepareAction(getAllActions);
-    const { reload } = useReloadAction(getAllActions);
+    const {reload} = useReloadAction(getAllActions);
 
     const withLoadingEffect = useWithLoadingEffect(getAllActions);
     const canTimeout = useCanTimeout(getAllActions);
@@ -706,7 +718,8 @@ export function useInputBuilderComponent({
         await Promise.all(proms);
     }
 
-    const applyOperation = comp.env.editor.shared.history.makePreviewableAsyncOperation(callApply);
+    const applyOperation =
+        comp.env.editor.shared.history.makePreviewableAsyncOperation(callApply);
     const operationWithReload = useOperationWithReload(callApply, reload);
     function getState(editingElement) {
         if (!isConnectedElement(editingElement)) {
@@ -714,18 +727,23 @@ export function useInputBuilderComponent({
             return {};
         }
         const actionWithGetValue = getAllActions().find(
-            ({ actionId }) => getAction(actionId).getValue
+            ({actionId}) => getAction(actionId).getValue
         );
-        const { actionId, actionParam } = actionWithGetValue;
+        const {actionId, actionParam} = actionWithGetValue;
         const actionValue =
-            getAction(actionId).getValue({ editingElement, params: actionParam }) || defaultValue;
+            getAction(actionId).getValue({editingElement, params: actionParam}) ||
+            defaultValue;
         return {
             value: actionValue,
         };
     }
 
     function commit(userInputValue) {
-        userInputValue = getValueWithDefault(userInputValue, defaultValue, formatRawValue);
+        userInputValue = getValueWithDefault(
+            userInputValue,
+            defaultValue,
+            formatRawValue
+        );
         const rawValue = parseDisplayValue(userInputValue);
         if (reload) {
             callOperation(operationWithReload, {
@@ -744,7 +762,10 @@ export function useInputBuilderComponent({
                 },
             });
         }
-        if (rawValue === null || (rawValue === defaultValue && rawValue === state.value)) {
+        if (
+            rawValue === null ||
+            (rawValue === defaultValue && rawValue === state.value)
+        ) {
             state.value = rawValue;
         }
         // If the parsed value is not equivalent to the user input, we want to
@@ -756,7 +777,11 @@ export function useInputBuilderComponent({
     const shouldPreview = useHasPreview(getAllActions);
     function preview(userInputValue) {
         if (shouldPreview) {
-            userInputValue = getValueWithDefault(userInputValue, defaultValue, formatRawValue);
+            userInputValue = getValueWithDefault(
+                userInputValue,
+                defaultValue,
+                formatRawValue
+            );
             callOperation(applyOperation.preview, {
                 preview: true,
                 userInputValue: parseDisplayValue(userInputValue),
@@ -776,7 +801,7 @@ export function useInputBuilderComponent({
                 type: "input",
                 getValue: () => state.value,
             },
-            { onReady }
+            {onReady}
         );
     }
 
@@ -841,40 +866,45 @@ export function useInputDebouncedCommit(ref) {
 }
 
 export const basicContainerBuilderComponentProps = {
-    id: { type: String, optional: true },
-    applyTo: { type: String, optional: true },
-    preview: { type: Boolean, optional: true },
-    inheritedActions: { type: Array, element: String, optional: true },
+    id: {type: String, optional: true},
+    applyTo: {type: String, optional: true},
+    preview: {type: Boolean, optional: true},
+    inheritedActions: {type: Array, element: String, optional: true},
     // preview: { type: Boolean, optional: true },
     // reloadPage: { type: Boolean, optional: true },
 
-    action: { type: String, optional: true },
-    actionParam: { validate: () => true, optional: true },
+    action: {type: String, optional: true},
+    actionParam: {validate: () => true, optional: true},
 
     // Shorthand actions.
-    classAction: { validate: () => true, optional: true },
-    attributeAction: { validate: () => true, optional: true },
-    dataAttributeAction: { validate: () => true, optional: true },
-    styleAction: { validate: () => true, optional: true },
+    classAction: {validate: () => true, optional: true},
+    attributeAction: {validate: () => true, optional: true},
+    dataAttributeAction: {validate: () => true, optional: true},
+    styleAction: {validate: () => true, optional: true},
 };
-const validateIsNull = { validate: (value) => value === null };
+const validateIsNull = {validate: (value) => value === null};
 
 export const clickableBuilderComponentProps = {
     ...basicContainerBuilderComponentProps,
-    inverseAction: { type: Boolean, optional: true },
+    inverseAction: {type: Boolean, optional: true},
 
     actionValue: {
-        type: [Boolean, String, Number, { type: Array, element: [Boolean, String, Number] }],
+        type: [
+            Boolean,
+            String,
+            Number,
+            {type: Array, element: [Boolean, String, Number]},
+        ],
         optional: true,
     },
 
     // Shorthand actions values.
-    classActionValue: { type: [String, Array, validateIsNull], optional: true },
-    attributeActionValue: { type: [String, Array, validateIsNull], optional: true },
-    dataAttributeActionValue: { type: [String, Array, validateIsNull], optional: true },
-    styleActionValue: { type: [String, Array, validateIsNull], optional: true },
+    classActionValue: {type: [String, Array, validateIsNull], optional: true},
+    attributeActionValue: {type: [String, Array, validateIsNull], optional: true},
+    dataAttributeActionValue: {type: [String, Array, validateIsNull], optional: true},
+    styleActionValue: {type: [String, Array, validateIsNull], optional: true},
 
-    inheritedActions: { type: Array, element: String, optional: true },
+    inheritedActions: {type: Array, element: String, optional: true},
 };
 
 export function getAllActionsAndOperations(comp) {
@@ -885,7 +915,7 @@ export function getAllActionsAndOperations(comp) {
         const getAction = comp.env.editor.shared.builderActions.getAction;
         const overridableMethods = ["apply", "clean", "load", "loadOnClean"];
         const specs = [];
-        for (let { actionId, actionParam, actionValue } of actions) {
+        for (let {actionId, actionParam, actionValue} of actions) {
             const action = getAction(actionId);
             // Take the action value defined by the clickable or the input given
             // by the user.
@@ -933,7 +963,8 @@ export function getAllActionsAndOperations(comp) {
     function getCustomAction() {
         const actionId = comp.props.action || comp.env.weContext.action;
         if (actionId) {
-            const actionParam = comp.props.actionParam ?? comp.env.weContext.actionParam;
+            const actionParam =
+                comp.props.actionParam ?? comp.env.weContext.actionParam;
             return {
                 actionId: actionId,
                 actionParam: convertParamToObject(actionParam),
@@ -944,9 +975,9 @@ export function getAllActionsAndOperations(comp) {
     function getAllActions() {
         const actions = getShorthandActions();
 
-        const { actionId, actionParam, actionValue } = getCustomAction() || {};
+        const {actionId, actionParam, actionValue} = getCustomAction() || {};
         if (actionId) {
-            actions.push({ actionId, actionParam, actionValue });
+            actions.push({actionId, actionParam, actionValue});
         }
         const inheritedActions =
             inheritedActionIds
@@ -972,7 +1003,10 @@ export function getAllActionsAndOperations(comp) {
                             return;
                         }
                         const hasClean = !!applySpec.action.has("clean");
-                        if (!applySpec.loadOnClean && _shouldClean(comp, hasClean, isApplied())) {
+                        if (
+                            !applySpec.loadOnClean &&
+                            _shouldClean(comp, hasClean, isApplied())
+                        ) {
                             // The element will be cleaned, do not load
                             return;
                         }
@@ -994,7 +1028,7 @@ export function getAllActionsAndOperations(comp) {
             return;
         }
         const areActionsActiveTabs = getAllActions().map((o) => {
-            const { actionId, actionParam, actionValue } = o;
+            const {actionId, actionParam, actionValue} = o;
             // TODO isApplied === first editing el or all ?
             const editingElement = editingElements[0];
             if (!isConnectedElement(editingElement)) {
@@ -1035,7 +1069,11 @@ function _shouldClean(comp, hasClean, isApplied) {
 export function convertParamToObject(param) {
     if (param === undefined) {
         param = {};
-    } else if (param instanceof Array || param instanceof Function || !(param instanceof Object)) {
+    } else if (
+        param instanceof Array ||
+        param instanceof Function ||
+        !(param instanceof Object)
+    ) {
         param = {
             ["mainParam"]: param,
         };

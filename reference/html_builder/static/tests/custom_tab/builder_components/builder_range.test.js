@@ -1,16 +1,16 @@
 import {
     addBuilderAction,
     addBuilderOption,
-    setupHTMLBuilder,
     editBuilderRangeValue,
+    setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { HistoryPlugin } from "@html_editor/core/history_plugin";
-import { expect, test, describe } from "@odoo/hoot";
-import { advanceTime, animationFrame, click, freezeTime } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {HistoryPlugin} from "@html_editor/core/history_plugin";
+import {describe, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, click, freezeTime} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 describe.current.tags("desktop");
 
@@ -18,10 +18,10 @@ test("should commit changes", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.innerHTML;
             }
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 expect.step(`customAction ${value}`);
                 editingElement.innerHTML = value;
             }
@@ -51,10 +51,10 @@ test("range input should step up or down with arrow keys", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.textContent;
             }
-            apply({ editingElement, value, isPreviewing }) {
+            apply({editingElement, value, isPreviewing}) {
                 if (!isPreviewing) {
                     expect.step(`customAction ${value}`);
                 }
@@ -149,10 +149,10 @@ test("keeping an arrow key pressed should commit only once", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.textContent;
             }
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 expect.step(`customAction ${value}`);
                 editingElement.textContent = value;
             }

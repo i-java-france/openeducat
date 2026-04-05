@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.phone_validation.tools import phone_validation
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import BaseCase
+
+from odoo.addons.phone_validation.tools import phone_validation
 
 
 @tagged('phone_validation')
@@ -33,7 +33,7 @@ class TestPhonenumbers(BaseCase):
                 ('BE', '456998877', '32'),
                 ('CA', '6135550177', '1'),
                 ('US', '2025550124', '1'),
-            ],
+            ], strict=False,
         ):
             with self.subTest(source=source):
                 self.assertDictEqual(

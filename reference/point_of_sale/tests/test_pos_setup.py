@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import tools
 import odoo
-from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 from odoo.exceptions import ValidationError
+
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestPoSSetup(TestPoSCommon):
@@ -14,7 +14,7 @@ class TestPoSSetup(TestPoSCommon):
     If a test fails here, then it means there are inconsistencies in what we expect in the setup.
     """
     def setUp(self):
-        super(TestPoSSetup, self).setUp()
+        super().setUp()
 
         self.config = self.basic_config
         self.products = [

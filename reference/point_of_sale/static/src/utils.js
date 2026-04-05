@@ -1,8 +1,8 @@
 /* global QRCode */
 
-import { session } from "@web/session";
-import { getDataURLFromFile } from "@web/core/utils/urls";
-import { deserializeDateTime } from "@web/core/l10n/dates";
+import {session} from "@web/session";
+import {getDataURLFromFile} from "@web/core/utils/urls";
+import {deserializeDateTime} from "@web/core/l10n/dates";
 /*
  * comes from o_spreadsheet.js
  * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -41,7 +41,8 @@ export function constructAttributeString(line) {
             if (value.is_custom) {
                 const customValue = line.custom_attribute_value_ids.find(
                     (cus) =>
-                        cus.custom_product_template_attribute_value_id?.id == parseInt(value.id)
+                        cus.custom_product_template_attribute_value_id?.id ==
+                        parseInt(value.id)
                 );
                 if (customValue) {
                     attributeString += `${value.attribute_id.name}: ${value.name}: ${customValue.custom_value}, `;
@@ -82,7 +83,7 @@ export function random5Chars() {
     return code;
 }
 
-export function qrCodeSrc(url, { size = 200 } = {}) {
+export function qrCodeSrc(url, {size = 200} = {}) {
     return `/report/barcode/QR/${encodeURIComponent(url)}?width=${size}&height=${size}`;
 }
 
@@ -93,14 +94,14 @@ export function qrCodeSrc(url, { size = 200 } = {}) {
  * @param {boolean} [inverted=false] - If true, the entry with the lowest value of the criterion function will be returned instead.
  * @returns {T} The entry with the highest or lowest value of the criterion function, depending on the value of `inverted`.
  */
-export function getMax(entries, { criterion = (x) => x, inverted = false } = {}) {
+export function getMax(entries, {criterion = (x) => x, inverted = false} = {}) {
     return entries.reduce((prev, current) => {
         const res = criterion(prev) > criterion(current);
         return (inverted ? !res : res) ? prev : current;
     });
 }
 export function getMin(entries, options) {
-    return getMax(entries, { ...options, inverted: true });
+    return getMax(entries, {...options, inverted: true});
 }
 export function getOnNotified(bus, channel) {
     bus.addChannel(channel);
@@ -141,20 +142,20 @@ export function waitImages(containerElement, timeoutMs = 3000) {
         let timedOut = false;
 
         if (total === 0) {
-            resolve({ timedOut: false });
+            resolve({timedOut: false});
             return;
         }
 
         const timeoutId = setTimeout(() => {
             timedOut = true;
-            resolve({ timedOut: true });
+            resolve({timedOut: true});
         }, timeoutMs);
 
         const onLoadOrError = () => {
             loadedCount++;
             if (loadedCount === total && !timedOut) {
                 clearTimeout(timeoutId);
-                resolve({ timedOut: false });
+                resolve({timedOut: false});
             }
         };
 
@@ -215,12 +216,12 @@ export function orderUsageUTCtoLocalUtil(data) {
  */
 export function generateQRCodeDataUrl(
     url,
-    { width = 150, height = 150, correctLevel = QRCode.CorrectLevel.L, ...rest } = {}
+    {width = 150, height = 150, correctLevel = QRCode.CorrectLevel.L, ...rest} = {}
 ) {
     const tempDiv = document.createElement("div");
-    const options = { width, height, correctLevel, ...rest };
+    const options = {width, height, correctLevel, ...rest};
 
-    new QRCode(tempDiv, { text: url, useSVG: true, ...options });
+    new QRCode(tempDiv, {text: url, useSVG: true, ...options});
 
     const svg = tempDiv.querySelector("svg");
     svg.setAttribute("width", width);

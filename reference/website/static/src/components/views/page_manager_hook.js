@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { AddPageDialog } from "@website/components/dialog/add_page_dialog";
-import { onWillStart, useEnv, useState } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {AddPageDialog} from "@website/components/dialog/add_page_dialog";
+import {onWillStart, useEnv, useState} from "@odoo/owl";
 
 /**
  * Used to share code and keep the same behaviour on different types of 'website
@@ -11,12 +11,12 @@ import { onWillStart, useEnv, useState } from "@odoo/owl";
  * - Add a website selector on ControlPanel (that will be used by the renderer
  * to filter content).
  */
-export function usePageManager({ resModel, createAction }) {
+export function usePageManager({resModel, createAction}) {
     const env = useEnv();
     const website = useService("website");
     const dialog = useService("dialog");
     const actionService = useService("action");
-    const websiteSelection = odoo.debug ? [{ id: 0, name: _t("All Websites") }] : [];
+    const websiteSelection = odoo.debug ? [{id: 0, name: _t("All Websites")}] : [];
     const state = useState({
         activeWebsite: undefined,
     });
@@ -36,13 +36,13 @@ export function usePageManager({ resModel, createAction }) {
         if (createAction) {
             if (/^\//.test(createAction)) {
                 const url = await rpc(createAction);
-                website.goToWebsite({ path: url, edition: true });
+                website.goToWebsite({path: url, edition: true});
                 return;
             }
             actionService.doAction(createAction, {
                 onClose: (infos) => {
                     if (infos) {
-                        website.goToWebsite({ path: infos.path });
+                        website.goToWebsite({path: infos.path});
                     }
                 },
                 props: {
@@ -51,7 +51,7 @@ export function usePageManager({ resModel, createAction }) {
                             const path = params.computePath();
                             actionService.doAction({
                                 type: "ir.actions.act_window_close",
-                                infos: { path },
+                                infos: {path},
                             });
                         }
                     },
@@ -65,7 +65,7 @@ export function usePageManager({ resModel, createAction }) {
             const activeId = state.activeWebsite.id;
             return websiteSelection.map((website) => {
                 const isActive = website.id === activeId;
-                return { ...website, isActive };
+                return {...website, isActive};
             });
         },
         createWebsiteContent,

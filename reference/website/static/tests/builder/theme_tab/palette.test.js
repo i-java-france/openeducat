@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { contains, defineModels, models, onRpc } from "@web/../tests/web_test_helpers";
-import { Deferred } from "@odoo/hoot-dom";
+import {contains, defineModels, models, onRpc} from "@web/../tests/web_test_helpers";
+import {Deferred} from "@odoo/hoot-dom";
 
 defineWebsiteModels();
 
@@ -30,7 +30,9 @@ test("theme tab: warning on palette change", async () => {
     await contains(
         ".o_theme_tab [data-src='/website/static/src/img/snippets_options/palette.svg']"
     ).click();
-    await contains(`[data-action-value="'default-light-1'"] .o-color-palette-pill span`).click();
+    await contains(
+        `[data-action-value="'default-light-1'"] .o-color-palette-pill span`
+    ).click();
     expect(".o_dialog").toHaveCount(1);
     await contains(".o_dialog .btn-secondary").click();
     expect(".o_dialog").toHaveCount(0);
@@ -38,7 +40,9 @@ test("theme tab: warning on palette change", async () => {
     await contains(
         ".o_theme_tab [data-src='/website/static/src/img/snippets_options/palette.svg']"
     ).click();
-    await contains(`[data-action-value="'default-light-1'"] .o-color-palette-pill span`).click();
+    await contains(
+        `[data-action-value="'default-light-1'"] .o-color-palette-pill span`
+    ).click();
     expect(".o_dialog").toHaveCount(1);
     await contains(".o_dialog .btn-primary").click();
     await def;
@@ -68,7 +72,9 @@ test("theme tab: no warning on palette change", async () => {
     await contains(
         ".o_theme_tab [data-src='/website/static/src/img/snippets_options/palette.svg']"
     ).click();
-    await contains(`[data-action-value="'default-light-1'"] .o-color-palette-pill span`).click();
+    await contains(
+        `[data-action-value="'default-light-1'"] .o-color-palette-pill span`
+    ).click();
     await def;
     expect(".o_dialog").toHaveCount(0);
     expect.verifySteps([

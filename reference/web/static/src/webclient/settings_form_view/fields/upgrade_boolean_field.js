@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { booleanField, BooleanField } from "@web/views/fields/boolean/boolean_field";
-import { useService } from "@web/core/utils/hooks";
-import { UpgradeDialog } from "./upgrade_dialog";
+import {registry} from "@web/core/registry";
+import {booleanField, BooleanField} from "@web/views/fields/boolean/boolean_field";
+import {useService} from "@web/core/utils/hooks";
+import {UpgradeDialog} from "./upgrade_dialog";
 
 /**
  *  The upgrade boolean field is intended to be used in config settings.
@@ -22,7 +22,7 @@ export class UpgradeBooleanField extends BooleanField {
                 {},
                 {
                     onClose: () => {
-                        this.props.record.update({ [this.props.name]: false });
+                        this.props.record.update({[this.props.name]: false});
                     },
                 }
             );

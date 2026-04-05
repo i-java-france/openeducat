@@ -1,13 +1,13 @@
-import { Component, onMounted, useEffect, useRef, useState } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { toolbarButtonProps } from "@html_editor/main/toolbar/toolbar";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { useDebounced } from "@web/core/utils/timing";
-import { cookie } from "@web/core/browser/cookie";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { useDropdownAutoVisibility } from "@html_editor/dropdown_autovisibility_hook";
-import { useChildRef } from "@web/core/utils/hooks";
+import {Component, onMounted, useEffect, useRef, useState} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {toolbarButtonProps} from "@html_editor/main/toolbar/toolbar";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {useDebounced} from "@web/core/utils/timing";
+import {cookie} from "@web/core/browser/cookie";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {useDropdownAutoVisibility} from "@html_editor/dropdown_autovisibility_hook";
+import {useChildRef} from "@web/core/utils/hooks";
 
 const MAX_FONT_SIZE = 144;
 
@@ -18,11 +18,11 @@ export class FontSizeSelector extends Component {
         getDisplay: Function,
         onFontSizeInput: Function,
         onSelected: Function,
-        onBlur: { type: Function, optional: true },
-        document: { validate: (p) => p.nodeType === Node.DOCUMENT_NODE },
+        onBlur: {type: Function, optional: true},
+        document: {validate: (p) => p.nodeType === Node.DOCUMENT_NODE},
         ...toolbarButtonProps,
     };
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
 
     setup() {
         this.items = this.props.getItems();
@@ -31,7 +31,10 @@ export class FontSizeSelector extends Component {
         this.menuRef = useChildRef();
         useDropdownAutoVisibility(this.env.overlayState, this.menuRef);
         this.iframeContentRef = useRef("iframeContent");
-        this.debouncedCustomFontSizeInput = useDebounced(this.onCustomFontSizeInput, 200);
+        this.debouncedCustomFontSizeInput = useDebounced(
+            this.onCustomFontSizeInput,
+            200
+        );
 
         onMounted(() => {
             const iframeEl = this.iframeContentRef.el;
@@ -77,7 +80,10 @@ export class FontSizeSelector extends Component {
                         this.dropdown.open();
                     }
                 });
-                this.fontSizeInput.addEventListener("input", this.debouncedCustomFontSizeInput);
+                this.fontSizeInput.addEventListener(
+                    "input",
+                    this.debouncedCustomFontSizeInput
+                );
                 this.fontSizeInput.addEventListener(
                     "keydown",
                     this.onKeyDownFontSizeInput.bind(this)
@@ -93,7 +99,7 @@ export class FontSizeSelector extends Component {
                     () => {
                         initFontSizeInput();
                     },
-                    { once: true }
+                    {once: true}
                 );
             }
         });
@@ -113,7 +119,9 @@ export class FontSizeSelector extends Component {
                     if (this.dropdown.isOpen) {
                         this.fontSizeInput.select();
                     } else if (
-                        this.iframeContentRef.el?.contains(this.props.document.activeElement)
+                        this.iframeContentRef.el?.contains(
+                            this.props.document.activeElement
+                        )
                     ) {
                         this.fontSizeInput.blur();
                         this.props.onBlur?.();
@@ -142,7 +150,9 @@ export class FontSizeSelector extends Component {
         if (["Enter", "Tab"].includes(ev.key) && this.dropdown.isOpen) {
             this.dropdown.close();
         } else if (["ArrowUp", "ArrowDown"].includes(ev.key)) {
-            const fontSizeSelectorMenu = document.querySelector(".o_font_size_selector_menu div");
+            const fontSizeSelectorMenu = document.querySelector(
+                ".o_font_size_selector_menu div"
+            );
             if (!fontSizeSelectorMenu) {
                 return;
             }

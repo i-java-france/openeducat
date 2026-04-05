@@ -3,10 +3,11 @@ import json
 from unittest.mock import patch
 
 from odoo import fields
-from odoo.addons.base.tests.common import SavepointCaseWithUserDemo
 from odoo.tests import common
 from odoo.tools.misc import file_open, mute_logger
 from odoo.tools.translate import code_translations
+
+from odoo.addons.base.tests.common import SavepointCaseWithUserDemo
 
 
 def message(msg, type_='error', from_=0, to_=0, record=0, field='value', **kwargs):
@@ -1543,7 +1544,7 @@ class test_unique(ImporterCase):
                  record=4, field='value'),
         ]
         expected_messages = [m.pop('message') for m in expected]
-        for actual, expect in zip(messages_messages, expected_messages):
+        for actual, expect in zip(messages_messages, expected_messages, strict=False):
             self.assertIn(expect, actual)
         self.assertEqual(messages, expected)
 

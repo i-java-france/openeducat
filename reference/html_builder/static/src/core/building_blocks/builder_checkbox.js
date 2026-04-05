@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
+import {Component} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
 import {
     clickableBuilderComponentProps,
     useActionInfo,
@@ -7,20 +7,20 @@ import {
     useDependencyDefinition,
     useDomState,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderCheckbox extends Component {
     static template = "html_builder.BuilderCheckbox";
-    static components = { BuilderComponent, CheckBox };
+    static components = {BuilderComponent, CheckBox};
     static props = {
         ...clickableBuilderComponentProps,
     };
 
     setup() {
         this.info = useActionInfo();
-        const { operation, isApplied, onReady } = useClickableBuilderComponent();
+        const {operation, isApplied, onReady} = useClickableBuilderComponent();
         if (this.props.id) {
-            useDependencyDefinition(this.props.id, { isActive: isApplied }, { onReady });
+            useDependencyDefinition(this.props.id, {isActive: isApplied}, {onReady});
         }
         this.state = useDomState(async () => {
             await onReady;

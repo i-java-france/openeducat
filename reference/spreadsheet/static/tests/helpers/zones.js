@@ -1,7 +1,7 @@
-import { helpers } from "@odoo/o-spreadsheet";
+import {helpers} from "@odoo/o-spreadsheet";
 
-const { toUnboundedZone } = helpers;
+const {toUnboundedZone} = helpers;
 
 export function toRangeData(sheetId, xc) {
-    return { _zone: toUnboundedZone(xc), _sheetId: sheetId };
+    return {_zone: toUnboundedZone(xc), _sheetId: sheetId};
 }

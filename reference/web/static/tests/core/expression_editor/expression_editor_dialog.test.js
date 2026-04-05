@@ -1,12 +1,12 @@
-import { expect, test, describe } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
-    mountWithCleanup,
     makeDialogMockEnv,
     mockService,
+    mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
 import {
     Country,
@@ -18,15 +18,15 @@ import {
     getTreeEditorContent,
 } from "@web/../tests/core/tree_editor/condition_tree_editor_test_helpers";
 
-import { ExpressionEditorDialog } from "@web/core/expression_editor_dialog/expression_editor_dialog";
+import {ExpressionEditorDialog} from "@web/core/expression_editor_dialog/expression_editor_dialog";
 
 describe.current.tags("desktop");
 
 async function makeExpressionEditorDialog(params = {}) {
-    const props = { ...params };
+    const props = {...params};
 
     class Parent extends Component {
-        static components = { ExpressionEditorDialog };
+        static components = {ExpressionEditorDialog};
         static template = xml`<ExpressionEditorDialog t-props="expressionEditorProps"/>`;
         static props = ["*"];
         setup() {
@@ -46,7 +46,7 @@ async function makeExpressionEditorDialog(params = {}) {
         }
     }
     const env = await makeDialogMockEnv();
-    return mountWithCleanup(Parent, { env, props });
+    return mountWithCleanup(Parent, {env, props});
 }
 
 defineModels([Partner, Product, Team, Player, Country, Stage]);
@@ -72,7 +72,7 @@ test("expr well sent but wrong, so notification when onConfirm", async () => {
     mockService("notification", {
         add(message, options) {
             expect(message).toBe("Expression is invalid. Please correct it");
-            expect(options).toEqual({ type: "danger" });
+            expect(options).toEqual({type: "danger"});
             expect.step("notification");
         },
     });
@@ -82,6 +82,6 @@ test("expr well sent but wrong, so notification when onConfirm", async () => {
     expect(".o_technical_modal").toHaveCount(1);
     await contains(".modal-footer button").click();
     await contains(".modal-body button").click();
-    expect(getTreeEditorContent()).toEqual([{ level: 0, value: "all" }]);
+    expect(getTreeEditorContent()).toEqual([{level: 0, value: "all"}]);
     expect.verifySteps(["notification"]);
 });

@@ -1,37 +1,45 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
 
 export class SurveyQuestionTriggerWidget extends Component {
     static template = "survey.surveyQuestionTrigger";
     static props = {
-    ...standardWidgetProps,
+        ...standardWidgetProps,
     };
 
     setup() {
         super.setup();
-        this.button = useRef('survey_question_trigger');
+        this.button = useRef("survey_question_trigger");
         this.state = useState({
             surveyIconWarning: false,
             triggerTooltip: "",
         });
         useEffect(() => {
-            if (this.button?.el && this.props.record.data.triggering_question_ids.records?.length !== 0) {
-                const { triggerError, misplacedTriggerQuestionRecords } = this.surveyQuestionTriggerError;
+            if (
+                this.button?.el &&
+                this.props.record.data.triggering_question_ids.records?.length !== 0
+            ) {
+                const {triggerError, misplacedTriggerQuestionRecords} =
+                    this.surveyQuestionTriggerError;
                 if (triggerError === "MISPLACED_TRIGGER_WARNING") {
                     this.state.surveyIconWarning = true;
-                    this.state.triggerTooltip = '⚠ ' + _t(
-                        'Triggers based on the following questions will not work because they are positioned after this question:\n"%s".',
-                        misplacedTriggerQuestionRecords
-                            .map((question) => question.data.title)
-                            .join('", "')
-                    );
+                    this.state.triggerTooltip =
+                        "⚠ " +
+                        _t(
+                            'Triggers based on the following questions will not work because they are positioned after this question:\n"%s".',
+                            misplacedTriggerQuestionRecords
+                                .map((question) => question.data.title)
+                                .join('", "')
+                        );
                 } else if (triggerError === "WRONG_QUESTIONS_SELECTION_WARNING") {
                     this.state.surveyIconWarning = true;
-                    this.state.triggerTooltip = '⚠ ' + _t(
-                        "Conditional display is not available when questions are randomly picked."
-                    );
+                    this.state.triggerTooltip =
+                        "⚠ " +
+                        _t(
+                            "Conditional display is not available when questions are randomly picked."
+                        );
                 } else if (triggerError === "MISSING_TRIGGER_ERROR") {
                     // This case must be handled to not temporarily render the "normal" icon if previously
                     // on an error state, which would cause a flicker as the trigger itself will be removed
@@ -42,7 +50,7 @@ export class SurveyQuestionTriggerWidget extends Component {
                         'Displayed if "%s".',
                         this.props.record.data.triggering_answer_ids.records
                             .map((answer) => answer.data.display_name)
-                            .join('", "'),
+                            .join('", "')
                     );
                 }
             } else {
@@ -76,36 +84,53 @@ export class SurveyQuestionTriggerWidget extends Component {
     get surveyQuestionTriggerError() {
         const record = this.props.record;
         if (!record.data.triggering_question_ids.records.length) {
-            return { triggerError: "", misplacedTriggerQuestionRecords: [] };
+            return {triggerError: "", misplacedTriggerQuestionRecords: []};
         }
-        if (this.props.record.data.questions_selection === 'random') {
-            return { triggerError: 'WRONG_QUESTIONS_SELECTION_WARNING', misplacedTriggerQuestionRecords: [] };
+        if (this.props.record.data.questions_selection === "random") {
+            return {
+                triggerError: "WRONG_QUESTIONS_SELECTION_WARNING",
+                misplacedTriggerQuestionRecords: [],
+            };
         }
 
         const missingTriggerQuestionsIds = [];
         let triggerQuestionsRecords = [];
         for (const triggeringQuestion of record.data.triggering_question_ids.records) {
-            const triggeringQuestionRecord = record.model.root.data.question_and_page_ids.records.find(
-                rec => rec.resId === triggeringQuestion.resId);
+            const triggeringQuestionRecord =
+                record.model.root.data.question_and_page_ids.records.find(
+                    (rec) => rec.resId === triggeringQuestion.resId
+                );
             if (triggeringQuestionRecord) {
                 triggerQuestionsRecords.push(triggeringQuestionRecord);
-            } else {  // Trigger question was deleted from the list
+            } else {
+                // Trigger question was deleted from the list
                 missingTriggerQuestionsIds.push(triggeringQuestion.resId);
             }
         }
 
-        if (missingTriggerQuestionsIds.length === this.props.record.data.triggering_question_ids.records.length) {
-            return { triggerError: 'MISSING_TRIGGER_ERROR', misplacedTriggerQuestionRecords: [] }; // only if all are missing
+        if (
+            missingTriggerQuestionsIds.length ===
+            this.props.record.data.triggering_question_ids.records.length
+        ) {
+            return {
+                triggerError: "MISSING_TRIGGER_ERROR",
+                misplacedTriggerQuestionRecords: [],
+            }; // only if all are missing
         }
         const misplacedTriggerQuestionRecords = [];
         for (const triggerQuestionRecord of triggerQuestionsRecords) {
-            if (record.data.sequence < triggerQuestionRecord.data.sequence ||
-                (record.data.sequence === triggerQuestionRecord.data.sequence && record.resId < triggerQuestionRecord.resId)) {
+            if (
+                record.data.sequence < triggerQuestionRecord.data.sequence ||
+                (record.data.sequence === triggerQuestionRecord.data.sequence &&
+                    record.resId < triggerQuestionRecord.resId)
+            ) {
                 misplacedTriggerQuestionRecords.push(triggerQuestionRecord);
             }
         }
         return {
-            triggerError: misplacedTriggerQuestionRecords.length ? "MISPLACED_TRIGGER_WARNING" : "",
+            triggerError: misplacedTriggerQuestionRecords.length
+                ? "MISPLACED_TRIGGER_WARNING"
+                : "",
             misplacedTriggerQuestionRecords: misplacedTriggerQuestionRecords,
         };
     }
@@ -114,8 +139,10 @@ export class SurveyQuestionTriggerWidget extends Component {
 export const surveyQuestionTriggerWidget = {
     component: SurveyQuestionTriggerWidget,
     fieldDependencies: [
-        { name: "triggering_question_ids", type: "many2one" },
-        { name: "triggering_answer_ids", type: "many2one" },
+        {name: "triggering_question_ids", type: "many2one"},
+        {name: "triggering_answer_ids", type: "many2one"},
     ],
 };
-registry.category("view_widgets").add("survey_question_trigger", surveyQuestionTriggerWidget);
+registry
+    .category("view_widgets")
+    .add("survey_question_trigger", surveyQuestionTriggerWidget);

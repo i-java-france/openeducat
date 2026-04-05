@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="view_memory">
         &lt;!DOCTYPE html&gt;
         <html lang="en">
         <head>
-            <meta charset="UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Memory Usage Visualization</title>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js" />
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels" />
             <style>
                 /* General body and layout styles */
                 body {
@@ -42,7 +42,7 @@
                     height: 100%;
                     width: 100%;
                 }
-                
+
                 /* Specific styling for the bottom row elements */
                 .bar-chart-wrapper {
                     flex: 2; /* Bar chart takes 2/3 of the width */
@@ -104,23 +104,28 @@
                 <!-- Top row for the full-width line chart -->
                 <div class="top-row">
                     <div class="chart-container">
-                        <canvas id="totalMemoryChart"></canvas>
+                        <canvas id="totalMemoryChart" />
                     </div>
                 </div>
                 <!-- Bottom row for the bar chart and traceback panel -->
                 <div class="bottom-row">
-                    <div class="bar-chart-wrapper chart-container" id="memoryChartContainer">
-                        <canvas id="memoryChart"></canvas>
+                    <div
+                        class="bar-chart-wrapper chart-container"
+                        id="memoryChartContainer"
+                    >
+                        <canvas id="memoryChart" />
                     </div>
                     <div class="traceback-panel" id="tracebackPanel">
-                        <div class="no-selection">Click a point on the top chart, then a bar below to see details.</div>
+                        <div
+                            class="no-selection"
+                        >Click a point on the top chart, then a bar below to see details.</div>
                     </div>
                 </div>
             </div>
 
             <script>
                 // Get data from Odoo template
-                const rawData = JSON.parse(atob('<t t-esc="memory_graph"/>'));
+                const rawData = JSON.parse(atob('<t t-esc="memory_graph" />'));
 
                 // --- UTILITY FUNCTIONS ---
                 function formatBytes(bytes) {
@@ -142,7 +147,7 @@
                     const lastFrame = traceback[traceback.length - 1];
                     return `${lastFrame[0]}:${lastFrame[1]}`;
                 }
-                
+
                 function getFullTracebackKey(traceback) {
                     if (!traceback || traceback.length === 0) return "unknown";
                     return traceback.map(frame => `${frame[0]}:${frame[1]}`).join(' -> ');
@@ -156,11 +161,11 @@
                         chart.resize();
                         return;
                     }
-                    
+
                     const minBarHeight = 35; // Minimum height per bar for readability
                     const padding = 100; // Extra space for axes and labels
                     const newHeight = Math.max(400, (dataLength * minBarHeight) + padding);
-                    
+
                     container.style.height = newHeight + 'px';
                     chart.resize();
                 }
@@ -168,17 +173,27 @@
                 function showTraceback(traceback, size, fullTracebackKey) {
                     const panel = document.getElementById('tracebackPanel');
                     if (!traceback || traceback.length === 0) {
-                        panel.innerHTML = '<div class="no-selection">No traceback available</div>';
+                        panel.innerHTML = '<div
+                class="no-selection"
+            >No traceback available</div>';
                         return;
                     }
 
-                    let html = `<div class="traceback-header">Traceback (${formatBytes(size)})</div>`;
+                    let html = `<div
+                class="traceback-header"
+            >Traceback (${formatBytes(size)})</div>`;
 
                     if (fullTracebackKey) {
                         html += `
-                            <div style="margin-bottom: 10px; padding: 8px; background: #e8f4f8; border-radius: 3px; font-size: 11px; color: #555;">
-                                <strong>Full Path:</strong> <span class="copyable" title="Click to select for copying">${fullTracebackKey}</span>
-                            </div>
+                            <div
+                style="margin-bottom: 10px; padding: 8px; background: #e8f4f8; border-radius: 3px; font-size: 11px; color: #555;"
+            >
+                <strong>Full Path:</strong>
+                <span
+                    class="copyable"
+                    title="Click to select for copying"
+                >${fullTracebackKey}</span>
+            </div>
                         `;
                     }
 
@@ -186,9 +201,15 @@
                         const [filename, lineNo, functionName, code] = frame;
                         html += `
                             <div class="traceback-item">
-                                <div class="traceback-file copyable" title="Click to select for copying">${filename}:${lineNo}</div>
-                                <div>in <strong>${functionName || 'unknown'}</strong></div>
-                                ${code ? `<div class="traceback-line">${code}</div>` : ''}
+                                <div
+                class="traceback-file copyable"
+                title="Click to select for copying"
+            >${filename}:${lineNo}</div>
+                                <div>in <strong
+            >${functionName || 'unknown'}</strong></div>
+                                ${code ? `<div
+                class="traceback-line"
+            >${code}</div>` : ''}
                             </div>
                         `;
                     });
@@ -255,7 +276,7 @@
                         const data1 = groupDataByFullTraceback(entry1);
                         const data2 = groupDataByFullTraceback(entry2);
                         const labelSet = new Set([...Object.keys(data1), ...Object.keys(data2)]);
-                        
+
                         let diffData = [];
                         labelSet.forEach(fullTracebackKey => {
                             const size1 = data1[fullTracebackKey]?.size || 0;
@@ -263,7 +284,7 @@
                             const diff = size2 - size1;
                             if (diff !== 0) {
                                 const item = data2[fullTracebackKey] || data1[fullTracebackKey];
-                                diffData.push({ 
+                                diffData.push({
                                     label: item.lastFile,
                                     diff: diff,
                                     traceback: item.traceback,
@@ -289,10 +310,12 @@
                         breakdownChart.data.labels = [];
                         breakdownChart.data.datasets = [];
                         breakdownChart.options.plugins.title.text = 'Memory Breakdown';
-                        document.getElementById('tracebackPanel').innerHTML = 
-                            '<div class="no-selection">Click a point on the top chart, then a bar below to see details.</div>';
+                        document.getElementById('tracebackPanel').innerHTML =
+                            '<div
+                class="no-selection"
+            >Click a point on the top chart, then a bar below to see details.</div>';
                     }
-                    
+
                     updateChartHeight(breakdownChart, currentBreakdownData.length);
                     breakdownChart.update();
                     totalChart.update();
@@ -388,6 +411,6 @@
                 updateBarChart();
             </script>
         </body>
-        </html>
+    </html>
     </template>
 </odoo>

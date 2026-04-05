@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { Plugin } from "@html_editor/plugin";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { ChatGPTTranslateDialog } from "@html_editor/main/chatgpt/chatgpt_translate_dialog";
-import { LanguageSelector } from "@html_editor/main/chatgpt/language_selector";
-import { withSequence } from "@html_editor/utils/resource";
-import { user } from "@web/core/user";
-import { isContentEditable } from "@html_editor/utils/dom_info";
+import {_t} from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {ChatGPTTranslateDialog} from "@html_editor/main/chatgpt/chatgpt_translate_dialog";
+import {LanguageSelector} from "@html_editor/main/chatgpt/language_selector";
+import {withSequence} from "@html_editor/utils/resource";
+import {user} from "@web/core/user";
+import {isContentEditable} from "@html_editor/utils/dom_info";
 
 export class ChatGPTTranslatePlugin extends Plugin {
     static id = "chatgpt_translate";
@@ -32,17 +32,22 @@ export class ChatGPTTranslatePlugin extends Plugin {
                 isDisabled: this.isNotReplaceableByAI.bind(this),
                 Component: LanguageSelector,
                 props: {
-                    onSelected: (language) => this.openDialog({ language }),
+                    onSelected: (language) => this.openDialog({language}),
                 },
             },
         ],
     };
 
-    isNotReplaceableByAI(selection = this.dependencies.selection.getEditableSelection()) {
+    isNotReplaceableByAI(
+        selection = this.dependencies.selection.getEditableSelection()
+    ) {
         const isEmpty = !selection.textContent().replace(/\s+/g, "");
         const cannotReplace = this.dependencies.selection
             .getTargetedNodes()
-            .find((el) => this.dependencies.split.isUnsplittable(el) || !isContentEditable(el));
+            .find(
+                (el) =>
+                    this.dependencies.split.isUnsplittable(el) || !isContentEditable(el)
+            );
         return cannotReplace || isEmpty;
     }
 
@@ -70,7 +75,10 @@ export class ChatGPTTranslatePlugin extends Plugin {
                         top += parent.offsetTop - parent.scrollTop;
                         parent = parent.offsetParent;
                     }
-                    let [endParent, endTop] = [end.offsetParent, end.offsetTop - end.scrollTop];
+                    let [endParent, endTop] = [
+                        end.offsetParent,
+                        end.offsetTop - end.scrollTop,
+                    ];
                     while (endParent && !endParent.contains(divContainer)) {
                         endTop += endParent.offsetTop - endParent.scrollTop;
                         endParent = endParent.offsetParent;
@@ -90,7 +98,8 @@ export class ChatGPTTranslatePlugin extends Plugin {
             },
             ...params,
         };
-        dialogParams.baseContainer = this.dependencies.baseContainer.getDefaultNodeName();
+        dialogParams.baseContainer =
+            this.dependencies.baseContainer.getDefaultNodeName();
         // collapse to end
         const sanitize = this.dependencies.sanitize.sanitize;
         const originalText = selection.textContent() || "";

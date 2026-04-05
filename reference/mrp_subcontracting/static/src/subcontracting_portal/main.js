@@ -1,6 +1,6 @@
-import { startWebClient } from "@web/start";
-import { SubcontractingPortalWebClient } from "./subcontracting_portal";
-import { registry } from "@web/core/registry";
+import {startWebClient} from "@web/start";
+import {SubcontractingPortalWebClient} from "./subcontracting_portal";
+import {registry} from "@web/core/registry";
 
 const servicesToRemove = ["menu"];
 

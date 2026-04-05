@@ -7,9 +7,9 @@ import * as PartnerList from "@point_of_sale/../tests/pos/tours/utils/partner_li
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
-import { negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
-import { delay } from "@web/core/utils/concurrency";
-import { registry } from "@web/core/registry";
+import {negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
+import {delay} from "@web/core/utils/concurrency";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("EWalletProgramTour1", {
     steps: () =>
@@ -82,7 +82,7 @@ registry.category("web_tour.tours").add("EWalletProgramTour2", {
         [
             Chrome.startPoS(),
             ProductScreen.addOrderline("Whiteboard Pen", "2", "6", "12.00"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAAAAA"),
             PosLoyalty.eWalletButtonState({
@@ -96,14 +96,14 @@ registry.category("web_tour.tours").add("EWalletProgramTour2", {
             // Consume partner_bbb's full eWallet.
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("BBBBBBB"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             ProductScreen.addOrderline("Desk Pad", "6", "6", "36.00"),
             PosLoyalty.eWalletButtonState({
                 highlighted: true,
                 text: getEWalletText("Pay"),
                 click: true,
             }),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             PosLoyalty.orderTotalIs("26.00"),
             PosLoyalty.finalizeOrder("Cash", "26"),
 
@@ -111,7 +111,7 @@ registry.category("web_tour.tours").add("EWalletProgramTour2", {
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("BBBBBBB"),
             ProductScreen.addOrderline("Desk Pad", "2", "19", "38.00"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAAAAA"),
             PosLoyalty.eWalletButtonState({
@@ -122,7 +122,7 @@ registry.category("web_tour.tours").add("EWalletProgramTour2", {
             PosLoyalty.orderTotalIs("0.00"),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("BBBBBBB"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             PosLoyalty.orderTotalIs("38.00"),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAAAAA"),
@@ -167,8 +167,8 @@ registry.category("web_tour.tours").add("ExpiredEWalletProgramTour", {
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAA"),
             ProductScreen.addOrderline("Whiteboard Pen", "2", "6", "12.00"),
-            PosLoyalty.eWalletButtonState({ highlighted: false, click: true }),
-            Dialog.is({ title: "No valid eWallet found" }),
+            PosLoyalty.eWalletButtonState({highlighted: false, click: true}),
+            Dialog.is({title: "No valid eWallet found"}),
             Dialog.confirm(),
         ].flat(),
 });
@@ -180,7 +180,7 @@ registry.category("web_tour.tours").add("PosLoyaltyPointsEwallet", {
             Dialog.confirm("Open Register"),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAA"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             ProductScreen.addOrderline("product_a", "1"),
             PosLoyalty.eWalletButtonState({
                 highlighted: true,
@@ -205,7 +205,7 @@ registry.category("web_tour.tours").add("EWalletLoyaltyHistory", {
             PosLoyalty.finalizeOrder("Cash", "50"),
 
             ProductScreen.addOrderline("Whiteboard Pen", "2", "6", "12.00"),
-            PosLoyalty.eWalletButtonState({ highlighted: false }),
+            PosLoyalty.eWalletButtonState({highlighted: false}),
             ProductScreen.clickPartnerButton(),
             ProductScreen.clickCustomer("AAAAAAA"),
             PosLoyalty.eWalletButtonState({

@@ -1,8 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import calendar
-
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
 from datetime import timedelta
 
 from odoo import _, api, fields, models
@@ -290,7 +289,7 @@ class StockLocation(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for location, vals in zip(self, vals_list):
+            for location, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", location.name)
         return vals_list
 
@@ -362,7 +361,7 @@ class StockLocation(models.Model):
 
                     qty_by_location.update({location.id: quantity_sum for location, quantity_sum in quant_data})
                     for location_dest, quantity_list, uoms in move_line_data:
-                        current_qty = sum(ml_uom._compute_quantity(float(qty), product.uom_id) for qty, ml_uom in zip(quantity_list, uoms))
+                        current_qty = sum(ml_uom._compute_quantity(float(qty), product.uom_id) for qty, ml_uom in zip(quantity_list, uoms, strict=False))
                         qty_by_location[location_dest.id] += current_qty
 
             if additional_qty:
@@ -547,7 +546,7 @@ class StockRoute(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for route, vals in zip(self, vals_list):
+            for route, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", route.name)
         return vals_list
 

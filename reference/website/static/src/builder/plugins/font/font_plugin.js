@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { showAddFontDialog } from "./add_font_dialog";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {showAddFontDialog} from "./add_font_dialog";
 
 /**
  * @typedef { Object } WebsiteFontShared
@@ -25,7 +25,12 @@ class WebsiteFontPlugin extends Plugin {
             this.config.reloadEditor
         );
     }
-    async customizeFonts({ values = {}, googleFonts, googleLocalFonts, uploadedLocalFonts }) {
+    async customizeFonts({
+        values = {},
+        googleFonts,
+        googleLocalFonts,
+        uploadedLocalFonts,
+    }) {
         if (googleFonts.length) {
             values["google-fonts"] = "('" + googleFonts.join("', '") + "')";
         } else {
@@ -50,7 +55,7 @@ class WebsiteFontPlugin extends Plugin {
         await this.dependencies.savePlugin.save(/* not in translation */);
     }
     async deleteFont(font) {
-        const { googleFonts, googleLocalFonts, uploadedLocalFonts } =
+        const {googleFonts, googleLocalFonts, uploadedLocalFonts} =
             await this.dependencies.builderFont.getFontsData();
         const values = {};
 

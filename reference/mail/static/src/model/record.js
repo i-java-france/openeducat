@@ -1,4 +1,4 @@
-import { markup, toRaw } from "@odoo/owl";
+import {markup, toRaw} from "@odoo/owl";
 import {
     IS_DELETED_SYM,
     OR_SYM,
@@ -9,7 +9,7 @@ import {
     isRelation,
     modelRegistry,
 } from "./misc";
-import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
+import {serializeDate, serializeDateTime} from "@web/core/l10n/dates";
 
 /** @typedef {import("./misc").FieldDefinition} FieldDefinition */
 /** @typedef {import("./record_list").RecordList} RecordList */
@@ -72,12 +72,14 @@ export class Record {
     get localId() {
         return toRaw(this)._.localId;
     }
-    static _localId(expr, data, { brackets = false } = {}) {
+    static _localId(expr, data, {brackets = false} = {}) {
         const Model = toRaw(this);
         if (!Array.isArray(expr)) {
             if (Model._.fields.get(expr)) {
                 if (Model._.fieldsMany.get(expr)) {
-                    throw new Error("Using a fields.Many() as id is not (yet) supported");
+                    throw new Error(
+                        "Using a fields.Many() as id is not (yet) supported"
+                    );
                 }
                 if (!isRelation(Model, expr)) {
                     return data[expr];
@@ -102,7 +104,7 @@ export class Record {
         }
         const vals = [];
         for (let i = 1; i < expr.length; i++) {
-            vals.push(Model._localId(expr[i], data, { brackets: true }));
+            vals.push(Model._localId(expr[i], data, {brackets: true}));
         }
         let res = vals.join(expr[0] === OR_SYM ? " OR " : " AND ");
         if (brackets) {
@@ -123,13 +125,13 @@ export class Record {
                             cmd === "DELETE"
                                 ? undefined
                                 : cmd === "DELETE.noinv"
-                                ? [["DELETE.noinv", data2]]
-                                : cmd === "ADD.noinv"
-                                ? [["ADD.noinv", data2]]
-                                : data2,
+                                  ? [["DELETE.noinv", data2]]
+                                  : cmd === "ADD.noinv"
+                                    ? [["ADD.noinv", data2]]
+                                    : data2,
                     });
                 }
-                return Object.assign(res, { [expr2]: data[expr2] });
+                return Object.assign(res, {[expr2]: data[expr2]});
             }
             if (expr2 instanceof Array) {
                 for (const expr of this.id) {
@@ -145,7 +147,7 @@ export class Record {
         }
         if (typeof Model.id === "string") {
             if (typeof data !== "object" || data === null) {
-                return { [Model.id]: data }; // non-object data => single id
+                return {[Model.id]: data}; // non-object data => single id
             }
             if (isCommand(data[Model.id])) {
                 // Note: only fields.One is supported
@@ -155,13 +157,13 @@ export class Record {
                         cmd === "DELETE"
                             ? undefined
                             : cmd === "DELETE.noinv"
-                            ? [["DELETE.noinv", data2]]
-                            : cmd === "ADD.noinv"
-                            ? [["ADD.noinv", data2]]
-                            : data2,
+                              ? [["DELETE.noinv", data2]]
+                              : cmd === "ADD.noinv"
+                                ? [["ADD.noinv", data2]]
+                                : data2,
                 });
             }
-            return { [Model.id]: data[Model.id] };
+            return {[Model.id]: data[Model.id]};
         }
         for (const expr of Model.id) {
             if (typeof expr === "symbol") {
@@ -193,8 +195,8 @@ export class Record {
         return store.MAKE_UPDATE(function RecordNew() {
             const recordProxy = new Model.Class();
             const record = toRaw(recordProxy)._raw;
-            Object.assign(record._, { localId: Model.localId(ids) });
-            Object.assign(recordProxy, { ...ids });
+            Object.assign(record._, {localId: Model.localId(ids)});
+            Object.assign(recordProxy, {...ids});
             Model.records[record.localId] = recordProxy;
             if (record.Model.getName() === "Store") {
                 Object.assign(record, {
@@ -252,9 +254,9 @@ export class Record {
             ) {
                 // preinsert that record in relational field,
                 // as it is required to make current local id
-                ids[name] = Model._rawStore[Model._.fieldsTargetModel.get(name)].preinsert(
-                    ids[name]
-                );
+                ids[name] = Model._rawStore[
+                    Model._.fieldsTargetModel.get(name)
+                ].preinsert(ids[name]);
             }
         }
         return Model.get.call(ModelFullProxy, data) ?? Model.new(data, ids);
@@ -306,7 +308,7 @@ export class Record {
                     );
                 }
                 // update on single-id data
-                store._.updateFields(record, { [record.Model.id]: data });
+                store._.updateFields(record, {[record.Model.id]: data});
             }
         });
     }
@@ -351,7 +353,7 @@ export class Record {
      * @param {Array<string> | { depth: boolean }} options Configuration options or an array of field names.
      * @returns {Object} A data object grouped by model names.
      */
-    toData(options = { depth: false }) {
+    toData(options = {depth: false}) {
         const prefix = this._getActualModelName();
         const ongoing = {
             seenRecords: new Set(),
@@ -396,7 +398,7 @@ export class Record {
         const recordProxy = this;
         const record = toRaw(recordProxy)._raw;
         const Model = record.Model;
-        const data = { ...recordProxy };
+        const data = {...recordProxy};
         for (const name of Model._.fields.keys()) {
             const fullFieldName = prefix ? `${prefix}.${name}` : name;
             if (isMany(Model, name)) {
@@ -443,7 +445,10 @@ export class Record {
      */
     _toDataRelationalRecord(ongoing, prefix = undefined) {
         const data = this.Model._retrieveIdFromData(this);
-        if (ongoing.depth || ongoing.fields?.some((field) => field.startsWith(prefix))) {
+        if (
+            ongoing.depth ||
+            ongoing.fields?.some((field) => field.startsWith(prefix))
+        ) {
             this._toData(ongoing, prefix);
         }
         for (const [name, val] of Object.entries(data)) {

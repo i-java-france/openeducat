@@ -3,7 +3,8 @@ html {
 }
 body {
     cursor: none;
-    background: url('/iot_drivers/static/img/background-light.svg') no-repeat center center fixed;
+    background: url("/iot_drivers/static/img/background-light.svg") no-repeat center
+        center fixed;
     background-size: cover;
     height: 100vh;
 }
@@ -20,7 +21,7 @@ body {
 .qr-code img {
     width: 150px; /* Ensure wifi and url QR code images appear as same size */
     height: 150px;
-    object-fit: contain; 
+    object-fit: contain;
 }
 .status-display-boxes {
     position: absolute;

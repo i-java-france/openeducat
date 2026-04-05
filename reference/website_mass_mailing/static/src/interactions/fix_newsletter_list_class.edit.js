@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 /**
  * This interaction tries to fix snippets that were malformed because of a missing
@@ -11,7 +11,8 @@ import { registry } from "@web/core/registry";
  */
 
 export class fixNewsletterListClass extends Interaction {
-    static selector = ".s_newsletter_subscribe_form:not(.s_subscription_list), .s_newsletter_block";
+    static selector =
+        ".s_newsletter_subscribe_form:not(.s_subscription_list), .s_newsletter_block";
     dynamicContent = {
         _root: {
             "t-att-class": () => ({

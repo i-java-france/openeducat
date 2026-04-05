@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { mockTimeZone } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockTimeZone} from "@odoo/hoot-mock";
 import {
     defineModels,
     fields,
@@ -8,15 +8,15 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { localization } from "@web/core/l10n/localization";
+import {localization} from "@web/core/l10n/localization";
 
-import { ConnectionLostError, rpc } from "@web/core/network/rpc";
+import {ConnectionLostError, rpc} from "@web/core/network/rpc";
 
 class Partner extends models.Model {
     _name = "res.partner";
 
     name = fields.Char();
-    active = fields.Boolean({ default: true });
+    active = fields.Boolean({default: true});
 
     _records = [
         {
@@ -39,8 +39,8 @@ class Bar extends models.Model {
     date = fields.Date();
     datetime = fields.Datetime();
     foo = fields.Integer();
-    partner_id = fields.Many2one({ string: "Main buddy", relation: "res.partner" });
-    partner_ids = fields.Many2many({ string: "Buddies", relation: "res.partner" });
+    partner_id = fields.Many2one({string: "Main buddy", relation: "res.partner"});
+    partner_ids = fields.Many2many({string: "Buddies", relation: "res.partner"});
     select = fields.Selection({
         string: "Stage",
         selection: [
@@ -49,16 +49,16 @@ class Bar extends models.Model {
             ["done", "Done"],
         ],
     });
-    many2one_field = fields.Many2one({ relation: "foo" });
+    many2one_field = fields.Many2one({relation: "foo"});
     one2many_field = fields.One2many({
         relation: "foo",
-        inverse_fname_by_model_name: { foo: "many2one_field" },
+        inverse_fname_by_model_name: {foo: "many2one_field"},
     });
     many2many_field = fields.Many2many({
         relation: "foo",
-        inverse_fname_by_model_name: { foo: "many2many_field" },
+        inverse_fname_by_model_name: {foo: "many2many_field"},
     });
-    partner_ref = fields.Reference({ selection: [["res.partner", "Partner"]] });
+    partner_ref = fields.Reference({selection: [["res.partner", "Partner"]]});
 
     _records = [
         {
@@ -125,20 +125,20 @@ class Foo extends models.Model {
 
     one2many_field = fields.One2many({
         relation: "bar",
-        inverse_fname_by_model_name: { bar: "many2one_field" },
+        inverse_fname_by_model_name: {bar: "many2one_field"},
     });
     many2one_field = fields.Many2one({
         relation: "bar",
-        inverse_fname_by_model_name: { bar: "one2many_field" },
+        inverse_fname_by_model_name: {bar: "one2many_field"},
     });
     many2many_field = fields.Many2many({
         relation: "bar",
-        inverse_fname_by_model_name: { bar: "many2many_field" },
+        inverse_fname_by_model_name: {bar: "many2many_field"},
     });
     many2one_reference = fields.Many2oneReference({
         model_field: "res_model",
         relation: "bar",
-        inverse_fname_by_model_name: { bar: "one2many_field" },
+        inverse_fname_by_model_name: {bar: "one2many_field"},
         model_name_ref_fname: "res_model",
     });
     res_model = fields.Char();
@@ -185,7 +185,7 @@ function fetchCallKw(params) {
  */
 const ormRequest = async (params) => {
     const response = await fetchCallKw(params);
-    const { error, result } = await response.json();
+    const {error, result} = await response.json();
     if (error) {
         console.error(error);
         throw error;
@@ -199,7 +199,7 @@ const ormRequest = async (params) => {
 const JSON_RPC_BASIC_PARAMS = {
     body: "{}",
     headers: {
-        ["Content-Type"]: "application/json",
+        "Content-Type": "application/json",
     },
 };
 let nextJsonRpcId = 0;
@@ -229,7 +229,7 @@ test("onRpc: error handling", async () => {
 });
 
 test("onRpc: pure, normal result", async () => {
-    onRpc("/get_result", () => "result", { pure: true });
+    onRpc("/get_result", () => "result", {pure: true});
 
     await makeMockServer();
 
@@ -246,7 +246,7 @@ test("onRpc: pure, error handling", async () => {
         () => {
             throw new Error("boom");
         },
-        { pure: true }
+        {pure: true}
     );
 
     await makeMockServer();
@@ -311,12 +311,14 @@ test("rpc: calls on mock server", async () => {
         () => {
             throw new Error("Pure boom");
         },
-        { pure: true }
+        {pure: true}
     );
     await makeMockServer();
 
     await expect(rpc("/route")).resolves.toBe("pure route response");
-    await expect(rpc("http://pure.route.com/")).resolves.toBe("external route response");
+    await expect(rpc("http://pure.route.com/")).resolves.toBe(
+        "external route response"
+    );
 
     await expect(rpc("/boom")).rejects.toThrow("RPC_ERROR: Boom");
     await expect(rpc("/boom/pure")).rejects.toThrow(ConnectionLostError);
@@ -339,7 +341,7 @@ test("rpc: calls on mock server", async () => {
 });
 
 test("performRPC: custom response", async () => {
-    const customResponse = new Response("{}", { status: 418 });
+    const customResponse = new Response("{}", {status: 418});
     onRpc(() => customResponse);
     await makeMockServer();
     await expect(fetchCallKw({})).resolves.toBe(customResponse);
@@ -351,7 +353,7 @@ test("performRPC: search with active_test=false", async () => {
         model: "res.partner",
         method: "search",
         kwargs: {
-            context: { active_test: false },
+            context: {active_test: false},
         },
     });
 
@@ -364,7 +366,7 @@ test("performRPC: search with active_test=true", async () => {
         model: "res.partner",
         method: "search",
         kwargs: {
-            context: { active_test: true },
+            context: {active_test: true},
         },
     });
     expect(result).toEqual([1]);
@@ -377,12 +379,12 @@ test("performRPC: search_read with active_test=false", async () => {
         method: "search_read",
         kwargs: {
             fields: ["name"],
-            context: { active_test: false },
+            context: {active_test: false},
         },
     });
     expect(result).toEqual([
-        { id: 1, name: "Jean-Michel" },
-        { id: 2, name: "Raoul" },
+        {id: 1, name: "Jean-Michel"},
+        {id: 2, name: "Raoul"},
     ]);
 });
 
@@ -393,10 +395,10 @@ test("performRPC: search_read with active_test=true", async () => {
         method: "search_read",
         kwargs: {
             fields: ["name"],
-            context: { active_test: true },
+            context: {active_test: true},
         },
     });
-    expect(result).toEqual([{ id: 1, name: "Jean-Michel" }]);
+    expect(result).toEqual([{id: 1, name: "Jean-Michel"}]);
 });
 
 test("performRPC: search_count", async () => {
@@ -409,7 +411,7 @@ test("performRPC: search_count", async () => {
 });
 
 test("performRPC: search_count with domain", async () => {
-    Partner._records.push({ id: 4, name: "José" });
+    Partner._records.push({id: 4, name: "José"});
 
     await makeMockServer();
     const result = await ormRequest({
@@ -436,7 +438,7 @@ test("performRPC: search_count with archived records", async () => {
         model: "res.partner",
         method: "search_count",
         kwargs: {
-            context: { active_test: false },
+            context: {active_test: false},
         },
     });
     expect(result).toBe(2);
@@ -453,7 +455,7 @@ test("performRPC: formatted_read_group, no group", async function (assert) {
             aggregates: ["__count"],
         },
     });
-    expect(result).toEqual([{ __count: 0, __extra_domain: [] }]);
+    expect(result).toEqual([{__count: 0, __extra_domain: []}]);
 });
 
 test("performRPC: formatted_read_group, group by char", async () => {
@@ -468,11 +470,11 @@ test("performRPC: formatted_read_group, group by char", async () => {
         },
     });
     expect(result).toEqual([
-        { name: "aaa", __extra_domain: [["name", "=", "aaa"]], __count: 1 },
-        { name: "ddd", __extra_domain: [["name", "=", "ddd"]], __count: 1 },
-        { name: "mmm", __extra_domain: [["name", "=", "mmm"]], __count: 1 },
-        { name: "xxx", __extra_domain: [["name", "=", "xxx"]], __count: 1 },
-        { name: "zzz", __extra_domain: [["name", "=", "zzz"]], __count: 2 },
+        {name: "aaa", __extra_domain: [["name", "=", "aaa"]], __count: 1},
+        {name: "ddd", __extra_domain: [["name", "=", "ddd"]], __count: 1},
+        {name: "mmm", __extra_domain: [["name", "=", "mmm"]], __count: 1},
+        {name: "xxx", __extra_domain: [["name", "=", "xxx"]], __count: 1},
+        {name: "zzz", __extra_domain: [["name", "=", "zzz"]], __count: 2},
     ]);
 });
 
@@ -488,8 +490,8 @@ test("performRPC: formatted_read_group, group by boolean", async () => {
         },
     });
     expect(result).toEqual([
-        { bool: false, __extra_domain: [["bool", "=", false]], __count: 2 },
-        { bool: true, __extra_domain: [["bool", "=", true]], __count: 4 },
+        {bool: false, __extra_domain: [["bool", "=", false]], __count: 2},
+        {bool: true, __extra_domain: [["bool", "=", true]], __count: 4},
     ]);
 });
 
@@ -711,7 +713,7 @@ test("performRPC: formatted_read_group, group by date with number granularity", 
         },
     ];
 
-    for (const { granularity, result, count } of allGranularity) {
+    for (const {granularity, result, count} of allGranularity) {
         const response = await ormRequest({
             model: "bar",
             method: "formatted_read_group",
@@ -1006,7 +1008,7 @@ test("performRPC: formatted_read_group, group by datetime with number granularit
         },
     ];
 
-    for (const { granularity, result, count } of allGranularity) {
+    for (const {granularity, result, count} of allGranularity) {
         const response = await ormRequest({
             model: "bar",
             method: "formatted_read_group",
@@ -1027,13 +1029,13 @@ test("performRPC: formatted_read_group, group by datetime with number granularit
 
 test("performRPC: formatted_read_group day_of_week", async () => {
     Bar._records = [
-        { foo: 11, datetime: "2025-02-17 13:00:00" }, // Monday
-        { foo: 22, datetime: "2025-02-18 13:00:00" }, // Tuesday
-        { foo: 33, datetime: "2025-02-19 13:00:00" }, // Wednesday
-        { foo: 44, datetime: "2025-02-20 13:00:00" }, // Thursday
-        { foo: 55, datetime: "2025-02-21 13:00:00" }, // Friday
-        { foo: 66, datetime: "2025-02-22 13:00:00" }, // Saturday
-        { foo: 77, datetime: "2025-02-23 13:00:00" }, // Sunday
+        {foo: 11, datetime: "2025-02-17 13:00:00"}, // Monday
+        {foo: 22, datetime: "2025-02-18 13:00:00"}, // Tuesday
+        {foo: 33, datetime: "2025-02-19 13:00:00"}, // Wednesday
+        {foo: 44, datetime: "2025-02-20 13:00:00"}, // Thursday
+        {foo: 55, datetime: "2025-02-21 13:00:00"}, // Friday
+        {foo: 66, datetime: "2025-02-22 13:00:00"}, // Saturday
+        {foo: 77, datetime: "2025-02-23 13:00:00"}, // Sunday
     ];
     await makeMockServer();
 
@@ -1047,7 +1049,9 @@ test("performRPC: formatted_read_group day_of_week", async () => {
         },
     });
 
-    expect(response.map((x) => x["datetime:day_of_week"])).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    expect(response.map((x) => x["datetime:day_of_week"])).toEqual([
+        0, 1, 2, 3, 4, 5, 6,
+    ]);
     expect(response.map((x) => x["foo:sum"])).toEqual([77, 11, 22, 33, 44, 55, 66]);
 });
 
@@ -1160,8 +1164,8 @@ test("performRPC: formatted_read_group, group by m2o", async () => {
 
 test("performRPC: formatted_read_group, group by id", async () => {
     Bar._records = [
-        { id: 1, name: "A" },
-        { id: 2, name: "B" },
+        {id: 1, name: "A"},
+        {id: 2, name: "B"},
     ];
 
     await makeMockServer();
@@ -1176,8 +1180,8 @@ test("performRPC: formatted_read_group, group by id", async () => {
     });
 
     expect(result).toEqual([
-        { id: [1, "A"], __extra_domain: [["id", "=", 1]], __count: 1 },
-        { id: [2, "B"], __extra_domain: [["id", "=", 2]], __count: 1 },
+        {id: [1, "A"], __extra_domain: [["id", "=", 1]], __count: 1},
+        {id: [2, "B"], __extra_domain: [["id", "=", 2]], __count: 1},
     ]);
 });
 
@@ -1242,9 +1246,9 @@ test("performRPC: formatted_read_group, group by selection", async () => {
             },
         })
     ).resolves.toEqual([
-        { select: "new", __extra_domain: [["select", "=", "new"]], __count: 3 },
-        { select: "dev", __extra_domain: [["select", "=", "dev"]], __count: 1 },
-        { select: "done", __extra_domain: [["select", "=", "done"]], __count: 2 },
+        {select: "new", __extra_domain: [["select", "=", "new"]], __count: 3},
+        {select: "dev", __extra_domain: [["select", "=", "dev"]], __count: 1},
+        {select: "done", __extra_domain: [["select", "=", "done"]], __count: 2},
     ]);
 });
 
@@ -1464,7 +1468,7 @@ describe("groupby chain of fields", () => {
     class RelatedFoo extends models.Model {
         _name = "test_read_group.related_foo";
         name = fields.Char();
-        bar_id = fields.Many2one({ relation: "test_read_group.related_bar" });
+        bar_id = fields.Many2one({relation: "test_read_group.related_bar"});
         schedule_datetime = fields.Datetime();
         date = fields.Date();
 
@@ -1473,7 +1477,7 @@ describe("groupby chain of fields", () => {
     class RelatedBase extends models.Model {
         _name = "test_read_group.related_base";
         name = fields.Char();
-        foo_id = fields.Many2one({ relation: "test_read_group.related_foo" });
+        foo_id = fields.Many2one({relation: "test_read_group.related_foo"});
 
         _records = [];
     }
@@ -1481,21 +1485,21 @@ describe("groupby chain of fields", () => {
 
     test("groupby chain fnames many2one", async () => {
         RelatedBar._records = [
-            { id: 1, name: "bar_a" },
-            { id: 2, name: false },
+            {id: 1, name: "bar_a"},
+            {id: 2, name: false},
         ];
         RelatedFoo._records = [
-            { id: 1, name: "foo_a_bar_a", bar_id: 1 },
-            { id: 2, name: "foo_b_bar_false", bar_id: 2 },
-            { id: 3, name: false, bar_id: 1 },
-            { id: 4, name: false, bar_id: false },
+            {id: 1, name: "foo_a_bar_a", bar_id: 1},
+            {id: 2, name: "foo_b_bar_false", bar_id: 2},
+            {id: 3, name: false, bar_id: 1},
+            {id: 4, name: false, bar_id: false},
         ];
         RelatedBase._records = [
-            { id: 1, name: "base_foo_a_1", foo_id: 1 },
-            { id: 2, name: "base_foo_a_2", foo_id: 1 },
-            { id: 3, name: "base_foo_b_bar_false", foo_id: 2 },
-            { id: 4, name: "base_false_foo_bar_a", foo_id: 3 },
-            { id: 5, name: "base_false_foo", foo_id: 4 },
+            {id: 1, name: "base_foo_a_1", foo_id: 1},
+            {id: 2, name: "base_foo_a_2", foo_id: 1},
+            {id: 3, name: "base_foo_b_bar_false", foo_id: 2},
+            {id: 4, name: "base_false_foo_bar_a", foo_id: 3},
+            {id: 5, name: "base_false_foo", foo_id: 4},
         ];
         await makeMockServer();
         const result = await ormRequest({
@@ -1531,21 +1535,21 @@ describe("groupby chain of fields", () => {
 
     test("groupby chain fnames char", async () => {
         RelatedBar._records = [
-            { id: 1, name: "bar_a" },
-            { id: 2, name: false },
+            {id: 1, name: "bar_a"},
+            {id: 2, name: false},
         ];
         RelatedFoo._records = [
-            { id: 1, name: "foo_a_bar_a", bar_id: 1 },
-            { id: 2, name: "foo_b_bar_false", bar_id: 2 },
-            { id: 3, name: false, bar_id: 1 },
-            { id: 4, name: false, bar_id: false },
+            {id: 1, name: "foo_a_bar_a", bar_id: 1},
+            {id: 2, name: "foo_b_bar_false", bar_id: 2},
+            {id: 3, name: false, bar_id: 1},
+            {id: 4, name: false, bar_id: false},
         ];
         RelatedBase._records = [
-            { id: 1, name: "base_foo_a_1", foo_id: 1 },
-            { id: 2, name: "base_foo_a_2", foo_id: 1 },
-            { id: 3, name: "base_foo_b_bar_false", foo_id: 2 },
-            { id: 4, name: "base_false_foo_bar_a", foo_id: 3 },
-            { id: 5, name: "base_false_foo", foo_id: 4 },
+            {id: 1, name: "base_foo_a_1", foo_id: 1},
+            {id: 2, name: "base_foo_a_2", foo_id: 1},
+            {id: 3, name: "base_foo_b_bar_false", foo_id: 2},
+            {id: 4, name: "base_false_foo_bar_a", foo_id: 3},
+            {id: 5, name: "base_false_foo", foo_id: 4},
         ];
         await makeMockServer();
         const result = await ormRequest({
@@ -1559,7 +1563,9 @@ describe("groupby chain of fields", () => {
         expect(result).toEqual([
             {
                 __count: 3,
-                __extra_domain: [["foo_id", "any", [["bar_id", "any", [["name", "=", "bar_a"]]]]]],
+                __extra_domain: [
+                    ["foo_id", "any", [["bar_id", "any", [["name", "=", "bar_a"]]]]],
+                ],
                 "foo_id.bar_id.name": "bar_a",
             },
             {
@@ -1570,7 +1576,11 @@ describe("groupby chain of fields", () => {
                     [
                         "foo_id",
                         "any",
-                        ["|", ["bar_id", "not any", []], ["bar_id", "any", [["name", "=", false]]]],
+                        [
+                            "|",
+                            ["bar_id", "not any", []],
+                            ["bar_id", "any", [["name", "=", false]]],
+                        ],
                     ],
                 ],
                 "foo_id.bar_id.name": false,
@@ -1580,19 +1590,19 @@ describe("groupby chain of fields", () => {
 
     test("groupby chain fnames date", async () => {
         RelatedFoo._records = [
-            { id: 1, schedule_datetime: false },
-            { id: 2, schedule_datetime: "1916-08-18 12:30:00" },
-            { id: 3, schedule_datetime: "1916-08-18 12:50:00" },
-            { id: 4, schedule_datetime: "1916-08-19 01:30:00" },
-            { id: 5, schedule_datetime: "1916-10-18 23:30:00" },
+            {id: 1, schedule_datetime: false},
+            {id: 2, schedule_datetime: "1916-08-18 12:30:00"},
+            {id: 3, schedule_datetime: "1916-08-18 12:50:00"},
+            {id: 4, schedule_datetime: "1916-08-19 01:30:00"},
+            {id: 5, schedule_datetime: "1916-10-18 23:30:00"},
         ];
         RelatedBase._records = [
-            { id: 1, foo_id: 1 },
-            { id: 2, foo_id: 2 },
-            { id: 3, foo_id: 3 },
-            { id: 4, foo_id: 4 },
-            { id: 5, foo_id: 5 },
-            { id: 6, foo_id: 5 },
+            {id: 1, foo_id: 1},
+            {id: 2, foo_id: 2},
+            {id: 3, foo_id: 3},
+            {id: 4, foo_id: 4},
+            {id: 5, foo_id: 5},
+            {id: 6, foo_id: 5},
         ];
         mockTimeZone(0); // UTC
         await makeMockServer();
@@ -1661,12 +1671,12 @@ describe("groupby chain of fields", () => {
 
     test("groupby chain fnames date with date part", async () => {
         RelatedFoo._records = [
-            { id: 1, schedule_datetime: false },
-            { id: 2, schedule_datetime: "1916-08-18 12:30:00" },
+            {id: 1, schedule_datetime: false},
+            {id: 2, schedule_datetime: "1916-08-18 12:30:00"},
         ];
         RelatedBase._records = [
-            { id: 1, foo_id: 1 },
-            { id: 2, foo_id: 2 },
+            {id: 1, foo_id: 1},
+            {id: 2, foo_id: 2},
         ];
         mockTimeZone(0); // UTC
         await makeMockServer();
@@ -1681,7 +1691,9 @@ describe("groupby chain of fields", () => {
         expect(result).toEqual([
             {
                 "foo_id.schedule_datetime:month_number": 8,
-                __extra_domain: [["foo_id", "any", [["schedule_datetime.month_number", "=", 8]]]],
+                __extra_domain: [
+                    ["foo_id", "any", [["schedule_datetime.month_number", "=", 8]]],
+                ],
                 __count: 1,
             },
             {
@@ -1698,21 +1710,21 @@ describe("groupby chain of fields", () => {
 
     test("groupby chain fnames with formatted_read_grouping_sets", async () => {
         RelatedBar._records = [
-            { id: 1, name: "bar_a" },
-            { id: 2, name: false },
+            {id: 1, name: "bar_a"},
+            {id: 2, name: false},
         ];
         RelatedFoo._records = [
-            { id: 1, name: "foo_a_bar_a", bar_id: 1 },
-            { id: 2, name: "foo_b_bar_false", bar_id: 2 },
-            { id: 3, name: false, bar_id: 1 },
-            { id: 4, name: false, bar_id: false },
+            {id: 1, name: "foo_a_bar_a", bar_id: 1},
+            {id: 2, name: "foo_b_bar_false", bar_id: 2},
+            {id: 3, name: false, bar_id: 1},
+            {id: 4, name: false, bar_id: false},
         ];
         RelatedBase._records = [
-            { id: 1, name: "base_foo_a_1", foo_id: 1 },
-            { id: 2, name: "base_foo_a_2", foo_id: 1 },
-            { id: 3, name: "base_foo_b_bar_false", foo_id: 2 },
-            { id: 4, name: "base_false_foo_bar_a", foo_id: 3 },
-            { id: 5, name: "base_false_foo", foo_id: 4 },
+            {id: 1, name: "base_foo_a_1", foo_id: 1},
+            {id: 2, name: "base_foo_a_2", foo_id: 1},
+            {id: 3, name: "base_foo_b_bar_false", foo_id: 2},
+            {id: 4, name: "base_false_foo_bar_a", foo_id: 3},
+            {id: 5, name: "base_false_foo", foo_id: 4},
         ];
         await makeMockServer();
         const grouping_sets = [
@@ -1759,14 +1771,14 @@ test("performRPC: read_progress_bar grouped by boolean", async () => {
                 domain: [],
                 group_by: "bool",
                 progress_bar: {
-                    colors: { new: "success", dev: "warning", done: "danger" },
+                    colors: {new: "success", dev: "warning", done: "danger"},
                     field: "select",
                 },
             },
         })
     ).resolves.toEqual({
-        False: { new: 0, dev: 0, done: 2 },
-        True: { new: 3, dev: 1, done: 0 },
+        False: {new: 0, dev: 0, done: 2},
+        True: {new: 3, dev: 1, done: 0},
     });
 });
 
@@ -1786,16 +1798,16 @@ test("performRPC: read_progress_bar grouped by datetime", async () => {
                 domain: [],
                 group_by: "datetime:week",
                 progress_bar: {
-                    colors: { new: "aaa", dev: "bbb", done: "ccc" },
+                    colors: {new: "aaa", dev: "bbb", done: "ccc"},
                     field: "select",
                 },
             },
         })
     ).resolves.toEqual({
-        "2019-12-29 23:00:00": { dev: 0, done: 0, new: 1 },
-        "2016-04-10 23:00:00": { dev: 0, done: 0, new: 1 },
-        "2016-10-23 23:00:00": { dev: 0, done: 0, new: 1 },
-        "2016-12-11 23:00:00": { dev: 1, done: 2, new: 0 },
+        "2019-12-29 23:00:00": {dev: 0, done: 0, new: 1},
+        "2016-04-10 23:00:00": {dev: 0, done: 0, new: 1},
+        "2016-10-23 23:00:00": {dev: 0, done: 0, new: 1},
+        "2016-12-11 23:00:00": {dev: 1, done: 2, new: 0},
     });
 });
 
@@ -1810,119 +1822,119 @@ test("performRPC: read_progress_bar grouped by many2one", async () => {
                 domain: [],
                 group_by: "partner_id",
                 progress_bar: {
-                    colors: { new: "aaa", dev: "bbb", done: "ccc" },
+                    colors: {new: "aaa", dev: "bbb", done: "ccc"},
                     field: "select",
                 },
             },
         })
     ).resolves.toEqual({
-        1: { dev: 0, done: 0, new: 2 },
-        2: { dev: 0, done: 0, new: 1 },
-        False: { dev: 1, done: 2, new: 0 },
+        1: {dev: 0, done: 0, new: 2},
+        2: {dev: 0, done: 0, new: 1},
+        False: {dev: 1, done: 2, new: 0},
     });
 });
 
 test("many2one_ref should auto fill inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, many2one_reference: 1, res_model: "bar" }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, many2one_reference: 1, res_model: "bar"}];
 
-    const { env } = await makeMockServer();
-    expect(env["bar"][0].one2many_field).toEqual([2]);
+    const {env} = await makeMockServer();
+    expect(env.bar[0].one2many_field).toEqual([2]);
 
-    env["foo"].unlink(2);
+    env.foo.unlink(2);
 
-    expect(env["bar"][0].one2many_field).toEqual([]);
+    expect(env.bar[0].one2many_field).toEqual([]);
 });
 
 test("many2one should auto fill inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, many2one_field: 1 }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, many2one_field: 1}];
 
-    const { env } = await makeMockServer();
-    expect(env["bar"][0].one2many_field).toEqual([2]);
+    const {env} = await makeMockServer();
+    expect(env.bar[0].one2many_field).toEqual([2]);
 
-    env["foo"].unlink(2);
+    env.foo.unlink(2);
 
-    expect(env["bar"][0].one2many_field).toEqual([]);
+    expect(env.bar[0].one2many_field).toEqual([]);
 });
 
 test("one2many should auto fill inverse field", async () => {
-    Bar._records = [{ id: 1 }, { id: 2 }];
-    Foo._records = [{ id: 3, one2many_field: [1, 2] }];
+    Bar._records = [{id: 1}, {id: 2}];
+    Foo._records = [{id: 3, one2many_field: [1, 2]}];
 
-    const { env } = await makeMockServer();
-    expect(env["bar"][0].many2one_field).toBe(3);
-    expect(env["bar"][1].many2one_field).toBe(3);
+    const {env} = await makeMockServer();
+    expect(env.bar[0].many2one_field).toBe(3);
+    expect(env.bar[1].many2one_field).toBe(3);
 
-    env["foo"].unlink(3);
+    env.foo.unlink(3);
 
-    expect(env["bar"][0].many2one_field).toBe(false);
-    expect(env["bar"][1].many2one_field).toBe(false);
+    expect(env.bar[0].many2one_field).toBe(false);
+    expect(env.bar[1].many2one_field).toBe(false);
 });
 
 test("many2many should auto fill inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, many2many_field: [1] }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, many2many_field: [1]}];
 
-    const { env } = await makeMockServer();
-    expect(env["bar"][0].many2many_field).toEqual([2]);
+    const {env} = await makeMockServer();
+    expect(env.bar[0].many2many_field).toEqual([2]);
 
-    env["foo"].unlink(2);
+    env.foo.unlink(2);
 
-    expect(env["bar"][0].many2many_field).toEqual([]);
+    expect(env.bar[0].many2many_field).toEqual([]);
 });
 
 test("one2many update should update inverse field", async () => {
-    Bar._records = [{ id: 1 }, { id: 2 }];
-    Foo._records = [{ id: 3, one2many_field: [1, 2] }];
+    Bar._records = [{id: 1}, {id: 2}];
+    Foo._records = [{id: 3, one2many_field: [1, 2]}];
 
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
 
-    env["foo"].write(3, { one2many_field: [1] });
+    env.foo.write(3, {one2many_field: [1]});
 
-    expect(env["bar"][0].many2one_field).toBe(3);
-    expect(env["bar"][1].many2one_field).toBe(false);
+    expect(env.bar[0].many2one_field).toBe(3);
+    expect(env.bar[1].many2one_field).toBe(false);
 });
 
 test("many2many update should update inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, many2many_field: [1] }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, many2many_field: [1]}];
 
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
 
-    env["foo"].write(2, { one2many_field: [] });
+    env.foo.write(2, {one2many_field: []});
 
-    expect(env["bar"][0].many2many_field).toEqual([2]);
+    expect(env.bar[0].many2many_field).toEqual([2]);
 });
 
 test.todo("many2one update should update inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, many2one_field: 1 }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, many2one_field: 1}];
 
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
 
-    env["foo"].write(2, { many2one_field: false });
+    env.foo.write(2, {many2one_field: false});
 
-    expect(env["bar"][0].one2many_field).toEqual([]);
+    expect(env.bar[0].one2many_field).toEqual([]);
 });
 
 test("many2one_ref update should update inverse field", async () => {
-    Bar._records = [{ id: 1 }];
-    Foo._records = [{ id: 2, res_model: "bar", many2one_reference: 1 }];
+    Bar._records = [{id: 1}];
+    Foo._records = [{id: 2, res_model: "bar", many2one_reference: 1}];
 
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
 
-    env["foo"].write(2, { many2one_reference: false });
+    env.foo.write(2, {many2one_reference: false});
 
-    expect(env["bar"][0].one2many_field).toEqual([]);
+    expect(env.bar[0].one2many_field).toEqual([]);
 });
 
 test("webRead sub-fields of a many2one field", async () => {
     Partner._fields.test_name = fields.Char();
     Partner._fields.test_number = fields.Integer();
 
-    Partner._records = [{ id: 1, test_name: "Jean-Michel", test_number: 5 }];
-    Bar._records = [{ id: 1, partner_id: 1 }];
+    Partner._records = [{id: 1, test_name: "Jean-Michel", test_number: 5}];
+    Bar._records = [{id: 1, partner_id: 1}];
 
     await makeMockServer();
 
@@ -1974,7 +1986,7 @@ test("List View: invisible on processed Arch", async () => {
         </list>
     `;
 
-    const { views } = await ormRequest({
+    const {views} = await ormRequest({
         method: "get_views",
         model: "bar",
         kwargs: {
@@ -1992,7 +2004,7 @@ test("performRPC: create one record (old API)", async () => {
         ormRequest({
             model: "bar",
             method: "create",
-            args: [{ name: "A" }],
+            args: [{name: "A"}],
         })
     ).resolves.toBe(7);
 });
@@ -2004,7 +2016,7 @@ test("performRPC: create one record (new API)", async () => {
         ormRequest({
             model: "bar",
             method: "create",
-            args: [[{ name: "A" }]],
+            args: [[{name: "A"}]],
         })
     ).resolves.toEqual([7]);
 });
@@ -2016,7 +2028,7 @@ test("performRPC: create several records (new API)", async () => {
         ormRequest({
             model: "bar",
             method: "create",
-            args: [[{ name: "A" }, { name: "B" }]],
+            args: [[{name: "A"}, {name: "B"}]],
         })
     ).resolves.toEqual([7, 8]);
 });
@@ -2028,9 +2040,9 @@ test("performRPC: trigger onchange for new record", async () => {
         ormRequest({
             model: "bar",
             method: "onchange",
-            args: [[], {}, [], { foo: {} }],
+            args: [[], {}, [], {foo: {}}],
         })
-    ).resolves.toEqual({ value: { foo: 0 } });
+    ).resolves.toEqual({value: {foo: 0}});
 });
 
 test("access rights attributes are present on an editable many2one field", async () => {
@@ -2051,7 +2063,7 @@ test("access rights attributes are present on an editable many2one field", async
         </form>
     `;
 
-    const { views } = await ormRequest({
+    const {views} = await ormRequest({
         method: "get_views",
         model: "bar",
         kwargs: {
@@ -2089,7 +2101,7 @@ test("access rights attributes are missing on an editable many2one field", async
         </form>
     `;
 
-    const { views } = await ormRequest({
+    const {views} = await ormRequest({
         method: "get_views",
         model: "bar",
         kwargs: {

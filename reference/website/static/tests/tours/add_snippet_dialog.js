@@ -1,4 +1,4 @@
-import { registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "website_add_snippet_dialog",
@@ -23,7 +23,8 @@ registerWebsitePreviewTour(
             run: "edit NoSnippetsAvailable",
         },
         {
-            content: "Verify that the appropriate message is displayed when no snippets are found.",
+            content:
+                "Verify that the appropriate message is displayed when no snippets are found.",
             trigger:
                 "p:contains('Oops! No snippets found.'), p:contains('Take a look at the search bar, there might be a small typo!')",
         },

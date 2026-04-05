@@ -1,4 +1,4 @@
-import { shallowEqual as _shallowEqual } from "./objects";
+import {shallowEqual as _shallowEqual} from "./objects";
 
 /**
  * @template T

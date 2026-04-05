@@ -1,4 +1,5 @@
-export const dynamicSVGSelector = "img[src^='/html_editor/shape/'], img[src^='/web_editor/shape/']";
+export const dynamicSVGSelector =
+    "img[src^='/html_editor/shape/'], img[src^='/web_editor/shape/']";
 
 export function applyFunDependOnSelectorAndExclude(fn, rootEl, selectorParams) {
     const editingEls = getEditingEls(rootEl, selectorParams);
@@ -8,9 +9,11 @@ export function applyFunDependOnSelectorAndExclude(fn, rootEl, selectorParams) {
     return Promise.all(editingEls.map((el) => fn(el)));
 }
 
-export function getEditingEls(rootEl, { selector, exclude, applyTo }) {
+export function getEditingEls(rootEl, {selector, exclude, applyTo}) {
     const closestSelector = rootEl.closest(selector);
-    let editingEls = closestSelector ? [closestSelector] : [...rootEl.querySelectorAll(selector)];
+    let editingEls = closestSelector
+        ? [closestSelector]
+        : [...rootEl.querySelectorAll(selector)];
     if (exclude) {
         editingEls = editingEls.filter((selectorEl) => !selectorEl.matches(exclude));
     }

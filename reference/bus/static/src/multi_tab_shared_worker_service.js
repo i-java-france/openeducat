@@ -1,6 +1,6 @@
-import { browser } from "@web/core/browser/browser";
-import { Deferred } from "@web/core/utils/concurrency";
-import { EventBus } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {Deferred} from "@web/core/utils/concurrency";
+import {EventBus} from "@odoo/owl";
 
 const STATE = Object.freeze({
     INIT: "INIT",
@@ -11,14 +11,14 @@ const STATE = Object.freeze({
 
 export const multiTabSharedWorkerService = {
     dependencies: ["worker_service"],
-    start(env, { worker_service: workerService }) {
+    start(env, {worker_service: workerService}) {
         const bus = new EventBus();
         let responseDeferred = null;
         let state = STATE.INIT;
         browser.addEventListener("pagehide", unregister);
 
         function messageHandler(messageEv) {
-            const { type, data } = messageEv.data;
+            const {type, data} = messageEv.data;
             if (!type?.startsWith("ELECTION:")) {
                 return;
             }

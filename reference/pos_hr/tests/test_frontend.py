@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.tests import tagged, new_test_user, users
+from odoo.tests import new_test_user, tagged, users
+
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
 

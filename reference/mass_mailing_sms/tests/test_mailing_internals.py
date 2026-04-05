@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from ast import literal_eval
 
-from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
 from odoo.tests.common import users
+
+from odoo.addons.mass_mailing_sms.tests.common import MassSMSCommon
 
 
 class TestMassMailValues(MassSMSCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMassMailValues, cls).setUpClass()
+        super().setUpClass()
 
         cls._create_mailing_list()
         cls.sms_template_partner = cls.env['sms.template'].create({

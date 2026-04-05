@@ -1,7 +1,7 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { setupSelfPosEnv, getFilledSelfOrder, addComboProduct } from "../utils";
-import { mockDate } from "@odoo/hoot-mock";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {addComboProduct, getFilledSelfOrder, setupSelfPosEnv} from "../utils";
+import {mockDate} from "@odoo/hoot-mock";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -14,12 +14,12 @@ test("currentOrder", async () => {
     expect(orders).toHaveLength(1);
     expect(order.id).toBe(orders[0].id);
 
-    // no Selected Order
+    // No Selected Order
     store.selectedOrderUuid = false;
     expect(store.currentOrder.id).toBe(orders[0].id);
     expect(store.selectedOrderUuid).toBe(orders[0].uuid);
 
-    // no Order
+    // No Order
     orders[0].delete();
     expect(models["pos.order"].length).toBe(0);
     expect(store.currentOrder.id).toBe(models["pos.order"].getAll()[0].id);
@@ -31,12 +31,16 @@ describe("initProducts", () => {
         const models = store.models;
         const tipProductTmpl = models["product.template"].get(1);
 
-        expect(store.config._pos_special_products_ids.includes(tipProductTmpl.id)).toBe(true);
+        expect(store.config._pos_special_products_ids.includes(tipProductTmpl.id)).toBe(
+            true
+        );
 
         models["product.template"].get(14).pos_categ_ids = [];
         store.initData();
         const UncategorisedProducts = store.productByCategIds["0"];
-        expect(UncategorisedProducts.find((p) => p.id === tipProductTmpl.id)).toBeEmpty();
+        expect(
+            UncategorisedProducts.find((p) => p.id === tipProductTmpl.id)
+        ).toBeEmpty();
 
         tipProductTmpl.pos_categ_ids = [1];
         store.initData();
@@ -58,7 +62,7 @@ describe("initProducts", () => {
         // When all products have categories - Uncategorised should be not there
         models["product.template"]
             .filter((p) => !p.pos_categ_ids.length)
-            .forEach((prd) => prd.update({ pos_categ_ids: [2] }));
+            .forEach((prd) => prd.update({pos_categ_ids: [2]}));
         store.initData();
         store.computeAvailableCategories();
         expect(store.availableCategories).toHaveLength(5);
@@ -84,15 +88,15 @@ test("showComboSelectionPage", async () => {
     const combo = models["product.combo"].get(2);
     product.combo_ids = [2];
 
-    const defaultReturnValue = { show: true, selectedCombos: [] };
+    const defaultReturnValue = {show: true, selectedCombos: []};
     expect(store.showComboSelectionPage(product)).toMatchObject(defaultReturnValue);
-    // only One choice
+    // Only One choice
     models["product.combo.item"].get(3).delete();
     const showCombo = store.showComboSelectionPage(product);
     expect(showCombo.show).toBe(false);
     expect(showCombo.selectedCombos).toHaveLength(1);
     expect(showCombo.selectedCombos[0].combo_item_id.id).toBe(4);
-    // qty_max is more than one
+    // Qty_max is more than one
     combo.qty_max = 3;
     expect(store.showComboSelectionPage(product)).toMatchObject(defaultReturnValue);
 });
@@ -107,7 +111,7 @@ test("createNewOrder", async () => {
     }
     models["pos.preset"].forEach((p) => p.id !== 1 && p.delete());
     {
-        // automatically select the preset if only one is available
+        // Automatically select the preset if only one is available
         expect(store.config.available_preset_ids).toHaveLength(1);
         const order = store.createNewOrder();
         expect(order.preset_id.id).toBe(1);
@@ -133,7 +137,7 @@ test("verifyCart", async () => {
         expect(store.currentOrder.lines).toHaveLength(2);
     }
     {
-        // with unavailable product
+        // With unavailable product
         models["product.product"].get(5).self_order_available = false;
         const result = store.verifyCart();
         expect(result).toBe(false);
@@ -176,12 +180,12 @@ describe("addToCart", () => {
         expect(store.currentOrder.lines).toHaveLength(1);
         expect(store.currentOrder.lines[0].qty).toBe(2);
 
-        // with same Product
+        // With same Product
         store.addToCart(product5, 7, "");
         expect(store.currentOrder.lines).toHaveLength(1);
         expect(store.currentOrder.lines[0].qty).toBe(9);
 
-        // with diffrent Product
+        // With diffrent Product
         store.addToCart(product6, 4, "");
         expect(store.currentOrder.lines).toHaveLength(2);
         expect(store.currentOrder.lines[1].qty).toBe(4);
@@ -257,7 +261,7 @@ test("sendDraftOrderToServer", async () => {
 
     expect(syncOrder.id).toBe(order.id);
     expect(store.currentOrder.id).toBe(syncOrder.id);
-    // no other order should be created
+    // No other order should be created
     expect(store.models["pos.order"].length).toBe(1);
 });
 
@@ -325,9 +329,9 @@ describe("cancelOrder", () => {
 
         line1.qty = 6; // 3 qty are sent
         store.cancelOrder();
-        // unsent line were deleted
+        // Unsent line were deleted
         expect(order.lines).toHaveLength(2);
-        expect(line1.qty).toBe(3); // qty reset to 3
+        expect(line1.qty).toBe(3); // Qty reset to 3
         expect(models["pos.order"].length).toBe(1);
         expect(models["pos.order.line"].length).toBe(2);
     });

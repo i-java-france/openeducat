@@ -9,14 +9,22 @@ import {
     mockWebSocket,
     registerDebugInfo,
 } from "@odoo/hoot";
-import { makeErrorFromResponse, rpc, RPCError } from "@web/core/network/rpc";
-import { RPCCache } from "@web/core/network/rpc_cache";
-import { ensureArray, isIterable } from "@web/core/utils/arrays";
-import { isObject } from "@web/core/utils/objects";
-import { hashCode } from "@web/core/utils/strings";
-import { serverState } from "../mock_server_state.hoot";
-import { fetchModelDefinitions, globalCachedFetch, registerModelToFetch } from "../module_set.hoot";
-import { DEFAULT_FIELD_PROPERTIES, getFieldDisplayName, S_SERVER_FIELD } from "./mock_fields";
+import {makeErrorFromResponse, rpc, RPCError} from "@web/core/network/rpc";
+import {RPCCache} from "@web/core/network/rpc_cache";
+import {ensureArray, isIterable} from "@web/core/utils/arrays";
+import {isObject} from "@web/core/utils/objects";
+import {hashCode} from "@web/core/utils/strings";
+import {serverState} from "../mock_server_state.hoot";
+import {
+    fetchModelDefinitions,
+    globalCachedFetch,
+    registerModelToFetch,
+} from "../module_set.hoot";
+import {
+    DEFAULT_FIELD_PROPERTIES,
+    getFieldDisplayName,
+    S_SERVER_FIELD,
+} from "./mock_fields";
 import {
     getRecordQualifier,
     makeKwArgs,
@@ -25,7 +33,7 @@ import {
     safeSplit,
 } from "./mock_server_utils";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @typedef {{
@@ -118,7 +126,7 @@ const { DateTime } = luxon;
  * @param {import("./mock_model").ModelRecord} user
  */
 function authenticateUser(user) {
-    const { env } = MockServer;
+    const {env} = MockServer;
     if (!user?.id) {
         throw new MockServerError("Unauthorized");
     }
@@ -181,7 +189,7 @@ function getAssignAction(options) {
 }
 
 function getCurrentMockServer() {
-    const { test } = getCurrent();
+    const {test} = getCurrent();
     if (!test || !test.run) {
         return null;
     }
@@ -194,8 +202,11 @@ function getCurrentMockServer() {
 /**
  * @param {RequestInit} init
  */
-function getJsonRpcParams({ headers, body }) {
-    if (headers.get("Content-Type") !== "application/json" || typeof body !== "string") {
+function getJsonRpcParams({headers, body}) {
+    if (
+        headers.get("Content-Type") !== "application/json" ||
+        typeof body !== "string"
+    ) {
         return null;
     }
     try {
@@ -225,7 +236,10 @@ function makeServerEnv(models) {
             }
             const model = Reflect.get(models, p);
             if (!model) {
-                throw modelNotFoundError(p, "could not get model from server environment");
+                throw modelNotFoundError(
+                    p,
+                    "could not get model from server environment"
+                );
             }
             return model;
         },
@@ -260,7 +274,7 @@ function modelNotFoundError(modelName, consequence) {
 function parseTranslations(translations) {
     return isIterable(translations)
         ? translations
-        : Object.entries(translations).map(([id, string]) => ({ id, string }));
+        : Object.entries(translations).map(([id, string]) => ({id, string}));
 }
 
 /**
@@ -295,7 +309,9 @@ class MockServerBaseEnvironment {
     cookie = new Map();
 
     get companies() {
-        return MockServer.env["res.company"].read(serverState.companies.map((c) => c.id));
+        return MockServer.env["res.company"].read(
+            serverState.companies.map((c) => c.id)
+        );
     }
 
     get company() {
@@ -437,7 +453,7 @@ export class MockServer {
      * @private
      */
     _modules = {
-        web: { messages: [] },
+        web: {messages: []},
     };
     /**
      * @private
@@ -486,7 +502,9 @@ export class MockServer {
             assign(
                 this,
                 "_modelSpecs",
-                [...params.models].map((ModelClass) => this._getModelDefinition(ModelClass))
+                [...params.models].map((ModelClass) =>
+                    this._getModelDefinition(ModelClass)
+                )
             );
             if (this._started) {
                 await this._loadModels();
@@ -494,7 +512,7 @@ export class MockServer {
         }
         if (params.modules) {
             for (const [module, values] in Object.entries(params.modules)) {
-                this._modules[module] ||= { messages: [] };
+                this._modules[module] ||= {messages: []};
                 assign(
                     this._modules[module],
                     "messages",
@@ -509,7 +527,11 @@ export class MockServer {
             assign(serverState, "timezone", params.timezone);
         }
         if (params.translations) {
-            assign(this._modules.web, "messages", parseTranslations(params.translations));
+            assign(
+                this._modules.web,
+                "messages",
+                parseTranslations(params.translations)
+            );
         }
         if (params.routes) {
             for (const args of params.routes) {
@@ -524,7 +546,9 @@ export class MockServer {
      * @param {string} [url]
      */
     getWebSockets(url) {
-        return url ? this._websockets.filter((ws) => ws.url.includes(url)) : this._websockets;
+        return url
+            ? this._websockets.filter((ws) => ws.url.includes(url))
+            : this._websockets;
     }
 
     async start() {
@@ -555,10 +579,13 @@ export class MockServer {
                 "/web/dataset/call_button/<path:path>",
             ],
             this.callKw,
-            { final: true }
+            {final: true}
         );
         this._onRoute(["/web/dataset/resequence"], this.resequence);
-        this._onRoute(["/web/image/<string:model>/<int:id>/<string:field>"], this.loadImage);
+        this._onRoute(
+            ["/web/image/<string:model>/<int:id>/<string:field>"],
+            this.loadImage
+        );
         this._onRoute(["/web/webclient/load_menus"], this.loadMenus);
         this._onRoute(["/web/webclient/translations"], this.loadTranslations);
 
@@ -577,7 +604,7 @@ export class MockServer {
      * @param {OrmParams} params
      */
     _callOrm(params) {
-        const { args, method, model: modelName, kwargs } = params;
+        const {args, method, model: modelName, kwargs} = params;
 
         // Try to find a model method
         if (modelName) {
@@ -632,7 +659,7 @@ export class MockServer {
      * @private
      * @param {OrmParams} params
      */
-    _findOrmListeners({ method, model }) {
+    _findOrmListeners({method, model}) {
         const callbacks = [this._callOrm];
         for (const [modelMatchers, methodMatchers, callback] of this._ormListeners) {
             if (match(model, modelMatchers) && match(method, methodMatchers)) {
@@ -670,7 +697,9 @@ export class MockServer {
      * @param {Partial<ActionDefinition>} rawAction
      */
     _getAction(rawAction) {
-        const mainIdentifier = ACTION_IDENTIFIERS.find((identifier) => rawAction[identifier]);
+        const mainIdentifier = ACTION_IDENTIFIERS.find(
+            (identifier) => rawAction[identifier]
+        );
         const id = rawAction[mainIdentifier];
         const action = {
             binding_type: "action",
@@ -738,7 +767,9 @@ export class MockServer {
                         embeddedAction.type === ACTION_TYPES.embedded &&
                         embeddedAction.parent_action_id === id
                     ) {
-                        action.embedded_action_ids.push(this._getAction(embeddedAction));
+                        action.embedded_action_ids.push(
+                            this._getAction(embeddedAction)
+                        );
                     }
                 }
                 break;
@@ -785,16 +816,22 @@ export class MockServer {
         const listeners = this._findRouteListeners(url);
         if (!listeners.length && !INTERNAL_URL_PROTOCOLS.includes(url.protocol)) {
             if (url.origin === mockLocation.origin) {
-                error = new MockServerError(`Unimplemented server route: ${url.pathname}`);
+                error = new MockServerError(
+                    `Unimplemented server route: ${url.pathname}`
+                );
             } else {
                 error = new MockServerError(
                     `Unimplemented server external URL: ${url.origin + url.pathname}`
                 );
             }
         } else {
-            for (const [callback, routeParams, { final, pure }] of listeners) {
+            for (const [callback, routeParams, {final, pure}] of listeners) {
                 try {
-                    const callbackResult = await callback.call(this, request, routeParams);
+                    const callbackResult = await callback.call(
+                        this,
+                        request,
+                        routeParams
+                    );
                     if (result instanceof Error) {
                         error = callbackResult;
                     } else {
@@ -822,7 +859,7 @@ export class MockServer {
         if (jsonRpcParams) {
             if (error) {
                 if (error instanceof RPCError) {
-                    jsonRpcParams.error = { ...error };
+                    jsonRpcParams.error = {...error};
                 } else {
                     jsonRpcParams.error = {
                         ...makeErrorFromResponse({
@@ -904,7 +941,9 @@ export class MockServer {
                     const inheritList = new Set(safeSplit(model._inherit));
                     for (const inherittedModelName of inherit) {
                         inheritList.add(inherittedModelName);
-                        serverModelInheritances.add([model._name, inherittedModelName].join(","));
+                        serverModelInheritances.add(
+                            [model._name, inherittedModelName].join(",")
+                        );
                     }
                     model._inherit = [...inheritList].join(",");
                 }
@@ -966,11 +1005,16 @@ export class MockServer {
                     for (const fieldName in parentModel._fields) {
                         model._fields[fieldName] ??= parentModel._fields[fieldName];
                     }
-                } else if (serverModelInheritances.has([model._name, modelName].join(","))) {
+                } else if (
+                    serverModelInheritances.has([model._name, modelName].join(","))
+                ) {
                     // Inheritance comes from the server, so we can safely remove it:
                     // it means that the inherited model has not been fetched in this
                     // context.
-                    model._inherit = model._inherit.replace(new RegExp(`${modelName},?`), "");
+                    model._inherit = model._inherit.replace(
+                        new RegExp(`${modelName},?`),
+                        ""
+                    );
                 } else {
                     throw modelNotFoundError(modelName, "could not inherit from model");
                 }
@@ -984,7 +1028,10 @@ export class MockServer {
                         delete model._fields[fieldName];
                         continue;
                     } else {
-                        throw modelNotFoundError(field.relation, "could not find model");
+                        throw modelNotFoundError(
+                            field.relation,
+                            "could not find model"
+                        );
                     }
                 }
 
@@ -1133,7 +1180,7 @@ export class MockServer {
                 .replaceAll(R_URL_SPECIAL_CHARACTERS, "\\$&")
                 // Replace parameters by regex notation and store their names
                 .replaceAll(R_ROUTE_PARAM, (...args) => {
-                    const { name, type } = args.pop();
+                    const {name, type} = args.pop();
                     return `(?<${name}>${ALLOWED_CHARS[type] || ALLOWED_CHARS.default}+)`;
                 })
                 // Replace glob wildcards by regex wildcard
@@ -1203,7 +1250,7 @@ export class MockServer {
             return nextCallback.call(this, callbackParams);
         };
 
-        const { params } = await request.json();
+        const {params} = await request.json();
         params.args ||= [];
         params.kwargs = makeKwArgs(params.kwargs || {});
         const callbackParams = {
@@ -1226,7 +1273,7 @@ export class MockServer {
      * @type {RouteCallback}
      */
     async loadAction(request) {
-        const { params } = await request.json();
+        const {params} = await request.json();
         return this._findAction(params.action_id);
     }
 
@@ -1234,21 +1281,24 @@ export class MockServer {
      * @type {RouteCallback}
      */
     async loadActionBreadcrumbs(request) {
-        const { params } = await request.json();
-        const { actions } = params;
-        return actions.map(({ action: actionId, model, resId }) => {
+        const {params} = await request.json();
+        const {actions} = params;
+        return actions.map(({action: actionId, model, resId}) => {
             /** @type {string} */
             let displayName;
             if (actionId) {
                 const action = this._findAction(actionId);
                 if (resId) {
-                    displayName = this.env[action.res_model].browse(resId)[0].display_name;
+                    displayName =
+                        this.env[action.res_model].browse(resId)[0].display_name;
                 } else {
                     displayName = action.name;
                 }
             } else if (model) {
                 if (!resId) {
-                    throw new MockServerError("Actions with a 'model' should also have a 'resId'");
+                    throw new MockServerError(
+                        "Actions with a 'model' should also have a 'resId'"
+                    );
                 }
                 displayName = this.env[model].browse(resId)[0].display_name;
             } else {
@@ -1256,7 +1306,7 @@ export class MockServer {
                     "Actions should have either an 'action' (ID or path) or a 'model'"
                 );
             }
-            return { display_name: displayName };
+            return {display_name: displayName};
         });
     }
 
@@ -1280,7 +1330,7 @@ export class MockServer {
     /**
      * @type {RouteCallback<"model" | "field" | "id">}
      */
-    async loadImage(request, { id, model, field }) {
+    async loadImage(request, {id, model, field}) {
         return `<fake url to record ${id} on ${model}.${field}>`;
     }
 
@@ -1293,12 +1343,12 @@ export class MockServer {
         /** @type {Record<MenuId, MenuDefinition>} */
         const menuDict = {};
         /** @type {MenuDefinition[]} */
-        const menuStack = [{ ...ROOT_MENU, children: this.menus }];
+        const menuStack = [{...ROOT_MENU, children: this.menus}];
         while (menuStack.length) {
             const menu = menuStack.shift();
             /** @type {Set<MenuId>} */
             const childIds = new Set();
-            menuDict[menu.id] = { ...menuDict[menu.id], ...menu };
+            menuDict[menu.id] = {...menuDict[menu.id], ...menu};
             for (const childMenuOrId of menuDict[menu.id].children) {
                 let childId = childMenuOrId;
                 if (isObject(childMenuOrId)) {
@@ -1317,7 +1367,9 @@ export class MockServer {
         }
         const missingMenuIds = [...allChildIds].filter((id) => !(id in menuDict));
         if (missingMenuIds.length) {
-            throw new MockServerError(`Missing menu ID(s): ${missingMenuIds.join(", ")}`);
+            throw new MockServerError(
+                `Missing menu ID(s): ${missingMenuIds.join(", ")}`
+            );
         }
         return menuDict;
     }
@@ -1327,7 +1379,7 @@ export class MockServer {
      */
     async loadTranslations(request) {
         const requestHash = new URL(request.url).searchParams.get("hash");
-        const langParameters = { ...this._lang_parameters };
+        const langParameters = {...this._lang_parameters};
         if (typeof langParameters.grouping !== "string") {
             langParameters.grouping = JSON.stringify(langParameters.grouping);
         }
@@ -1354,14 +1406,16 @@ export class MockServer {
      * @type {RouteCallback}
      */
     async resequence(request) {
-        const { params } = await request.json();
+        const {params} = await request.json();
         const offset = params.offset ? Number(params.offset) : 0;
         const field = params.field || "sequence";
         if (!(field in this.env[params.model]._fields)) {
             return false;
         }
         for (const index in params.ids) {
-            const record = this.env[params.model].find((r) => r.id === params.ids[index]);
+            const record = this.env[params.model].find(
+                (r) => r.id === params.ids[index]
+            );
             record[field] = Number(index) + offset;
         }
         return true;
@@ -1375,13 +1429,13 @@ export class MockServer {
  * @param {string} password
  */
 export function authenticate(login, password) {
-    const { env } = MockServer;
+    const {env} = MockServer;
     const [user] = env["res.users"]._filter(
         [
             ["login", "=", login],
             ["password", "=", password],
         ],
-        { active_test: false }
+        {active_test: false}
     );
     authenticateUser(user);
     env.cookie.set("authenticated_user_sid", env.cookie.get("sid"));
@@ -1392,7 +1446,7 @@ export function authenticate(login, password) {
  * @param {DefineOptions<"add">} [options]
  */
 export function defineActions(actions, options) {
-    before(() => _defineParams({ actions }, { mode: "add", ...options }));
+    before(() => _defineParams({actions}, {mode: "add", ...options}));
 }
 
 /**
@@ -1400,7 +1454,7 @@ export function defineActions(actions, options) {
  * @param {DefineOptions<"add">} [options]
  */
 export function defineMenus(menus, options) {
-    before(() => _defineParams({ menus }, { mode: "add", ...options }));
+    before(() => _defineParams({menus}, {mode: "add", ...options}));
 }
 
 /**
@@ -1421,7 +1475,7 @@ export function defineModels(ModelClasses, options) {
             registerModelToFetch(ModelClass.getModelName());
         }
     }
-    before(() => _defineParams({ models }, { mode: "add", ...options }));
+    before(() => _defineParams({models}, {mode: "add", ...options}));
 }
 
 /**
@@ -1436,7 +1490,7 @@ export function defineParams(params, options) {
  * Logs out the current user (if any)
  */
 export function logout() {
-    const { env } = MockServer;
+    const {env} = MockServer;
     if (env.cookie.get("authenticated_user_sid") === env.cookie.get("sid")) {
         env.cookie.delete("authenticated_user_sid");
     }
@@ -1482,7 +1536,7 @@ export async function makeMockServer() {
  * @type {MockServer["_onRpc"]}
  */
 export function onRpc(...args) {
-    before(() => _defineParams({ routes: [args] }, { mode: "add" }));
+    before(() => _defineParams({routes: [args]}, {mode: "add"}));
 }
 
 /**
@@ -1514,9 +1568,9 @@ export function stepAllNetworkCalls() {
  * @param {() => any} fn
  */
 export async function withUser(userId, fn) {
-    const { env } = MockServer;
+    const {env} = MockServer;
     const currentUser = env.user;
-    const [targetUser] = env["res.users"].browse(userId, { active_test: false });
+    const [targetUser] = env["res.users"].browse(userId, {active_test: false});
     authenticateUser(targetUser);
     let result;
     try {

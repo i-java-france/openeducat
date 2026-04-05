@@ -1,6 +1,6 @@
-import { useSpreadsheetNotificationStore } from "@spreadsheet/hooks";
-import { Spreadsheet, Model } from "@odoo/o-spreadsheet";
-import { Component } from "@odoo/owl";
+import {useSpreadsheetNotificationStore} from "@spreadsheet/hooks";
+import {Spreadsheet, Model} from "@odoo/o-spreadsheet";
+import {Component} from "@odoo/owl";
 
 /**
  * Component wrapping the <Spreadsheet> component from o-spreadsheet
@@ -9,7 +9,7 @@ import { Component } from "@odoo/owl";
  */
 export class SpreadsheetComponent extends Component {
     static template = "spreadsheet.SpreadsheetComponent";
-    static components = { Spreadsheet };
+    static components = {Spreadsheet};
     static props = {
         model: Model,
     };

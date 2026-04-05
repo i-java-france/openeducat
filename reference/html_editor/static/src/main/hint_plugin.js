@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { isEditorTab, isEmptyBlock, isProtected } from "@html_editor/utils/dom_info";
-import { removeClass } from "@html_editor/utils/dom";
-import { descendants, selectElements } from "@html_editor/utils/dom_traversal";
-import { closestBlock } from "../utils/blocks";
+import {Plugin} from "@html_editor/plugin";
+import {isEditorTab, isEmptyBlock, isProtected} from "@html_editor/utils/dom_info";
+import {removeClass} from "@html_editor/utils/dom";
+import {descendants, selectElements} from "@html_editor/utils/dom_traversal";
+import {closestBlock} from "../utils/blocks";
 
 /**
  * @typedef {import("@html_editor/editor").EditorContext} EditorContext
@@ -31,11 +31,14 @@ export class HintPlugin extends Plugin {
             this.updateHints();
         },
         normalize_handlers: this.normalize.bind(this),
-        clean_for_save_handlers: ({ root }) => this.clearHints(root),
+        clean_for_save_handlers: ({root}) => this.clearHints(root),
         content_updated_handlers: this.updateHints.bind(this),
 
         hint_targets_providers: (selectionData, editable) => {
-            if (!selectionData.currentSelectionIsInEditable || !selectionData.documentSelection) {
+            if (
+                !selectionData.currentSelectionIsInEditable ||
+                !selectionData.documentSelection
+            ) {
                 return [];
             }
             const blockEl = closestBlock(selectionData.documentSelection.anchorNode);
@@ -74,7 +77,9 @@ export class HintPlugin extends Plugin {
             const hints = this.getResource("hints");
             for (const provideTargets of this.getResource("hint_targets_providers")) {
                 for (const target of provideTargets(selectionData, this.editable)) {
-                    const nodeHint = hints.find((h) => target.matches(h.selector))?.text;
+                    const nodeHint = hints.find((h) =>
+                        target.matches(h.selector)
+                    )?.text;
                     if (
                         target &&
                         nodeHint &&
@@ -98,7 +103,9 @@ export class HintPlugin extends Plugin {
     removeHint(el) {
         el.removeAttribute("o-we-hint-text");
         removeClass(el, "o-we-hint");
-        this.getResource("system_style_properties").forEach((n) => el.style.removeProperty(n));
+        this.getResource("system_style_properties").forEach((n) =>
+            el.style.removeProperty(n)
+        );
     }
 
     clearHints(root = this.editable) {

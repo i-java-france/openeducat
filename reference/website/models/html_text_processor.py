@@ -284,7 +284,7 @@ class WebsiteHTMLTextProcessor(models.AbstractModel):
                 for el in wrapping_html
                 for tag, attrs in [(el["tag"], " ".join([f'{k}="{v}"' for k, v in el["attr"].items()]))]
             ]
-            opening_tags, closing_tags = zip(*tags)
+            opening_tags, closing_tags = zip(*tags, strict=False)
             wrapping_pattern = f'{"".join(opening_tags)}$0{"".join(closing_tags[::-1])}'
 
             # Update context with wrapping tags

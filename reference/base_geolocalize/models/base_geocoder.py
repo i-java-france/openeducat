@@ -1,10 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 
-from odoo import api, fields, models, modules, tools, _
+from odoo import _, api, fields, models, modules, tools
 from odoo.exceptions import UserError
 from odoo.http import request
-
 
 _logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-import { uuidv4 } from "@point_of_sale/utils";
+import {uuidv4} from "@point_of_sale/utils";
 import {
     getService,
     makeMockEnv,
@@ -7,30 +7,32 @@ import {
     MockServer,
     mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { session } from "@web/session";
-import { registry } from "@web/core/registry";
-import { selfOrderIndex } from "@pos_self_order/app/self_order_index";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { unpatchSelf } from "@pos_self_order/app/services/data_service";
+import {session} from "@web/session";
+import {registry} from "@web/core/registry";
+import {selfOrderIndex} from "@pos_self_order/app/self_order_index";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {unpatchSelf} from "@pos_self_order/app/services/data_service";
 
 export function initMockRpc() {
     onRpc("/pos-self/relations/1", () =>
-        MockServer.env["pos.session"].load_data_params({ self_ordering: true })
+        MockServer.env["pos.session"].load_data_params({self_ordering: true})
     );
     onRpc("/pos-self/data/1", () =>
-        MockServer.env["pos.session"].load_data({ self_ordering: true })
+        MockServer.env["pos.session"].load_data({self_ordering: true})
     );
 
     const mockProcssOrder = async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         const response = MockServer.env["pos.order"].sync_from_ui([params.order]);
         const models = MockServer.env["pos.session"]._load_self_data_models();
-        return Object.fromEntries(Object.entries(response).filter(([key]) => models.includes(key)));
+        return Object.fromEntries(
+            Object.entries(response).filter(([key]) => models.includes(key))
+        );
     };
 
     onRpc("/pos-self-order/process-order/kiosk", mockProcssOrder);
     onRpc("/pos-self-order/process-order/mobile", mockProcssOrder);
-    onRpc("/pos-self-order/get-slots/", () => ({ usage_utc: {} }));
+    onRpc("/pos-self-order/get-slots/", () => ({usage_utc: {}}));
     onRpc("/pos-self-order/remove-order", () => ({}));
 }
 
@@ -60,7 +62,9 @@ export const setupSelfPosEnv = async (
     // Both `pos` and `self_order` rely on `pos_data`, but some models required by `self_order` (e.g., `res.users`)
     // are missing when `pos` is loaded. Hence, these services are excluded.
     const serviceNames = ["contextual_utils_service", "debug", "report", "pos"];
-    serviceNames.forEach((serviceName) => registry.category("services").remove(serviceName));
+    serviceNames.forEach((serviceName) =>
+        registry.category("services").remove(serviceName)
+    );
 
     initMockRpc();
     await makeMockEnv();

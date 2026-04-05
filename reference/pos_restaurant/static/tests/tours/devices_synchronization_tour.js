@@ -8,10 +8,10 @@ import * as DeviceSynchronization from "@pos_restaurant/../tests/tours/utils/dev
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
+const Chrome = {...ChromePos, ...ChromeRestaurant};
 
 registry.category("web_tour.tours").add("test_devices_synchronization", {
     steps: () =>

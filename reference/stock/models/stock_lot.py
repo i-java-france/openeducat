@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import operator as py_operator
-from collections.abc import Iterable
-from re import findall as regex_findall, split as regex_split
 from collections import defaultdict
+from collections.abc import Iterable
+from re import findall as regex_findall
+from re import split as regex_split
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -203,7 +204,7 @@ class StockLot(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for lot, vals in zip(self, vals_list):
+            for lot, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("(copy of) %s", lot.name)
         return vals_list
 

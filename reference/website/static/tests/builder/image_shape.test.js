@@ -1,14 +1,14 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryFirst, setInputRange } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
-import { Plugin } from "@html_editor/plugin";
-import { addPlugin, defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { testImg } from "./image_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryFirst, setInputRange} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
+import {Plugin} from "@html_editor/plugin";
+import {addPlugin, defineWebsiteModels, setupWebsiteBuilder} from "./website_helpers";
+import {testImg} from "./image_test_helpers";
 
 defineWebsiteModels();
 
 test("Should set a shape on an image", async () => {
-    const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -19,13 +19,19 @@ test("Should set a shape on an image", async () => {
 
     await contains("[data-label='Shape'] .dropdown").click();
     await contains("[data-action-value='html_builder/geometric/geo_shuriken']").click();
-    // ensure the shape action has been applied
+    // Ensure the shape action has been applied
     await editor.shared.operation.next(() => {});
 
     const img = queryFirst(":iframe .test-options-target img");
-    expect(":iframe .test-options-target img").toHaveAttribute("data-attachment-id", "1");
+    expect(":iframe .test-options-target img").toHaveAttribute(
+        "data-attachment-id",
+        "1"
+    );
     expect(":iframe .test-options-target img").toHaveAttribute("data-original-id", "1");
-    expect(":iframe .test-options-target img").toHaveAttribute("data-mimetype", "image/svg+xml");
+    expect(":iframe .test-options-target img").toHaveAttribute(
+        "data-mimetype",
+        "image/svg+xml"
+    );
     expect(img.src.startsWith("data:image/svg+xml;base64,")).toBe(true);
     expect(":iframe .test-options-target img").toHaveAttribute(
         "data-original-src",
@@ -43,7 +49,10 @@ test("Should set a shape on an image", async () => {
         "data-file-name",
         "s_text_image.svg"
     );
-    expect(":iframe .test-options-target img").toHaveAttribute("data-shape-colors", ";;;;");
+    expect(":iframe .test-options-target img").toHaveAttribute(
+        "data-shape-colors",
+        ";;;;"
+    );
 });
 
 test("Should set a shape on a GIF", async () => {
@@ -54,7 +63,7 @@ test("Should set a shape on a GIF", async () => {
     >`;
 
     // Set up the website builder with the test GIF.
-    const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testGif}
         </div>
@@ -79,7 +88,10 @@ test("Should set a shape on a GIF", async () => {
     expect(gif.src.startsWith("data:image/svg+xml;base64,")).toBe(true);
 
     // 2. The new MIME type for the element is 'image/svg+xml'.
-    expect(":iframe .test-options-target img").toHaveAttribute("data-mimetype", "image/svg+xml");
+    expect(":iframe .test-options-target img").toHaveAttribute(
+        "data-mimetype",
+        "image/svg+xml"
+    );
 
     // 3. The system correctly remembers the original source was a GIF.
     expect(":iframe .test-options-target img").toHaveAttribute(
@@ -101,7 +113,7 @@ test("Should set a shape on a GIF", async () => {
 });
 
 test("Should change the shape color of an image", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(
         `<div class="test-options-target">
             ${testImg}
         </div>`,
@@ -159,7 +171,7 @@ test("Should change the shape color of an image", async () => {
     );
 });
 test("Should change the shape color of an image with a class color", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(
         `<div class="test-options-target">
             ${testImg}
         </div>`,
@@ -217,7 +229,7 @@ test("Should change the shape color of an image with a class color", async () =>
     );
 });
 test("Should not show transform action on shape that cannot bet transformed", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -233,7 +245,7 @@ test("Should not show transform action on shape that cannot bet transformed", as
 });
 describe("flip shape axis", () => {
     test("Should flip the shape X axis", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -243,7 +255,9 @@ describe("flip shape axis", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -252,13 +266,16 @@ describe("flip shape axis", () => {
         );
 
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-h)`).click();
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-flip", "x");
+        expect(`:iframe .test-options-target img`).toHaveAttribute(
+            "data-shape-flip",
+            "x"
+        );
     });
     test("Should unflip the shape X axis", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -268,7 +285,9 @@ describe("flip shape axis", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -278,13 +297,15 @@ describe("flip shape axis", () => {
 
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-h)`).click();
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-h)`).click();
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).not.toHaveAttribute("data-shape-flip");
+        expect(`:iframe .test-options-target img`).not.toHaveAttribute(
+            "data-shape-flip"
+        );
     });
     test("Should flip the shape Y axis", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -294,7 +315,9 @@ describe("flip shape axis", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -303,13 +326,16 @@ describe("flip shape axis", () => {
         );
 
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-v)`).click();
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-flip", "y");
+        expect(`:iframe .test-options-target img`).toHaveAttribute(
+            "data-shape-flip",
+            "y"
+        );
     });
     test("Should flip the shape XY axis", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -319,7 +345,9 @@ describe("flip shape axis", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -329,15 +357,18 @@ describe("flip shape axis", () => {
 
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-h)`).click();
         await contains(`[data-action-id="flipImageShape"]:has(.oi-arrows-v)`).click();
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-flip", "xy");
+        expect(`:iframe .test-options-target img`).toHaveAttribute(
+            "data-shape-flip",
+            "xy"
+        );
     });
 });
 describe("rotate shape", () => {
     test("Should rotate the shape to the left", async () => {
-        const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -346,8 +377,10 @@ describe("rotate shape", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
-        // ensure the shape action has been applied
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
+        // Ensure the shape action has been applied
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -355,13 +388,18 @@ describe("rotate shape", () => {
             "html_builder/geometric/geo_tetris"
         );
 
-        await contains(`[data-action-id="rotateImageShape"]:has(.fa-rotate-left)`).click();
-        // ensure the shape action has been applied
+        await contains(
+            `[data-action-id="rotateImageShape"]:has(.fa-rotate-left)`
+        ).click();
+        // Ensure the shape action has been applied
         await waitSidebarUpdated();
-        expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-rotate", "270");
+        expect(`:iframe .test-options-target img`).toHaveAttribute(
+            "data-shape-rotate",
+            "270"
+        );
     });
     test("Should remove rotate data when there is no rotation", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -371,7 +409,9 @@ describe("rotate shape", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -379,15 +419,21 @@ describe("rotate shape", () => {
             "html_builder/geometric/geo_tetris"
         );
 
-        await contains(`[data-action-id="rotateImageShape"]:has(.fa-rotate-left)`).click();
-        await contains(`[data-action-id="rotateImageShape"]:has(.fa-rotate-right)`).click();
-        // ensure the shape action has been applied
+        await contains(
+            `[data-action-id="rotateImageShape"]:has(.fa-rotate-left)`
+        ).click();
+        await contains(
+            `[data-action-id="rotateImageShape"]:has(.fa-rotate-right)`
+        ).click();
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).not.toHaveAttribute("data-shape-rotate");
+        expect(`:iframe .test-options-target img`).not.toHaveAttribute(
+            "data-shape-rotate"
+        );
     });
     test("Should rotate the shape to the right", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -397,8 +443,10 @@ describe("rotate shape", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
-        // ensure the shape action has been applied
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_tetris']"
+        ).click();
+        // Ensure the shape action has been applied
         await waitSidebarUpdated();
 
         expect(`:iframe .test-options-target img`).toHaveAttribute(
@@ -406,15 +454,20 @@ describe("rotate shape", () => {
             "html_builder/geometric/geo_tetris"
         );
 
-        await contains(`[data-action-id="rotateImageShape"]:has(.fa-rotate-right)`).click();
-        // ensure the shape action has been applied
+        await contains(
+            `[data-action-id="rotateImageShape"]:has(.fa-rotate-right)`
+        ).click();
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
-        expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-rotate", "90");
+        expect(`:iframe .test-options-target img`).toHaveAttribute(
+            "data-shape-rotate",
+            "90"
+        );
     });
 });
 test("Should not show animate speed if the shape is not animated", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -428,7 +481,7 @@ test("Should not show animate speed if the shape is not animated", async () => {
     expect(`[data-action-id="setImageShapeSpeed"]`).not.toHaveCount();
 });
 test("Should change the speed of an animated shape", async () => {
-    const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -439,21 +492,24 @@ test("Should change the speed of an animated shape", async () => {
 
     await contains("[data-label='Shape'] .dropdown").click();
     await contains("[data-action-value='html_builder/pattern/pattern_wave_4']").click();
-    // ensure the shape action has been applied
+    // Ensure the shape action has been applied
     await waitSidebarUpdated();
 
     const originalSrc = queryFirst(":iframe .test-options-target img").src;
 
     await setInputRange(`[data-action-id="setImageShapeSpeed"] input`, 2);
-    // ensure the shape action has been applied
+    // Ensure the shape action has been applied
     await editor.shared.operation.next(() => {});
 
-    expect(`:iframe .test-options-target img`).toHaveAttribute("data-shape-animation-speed", "2");
+    expect(`:iframe .test-options-target img`).toHaveAttribute(
+        "data-shape-animation-speed",
+        "2"
+    );
     expect(`:iframe .test-options-target img`).not.toHaveAttribute("src", originalSrc);
 });
 describe("toggle ratio", () => {
     test("Should not be able to toggle the ratio of a pattern_wave_4", async () => {
-        const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -462,13 +518,15 @@ describe("toggle ratio", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/pattern/pattern_wave_4']").click();
+        await contains(
+            "[data-action-value='html_builder/pattern/pattern_wave_4']"
+        ).click();
         await waitSidebarUpdated();
 
         expect(`[data-action-id="toggleImageShapeRatio"]`).not.toHaveCount();
     });
     test("A shape with togglable ratio should be added cropped and crop when clicked", async () => {
-        const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -477,19 +535,24 @@ describe("toggle ratio", () => {
         await waitSidebarUpdated();
 
         await contains("[data-label='Shape'] .dropdown").click();
-        await contains("[data-action-value='html_builder/geometric/geo_shuriken']").click();
-        // ensure the shape action has been applied
+        await contains(
+            "[data-action-value='html_builder/geometric/geo_shuriken']"
+        ).click();
+        // Ensure the shape action has been applied
         await waitSidebarUpdated();
         const croppedSrc = queryFirst(":iframe .test-options-target img").src;
 
         await contains(`[data-action-id="toggleImageShapeRatio"] input`).click();
         await waitSidebarUpdated();
-        expect(`:iframe .test-options-target img`).not.toHaveAttribute("src", croppedSrc);
+        expect(`:iframe .test-options-target img`).not.toHaveAttribute(
+            "src",
+            croppedSrc
+        );
     });
 });
 
 test("Should reset crop when removing shape with ratio", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -509,7 +572,7 @@ test("Should reset crop when removing shape with ratio", async () => {
 });
 
 test("Should have the correct active shape in the image shape selector", async () => {
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -521,11 +584,13 @@ test("Should have the correct active shape in the image shape selector", async (
     await contains("[data-action-value='html_builder/geometric/geo_tetris']").click();
     await waitSidebarUpdated();
     await contains("[data-label='Shape'] .dropdown").click();
-    expect("[data-action-value='html_builder/geometric/geo_tetris']").toHaveClass("active");
+    expect("[data-action-value='html_builder/geometric/geo_tetris']").toHaveClass(
+        "active"
+    );
 });
 
 test("Should keep colors when changing speed and vice versa", async () => {
-    const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(
+    const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(
         `<div class="test-options-target">
             ${testImg}
         </div>`,
@@ -545,10 +610,14 @@ test("Should keep colors when changing speed and vice versa", async () => {
 
     const imgSelector = ":iframe .test-options-target img";
     const initialColors = [
-        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(1)`).style.backgroundColor,
-        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(2)`).style.backgroundColor,
-        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(3)`).style.backgroundColor,
-        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(4)`).style.backgroundColor,
+        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(1)`).style
+            .backgroundColor,
+        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(2)`).style
+            .backgroundColor,
+        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(3)`).style
+            .backgroundColor,
+        queryFirst(`[data-label="Colors"] .o_we_color_preview:nth-child(4)`).style
+            .backgroundColor,
     ];
 
     // Change speed
@@ -643,7 +712,7 @@ test("Be able to add and remove shape from custom groups", async () => {
     }
     addPlugin(CustomImageShapeGroupsPlugin);
 
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>

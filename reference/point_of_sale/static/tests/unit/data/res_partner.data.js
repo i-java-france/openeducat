@@ -1,4 +1,4 @@
-import { ResPartner as MailResPartner } from "@mail/../tests/mock_server/mock_models/res_partner";
+import {ResPartner as MailResPartner} from "@mail/../tests/mock_server/mock_models/res_partner";
 
 export class ResPartner extends MailResPartner {
     _name = "res.partner";

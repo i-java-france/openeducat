@@ -1,16 +1,17 @@
-import logging
 import datetime
+import logging
 import re
 
 import stdnum
 from stdnum import luhn
 from stdnum.eu.vat import check_vies
-from stdnum.exceptions import InvalidComponent, InvalidChecksum, InvalidFormat
+from stdnum.exceptions import InvalidChecksum, InvalidComponent, InvalidFormat
 from stdnum.util import clean
 
-from odoo import api, models, fields
-from odoo.tools import _, LazyTranslate
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import LazyTranslate, _
+
 from odoo.addons.base.models.res_partner import EU_EXTRA_VAT_CODES
 
 _lt = LazyTranslate(__name__)
@@ -550,7 +551,7 @@ class ResPartner(models.Model):
         def calc_check_digit(number):
             """Calculate the check digit."""
             weights = (4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-            total = sum(int(n) * w for w, n in zip(weights, number))
+            total = sum(int(n) * w for w, n in zip(weights, number, strict=False))
             return str(-total % 11)
 
         vat = compact(vat)
@@ -764,7 +765,7 @@ class ResPartner(models.Model):
         # For the next steps, we will need to sum the results.
         # For a two-digit product like 20, you would add its digits (2 + 0) to the total sum, so we convert the sums here
         # to strings in order to make it easier later on.
-        products = [str(a * int(b)) for a, b in zip(logic_multiplier, vat)]
+        products = [str(a * int(b)) for a, b in zip(logic_multiplier, vat, strict=False)]
         if vat[6] != '7':
             # If the 7th number is not 7, we simply sum everything and check that the result is divisible by 5.
             checksum = sum(int(d) for d in ''.join(products))

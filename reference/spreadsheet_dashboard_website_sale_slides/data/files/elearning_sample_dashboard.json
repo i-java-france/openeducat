@@ -7,21 +7,21 @@
       "colNumber": 11,
       "rowNumber": 42,
       "rows": {
-        "6": { "size": 40 },
-        "22": { "size": 40 }
+        "6": {"size": 40},
+        "22": {"size": 40}
       },
       "cols": {
-        "0": { "size": 100 },
-        "1": { "size": 100 },
-        "2": { "size": 100 },
-        "3": { "size": 100 },
-        "4": { "size": 75 },
-        "5": { "size": 50 },
-        "6": { "size": 100 },
-        "7": { "size": 100 },
-        "8": { "size": 100 },
-        "9": { "size": 100 },
-        "10": { "size": 75 }
+        "0": {"size": 100},
+        "1": {"size": 100},
+        "2": {"size": 100},
+        "3": {"size": 100},
+        "4": {"size": 75},
+        "5": {"size": 50},
+        "6": {"size": 100},
+        "7": {"size": 100},
+        "8": {"size": 100},
+        "9": {"size": 100},
+        "10": {"size": 75}
       },
       "merges": [],
       "cells": {
@@ -29,7 +29,7 @@
         "A23": "[Attendees by Course](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"channel_id\"],\"graph_measure\":\"__count\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"channel_id\"]},\"modelName\":\"slide.channel.partner\",\"views\":[[false,\"list\"],[false,\"form\"],[false,\"kanban\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Attendees by Course\"})",
         "G23": "[Views by Course](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"is_category\",\"=\",false]],\"context\":{\"group_by\":[\"channel_id\",\"slide_category\"],\"graph_measure\":\"total_views\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"channel_id\",\"slide_category\"]},\"modelName\":\"slide.slide\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Views by Course\"})"
       },
-      "styles": { "A7": 1, "A23": 1, "G23": 1 },
+      "styles": {"A7": 1, "A23": 1, "G23": 1},
       "formats": {},
       "borders": {
         "A23:E23": 1,
@@ -51,13 +51,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Courses", "bold": true, "color": "#434343" },
+            "title": {"text": "Courses", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!D2",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 12 },
+          "offset": {"x": 0, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -70,13 +70,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Content", "bold": true, "color": "#434343" },
+            "title": {"text": "Content", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!D3",
             "humanize": false
           },
-          "offset": { "x": 202, "y": 12 },
+          "offset": {"x": 202, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -89,15 +89,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Attendees", "bold": true, "color": "#434343" },
+            "title": {"text": "Attendees", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "baseline": "Data!E4",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D4",
             "humanize": false
           },
-          "offset": { "x": 606, "y": 12 },
+          "offset": {"x": 606, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -110,15 +110,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "baseline": "Data!E6",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D6",
             "humanize": false
           },
-          "offset": { "x": 808, "y": 12 },
+          "offset": {"x": 808, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -131,13 +131,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Rating", "bold": true, "color": "#434343" },
+            "title": {"text": "Rating", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!D5",
             "humanize": false
           },
-          "offset": { "x": 404, "y": 12 },
+          "offset": {"x": 404, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -149,9 +149,7 @@
           "data": {
             "type": "line",
             "dataSetsHaveTitle": false,
-            "dataSets": [
-              { "dataRange": "Data!C9:C16", "yAxisId": "y" }
-            ],
+            "dataSets": [{"dataRange": "Data!C9:C16", "yAxisId": "y"}],
             "legendPosition": "none",
             "labelRange": "Data!A9:A16",
             "title": {},
@@ -161,7 +159,7 @@
             "cumulative": true,
             "fillArea": true
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -173,16 +171,14 @@
           "data": {
             "type": "bar",
             "dataSetsHaveTitle": false,
-            "dataSets": [
-              { "dataRange": "Data!B20:B24", "yAxisId": "y" }
-            ],
+            "dataSets": [{"dataRange": "Data!B20:B24", "yAxisId": "y"}],
             "legendPosition": "none",
             "labelRange": "Data!A20:A24",
             "title": {},
             "stacked": false,
             "aggregated": false
           },
-          "offset": { "x": 0, "y": 563 },
+          "offset": {"x": 0, "y": 563},
           "col": 0,
           "row": 0
         },
@@ -195,11 +191,11 @@
             "type": "bar",
             "dataSetsHaveTitle": true,
             "dataSets": [
-              { "dataRange": "Data!B27:B32", "yAxisId": "y" },
-              { "dataRange": "Data!C27:C32" },
-              { "dataRange": "Data!D27:D32" },
-              { "dataRange": "Data!E27:E32" },
-              { "dataRange": "Data!F27:F32" }
+              {"dataRange": "Data!B27:B32", "yAxisId": "y"},
+              {"dataRange": "Data!C27:C32"},
+              {"dataRange": "Data!D27:D32"},
+              {"dataRange": "Data!E27:E32"},
+              {"dataRange": "Data!F27:F32"}
             ],
             "legendPosition": "top",
             "labelRange": "Data!A27:A32",
@@ -208,7 +204,7 @@
             "aggregated": false,
             "horizontal": false
           },
-          "offset": { "x": 525, "y": 563 },
+          "offset": {"x": 525, "y": 563},
           "col": 0,
           "row": 0
         }
@@ -328,8 +324,8 @@
         "F31": "117",
         "F32": "51"
       },
-      "styles": { "B1:E1": 2, "D2:D4": 3, "E4": 3, "D6:E6": 3, "D5": 4 },
-      "formats": { "A9:A16": 1, "B2:B4": 2, "C4": 2, "B5": 3, "C9:C16": 4, "B6:E6": 4 },
+      "styles": {"B1:E1": 2, "D2:D4": 3, "E4": 3, "D6:E6": 3, "D5": 4},
+      "formats": {"A9:A16": 1, "B2:B4": 2, "C4": 2, "B5": 3, "C9:C16": 4, "B6:E6": 4},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -345,18 +341,18 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
-    "2": { "bold": true },
-    "3": { "fillColor": "#f2f2f2" },
-    "4": { "fillColor": "#f2f2f2", "align": "right" }
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
+    "2": {"bold": true},
+    "3": {"fillColor": "#f2f2f2"},
+    "4": {"fillColor": "#f2f2f2", "align": "right"}
   },
-  "formats": { "1": "mmmm yyyy", "2": "0", "3": "#,##0", "4": "[$$]#,##0" },
+  "formats": {"1": "mmmm yyyy", "2": "0", "3": "#,##0", "4": "[$$]#,##0"},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     }
   },
   "revisionId": "START_REVISION",

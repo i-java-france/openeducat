@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 const ARIA_LABELS = {
     ".o_editor_banner.alert-danger": _t("Banner Danger"),
@@ -37,7 +37,9 @@ export function migrate(container) {
                 icon.dataset.oeAriaLabel = ariaLabel;
             }
         }
-        const bannerContent = bannerContainer.querySelector(".o_editor_banner_icon ~ div");
+        const bannerContent = bannerContainer.querySelector(
+            ".o_editor_banner_icon ~ div"
+        );
         if (bannerContent) {
             bannerContent.classList.remove("o_editable");
             bannerContent.classList.add("o_editor_banner_content");

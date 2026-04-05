@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
 import re
 from collections import defaultdict
+
 from markupsafe import Markup
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import is_html_empty, remove_accents
 
@@ -307,7 +307,7 @@ class MailAlias(models.Model):
 
         # reorder per alias domain, keep only not void alias names (void domain also checks uniqueness)
         domain_to_names = defaultdict(list)
-        for alias_name, alias_domain in zip(alias_names, alias_domains):
+        for alias_name, alias_domain in zip(alias_names, alias_domains, strict=False):
             if alias_name and alias_name in domain_to_names[alias_domain]:
                 raise UserError(
                     _('Email aliases %(alias_name)s cannot be used on several records at the same time. Please update records one by one.',

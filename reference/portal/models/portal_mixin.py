@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import uuid
 from ast import literal_eval
+
 from werkzeug.urls import url_encode
-from odoo import api, exceptions, fields, models, _
+
+from odoo import api, exceptions, fields, models
 
 
 class PortalMixin(models.AbstractModel):
@@ -76,7 +77,7 @@ class PortalMixin(models.AbstractModel):
             try:
                 record.check_access('read')
             except exceptions.AccessError:
-                return super(PortalMixin, self)._get_access_action(
+                return super()._get_access_action(
                     access_uid=access_uid, force_website=force_website
                 )
             user = self.env['res.users'].sudo().browse(access_uid)
@@ -101,7 +102,7 @@ class PortalMixin(models.AbstractModel):
                     'target': 'self',
                     'res_id': record.id,
                 }
-        return super(PortalMixin, self)._get_access_action(
+        return super()._get_access_action(
             access_uid=access_uid, force_website=force_website
         )
 

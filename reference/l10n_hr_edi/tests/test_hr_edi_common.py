@@ -1,4 +1,5 @@
 from odoo import Command
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

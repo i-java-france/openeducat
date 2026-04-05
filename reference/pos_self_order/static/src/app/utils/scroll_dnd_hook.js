@@ -1,5 +1,5 @@
-import { onMounted, onWillUnmount } from "@odoo/owl";
-import { hasTouch } from "@web/core/browser/feature_detection";
+import {onMounted, onWillUnmount} from "@odoo/owl";
+import {hasTouch} from "@web/core/browser/feature_detection";
 
 export function useDraggableScroll(scrollContainerRef, options = {}) {
     if (hasTouch() || !scrollContainerRef) {

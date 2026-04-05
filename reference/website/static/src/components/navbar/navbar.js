@@ -1,12 +1,12 @@
-import { NavBar } from "@web/webclient/navbar/navbar";
-import { useService, useBus } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
-import { UserMenu } from "@web/webclient/user_menu/user_menu";
-import { useEffect } from "@odoo/owl";
+import {NavBar} from "@web/webclient/navbar/navbar";
+import {useService, useBus} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
+import {UserMenu} from "@web/webclient/user_menu/user_menu";
+import {useEffect} from "@odoo/owl";
 
 const websiteSystrayRegistry = registry.category("website_systray");
-websiteSystrayRegistry.add("UserMenu", { Component: UserMenu }, { sequence: 14 });
+websiteSystrayRegistry.add("UserMenu", {Component: UserMenu}, {sequence: 14});
 
 patch(NavBar.prototype, {
     setup() {
@@ -23,7 +23,7 @@ patch(NavBar.prototype, {
             websiteSystrayRegistry.add(
                 "web.debug_mode_menu",
                 registry.category("systray").get("web.debug_mode_menu"),
-                { sequence: 100 }
+                {sequence: 100}
             );
         }
         // Similar to what is done in web/navbar. When the app menu or systray
@@ -49,7 +49,9 @@ patch(NavBar.prototype, {
     },
 
     get shouldDisplayWebsiteSystray() {
-        return this.websiteService.currentWebsite && this.websiteService.isRestrictedEditor;
+        return (
+            this.websiteService.currentWebsite && this.websiteService.isRestrictedEditor
+        );
     },
 
     // Somehow a setter is needed in `patch()` to avoid an owl error.
@@ -62,8 +64,10 @@ patch(NavBar.prototype, {
         if (this.websiteService.currentWebsite) {
             const websiteItems = websiteSystrayRegistry
                 .getEntries()
-                .map(([key, value], index) => ({ key, ...value, index }))
-                .filter((item) => ("isDisplayed" in item ? item.isDisplayed(this.env) : true))
+                .map(([key, value], index) => ({key, ...value, index}))
+                .filter((item) =>
+                    "isDisplayed" in item ? item.isDisplayed(this.env) : true
+                )
                 .reverse();
             // Do not override the regular Odoo navbar if the only visible
             // elements are the debug items.
@@ -83,7 +87,10 @@ patch(NavBar.prototype, {
      */
     get currentAppSections() {
         const currentAppSections = super.currentAppSections;
-        if (this.currentApp && this.currentApp.xmlid === "website.menu_website_configuration") {
+        if (
+            this.currentApp &&
+            this.currentApp.xmlid === "website.menu_website_configuration"
+        ) {
             return this.websiteCustomMenus
                 .addCustomMenus(currentAppSections)
                 .filter((section) => section.childrenTree.length);

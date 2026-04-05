@@ -1,11 +1,11 @@
-import { Component, onWillUpdateProps, useRef, useState } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { Time, parseTime } from "@web/core/l10n/time";
-import { mergeClasses } from "@web/core/utils/classname";
-import { useChildRef } from "@web/core/utils/hooks";
+import {Component, onWillUpdateProps, useRef, useState} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {Time, parseTime} from "@web/core/l10n/time";
+import {mergeClasses} from "@web/core/utils/classname";
+import {useChildRef} from "@web/core/utils/hooks";
 
 const HOURS = [...Array(24)].map((_, i) => i);
 const MINUTES = [...Array(60)].map((_, i) => i);
@@ -27,14 +27,14 @@ export class TimePicker extends Component {
         DropdownItem,
     };
     static props = {
-        cssClass: { type: [String, Array, Object], optional: true },
-        inputCssClass: { type: [String, Array, Object], optional: true },
-        value: { type: [String, Time, { value: false }, { value: null }], optional: true },
-        onChange: { type: Function, optional: true },
-        onInvalid: { type: Function, optional: true },
-        showSeconds: { type: Boolean, optional: true },
-        minutesRounding: { type: Number, optional: true },
-        placeholder: { type: String, optional: true },
+        cssClass: {type: [String, Array, Object], optional: true},
+        inputCssClass: {type: [String, Array, Object], optional: true},
+        value: {type: [String, Time, {value: false}, {value: null}], optional: true},
+        onChange: {type: Function, optional: true},
+        onInvalid: {type: Function, optional: true},
+        showSeconds: {type: Boolean, optional: true},
+        minutesRounding: {type: Number, optional: true},
+        placeholder: {type: String, optional: true},
     };
     static defaultProps = {
         cssClass: {},
@@ -97,7 +97,10 @@ export class TimePicker extends Component {
                     bypassEditableProtection: true,
                     callback: (navigator) => {
                         if (!this.isNavigating) {
-                            const value = parseTime(this.inputRef.el.value, this.props.showSeconds);
+                            const value = parseTime(
+                                this.inputRef.el.value,
+                                this.props.showSeconds
+                            );
                             if (value) {
                                 this.setValue(value);
                                 this.close();
@@ -153,7 +156,7 @@ export class TimePicker extends Component {
         const minutes = MINUTES.filter((m) => !(m % rounding));
         for (const hour of HOURS) {
             for (const minute of minutes) {
-                suggestions.push(new Time({ hour, minute }));
+                suggestions.push(new Time({hour, minute}));
             }
         }
         return suggestions;
@@ -195,7 +198,9 @@ export class TimePicker extends Component {
 
         this.lastValue = newValue?.copy() ?? newValue;
         this.state.value = newValue;
-        this.state.inputValue = newValue ? newValue.toString(this.props.showSeconds) : "";
+        this.state.inputValue = newValue
+            ? newValue.toString(this.props.showSeconds)
+            : "";
         this.state.isValid = true;
     }
 

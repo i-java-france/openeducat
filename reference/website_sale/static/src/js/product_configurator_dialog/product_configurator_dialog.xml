@@ -5,7 +5,12 @@
             <attribute name="t-if">!showShopButtons()</attribute>
         </button>
         <button name="sale_product_configurator_cancel_button" position="attributes">
-            <attribute name="class" remove="btn-secondary" add="btn-light" separator=" "/>
+            <attribute
+                name="class"
+                remove="btn-secondary"
+                add="btn-light"
+                separator=" "
+            />
             <attribute name="t-if">!showShopButtons()</attribute>
         </button>
         <h6 name="sale_product_configurator_list_total" position="attributes">
@@ -27,7 +32,7 @@
                     t-on-click="() => this.onConfirm({goToCart: false})"
                     t-att-disabled="!isPossibleConfiguration() || !canBeSold()"
                 >
-                    <i class="fa fa-shopping-cart"/>
+                    <i class="fa fa-shopping-cart" />
                     Add to cart
                 </button>
                 <button
@@ -37,7 +42,7 @@
                     t-att-disabled="!isPossibleConfiguration() || !canBeSold()"
                 >
                     Go to Checkout
-                    <i class="fa fa-angle-right ms-2"/>
+                    <i class="fa fa-angle-right ms-2" />
                 </button>
             </div>
         </button>

@@ -1,13 +1,13 @@
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { rpc } from "@web/core/network/rpc";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {rpc} from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export class DeleteThreadDialog extends Component {
-    static components = { ActionPanel };
+    static components = {ActionPanel};
     static props = ["thread", "close"];
     static template = "discuss.DeleteThreadDialog";
 
@@ -19,7 +19,10 @@ export class DeleteThreadDialog extends Component {
     async onConfirmation() {
         let toOpenThread;
         const threadName = this.props.thread.name;
-        if (this.store.discuss?.thread?.eq(this.props.thread) || this.env.inChatWindow) {
+        if (
+            this.store.discuss?.thread?.eq(this.props.thread) ||
+            this.env.inChatWindow
+        ) {
             toOpenThread = this.props.thread.parent_channel_id;
         }
         await rpc("/discuss/channel/sub_channel/delete", {
@@ -30,8 +33,8 @@ export class DeleteThreadDialog extends Component {
         }
         this.props.close();
         this.env.services.notification.add(
-            _t('Thread "%(thread_name)s" has been deleted', { thread_name: threadName }),
-            { type: "info" }
+            _t('Thread "%(thread_name)s" has been deleted', {thread_name: threadName}),
+            {type: "info"}
         );
     }
 }

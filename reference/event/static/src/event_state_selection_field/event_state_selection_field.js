@@ -1,8 +1,10 @@
-import { formatSelection } from "@web/views/fields/formatters";
-import { registry } from "@web/core/registry";
-import { StateSelectionField, stateSelectionField } from "@web/views/fields/state_selection/state_selection_field";
-import { useService } from "@web/core/utils/hooks";
-
+import {formatSelection} from "@web/views/fields/formatters";
+import {registry} from "@web/core/registry";
+import {
+    StateSelectionField,
+    stateSelectionField,
+} from "@web/views/fields/state_selection/state_selection_field";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * This widget is used to enhance the Event State Selection field UI.
@@ -29,11 +31,14 @@ export class EventStateSelection extends StateSelectionField {
     }
 
     get options() {
-        return ["normal", "done", "blocked", "cancel"].map((state) => [state, new Map(super.options).get(state)]);
+        return ["normal", "done", "blocked", "cancel"].map((state) => [
+            state,
+            new Map(super.options).get(state),
+        ]);
     }
 
     get label() {
-        return formatSelection(this.currentValue, { selection: this.options });
+        return formatSelection(this.currentValue, {selection: this.options});
     }
 
     stateIcon(value) {
@@ -51,9 +56,7 @@ export class EventStateSelection extends StateSelectionField {
 export const EventStateSelectionField = {
     ...stateSelectionField,
     component: EventStateSelection,
-    supportedOptions: [
-        ...stateSelectionField.supportedOptions
-    ]
-}
+    supportedOptions: [...stateSelectionField.supportedOptions],
+};
 
 registry.category("fields").add("event_state_selection", EventStateSelectionField);

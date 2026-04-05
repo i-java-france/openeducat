@@ -1,8 +1,8 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { renderToElement } from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {renderToElement} from "@web/core/utils/render";
 
 class MasonryBlockTemplateOptionPlugin extends Plugin {
     static id = "mass_mailing.MasonryBlock";
@@ -22,7 +22,7 @@ class MasonryBlockTemplateOption extends BaseOptionComponent {
 
 class ChangeMasonryTemplate extends BuilderAction {
     static id = "changeMasonryTemplate";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.templateName = value;
         const templateName = `mass_mailing.s_masonry_block_${value}`;
         const newTemplate = renderToElement(templateName);
@@ -30,7 +30,7 @@ class ChangeMasonryTemplate extends BuilderAction {
         const target = editingElement.querySelector(".container");
         target.replaceChildren(newTemplate);
     }
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return editingElement.dataset.templateName === value;
     }
 }

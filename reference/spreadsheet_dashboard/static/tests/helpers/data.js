@@ -1,6 +1,9 @@
-import { SpreadsheetModels, defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { fields, models, onRpc } from "@web/../tests/web_test_helpers";
-import { RPCError } from "@web/core/network/rpc";
+import {
+    SpreadsheetModels,
+    defineSpreadsheetModels,
+} from "@spreadsheet/../tests/helpers/data";
+import {fields, models, onRpc} from "@web/../tests/web_test_helpers";
+import {RPCError} from "@web/core/network/rpc";
 
 export function getDashboardServerData() {
     return {
@@ -15,13 +18,19 @@ export function getDashboardServerData() {
 export class SpreadsheetDashboard extends models.Model {
     _name = "spreadsheet.dashboard";
 
-    name = fields.Char({ string: "Name" });
+    name = fields.Char({string: "Name"});
     spreadsheet_data = fields.Char({});
     json_data = fields.Char({});
-    is_published = fields.Boolean({ string: "Is published" });
-    dashboard_group_id = fields.Many2one({ relation: "spreadsheet.dashboard.group" });
-    favorite_user_ids = fields.Many2many({ relation: "res.users", string: "Favorite Users" });
-    is_favorite = fields.Boolean({ compute: "_compute_is_favorite", string: "Is Favorite" });
+    is_published = fields.Boolean({string: "Is published"});
+    dashboard_group_id = fields.Many2one({relation: "spreadsheet.dashboard.group"});
+    favorite_user_ids = fields.Many2many({
+        relation: "res.users",
+        string: "Favorite Users",
+    });
+    is_favorite = fields.Boolean({
+        compute: "_compute_is_favorite",
+        string: "Is Favorite",
+    });
 
     _compute_is_favorite() {
         for (const record of this) {
@@ -57,20 +66,22 @@ export class SpreadsheetDashboard extends models.Model {
 export class SpreadsheetDashboardGroup extends models.Model {
     _name = "spreadsheet.dashboard.group";
 
-    name = fields.Char({ string: "Name" });
+    name = fields.Char({string: "Name"});
     published_dashboard_ids = fields.One2many({
         relation: "spreadsheet.dashboard",
         relation_field: "dashboard_group_id",
     });
 
     _records = [
-        { id: 1, name: "Container 1", published_dashboard_ids: [1, 2] },
-        { id: 2, name: "Container 2", published_dashboard_ids: [3] },
+        {id: 1, name: "Container 1", published_dashboard_ids: [1, 2]},
+        {id: 2, name: "Container 2", published_dashboard_ids: [3]},
     ];
 }
 
-function mockDashboardDataController(_request, { res_id }) {
-    const [record] = this.env["spreadsheet.dashboard"].search_read([["id", "=", parseInt(res_id)]]);
+function mockDashboardDataController(_request, {res_id}) {
+    const [record] = this.env["spreadsheet.dashboard"].search_read([
+        ["id", "=", parseInt(res_id)],
+    ]);
     if (!record) {
         const error = new RPCError(`Dashboard ${res_id} does not exist`);
         error.data = {};
@@ -85,7 +96,10 @@ function mockDashboardDataController(_request, { res_id }) {
 onRpc("/spreadsheet/dashboard/data/<int:res_id>", mockDashboardDataController);
 
 export function defineSpreadsheetDashboardModels() {
-    const SpreadsheetDashboardModels = [SpreadsheetDashboard, SpreadsheetDashboardGroup];
+    const SpreadsheetDashboardModels = [
+        SpreadsheetDashboard,
+        SpreadsheetDashboardGroup,
+    ];
     Object.assign(SpreadsheetModels, SpreadsheetDashboardModels);
     defineSpreadsheetModels();
 }

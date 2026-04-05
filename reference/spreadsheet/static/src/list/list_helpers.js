@@ -1,8 +1,8 @@
 // @ts-check
 
-import { helpers } from "@odoo/o-spreadsheet";
+import {helpers} from "@odoo/o-spreadsheet";
 
-const { getFunctionsFromTokens } = helpers;
+const {getFunctionsFromTokens} = helpers;
 
 /** @typedef {import("@odoo/o-spreadsheet").Token} Token */
 

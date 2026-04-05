@@ -1,0 +1,3953 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="portal_my_home_menu_academic_calendar" model="ir.ui.view">
+        <field name="name">Portal layout : Academic Calendar</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="portal_breadcrumbs_inhetrite"/>
+        <field name="arch" type="xml">
+<data name="Portal layout : Academic Calendar" inherit_id="openeducat_core_enterprise.portal_breadcrumbs_inhetrite" priority="10">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        
+            
+        <li t-if="page_name == 'academic_calendar' or academic_calendar" t-attf-class="breadcrumb-item #{'active ' if not notice_board else ''}">
+            
+                
+            <t t-if="user_id.sudo().is_student">
+                
+                    
+                <a t-if="academic_calendar or academic_calendar" t-attf-href="/my/academic-calendar/?{{ keep_query() }}">
+                    
+                        
+                    <span>Academic Calendar</span>
+                    
+                    
+                </a>
+                
+                    
+                <t t-else=" ">
+                    
+                        
+                    <span>Academic Calendar</span>
+                    
+                    
+                </t>
+                
+                
+            </t>
+            
+                
+            <t t-else=" ">
+                
+                    
+                <a t-if="academic_calendar or academic_calendar" t-attf-href="/my/academic-calendar/#{current_stud_id}?{{ keep_query() }}">
+                    
+                        
+                    <span>Academic Calendar</span>
+                    
+                    
+                </a>
+                
+                    
+                <t t-else=" ">
+                    
+                        
+                    <span>Academic Calendar</span>
+                    
+                    
+                </t>
+                
+                
+            </t>
+            
+            
+        </li>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_my_home_menu_student_profile" model="ir.ui.view">
+        <field name="name">Portal layout : Student Profile</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="portal_breadcrumbs_inhetrite"/>
+        <field name="arch" type="xml">
+<data name="Portal layout : Student Profile" inherit_id="openeducat_core_enterprise.portal_breadcrumbs_inhetrite" priority="10">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        
+            
+        <t t-if="user_id.sudo().is_parent">
+            
+                
+            <li t-if="page_name == 'student_profile' or student_profile" t-attf-class="breadcrumb-item #{'active ' if not student_profile else ''}">
+                
+                    
+                <t t-if="student">
+                        Student Profile
+                    </t>
+                
+                    
+                <t t-else="">Student Profile</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+            
+        <t t-if="user_id.sudo().is_student">
+            
+                
+            <li t-if="page_name == 'student_profile' or student_profile" t-attf-class="breadcrumb-item #{'active ' if not student_profile else ''}">
+                
+                    
+                <t t-if="student">
+                        Student Profile
+                    </t>
+                
+                    
+                <t t-else="">Student Profile</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_my_home_menu_subject_registration" model="ir.ui.view">
+        <field name="name">Portal layout : Subject Registration</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="portal_breadcrumbs_inhetrite"/>
+        <field name="arch" type="xml">
+<data name="Portal layout : Subject Registration" inherit_id="openeducat_core_enterprise.portal_breadcrumbs_inhetrite" priority="10">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        
+
+            
+        <t t-if="user_id.sudo().is_parent">
+            
+                
+            <li t-if="page_name == 'subject_registration' or subject_registration" t-attf-class="breadcrumb-item #{'active ' if not subject_registration else ''}">
+                
+                    
+                <t t-if="subject_registration_ids" t-attf-href="#">
+                        Subject Registration List
+                    </t>
+                
+                    
+                <t t-else="">Subject Registration List</t>
+                
+                
+            </li>
+            
+                
+            <li t-if="page_name == 'subject_register' or subject_register " t-attf-class="breadcrumb-item #{'active ' if not subject_registration_ids else ''}">
+                
+                    
+                <a t-if="subject_register" t-attf-href="/subject/registration/#{student}?{{ keep_query() }}">
+                        Subject Registration List
+                    </a>
+                
+                    
+                <t t-else="">Subject Registration List</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+            
+        <t t-if="user_id.sudo().is_student">
+            
+                
+            <li t-if="page_name == 'subject_registration' or subject_registration" t-attf-class="breadcrumb-item #{'active ' if not subject_registration else ''}">
+                
+                    
+                <t t-if="subject_registration_ids" t-attf-href="#">
+                        Subject Registration List
+                    </t>
+                
+                    
+                <t t-else="">Subject Registration List</t>
+                
+                
+            </li>
+            
+                
+            <li t-if="page_name == 'subject_register' or subject_register " t-attf-class="breadcrumb-item #{'active ' if not subject_registration_ids else ''}">
+                
+                    
+                <a t-if="subject_register" t-attf-href="/subject/registration/?{{ keep_query() }}">
+                        Subject Registration List
+                    </a>
+                
+                    
+                <t t-else="">Subject Registration List</t>
+                
+                
+            </li>
+            
+            
+        </t>
+        
+            
+        <li t-if="subject_register" class="breadcrumb-item active">
+            
+                
+            <span t-field="subject_register.name"/>
+            
+            
+        </li>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_my_home_menu_subject_registration_form" model="ir.ui.view">
+        <field name="name">Portal layout : Subject Registration Form</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="portal_breadcrumbs_inhetrite"/>
+        <field name="arch" type="xml">
+<data name="Portal layout : Subject Registration Form" inherit_id="openeducat_core_enterprise.portal_breadcrumbs_inhetrite" priority="10">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        
+            
+        <li t-if="page_name == 'subject_reg_form' or subject_reg_form " t-attf-class="breadcrumb-item #{'active ' if not subject_reg_form else ''}">
+            
+                
+            <a t-if="student_id" t-attf-href="/subject/registration/?{{ keep_query() }}">
+                    Subject Registration List
+                </a>
+            
+                
+            <t t-else="">Subject Registration List</t>
+            
+            
+        </li>
+        
+            
+        <t t-if="page_name == 'subject_reg_form' or subject_reg_form ">
+            
+                
+            <li t-if="student_id" class="breadcrumb-item active">
+                    Subject Registration Form
+                </li>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="academic_calendar_portal" model="ir.ui.view">
+        <field name="name">academic_calendar_portal</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.academic_calendar_portal">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+        
+            
+        <t t-call="portal.portal_searchbar">
+            
+                
+            <t t-set="title">Timetable List</t>
+            
+            
+        </t>
+        
+            
+        <div class="stud_id_academic_calendar" t-att-current_stud_id="current_stud_id"/>
+        
+            
+        <div class="academic_calendar_portal active">
+            
+                
+            <div id="academic_calendar_portal_kendo"/>
+            
+            
+        </div>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="openeducat_create_subject_registration" model="ir.ui.view">
+        <field name="name">openeducat_create_subject_registration</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.openeducat_create_subject_registration">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+        
+
+            
+        <t t-call="portal.portal_searchbar">
+            
+                
+            <t t-set="title">Subject Registration Form</t>
+            
+            
+        </t>
+        
+            
+        <t t-if="not student_id">
+            
+                
+            <p>There are currently no information for your account!!!</p>
+            
+            
+        </t>
+        
+
+            
+        <div t-if="student_id" style="background-color:white; padding: 20px 40px 20px 40px;" class="js_get_data oe_subject_registration_form">
+            
+                
+            <div class="mt-md-4">
+                
+                    
+                <form action="/subject/registration/submit" method="post" role="form" enctype="multipart/form-data">
+                    
+                        
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    
+                        
+                    <div class="row col-md-12">
+                        
+                            
+                        <div class="row col-lg-6 col-md-12">
+                            
+                                
+                            <input type="hidden" name="student_id" t-attf-class="form-control" t-att-value="student_id.id"/>
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Course:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8">
+                                
+                                    
+                                <select id="course_dropdown" class="form-control" name="course_id">
+                                    
+                                        
+                                    <option value="" class="disabled selected">
+                                        
+                                            
+                                        <lable>Select your option</lable>
+                                        
+                                        
+                                    </option>
+                                    
+                                        
+                                    <t t-foreach="course_ids" t-as="course_data">
+                                        
+                                            
+                                        <option t-att-value="course_data.id">
+                                            
+                                                
+                                            <t t-esc="course_data.name"/>
+                                            
+                                            
+                                        </option>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </select>
+                                
+                                
+                            </div>
+                            
+                                
+                            <t t-if="is_check_academic">
+                                
+                                    
+                                <div class="col-md-4 mt16">
+                                    
+                                        
+                                    <lable>Academic Plan:</lable>
+                                    
+                                    
+                                </div>
+                                
+                                    
+                                <div class="col-md-8 mt8">
+                                    
+                                        
+                                    <select class="form-control custom academic_plans" id="academic_plan_on_courses" name="academic_plan_id" required="1">
+                                        </select>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </t>
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Batch:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8" id="batch_on_courses">
+                                
+                                    
+                                <select class="form-control custom batches" id="batch_on_courses" name="batch_id" required="1">
+                                    </select>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div class="row col-lg-6 col-md-12">
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Minimum Unit Load:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8">
+                                
+                                    
+                                <input type="number" name="min_unit_load" t-attf-class="form-control"/>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Maximum Unit Load:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8">
+                                
+                                    
+                                <input type="number" name="max_unit_load" t-attf-class="form-control"/>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                        
+                    <div class="mt-lg-4"/>
+                    
+                        
+                    <div t-if="user_id.sudo().is_student" class="row compulsory_subjects col-md-12">
+                        
+                            
+                        <div class="row col-lg-6 col-md-12">
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Compulsory Subjects:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8">
+                                
+                                    
+                                <select class="form-control custom compulsory_subjects_js js-example-basic-multiple" name="compulsory_subject_ids" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;" required="1" multiple="True">
+                                    </select>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div class="row col-lg-6 col-md-12 elective_subjects">
+                            
+                                
+                            <div class="col-md-4 mt16">
+                                
+                                    
+                                <lable>Elective Subjects:</lable>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-8 mt8">
+                                
+                                    
+                                <select class="form-control elective_subjects_js js-example-basic-multiple" name="elective_subject_ids" multiple="True" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;" required="1">
+                                    </select>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+
+                        
+                    <div class="clearfix mb16 mt16 row col-md-12">
+                        
+                            
+                        <div class="col-md-4">
+                            
+                                
+                            <button type="submit" class="btn btn-primary subject_registration_submit">
+                                    Submit
+    
+                                </button>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </form>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="openeducat_enterprise_student_portal" model="ir.ui.view">
+        <field name="name">openeducat_enterprise_student_portal</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.openeducat_enterprise_student_portal">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+        
+            
+        <t t-call="portal.portal_searchbar">
+            
+                
+            <t t-set="title">Student Information</t>
+            
+            
+        </t>
+        
+            
+        <t t-if="not student">
+            
+                
+            <p>There are currently no information for your account!!!</p>
+            
+            
+        </t>
+        
+            
+        <div t-if="student" name="student_portal_div" class="oe_student_portal_div">
+            
+                
+            <div class="row pt48 pr-md-3 student_profile" id="student-profile">
+                
+                    
+                <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt8 mb8">
+                    
+                        
+                    <t t-foreach="student" t-as="student">
+                        
+                            
+                        <div class="card student-card personal-info">
+                            
+                                
+                            <div class="p-0 border-0">
+                                
+                                    
+                                <div class="p-0 row align-items-top text-center text-md-start">
+                                    
+                                        
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-4 col-xl-3">
+                                        
+                                            
+                                        <img class="rounded img img-responsive personal_Info_border img-fluid" t-att-src="'data:image/png;base64,%s' % student_image"/>
+                                        
+                                        
+                                    </div>
+                                    
+                                        
+                                    <div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-9 mt-3 mt-md-0">
+                                        
+                                            
+                                        <div t-if="student.name">
+                                            
+                                                
+                                            <h5 id="student_name" t-esc="student.name"/>
+                                            
+                                                
+                                            <p class="mb-0 text-600" t-esc="student.email"/>
+                                            
+                                            
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="card-body basic-info p-0 ">
+                                
+                                    
+                                <div class="accordion" id="accordionExample">
+                                    
+                                        
+                                    <div class="accordion-item border-0 pt-3 pb-3">
+                                        
+                                            
+                                        <a class="accordion-toggle drop-down d-flex p-2 portal-card" data-bs-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">
+                                            
+                                                
+                                            <h5 class="mb-0 text-black text-500 me-auto">Basic Information</h5>
+                                            
+                                                
+                                            <img class="toggle-icon"/>
+                                            
+                                            
+                                        </a>
+                                        
+                                            
+                                        <div id="collapseOne" class="collapse show" data-bs-parent="#accordionExample">
+                                            
+                                                
+                                            <div class="card-body custom-body-space p-3 p-md-1 p-xl-3" style="white-space: nowrap;">
+                                                
+                                                    
+                                                <div class="row">
+                                                    
+                                                        
+                                                    <div class="d-flex mb-3">
+                                                        
+                                                            
+                                                        <t t-if="student.gender">
+                                                            
+                                                                
+                                                            <div class="col-6 d-flex align-items-center text-600 gap-2 border-end pe-3">
+                                                                
+                                                                    
+                                                                <img class="img img-fluid" src="/openeducat_core_enterprise/static/img/fi_1261257.svg" loading="lazy"/>
+                                                                
+                                                                    
+                                                                <p class="text-o-color-5 mb-0" t-esc="{False:False, 'm':'Male', 'f':'Female', 'o':'Other' }[student.gender]"/>
+                                                                
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                            
+                                                        <t t-if="student.birth_date">
+                                                            
+                                                                
+                                                            <div class="col-6 d-flex align-items-center text-600 gap-2 px-3">
+                                                                
+                                                                    
+                                                                <img class="img img-fluid" src="/openeducat_core_enterprise/static/img/fi_1259845.svg" loading="lazy"/>
+                                                                
+                                                                    
+                                                                <p class="text-o-color-5 mb-0" t-esc="student.birth_date" t-options="{'widget': 'date'}"/>
+                                                                
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                        
+                                                    </div>
+                                                    
+                                                        
+                                                    <div class="d-flex flex-wrap w-100 mb-3">
+                                                        
+                                                            
+                                                        <t t-if="student.phone">
+                                                            
+                                                                
+                                                            <div class="col-6 d-flex align-items-center text-600 gap-2 border-end pe-3">
+                                                                
+                                                                    
+                                                                <img class="img img-fluid" src="/openeducat_core_enterprise/static/img/fi_1288901.svg" loading="lazy"/>
+                                                                
+                                                                    
+                                                                <p class="text-o-color-5 mb-0" t-esc="student.phone"/>
+                                                                
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                            
+                                                        <t t-if="student.blood_group">
+                                                            
+                                                                
+                                                            <div class="col-6 d-flex align-items-center text-600 gap-2 px-3">
+                                                                
+                                                                    
+                                                                <img class="img img-fluid" src="/openeducat_core_enterprise/static/img/fi_1261253.svg" loading="lazy"/>
+                                                                
+                                                                    
+                                                                <p class="text-o-color-5 mb-0" t-esc="{False:False, 'B+':'B+ve', 'O+':'O+ve', 'AB+':'AB+ve','A-':'A-ve','B-':'B-ve','O-':'O-ve','AB-':'AB-ve','A+':'A+ve'}[student.blood_group]"/>
+                                                                
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                        
+                                                    </div>
+                                                    
+                                                        
+                                                    <t t-if="student.nationality">
+                                                        
+                                                            
+                                                        <div class="col-12 d-flex align-items-center mb-3 text-600 gap-2">
+                                                            
+                                                                
+                                                            <img class="img img-fluid" src="/openeducat_core_enterprise/static/img/fi_1259866.svg" loading="lazy"/>
+                                                            
+                                                                
+                                                            <p class="text-o-color-5 mb-0" t-esc="student.nationality.name"/>
+                                                            
+                                                            
+                                                        </div>
+                                                        
+                                                        
+                                                    </t>
+                                                    
+                                                        
+                                                    <t t-if="student.visa_info">
+                                                        
+                                                            
+                                                        <div class="col-12 d-flex align-items-center mb-3 text-600 gap-2">
+                                                            
+                                                                
+                                                            <p class="text-o-color-5 mb-0" t-esc="student.visa_info"/>
+                                                            
+                                                            
+                                                        </div>
+                                                        
+                                                        
+                                                    </t>
+                                                    
+                                                        
+                                                    <div class="col-12 d-flex mb-3 text-600 gap-2" style="    white-space: normal;">
+                                                        
+                                                            
+                                                        <img class="img img-fluid align-self-start" src="/openeducat_core_enterprise/static/img/fi_1266486.svg" loading="lazy"/>
+                                                        
+                                                            
+                                                        <p class="text-o-color-5 mb-0">
+                                                            
+                                                                
+                                                            <t t-if="student.street">
+                                                                
+                                                                    
+                                                                <span t-esc="student.street"/>
+                                                                ,
+                                                                
+                                                            </t>
+                                                            
+                                                                
+                                                            <t t-if="student.street2">
+                                                                
+                                                                    
+                                                                <span t-esc="student.street2"/>
+                                                                
+                                                                
+                                                            </t>
+                                                            
+                                                                
+                                                            <t t-if="student.city">
+                                                                
+                                                                    
+                                                                <span t-esc="student.city"/>
+                                                                ,
+                                                                
+                                                            </t>
+                                                            
+                                                                
+                                                            <t t-if="student.state_id">
+                                                                
+                                                                    
+                                                                <span t-esc="student.state_id.name"/>
+                                                                ,
+                                                                
+                                                            </t>
+                                                            
+                                                                
+                                                            <t t-if="student.zip">
+                                                                
+                                                                    
+                                                                <span t-esc="student.zip"/>
+                                                                ,
+                                                                
+                                                            </t>
+                                                            
+                                                                
+                                                            <t t-if="student.country_id.name">
+                                                                
+                                                                    
+                                                                <span t-esc="student.country_id.name"/>
+                                                                
+                                                                
+                                                            </t>
+                                                            
+                                                            
+                                                        </p>
+                                                        
+                                                        
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </t>
+                    
+                    
+                </div>
+                
+                    
+                <div class="col-12 col-sm-12 col-md-12 col-lg-8 mt8 mb8">
+                    
+                        
+                    <div class="row">
+                        
+                            
+                        <div class="col-md-12 mb24">
+                            
+                                
+                            <div class="wrapper">
+                                
+                                    
+                                <div class="icon">
+                                    
+                                        
+                                    <i id="left" class="fa fa-angle-left text-600"/>
+                                    
+                                    
+                                </div>
+                                
+                                    
+                                <ul class="nav nav-pills tabs-box">
+                                    
+                                        
+                                    <li class="pr_info tab">
+                                        
+                                            
+                                        <a href="#personal_info" aria-expanded="false" data-bs-toggle="tab" role="tab" class="active">
+                                            
+                                                
+                                            <h5 class="mb-0">
+                                                    Student Details
+                                                </h5>
+                                            
+                                            
+                                        </a>
+                                        
+                                        
+                                    </li>
+                                    
+                                    
+                                </ul>
+                                
+                                    
+                                <div class="icon">
+                                    
+                                        
+                                    <i id="right" class="fa fa-angle-right text-600"/>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div class="col-md-12 col-lg-12 col-12">
+                            
+                                
+                            <div class="tab-content">
+                                
+                                    
+                                <div class="tab-pane fade show active" id="personal_info">
+                                    
+                                        
+                                    <div class="card student-card mb24">
+                                        
+                                            
+                                        <div t-if="student.gr_no" class="row col-md-12">
+                                            
+                                                
+                                            <div>
+                                                
+                                                    
+                                                <strong>Gr Number:</strong>
+                                                
+                                                
+                                            </div>
+                                            
+                                                
+                                            <div class="col-md-8">
+                                                
+                                                    
+                                                <span t-esc="student.gr_no"/>
+                                                
+                                                
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        
+                                            
+                                        <div class="accordion" id="accordionExample1">
+                                            
+                                                
+                                            <div class="accordion-item border-1 p-0 ">
+                                                
+                                                    
+                                                <a class="accordion-toggle drop-down d-flex pb-3 text-black" style="padding: 1rem 1.25rem 1rem;" data-bs-toggle="collapse" href="#collapseThree" role="button" aria-expanded="true" aria-controls="collapseThree">
+                                                    
+                                                        
+                                                    <h5 class="mb-0 me-auto">Admission Details</h5>
+                                                    
+                                                        
+                                                    <img class="toggle-icon"/>
+                                                    
+                                                    
+                                                </a>
+                                                
+                                                    
+                                                <div id="collapseThree" class="collapse show" data-bs-parent="#accordionExample1">
+                                                    
+                                                        
+                                                    <div class="card-body p-0 table-responsive">
+                                                        
+                                                            
+                                                        <table class="mb-0 table table-condensed">
+                                                            
+                                                                
+                                                            <thead style="white-space:nowrap;">
+                                                                
+                                                                    
+                                                                <tr>
+                                                                    
+                                                                        
+                                                                    <th data-column-index="0" onclick="sortTable(this)">
+                                                                        Course
+                                                                            
+                                                                        <i class="sort-arrow fa fa-sort" style="color:#abadaf;"/>
+                                                                        
+                                                                        
+                                                                    </th>
+                                                                    
+                                                                        
+                                                                    <th data-column-index="1" onclick="sortTable(this)">
+                                                                        Batch
+                                                                            
+                                                                        <i class="sort-arrow fa fa-sort" style="color:#abadaf;"/>
+                                                                        
+                                                                        
+                                                                    </th>
+                                                                    
+                                                                        
+                                                                    <th>Roll Number</th>
+                                                                    
+                                                                        
+                                                                    <th>Subjects</th>
+                                                                    
+                                                                        
+                                                                    <th>Faculty Advisor</th>
+                                                                    
+                                                                    
+                                                                </tr>
+                                                                
+                                                                
+                                                            </thead>
+                                                            
+                                                                
+                                                            <tbody>
+                                                                
+                                                                    
+                                                                <t t-foreach="student.course_detail_ids" t-as="course_detail">
+                                                                    
+                                                                        
+                                                                    <tr>
+                                                                        
+                                                                            
+                                                                        <td data-label="Course : ">
+                                                                            
+                                                                                
+                                                                            <span t-esc="course_detail.course_id.name"/>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        
+                                                                            
+                                                                        <td data-label="Batch : ">
+                                                                            
+                                                                                
+                                                                            <span t-esc="course_detail.batch_id.name"/>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        
+                                                                            
+                                                                        <td data-label="Roll Number : ">
+                                                                            
+                                                                                
+                                                                            <span t-esc="course_detail.roll_number"/>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        
+                                                                            
+                                                                        <td data-label="Subjects : ">
+                                                                            
+                                                                                
+                                                                            <t t-foreach="course_detail.subject_ids" t-as="subject">
+                                                                                
+                                                                                    
+                                                                                <li style=" list-style-type: none;" t-esc="subject.name"/>
+                                                                                
+                                                                                
+                                                                            </t>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        
+                                                                            
+                                                                        <td data-label="Faculty Advisor : ">
+                                                                            
+                                                                                
+                                                                            <span t-esc="course_detail.faculty_advisor_id.name"/>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        
+                                                                        
+                                                                    </tr>
+                                                                    
+                                                                    
+                                                                </t>
+                                                                
+                                                                
+                                                            </tbody>
+                                                            
+                                                            
+                                                        </table>
+                                                        
+                                                        
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="portal_notifications_into_header" model="ir.ui.view">
+        <field name="name">portal_notifications_into_header</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="My Portal"/>
+        <field name="arch" type="xml">
+<data inherit_id="portal.portal_my_home" customize_show="True">
+    
+        
+    <xpath expr="//div[@id='portal_alert_category']" position="inside">
+        
+            
+        <div class="accordion" id="accordionExample">
+            
+                
+            <div class="accordion-item text-bg-light rounded">
+                
+                    
+                <h2 class="accordion-header" id="headingOne">
+                    
+                        
+                    <button class="accordion-button o_portal_index_card" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                         
+                            
+                        <div class="align-items-center d-flex w-100">
+                            
+                                
+                            <i class="fa fa-bell me-2" aria-hidden="true"/>
+                            
+                                
+                            <span class="fs-5">Notifications</span>
+                            
+                                
+                            <div class="me-2 ms-auto text-end">
+                                
+                                    
+                                <span class="badge bg-danger" data-placeholder_count="all_notification_count" t-esc="all_notification_count or 0"/>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </button>
+                    
+                    
+                </h2>
+                
+                
+            </div>
+            
+                
+            <div id="collapseOne" class="accordion-collapse border text-bg-light collapse rounded" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                
+                    
+                <div class="accordion-body notification-accordion-body">
+                    
+                        
+                    <ul class="list-unstyled mb-0 w-100" id="search-notification-list">
+                        
+                            
+                        <li class="dropdown-item-text p-0">
+                            
+                                
+                            <t t-call="portal.portal_docs_entry">
+                                
+                                    
+                                <t t-set="bg_color" t-value="'alert alert-primary align-items-center'"/>
+                                
+                                    
+                                <t t-set="placeholder_count" t-value="'registartion_count'"/>
+                                
+                                    
+                                <t t-set="title">Your Subject Registration Request Approved</t>
+                                
+                                    
+                                <t t-set="url" t-value="'/subject/registration/'"/>
+                                
+                                    
+                                <t t-set="show_count" t-value="True"/>
+                                
+                                
+                            </t>
+                            
+                            
+                        </li>
+                        
+                        
+                    </ul>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_student_subject_registration_data" model="ir.ui.view">
+        <field name="name">portal_student_subject_registration_data</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.portal_student_subject_registration_data">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-foreach="subject_register" t-as="registation_data">
+            
+                
+            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
+                
+                    
+                <t t-call="portal.portal_back_in_edit_mode">
+                    
+                        
+                    <t t-set="backend_url" t-value="'/web#model=op.subject.registration&amp;id=%s&amp;view_type=form' % (registation_data.id)"/>
+                    
+                    
+                </t>
+                
+                
+            </t>
+            
+            
+        </t>
+        
+            
+        <t t-if="not subject_register">
+            
+                
+            <div class="alert alert-warning mt8" role="alert">
+                    There are no records.
+                </div>
+            
+            
+        </t>
+        
+            
+        <div class="card mt-0 rounded">
+            
+                
+            <div class="card-header">
+                
+                    
+                <h5 class="mb-0">
+                    
+                        
+                    <t t-foreach="subject_register" t-as="registation_data">
+                        
+                            
+                        <small class="text-muted">Subject Registration -</small>
+                        
+                            
+                        <span id="registration_name" t-field="registation_data.name"/>
+                        
+                        
+                    </t>
+                    
+                    
+                </h5>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+
+            
+        <t t-foreach="subject_register" t-as="registation_data">
+            
+                
+            <div t-if="registation_data" style="background-color:white; padding: 20px 40px 20px 40px;" class="texr-center">
+                
+
+                    
+                <div class="mt32">
+                    
+                        
+                    <div class="row col-md-12">
+                        
+                            
+                        <div class="row col-md-6">
+                            
+                                
+                            <div t-if="registation_data.student_id" class="col-md-5">
+                                
+                                    
+                                <strong>Student:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.student_id" class="col-md-7 mb-2 mb-md-0">
+                                
+                                    
+                                <span id="student_name" t-esc="registation_data.student_id.name"/>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.course_id" class="col-md-5">
+                                
+                                    
+                                <strong>Course:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.course_id" class="col-md-7 mb-2 mb-md-0">
+                                
+                                    
+                                <span t-esc="registation_data.course_id.name"/>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.academic_plan_id" class="col-md-5">
+                                
+                                    
+                                <strong>Academic Plan:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.academic_plan_id" class="col-md-7 mb-2 mb-md-0">
+                                
+                                    
+                                <span t-esc="registation_data.academic_plan_id.name"/>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.batch_id.name" class="col-md-5">
+                                
+                                    
+                                <strong>Batch:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.batch_id.name" class="col-md-7 mb-2 mb-md-0">
+                                
+                                    
+                                <span t-esc="registation_data.batch_id.name"/>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div class="row col-md-6">
+                            
+                                
+                            <div t-if="registation_data.state" class="col-md-5">
+                                
+                                    
+                                <strong>Status:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.state" class="col-md-7 mb-2 mb-md-0">
+                                
+                                   
+
+                                                                        
+                                <td>
+                                    
+                                        
+                                    <t t-if="registation_data.state == 'draft'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-primary">
+                                            
+                                               
+                                            <span class="d-inline">Draft</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="registation_data.state == 'submitted'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-secondary">
+                                            
+                                               
+                                            <span class="d-inline">Submitted</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="registation_data.state == 'approved'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-success">
+                                            
+                                               
+                                            <span class="d-inline">Approved</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="registation_data.state == 'rejected'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-danger">
+                                            
+                                               
+                                            <span class="d-inline">Rejected</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </td>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.max_unit_load" class="col-md-5">
+                                
+                                    
+                                <strong>Max Unit Load:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.max_unit_load" class="col-md-7 mb-2 mb-md-0">
+                                
+                                    
+                                <span t-esc="registation_data.max_unit_load"/>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.min_unit_load" class="col-md-5">
+                                
+                                    
+                                <strong>Min Unit Load:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div t-if="registation_data.min_unit_load" class="col-md-7">
+                                
+                                    
+                                <span t-esc="registation_data.min_unit_load"/>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+                
+            <div style="background-color:white; padding: 0px 40px 20px 40px;">
+                
+                    
+                <div class="row col-md-12">
+                    
+                        
+                    <div class="col-md-6 row">
+                        
+                            
+                        <div class="col-md-5">
+                            
+                                
+                            <strong>Compulsory Subjects:</strong>
+                            
+                            
+                        </div>
+                        
+                            
+                        <div class="col-md-7">
+                            
+                                
+                            <t t-if="registation_data.compulsory_subject_ids" t-foreach="registation_data.compulsory_subject_ids" t-as="compulsory_subject_list">
+                                
+                                    
+                                <span t-esc="compulsory_subject_list.name">,</span>
+                                
+                                    
+                                <br/>
+                                
+                                
+                            </t>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                        
+                    <t t-if="registation_data.is_elective_select == True">
+                        
+                            
+                        <div class="col-md-6 row">
+                            
+                                
+                            <div class="col-md-5">
+                                
+                                    
+                                <strong>Elective Subjects:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-7">
+                                
+                                    
+                                <t t-if="registation_data.elective_subject_ids" t-foreach="registation_data.elective_subject_ids" t-as="elective_subject_list">
+                                    
+                                        
+                                    <span t-esc="elective_subject_list.name"/>
+                                    
+                                        
+                                    <br/>
+                                    
+                                    
+                                </t>
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </t>
+                    
+                        
+                    <t t-else=" ">
+                        
+                            
+                        <div class="col-md-6 row">
+                            
+                                
+                            <div class="col-md-5 my-2 my-md-0 ">
+                                
+                                    
+                                <strong>Elective Subjects:</strong>
+                                
+                                
+                            </div>
+                            
+                                
+                            <div class="col-md-7">
+                                
+                                    
+                                <form id="elective_subject" action="/submit/elective-subject" role="form" method="post">
+                                    
+                                        
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    
+                                        
+                                    <input type="hidden" name="subject_register_id" t-att-value="registation_data.id"/>
+                                    
+                                        
+                                    <div>
+                                        
+                                            
+                                        <select name="elective_subject_ids" id="elective_subject_id" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;width: 260px;" class="form-control chosen-select" multiple="multiple" required="True">
+                                            
+                                                
+                                            <t t-foreach="elective_subject_choice" t-as="elective_subject_list">
+                                                
+                                                    
+                                                <t t-if="elective_subject_list.subject_id.id not in registation_data.compulsory_subject_ids.ids">
+                                                    
+                                                        
+                                                    <option t-att-value="elective_subject_list.subject_id.id">
+                                                        
+                                                            
+                                                        <t t-esc="elective_subject_list.subject_id.name"/>
+                                                        
+                                                        
+                                                    </option>
+                                                    
+                                                    
+                                                </t>
+                                                
+                                                
+                                            </t>
+                                            
+                                            
+                                        </select>
+                                        
+                                        
+                                    </div>
+                                    
+                                        
+                                    <button type="submit" class="btn btn-primary mb16 mt16 col-md-12 elective_subject_submit">
+                                            Submit
+                                        </button>
+                                    
+                                    
+                                </form>
+                                
+
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </t>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+            
+        </t>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="portal_student_subject_registration_list" model="ir.ui.view">
+        <field name="name">portal_student_subject_registration_list</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.portal_student_subject_registration_list">
+    
+        
+    <t t-call="portal.portal_layout">
+        
+            
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+        
+
+            
+        <t t-call="portal.portal_searchbar">
+            
+                
+            <t t-set="title">Subject Registration List</t>
+            
+            
+        </t>
+        
+
+            
+        <div t-if="user_id.sudo().is_student" class="mt16 mb16 text-left portal_buttons">
+            
+                
+            <div>
+                
+                    
+                <a t-attf-href="/subject/registration/create/">
+                    
+                        
+                    <button class="btn btn-primary">Create Subject Registration</button>
+                    
+                    
+                </a>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+            
+        <t t-if="not grouped_tasks">
+            
+                
+            <div class="alert alert-warning mt8" role="alert">
+                    There are no records.
+                </div>
+            
+            
+        </t>
+        
+            
+        <t t-if="grouped_tasks">
+            
+                
+            <t t-if="subject_registration_ids" t-call="portal.portal_table">
+                
+                    
+                <t t-foreach="grouped_tasks" t-as="tasks">
+                    
+                        
+                    <thead>
+                        
+                            
+                        <tr class="active" t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                            
+                                
+                            <th t-if="groupby == 'none'">Name</th>
+                            
+                                
+                            <th t-else="">Registration</th>
+                            
+                                
+                            <th>Student</th>
+                            
+                                
+                            <th>Course</th>
+                            
+                                
+                            <th>Batch</th>
+                            
+                                
+                            <th>Status</th>
+                            
+                            
+                        </tr>
+                        
+                        
+                    </thead>
+                    
+                        
+                    <tbody>
+                        
+                            
+                        <t t-if="tasks" t-foreach="tasks" t-as="task">
+                            
+                                
+                            <tr>
+                                
+                                    
+                                <td>
+                                    
+                                        
+                                    <a t-attf-href="/subject/registration/data/#{stud_id}/#{task.id}">
+                                        
+                                            
+                                        <span t-esc="task.name"/>
+                                        
+                                        
+                                    </a>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td>
+                                    
+                                        
+                                    <span id="student_name" t-esc="task.student_id.name"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td>
+                                    
+                                        
+                                    <span t-esc="task.course_id.name"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td>
+                                    
+                                        
+                                    <span t-esc="task.batch_id.name"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td>
+                                    
+                                        
+                                    <t t-if="task.state == 'draft'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-primary">
+                                            
+                                            
+                                            <span class="d-inline">Draft</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="task.state == 'submitted'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-secondary">
+                                            
+                                                
+                                            <span class="d-inline">Submitted</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="task.state == 'approved'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-success">
+                                            
+                                               
+                                            <span class="d-inline">Approved</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                        
+                                    <t t-if="task.state == 'rejected'">
+                                        
+                                            
+                                        <span class="badge badge-pill text-bg-danger">
+                                            
+                                               
+                                            <span class="d-inline">Rejected</span>
+                                            
+                                            
+                                        </span>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </td>
+                                
+                                
+                            </tr>
+                            
+                            
+                        </t>
+                        
+                        
+                    </tbody>
+                    
+                    
+                </t>
+                
+                
+            </t>
+            
+            
+        </t>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="report_op_academic_plan" model="ir.ui.view">
+        <field name="name">report_op_academic_plan</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.report_op_academic_plan">
+    
+        
+    <t t-call="web.html_container">
+        
+            
+        <t t-foreach="docs" t-as="o">
+            
+                
+            <t t-call="openeducat_core_enterprise.report_op_academic_plan_data"/>
+            
+            
+        </t>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="report_op_academic_plan_data" model="ir.ui.view">
+        <field name="name">report_op_academic_plan_data</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.report_op_academic_plan_data">
+    
+        
+    <t t-call="web.external_layout">
+        
+            
+        <div class="page" style="font-family: 'Odoo Unicode Support Noto';">
+            
+                
+            <div class="mt-6" style="text-align:center;">
+                
+                    
+                <strong style="width: 40%; display:inline-block; border-bottom:2px solid black;">
+                    
+                        
+                    <h2>Academic Plan</h2>
+                    
+                        
+                    <h3>
+                        
+                            
+                        <t t-esc="o.name"/>
+                        
+                        
+                    </h3>
+                    
+                    
+                </strong>
+                
+                
+            </div>
+            
+                
+            <t t-foreach="o.get_assessment_data().items()" t-as="academic_data">
+                
+                    
+                <t t-set="academic_key" t-value="academic_data[0]"/>
+                
+                    
+                <t t-set="academic_value" t-value="academic_data[1]"/>
+                
+                    
+                <t t-set="assessment_count" t-value="0"/>
+                
+                    
+                <t t-set="child_count" t-value="0"/>
+                
+                    
+                <t t-set="mark_count" t-value="0"/>
+                
+                    
+                <t t-set="mark_child_count" t-value="0"/>
+                
+                    
+                <div style="text-align:center;">
+                    
+                        
+                    <h4>
+                        
+                            
+                        <span t-esc="academic_key"/>
+                        
+                        
+                    </h4>
+                    
+                    
+                </div>
+                
+                    
+                <table class="table-bordered mt-6" width="100%" border="1" style="border-collapse:collapse">
+                    
+                        
+                    <thead>
+                        
+                            
+                        <tr>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Code</td>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Subject</td>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Credit</td>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Lect</td>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Lab</td>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">Tut</td>
+                            
+                                
+                            <t t-foreach="academic_value.items()" t-as="subject_data">
+                                
+                                    
+                                <t t-set="subject_key" t-value="subject_data[0]"/>
+                                
+                                    
+                                <t t-set="subject_value" t-value="subject_data[1]"/>
+                                
+                                    
+                                <t t-if="assessment_count == 0">
+                                    
+                                        
+                                    <t t-foreach="subject_value.items()" t-as="assessment_data">
+                                        
+                                            
+                                        <t t-set="assessment_key" t-value="assessment_data[0]"/>
+                                        
+                                            
+                                        <t t-set="assessment_value" t-value="assessment_data[1]"/>
+                                        
+                                            
+                                        <t t-if="assessment_key not in ['code', 'credit', 'lect', 'lab', 'tut', 'total_marks']">
+                                            
+                                                
+                                            <t t-foreach="assessment_value.items()" t-as="child_data">
+                                                
+                                                    
+                                                <t t-set="child_key" t-value="child_data[0]"/>
+                                                
+                                                    
+                                                <t t-set="child_value" t-value="child_data[1]"/>
+                                                
+                                                
+                                            </t>
+                                            
+                                                
+                                            <td t-att-colspan="len(assessment_value)+len(child_value)" style="text-align:center; padding: 10px;">
+                                                
+                                                    
+                                                <t t-esc="assessment_key"/>
+                                                
+                                                
+                                            </td>
+                                            
+                                            
+                                        </t>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </t>
+                                
+                                    
+                                <t t-set="assessment_count" t-value="assessment_count +1"/>
+                                
+                                
+                            </t>
+                            
+                                
+                            <td rowspan="3" style="text-align:center; padding: 10px;">
+                                    Total Marks
+                                </td>
+                            
+                            
+                        </tr>
+                        
+                            
+                        <tr>
+                            
+                                
+                            <t t-foreach="academic_value.items()" t-as="subject_data">
+                                
+                                    
+                                <t t-set="subject_key" t-value="subject_data[0]"/>
+                                
+                                    
+                                <t t-set="subject_value" t-value="subject_data[1]"/>
+                                
+                                    
+                                <t t-if="child_count == 0">
+                                    
+                                        
+                                    <t t-foreach="subject_value.items()" t-as="assessment_data">
+                                        
+                                            
+                                        <t t-set="assessment_key" t-value="assessment_data[0]"/>
+                                        
+                                            
+                                        <t t-set="assessment_value" t-value="assessment_data[1]"/>
+                                        
+                                            
+                                        <t t-if="assessment_key not in ['code', 'credit', 'lect', 'lab', 'tut', 'total_marks']">
+                                            
+                                                
+                                            <t t-foreach="assessment_value.items()" t-as="child_data">
+                                                
+                                                    
+                                                <t t-set="child_key" t-value="child_data[0]"/>
+                                                
+                                                    
+                                                <t t-set="child_value" t-value="child_data[1]"/>
+                                                
+                                                    
+                                                <td t-att-colspan="len(child_value)" style="text-align:center; padding: 10px;">
+                                                    
+                                                        
+                                                    <t t-esc="child_key"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                
+                                            </t>
+                                            
+                                            
+                                        </t>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </t>
+                                
+                                    
+                                <t t-set="child_count" t-value="child_count + 1"/>
+                                
+                                
+                            </t>
+                            
+                            
+                        </tr>
+                        
+                            
+                        <tr>
+                            
+                                
+                            <t t-foreach="academic_value.items()" t-as="subject_data">
+                                
+                                    
+                                <t t-set="subject_key" t-value="subject_data[0]"/>
+                                
+                                    
+                                <t t-set="subject_value" t-value="subject_data[1]"/>
+                                
+                                    
+                                <t t-if="mark_count == 0">
+                                    
+                                        
+                                    <t t-foreach="subject_value.items()" t-as="assessment_data">
+                                        
+                                            
+                                        <t t-set="assessment_key" t-value="assessment_data[0]"/>
+                                        
+                                            
+                                        <t t-set="assessment_value" t-value="assessment_data[1]"/>
+                                        
+                                            
+                                        <t t-if="assessment_key not in ['code', 'credit', 'lect', 'lab', 'tut', 'total_marks']">
+                                            
+                                                
+                                            <t t-foreach="assessment_value.items()" t-as="child_data">
+                                                
+                                                    
+                                                <t t-set="child_key" t-value="child_data[0]"/>
+                                                
+                                                    
+                                                <t t-set="child_value" t-value="child_data[1]"/>
+                                                
+                                                    
+                                                <t t-foreach="child_value.items()" t-as="mark_data">
+                                                    
+                                                        
+                                                    <t t-set="mark_key" t-value="mark_data[0]"/>
+                                                    
+                                                        
+                                                    <td style="text-align:center; padding: 10px;">
+                                                        
+                                                            
+                                                        <t t-if="mark_key == 'max'">
+                                                            
+                                                                
+                                                            <span>Max</span>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                            
+                                                        <t t-if="mark_key == 'passing_marks'">
+                                                            
+                                                                
+                                                            <span>Passing</span>
+                                                            
+                                                            
+                                                        </t>
+                                                        
+                                                        
+                                                    </td>
+                                                    
+                                                    
+                                                </t>
+                                                
+                                                
+                                            </t>
+                                            
+                                            
+                                        </t>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </t>
+                                
+                                    
+                                <t t-set="mark_count" t-value="mark_count + 1"/>
+                                
+                                
+                            </t>
+                            
+                            
+                        </tr>
+                        
+                        
+                    </thead>
+                    
+                        
+                    <tbody>
+                        
+                            
+                        <t t-foreach="academic_value.items()" t-as="subject_data">
+                            
+                                
+                            <t t-set="subject_key" t-value="subject_data[0]"/>
+                            
+                                
+                            <t t-set="subject_value" t-value="subject_data[1]"/>
+                            
+                                
+                            <tr>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['code']"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_key"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['credit']"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['lect']"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['lab']"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['tut']"/>
+                                    
+                                    
+                                </td>
+                                
+                                    
+                                <t t-foreach="subject_value.items()" t-as="assessment_data">
+                                    
+                                        
+                                    <t t-set="assessment_key" t-value="assessment_data[0]"/>
+                                    
+                                        
+                                    <t t-set="assessment_value" t-value="assessment_data[1]"/>
+                                    
+                                        
+                                    <t t-if="assessment_key not in ['code', 'credit', 'lect', 'lab', 'tut', 'total_marks']">
+                                        
+                                            
+                                        <t t-foreach="assessment_value.items()" t-as="child_data">
+                                            
+                                                
+                                            <t t-set="child_key" t-value="child_data[0]"/>
+                                            
+                                                
+                                            <t t-set="child_value" t-value="child_data[1]"/>
+                                            
+                                                
+                                            <t t-foreach="child_value.items()" t-as="mark_data">
+                                                
+                                                    
+                                                <t t-set="mark_key" t-value="mark_data[0]"/>
+                                                
+                                                    
+                                                <t t-set="mark_value" t-value="mark_data[1]"/>
+                                                
+                                                    
+                                                <td style="text-align:center; padding: 10px;">
+                                                    
+                                                        
+                                                    <t t-esc="mark_value"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                
+                                            </t>
+                                            
+                                            
+                                        </t>
+                                        
+                                        
+                                    </t>
+                                    
+                                    
+                                </t>
+                                
+                                    
+                                <td style="text-align:center; padding: 10px;">
+                                    
+                                        
+                                    <t t-esc="subject_value['total_marks']"/>
+                                    
+                                    
+                                </td>
+                                
+                                
+                            </tr>
+                            
+                            
+                        </t>
+                        
+                        
+                    </tbody>
+                    
+                    
+                </table>
+                
+                    
+                <div class="mt-5" style="text-align:right;">
+                    
+                        
+                    <p>
+                        
+                            
+                        <b>Lect</b>
+                        
+                            - Lecture, 
+                        <b>Tut</b>
+                         - Tutorial, 
+                        <b>Lab</b>
+                         - Lab, 
+                        <b>T</b>
+                         - Theory, 
+                        <b>P</b>
+                         -
+                            Practical
+                        
+                    </p>
+                    
+                    
+                </div>
+                
+                    
+                <div class="pb-0" style="text-align:right;">
+                    
+                        
+                    <t t-esc="datetime.date.today()"/>
+                    
+                    
+                </div>
+                
+                    
+                <p style="page-break-after: always;"/>
+                
+                
+            </t>
+            
+            
+        </div>
+        
+        
+    </t>
+    
+    
+</t>
+        </field>
+    </record>
+
+    <record id="report_student_course_enrollment" model="ir.ui.view">
+        <field name="name">report_student_course_enrollment</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.report_student_course_enrollment">
+    
+            
+    <t t-call="web.html_container">
+        
+                
+        <t t-foreach="docs" t-as="o">
+            
+                    
+            <t t-call="web.external_layout">
+                
+                        
+                <div class="page" style="font-family: 'Odoo Unicode Support Noto';">
+                    
+                            
+                    <style>
+                                .course tr:nth-of-type(odd){
+                                background-color: #f4f4f4;
+                                }
+                                .course tr:nth-of-type(even){
+                                background-color: #ffffff;
+                                }
+                                .course th, td{
+                                text-align:left;
+                                }
+                                .course td {
+                                padding: 10px;
+                                }
+                            </style>
+                    
+                            
+                    <div class="mt-6 text-center">
+                        
+                                
+                        <h4 style="position:relative;font-size:25px;padding-bottom:5px; width: 40%; display:inline-block; border-bottom:2px solid black;">
+                            
+                                    
+                            <strong>Student Course
+                                        Enrollment
+                                    </strong>
+                            
+                                
+                        </h4>
+                        
+                            
+                    </div>
+                    
+                            
+                    <br/>
+                    
+                            
+                    <table class="table-borderless mt-3" width="25%" style="line-height: 1;">
+                        
+                                
+                        <tbody>
+                            
+                                    
+                            <tr>
+                                
+                                        
+                                <t t-if="o.name">
+                                    
+                                            
+                                    <td>
+                                        
+                                                
+                                        <span t-esc="o.name" style="font-size:20px;"/>
+                                        
+                                                
+                                        <br/>
+                                        
+                                                
+                                        <t t-if="o.street">
+                                            
+                                                    
+                                            <span t-esc="o.street"/>
+                                            ,
+                                                
+                                        </t>
+                                        
+                                                
+                                        <t t-if="o.street2">
+                                            
+                                                    
+                                            <span t-esc="o.street2"/>
+                                            
+                                                
+                                        </t>
+                                        
+                                                
+                                        <br/>
+                                        
+                                                
+                                        <t t-if="o.city">
+                                            
+                                                    
+                                            <span t-esc="o.city"/>
+                                            ,
+                                                
+                                        </t>
+                                        
+                                                
+                                        <t t-if="o.state_id">
+                                            
+                                                    
+                                            <span t-esc="o.state_id.name"/>
+                                            ,
+                                                
+                                        </t>
+                                        
+                                                
+                                        <t t-if="o.zip">
+                                            
+                                                    
+                                            <span t-esc="o.zip"/>
+                                            
+                                                
+                                        </t>
+                                        
+                                                
+                                        <br/>
+                                        
+                                                
+                                        <t t-if="o.country_id.name">
+                                            
+                                                    
+                                            <span t-esc="o.country_id.name"/>
+                                            
+                                                
+                                        </t>
+                                        
+                                            
+                                    </td>
+                                    
+                                        
+                                </t>
+                                
+                                    
+                            </tr>
+                            
+                                
+                        </tbody>
+                        
+                            
+                    </table>
+                    
+                            
+                    <t t-foreach="o.course_detail_ids" t-as="course_details">
+                        
+                                
+                        <div class="mt-5">
+                            
+                                    
+                            <h3 style="font-size:20px;">
+                                
+                                        
+                                <t t-esc="course_details.course_id.name"/>
+                                
+                                    
+                            </h3>
+                            
+                                    
+                            <table class="table mt-3 course" width="100%" style="font-size:14px;">
+                                
+                                        
+                                <tbody>
+                                    
+                                            
+                                    <tr style="font-weight: bold;">
+                                        
+                                                
+                                        <td class="p-2">
+                                                    BATCH
+                                                </td>
+                                        
+                                                
+                                        <td>
+                                            
+                                                    
+                                            <t t-if="course_details.batch_id">
+                                                
+                                                        
+                                                <t t-esc="course_details.batch_id.name"/>
+                                                
+                                                    
+                                            </t>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <td class="p-2">
+                                                    ACADEMIC YEAR
+                                                </td>
+                                        
+                                                
+                                        <td>
+                                            
+                                                    
+                                            <t t-if="course_details.academic_years_id">
+                                                
+                                                        
+                                                <t t-esc="course_details.academic_years_id.name"/>
+                                                
+                                                    
+                                            </t>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <td class="p-2">
+                                                    ACADEMIC TERM
+                                                </td>
+                                        
+                                                
+                                        <td>
+                                            
+                                                    
+                                            <t t-if="course_details.academic_term_id">
+                                                
+                                                        
+                                                <t t-esc="course_details.academic_term_id.name"/>
+                                                
+                                                        (
+                                                        
+                                                <t t-esc="course_details.academic_term_id.term_start_date.strftime('%d/%m/%Y')"/>
+                                                
+                                                        to
+                                                        
+                                                <t t-esc="course_details.academic_term_id.term_end_date.strftime('%d/%m/%Y')"/>
+                                                
+                                                        )
+                                                    
+                                            </t>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <td class="p-2">
+                                                    ROLL NUMBER
+                                                </td>
+                                        
+                                                
+                                        <td>
+                                            
+                                                    
+                                            <t t-esc="course_details.roll_number"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+
+                                        
+                                </tbody>
+                                
+                                    
+                            </table>
+                            
+                                    
+                            <t t-if="course_details.subject_ids">
+                                
+                                    
+                                <table class="table course" style="font-size:14px;">
+                                    
+                                        
+                                    <tbody>
+                                        
+                                            
+                                        <tr>
+                                            
+                                                
+                                            <td colspan="5" style="text-align:left; font-weight: bold;" class="p-2">
+                                                    SUBJECTS
+                                                </td>
+                                            
+                                            
+                                        </tr>
+                                        
+                                            
+                                        <tr style="font-weight: bold;">
+                                            
+                                                
+                                            <td class="p-2">NAME</td>
+                                            
+                                                
+                                            <td>CODE</td>
+                                            
+                                                
+                                            <td>TYPE</td>
+                                            
+                                                
+                                            <td>SUBJECT TYPE</td>
+                                            
+                                                
+                                            <td>GRADE WEIGHTAGE</td>
+                                            
+                                            
+                                        </tr>
+                                        
+                                            
+                                        <t t-foreach="course_details.subject_ids" t-as="subject">
+                                            
+                                                
+                                            <tr>
+                                                
+                                                    
+                                                <td class="p-2">
+                                                    
+                                                        
+                                                    <t t-esc="subject.name"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                    
+                                                <td>
+                                                    
+                                                        
+                                                    <t t-esc="subject.code"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                    
+                                                <td>
+                                                    
+                                                        
+                                                    <span t-field="subject.type"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                    
+                                                <td>
+                                                    
+                                                        
+                                                    <span t-field="subject.subject_type"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                    
+                                                <td>
+                                                    
+                                                        
+                                                    <t t-esc="subject.grade_weightage"/>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                
+                                            </tr>
+                                            
+                                            
+                                        </t>
+                                        
+                                        
+                                    </tbody>
+                                    
+                                    
+                                </table>
+                                
+                                    
+                            </t>
+                            
+                                
+                        </div>
+                        
+                            
+                    </t>
+                    
+                        
+                </div>
+                
+                    
+            </t>
+            
+                
+        </t>
+        
+            
+    </t>
+    
+        
+</t>
+        </field>
+    </record>
+
+    <record id="report_student_information" model="ir.ui.view">
+        <field name="name">report_student_information</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<t t-name="openeducat_core_enterprise.report_student_information">
+    
+            
+    <t t-call="web.html_container">
+        
+                
+        <t t-foreach="docs" t-as="o">
+            
+                    
+            <t t-call="web.external_layout">
+                
+                        
+                <div class="page" style="font-family: 'Odoo Unicode Support Noto';">
+                    
+                            
+                    <style>
+                                th { text-align: left;}
+                            </style>
+                    
+                            
+                    <div class="text-center mb-4">
+                        
+                                
+                        <h4 style="position:relative; padding-bottom:5px; width: 32%; display:inline-block; border-bottom:2px solid black;">
+                            
+                                    
+                            <strong>Student Information</strong>
+                            
+                                
+                        </h4>
+                        
+                            
+                    </div>
+                    
+                            
+                    <table class="table" style="background:#ebebeb">
+                        
+                                
+                        <tr style="border-style: hidden;">
+                            
+                                    
+                            <td colspan="2">
+                                
+                                        
+                                <h4 class="mb-0 p-2">General Information</h4>
+                                
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                                
+                        <tr>
+                            
+                                    
+                            <td colspan="2" style="padding-top :0 !important; padding-bottom :0 !important;border-color: #ccc;">
+                                
+                                        
+                                <table class="table table-bordered mb-0 mt-0" style="background:#fff; border-color: #ccc;">
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Name
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-out="o.name"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                                
+                                        <td rowspan="5">
+                                            
+                                                    
+                                            <div class="text-center" style="background:#fff;">
+                                                
+                                                        
+                                                <img t-if="o.image_1920" class="profile_img" t-att-src="image_data_uri(o.image_1920)" style="width:120px; height:120px; object-fit: cover; margin: 10px auto; "/>
+                                                
+                                                    
+                                            </div>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Gender
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.gender"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Birth Date
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-out="o.birth_date" t-options="{'widget': 'date'}"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Age
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-out="str(relativedelta(datetime.datetime.now().date(), o.birth_date).years) + ' Years'"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Blood Group
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.blood_group"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                        
+                                </table>
+                                
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                                
+                        <tr style="border-style: hidden;">
+                            
+                                    
+                            <td colspan="2">
+                                
+                                        
+                                <h4 class="mb-0 p-2">Contact Information</h4>
+                                
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                                
+                        <tr>
+                            
+                                    
+                            <td colspan="2" class="py-0" style="padding-top :0 !important; padding-bottom :0 !important;border-color: #ccc;">
+                                
+                                        
+                                <table class="table table-bordered mb-0 mt-0" width="100%" style="empty-cells: hide; background:#fff;border-color: #ccc;">
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Email
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.email"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Mobile
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.phone"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Address
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <t t-if="o.street">
+                                                
+                                                        
+                                                <span t-esc="o.street"/>
+                                                ,
+                                                    
+                                            </t>
+                                            
+                                                    
+                                            <t t-if="o.street2">
+                                                
+                                                        
+                                                <span t-esc="o.street2"/>
+                                                
+                                                    
+                                            </t>
+                                            
+                                                    
+                                            <br/>
+                                            
+                                                    
+                                            <span t-if="o.city"/>
+                                            
+                                                    
+                                            <span t-esc="o.city"/>
+                                            ,
+                                                    
+                                            <span t-if="o.state_id"/>
+                                            
+                                                    
+                                            <span t-esc="o.state_id.name"/>
+                                            ,
+                                                    
+                                            <span t-if="o.zip"/>
+                                            
+                                                    
+                                            <span t-esc="o.zip"/>
+                                            
+                                                    
+                                            <br/>
+                                            
+                                                    
+                                            <span t-if="o.country_id.name"/>
+                                            
+                                                    
+                                            <span t-esc="o.country_id.name"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <t t-if="o.emergency_contact">
+                                        
+                                                
+                                        <tr>
+                                            
+                                                    
+                                            <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                        Emergency Contact
+                                                    </th>
+                                            
+                                                    
+                                            <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                
+                                                        
+                                                <span t-esc="o.emergency_contact.name"/>
+                                                
+                                                        
+                                                <br/>
+                                                
+                                                        
+                                                <t t-if="o.emergency_contact.email">
+                                                    
+                                                            
+                                                    <span t-esc="o.emergency_contact.mobile"/>
+                                                    
+                                                            
+                                                    <br/>
+                                                    
+                                                        
+                                                </t>
+                                                
+                                                        
+                                                <t t-if="o.emergency_contact.mobile">
+                                                    
+                                                            
+                                                    <span t-esc="o.emergency_contact.email"/>
+                                                    
+                                                            
+                                                    <br/>
+                                                    
+                                                        
+                                                </t>
+                                                
+                                                        
+                                                <t t-if="o.emergency_contact.street">
+                                                    
+                                                            
+                                                    <span t-esc="o.emergency_contact.street"/>
+                                                    ,
+                                                        
+                                                </t>
+                                                
+                                                        
+                                                <t t-if="o.emergency_contact.street2">
+                                                    
+                                                            
+                                                    <span t-esc="o.emergency_contact.street2"/>
+                                                    
+                                                        
+                                                </t>
+                                                
+                                                        
+                                                <br/>
+                                                
+                                                        
+                                                <span t-if="o.emergency_contact.city"/>
+                                                
+                                                        
+                                                <span t-esc="o.emergency_contact.city"/>
+                                                ,
+                                                        
+                                                <span t-if="o.emergency_contact.state_id"/>
+                                                
+                                                        
+                                                <span t-esc="o.emergency_contact.state_id.name"/>
+                                                ,
+                                                        
+                                                <span t-if="o.emergency_contact.zip"/>
+                                                
+                                                        
+                                                <span t-esc="o.emergency_contact.zip"/>
+                                                
+                                                        
+                                                <br/>
+                                                
+                                                        
+                                                <span t-if="o.emergency_contact.country_id.name"/>
+                                                
+                                                        
+                                                <span t-esc="o.emergency_contact.country_id.name"/>
+                                                
+                                                    
+                                            </td>
+                                            
+                                                
+                                        </tr>
+                                        
+                                            
+                                    </t>
+                                    
+                                        
+                                </table>
+                                
+
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                                
+                        <tr style="border-style: hidden;">
+                            
+                                    
+                            <td style="border:0;">
+                                
+                                        
+                                <h4 class="mb-0 p-2">Academic Information</h4>
+                                
+                                    
+                            </td>
+                            
+                                    
+                            <td style="border:0;">
+                                
+                                        
+                                <h4 class="mb-0 p-2">Citizenship Information</h4>
+                                
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                                
+                        <tr style="border-style: hidden;">
+                            
+                                    
+                            <td style="padding-top :0 !important; padding-bottom :0 !important;border-color: #ccc;">
+                                
+                                        
+                                <table t-if="o.course_detail_ids" class="table table-bordered m-0" width="100%" style="empty-cells: hide; background:#fff;border-color: #ccc;">
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    GR Number
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-out="o.gr_no"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Course
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-esc="o.get_course_batch_data(o.course_detail_ids)['courses']"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Batch
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-esc="o.get_course_batch_data(o.course_detail_ids)['batches']"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                        
+                                </table>
+                                
+                                        
+                                <t t-else="">
+                                    
+                                            
+                                    <table class="table table-bordered m-0" width="100%" style="empty-cells: hide; background:#fff;">
+                                        
+                                                
+                                        <tr>
+                                            
+                                                    
+                                            <th>
+                                                
+                                                        
+                                                <span>Academic Record not Found</span>
+                                                
+                                                    
+                                            </th>
+                                            
+                                                
+                                        </tr>
+                                        
+                                            
+                                    </table>
+                                    
+                                        
+                                </t>
+                                
+                                    
+                            </td>
+                            
+                                    
+                            <td class="ps-0 py-0" style="padding-top :0 !important; padding-bottom :0 !important; border-color: #ccc;">
+                                
+                                        
+                                <table class="table table-bordered m-0" width="100%" style="empty-cells: hide; background:#fff;border-color: #ccc;">
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Nationality
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.nationality.name"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Language
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.lang"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                            
+                                    <tr>
+                                        
+                                                
+                                        <th width="30%" style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                                    Visa Info.
+                                                </th>
+                                        
+                                                
+                                        <td style="font-size: 14px; padding: 5px 10px; color: #000;">
+                                            
+                                                    
+                                            <span t-field="o.visa_info"/>
+                                            
+                                                
+                                        </td>
+                                        
+                                            
+                                    </tr>
+                                    
+                                        
+                                </table>
+                                
+                                    
+                            </td>
+                            
+                                
+                        </tr>
+                        
+                            
+                    </table>
+                    
+                        
+                </div>
+                
+                    
+            </t>
+            
+                
+        </t>
+        
+            
+    </t>
+    
+        
+</t>
+        </field>
+    </record>
+
+    <record id="portal_breadcrumbs_inhetrite" model="ir.ui.view">
+        <field name="name">portal_breadcrumbs_inhetrite</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="Portal Breadcrumbs"/>
+        <field name="arch" type="xml">
+<data inherit_id="portal.portal_breadcrumbs" priority="99">
+    
+        
+    <xpath expr="//ol[hasclass('o_portal_submenu')]//li[1]/a" position="replace">
+        
+            
+        <t t-if="user_id.sudo().is_student">
+            
+                
+            <a href="/my" aria-label="home" title="home">
+                
+                    
+                <i class="fa fa-home"/>
+                
+                
+            </a>
+            
+            
+        </t>
+        
+            
+        <t t-if="user_id.sudo().is_parent">
+            
+                
+            <a href="/my/child/" aria-label="child" title="child">
+                
+                    
+                <i class="fa fa-home"/>
+                
+                
+            </a>
+            
+            
+        </t>
+        
+            
+        <t t-if="not (user_id.sudo().is_student or user_id.sudo().is_parent)">
+            
+                
+            <a href="/my" aria-label="home" title="home">
+                
+                    
+                <i class="fa fa-home"/>
+                
+                
+            </a>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_home_inherit3" model="ir.ui.view">
+        <field name="name">Show Academic Calendar</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="My Portal"/>
+        <field name="arch" type="xml">
+<data name="Show Academic Calendar" customize_show="True" inherit_id="portal.portal_my_home" priority="99">
+    
+        
+    <xpath expr="//div[@id='portal_openeducat_category']" position="inside">
+        
+            
+        <t t-call="portal.portal_docs_entry">
+            
+                
+            <t t-set="icon" t-value="'/openeducat_core_enterprise/static/src/img/academic-calendar.svg'"/>
+            
+                
+            <t t-set="title">Academic Calendar</t>
+            
+                
+            <t t-set="text">Track of important dates and academic events</t>
+            
+                
+            <t t-set="url" t-value="'/my/academic-calendar/'"/>
+            
+                
+            <t t-if="is_parent">
+                
+                    
+                <t t-set="url" t-value="'/my/academic-calendar/' + student_id"/>
+                
+                
+            </t>
+            
+                
+            <t t-set="config_card" t-value="True"/>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_home_inherit" model="ir.ui.view">
+        <field name="name">Show Profile</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="My Portal"/>
+        <field name="arch" type="xml">
+<data name="Show Profile" customize_show="True" inherit_id="portal.portal_my_home" priority="99">
+    
+        
+    <xpath expr="//div[@id='oe_structure_portal_my_home_1']" position="inside">
+        
+            
+        <t t-if="user_id.sudo().is_parent">
+            
+                
+            <div class="align-items-center d-flex flex-column flex-md-row justify-content-between pb-3 pb-md-0 top-header">
+                
+                    
+                <h3 class="col-sm-12 col-md-8">
+                    
+                        
+                    <span t-esc="name"/>
+                    
+                        
+                    <span>Documents</span>
+                    
+                    
+                </h3>
+                
+                    
+                <input type="search" id="searchBox" placeholder="Search Tile..." class="form-control w-100 w-md-25 col-sm-12 col-md-4"/>
+                
+                
+            </div>
+            
+            
+        </t>
+        
+            
+        <t t-else="1">
+            
+                
+            <div class="align-items-center d-flex flex-column flex-md-row justify-content-between pb-3 pb-md-0 top-header">
+                
+                    
+                <h3 class="col-sm-12 col-md-8">
+                    
+                        
+                    <t t-esc="user_id.name"/>
+                    
+                        
+                    <span>Documents</span>
+                    
+                    
+                </h3>
+                
+                    
+                <input type="search" id="searchBox" placeholder="Search Tile..." class="form-control w-100 w-md-25 col-sm-12 col-md-4"/>
+                
+                
+            </div>
+            
+            
+        </t>
+        
+            
+        
+    </xpath>
+    
+        
+    <xpath expr="//div[@id='portal_alert_category']" position="after">
+        
+            
+        <div class="o_portal_category row g-2 mt-3" id="portal_openeducat_category">
+            
+                
+            <t t-call="portal.portal_docs_entry">
+                
+                    
+                <t t-set="icon" t-value="'/openeducat_core_enterprise/static/src/img/student-profile.svg'"/>
+                
+                    
+                <t t-set="title">Student Profile</t>
+                
+                    
+                <t t-set="text">Student data for easy access and management</t>
+                
+                    
+                <t t-set="url" t-value="'/student/profile'"/>
+                
+                    
+                <t t-if="is_parent">
+                    
+                        
+                    <t t-set="url" t-value="'/student/profile/' + student_id"/>
+                    
+                    
+                </t>
+                
+                    
+                <t t-set="config_card" t-value="True"/>
+                
+                
+            </t>
+            
+            
+        </div>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+
+    <record id="portal_home_inherit2" model="ir.ui.view">
+        <field name="name">Show Subject Registration</field>
+        <field name="model"></field>
+        <field name="type">qweb</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="My Portal"/>
+        <field name="arch" type="xml">
+<data name="Show Subject Registration" customize_show="True" inherit_id="portal.portal_my_home" priority="99">
+    
+        
+    <xpath expr="//div[@id='portal_openeducat_category']" position="inside">
+        
+            
+        <t t-call="portal.portal_docs_entry">
+            
+                
+            <t t-set="icon" t-value="'/openeducat_core_enterprise/static/src/img/subject-registration.svg'"/>
+            
+                
+            <t t-set="title">Subject Registration</t>
+            
+                
+            <t t-set="text">Process of enrolling in courses and subjects</t>
+            
+                
+            <t t-set="url" t-value="'/subject/registration/'"/>
+            
+                
+            <t t-if="is_parent">
+                
+                    
+                <t t-set="url" t-value="'/subject/registration/' + student_id"/>
+                
+                
+            </t>
+            
+                
+            <t t-set="config_card" t-value="True"/>
+            
+                
+            <t t-set="show_oe_count" t-value="True"/>
+            
+                
+            <t t-set="oe_count" t-value="registartion_count or 0"/>
+            
+            
+        </t>
+        
+        
+    </xpath>
+    
+        
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+        
+            
+        <t t-set="portal_alert_category_enable" t-value="True"/>
+        
+            
+        <t t-set="portal_client_category_enable" t-value="True"/>
+        
+        
+    </xpath>
+    
+    
+</data>
+        </field>
+    </record>
+</odoo>

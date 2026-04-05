@@ -1,5 +1,5 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
 
 export class SettingsConfirmationDialog extends ConfirmationDialog {
     static template = "web.SettingsConfirmationDialog";
@@ -8,7 +8,7 @@ export class SettingsConfirmationDialog extends ConfirmationDialog {
     };
     static props = {
         ...ConfirmationDialog.props,
-        stayHere: { type: Function, optional: true },
+        stayHere: {type: Function, optional: true},
     };
 
     _stayHere() {

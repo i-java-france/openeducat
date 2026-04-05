@@ -10,18 +10,18 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { LazyComponent, loadBundle } from "@web/core/assets";
-import { Deferred } from "@web/core/utils/concurrency";
-import { uniqueId } from "@web/core/utils/functions";
-import { useChildRef, useForwardRefToParent } from "@web/core/utils/hooks";
-import { renderToFragment } from "@web/core/utils/render";
-import { LocalOverlayContainer } from "@html_editor/local_overlay_container";
-import { Editor } from "@html_editor/editor";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
-import { closestScrollableY } from "@web/core/utils/scrolling";
-import { _t } from "@web/core/l10n/translation";
-import { localization } from "@web/core/l10n/localization";
-import { isBrowserSafari } from "@web/core/browser/feature_detection";
+import {LazyComponent, loadBundle} from "@web/core/assets";
+import {Deferred} from "@web/core/utils/concurrency";
+import {uniqueId} from "@web/core/utils/functions";
+import {useChildRef, useForwardRefToParent} from "@web/core/utils/hooks";
+import {renderToFragment} from "@web/core/utils/render";
+import {LocalOverlayContainer} from "@html_editor/local_overlay_container";
+import {Editor} from "@html_editor/editor";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
+import {closestScrollableY} from "@web/core/utils/scrolling";
+import {_t} from "@web/core/l10n/translation";
+import {localization} from "@web/core/l10n/localization";
+import {isBrowserSafari} from "@web/core/browser/feature_detection";
 
 const IFRAME_VALUE_SELECTOR = ".o_mass_mailing_value";
 const MASS_MAILING_IFRAME_ASSETS = [
@@ -48,7 +48,7 @@ export function useOverlayServiceOffset() {
         };
         return originalOverlay.add(C, props, opts);
     };
-    useSubEnv({ services: subServices });
+    useSubEnv({services: subServices});
 }
 
 export class MassMailingIframe extends Component {
@@ -58,17 +58,17 @@ export class MassMailingIframe extends Component {
         LocalOverlayContainer,
     };
     static props = {
-        config: { type: Object },
-        iframeRef: { type: Function },
-        showThemeSelector: { type: Boolean, optional: true },
-        onIframeLoad: { type: Function, optional: true },
-        showCodeView: { type: Boolean, optional: true },
-        toggleCodeView: { type: Function, optional: true },
-        readonly: { type: Boolean, optional: true },
-        onEditorLoad: { type: Function, optional: true },
-        onBlur: { type: Function, optional: true },
-        extraClass: { type: String, optional: true },
-        withBuilder: { type: Boolean, optional: true },
+        config: {type: Object},
+        iframeRef: {type: Function},
+        showThemeSelector: {type: Boolean, optional: true},
+        onIframeLoad: {type: Function, optional: true},
+        showCodeView: {type: Boolean, optional: true},
+        toggleCodeView: {type: Function, optional: true},
+        readonly: {type: Boolean, optional: true},
+        onEditorLoad: {type: Function, optional: true},
+        onBlur: {type: Function, optional: true},
+        extraClass: {type: String, optional: true},
+        withBuilder: {type: Boolean, optional: true},
     };
     static defaultProps = {
         onEditorLoad: () => {},
@@ -164,7 +164,9 @@ export class MassMailingIframe extends Component {
                 }
                 const top = scrollableY
                     ? `${
-                          -1 * (parseInt(getComputedStyle(scrollableY).paddingTop) || 0) +
+                          -1 *
+                              (parseInt(getComputedStyle(scrollableY).paddingTop) ||
+                                  0) +
                           stickyHeight
                       }px`
                     : `${stickyHeight}px`;
@@ -234,7 +236,9 @@ export class MassMailingIframe extends Component {
         const htmlResizeObserver = new ResizeObserver(this.throttledResize);
         this.iframeRef.el.contentDocument.body.classList.add("o_in_iframe");
         if (this.props.withBuilder) {
-            this.iframeRef.el.contentDocument.body.classList.add("o_mass_mailing_with_builder");
+            this.iframeRef.el.contentDocument.body.classList.add(
+                "o_mass_mailing_with_builder"
+            );
         } else {
             this.iframeRef.el.contentDocument.body.classList.add("bg-white");
         }
@@ -244,7 +248,9 @@ export class MassMailingIframe extends Component {
         );
         if (this.props.readonly) {
             this.retargetLinks(
-                this.iframeRef.el.contentDocument.body.querySelector(IFRAME_VALUE_SELECTOR)
+                this.iframeRef.el.contentDocument.body.querySelector(
+                    IFRAME_VALUE_SELECTOR
+                )
             );
             this.fixInlineDynamicPlaceholders(this.iframeRef.el);
         }
@@ -253,7 +259,10 @@ export class MassMailingIframe extends Component {
         this.iframeRef.el.contentWindow.addEventListener("beforeUnload", () => {
             this.iframeRef.el.removeAttribute("is-ready");
         });
-        this.iframeRef.el.contentWindow.addEventListener("blur", this.onBlur.bind(this));
+        this.iframeRef.el.contentWindow.addEventListener(
+            "blur",
+            this.onBlur.bind(this)
+        );
         this.iframeLoaded.resolve({
             iframe: this.iframeRef.el,
             bundleControls: this.bundleControls,
@@ -277,7 +286,8 @@ export class MassMailingIframe extends Component {
                 } else {
                     return (
                         child.nodeType !== Node.ELEMENT_NODE ||
-                        iframe.contentWindow.getComputedStyle(child).display === "inline"
+                        iframe.contentWindow.getComputedStyle(child).display ===
+                            "inline"
                     );
                 }
             });
@@ -324,9 +334,15 @@ export class MassMailingIframe extends Component {
                             return;
                         }
                         for (const target of targets) {
-                            if (enable && !iframe.contentDocument.head.contains(target)) {
+                            if (
+                                enable &&
+                                !iframe.contentDocument.head.contains(target)
+                            ) {
                                 iframe.contentDocument.head.appendChild(target);
-                            } else if (!enable && iframe.contentDocument.head.contains(target)) {
+                            } else if (
+                                !enable &&
+                                iframe.contentDocument.head.contains(target)
+                            ) {
                                 target.remove();
                             }
                         }
@@ -371,7 +387,8 @@ export class MassMailingIframe extends Component {
                 this.props.onEditorLoad(editor);
             },
             getThemeTab: () =>
-                odoo.loader.modules.get("@mass_mailing/builder/tabs/design_tab").DesignTab,
+                odoo.loader.modules.get("@mass_mailing/builder/tabs/design_tab")
+                    .DesignTab,
             themeTabDisplayName: _t("Design"),
         };
     }

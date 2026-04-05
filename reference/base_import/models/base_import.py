@@ -452,7 +452,7 @@ class Base_ImportImport(models.TransientModel):
                         else dt.date()
                     )
                 elif cell.ctype is xlrd.XL_CELL_BOOLEAN:
-                    values.append(u'True' if cell.value else u'False')
+                    values.append('True' if cell.value else 'False')
                 elif cell.ctype is xlrd.XL_CELL_ERROR:
                     raise ValueError(
                         _("Invalid cell value at row %(row)s, column %(col)s: %(cell_value)s") % {
@@ -1217,7 +1217,7 @@ class Base_ImportImport(models.TransientModel):
             if 'E' in line[index] or 'e' in line[index]:
                 tmp_value = line[index].replace(thousand_separator, '.')
                 try:
-                    tmp_value = '{:f}'.format(float(tmp_value))
+                    tmp_value = f'{float(tmp_value):f}'
                     line[index] = tmp_value
                     thousand_separator = ' '
                 except Exception:
@@ -1428,7 +1428,7 @@ class Base_ImportImport(models.TransientModel):
         }
 
         for row_index, row in enumerate(input_file_data):
-            for field_name, value in zip(import_fields, row):
+            for field_name, value in zip(import_fields, row, strict=False):
                 if not isinstance(value, (datetime.date, datetime.datetime)):
                     continue
 

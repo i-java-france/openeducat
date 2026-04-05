@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 
-from odoo.tests import Form, tagged
 from odoo import Command
 from odoo.exceptions import RedirectWarning
+from odoo.tests import Form, tagged
 
 from odoo.addons.analytic.tests.common import AnalyticCommon
 

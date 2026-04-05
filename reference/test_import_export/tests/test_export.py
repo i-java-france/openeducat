@@ -5,6 +5,7 @@ from unittest.mock import patch
 from odoo import Command, http
 from odoo.tests import common, tagged, warmup
 from odoo.tools.misc import get_lang
+
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 
 

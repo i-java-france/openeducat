@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.website_slides.tests import common
 from odoo.tests import tagged
 from odoo.tests.common import users
 from odoo.tools import mute_logger
+
+from odoo.addons.website_slides.tests import common
 
 
 @tagged('gamification')
 class TestKarmaGain(common.SlidesCase):
 
     def setUp(self):
-        super(TestKarmaGain, self).setUp()
+        super().setUp()
 
         self.channel_2 = self.env['slide.channel'].with_user(self.user_officer).create({
             'name': 'Test Channel 2',

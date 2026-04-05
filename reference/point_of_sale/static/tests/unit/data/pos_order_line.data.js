@@ -1,4 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class PosOrderLine extends models.ServerModel {
     _name = "pos.order.line";

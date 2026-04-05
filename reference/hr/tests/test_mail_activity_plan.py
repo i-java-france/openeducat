@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from freezegun import freeze_time
 
-from odoo import fields, Command
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
+from odoo import Command, fields
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import tagged, users
+
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
 
 
 class ActivityScheduleHRCase(ActivityScheduleCase):

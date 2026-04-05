@@ -315,7 +315,7 @@ class SaleProductConfiguratorController(Controller):
             for attr_data in ptals.attribute_id.read(['id', 'name', 'display_type'])
         }
         ptavs = ptals.product_template_value_ids.filtered(lambda p: p.ptav_active or combination and p.id in combination.ids)
-        ptavs_map = dict(zip(ptavs.ids, ptavs.read(['name', 'html_color', 'image', 'is_custom'])))
+        ptavs_map = dict(zip(ptavs.ids, ptavs.read(['name', 'html_color', 'image', 'is_custom']), strict=False))
 
         values = dict(
             product_tmpl_id=product_template.id,

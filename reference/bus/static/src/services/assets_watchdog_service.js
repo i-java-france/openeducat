@@ -1,16 +1,16 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
 
 export const assetsWatchdogService = {
     dependencies: ["bus_service", "notification"],
 
-    start(env, { bus_service, notification }) {
+    start(env, {bus_service, notification}) {
         let isNotificationDisplayed = false;
         let bundleNotifTimerID = null;
 
-        bus_service.subscribe("bundle_changed", ({ server_version }) => {
+        bus_service.subscribe("bundle_changed", ({server_version}) => {
             if (server_version !== session.server_version) {
                 displayBundleChangedNotification();
             }

@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { withSequence } from "@html_editor/utils/resource";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {withSequence} from "@html_editor/utils/resource";
 
 /**
  * @typedef {((arg: { sourceEl: HTMLElement, targetEl: HTMLElement }) => void)[]} after_replication_handlers
@@ -25,13 +25,24 @@ export class FieldChangeReplicationPlugin extends Plugin {
      */
     handleMutations(records) {
         records
-            .filter((r) => !(r.type === "attributes" && r.attributeName.startsWith("data-oe-t")))
+            .filter(
+                (r) =>
+                    !(
+                        r.type === "attributes" &&
+                        r.attributeName.startsWith("data-oe-t")
+                    )
+            )
             .map((r) =>
-                closestElement(r.target, "[data-oe-model], [data-oe-translation-source-sha]")
+                closestElement(
+                    r.target,
+                    "[data-oe-model], [data-oe-translation-source-sha]"
+                )
             )
             .filter(Boolean)
             // Do not forward "unstyled" copies to other nodes.
-            .filter((fieldEl) => !fieldEl.classList.contains("o_translation_without_style"))
+            .filter(
+                (fieldEl) => !fieldEl.classList.contains("o_translation_without_style")
+            )
             .forEach((fieldEl) => this.fieldsToReplicate.add(fieldEl));
     }
 
@@ -51,7 +62,8 @@ export class FieldChangeReplicationPlugin extends Plugin {
                 `[${attribute}=${quote}${sourceEl.getAttribute(attribute)}${quote}]`;
             let selector = "";
             if (sourceEl.getAttribute("data-oe-model")) {
-                selector += same("data-oe-model") + same("data-oe-id") + same("data-oe-field");
+                selector +=
+                    same("data-oe-model") + same("data-oe-id") + same("data-oe-field");
             }
             if (sourceEl.getAttribute("data-oe-translation-source-sha")) {
                 selector += same("data-oe-translation-source-sha");
@@ -93,7 +105,7 @@ export class FieldChangeReplicationPlugin extends Plugin {
             if (targetEls.length) {
                 const cloneEl = sourceEl.cloneNode(true);
                 this.dependencies.dom.removeSystemProperties(cloneEl);
-                this.dispatchTo("clean_for_save_handlers", { root: cloneEl });
+                this.dispatchTo("clean_for_save_handlers", {root: cloneEl});
                 for (const targetEl of targetEls) {
                     if (targetEl.classList.contains("o_translation_without_style")) {
                         // For generated elements such as the navigation
@@ -105,11 +117,13 @@ export class FieldChangeReplicationPlugin extends Plugin {
                         }
                     } else {
                         if (targetEl.innerHTML !== cloneEl.innerHTML) {
-                            targetEl.replaceChildren(...cloneEl.cloneNode(true).childNodes);
+                            targetEl.replaceChildren(
+                                ...cloneEl.cloneNode(true).childNodes
+                            );
                             touchedEls.add(targetEl);
                         }
                     }
-                    this.dispatchTo("after_replication_handlers", { sourceEl, targetEl });
+                    this.dispatchTo("after_replication_handlers", {sourceEl, targetEl});
                 }
             }
         }

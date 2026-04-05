@@ -1,8 +1,8 @@
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { register_payment_method } from "@point_of_sale/app/services/pos_store";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {register_payment_method} from "@point_of_sale/app/services/pos_store";
 
 export class PaymentMollie extends PaymentInterface {
     setup() {
@@ -43,14 +43,20 @@ export class PaymentMollie extends PaymentInterface {
 
     async _createMolliePayment(paymentLine) {
         try {
-            const data = await this.pos.data.call("pos.payment.method", "mollie_create_payment", [
-                this.payment_method_id.id,
-                paymentLine.amount,
-                paymentLine.uuid,
-                this.pos.session.id,
-            ]);
+            const data = await this.pos.data.call(
+                "pos.payment.method",
+                "mollie_create_payment",
+                [
+                    this.payment_method_id.id,
+                    paymentLine.amount,
+                    paymentLine.uuid,
+                    this.pos.session.id,
+                ]
+            );
             if (!["open", "pending"].includes(data.status)) {
-                this._showMollieError(_t("Failed to initiate payment: %s", data.status));
+                this._showMollieError(
+                    _t("Failed to initiate payment: %s", data.status)
+                );
                 return false;
             }
 
@@ -62,7 +68,7 @@ export class PaymentMollie extends PaymentInterface {
             paymentLine.transaction_id = data.id;
             await this.pos.data.synchronizeLocalDataInIndexedDB();
 
-            const { promise, resolve } = Promise.withResolvers();
+            const {promise, resolve} = Promise.withResolvers();
             this.paymentLineResolvers[paymentLine.uuid] = resolve;
 
             return promise;
@@ -74,13 +80,17 @@ export class PaymentMollie extends PaymentInterface {
 
     async _createMollieRefund(refundPaymentLine, originalPaymentId) {
         try {
-            const data = await this.pos.data.call("pos.payment.method", "mollie_create_refund", [
-                this.payment_method_id.id,
-                originalPaymentId,
-                Math.abs(refundPaymentLine.amount),
-                refundPaymentLine.uuid,
-                this.pos.session.id,
-            ]);
+            const data = await this.pos.data.call(
+                "pos.payment.method",
+                "mollie_create_refund",
+                [
+                    this.payment_method_id.id,
+                    originalPaymentId,
+                    Math.abs(refundPaymentLine.amount),
+                    refundPaymentLine.uuid,
+                    this.pos.session.id,
+                ]
+            );
 
             if (!["queued", "pending"].includes(data.status)) {
                 this._showMollieError(_t("Failed to initiate refund: %s", data.status));
@@ -105,7 +115,8 @@ export class PaymentMollie extends PaymentInterface {
         const amountDue = Math.abs(currentOrder.remainingDue);
         const matchedPaymentLine = orderToRefund.payment_ids.find(
             (line) =>
-                line.payment_method_id.use_payment_terminal === "mollie" && line.amount <= amountDue
+                line.payment_method_id.use_payment_terminal === "mollie" &&
+                line.amount <= amountDue
         );
 
         return matchedPaymentLine?.transaction_id ?? null;

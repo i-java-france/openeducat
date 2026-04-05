@@ -1,13 +1,14 @@
 import datetime
-
 from contextlib import contextmanager, nullcontext
-from freezegun import freeze_time
 from unittest import mock
 
-from odoo.addons.point_of_sale.models.pos_order import PosOrder
+from freezegun import freeze_time
+
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.point_of_sale.models.pos_order import PosOrder
 
 from .common import TestL10nEsEdiVerifactuPosCommon
 

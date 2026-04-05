@@ -6,7 +6,7 @@ from collections import deque
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import UnprocessableEntity
 
-from odoo import http, _
+from odoo import _, http
 from odoo.http import content_disposition, request
 from odoo.tools import osutil
 

@@ -1,8 +1,8 @@
-import { Thread } from "@mail/core/common/thread_model";
-import { discussSidebarChannelIndicatorsRegistry } from "@mail/discuss/core/public_web/discuss_sidebar_categories";
+import {Thread} from "@mail/core/common/thread_model";
+import {discussSidebarChannelIndicatorsRegistry} from "@mail/discuss/core/public_web/discuss_sidebar_categories";
 
-import { Component } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -11,7 +11,7 @@ import { useService } from "@web/core/utils/hooks";
  */
 export class DiscussSidebarCallIndicator extends Component {
     static template = "mail.DiscussSidebarCallIndicator";
-    static props = { thread: { type: Thread } };
+    static props = {thread: {type: Thread}};
     static components = {};
 
     setup() {
@@ -21,4 +21,7 @@ export class DiscussSidebarCallIndicator extends Component {
     }
 }
 
-discussSidebarChannelIndicatorsRegistry.add("call-indicator", DiscussSidebarCallIndicator);
+discussSidebarChannelIndicatorsRegistry.add(
+    "call-indicator",
+    DiscussSidebarCallIndicator
+);

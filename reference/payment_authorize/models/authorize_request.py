@@ -3,7 +3,6 @@
 import json
 import logging
 import pprint
-
 from uuid import uuid4
 
 import requests

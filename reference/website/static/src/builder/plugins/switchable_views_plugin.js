@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { SwitchableViews } from "./switchable_views";
+import {Plugin} from "@html_editor/plugin";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {SwitchableViews} from "./switchable_views";
 
 /**
  * @typedef { Object } SwitchableViewsShared
@@ -31,7 +31,10 @@ export class SwitchableViewsPlugin extends Plugin {
                 this.prom.then((views) => {
                     for (const view of views) {
                         const promise = Promise.resolve(view.active);
-                        this.dependencies.customizeWebsite.populateCache(view.key, promise);
+                        this.dependencies.customizeWebsite.populateCache(
+                            view.key,
+                            promise
+                        );
                     }
                 });
             } else {
@@ -42,4 +45,6 @@ export class SwitchableViewsPlugin extends Plugin {
     }
 }
 
-registry.category("website-plugins").add(SwitchableViewsPlugin.id, SwitchableViewsPlugin);
+registry
+    .category("website-plugins")
+    .add(SwitchableViewsPlugin.id, SwitchableViewsPlugin);

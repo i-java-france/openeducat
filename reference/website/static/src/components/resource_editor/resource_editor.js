@@ -1,20 +1,27 @@
-import { CodeEditor } from "@web/core/code_editor/code_editor";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { user } from "@web/core/user";
-import { sortBy } from "@web/core/utils/arrays";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { useService } from "@web/core/utils/hooks";
+import {CodeEditor} from "@web/core/code_editor/code_editor";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {CheckboxItem} from "@web/core/dropdown/checkbox_item";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {user} from "@web/core/user";
+import {sortBy} from "@web/core/utils/arrays";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {useService} from "@web/core/utils/hooks";
 
-import { ResourceEditorWarningOverlay } from "./resource_editor_warning";
-import { checkSCSS, checkXML, formatXML } from "./utils";
+import {ResourceEditorWarningOverlay} from "./resource_editor_warning";
+import {checkSCSS, checkXML, formatXML} from "./utils";
 
-import { Component, onWillUnmount, onWillStart, reactive, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onWillUnmount,
+    onWillStart,
+    reactive,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
 const BUNDLES_RESTRICTION = [
     "web.assets_frontend",
@@ -33,7 +40,7 @@ export class ResourceEditor extends Component {
     };
     static template = "website.ResourceEditor";
     static props = {
-        close: { type: Function, optional: true },
+        close: {type: Function, optional: true},
     };
     static defaultProps = {
         close: () => {},
@@ -135,7 +142,8 @@ export class ResourceEditor extends Component {
     get selectMenuProps() {
         const props = {
             onSelect: (value) => {
-                this.state.currentResource = this.state.resources[this.state.type][value];
+                this.state.currentResource =
+                    this.state.resources[this.state.type][value];
             },
             autoSort: false,
             required: true,
@@ -146,16 +154,19 @@ export class ResourceEditor extends Component {
                 label: view.label,
             }));
             const value = this.state.currentResource?.id;
-            return { ...props, choices, value };
+            return {...props, choices, value};
         } else {
-            const { type, sortedSCSS, sortedJS } = this.state;
+            const {type, sortedSCSS, sortedJS} = this.state;
             const bundles = type === "scss" ? sortedSCSS : sortedJS;
             const groups = bundles.map(([name, files]) => {
-                const choices = files.map((file) => ({ value: file.url, label: file.label }));
-                return { label: name, choices };
+                const choices = files.map((file) => ({
+                    value: file.url,
+                    label: file.label,
+                }));
+                return {label: name, choices};
             });
             const value = this.state.currentResource?.url;
-            return { ...props, groups, value };
+            return {...props, groups, value};
         }
     }
 
@@ -189,13 +200,14 @@ export class ResourceEditor extends Component {
                 only_user_custom_files: this.state.scssFilter === "custom",
             })
         );
-        this.state.resources = { xml: {}, js: {}, scss: {} };
+        this.state.resources = {xml: {}, js: {}, scss: {}};
         this.processResources(resources.views || [], "xml");
         this.processResources(resources.scss || [], "scss");
         this.processResources(resources.js || [], "js");
         const type = this.state.type;
         if (this.state.currentResource) {
-            this.state.currentResource = this.state.resources[type][this.state.currentResource.id];
+            this.state.currentResource =
+                this.state.resources[type][this.state.currentResource.id];
         }
         if (!this.state.currentResource) {
             this.setDefaultFile();
@@ -298,15 +310,20 @@ export class ResourceEditor extends Component {
             throw new Error(_t("Reseting views is not supported yet"));
         }
         const resource = this.state.currentResource;
-        await this.orm.call("website.assets", "reset_asset", [resource.url, resource.bundle], {
-            context: this.context,
-        });
+        await this.orm.call(
+            "website.assets",
+            "reset_asset",
+            [resource.url, resource.bundle],
+            {
+                context: this.context,
+            }
+        );
         await this.loadResources();
         this.website.contentWindow.location.reload();
     }
 
     async saveResources() {
-        const { js, scss, xml } = this.state.resources;
+        const {js, scss, xml} = this.state.resources;
         const toSave = {
             js: Object.values(js).filter((r) => r.dirty),
             scss: Object.values(scss).filter((r) => r.dirty),
@@ -320,9 +337,10 @@ export class ResourceEditor extends Component {
         for (const [type, resources] of Object.entries(toSave)) {
             for (let i = 0; i < resources.length; i++) {
                 const arch = resources[i].arch;
-                const { isValid, error } = type === "xml" ? checkXML(arch) : checkSCSS(arch);
+                const {isValid, error} =
+                    type === "xml" ? checkXML(arch) : checkSCSS(arch);
                 if (!isValid) {
-                    this.errors.push({ error, resource: resources[i] });
+                    this.errors.push({error, resource: resources[i]});
                 }
             }
         }
@@ -330,7 +348,7 @@ export class ResourceEditor extends Component {
             // switch to the first resource in error if the current has no error
             if (
                 !this.errors
-                    .map(({ resource }) => resource.id)
+                    .map(({resource}) => resource.id)
                     .includes(this.state.currentResource.id)
             ) {
                 this.state.currentResource = this.errors[0].resource;
@@ -361,14 +379,16 @@ export class ResourceEditor extends Component {
      * @return {Promise} indicates if the save is finished or if an error occured.
      */
     async saveSCSSorJS(resource) {
-        const { url, arch } = resource;
+        const {url, arch} = resource;
         const isJSFile = String(url).endsWith(".js");
         const bundle = isJSFile
             ? this.state.resources.js[url].bundle
             : this.state.resources.scss[url].bundle;
         const fileType = isJSFile ? "js" : "scss";
         const params = [url, bundle, arch, fileType];
-        await this.orm.call("website.assets", "save_asset", params, { context: this.context });
+        await this.orm.call("website.assets", "save_asset", params, {
+            context: this.context,
+        });
         delete resource.dirty;
     }
 
@@ -379,7 +399,7 @@ export class ResourceEditor extends Component {
      * @returns {Promise} indicates if the save is finished or if an error occured.
      */
     async saveXML(resource) {
-        const { id, arch } = resource;
+        const {id, arch} = resource;
         await rpc("/website/save_xml", {
             view_id: id,
             arch: arch,
@@ -390,7 +410,9 @@ export class ResourceEditor extends Component {
     setDefaultFile() {
         if (this.state.type === "xml") {
             const views = Object.values(this.state.resources.xml);
-            let view = views.find((view) => [view.id, view.xml_id].includes(this.viewKey));
+            let view = views.find((view) =>
+                [view.id, view.xml_id].includes(this.viewKey)
+            );
             if (!view) {
                 view = views.find((view) => view.key === this.viewKey);
             }
@@ -401,7 +423,9 @@ export class ResourceEditor extends Component {
             // otherwise, not reading the comment inside explaining how that
             // file should be used.
             this.state.currentResource =
-                this.state.resources.scss["/website/static/src/scss/user_custom_rules.scss"];
+                this.state.resources.scss[
+                    "/website/static/src/scss/user_custom_rules.scss"
+                ];
         } else {
             this.state.currentResource =
                 this.state.sortedJS.map(([_, files]) => files).flat()[0] || false;
@@ -414,10 +438,13 @@ export class ResourceEditor extends Component {
             return;
         }
         const resourceId = this.state.currentResource.id;
-        const error = this.errors.find(({ resource }) => resource.id === resourceId)?.error;
+        const error = this.errors.find(
+            ({resource}) => resource.id === resourceId
+        )?.error;
         if (error) {
-            const { line, message } = error;
-            const gutterCell = this.editorRef.el.querySelectorAll(".ace_gutter-cell")[line - 1];
+            const {line, message} = error;
+            const gutterCell =
+                this.editorRef.el.querySelectorAll(".ace_gutter-cell")[line - 1];
             if (gutterCell && !gutterCell.classList.contains("o_error")) {
                 gutterCell.classList.add("o_error");
                 gutterCell.setAttribute("data-tooltip", message);
@@ -475,11 +502,13 @@ export class ResourceEditor extends Component {
 
     onFormat() {
         if (this.state.type === "xml") {
-            const { isValid, error } = checkXML(this.state.currentResource.arch);
+            const {isValid, error} = checkXML(this.state.currentResource.arch);
             if (isValid) {
-                this.state.currentResource.arch = formatXML(this.state.currentResource.arch);
+                this.state.currentResource.arch = formatXML(
+                    this.state.currentResource.arch
+                );
             } else {
-                this.errors.push({ error, resource: this.state.currentResource });
+                this.errors.push({error, resource: this.state.currentResource});
             }
         }
     }

@@ -2,7 +2,7 @@
 
 from ast import literal_eval
 
-from odoo import _, models, fields
+from odoo import _, fields, models
 from odoo.fields import Domain
 from odoo.tools import html2plaintext
 

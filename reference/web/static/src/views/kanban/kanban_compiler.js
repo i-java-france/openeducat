@@ -5,8 +5,8 @@ import {
     extractAttributes,
     getTag,
 } from "@web/core/utils/xml";
-import { toStringExpression } from "@web/views/utils";
-import { toInterpolatedStringExpression, ViewCompiler } from "@web/views/view_compiler";
+import {toStringExpression} from "@web/views/utils";
+import {toInterpolatedStringExpression, ViewCompiler} from "@web/views/view_compiler";
 
 /**
  * @typedef {Object} DropdownDef
@@ -30,8 +30,8 @@ const SPECIAL_TYPES = [
 export class KanbanCompiler extends ViewCompiler {
     setup() {
         this.compilers.push(
-            { selector: "t[t-call]", fn: this.compileTCall },
-            { selector: "img", fn: this.compileImage }
+            {selector: "t[t-call]", fn: this.compileTCall},
+            {selector: "img", fn: this.compileImage}
         );
     }
 
@@ -61,11 +61,11 @@ export class KanbanCompiler extends ViewCompiler {
 
         const nodeParams = extractAttributes(el, ["type"]);
         if (type === "set_cover") {
-            const { "auto-open": autoOpen, "data-field": fieldName } = extractAttributes(el, [
-                "auto-open",
-                "data-field",
-            ]);
-            Object.assign(nodeParams, { autoOpen, fieldName });
+            const {"auto-open": autoOpen, "data-field": fieldName} = extractAttributes(
+                el,
+                ["auto-open", "data-field"]
+            );
+            Object.assign(nodeParams, {autoOpen, fieldName});
         }
         const strParams = Object.entries(nodeParams)
             .map(([k, v]) => [k, toStringExpression(v)].join(":"))
@@ -73,7 +73,7 @@ export class KanbanCompiler extends ViewCompiler {
         el.setAttribute("t-on-click", `()=>__comp__.triggerAction({${strParams}})`);
 
         const compiled = createElement(el.nodeName);
-        for (const { name, value } of el.attributes) {
+        for (const {name, value} of el.attributes) {
             compiled.setAttribute(name, value);
         }
         if (getTag(el, true) === "a" && !compiled.hasAttribute("href")) {
@@ -105,7 +105,9 @@ export class KanbanCompiler extends ViewCompiler {
             // fields without a specified widget are rendered as simple spans in kanban records
             const fieldId = el.getAttribute("field_id");
             compiled = createElement("span", {
-                "t-out": params.formattedValueExpr || `__comp__.getFormattedValue("${fieldId}")`,
+                "t-out":
+                    params.formattedValueExpr ||
+                    `__comp__.getFormattedValue("${fieldId}")`,
             });
         } else {
             compiled = super.compileField(el, params);
@@ -118,7 +120,10 @@ export class KanbanCompiler extends ViewCompiler {
             // view dialog.
             const readonlyAttr = compiled.getAttribute("readonly");
             if (readonlyAttr) {
-                compiled.setAttribute("readonly", `${recordExpr}.isInEdition || (${readonlyAttr})`);
+                compiled.setAttribute(
+                    "readonly",
+                    `${recordExpr}.isInEdition || (${readonlyAttr})`
+                );
             } else {
                 compiled.setAttribute("readonly", `${recordExpr}.isInEdition`);
             }
@@ -165,7 +170,10 @@ export class KanbanCompiler extends ViewCompiler {
         const compiled = this.compileGenericNode(el, params);
         const tname = el.getAttribute("t-call");
         if (tname in this.templates) {
-            compiled.setAttribute("t-call", `{{__comp__.templates[${toStringExpression(tname)}]}}`);
+            compiled.setAttribute(
+                "t-call",
+                `{{__comp__.templates[${toStringExpression(tname)}]}}`
+            );
         }
         return compiled;
     }

@@ -1,7 +1,7 @@
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
 // Previously ProxyStatusWidget
 export class ProxyStatus extends Component {
@@ -17,7 +17,7 @@ export class ProxyStatus extends Component {
 
     get message() {
         if (this.connectionInfo.status === "connected") {
-            const { drivers } = this.connectionInfo;
+            const {drivers} = this.connectionInfo;
             const {
                 iface_scan_via_proxy,
                 iface_print_via_proxy,
@@ -42,7 +42,7 @@ export class ProxyStatus extends Component {
                 },
             ];
             const disconnectedDevices = devices.filter(
-                ({ enabled, driver }) =>
+                ({enabled, driver}) =>
                     enabled && !["connected", "connecting"].includes(driver?.status)
             );
             if (disconnectedDevices.length) {

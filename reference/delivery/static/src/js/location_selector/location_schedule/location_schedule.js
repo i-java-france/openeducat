@@ -1,8 +1,8 @@
-import { Component } from '@odoo/owl';
-import { _t } from '@web/core/l10n/translation';
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 export class LocationSchedule extends Component {
-    static template = 'delivery.locationSelector.schedule';
+    static template = "delivery.locationSelector.schedule";
     static props = {
         openingHours: {
             type: Object,
@@ -12,7 +12,7 @@ export class LocationSchedule extends Component {
                 optional: true,
             },
         },
-        wrapClass: { type: String, optional: true },
+        wrapClass: {type: String, optional: true},
     };
 
     /**

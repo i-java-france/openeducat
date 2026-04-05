@@ -1,8 +1,8 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { _t } from "@web/core/l10n/translation";
-import { CategoryAddDialog } from "@website_slides/js/public/components/category_add_dialog/category_add_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {CategoryAddDialog} from "@website_slides/js/public/components/category_add_dialog/category_add_dialog";
 
 export class CategoryAdd extends Interaction {
     static selector = ".o_wslides_js_slide_section_add";
@@ -17,7 +17,7 @@ export class CategoryAdd extends Interaction {
         this.services.dialog.add(CategoryAddDialog, {
             title: _t("Add a section"),
             confirmLabel: _t("Save"),
-            confirm: ({ formEl }) => {
+            confirm: ({formEl}) => {
                 if (!formEl.checkValidity()) {
                     return false;
                 }
@@ -26,7 +26,7 @@ export class CategoryAdd extends Interaction {
                 return true;
             },
             cancelLabel: _t("Cancel"),
-            cancel: () => { },
+            cancel: () => {},
             channelId,
         });
     }

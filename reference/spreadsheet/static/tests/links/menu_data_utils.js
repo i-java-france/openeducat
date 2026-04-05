@@ -1,5 +1,5 @@
-import { getBasicData } from "@spreadsheet/../tests/helpers/data";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {getBasicData} from "@spreadsheet/../tests/helpers/data";
+import {serverState} from "@web/../tests/web_test_helpers";
 
 export function getMenuServerData() {
     const serverData = {};
@@ -54,19 +54,24 @@ export function getMenuServerData() {
         ...getBasicData(),
         "ir.ui.menu": {
             fields: {
-                name: { string: "Name", type: "char" },
-                action: { string: "Action", type: "char" },
-                group_ids: { string: "Groups", type: "many2many", relation: "res.group" },
+                name: {string: "Name", type: "char"},
+                action: {string: "Action", type: "char"},
+                group_ids: {string: "Groups", type: "many2many", relation: "res.group"},
             },
             records: [
-                { id: 11, name: "menu with xmlid", action: "action1", group_ids: [10] },
-                { id: 12, name: "menu without xmlid", action: "action1", group_ids: [10] },
+                {id: 11, name: "menu with xmlid", action: "action1", group_ids: [10]},
+                {
+                    id: 12,
+                    name: "menu without xmlid",
+                    action: "action1",
+                    group_ids: [10],
+                },
             ],
         },
         "res.users": {
             fields: {
-                name: { string: "Name", type: "char" },
-                group_ids: { string: "Groups", type: "many2many", relation: "res.group" },
+                name: {string: "Name", type: "char"},
+                group_ids: {string: "Groups", type: "many2many", relation: "res.group"},
             },
             records: [
                 {
@@ -76,12 +81,12 @@ export function getMenuServerData() {
                     partner_id: serverState.partnerId,
                     group_ids: [10],
                 },
-                { id: 2, name: "Joseph", group_ids: [] },
+                {id: 2, name: "Joseph", group_ids: []},
             ],
         },
         "res.group": {
-            fields: { name: { string: "Name", type: "char" } },
-            records: [{ id: 10, name: "test group" }],
+            fields: {name: {string: "Name", type: "char"}},
+            records: [{id: 10, name: "test group"}],
         },
     };
     serverState.userId = 1;

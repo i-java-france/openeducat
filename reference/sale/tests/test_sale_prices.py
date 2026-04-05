@@ -1233,7 +1233,7 @@ class TestSalePrices(SaleCommon):
             'product_id': product.id,
             'combo_item_id': combo.combo_item_ids.id,
             'linked_line_id': combo_line.id,
-        } for product, combo in zip(product_a + product_b, combos)])
+        } for product, combo in zip(product_a + product_b, combos, strict=False)])
 
         self.assertEqual(
             item_lines.mapped('discount'),

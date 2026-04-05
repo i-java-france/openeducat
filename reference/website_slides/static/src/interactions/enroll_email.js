@@ -1,9 +1,9 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { _t } from "@web/core/l10n/translation";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { createElementWithContent } from "@web/core/utils/html";
+import {_t} from "@web/core/l10n/translation";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {createElementWithContent} from "@web/core/utils/html";
 
 export class EnrollEmail extends Interaction {
     static selector = "#wrapwrap";
@@ -25,24 +25,27 @@ export class EnrollEmail extends Interaction {
             body: _t("Do you want to request access to this course?"),
             confirmLabel: _t("Yes"),
             confirm: async () => {
-                const { error, done } = await this.waitFor(
-                    this.services.orm.call(
-                        "slide.channel",
-                        "action_request_access",
-                        [channelId],
-                    )
+                const {error, done} = await this.waitFor(
+                    this.services.orm.call("slide.channel", "action_request_access", [
+                        channelId,
+                    ])
                 );
-                const message = done ? _t("Request sent!") : error || _t("Unknown error, try again.");
+                const message = done
+                    ? _t("Request sent!")
+                    : error || _t("Unknown error, try again.");
 
                 const newAlertEl = document.createElement("div");
-                newAlertEl.classList.add("alert", done ? "alert-success" : "alert-danger");
+                newAlertEl.classList.add(
+                    "alert",
+                    done ? "alert-success" : "alert-danger"
+                );
                 newAlertEl.role = "alert";
                 newAlertEl.appendChild(createElementWithContent("strong", message));
                 this.insert(newAlertEl, alertEl, "afterend");
                 alertEl.remove();
             },
             cancelLabel: _t("Cancel"),
-            cancel: () => { },
+            cancel: () => {},
         });
     }
 }

@@ -1,24 +1,24 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useBus } from "@web/core/utils/hooks";
-import { standardFieldProps } from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useBus} from "@web/core/utils/hooks";
+import {standardFieldProps} from "../standard_field_props";
 
-import { CodeEditor } from "@web/core/code_editor/code_editor";
-import { Component, useState } from "@odoo/owl";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { formatText } from "@web/views/fields/formatters";
-import { cookie } from "@web/core/browser/cookie";
+import {CodeEditor} from "@web/core/code_editor/code_editor";
+import {Component, useState} from "@odoo/owl";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {formatText} from "@web/views/fields/formatters";
+import {cookie} from "@web/core/browser/cookie";
 
 export class AceField extends Component {
     static template = "web.AceField";
     static props = {
         ...standardFieldProps,
-        mode: { type: String, optional: true },
+        mode: {type: String, optional: true},
     };
     static defaultProps = {
         mode: "qweb",
     };
-    static components = { CodeEditor };
+    static components = {CodeEditor};
 
     setup() {
         this.state = useState({});
@@ -28,9 +28,9 @@ export class AceField extends Component {
 
         this.isDirty = false;
 
-        const { model } = this.props.record;
+        const {model} = this.props.record;
         useBus(model.bus, "WILL_SAVE_URGENTLY", () => this.commitChanges());
-        useBus(model.bus, "NEED_LOCAL_CHANGES", ({ detail }) =>
+        useBus(model.bus, "NEED_LOCAL_CHANGES", ({detail}) =>
             detail.proms.push(this.commitChanges())
         );
     }
@@ -55,7 +55,7 @@ export class AceField extends Component {
     async commitChanges() {
         if (!this.props.readonly && this.isDirty) {
             if (this.state.initialValue !== this.editedValue) {
-                await this.props.record.update({ [this.props.name]: this.editedValue });
+                await this.props.record.update({[this.props.name]: this.editedValue});
             }
             this.isDirty = false;
             this.props.record.model.bus.trigger("FIELD_IS_DIRTY", false);
@@ -74,7 +74,7 @@ export const aceField = {
         },
     ],
     supportedTypes: ["text", "html"],
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         mode: options.mode,
     }),
 };

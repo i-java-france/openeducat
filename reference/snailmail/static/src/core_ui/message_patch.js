@@ -1,6 +1,6 @@
-import { Message } from "@mail/core/common/message";
+import {Message} from "@mail/core/common/message";
 
-import { SnailmailNotificationPopover } from "./snailmail_notification_popover";
+import {SnailmailNotificationPopover} from "./snailmail_notification_popover";
 
 Message.components = {
     ...Message.components,

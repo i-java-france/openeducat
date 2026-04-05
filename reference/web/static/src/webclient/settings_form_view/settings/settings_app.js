@@ -1,4 +1,4 @@
-import { Component, useState, useEffect, useRef } from "@odoo/owl";
+import {Component, useState, useEffect, useRef} from "@odoo/owl";
 
 export class SettingsApp extends Component {
     static template = "web.SettingsApp";
@@ -6,7 +6,7 @@ export class SettingsApp extends Component {
         string: String,
         imgurl: String,
         key: String,
-        selectedTab: { type: String, optional: 1 },
+        selectedTab: {type: String, optional: 1},
         slots: Object,
     };
     setup() {

@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -13,7 +13,7 @@ import { useService } from "@web/core/utils/hooks";
  * @extends {Component<Props, Env>}
  */
 export class LinkPreviewConfirmDelete extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = ["linkPreview", "delete", "deleteAll?", "close", "LinkPreview"];
     static template = "mail.LinkPreviewConfirmDelete";
 

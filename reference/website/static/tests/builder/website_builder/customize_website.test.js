@@ -1,11 +1,11 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
 import {
     contains,
-    onRpc,
-    models,
     defineModels,
+    models,
+    onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 import {
@@ -13,16 +13,16 @@ import {
     defineWebsiteModels,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { redo, undo } from "@html_editor/../tests/_helpers/user_actions";
-import { CustomizeBodyBgTypeAction } from "@website/builder/plugins/customize_website_plugin";
-import { renderToString } from "@web/core/utils/render";
+import {redo, undo} from "@html_editor/../tests/_helpers/user_actions";
+import {CustomizeBodyBgTypeAction} from "@website/builder/plugins/customize_website_plugin";
+import {renderToString} from "@web/core/utils/render";
 
 defineWebsiteModels();
 
 test("BuilderButton with action “websiteConfig” are correctly displayed", async () => {
     const def = new Deferred();
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1", "test_template_2"]);
         await def;
@@ -48,13 +48,13 @@ test("BuilderButton with action “websiteConfig” are correctly displayed", as
 
 test("click on BuilderButton with action “websiteConfig”", async () => {
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1", "test_template_2"]);
         return ["test_template_2"];
     });
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_1"]);
         expect(params.disable).toEqual([]);
@@ -82,13 +82,13 @@ test("click on BuilderButton with action “websiteConfig”", async () => {
 
 test("click on BuilderSelectItem with action “websiteConfig”", async () => {
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1", "test_template_2"]);
         return ["test_template_2"];
     });
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_1"]);
         expect(params.disable).toEqual(["test_template_2"]);
@@ -118,7 +118,7 @@ test("click on BuilderSelectItem with action “websiteConfig”", async () => {
 test("use isActiveItem base on BuilderButton with 'websiteConfig'", async () => {
     const def = new Deferred();
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1"]);
         await def;
@@ -145,7 +145,7 @@ test("use isActiveItem base on BuilderButton with 'websiteConfig'", async () => 
 test("use isActiveItem base on BuilderCheckbox with 'websiteConfig'", async () => {
     const def = new Deferred();
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1"]);
         await def;
@@ -164,20 +164,22 @@ test("use isActiveItem base on BuilderCheckbox with 'websiteConfig'", async () =
     def.resolve();
     await animationFrame();
     expect(".o-tab-content > .o_customize_tab").toHaveCount(1);
-    expect("[data-action-param*='test_template_1'] .form-check-input:checked").toHaveCount(1);
+    expect(
+        "[data-action-param*='test_template_1'] .form-check-input:checked"
+    ).toHaveCount(1);
     expect(".test").toHaveCount(1);
     expect.verifySteps(["theme_customize_data_get"]);
 });
 
 test("click on BuilderCheckbox with action “websiteConfig”", async () => {
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1", "test_template_2"]);
         return ["test_template_2"];
     });
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_1"]);
         expect(params.disable).toEqual(["test_template_2"]);
@@ -199,14 +201,14 @@ test("click on BuilderCheckbox with action “websiteConfig”", async () => {
 
 test("use isActiveItem base on BuilderSelectItem with websiteConfig", async () => {
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data_get");
         expect(params.keys).toEqual(["test_template_1"]);
         return [];
     });
 
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_1"]);
         expect(params.disable).toEqual([]);
@@ -241,7 +243,7 @@ test("use isActiveItem base on BuilderSelectItem with websiteConfig", async () =
 
 test("isApplied with action “websiteConfig” depends on views, assets and vars", async () => {
     onRpc("/website/theme_customize_data_get", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         if (params.is_view_data) {
             expect.step("theme_customize_data_get view");
             expect(params.keys).toEqual(["test_template_1", "test_template_2"]);
@@ -272,16 +274,19 @@ test("isApplied with action “websiteConfig” depends on views, assets and var
                 }"/>
         `,
     });
-    const { getEditableContent } = await setupWebsiteBuilder(
+    const {getEditableContent} = await setupWebsiteBuilder(
         `<div class="test-options-target">b</div>`
     );
-    // fake initial values
+    // Fake initial values
     const iframeDocument = getEditableContent().ownerDocument.documentElement;
     iframeDocument.style.setProperty("--foo", "bar");
     iframeDocument.style.setProperty("--cat", "cat");
     await contains(":iframe .test-options-target").click();
     await animationFrame();
-    expect.verifySteps(["theme_customize_data_get view", "theme_customize_data_get asset"]);
+    expect.verifySteps([
+        "theme_customize_data_get view",
+        "theme_customize_data_get asset",
+    ]);
     expect(".options-container input[type='checkbox']:eq(0)").toBeChecked();
     expect(".options-container input[type='checkbox']:eq(1)").not.toBeChecked();
     expect(".options-container input[type='checkbox']:eq(2)").not.toBeChecked();
@@ -290,7 +295,7 @@ test("isApplied with action “websiteConfig” depends on views, assets and var
 
 test("BuilderButton with action “previewableWebsiteConfig”", async () => {
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_2"]);
         expect(params.disable).toEqual(["test_template_1", "test_template_negation"]);
@@ -346,7 +351,7 @@ test("BuilderButton with action “previewableWebsiteConfig”", async () => {
 
 test("Undo and redo “previewableWebsiteConfig” action", async () => {
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_1"]);
         expect(params.disable).toEqual([]);
@@ -364,7 +369,9 @@ test("Undo and redo “previewableWebsiteConfig” action", async () => {
                 <BuilderButton actionParam="{views: [], previewClass: ''}">3</BuilderButton>
             </BuilderButtonGroup>`,
     });
-    const { getEditor } = await setupWebsiteBuilder(`<div class="test-options-target">b</div>`);
+    const {getEditor} = await setupWebsiteBuilder(
+        `<div class="test-options-target">b</div>`
+    );
     const editor = getEditor();
 
     await contains(":iframe .test-options-target").click();
@@ -416,7 +423,9 @@ test("No rpc call if “previewableWebsiteConfig” action is undone", async () 
                 <BuilderButton actionParam="{views: ['test_template'], previewClass: 'test_class'}">2</BuilderButton>
             </BuilderButtonGroup>`,
     });
-    const { getEditor } = await setupWebsiteBuilder(`<div class="test-options-target">b</div>`);
+    const {getEditor} = await setupWebsiteBuilder(
+        `<div class="test-options-target">b</div>`
+    );
     const editor = getEditor();
 
     await contains(":iframe .test-options-target").click();
@@ -434,7 +443,7 @@ test("theme background image is properly set", async () => {
     // Using historyImageSrc to avoid mocking the gallery dialog
     patchWithCleanup(CustomizeBodyBgTypeAction.prototype, {
         async load(editingElement) {
-            editingElement.historyImageSrc = { src: base64Image };
+            editingElement.historyImageSrc = {src: base64Image};
             super.load(editingElement);
         },
         apply(params) {
@@ -461,7 +470,7 @@ test("theme background image is properly set", async () => {
 
     onRpc("/website/theme_customize_bundle_reload", async (request) => {
         expect.step("bundle_reload");
-        return { success: true };
+        return {success: true};
     });
 
     await setupWebsiteBuilder(`<div class="test-options-target">b</div>`, {
@@ -485,7 +494,7 @@ test("BuilderButton with action “templatePreviewableWebsiteConfig”", async (
     renderToString.app.addTemplate("test.template.2", `<div class="template2"></div>`);
     renderToString.app.addTemplate("test.template.3", `<div class="template3"></div>`);
     onRpc("/website/theme_customize_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step("theme_customize_data");
         expect(params.enable).toEqual(["test_template_2"]);
         expect(params.disable).toEqual(["test_template_1", "test_template_3"]);

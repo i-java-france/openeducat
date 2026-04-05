@@ -86,7 +86,9 @@ export function useEditableDescendants(host) {
             "Missing `getEditableDescendants` function in the `embedding` provided to the `EmbeddedComponentPlugin`."
         );
     }
-    const editableDescendants = Object.freeze(component.env.getEditableDescendants(host));
+    const editableDescendants = Object.freeze(
+        component.env.getEditableDescendants(host)
+    );
     const refs = {};
     const renders = {};
     for (const name of Object.keys(editableDescendants)) {
@@ -102,7 +104,8 @@ export function useEditableDescendants(host) {
     };
     if (component.env.editorShared?.selection) {
         onRendered(() => {
-            _restoreSelection = component.env.editorShared.selection.preserveSelection().restore;
+            _restoreSelection =
+                component.env.editorShared.selection.preserveSelection().restore;
         });
     }
     onMounted(() => {
@@ -222,8 +225,8 @@ export function applyObjectPropertyDifference(container, key, previous, next) {
     if (!container[key]) {
         container[key] = {};
     }
-    const obj1 = { ...(previous || {}) };
-    const obj2 = { ...(next || {}) };
+    const obj1 = {...(previous || {})};
+    const obj2 = {...(next || {})};
     const dest = container[key];
     for (const key in obj2) {
         if (JSON.stringify(obj1[key]) !== JSON.stringify(obj2[key])) {
@@ -351,7 +354,7 @@ export class StateChangeManager {
      *          that collaborators will do applyMutations, so the stateChange
      *          must be expressed with another form for them).
      */
-    onStateChanged(attrState, { reverse = false, forNewStep = false } = {}) {
+    onStateChanged(attrState, {reverse = false, forNewStep = false} = {}) {
         const stateChange = attrState ? JSON.parse(attrState) : this.defaultStateChange;
         const state = this.getState();
         if (reverse) {
@@ -441,7 +444,9 @@ export class StateChangeManager {
                 previous: JSON.parse(previous),
                 next: JSON.parse(next),
             };
-            this.config.host.dataset.embeddedState = JSON.stringify(this.previousStateChange);
+            this.config.host.dataset.embeddedState = JSON.stringify(
+                this.previousStateChange
+            );
             this.config.host.dataset.embeddedProps = JSON.stringify(
                 this.stateToEmbeddedProps(this.config.host, sortedState)
             );

@@ -1,17 +1,20 @@
 import ast
-from babel.dates import format_datetime, format_date
-from collections import defaultdict
-from datetime import datetime, timedelta
 import base64
 import json
 import random
+from collections import defaultdict
+from datetime import datetime, timedelta
 
-from odoo import models, api, _, fields, tools
+from babel.dates import format_date, format_datetime
+
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 from odoo.fields import Command, Domain
 from odoo.release import version
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF, SQL
-from odoo.tools.misc import formatLang, format_date as odoo_format_date, get_lang
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
+from odoo.tools import SQL
+from odoo.tools.misc import format_date as odoo_format_date
+from odoo.tools.misc import get_lang
 
 
 def group_by_journal(vals_list):

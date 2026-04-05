@@ -1,7 +1,7 @@
-import { CrmColumnProgress } from "./crm_column_progress";
-import { RottingKanbanRecord } from "@mail/js/rotting_mixin/rotting_kanban_record";
-import { RottingKanbanHeader } from "@mail/js/rotting_mixin/rotting_kanban_header";
-import { RottingKanbanRenderer } from "@mail/js/rotting_mixin/rotting_kanban_renderer";
+import {CrmColumnProgress} from "./crm_column_progress";
+import {RottingKanbanRecord} from "@mail/js/rotting_mixin/rotting_kanban_record";
+import {RottingKanbanHeader} from "@mail/js/rotting_mixin/rotting_kanban_header";
+import {RottingKanbanRenderer} from "@mail/js/rotting_mixin/rotting_kanban_renderer";
 
 class CrmKanbanHeader extends RottingKanbanHeader {
     static components = {

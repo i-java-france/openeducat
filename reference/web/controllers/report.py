@@ -11,7 +11,6 @@ from odoo.http import content_disposition, request
 from odoo.tools.misc import html_escape
 from odoo.tools.safe_eval import safe_eval, time
 
-
 _logger = logging.getLogger(__name__)
 
 

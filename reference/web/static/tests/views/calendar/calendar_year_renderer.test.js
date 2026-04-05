@@ -1,15 +1,15 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts, resize } from "@odoo/hoot-dom";
-import { mockTimeZone, runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts, resize} from "@odoo/hoot-dom";
+import {mockTimeZone, runAllTimers} from "@odoo/hoot-mock";
 import {
     mockService,
     mountWithCleanup,
-    preloadBundle,
     patchWithCleanup,
+    preloadBundle,
 } from "@web/../tests/web_test_helpers";
-import { FAKE_MODEL, clickDate, selectDateRange } from "./calendar_test_helpers";
+import {FAKE_MODEL, clickDate, selectDateRange} from "./calendar_test_helpers";
 
-import { CalendarYearRenderer } from "@web/views/calendar/calendar_year/calendar_year_renderer";
+import {CalendarYearRenderer} from "@web/views/calendar/calendar_year/calendar_year_renderer";
 
 const FAKE_PROPS = {
     model: FAKE_MODEL,
@@ -20,7 +20,7 @@ const FAKE_PROPS = {
 
 async function start(props = {}) {
     await mountWithCleanup(CalendarYearRenderer, {
-        props: { ...FAKE_PROPS, ...props },
+        props: {...FAKE_PROPS, ...props},
     });
 }
 
@@ -30,7 +30,7 @@ test(`mount a CalendarYearRenderer`, async () => {
     await start();
     expect(`.fc-month-container`).toHaveCount(12);
 
-    // check "title format"
+    // Check "title format"
     expect(`.fc-toolbar-chunk:nth-child(2) .fc-toolbar-title`).toHaveCount(12);
     expect(queryAllTexts`.fc-toolbar-chunk:nth-child(2) .fc-toolbar-title`).toEqual([
         "January 2021",
@@ -47,7 +47,7 @@ test(`mount a CalendarYearRenderer`, async () => {
         "December 2021",
     ]);
 
-    // check day header format
+    // Check day header format
     expect(`.fc-month:eq(0) .fc-col-header-cell`).toHaveCount(7);
     expect(queryAllTexts`.fc-month:eq(0) .fc-col-header-cell`).toEqual([
         "S",
@@ -59,7 +59,7 @@ test(`mount a CalendarYearRenderer`, async () => {
         "S",
     ]);
 
-    // check showNonCurrentDates
+    // Check showNonCurrentDates
     expect(`:not(.fc-day-disabled) > * > * > .fc-daygrid-day-number`).toHaveCount(365);
 });
 
@@ -74,7 +74,9 @@ test(`display events`, async () => {
 
     await start({
         createRecord(record) {
-            expect.step(`${record.start.toISODate()} allDay:${record.isAllDay} no event`);
+            expect.step(
+                `${record.start.toISODate()} allDay:${record.isAllDay} no event`
+            );
         },
     });
 
@@ -111,7 +113,7 @@ test(`display events`, async () => {
 test.tags("desktop");
 test(`select a range of date`, async () => {
     await start({
-        createRecord({ isAllDay, start, end }) {
+        createRecord({isAllDay, start, end}) {
             expect.step("create");
             expect(isAllDay).toBe(true);
             expect(start.toSQL()).toBe("2021-07-02 00:00:00.000 +01:00");
@@ -152,7 +154,7 @@ test("resize callback is being called", async () => {
     });
     await start();
     expect.verifySteps([]);
-    await resize({ height: 500 });
+    await resize({height: 500});
     await runAllTimers();
-    expect.verifySteps(new Array(12).fill("onWindowResize")); // one for each FullCalendar instance
+    expect.verifySteps(new Array(12).fill("onWindowResize")); // One for each FullCalendar instance
 });

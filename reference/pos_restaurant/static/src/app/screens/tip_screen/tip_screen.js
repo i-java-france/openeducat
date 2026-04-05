@@ -1,17 +1,17 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { Component, useRef, onMounted } from "@odoo/owl";
-import { ask } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { TipReceipt } from "@pos_restaurant/app/components/tip_receipt/tip_receipt";
-import { useRouterParamsChecker } from "@point_of_sale/app/hooks/pos_router_hook";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {Component, useRef, onMounted} from "@odoo/owl";
+import {ask} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {TipReceipt} from "@pos_restaurant/app/components/tip_receipt/tip_receipt";
+import {useRouterParamsChecker} from "@point_of_sale/app/hooks/pos_router_hook";
 
 export class TipScreen extends Component {
     static template = "pos_restaurant.TipScreen";
     static props = {
-        orderUuid: { type: String },
+        orderUuid: {type: String},
     };
     setup() {
         this.pos = usePos();
@@ -41,9 +41,9 @@ export class TipScreen extends Component {
     }
     get percentageTips() {
         return [
-            { percentage: "15%", amount: 0.15 * this.totalAmount },
-            { percentage: "20%", amount: 0.2 * this.totalAmount },
-            { percentage: "25%", amount: 0.25 * this.totalAmount },
+            {percentage: "15%", amount: 0.15 * this.totalAmount},
+            {percentage: "20%", amount: 0.2 * this.totalAmount},
+            {percentage: "25%", amount: 0.25 * this.totalAmount},
         ];
     }
     async validateTip() {
@@ -62,7 +62,10 @@ export class TipScreen extends Component {
         }
 
         if (!amount) {
-            await this.pos.data.write("pos.order", [serverId], { is_tipped: true, tip_amount: 0 });
+            await this.pos.data.write("pos.order", [serverId], {
+                is_tipped: true,
+                tip_amount: 0,
+            });
             this.goNextScreen();
             return;
         }
@@ -93,7 +96,9 @@ export class TipScreen extends Component {
 
         const serializedTipLine = order.getSelectedOrderline().serializeForORM();
         order.getSelectedOrderline().delete();
-        const serverTipLine = await this.pos.data.create("pos.order.line", [serializedTipLine]);
+        const serverTipLine = await this.pos.data.create("pos.order.line", [
+            serializedTipLine,
+        ]);
         await this.pos.data.write("pos.order", [serverId], {
             is_tipped: true,
             tip_amount: serverTipLine[0].priceIncl,
@@ -110,10 +115,12 @@ export class TipScreen extends Component {
     }
     async printTipReceipt() {
         const order = this.currentOrder;
-        const selectedPaymentLine = order.getSelectedPaymentline() || order.payment_ids[0];
-        const receipts = [selectedPaymentLine?.ticket, selectedPaymentLine?.cashier_receipt].filter(
-            Boolean
-        );
+        const selectedPaymentLine =
+            order.getSelectedPaymentline() || order.payment_ids[0];
+        const receipts = [
+            selectedPaymentLine?.ticket,
+            selectedPaymentLine?.cashier_receipt,
+        ].filter(Boolean);
         for (let i = 0; i < receipts.length; i++) {
             await this.printer.print(
                 TipReceipt,
@@ -122,7 +129,7 @@ export class TipScreen extends Component {
                     order: order,
                     total: this.env.utils.formatCurrency(this.totalAmount),
                 },
-                { webPrintFallback: false }
+                {webPrintFallback: false}
             );
         }
     }

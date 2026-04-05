@@ -1,18 +1,18 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { formatPercentage } from "../formatters";
-import { parsePercentage } from "../parsers";
-import { useInputField } from "../input_field_hook";
-import { useNumpadDecimal } from "../numpad_decimal_hook";
-import { standardFieldProps } from "../standard_field_props";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {formatPercentage} from "../formatters";
+import {parsePercentage} from "../parsers";
+import {useInputField} from "../input_field_hook";
+import {useNumpadDecimal} from "../numpad_decimal_hook";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class PercentageField extends Component {
     static template = "web.PercentageField";
     static props = {
         ...standardFieldProps,
-        digits: { type: Array, optional: true },
+        digits: {type: Array, optional: true},
     };
 
     setup() {
@@ -41,7 +41,7 @@ export const percentageField = {
     component: PercentageField,
     displayName: _t("Percentage"),
     supportedTypes: ["integer", "float"],
-    extractProps: ({ attrs, options }) => {
+    extractProps: ({attrs, options}) => {
         // Sadly, digits param was available as an option and an attr.
         // The option version could be removed with some xml refactoring.
         let digits;

@@ -10,6 +10,7 @@ from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.addons.payment.tests.http_common import PaymentHttpCommon
+
 from .common import TestWebsiteEventSaleCommon
 
 

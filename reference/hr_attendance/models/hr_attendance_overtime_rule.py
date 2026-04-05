@@ -2,15 +2,16 @@
 
 from collections import defaultdict
 from datetime import datetime, timedelta
+
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, DAILY
+from dateutil.rrule import DAILY, rrule
 from pytz import timezone, utc
 
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools.date_utils import sum_intervals, float_to_time
+from odoo.tools.date_utils import float_to_time, sum_intervals
 from odoo.tools.float_utils import float_compare
-from odoo.tools.intervals import _boundaries, Intervals, invert_intervals
+from odoo.tools.intervals import Intervals, _boundaries, invert_intervals
 
 
 def _naive_utc(dt):

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <!-- Inject the comparison button in products cards -->
     <template
         id="website_sale_comparison.add_to_compare"
@@ -14,14 +13,23 @@
                 t-value="product and product.valid_product_template_attribute_line_ids"
             />
 
-            <t t-if="isCompareAvailable" t-call="website_sale.product_tile_element_visibility">
-                <t t-set="visible_element_class" t-value="'o_wsale_products_opt_has_comparison'"/>
+            <t
+                t-if="isCompareAvailable"
+                t-call="website_sale.product_tile_element_visibility"
+            >
+                <t
+                    t-set="visible_element_class"
+                    t-value="'o_wsale_products_opt_has_comparison'"
+                />
 
                 <t
                     t-set="attrib_categories"
                     t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"
                 />
-                <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+                <t
+                    t-set="product_variant_id"
+                    t-value="product._get_first_possible_variant_id()"
+                />
                 <button
                     t-if="product_variant_id and attrib_categories"
                     type="button"
@@ -32,10 +40,9 @@
                     t-att-data-product-product-id="product_variant_id"
                     data-action="o_comparelist"
                 >
-                    <span class="fa fa-exchange fa-fw o_not-animable"/>
+                    <span class="fa fa-exchange fa-fw o_not-animable" />
                     <span class="o_label small ms-2">Compare</span>
                 </button>
-
             </t>
             <t t-else="" t-call="website_sale.product_tile_element_visibility">
                 <!--
@@ -43,7 +50,7 @@
                     comparison button
                 -->
                 <div class="o_add_compare_placeholder pe-none opacity-0 btn">
-                    <span class="fa fa-exchange fa-fw"/>
+                    <span class="fa fa-exchange fa-fw" />
                 </div>
             </t>
         </xpath>
@@ -56,8 +63,14 @@
         priority="8"
     >
         <xpath expr="//div[@id='product_option_block']" position="inside">
-            <t t-set="attrib_categories" t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"/>
-            <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+            <t
+                t-set="attrib_categories"
+                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"
+            />
+            <t
+                t-set="product_variant_id"
+                t-value="product._get_first_possible_variant_id()"
+            />
             <t
                 t-set="_button_classes"
                 t-valuef="o_add_compare_dyn btn btn-outline-primary order-last flex-grow-1 flex-sm-grow-0"
@@ -82,27 +95,40 @@
                 t-att-data-product-template-id="product.id"
                 data-action="o_comparelist"
             >
-                <span class="fa fa-exchange"/>
-                <span t-att-class="'d-inline ms-2' + (' d-lg-none' if website.product_page_image_width == '50_pc' and not (is_view_active('website_sale.cta_wrapper_boxed') or is_view_active('website_sale.cta_wrapper_large')) or is_view_active('website_sale_wishlist.product_add_to_wishlist') else '')">Add to compare</span>
+                <span class="fa fa-exchange" />
+                <span
+                    t-att-class="'d-inline ms-2' + (' d-lg-none' if website.product_page_image_width == '50_pc' and not (is_view_active('website_sale.cta_wrapper_boxed') or is_view_active('website_sale.cta_wrapper_large')) or is_view_active('website_sale_wishlist.product_add_to_wishlist') else '')"
+                >Add to compare</span>
             </button>
         </xpath>
     </template>
 
-    <template id="product_attributes_body" inherit_id="website_sale.product" name="Product attributes table">
-        <xpath expr="//div[@id='product_attributes_simple']" position="replace"/>
+    <template
+        id="product_attributes_body"
+        inherit_id="website_sale.product"
+        name="Product attributes table"
+    >
+        <xpath expr="//div[@id='product_attributes_simple']" position="replace" />
         <xpath expr="//div[@id='product_full_description']" position="after">
-            <t t-set="attrib_categories" t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"/>
+            <t
+                t-set="attrib_categories"
+                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"
+            />
             <t t-if="attrib_categories">
                 <section class="pt32 pb32" id="product_full_spec">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div
+                            class="d-flex justify-content-between align-items-center mb-4"
+                        >
                             <h3 class="m-0">Specifications</h3>
                         </div>
                         <div id="product_specifications">
                             <div class="row">
                                 <t t-foreach="attrib_categories" t-as="category">
                                     <div class="col-lg-6">
-                                        <t t-call="website_sale_comparison.specifications_table"/>
+                                        <t
+                                            t-call="website_sale_comparison.specifications_table"
+                                        />
                                     </div>
                                 </t>
                             </div>
@@ -128,7 +154,9 @@
                 t-set="product_variant_id"
                 t-value="product._get_first_possible_variant_id()"
             />
-            <t t-if="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()">
+            <t
+                t-if="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()"
+            >
                 <t t-foreach="attrib_categories" t-as="category">
                     <div class="accordion-item">
                         <div class="accordion-header my-0 h6">
@@ -151,8 +179,10 @@
                             data-bs-parent="#product_accordion"
                         >
                             <div class="accordion-body pt-0">
-                                <t t-call="website_sale_comparison.specifications_table">
-                                    <t t-set="is_accordion" t-value="True"/>
+                                <t
+                                    t-call="website_sale_comparison.specifications_table"
+                                >
+                                    <t t-set="is_accordion" t-value="True" />
                                 </t>
                             </div>
                         </div>
@@ -167,7 +197,7 @@
             <t t-if="len(attrib_categories) > 1 and not is_accordion">
                 <tr>
                     <th class="text-start" colspan="2">
-                        <span t-if="category" t-field="category.name"/>
+                        <span t-if="category" t-field="category.name" />
                         <span t-else="">Others</span>
                     </th>
                 </tr>
@@ -181,11 +211,14 @@
                     t-value="'border-bottom-0' if ptal_last and is_accordion else ''"
                 />
                 <td t-attf-class="w-25 {{hide_border_bottom_classes}} ps-0">
-                    <span t-field="ptal.attribute_id.name"/>
+                    <span t-field="ptal.attribute_id.name" />
                 </td>
-                <td t-attf-class="w-75 {{hide_border_bottom_classes}} pe-0 text-muted text-end">
+                <td
+                    t-attf-class="w-75 {{hide_border_bottom_classes}} pe-0 text-muted text-end"
+                >
                     <t t-foreach="ptal.value_ids" t-as="pav">
-                        <span t-field="pav.name"/><t t-if="not pav_last">, </t>
+                        <span t-field="pav.name" />
+                        <t t-if="not pav_last">, </t>
                     </t>
                 </td>
             </tr>
@@ -199,11 +232,16 @@
                     t-value="'border-bottom-0' if attribute_last and is_accordion else ''"
                 />
                 <td t-attf-class="w-25 {{hide_border_bottom_classes}} ps-0 ">
-                    <span t-field="attribute.name"/>
+                    <span t-field="attribute.name" />
                 </td>
-                <td t-attf-class="w-75 {{hide_border_bottom_classes}} pe-0 text-muted text-end">
+                <td
+                    t-attf-class="w-75 {{hide_border_bottom_classes}} pe-0 text-muted text-end"
+                >
                     <t t-foreach="single_value_attributes[attribute]" t-as="ptal">
-                        <span t-field="ptal.product_template_value_ids._only_active().name"/><t t-if="not ptal_last">, </t>
+                        <span
+                            t-field="ptal.product_template_value_ids._only_active().name"
+                        />
+                        <t t-if="not ptal_last">, </t>
                     </t>
                 </td>
             </tr>
@@ -214,8 +252,13 @@
         <t t-call="website.layout">
             <t t-set="additional_title">Shop Comparator</t>
             <div id="wrap" class="js_sale o_wsale_comparison_page">
-                <div class="oe_structure oe_empty" id="oe_structure_website_sale_comparison_product_compare_1"/>
-                <div t-attf-class="oe_website_sale o_wsale_comparison_page pb-5 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}">
+                <div
+                    class="oe_structure oe_empty"
+                    id="oe_structure_website_sale_comparison_product_compare_1"
+                />
+                <div
+                    t-attf-class="oe_website_sale o_wsale_comparison_page pb-5 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}"
+                >
                     <h1 class="h4 mt-4 mb-3">Compare Products</h1>
 
                     <!-- Mini sticky product overview (initially hidden) -->
@@ -223,9 +266,15 @@
                         class="o_wsale_comparison_mini_sticky fixed-top d-none bg-body"
                         id="miniStickyComparison"
                     >
-                        <div t-attf-class="px-3 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}">
-                            <div class="o_wsale_comparison_scroll_container overflow-x-auto">
-                                <ul class="list-unstyled d-flex align-items-stretch mb-0 py-3">
+                        <div
+                            t-attf-class="px-3 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}"
+                        >
+                            <div
+                                class="o_wsale_comparison_scroll_container overflow-x-auto"
+                            >
+                                <ul
+                                    class="list-unstyled d-flex align-items-stretch mb-0 py-3"
+                                >
                                     <li
                                         t-foreach="products"
                                         t-as="product"
@@ -239,7 +288,9 @@
                                                 t-set="combination_info"
                                                 t-value="product._get_combination_info_variant()"
                                             />
-                                            <div class="o_mini_product_img_container flex-shrink-0">
+                                            <div
+                                                class="o_mini_product_img_container flex-shrink-0"
+                                            >
                                                 <img
                                                     t-att-src="product._get_image_1024_url()"
                                                     class="img-fluid flex-shrink-0 w-100 h-100 rounded border object-fit-cover"
@@ -312,7 +363,7 @@
                                         class="o_comparelist_remove btn position-absolute top-0 end-0 mx-3 my-2 p-2 rounded-circle bg-white-75 lh-1"
                                         aria-label="Remove product from comparison"
                                     >
-                                        <i class="oi oi-close"/>
+                                        <i class="oi oi-close" />
                                     </button>
                                 </li>
                             </ul>
@@ -331,11 +382,15 @@
                                         class="product_summary d-flex flex-column h-100"
                                     >
                                         <a t-att-href="product.website_url">
-                                            <h6 t-out="product.display_name"/>
+                                            <h6 t-out="product.display_name" />
                                         </a>
-                                        <span t-if="not combination_info['prevent_zero_price_sale']">
-                                            <span t-out="combination_info['price']"
-                                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                        <span
+                                            t-if="not combination_info['prevent_zero_price_sale']"
+                                        >
+                                            <span
+                                                t-out="combination_info['price']"
+                                                t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"
+                                            />
                                             <del
                                                 t-if="combination_info.get('compare_list_price') and (combination_info['compare_list_price'] &gt; combination_info['price'])"
                                                 class="me-2 text-muted text-nowrap"
@@ -348,10 +403,17 @@
                                                 t-out="combination_info['list_price']"
                                                 t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"
                                             />
-                                            <small t-if="combination_info.get('base_unit_price')"
-                                                   class="d-block text-muted">
-                                                <t t-call="website_sale.base_unit_price">
-                                                    <t t-set="base_unit_price" t-value="combination_info['base_unit_price']"/>
+                                            <small
+                                                t-if="combination_info.get('base_unit_price')"
+                                                class="d-block text-muted"
+                                            >
+                                                <t
+                                                    t-call="website_sale.base_unit_price"
+                                                >
+                                                    <t
+                                                        t-set="base_unit_price"
+                                                        t-value="combination_info['base_unit_price']"
+                                                    />
                                                 </t>
                                             </small>
                                         </span>
@@ -371,7 +433,10 @@
                                                 t-att-data-product-template-id="product.product_tmpl_id.id"
                                                 t-att-data-show-quantity="is_view_active('website_sale.product_quantity')"
                                             >
-                                                <i class="fa fa-shopping-cart me-2" aria-hidden="true"/>Add to Cart
+                                                <i
+                                                class="fa fa-shopping-cart me-2"
+                                                aria-hidden="true"
+                                            />Add to Cart
                                             </button>
                                         </div>
                                     </div>
@@ -379,8 +444,10 @@
                             </ul>
                             <div t-foreach="attrib_categories" t-as="category">
                                 <div class="w-100 py-3 bg-light bg-opacity-50">
-                                    <h6 class="d-table position-sticky start-0 mb-0 ps-2">
-                                        <span t-if="category" t-field="category.name"/>
+                                    <h6
+                                        class="d-table position-sticky start-0 mb-0 ps-2"
+                                    >
+                                        <span t-if="category" t-field="category.name" />
                                         <t t-else="">Uncategorized</t>
                                     </h6>
                                 </div>
@@ -395,7 +462,9 @@
                                         class="o_wsale_compare_table_column d-flex flex-column flex-shrink-0"
                                     >
                                         <div id="o_comparelist_attribute">
-                                            <t t-if="attrib_categories[category][attribute][product]">
+                                            <t
+                                                t-if="attrib_categories[category][attribute][product]"
+                                            >
                                                 <div
                                                     class="small text-muted"
                                                     t-field="attribute.name"
@@ -404,7 +473,8 @@
                                                     t-foreach="attrib_categories[category][attribute][product]"
                                                     t-as="ptav"
                                                 >
-                                                    <small t-field="ptav.name"/><t t-if="not ptav_last">, </t>
+                                                    <small t-field="ptav.name" />
+                                                    <t t-if="not ptav_last">, </t>
                                                 </t>
                                             </t>
                                             <t t-else="">
@@ -418,9 +488,15 @@
                                     </li>
                                 </ul>
                             </div>
-                            <t t-if="is_view_active('website_sale.product_tags') and any([product.all_product_tag_ids for product in products])">
-                                <h6 class="d-table position-sticky start-0 mb-0">Tags</h6>
-                                <ul class="list-unstyled d-flex border-bottom mb-0 py-3">
+                            <t
+                                t-if="is_view_active('website_sale.product_tags') and any([product.all_product_tag_ids for product in products])"
+                            >
+                                <h6
+                                    class="d-table position-sticky start-0 mb-0"
+                                >Tags</h6>
+                                <ul
+                                    class="list-unstyled d-flex border-bottom mb-0 py-3"
+                                >
                                     <li
                                         t-foreach="products"
                                         t-as="product"
@@ -439,16 +515,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="oe_structure" id="oe_structure_website_sale_comparison_product_compare_2"/>
-                <div class="align-items-end bottom-0 d-flex end-0 justify-content-end o_not_editable p-0 position-absolute top-0 start-0 pe-none">
-                    <div class="o_wsale_comparison_bottom_bar sticky-bottom flex-shrink-0 w-100 bg-body pe-auto">
-                        <div t-attf-class="d-flex align-items-center py-3 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}">
+                <div
+                    class="oe_structure"
+                    id="oe_structure_website_sale_comparison_product_compare_2"
+                />
+                <div
+                    class="align-items-end bottom-0 d-flex end-0 justify-content-end o_not_editable p-0 position-absolute top-0 start-0 pe-none"
+                >
+                    <div
+                        class="o_wsale_comparison_bottom_bar sticky-bottom flex-shrink-0 w-100 bg-body pe-auto"
+                    >
+                        <div
+                            t-attf-class="d-flex align-items-center py-3 #{website.shop_page_container == 'fluid' and 'container-fluid' or 'container'}"
+                        >
                             <button
                                 class="btn btn-link ps-0 text-decoration-none"
                                 aria-label="Continue shopping"
                                 name="comparison_back_button"
                             >
-                                <i class="oi oi-chevron-left me-1"/> Back to shop </button>
+                                <i
+                                class="oi oi-chevron-left me-1"
+                            /> Back to shop </button>
                             <button
                                 class="button btn btn-light ms-auto"
                                 aria-label="Remove all products from comparison"
@@ -462,5 +549,4 @@
             </div>
         </t>
     </template>
-
 </odoo>

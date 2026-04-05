@@ -1,9 +1,9 @@
-import { DiscussCoreCommon } from "@mail/discuss/core/common/discuss_core_common_service";
-import { patch } from "@web/core/utils/patch";
+import {DiscussCoreCommon} from "@mail/discuss/core/common/discuss_core_common_service";
+import {patch} from "@web/core/utils/patch";
 
 patch(DiscussCoreCommon.prototype, {
     _handleNotificationChannelDelete(thread, metadata) {
-        const { notifId } = metadata;
+        const {notifId} = metadata;
         const filteredStarredMessages = [];
         let starredCounter = 0;
         for (const msg of this.store.starred.messages) {

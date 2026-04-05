@@ -1,6 +1,6 @@
-import { after } from "@odoo/hoot";
-import { serverState } from "./mock_server_state.hoot";
-import { patchWithCleanup } from "./patch_test_helpers";
+import {after} from "@odoo/hoot";
+import {serverState} from "./mock_server_state.hoot";
+import {patchWithCleanup} from "./patch_test_helpers";
 
 import {
     loadLanguages,
@@ -33,7 +33,7 @@ export function patchTranslations(terms = {}) {
     allowTranslations();
     for (const addonName in terms) {
         if (!(addonName in translatedTerms)) {
-            patchWithCleanup(translatedTerms, { [addonName]: {} });
+            patchWithCleanup(translatedTerms, {[addonName]: {}});
         }
         patchWithCleanup(translatedTerms[addonName], terms[addonName]);
         patchWithCleanup(translatedTermsGlobal, terms[addonName]);

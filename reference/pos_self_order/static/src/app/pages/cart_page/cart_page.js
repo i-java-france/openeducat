@@ -1,19 +1,19 @@
-import { Component, useState, useRef } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { PopupTable } from "@pos_self_order/app/components/popup_table/popup_table";
-import { OrderWidget } from "@pos_self_order/app/components/order_widget/order_widget";
-import { PresetInfoPopup } from "@pos_self_order/app/components/preset_info_popup/preset_info_popup";
-import { useScrollShadow } from "../../utils/scroll_shadow_hook";
-import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
-import { OrderReceipt } from "@point_of_sale/app/screens/receipt_screen/receipt/order_receipt";
-import { CancelPopup } from "@pos_self_order/app/components/cancel_popup/cancel_popup";
-import { _t } from "@web/core/l10n/translation";
-import { formatProductName } from "../../utils";
+import {Component, useState, useRef} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {PopupTable} from "@pos_self_order/app/components/popup_table/popup_table";
+import {OrderWidget} from "@pos_self_order/app/components/order_widget/order_widget";
+import {PresetInfoPopup} from "@pos_self_order/app/components/preset_info_popup/preset_info_popup";
+import {useScrollShadow} from "../../utils/scroll_shadow_hook";
+import {useTrackedAsync} from "@point_of_sale/app/hooks/hooks";
+import {OrderReceipt} from "@point_of_sale/app/screens/receipt_screen/receipt/order_receipt";
+import {CancelPopup} from "@pos_self_order/app/components/cancel_popup/cancel_popup";
+import {_t} from "@web/core/l10n/translation";
+import {formatProductName} from "../../utils";
 
 export class CartPage extends Component {
     static template = "pos_self_order.CartPage";
-    static components = { PopupTable, OrderWidget, PresetInfoPopup };
+    static components = {PopupTable, OrderWidget, PresetInfoPopup};
     static props = {};
 
     setup() {
@@ -52,8 +52,8 @@ export class CartPage extends Component {
     }
 
     get totalPriceAndTax() {
-        const { amountTaxes, priceIncl } = this.selfOrder.currentOrder;
-        const { priceWithTax, tax, count } = this.selfOrder.orderLineNotSend;
+        const {amountTaxes, priceIncl} = this.selfOrder.currentOrder;
+        const {priceWithTax, tax, count} = this.selfOrder.orderLineNotSend;
         return {
             priceWithTax: count > 0 ? priceWithTax : priceIncl,
             tax: count > 0 ? tax : amountTaxes,
@@ -100,7 +100,10 @@ export class CartPage extends Component {
             return;
         }
 
-        if (!this.selfOrder.currentOrder.presetRequirementsFilled && orderingMode !== "table") {
+        if (
+            !this.selfOrder.currentOrder.presetRequirementsFilled &&
+            orderingMode !== "table"
+        ) {
             this.state.fillInformations = true;
             return;
         }
@@ -138,10 +141,10 @@ export class CartPage extends Component {
                 order: this.selfOrder.currentOrder,
                 basic_receipt: basicReceipt,
             },
-            { addClass: "pos-receipt-print p-3" }
+            {addClass: "pos-receipt-print p-3"}
         );
 
-    async _sendReceiptToCustomer({ action, destination, mail_template_id }) {
+    async _sendReceiptToCustomer({action, destination, mail_template_id}) {
         const order = this.selfOrder.currentOrder;
         const fullTicketImage = await this.generateTicketImage();
         const basicTicketImage = this.selfOrder.config.basic_receipt

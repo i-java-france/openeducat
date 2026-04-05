@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { useComponent, useEffect } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {useComponent, useEffect} from "@odoo/owl";
 
 export function useBarcodeReader(callbackMap, exclusive = false) {
     const current = useComponent();

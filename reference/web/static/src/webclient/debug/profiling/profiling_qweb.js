@@ -1,11 +1,18 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { loadBundle } from "@web/core/assets";
-import { renderToString } from "@web/core/utils/render";
-import { useDebounced } from "@web/core/utils/timing";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {loadBundle} from "@web/core/assets";
+import {renderToString} from "@web/core/utils/render";
+import {useDebounced} from "@web/core/utils/timing";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { Component, useState, useRef, onWillStart, onMounted, onWillUnmount } from "@odoo/owl";
+import {
+    Component,
+    useState,
+    useRef,
+    onWillStart,
+    onMounted,
+    onWillUnmount,
+} from "@odoo/owl";
 
 class MenuItem extends Component {
     static template = "web.ProfilingQwebView.menuitem";
@@ -17,7 +24,9 @@ class MenuItem extends Component {
 function processValue(value) {
     const data = JSON.parse(value);
     for (const line of data[0].results.data) {
-        line.xpath = line.xpath.replace(/([^\]])\//g, "$1[1]/").replace(/([^\]])$/g, "$1[1]");
+        line.xpath = line.xpath
+            .replace(/([^\]])\//g, "$1[1]/")
+            .replace(/([^\]])$/g, "$1[1]");
     }
     return data;
 }
@@ -28,8 +37,8 @@ function processValue(value) {
  */
 export class ProfilingQwebView extends Component {
     static template = "web.ProfilingQwebView";
-    static components = { MenuItem };
-    static props = { ...standardFieldProps };
+    static components = {MenuItem};
+    static props = {...standardFieldProps};
 
     setup() {
         super.setup();
@@ -44,12 +53,17 @@ export class ProfilingQwebView extends Component {
             view: null,
         });
 
-        this.renderProfilingInformation = useDebounced(this.renderProfilingInformation, 100);
+        this.renderProfilingInformation = useDebounced(
+            this.renderProfilingInformation,
+            100
+        );
 
         onWillStart(async () => {
             await loadBundle("web.ace_lib");
             await this._fetchViewData();
-            this.state.view = this.viewObjects.find((view) => view.id === this.state.viewID);
+            this.state.view = this.viewObjects.find(
+                (view) => view.id === this.state.viewID
+            );
         });
         onMounted(() => {
             this._startAce(this.ace.el);
@@ -69,7 +83,7 @@ export class ProfilingQwebView extends Component {
      * @returns {archs, data: {template, xpath, directive, time, duration, query }[]}
      */
     get profile() {
-        return this.value ? this.value[0].results : { archs: {}, data: [] };
+        return this.value ? this.value[0].results : {archs: {}, data: []};
     }
 
     //--------------------------------------------------------------------------
@@ -83,7 +97,9 @@ export class ProfilingQwebView extends Component {
      * @returns {Promise<viewObjects>}
      */
     async _fetchViewData() {
-        const viewIDs = Array.from(new Set(this.profile.data.map((line) => line.view_id)));
+        const viewIDs = Array.from(
+            new Set(this.profile.data.map((line) => line.view_id))
+        );
         const viewObjects = await this.orm.call("ir.ui.view", "search_read", [], {
             fields: ["id", "display_name", "key"],
             domain: [["id", "in", viewIDs]],
@@ -148,14 +164,17 @@ export class ProfilingQwebView extends Component {
         });
 
         // Ace render 3 times when change the value and 1 time per click.
-        this.aceEditor.renderer.on("afterRender", this.renderProfilingInformation.bind(this));
+        this.aceEditor.renderer.on(
+            "afterRender",
+            this.renderProfilingInformation.bind(this)
+        );
     }
 
     renderProfilingInformation() {
         this._unmoutInfo();
 
         const flat = {};
-        const arch = [{ xpath: "", children: [] }];
+        const arch = [{xpath: "", children: []}];
         const rows = this.ace.el.querySelectorAll(".ace_gutter .ace_gutter-cell");
         const elems = this.ace.el.querySelectorAll(
             ".ace_tag-open, .ace_end-tag-close, .ace_end-tag-open, .ace_qweb"
@@ -178,7 +197,8 @@ export class ProfilingQwebView extends Component {
                 }
             } else if (node.classList.contains("ace_end-tag-open")) {
                 // Auto close tag.
-                const tag = node.nextElementSibling && node.nextElementSibling.textContent;
+                const tag =
+                    node.nextElementSibling && node.nextElementSibling.textContent;
                 if (parent.tag === tag) {
                     // can be different when scroll because ace does not display the previous lines.
                     arch.pop();
@@ -301,7 +321,9 @@ export class ProfilingQwebView extends Component {
             delay: this._formatDelay(delay),
             query: query,
         });
-        const div = new DOMParser().parseFromString(xml, "text/html").querySelector("div");
+        const div = new DOMParser()
+            .parseFromString(xml, "text/html")
+            .querySelector("div");
         node.appendChild(div);
     }
     _renderInfo(delays, querys, displayDetail, groups, node) {
@@ -311,7 +333,9 @@ export class ProfilingQwebView extends Component {
             displayDetail: displayDetail,
             groups: groups,
         });
-        const div = new DOMParser().parseFromString(xml, "text/html").querySelector("div");
+        const div = new DOMParser()
+            .parseFromString(xml, "text/html")
+            .querySelector("div");
         node.appendChild(div);
     }
 

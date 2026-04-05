@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <record id="job_add_applicants_view_form" model="ir.ui.view">
         <field name="name">job.add.applicants.view.form</field>
@@ -6,7 +6,12 @@
         <field name="arch" type="xml">
             <form string="Add Applicants to Pool">
                 <group>
-                    <field name="job_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Move to..."/>
+                    <field
+                        name="job_ids"
+                        widget="many2many_tags"
+                        options="{'color_field': 'color'}"
+                        placeholder="Move to..."
+                    />
                 </group>
                 <footer>
                     <button
@@ -16,7 +21,12 @@
                         class="btn-primary"
                         data-hotkey="q"
                     />
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    <button
+                        string="Discard"
+                        class="btn-secondary"
+                        special="cancel"
+                        data-hotkey="x"
+                    />
                 </footer>
             </form>
         </field>

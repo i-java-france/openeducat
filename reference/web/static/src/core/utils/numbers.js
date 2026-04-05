@@ -1,6 +1,6 @@
-import { localization as l10n } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { intersperse } from "@web/core/utils/strings";
+import {localization as l10n} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {intersperse} from "@web/core/utils/strings";
 
 /**
  * Returns value clamped to the inclusive range of min and max.
@@ -83,7 +83,9 @@ export function roundPrecision(value, precision, method = "HALF-UP") {
             const integral = Math.floor(normalizedValue);
             const remainder = Math.abs(normalizedValue - integral);
             const isHalf = Math.abs(0.5 - remainder) < epsilon;
-            roundedValue = isHalf ? integral + (integral & 1) : Math.round(normalizedValue);
+            roundedValue = isHalf
+                ? integral + (integral & 1)
+                : Math.round(normalizedValue);
             break;
         }
         case "UP": {
@@ -157,7 +159,7 @@ export function insertThousandsSep(number, thousandsSep = ",", grouping = []) {
  *    represented as 4321 otherwise it will be down to one digit (4k))
  * @returns {string}
  */
-export function humanNumber(number, options = { decimals: 0, minDigits: 1 }) {
+export function humanNumber(number, options = {decimals: 0, minDigits: 1}) {
     const decimals = options.decimals || 0;
     const minDigits = options.minDigits || 1;
     const d2 = Math.pow(10, decimals);
@@ -185,12 +187,15 @@ export function humanNumber(number, options = { decimals: 0, minDigits: 1 }) {
             break;
         }
     }
-    const { decimalPoint, grouping, thousandsSep } = l10n;
+    const {decimalPoint, grouping, thousandsSep} = l10n;
 
     // determine if we should keep the decimals (we don't want to display 1,020.02k for 1020020)
     const decimalsToKeep = number >= 1000 ? 0 : decimals;
     number = sign * number;
-    const [integerPart, decimalPart] = formatFixedDecimals(number, decimalsToKeep).split(".");
+    const [integerPart, decimalPart] = formatFixedDecimals(
+        number,
+        decimalsToKeep
+    ).split(".");
     const int = insertThousandsSep(integerPart, thousandsSep, grouping);
     if (!decimalPart) {
         return int + symbol;
@@ -224,7 +229,8 @@ export function formatFloat(value, options = {}) {
     if (options.digits && options.digits[1] !== undefined) {
         precision = options.digits[1];
     } else if (options.minDigits) {
-        const intDigitsCount = (value !== 0) ? Math.floor(Math.log10(Math.abs(value))) + 1 : 1;
+        const intDigitsCount =
+            value !== 0 ? Math.floor(Math.log10(Math.abs(value))) + 1 : 1;
         // We estimate the maximum decimal digits we can display without showing rounding errors,
         // by substracting the number of integer digits to 15, as floats have 15-16 digits precision.
         const maxDecDigits = Math.max(15 - intDigitsCount, 0);
@@ -241,8 +247,10 @@ export function formatFloat(value, options = {}) {
         return humanNumber(value, options);
     }
     const grouping = options.grouping || l10n.grouping;
-    const thousandsSep = "thousandsSep" in options ? options.thousandsSep : l10n.thousandsSep;
-    const decimalPoint = "decimalPoint" in options ? options.decimalPoint : l10n.decimalPoint;
+    const thousandsSep =
+        "thousandsSep" in options ? options.thousandsSep : l10n.thousandsSep;
+    const decimalPoint =
+        "decimalPoint" in options ? options.decimalPoint : l10n.decimalPoint;
     const formatted = formatFixedDecimals(value, precision).split(".");
     formatted[0] = insertThousandsSep(formatted[0], thousandsSep, grouping);
     if (formatted[1]) {

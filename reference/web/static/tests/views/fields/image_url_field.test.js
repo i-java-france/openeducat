@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, edit } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, edit} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
 import {
     defineModels,
     fields,
@@ -9,7 +9,7 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { KanbanController } from "@web/views/kanban/kanban_controller";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
 
 const FR_FLAG_URL = "/base/static/img/country_flags/fr.png";
 const EN_FLAG_URL = "/base/static/img/country_flags/gb.png";
@@ -17,10 +17,10 @@ const EN_FLAG_URL = "/base/static/img/country_flags/gb.png";
 class Partner extends models.Model {
     name = fields.Char();
     foo = fields.Char();
-    p = fields.One2many({ relation: "partner" });
-    timmy = fields.Many2many({ relation: "partner.type" });
+    p = fields.One2many({relation: "partner"});
+    timmy = fields.Many2many({relation: "partner.type"});
 
-    _records = [{ id: 1, foo: FR_FLAG_URL, timmy: [] }];
+    _records = [{id: 1, foo: FR_FLAG_URL, timmy: []}];
 }
 
 class PartnerType extends models.Model {
@@ -28,8 +28,8 @@ class PartnerType extends models.Model {
     color = fields.Integer();
 
     _records = [
-        { id: 12, display_name: "gold", color: 2 },
-        { id: 14, display_name: "silver", color: 5 },
+        {id: 12, display_name: "gold", color: 2},
+        {id: 14, display_name: "silver", color: 5},
     ];
 }
 
@@ -105,14 +105,16 @@ test("ImageUrlField in subviews are loaded correctly", async () => {
     expect(`img[data-src="${FR_FLAG_URL}"]`).toHaveCount(1, {
         message: "The view's image is in the DOM",
     });
-    expect(".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)").toHaveCount(1, {
+    expect(
+        ".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)"
+    ).toHaveCount(1, {
         message: "There should be one record in the many2many",
     });
 
     // Actual flow: click on an element of the m2m to get its form view
     await click(".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)");
     await animationFrame();
-    expect(".modal").toHaveCount(1, { message: "The modal should have opened" });
+    expect(".modal").toHaveCount(1, {message: "The modal should have opened"});
     expect(`img[data-src="${EN_FLAG_URL}"]`).toHaveCount(1, {
         message: "The dialog's image is in the DOM",
     });
@@ -217,7 +219,7 @@ test("onchange update image fields", async () => {
     });
 
     await click(`[name="name"] input`);
-    await edit("test", { confirm: "enter" });
+    await edit("test", {confirm: "enter"});
     await runAllTimers();
     await animationFrame();
     expect(`div[name="foo"] > img`).toHaveAttribute("data-src", srcTest, {

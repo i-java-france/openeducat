@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from unittest import skip
 
 import odoo
-
 from odoo import tools
+
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestPoSOtherCurrencyConfig(TestPoSCommon):
@@ -14,7 +14,7 @@ class TestPoSOtherCurrencyConfig(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPoSOtherCurrencyConfig, self).setUp()
+        super().setUp()
 
         self.config = self.other_currency_config
         self.product1 = self.create_product('Product 1', self.categ_basic, 10.0, 5)

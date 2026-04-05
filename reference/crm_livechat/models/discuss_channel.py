@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
-from odoo.addons.mail.tools.discuss import Store
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.tools import html2plaintext
+
+from odoo.addons.mail.tools.discuss import Store
 
 
 class DiscussChannel(models.Model):

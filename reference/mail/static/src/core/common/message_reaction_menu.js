@@ -1,14 +1,21 @@
-import { loadEmoji } from "@web/core/emoji_picker/emoji_picker";
-import { onExternalClick } from "@mail/utils/common/hooks";
+import {loadEmoji} from "@web/core/emoji_picker/emoji_picker";
+import {onExternalClick} from "@mail/utils/common/hooks";
 
-import { Component, onMounted, useEffect, useExternalListener, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onMounted,
+    useEffect,
+    useExternalListener,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
 
 export class MessageReactionMenu extends Component {
     static props = ["close", "message", "initialReaction?"];
-    static components = { Dialog };
+    static components = {Dialog};
     static template = "mail.MessageReactionMenu";
 
     setup() {
@@ -26,7 +33,7 @@ export class MessageReactionMenu extends Component {
         useEffect(
             () => {
                 const activeReaction = this.props.message.reactions.find(
-                    ({ content }) => content === this.state.reaction.content
+                    ({content}) => content === this.state.reaction.content
                 );
                 if (this.props.message.reactions.length === 0) {
                     this.props.close();
@@ -57,7 +64,11 @@ export class MessageReactionMenu extends Component {
     }
 
     getEmojiShortcode(reaction) {
-        return this.store.emojiLoader.loaded?.emojiValueToShortcodes?.[reaction.content]?.[0] ?? "?";
+        return (
+            this.store.emojiLoader.loaded?.emojiValueToShortcodes?.[
+                reaction.content
+            ]?.[0] ?? "?"
+        );
     }
 
     get contentClass() {

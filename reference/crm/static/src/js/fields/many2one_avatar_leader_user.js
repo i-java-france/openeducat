@@ -2,7 +2,7 @@ import {
     many2OneAvatarUserField,
     Many2OneAvatarUserField,
 } from "@mail/views/web/fields/many2one_avatar_user_field/many2one_avatar_user_field";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export class Many2OneAvatarLeaderUserField extends Many2OneAvatarUserField {
     static props = {
@@ -15,7 +15,9 @@ export class Many2OneAvatarLeaderUserField extends Many2OneAvatarUserField {
             ...super.m2oProps,
             context: {
                 ...super.m2oProps.context,
-                crm_formatted_display_name_team: Number(this.props.record.data[this.props.teamField].id),
+                crm_formatted_display_name_team: Number(
+                    this.props.record.data[this.props.teamField].id
+                ),
             },
         };
     }

@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { isBlock, closestBlock } from "@html_editor/utils/blocks";
-import { unwrapContents } from "@html_editor/utils/dom";
+import {Plugin} from "@html_editor/plugin";
+import {isBlock, closestBlock} from "@html_editor/utils/blocks";
+import {unwrapContents} from "@html_editor/utils/dom";
 import {
     isParagraphRelatedElement,
     isRedundantElement,
@@ -24,18 +24,18 @@ import {
     getFontSizeDisplayValue,
     FONT_SIZE_CLASSES,
 } from "@html_editor/utils/formatting";
-import { DIRECTIONS } from "@html_editor/utils/position";
-import { _t } from "@web/core/l10n/translation";
-import { FontSelector } from "./font_selector";
+import {DIRECTIONS} from "@html_editor/utils/position";
+import {_t} from "@web/core/l10n/translation";
+import {FontSelector} from "./font_selector";
 import {
     getBaseContainerSelector,
     SUPPORTED_BASE_CONTAINER_NAMES,
 } from "@html_editor/utils/base_container";
-import { withSequence } from "@html_editor/utils/resource";
-import { reactive } from "@odoo/owl";
-import { FontSizeSelector } from "./font_size_selector";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { weakMemoize } from "@html_editor/utils/functions";
+import {withSequence} from "@html_editor/utils/resource";
+import {reactive} from "@odoo/owl";
+import {FontSizeSelector} from "./font_size_selector";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {weakMemoize} from "@html_editor/utils/functions";
 
 /** @typedef {import("plugins").TranslatedString} TranslatedString */
 
@@ -45,18 +45,18 @@ import { weakMemoize } from "@html_editor/utils/functions";
  */
 
 export const fontSizeItems = [
-    { variableName: "display-1-font-size", className: "display-1-fs" },
-    { variableName: "display-2-font-size", className: "display-2-fs" },
-    { variableName: "display-3-font-size", className: "display-3-fs" },
-    { variableName: "display-4-font-size", className: "display-4-fs" },
-    { variableName: "h1-font-size", className: "h1-fs" },
-    { variableName: "h2-font-size", className: "h2-fs" },
-    { variableName: "h3-font-size", className: "h3-fs" },
-    { variableName: "h4-font-size", className: "h4-fs" },
-    { variableName: "h5-font-size", className: "h5-fs" },
-    { variableName: "h6-font-size", className: "h6-fs" },
-    { variableName: "font-size-base", className: "base-fs" },
-    { variableName: "small-font-size", className: "o_small-fs" },
+    {variableName: "display-1-font-size", className: "display-1-fs"},
+    {variableName: "display-2-font-size", className: "display-2-fs"},
+    {variableName: "display-3-font-size", className: "display-3-fs"},
+    {variableName: "display-4-font-size", className: "display-4-fs"},
+    {variableName: "h1-font-size", className: "h1-fs"},
+    {variableName: "h2-font-size", className: "h2-fs"},
+    {variableName: "h3-font-size", className: "h3-fs"},
+    {variableName: "h4-font-size", className: "h4-fs"},
+    {variableName: "h5-font-size", className: "h5-fs"},
+    {variableName: "h6-font-size", className: "h6-fs"},
+    {variableName: "font-size-base", className: "base-fs"},
+    {variableName: "small-font-size", className: "o_small-fs"},
 ];
 
 const rightLeafOnlyNotBlockPath = createDOMPathGenerator(DIRECTIONS.RIGHT, {
@@ -88,12 +88,12 @@ export class FontPlugin extends Plugin {
                 extraClass: "display-1",
             }),
             ...[
-                { name: _t("Header 1"), tagName: "h1" },
-                { name: _t("Header 2"), tagName: "h2" },
-                { name: _t("Header 3"), tagName: "h3" },
-                { name: _t("Header 4"), tagName: "h4" },
-                { name: _t("Header 5"), tagName: "h5" },
-                { name: _t("Header 6"), tagName: "h6" },
+                {name: _t("Header 1"), tagName: "h1"},
+                {name: _t("Header 2"), tagName: "h2"},
+                {name: _t("Header 3"), tagName: "h3"},
+                {name: _t("Header 4"), tagName: "h4"},
+                {name: _t("Header 5"), tagName: "h5"},
+                {name: _t("Header 6"), tagName: "h6"},
             ].map((item) => withSequence(20, item)),
             withSequence(30, {
                 name: _t("Normal"),
@@ -101,15 +101,15 @@ export class FontPlugin extends Plugin {
                 // for the FontSelector component
                 selector: getBaseContainerSelector("DIV"),
             }),
-            withSequence(40, { name: _t("Paragraph"), tagName: "p" }),
-            withSequence(50, { name: _t("Code"), tagName: "pre" }),
-            withSequence(60, { name: _t("Quote"), tagName: "blockquote" }),
+            withSequence(40, {name: _t("Paragraph"), tagName: "p"}),
+            withSequence(50, {name: _t("Code"), tagName: "pre"}),
+            withSequence(60, {name: _t("Quote"), tagName: "blockquote"}),
         ],
         user_commands: [
             {
                 id: "setTagHeading",
-                run: ({ level } = {}) =>
-                    this.dependencies.dom.setBlock({ tagName: `H${level ?? 1}` }),
+                run: ({level} = {}) =>
+                    this.dependencies.dom.setBlock({tagName: `H${level ?? 1}`}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
             {
@@ -117,7 +117,7 @@ export class FontPlugin extends Plugin {
                 title: _t("Heading 1"),
                 description: _t("Big section heading"),
                 icon: "fa-header",
-                run: () => this.dependencies.dom.setBlock({ tagName: "H1" }),
+                run: () => this.dependencies.dom.setBlock({tagName: "H1"}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
             {
@@ -125,7 +125,7 @@ export class FontPlugin extends Plugin {
                 title: _t("Heading 2"),
                 description: _t("Medium section heading"),
                 icon: "fa-header",
-                run: () => this.dependencies.dom.setBlock({ tagName: "H2" }),
+                run: () => this.dependencies.dom.setBlock({tagName: "H2"}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
             {
@@ -133,7 +133,7 @@ export class FontPlugin extends Plugin {
                 title: _t("Heading 3"),
                 description: _t("Small section heading"),
                 icon: "fa-header",
-                run: () => this.dependencies.dom.setBlock({ tagName: "H3" }),
+                run: () => this.dependencies.dom.setBlock({tagName: "H3"}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
             {
@@ -153,7 +153,7 @@ export class FontPlugin extends Plugin {
                 title: _t("Quote"),
                 description: _t("Add a blockquote section"),
                 icon: "fa-quote-right",
-                run: () => this.dependencies.dom.setBlock({ tagName: "blockquote" }),
+                run: () => this.dependencies.dom.setBlock({tagName: "blockquote"}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
             {
@@ -161,7 +161,7 @@ export class FontPlugin extends Plugin {
                 title: _t("Code"),
                 description: _t("Add a code section"),
                 icon: "fa-code",
-                run: () => this.dependencies.dom.setBlock({ tagName: "pre" }),
+                run: () => this.dependencies.dom.setBlock({tagName: "pre"}),
                 isAvailable: this.blockFormatIsAvailable.bind(this),
             },
         ],
@@ -201,16 +201,19 @@ export class FontPlugin extends Plugin {
                     getDisplay: () => this.fontSize,
                     onFontSizeInput: (size) => {
                         this.dependencies.format.formatSelection("fontSize", {
-                            formatProps: { size },
+                            formatProps: {size},
                             applyStyle: true,
                         });
                         this.updateFontSizeSelectorParams();
                     },
                     onSelected: (item) => {
-                        this.dependencies.format.formatSelection("setFontSizeClassName", {
-                            formatProps: { className: item.className },
-                            applyStyle: true,
-                        });
+                        this.dependencies.format.formatSelection(
+                            "setFontSizeClassName",
+                            {
+                                formatProps: {className: item.className},
+                                applyStyle: true,
+                            }
+                        );
                         this.updateFontSizeSelectorParams();
                     },
                     onBlur: () => this.dependencies.selection.focusEditable(),
@@ -219,7 +222,7 @@ export class FontPlugin extends Plugin {
                 isAvailable: isHtmlContentSupported,
             }),
         ],
-        powerbox_categories: withSequence(5, { id: "format", name: _t("Format") }),
+        powerbox_categories: withSequence(5, {id: "format", name: _t("Format")}),
         powerbox_items: [
             {
                 categoryId: "format",
@@ -253,32 +256,32 @@ export class FontPlugin extends Plugin {
             {
                 pattern: /^#$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 1 },
+                commandParams: {level: 1},
             },
             {
                 pattern: /^##$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 2 },
+                commandParams: {level: 2},
             },
             {
                 pattern: /^###$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 3 },
+                commandParams: {level: 3},
             },
             {
                 pattern: /^####$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 4 },
+                commandParams: {level: 4},
             },
             {
                 pattern: /^#####$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 5 },
+                commandParams: {level: 5},
             },
             {
                 pattern: /^######$/,
                 commandId: "setTagHeading",
-                commandParams: { level: 6 },
+                commandParams: {level: 6},
             },
             {
                 pattern: /^>$/,
@@ -286,14 +289,14 @@ export class FontPlugin extends Plugin {
             },
         ],
         hints: [
-            { selector: "H1", text: _t("Heading 1") },
-            { selector: "H2", text: _t("Heading 2") },
-            { selector: "H3", text: _t("Heading 3") },
-            { selector: "H4", text: _t("Heading 4") },
-            { selector: "H5", text: _t("Heading 5") },
-            { selector: "H6", text: _t("Heading 6") },
-            { selector: "PRE", text: _t("Code") },
-            { selector: "BLOCKQUOTE", text: _t("Quote") },
+            {selector: "H1", text: _t("Heading 1")},
+            {selector: "H2", text: _t("Heading 2")},
+            {selector: "H3", text: _t("Heading 3")},
+            {selector: "H4", text: _t("Heading 4")},
+            {selector: "H5", text: _t("Heading 5")},
+            {selector: "H6", text: _t("Heading 6")},
+            {selector: "PRE", text: _t("Code")},
+            {selector: "BLOCKQUOTE", text: _t("Quote")},
         ],
 
         /** Handlers */
@@ -317,7 +320,10 @@ export class FontPlugin extends Plugin {
             this.handleSplitBlockPRE.bind(this),
             this.handleSplitBlockquote.bind(this),
         ],
-        delete_backward_overrides: withSequence(20, this.handleDeleteBackward.bind(this)),
+        delete_backward_overrides: withSequence(
+            20,
+            this.handleDeleteBackward.bind(this)
+        ),
         delete_backward_word_overrides: this.handleDeleteBackward.bind(this),
 
         /** Processors */
@@ -329,13 +335,14 @@ export class FontPlugin extends Plugin {
     };
 
     setup() {
-        this.fontSize = reactive({ displayName: "" });
-        this.font = reactive({ displayName: "" });
+        this.fontSize = reactive({displayName: ""});
+        this.font = reactive({displayName: ""});
         this.blockFormatIsAvailableMemoized = weakMemoize(
-            (selection) => isHtmlContentSupported(selection) && this.dependencies.dom.canSetBlock()
+            (selection) =>
+                isHtmlContentSupported(selection) && this.dependencies.dom.canSetBlock()
         );
         this.availableFontItems = this.getResource("font_items").filter(
-            ({ tagName }) =>
+            ({tagName}) =>
                 !SUPPORTED_BASE_CONTAINER_NAMES.includes(tagName.toUpperCase()) ||
                 this.config.baseContainers.includes(tagName.toUpperCase())
         );
@@ -353,7 +360,8 @@ export class FontPlugin extends Plugin {
     }
 
     get fontName() {
-        const sel = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        const sel =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         // if (!sel) {
         //     return "Normal";
         // }
@@ -365,7 +373,9 @@ export class FontPlugin extends Plugin {
             item.selector ? block.matches(item.selector) : item.tagName === tagName
         );
 
-        const matchingItemsWitoutExtraClass = matchingItems.filter((item) => !item.extraClass);
+        const matchingItemsWitoutExtraClass = matchingItems.filter(
+            (item) => !item.extraClass
+        );
 
         if (!matchingItems.length) {
             return _t("Normal");
@@ -378,7 +388,8 @@ export class FontPlugin extends Plugin {
     }
 
     get fontSizeName() {
-        const sel = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        const sel =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         if (!sel) {
             return fontSizeItems[0].name;
         }
@@ -402,7 +413,7 @@ export class FontPlugin extends Plugin {
                 }
                 nameAlreadyUsed.add(roundedValue);
 
-                return [{ ...item, tagName: "span", name: roundedValue }];
+                return [{...item, tagName: "span", name: roundedValue}];
             })
             .sort((a, b) => a.name - b.name);
     }
@@ -416,7 +427,7 @@ export class FontPlugin extends Plugin {
      * Specific behavior for pre: insert newline (\n) in text or insert p at
      * end.
      */
-    handleSplitBlockPRE({ targetNode, targetOffset }) {
+    handleSplitBlockPRE({targetNode, targetOffset}) {
         const closestPre = closestElement(targetNode, "pre");
         const closestBlockNode = closestBlock(targetNode);
         if (
@@ -429,18 +440,21 @@ export class FontPlugin extends Plugin {
         }
 
         // Nodes to the right of the split position.
-        const nodesAfterTarget = [...rightLeafOnlyNotBlockPath(targetNode, targetOffset)];
+        const nodesAfterTarget = [
+            ...rightLeafOnlyNotBlockPath(targetNode, targetOffset),
+        ];
         if (
             !nodesAfterTarget.length ||
             (nodesAfterTarget.length === 1 && nodesAfterTarget[0].nodeName === "BR") ||
             isEmptyBlock(closestBlockNode)
         ) {
             // Remove the last empty block node within pre tag
-            const [beforeElement, afterElement] = this.dependencies.split.splitElementBlock({
-                targetNode,
-                targetOffset,
-                blockToSplit: closestBlockNode,
-            });
+            const [beforeElement, afterElement] =
+                this.dependencies.split.splitElementBlock({
+                    targetNode,
+                    targetOffset,
+                    blockToSplit: closestBlockNode,
+                });
             const isPreBlock = beforeElement.nodeName === "PRE";
             const baseContainer = isPreBlock
                 ? this.dependencies.baseContainer.createBaseContainer()
@@ -452,7 +466,8 @@ export class FontPlugin extends Plugin {
                 beforeElement.remove();
                 closestPre.after(afterElement);
             }
-            const dir = closestBlockNode.getAttribute("dir") || closestPre.getAttribute("dir");
+            const dir =
+                closestBlockNode.getAttribute("dir") || closestPre.getAttribute("dir");
             if (dir) {
                 baseContainer.setAttribute("dir", dir);
             }
@@ -469,7 +484,7 @@ export class FontPlugin extends Plugin {
      * Specific behavior for blockquote: insert p at end and remove the last
      * empty node.
      */
-    handleSplitBlockquote({ targetNode, targetOffset, blockToSplit }) {
+    handleSplitBlockquote({targetNode, targetOffset, blockToSplit}) {
         const closestQuote = closestElement(targetNode, "blockquote");
         const closestBlockNode = closestBlock(targetNode);
         const blockQuotedir = closestQuote && closestQuote.getAttribute("dir");
@@ -498,10 +513,15 @@ export class FontPlugin extends Plugin {
         }
 
         const selection = this.dependencies.selection.getEditableSelection();
-        const previousElementSibling = selection.anchorNode?.childNodes[selection.anchorOffset - 1];
-        const nextElementSibling = selection.anchorNode?.childNodes[selection.anchorOffset];
+        const previousElementSibling =
+            selection.anchorNode?.childNodes[selection.anchorOffset - 1];
+        const nextElementSibling =
+            selection.anchorNode?.childNodes[selection.anchorOffset];
         // Double enter at the end of blockquote => we should break out of the blockquote element.
-        if (previousElementSibling?.tagName === "BR" && nextElementSibling?.tagName === "BR") {
+        if (
+            previousElementSibling?.tagName === "BR" &&
+            nextElementSibling?.tagName === "BR"
+        ) {
             nextElementSibling.remove();
             previousElementSibling.remove();
             this.dependencies.split.splitElementBlock({
@@ -515,7 +535,7 @@ export class FontPlugin extends Plugin {
             return true;
         }
 
-        this.dependencies.lineBreak.insertLineBreakElement({ targetNode, targetOffset });
+        this.dependencies.lineBreak.insertLineBreakElement({targetNode, targetOffset});
         return true;
     }
 
@@ -539,7 +559,8 @@ export class FontPlugin extends Plugin {
                 headingTags.includes(newElement.tagName) &&
                 !descendants(newElement).some(isVisibleTextNode)
             ) {
-                const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                const baseContainer =
+                    this.dependencies.baseContainer.createBaseContainer();
                 const dir = newElement.getAttribute("dir");
                 if (dir) {
                     baseContainer.setAttribute("dir", dir);
@@ -557,9 +578,10 @@ export class FontPlugin extends Plugin {
      * editable into a base container. An empty blockquote is transformed
      * into a base container, regardless of its position in the editable.
      */
-    handleDeleteBackward({ startContainer, startOffset, endContainer, endOffset }) {
+    handleDeleteBackward({startContainer, startOffset, endContainer, endOffset}) {
         // Detect if cursor is at the start of the editable (collapsed range).
-        const rangeIsCollapsed = startContainer === endContainer && startOffset === endOffset;
+        const rangeIsCollapsed =
+            startContainer === endContainer && startOffset === endOffset;
         const closestHandledElement = closestElement(endContainer, handledElemSelector);
         if (!rangeIsCollapsed && closestHandledElement?.tagName !== "BLOCKQUOTE") {
             return;
@@ -569,7 +591,11 @@ export class FontPlugin extends Plugin {
             return;
         }
         // Check if unremovable.
-        if (this.getResource("unremovable_node_predicates").some((p) => p(closestHandledElement))) {
+        if (
+            this.getResource("unremovable_node_predicates").some((p) =>
+                p(closestHandledElement)
+            )
+        ) {
             return;
         }
         const baseContainer = this.dependencies.baseContainer.createBaseContainer();

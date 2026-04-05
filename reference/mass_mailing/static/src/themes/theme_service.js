@@ -1,14 +1,16 @@
-import { children } from "@html_editor/utils/dom_traversal";
-import { parseHTML } from "@html_editor/utils/html";
-import { markup } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { Deferred } from "@web/core/utils/concurrency";
-import { Reactive } from "@web/core/utils/reactive";
-import { renderToMarkup } from "@web/core/utils/render";
+import {children} from "@html_editor/utils/dom_traversal";
+import {parseHTML} from "@html_editor/utils/html";
+import {markup} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {Deferred} from "@web/core/utils/concurrency";
+import {Reactive} from "@web/core/utils/reactive";
+import {renderToMarkup} from "@web/core/utils/render";
 
 function hasDataOption(element, attribute) {
     attribute = "data-" + attribute;
-    return element.hasAttribute(attribute) && element.getAttribute(attribute) !== "false";
+    return (
+        element.hasAttribute(attribute) && element.getAttribute(attribute) !== "false"
+    );
 }
 
 function getClassName(name) {
@@ -47,7 +49,7 @@ export class ThemeModel extends Reactive {
             }
             if (hasDataOption(theme, "images-info")) {
                 const imagesInfo = Object.assign(
-                    { all: {} },
+                    {all: {}},
                     JSON.parse(theme.dataset.imagesInfo || "{}")
                 );
                 for (const [key, info] of Object.entries(imagesInfo)) {
@@ -60,10 +62,14 @@ export class ThemeModel extends Reactive {
                         info
                     );
                 }
-                themeOptions.getImageInfo = (filename) => imagesInfo[filename] || imagesInfo.all;
+                themeOptions.getImageInfo = (filename) =>
+                    imagesInfo[filename] || imagesInfo.all;
             }
             // Wrap the Theme `html` with a technical layout.
-            themeOptions.html = renderToMarkup("mass_mailing.ThemeLayout", themeOptions);
+            themeOptions.html = renderToMarkup(
+                "mass_mailing.ThemeLayout",
+                themeOptions
+            );
             this.loadedThemes.set(themeOptions.name, themeOptions);
         }
     }
@@ -105,8 +111,8 @@ export class ThemeModel extends Reactive {
 registry.category("services").add("mass_mailing.themes", {
     dependencies: ["orm"],
 
-    start(env, { orm }) {
-        const services = { orm };
+    start(env, {orm}) {
+        const services = {orm};
         return new ThemeModel(services);
     },
 });

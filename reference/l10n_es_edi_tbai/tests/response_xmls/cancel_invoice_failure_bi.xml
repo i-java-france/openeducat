@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <ns2:LROEPJ240FacturasEmitidasConSGAnulacionRespuesta xmlns:ns2="xxx">
     <Cabecera>
         <Modelo>XXX</Modelo>
@@ -20,8 +20,10 @@
             <SituacionRegistro>
                 <EstadoRegistro>Incorrecto</EstadoRegistro>
                 <CodigoErrorRegistro>B4_2000001</CodigoErrorRegistro>
-                <DescripcionErrorRegistroES>Error description in Spanish.</DescripcionErrorRegistroES>
-                <DescripcionErrorRegistroEU>Error description in Basque.</DescripcionErrorRegistroEU>
+                <DescripcionErrorRegistroES
+                >Error description in Spanish.</DescripcionErrorRegistroES>
+                <DescripcionErrorRegistroEU
+                >Error description in Basque.</DescripcionErrorRegistroEU>
             </SituacionRegistro>
         </Registro>
     </Registros>

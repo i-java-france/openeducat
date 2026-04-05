@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { waitFor } from "@odoo/hoot-dom";
+import {waitFor} from "@odoo/hoot-dom";
 
 defineWebsiteModels();
 
@@ -12,11 +12,11 @@ test("test parallax zoom", async () => {
     await setupWebsiteAndOpenParallaxOptions();
     await contains("[data-action-value='zoomOut']").click();
     await waitFor("[data-label='Intensity'] input");
-    expect(":iframe section").not.toHaveStyle("background-image", { inline: true });
+    expect(":iframe section").not.toHaveStyle("background-image", {inline: true});
     expect("[data-label='Intensity'] input").toBeVisible();
 });
 test("add parallax changes editing element", async () => {
-    await setupWebsiteAndOpenParallaxOptions({}, { loadIframeBundles: true });
+    await setupWebsiteAndOpenParallaxOptions({}, {loadIframeBundles: true});
     await contains("[data-action-value='fixed']").click();
     await contains("[data-label='Position'] .dropdown-toggle").click();
     await contains("[data-action-value='repeat-pattern']").click();
@@ -25,7 +25,9 @@ test("add parallax changes editing element", async () => {
     expect(":iframe section .s_parallax_bg").toHaveStyle("background-repeat: repeat");
 });
 test("add parallax removes classes on the original editing element", async () => {
-    await setupWebsiteAndOpenParallaxOptions({ editingElClasses: "o_modified_image_to_save" });
+    await setupWebsiteAndOpenParallaxOptions({
+        editingElClasses: "o_modified_image_to_save",
+    });
     await contains("[data-action-value='fixed']").click();
     expect(":iframe section").not.toHaveClass("o_modified_image_to_save");
     expect(":iframe section .s_parallax_bg").toHaveClass("o_modified_image_to_save");
@@ -105,7 +107,7 @@ test("parallax scroll effect 'none' doesn't remove the color filter", async () =
 });
 
 async function setupWebsiteAndOpenParallaxOptions(
-    { editingElClasses = "" } = {},
+    {editingElClasses = ""} = {},
     builderOptions = {}
 ) {
     const backgroundImageUrl = "url('/web/image/123/transparent.png')";

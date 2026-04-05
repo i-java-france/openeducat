@@ -1,9 +1,9 @@
-import { after } from "@odoo/hoot";
-import { Deferred, mockWorker } from "@odoo/hoot-mock";
-import { MockServer } from "@web/../tests/web_test_helpers";
+import {after} from "@odoo/hoot";
+import {Deferred, mockWorker} from "@odoo/hoot-mock";
+import {MockServer} from "@web/../tests/web_test_helpers";
 
-import { WebsocketWorker } from "@bus/workers/websocket_worker";
-import { patch } from "@web/core/utils/patch";
+import {WebsocketWorker} from "@bus/workers/websocket_worker";
+import {patch} from "@web/core/utils/patch";
 
 //-----------------------------------------------------------------------------
 // Internal
@@ -104,17 +104,20 @@ patch(WebsocketWorker.prototype, {
     },
 
     _sendToServer(message) {
-        const { env } = MockServer;
+        const {env} = MockServer;
         if (!env) {
             return;
         }
 
         if ("bus.bus" in env && "ir.websocket" in env) {
             if (message.event_name === "update_presence") {
-                const { inactivity_period, im_status_ids_by_model } = message.data;
-                env["ir.websocket"]._update_presence(inactivity_period, im_status_ids_by_model);
+                const {inactivity_period, im_status_ids_by_model} = message.data;
+                env["ir.websocket"]._update_presence(
+                    inactivity_period,
+                    im_status_ids_by_model
+                );
             } else if (message.event_name === "subscribe") {
-                const { channels } = message.data;
+                const {channels} = message.data;
                 env["bus.bus"].channelsByUser[env.uid] = channels;
             }
         }

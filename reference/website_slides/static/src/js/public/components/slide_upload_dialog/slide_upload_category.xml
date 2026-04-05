@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="website_slides.SlideUploadCategory" owl="1">
         <div>
-            <div t-if="state.alert.show" t-attf-class="alert {{state.alert.class}}"
-                role="alert" t-out="state.alert.message" />
+            <div
+                t-if="state.alert.show"
+                t-attf-class="alert {{state.alert.class}}"
+                role="alert"
+                t-out="state.alert.message"
+            />
             <form
                 id="o_w_slide_upload_category_form"
                 t-att-class="{'clearfix': true, 'was-validated': state.form.wasValidated}"
@@ -21,8 +25,8 @@
                             onChangeFileInput.bind="onChangeFileInput"
                             onChangeUrl.bind="onChangeUrl"
                         />
-                        <canvas id="data_canvas" class="d-none"/>
-                        <t t-call="website_slides.UploadFormCommonInputs"/>
+                        <canvas id="data_canvas" class="d-none" />
+                        <t t-call="website_slides.UploadFormCommonInputs" />
                     </div>
                     <!-- Right column: preview and tutorial -->
                     <div class="col-md-6">
@@ -45,15 +49,15 @@
                                 />
                             </div>
                             <div t-else="" class="p-3">
-                                <t t-slot="tutorial"/>
+                                <t t-slot="tutorial" />
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <t t-if="state.form.isLoading" t-call="website_slides.UploadDialogLoading"/>
-        <t t-call="website_slides.UploadBtns"/>
+        <t t-if="state.form.isLoading" t-call="website_slides.UploadDialogLoading" />
+        <t t-call="website_slides.UploadBtns" />
     </t>
 
     <!-- Slide Upload Category common part templates -->
@@ -101,11 +105,11 @@
             >
                 <t t-set-slot="bottomArea" t-slot-scope="select">
                     <DropdownItem
-                            t-if="select.data.searchValue and !this.choiceExists(select.data.searchValue, select.data.choices)"
-                            class="'btn text-primary'"
-                            onSelected="() => this.onClickCreateCategoryBtn(select.data.searchValue)"
-                        >
-                            Create New Category "<i t-out="select.data.searchValue"/>"
+                        t-if="select.data.searchValue and !this.choiceExists(select.data.searchValue, select.data.choices)"
+                        class="'btn text-primary'"
+                        onSelected="() => this.onClickCreateCategoryBtn(select.data.searchValue)"
+                    >
+                            Create New Category "<i t-out="select.data.searchValue" />"
                     </DropdownItem>
                 </t>
             </SelectMenu>
@@ -122,17 +126,20 @@
             >
                 <t t-set-slot="bottomArea" t-slot-scope="select">
                     <DropdownItem
-                            t-if="select.data.searchValue and !this.choiceExists(select.data.searchValue, select.data.choices)"
-                            class="'btn text-primary'"
-                            onSelected="() => this.onClickCreateTagBtn(select.data.searchValue)"
-                        >
-                            Create New Tag "<i t-out="select.data.searchValue"/>"
+                        t-if="select.data.searchValue and !this.choiceExists(select.data.searchValue, select.data.choices)"
+                        class="'btn text-primary'"
+                        onSelected="() => this.onClickCreateTagBtn(select.data.searchValue)"
+                    >
+                            Create New Tag "<i t-out="select.data.searchValue" />"
                     </DropdownItem>
                 </t>
             </SelectMenu>
         </div>
         <div class="mb-3">
-            <label for="duration" class="col-form-label">Estimated Completion Time</label>
+            <label
+                for="duration"
+                class="col-form-label"
+            >Estimated Completion Time</label>
             <div class="input-group">
                 <input
                     t-model="state.form.duration"
@@ -155,7 +162,7 @@
             class="o_wslides_slide_upload_loading position-absolute h-100 w-100 text-center d-flex flex-column justify-content-center"
         >
             <h2 class="text-white">
-                <span class="fa fa-circle-o-notch fa-spin"/>
+                <span class="fa fa-circle-o-notch fa-spin" />
                 <span>Loading content...</span>
             </h2>
         </div>

@@ -1,6 +1,6 @@
-import { DiscussContent } from "@mail/core/public_web/discuss_content";
+import {DiscussContent} from "@mail/core/public_web/discuss_content";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(DiscussContent.prototype, {
     get isLivechatChannel() {

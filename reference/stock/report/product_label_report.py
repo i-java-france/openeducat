@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 
+import markupsafe
+
 from odoo import _, models
 from odoo.exceptions import UserError
-
-import markupsafe
 
 
 class ReportStockLabel_Product_Product_View(models.AbstractModel):

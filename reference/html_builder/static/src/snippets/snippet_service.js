@@ -1,15 +1,15 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { uniqueId } from "@web/core/utils/functions";
-import { Reactive } from "@web/core/utils/reactive";
-import { AddSnippetDialog } from "./add_snippet_dialog";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { markup, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {uniqueId} from "@web/core/utils/functions";
+import {Reactive} from "@web/core/utils/reactive";
+import {AddSnippetDialog} from "./add_snippet_dialog";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {markup, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 export class SnippetModel extends Reactive {
-    constructor(services, { snippetsName, context }) {
+    constructor(services, {snippetsName, context}) {
         super();
         this.orm = services.orm;
         this.dialog = services.dialog;
@@ -91,14 +91,20 @@ export class SnippetModel extends Reactive {
     }
 
     getSnippetByName(category, name) {
-        return this.snippetsByCategory[category].find((snippet) => snippet.name === name);
+        return this.snippetsByCategory[category].find(
+            (snippet) => snippet.name === name
+        );
     }
 
     installSnippetModule(snippet, installSnippetModule) {
-        const bodyText = _t("Do you want to install %s App?", snippet.moduleDisplayName);
+        const bodyText = _t(
+            "Do you want to install %s App?",
+            snippet.moduleDisplayName
+        );
         const linkText = _t("More info about this app.");
         const linkUrl =
-            "/odoo/action-base.open_module_tree/" + encodeURIComponent(snippet.moduleId);
+            "/odoo/action-base.open_module_tree/" +
+            encodeURIComponent(snippet.moduleId);
 
         this.dialog.add(ConfirmationDialog, {
             title: _t("Install %s", snippet.moduleDisplayName),
@@ -120,7 +126,7 @@ export class SnippetModel extends Reactive {
      *                 - `onClose` called when the dialog is closed.
      * @param {Object} editor
      */
-    openSnippetDialog(snippet, { onSelect, onClose }, editor) {
+    openSnippetDialog(snippet, {onSelect, onClose}, editor) {
         this.dialog.add(
             AddSnippetDialog,
             {
@@ -133,14 +139,14 @@ export class SnippetModel extends Reactive {
                 installSnippetModule: editor.config.installSnippetModule,
                 editor,
             },
-            { onClose }
+            {onClose}
         );
     }
 
     load() {
         if (!this.loadProm) {
             this.loadProm = (async () => {
-                const context = { ...this.context, rendering_bundle: true };
+                const context = {...this.context, rendering_bundle: true};
                 if (context.user_lang) {
                     context.lang = this.context.user_lang;
                     context.snippet_lang = this.context.lang;
@@ -149,10 +155,15 @@ export class SnippetModel extends Reactive {
                     "ir.ui.view",
                     "render_public_asset",
                     [this.snippetsName, {}],
-                    { context }
+                    {context}
                 );
-                this.snippetsDocument = new DOMParser().parseFromString(html, "text/html");
-                const processors = registry.category("html_builder.snippetsPreprocessor").getAll();
+                this.snippetsDocument = new DOMParser().parseFromString(
+                    html,
+                    "text/html"
+                );
+                const processors = registry
+                    .category("html_builder.snippetsPreprocessor")
+                    .getAll();
                 for (const processor of Object.values(processors)) {
                     processor(this.snippetsName, this.snippetsDocument);
                 }
@@ -211,10 +222,14 @@ export class SnippetModel extends Reactive {
                     });
                 }
                 if (snippetEl.dataset.oeForbidSanitize) {
-                    Object.assign(snippet, { forbidSanitize: snippetEl.dataset.oeForbidSanitize });
+                    Object.assign(snippet, {
+                        forbidSanitize: snippetEl.dataset.oeForbidSanitize,
+                    });
                 }
                 if (snippetEl.dataset.oGridColumnSpan) {
-                    snippet.gridColumnSpan = parseInt(snippetEl.dataset.oGridColumnSpan);
+                    snippet.gridColumnSpan = parseInt(
+                        snippetEl.dataset.oGridColumnSpan
+                    );
                 }
                 switch (snippetCategory.id) {
                     case "snippet_groups":
@@ -230,7 +245,11 @@ export class SnippetModel extends Reactive {
                         break;
                 }
                 snippet.label = this.getSnippetLabel(snippetEl, snippet.isCustom);
-                if (["snippet_structure", "snippet_content"].includes(snippetCategory.id)) {
+                if (
+                    ["snippet_structure", "snippet_content"].includes(
+                        snippetCategory.id
+                    )
+                ) {
                     this.originalSnippets[snippet.name] ??= snippet;
                 }
                 snippets.push(snippet);
@@ -262,18 +281,25 @@ export class SnippetModel extends Reactive {
 
     async deleteCustomSnippet(snippet) {
         return new Promise((resolve) => {
-            const message = _t("Are you sure you want to delete the block %s?", snippet.title);
+            const message = _t(
+                "Are you sure you want to delete the block %s?",
+                snippet.title
+            );
             this.dialog.add(
                 ConfirmationDialog,
                 {
                     body: message,
                     confirm: async () => {
                         const isInnerContent =
-                            this.snippetsByCategory.snippet_custom_content.includes(snippet);
+                            this.snippetsByCategory.snippet_custom_content.includes(
+                                snippet
+                            );
                         const snippetCustom = isInnerContent
                             ? this.snippetsByCategory.snippet_custom_content
                             : this.snippetsByCategory.snippet_custom;
-                        const index = snippetCustom.findIndex((s) => s.id === snippet.id);
+                        const index = snippetCustom.findIndex(
+                            (s) => s.id === snippet.id
+                        );
                         if (index > -1) {
                             snippetCustom.splice(index, 1);
                         }
@@ -313,7 +339,9 @@ export class SnippetModel extends Reactive {
 
     setSnippetName(snippetsDocument) {
         // TODO: this should probably be done in py
-        for (const snippetEl of snippetsDocument.body.querySelectorAll("snippets > *")) {
+        for (const snippetEl of snippetsDocument.body.querySelectorAll(
+            "snippets > *"
+        )) {
             snippetEl.children[0].dataset["name"] = snippetEl.getAttribute("name");
         }
     }
@@ -379,11 +407,14 @@ export class SnippetModel extends Reactive {
                     cancel: () => resolve(false),
                     confirm: async () => {
                         const isButton = snippetEl.matches("a.btn");
-                        const snippetKey = isButton ? "s_button" : snippetEl.dataset.snippet;
+                        const snippetKey = isButton
+                            ? "s_button"
+                            : snippetEl.dataset.snippet;
                         const thumbnailURL = this.getSnippetThumbnailURL(snippetKey);
 
-                        const snippetCopyEl = await wrapWithSaveSnippetHandlers(snippetEl, () =>
-                            snippetEl.cloneNode(true)
+                        const snippetCopyEl = await wrapWithSaveSnippetHandlers(
+                            snippetEl,
+                            () => snippetEl.cloneNode(true)
                         );
 
                         // "CleanForSave" the snippet copy (only its children in
@@ -392,7 +423,9 @@ export class SnippetModel extends Reactive {
                         const rootEl = snippetEl.matches(".s_popup")
                             ? snippetCopyEl.firstElementChild
                             : snippetCopyEl;
-                        cleanForSaveHandlers.forEach((handler) => handler({ root: rootEl }));
+                        cleanForSaveHandlers.forEach((handler) =>
+                            handler({root: rootEl})
+                        );
 
                         const defaultSnippetName = isButton
                             ? _t("Custom Button")
@@ -416,21 +449,26 @@ export class SnippetModel extends Reactive {
                             field: editableParentEl.dataset.oeField,
                             resId: editableParentEl.dataset.oeId,
                         };
-                        const savedName = await this.orm.call("ir.ui.view", "save_snippet", [], {
-                            name: defaultSnippetName,
-                            arch: snippetCopyEl.outerHTML,
-                            template_key: this.snippetsName,
-                            snippet_key: snippetKey,
-                            thumbnail_url: thumbnailURL,
-                            context,
-                        });
+                        const savedName = await this.orm.call(
+                            "ir.ui.view",
+                            "save_snippet",
+                            [],
+                            {
+                                name: defaultSnippetName,
+                                arch: snippetCopyEl.outerHTML,
+                                template_key: this.snippetsName,
+                                snippet_key: snippetKey,
+                                thumbnail_url: thumbnailURL,
+                                context,
+                            }
+                        );
 
                         // Reload the snippets so the sidebar is up to date.
                         await this.reload();
                         resolve(savedName);
                     },
                 },
-                { onClose: () => resolve(false) }
+                {onClose: () => resolve(false)}
             );
         });
     }
@@ -450,8 +488,8 @@ export class SnippetModel extends Reactive {
 export const snippetService = {
     dependencies: ["orm", "dialog"],
 
-    start(env, { orm, dialog }) {
-        const services = { orm, dialog };
+    start(env, {orm, dialog}) {
+        const services = {orm, dialog};
         const context = {
             lang: user.context.lang, // will be overridden by each module through reload().
             user_lang: user.context.lang,
@@ -472,7 +510,7 @@ export const snippetService = {
             return snippetModelsMap.get(snippetsName);
         };
 
-        return { getSnippetModel };
+        return {getSnippetModel};
     },
 };
 

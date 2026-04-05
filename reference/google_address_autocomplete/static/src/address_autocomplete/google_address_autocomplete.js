@@ -1,53 +1,54 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { CharField, charField } from "@web/views/fields/char/char_field";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { googlePlacesSession } from "../google_places_session";
-import { useChildRef } from "@web/core/utils/hooks";
-import { useInputField } from "@web/views/fields/input_field_hook";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {CharField, charField} from "@web/views/fields/char/char_field";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {googlePlacesSession} from "../google_places_session";
+import {useChildRef} from "@web/core/utils/hooks";
+import {useInputField} from "@web/views/fields/input_field_hook";
 
 const standardAddressFields = {
     street: {
         label: _t("Street field"),
-        type: ["char"]
+        type: ["char"],
     },
     street2: {
         label: _t("Additional street field"),
-        type: ["char"]
+        type: ["char"],
     },
     city: {
         label: _t("City field"),
-        type: ["char"]
+        type: ["char"],
     },
     state_id: {
         label: _t("State field"),
-        type: ["char", "many2one"]
+        type: ["char", "many2one"],
     },
     zip: {
         label: _t("Zip field"),
-        type: ["char"]
+        type: ["char"],
     },
     country_id: {
         label: _t("Country field"),
-        type: ["char", "many2one"]
-    }
-}
+        type: ["char", "many2one"],
+    },
+};
 
 export class AddressAutoComplete extends CharField {
     static template = "google_address_autocomplete.AddressAutoCompleteTemplate";
-    static components = { AutoComplete, ...CharField.components };
+    static components = {AutoComplete, ...CharField.components};
 
-    static props = {...CharField.props,
+    static props = {
+        ...CharField.props,
         addressFieldMap: {
             type: Object,
             optional: true,
-        }
-    }
+        },
+    };
 
     static defaultProps = {
         ...CharField.defaultProps,
         addressFieldMap: {},
-    }
+    };
 
     setup() {
         super.setup();
@@ -64,10 +65,11 @@ export class AddressAutoComplete extends CharField {
             {
                 options: async (request) => {
                     if (request.length > 5) {
-                        const suggestions = await googlePlacesSession.getAddressPropositions({
-                            partial_address: request,
-                            use_employees_key: true,
-                        });
+                        const suggestions =
+                            await googlePlacesSession.getAddressPropositions({
+                                partial_address: request,
+                                use_employees_key: true,
+                            });
                         suggestions.results = suggestions.results.map((result) => ({
                             label: result.formatted_address,
                             onSelect: () => this.selectAddressProposition(result),
@@ -116,7 +118,7 @@ export class AddressAutoComplete extends CharField {
             const recordFieldName = addressFieldMap[fieldName] || fieldName;
             if (recordFieldName in activeFields) {
                 if (fields[recordFieldName].type === "many2one") {
-                    value = value && { id: value[0], display_name: value[1] };
+                    value = value && {id: value[0], display_name: value[1]};
                 } else if (Array.isArray(value)) {
                     value = value[1];
                 }
@@ -144,14 +146,14 @@ export const addressAutoComplete = {
             return {
                 label: data.label,
                 placeholder: fname,
-                type : "field",
+                type: "field",
                 name: fname,
                 availableTypes: data.type,
-            }
-        })
+            };
+        }),
     ],
     extractProps: (fieldInfo, dynamicInfo) => {
-        const { options } = fieldInfo;
+        const {options} = fieldInfo;
         const props = charField.extractProps(fieldInfo, dynamicInfo);
         const addressFieldMap = {};
         Object.keys(standardAddressFields).forEach((fname) => {
@@ -162,6 +164,6 @@ export const addressAutoComplete = {
         });
         props.addressFieldMap = addressFieldMap;
         return props;
-    }
+    },
 };
 registry.category("fields").add("google_address_autocomplete", addressAutoComplete);

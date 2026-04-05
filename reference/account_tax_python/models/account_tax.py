@@ -1,12 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
-from odoo.addons.account_tax_python.tools.formula_utils import check_formula, normalize_formula
+from odoo.addons.account_tax_python.tools.formula_utils import (
+    check_formula,
+    normalize_formula,
+)
 
 
 class AccountTax(models.Model):

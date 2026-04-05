@@ -1,5 +1,5 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 const diacriticalMarksRegex = /[\u0300-\u036f]/g;
 
@@ -10,7 +10,7 @@ function normalizeFeatureName(name) {
 
 export const geoJsonService = {
     dependencies: ["orm"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         const geoJsonPromises = new Map();
         const geoJsonCache = new Map();
 
@@ -24,7 +24,8 @@ export const geoJsonService = {
             const featurePromise = fetchJsonFromServer(
                 `/spreadsheet/static/topojson/${region}.topo.json`
             );
-            const mappingPromise = region === "usa" ? getUsaStatesMapping() : getCountriesMapping();
+            const mappingPromise =
+                region === "usa" ? getUsaStatesMapping() : getCountriesMapping();
             return Promise.all([featurePromise, mappingPromise]);
         }
 
@@ -36,7 +37,11 @@ export const geoJsonService = {
                 return usStatesMappingPromise;
             }
             usStatesMappingPromise = orm
-                .searchRead("res.country.state", [["country_id.code", "=", "US"]], ["name", "code"])
+                .searchRead(
+                    "res.country.state",
+                    [["country_id.code", "=", "US"]],
+                    ["name", "code"]
+                )
                 .then((usStates) => {
                     const mapping = {};
                     for (const state of usStates) {
@@ -93,7 +98,7 @@ export const geoJsonService = {
                 return geoJsonPromises.get(url);
             }
 
-            const promise = fetch(url, { method: "GET" })
+            const promise = fetch(url, {method: "GET"})
                 .then((res) => res.json())
                 .then((geoJson) => {
                     geoJsonCache.set(url, geoJson);
@@ -102,7 +107,7 @@ export const geoJsonService = {
                 })
                 .catch((e) => {
                     console.error(e);
-                    geoJsonCache.set(url, { type: "FeatureCollection", features: [] });
+                    geoJsonCache.set(url, {type: "FeatureCollection", features: []});
                     geoJsonPromises.delete(url);
                     return geoJsonCache.get(url);
                 });
@@ -115,17 +120,21 @@ export const geoJsonService = {
 
         return {
             getAvailableRegions: () => [
-                { id: "world", label: _t("World"), defaultProjection: "mercator" },
-                { id: "africa", label: _t("Africa"), defaultProjection: "mercator" },
-                { id: "asia", label: _t("Asia"), defaultProjection: "mercator" },
-                { id: "europe", label: _t("Europe"), defaultProjection: "mercator" },
+                {id: "world", label: _t("World"), defaultProjection: "mercator"},
+                {id: "africa", label: _t("Africa"), defaultProjection: "mercator"},
+                {id: "asia", label: _t("Asia"), defaultProjection: "mercator"},
+                {id: "europe", label: _t("Europe"), defaultProjection: "mercator"},
                 {
                     id: "north_america",
                     label: _t("North America"),
                     defaultProjection: "conicConformal",
                 },
-                { id: "usa", label: _t("United States"), defaultProjection: "albersUsa" },
-                { id: "south_america", label: _t("South America"), defaultProjection: "mercator" },
+                {id: "usa", label: _t("United States"), defaultProjection: "albersUsa"},
+                {
+                    id: "south_america",
+                    label: _t("South America"),
+                    defaultProjection: "mercator",
+                },
             ],
             getTopoJson: async function (region) {
                 const [topoJson] = await getRegionAndFetchMapping(region);

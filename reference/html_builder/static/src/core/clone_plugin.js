@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { isElementInViewport } from "@html_builder/utils/utils";
-import { isRemovable } from "./remove_plugin";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {isElementInViewport} from "@html_builder/utils/utils";
+import {isRemovable} from "./remove_plugin";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 /**
  * @typedef { Object } CloneShared
@@ -53,13 +53,14 @@ export class ClonePlugin extends Plugin {
         }
         const buttons = [];
         this.overlayTarget = target;
-        const disabledReason = this.dependencies.builderOptions.getCloneDisabledReason(target);
+        const disabledReason =
+            this.dependencies.builderOptions.getCloneDisabledReason(target);
         buttons.push({
             class: "o_snippet_clone fa fa-clone",
             title: _t("Duplicate"),
             disabledReason,
             handler: async () => {
-                await this.cloneElement(this.overlayTarget, { activateClone: false });
+                await this.cloneElement(this.overlayTarget, {activateClone: false});
                 this.dependencies.history.addStep();
             },
         });
@@ -81,9 +82,9 @@ export class ClonePlugin extends Plugin {
      */
     async cloneElement(
         el,
-        { position = "afterend", scrollToClone = false, activateClone = true } = {}
+        {position = "afterend", scrollToClone = false, activateClone = true} = {}
     ) {
-        this.dispatchTo("on_will_clone_handlers", { originalEl: el });
+        this.dispatchTo("on_will_clone_handlers", {originalEl: el});
         const cloneEl = el.cloneNode(true);
         this.dependencies.dom.removeSystemProperties(cloneEl); // TODO check that
         el.insertAdjacentElement(position, cloneEl);
@@ -96,11 +97,11 @@ export class ClonePlugin extends Plugin {
         // Scroll to the clone if required and if it is not visible.
         if (scrollToClone && !isElementInViewport(cloneEl)) {
             // Firefox mis-scrolls with block "center" on tall snippets; keep "start".
-            cloneEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            cloneEl.scrollIntoView({behavior: "smooth", block: "start"});
         }
 
         for (const onCloned of this.getResource("on_cloned_handlers")) {
-            await onCloned({ cloneEl, originalEl: el });
+            await onCloned({cloneEl, originalEl: el});
         }
 
         return cloneEl;
@@ -110,10 +111,13 @@ export class ClonePlugin extends Plugin {
 export class CloneItemAction extends BuilderAction {
     static id = "addItem";
     static dependencies = ["clone", "history"];
-    async apply({ editingElement, params: { mainParam: itemSelector }, value: position }) {
+    async apply({editingElement, params: {mainParam: itemSelector}, value: position}) {
         const itemEl = editingElement.querySelector(itemSelector);
         if (itemEl) {
-            await this.dependencies.clone.cloneElement(itemEl, { position, scrollToClone: true });
+            await this.dependencies.clone.cloneElement(itemEl, {
+                position,
+                scrollToClone: true,
+            });
             this.dependencies.history.addStep();
         }
     }

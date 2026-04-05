@@ -1,13 +1,13 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, queryOne } from "@odoo/hoot-dom";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame, queryOne} from "@odoo/hoot-dom";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
     setupWebsiteBuilderWithSnippet,
 } from "@website/../tests/builder/website_helpers";
-import { insertText, undo } from "@html_editor/../tests/_helpers/user_actions";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
+import {insertText, undo} from "@html_editor/../tests/_helpers/user_actions";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
 
 defineWebsiteModels();
 
@@ -56,19 +56,27 @@ test("click on 'Hide on Mobile' then on 'Hide on desktop'", async () => {
     await contains(":iframe .col-lg-3").click();
     await animationFrame();
     await contains("button[data-action-id='toggleDeviceVisibility']:last").click();
-    expect("button[data-action-id='toggleDeviceVisibility']:first").not.toHaveClass("active");
-    expect("button[data-action-id='toggleDeviceVisibility']:last").toHaveClass("active");
+    expect("button[data-action-id='toggleDeviceVisibility']:first").not.toHaveClass(
+        "active"
+    );
+    expect("button[data-action-id='toggleDeviceVisibility']:last").toHaveClass(
+        "active"
+    );
 
     await contains("button[data-action-id='toggleDeviceVisibility']").click();
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
     await animationFrame();
-    expect("button[data-action-id='toggleDeviceVisibility']:first").toHaveClass("active");
-    expect("button[data-action-id='toggleDeviceVisibility']:last").not.toHaveClass("active");
+    expect("button[data-action-id='toggleDeviceVisibility']:first").toHaveClass(
+        "active"
+    );
+    expect("button[data-action-id='toggleDeviceVisibility']:last").not.toHaveClass(
+        "active"
+    );
 });
 
 test("check invisible element after save", async () => {
     const resultSave = [];
-    onRpc("ir.ui.view", "save", ({ args }) => {
+    onRpc("ir.ui.view", "save", ({args}) => {
         resultSave.push(args[1]);
         return true;
     });
@@ -107,7 +115,9 @@ test("click on 'Show/hide on mobile' in mobile view", async () => {
 
     await contains("button[data-action-id='toggleDeviceVisibility']:last").click();
     expect(".o-snippets-tabs button:contains('Blocks')").toHaveClass("active");
-    expect(":iframe .col-lg-3[data-invisible='1']").toHaveClass("o_snippet_mobile_invisible");
+    expect(":iframe .col-lg-3[data-invisible='1']").toHaveClass(
+        "o_snippet_mobile_invisible"
+    );
 });
 
 test("click on 'Show/hide on mobile' in desktop view", async () => {
@@ -115,7 +125,9 @@ test("click on 'Show/hide on mobile' in desktop view", async () => {
     await contains(":iframe .col-lg-3").click();
 
     await contains("button[data-action-id='toggleDeviceVisibility']:last").click();
-    expect("button[data-action-id='toggleDeviceVisibility']:last").toHaveClass("active");
+    expect("button[data-action-id='toggleDeviceVisibility']:last").toHaveClass(
+        "active"
+    );
     expect(":iframe .col-lg-3").toHaveClass("o_snippet_mobile_invisible");
 });
 
@@ -153,7 +165,9 @@ test("Hide element conditionally", async () => {
 
     await contains(":iframe section").click();
     await contains("[data-label='Visibility'] button.dropdown").click();
-    await contains("div[data-action-id='forceVisible']:contains(Conditionally)").click();
+    await contains(
+        "div[data-action-id='forceVisible']:contains(Conditionally)"
+    ).click();
     expect(":iframe section").toHaveClass("o_snippet_invisible");
     expect(".o_we_invisible_el_panel .o_we_invisible_entry").toHaveCount(1);
     expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass("fa-eye");
@@ -161,10 +175,14 @@ test("Hide element conditionally", async () => {
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
     expect(":iframe section.o_snippet_invisible").toHaveClass("o_conditional_hidden");
     expect(":iframe section").toHaveAttribute("data-invisible", "1");
-    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass("fa-eye-slash");
+    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass(
+        "fa-eye-slash"
+    );
 
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
-    expect(":iframe section.o_snippet_invisible").not.toHaveClass("o_conditional_hidden");
+    expect(":iframe section.o_snippet_invisible").not.toHaveClass(
+        "o_conditional_hidden"
+    );
     expect(":iframe section").not.toHaveAttribute("data-invisible");
 
     await contains("[data-label='Visibility'] button.dropdown").click();
@@ -173,11 +191,13 @@ test("Hide element conditionally", async () => {
 });
 
 test("Show conditionally hidden elements should not be tracked in history", async () => {
-    const { getEditor } = await setupWebsiteBuilder(websiteContent);
+    const {getEditor} = await setupWebsiteBuilder(websiteContent);
 
     await contains(":iframe section").click();
     await contains("[data-label='Visibility'] button.dropdown").click();
-    await contains("div[data-action-id='forceVisible']:contains(Conditionally)").click();
+    await contains(
+        "div[data-action-id='forceVisible']:contains(Conditionally)"
+    ).click();
     expect(":iframe section").toHaveClass("o_snippet_invisible");
     expect(".o_we_invisible_el_panel .o_we_invisible_entry").toHaveCount(1);
     expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass("fa-eye");
@@ -185,12 +205,19 @@ test("Show conditionally hidden elements should not be tracked in history", asyn
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
     expect(":iframe section.o_snippet_invisible").toHaveClass("o_conditional_hidden");
     expect(":iframe section").toHaveAttribute("data-invisible", "1");
-    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass("fa-eye-slash");
+    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass(
+        "fa-eye-slash"
+    );
 
-    setSelection({ anchorNode: queryOne(":iframe p:not([data-selection-placeholder])"), anchorOffset: 1 });
-    await insertText(getEditor(), "x"); // something to undo
+    setSelection({
+        anchorNode: queryOne(":iframe p:not([data-selection-placeholder])"),
+        anchorOffset: 1,
+    });
+    await insertText(getEditor(), "x"); // Something to undo
     undo(getEditor());
     expect(":iframe section.o_snippet_invisible").toHaveClass("o_conditional_hidden");
     expect(":iframe section").toHaveAttribute("data-invisible", "1");
-    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass("fa-eye-slash");
+    expect(".o_we_invisible_el_panel .o_we_invisible_entry i").toHaveClass(
+        "fa-eye-slash"
+    );
 });

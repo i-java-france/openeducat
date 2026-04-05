@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_jo_edi.tests.test_jo_edi_precision import TestJoEdiPrecision
 from odoo.addons.l10n_jo_edi_pos.tests.jo_edi_pos_common import JoEdiPosCommon
 
@@ -137,5 +138,5 @@ class TestJoEdiPosPrecision(JoEdiPosCommon, TestJoEdiPrecision):
         })
         invoice_file = self.env['pos.edi.xml.ubl_21.jo']._export_pos_order(order)[0]
         refund_file = self.env['pos.edi.xml.ubl_21.jo']._export_pos_order(refund)[0]
-        for invoice_price_unit, refund_price_unit in zip(get_price_units(invoice_file), get_price_units(refund_file)):
+        for invoice_price_unit, refund_price_unit in zip(get_price_units(invoice_file), get_price_units(refund_file), strict=False):
             self.assertEqual(invoice_price_unit, refund_price_unit)

@@ -1,6 +1,6 @@
-import { MediaDialog, TABS } from "@html_editor/main/media/media_dialog/media_dialog";
-import { patch } from "@web/core/utils/patch";
-import { useService } from "@web/core/utils/hooks";
+import {MediaDialog, TABS} from "@html_editor/main/media/media_dialog/media_dialog";
+import {patch} from "@web/core/utils/patch";
+import {useService} from "@web/core/utils/hooks";
 
 patch(MediaDialog.prototype, {
     setup() {
@@ -17,7 +17,7 @@ patch(MediaDialog.prototype, {
             if (unsplashRecords.length) {
                 await this.unsplashService.uploadUnsplashRecords(
                     unsplashRecords,
-                    { resModel: this.props.resModel, resId: this.props.resId },
+                    {resModel: this.props.resModel, resId: this.props.resId},
                     (attachments) => {
                         this.selectedMedia[TABS.IMAGES.id] = this.selectedMedia[
                             TABS.IMAGES.id

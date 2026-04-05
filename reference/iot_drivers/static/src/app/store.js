@@ -10,7 +10,7 @@ export default class Store {
         this.advanced = false;
     }
 
-    async rpc({ url, method = "GET", params = {} }) {
+    async rpc({url, method = "GET", params = {}}) {
         if (method === "POST") {
             const response = await fetch(url, {
                 method,

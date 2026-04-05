@@ -1,19 +1,19 @@
 /** @odoo-module **/
 
-import { afterEach, beforeEach, describe, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, queryFirst } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
+import {afterEach, beforeEach, describe, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, queryFirst} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
 import {
     getService,
     makeMockEnv,
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { Dialog } from "@web/core/dialog/dialog";
-import { Macro } from "@web/core/macro";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Macro} from "@web/core/macro";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
 describe.current.tags("desktop");
 
@@ -119,7 +119,7 @@ test("a tour with invalid step trigger", async () => {
             },
         ],
     });
-    await odoo.startTour("tour_invalid_trigger", { mode: "auto" }); // Use odoo to run tour from registry because this is a test tour
+    await odoo.startTour("tour_invalid_trigger", {mode: "auto"}); // Use odoo to run tour from registry because this is a test tour
     await waitForMacro();
     const expectedSteps = [
         "log: [1/2] Tour tour_invalid_trigger → Step .button0:contins(brol)",
@@ -136,13 +136,13 @@ test("a failing tour logs the step that failed in run", async () => {
         log: (s) => expect.step(`log: ${s}`),
         warn: (s) => {},
         error: (s) => {
-            s = s.replace(/\n +at.*/g, ""); // strip stack trace
+            s = s.replace(/\n +at.*/g, ""); // Strip stack trace
             expect.step(`error: ${s}`);
         },
     });
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <button class="button0">Button 0</button>
                 <button class="button1">Button 1</button>
@@ -168,7 +168,7 @@ test("a failing tour logs the step that failed in run", async () => {
             },
         ],
     });
-    await odoo.startTour("tour2", { mode: "auto" }); // Use odoo to run tour from registry because this is a test tour
+    await odoo.startTour("tour2", {mode: "auto"}); // Use odoo to run tour from registry because this is a test tour
     await waitForMacro();
     const expectedError = [
         "log: [1/2] Tour tour2 → Step .button0",
@@ -189,7 +189,7 @@ test("a failing tour with disabled element", async () => {
     });
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <button class="button0">Button 0</button>
                 <button class="button1" disabled="">Button 1</button>
@@ -217,7 +217,7 @@ test("a failing tour with disabled element", async () => {
             },
         ],
     });
-    await odoo.startTour("tour3", { mode: "auto" });
+    await odoo.startTour("tour3", {mode: "auto"});
     await waitForMacro();
     const expectedError = [
         `error: FAILED: [2/3] Tour tour3 → Step .button1.
@@ -239,7 +239,7 @@ test("a failing tour logs the step that failed", async () => {
 
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <button class="button0">Button 0</button>
                 <button class="button1">Button 1</button>
@@ -305,7 +305,7 @@ test("a failing tour logs the step that failed", async () => {
             },
         ],
     });
-    await odoo.startTour("tour1", { mode: "auto" });
+    await odoo.startTour("tour1", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps([
         "log: [1/9] Tour tour1 → Step content (trigger: .button0)",
@@ -323,7 +323,7 @@ TIMEOUT step failed to complete within 111 ms.`,
 test("check tour with inactive steps", async () => {
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <div class="container">
                     <button class="button0">Button 0</button>
@@ -361,7 +361,7 @@ test("check tour with inactive steps", async () => {
             },
         ],
     });
-    await odoo.startTour("pipu_tour", { mode: "auto" });
+    await odoo.startTour("pipu_tour", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps([
         "this action 1 has not been skipped",
@@ -378,7 +378,7 @@ test("automatic tour with invisible element", async () => {
 
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <div class="container">
                     <button class="button0">Button 0</button>
@@ -408,7 +408,7 @@ test("automatic tour with invisible element", async () => {
             },
         ],
     });
-    await odoo.startTour("tour_de_wallonie", { mode: "auto" });
+    await odoo.startTour("tour_de_wallonie", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps([
         `error: FAILED: [2/3] Tour tour_de_wallonie → Step .button1.
@@ -430,7 +430,7 @@ test("automatic tour with invisible element but use :not(:visible))", async () =
 
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <div class="container">
                     <button class="button0">Button 0</button>
@@ -459,7 +459,7 @@ test("automatic tour with invisible element but use :not(:visible))", async () =
             },
         ],
     });
-    await odoo.startTour("tour_de_wallonie", { mode: "auto" });
+    await odoo.startTour("tour_de_wallonie", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps(["succeeded"]);
 });
@@ -503,7 +503,7 @@ test("automatic tour with alternative trigger", async () => {
     });
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <div class="container">
                     <button class="button0">Button 0</button>
@@ -518,7 +518,7 @@ test("automatic tour with alternative trigger", async () => {
         static props = ["*"];
     }
     await mountWithCleanup(Root);
-    await odoo.startTour("tour_des_flandres", { mode: "auto" });
+    await odoo.startTour("tour_des_flandres", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps(["on step", "on step", "on step", "on step", "succeeded"]);
 });
@@ -532,7 +532,7 @@ test("check not possible to click below modal", async () => {
     });
     class DummyDialog extends Component {
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`
             <Dialog>
                 <button class="a">A</button>
@@ -542,7 +542,7 @@ test("check not possible to click below modal", async () => {
     }
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <div class="container">
                     <div class="p-3"><button class="button0" t-on-click="openDialog">Button 0</button></div>
@@ -575,7 +575,7 @@ test("check not possible to click below modal", async () => {
             },
         ],
     });
-    await odoo.startTour("tour_check_modal", { mode: "auto" });
+    await odoo.startTour("tour_check_modal", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps([
         "log: [1/2] Tour tour_check_modal → Step .button0",
@@ -594,7 +594,7 @@ test("a tour where hoot trigger failed", async () => {
 
     class Root extends Component {
         static components = {};
-        static template = xml/*html*/ `
+        static template = xml /* html*/ `
             <t>
                 <button class="button0">Button 0</button>
                 <button class="button1">Button 1</button>
@@ -619,7 +619,7 @@ test("a tour where hoot trigger failed", async () => {
             },
         ],
     });
-    await odoo.startTour("tour_hoot_failed", { mode: "auto" });
+    await odoo.startTour("tour_hoot_failed", {mode: "auto"});
     await waitForMacro();
     expect.verifySteps([
         `error: FAILED: [2/2] Tour tour_hoot_failed → Step content (trigger: .button1:brol(:machin)).

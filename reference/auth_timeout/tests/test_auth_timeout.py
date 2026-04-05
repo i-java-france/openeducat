@@ -1,17 +1,16 @@
 import json
-import lxml.html
 import time
-
-import odoo.http
-
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from odoo.tests import HttpCase, new_test_user, tagged, TransactionCase
+import lxml.html
+
+import odoo.http
+from odoo.tests import HttpCase, TransactionCase, new_test_user, tagged
 from odoo.tests.common import HOST
 
-from odoo.addons.auth_totp.models.totp import TOTP
 from odoo.addons.auth_totp.controllers.home import TRUSTED_DEVICE_COOKIE
+from odoo.addons.auth_totp.models.totp import TOTP
 
 
 class TestAuthTimeout(TransactionCase):

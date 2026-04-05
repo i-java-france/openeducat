@@ -1,8 +1,11 @@
-import { Plugin } from "@html_editor/plugin";
-import { isBlock } from "@html_editor/utils/blocks";
-import { registry } from "@web/core/registry";
-import { addBackgroundGrid, setElementToMaxZindex } from "@html_builder/utils/grid_layout_utils";
-import { StyleAction } from "@html_builder/core/core_builder_action_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {isBlock} from "@html_editor/utils/blocks";
+import {registry} from "@web/core/registry";
+import {
+    addBackgroundGrid,
+    setElementToMaxZindex,
+} from "@html_builder/utils/grid_layout_utils";
+import {StyleAction} from "@html_builder/core/core_builder_action_plugin";
 
 class SpacingOptionPlugin extends Plugin {
     static id = "SpacingOption";
@@ -41,11 +44,11 @@ class SpacingOptionPlugin extends Plugin {
         );
     }
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         this.removeGridPreviews(cloneEl);
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         this.removeGridPreviews(root);
     }
 }
@@ -54,7 +57,7 @@ registry.category("website-plugins").add(SpacingOptionPlugin.id, SpacingOptionPl
 
 export class SetGridSpacingAction extends StyleAction {
     static id = "setGridSpacing";
-    apply({ editingElement: rowEl }) {
+    apply({editingElement: rowEl}) {
         // Remove the grid preview if any.
         let gridPreviewEl = rowEl.querySelector(".o_we_grid_preview");
         if (gridPreviewEl) {

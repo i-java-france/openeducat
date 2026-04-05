@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 
-import { IrMenuPlugin } from "./ir_ui_menu_plugin";
+import {IrMenuPlugin} from "./ir_ui_menu_plugin";
 
 import {
     isMarkdownIrMenuIdUrl,
@@ -11,11 +11,11 @@ import {
     parseViewLink,
     parseIrMenuIdLink,
 } from "./odoo_menu_link_cell";
-import { _t } from "@web/core/l10n/translation";
-import { navigateTo } from "../actions/helpers";
+import {_t} from "@web/core/l10n/translation";
+import {navigateTo} from "../actions/helpers";
 
-const { urlRegistry, corePluginRegistry, errorTypes } = spreadsheet.registries;
-const { EvaluationError } = spreadsheet;
+const {urlRegistry, corePluginRegistry, errorTypes} = spreadsheet.registries;
+const {EvaluationError} = spreadsheet;
 
 corePluginRegistry.add("ir_ui_menu_plugin", IrMenuPlugin);
 
@@ -25,7 +25,10 @@ errorTypes.add(LINK_ERROR);
 class BadOdooLinkError extends EvaluationError {
     constructor(menuId) {
         super(
-            _t("Menu %s not found. You may not have the required access rights.", menuId),
+            _t(
+                "Menu %s not found. You may not have the required access rights.",
+                menuId
+            ),
             LINK_ERROR
         );
     }
@@ -35,7 +38,9 @@ export const spreadsheetLinkMenuCellService = {
     dependencies: ["menu"],
     start(env) {
         function _getIrMenuByXmlId(xmlId) {
-            const menu = env.services.menu.getAll().find((menu) => menu.xmlid === xmlId);
+            const menu = env.services.menu
+                .getAll()
+                .find((menu) => menu.xmlid === xmlId);
             if (!menu) {
                 throw new BadOdooLinkError(xmlId);
             }
@@ -66,7 +71,7 @@ export const spreadsheetLinkMenuCellService = {
                 open(url, env, newWindow) {
                     const menuId = parseIrMenuIdLink(url);
                     const menu = env.services.menu.getMenu(menuId);
-                    env.services.action.doAction(menu.actionID, { newWindow });
+                    env.services.action.doAction(menu.actionID, {newWindow});
                 },
             })
             .replace("OdooMenuXmlLink", {
@@ -91,7 +96,7 @@ export const spreadsheetLinkMenuCellService = {
                     const xmlId = parseIrMenuXmlUrl(url);
                     const menuId = _getIrMenuByXmlId(xmlId).id;
                     const menu = env.services.menu.getMenu(menuId);
-                    env.services.action.doAction(menu.actionID, { newWindow });
+                    env.services.action.doAction(menu.actionID, {newWindow});
                 },
             })
             .replace("OdooViewLink", {
@@ -110,7 +115,7 @@ export const spreadsheetLinkMenuCellService = {
                     return actionDescription.name;
                 },
                 async open(url, env, newWindow) {
-                    const { viewType, action, name } = parseViewLink(url);
+                    const {viewType, action, name} = parseViewLink(url);
                     await navigateTo(
                         env,
                         action.xmlId,
@@ -123,7 +128,7 @@ export const spreadsheetLinkMenuCellService = {
                             domain: action.domain,
                             context: action.context,
                         },
-                        { viewType, newWindow }
+                        {viewType, newWindow}
                     );
                 },
             });
@@ -132,4 +137,6 @@ export const spreadsheetLinkMenuCellService = {
     },
 };
 
-registry.category("services").add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
+registry
+    .category("services")
+    .add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);

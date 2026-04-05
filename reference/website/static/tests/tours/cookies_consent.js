@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 /**
  * Assert that gtag consent values in `dataLayer` match the expected state.
@@ -9,7 +9,9 @@ function assertGtagConsent(expectedState) {
     const lastDataLayerEntry = window.dataLayer?.at(-1);
 
     if (!lastDataLayerEntry || lastDataLayerEntry[0] !== "consent") {
-        console.error("Cookie preference change must push a consent update to dataLayer");
+        console.error(
+            "Cookie preference change must push a consent update to dataLayer"
+        );
         return;
     }
 

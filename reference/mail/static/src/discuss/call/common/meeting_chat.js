@@ -1,12 +1,12 @@
-import { Composer } from "@mail/core/common/composer";
-import { Thread } from "@mail/core/common/thread";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
-import { Typing } from "@mail/discuss/typing/common/typing";
+import {Composer} from "@mail/core/common/composer";
+import {Thread} from "@mail/core/common/thread";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
+import {Typing} from "@mail/discuss/typing/common/typing";
 
-import { Component, useState, useSubEnv } from "@odoo/owl";
+import {Component, useState, useSubEnv} from "@odoo/owl";
 
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { useChildRef, useService } from "@web/core/utils/hooks";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {useChildRef, useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -27,10 +27,10 @@ export class MeetingChat extends Component {
         this.store = useService("mail.store");
         this.ui = useService("ui");
         this.rtc = useService("discuss.rtc");
-        this.state = useState({ jumpPresent: 0 });
+        this.state = useState({jumpPresent: 0});
         this.panelContentRef = useChildRef();
         this.isMobileOS = isMobileOS();
-        useSubEnv({ inMeetingChat: true });
+        useSubEnv({inMeetingChat: true});
     }
 
     get thread() {

@@ -1,9 +1,9 @@
 // @ts-check
 
-import { _t } from "@web/core/l10n/translation";
-import { EvaluationError, helpers } from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {EvaluationError, helpers} from "@odoo/o-spreadsheet";
 
-const { isDateOrDatetimeField } = helpers;
+const {isDateOrDatetimeField} = helpers;
 
 /**
  * @typedef {import("@odoo/o-spreadsheet").Token} Token
@@ -79,7 +79,9 @@ export function parseGroupField(allFields, groupFieldString) {
     if (isDateOrDatetimeField(field)) {
         granularity = granularity || "month";
     }
-    const dimensionWithGranularity = granularity ? `${fieldName}:${granularity}` : fieldName;
+    const dimensionWithGranularity = granularity
+        ? `${fieldName}:${granularity}`
+        : fieldName;
     return {
         isPositional,
         field,
@@ -93,11 +95,14 @@ export function domainHasNoRecordAtThisPosition(domain) {
 }
 
 export async function getRelationalFieldDefinition(resModel, fieldName, fieldService) {
-    const { modelsInfo, names } = await fieldService.loadPath(resModel, fieldName);
+    const {modelsInfo, names} = await fieldService.loadPath(resModel, fieldName);
     return {
         ...modelsInfo.at(-1).fieldDefs[fieldName.split(".").at(-1)],
         string: names
-            .map((name, i) => modelsInfo[i].fieldDefs[name]?.string || _t("Unnamed Field"))
+            .map(
+                (name, i) =>
+                    modelsInfo[i].fieldDefs[name]?.string || _t("Unnamed Field")
+            )
             .join(" > "),
         name: fieldName,
     };

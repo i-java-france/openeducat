@@ -1,24 +1,24 @@
-import { after, describe, expect, test } from "@odoo/hoot";
-import { Deferred, mockFetch } from "@odoo/hoot-mock";
-import { allowTranslations } from "@web/../tests/web_test_helpers";
+import {after, describe, expect, test} from "@odoo/hoot";
+import {Deferred, mockFetch} from "@odoo/hoot-mock";
+import {allowTranslations} from "@web/../tests/web_test_helpers";
 
-import { download } from "@web/core/network/download";
-import { ConnectionLostError, RPCError } from "@web/core/network/rpc";
+import {download} from "@web/core/network/download";
+import {ConnectionLostError, RPCError} from "@web/core/network/rpc";
 
 describe.current.tags("headless");
 
 test("handles connection error when behind a server", async () => {
-    mockFetch(() => new Response("", { status: 502 }));
+    mockFetch(() => new Response("", {status: 502}));
 
     const error = new ConnectionLostError("/some_url");
-    await expect(download({ data: {}, url: "/some_url" })).rejects.toThrow(error);
+    await expect(download({data: {}, url: "/some_url"})).rejects.toThrow(error);
 });
 
 test("handles connection error when network unavailable", async () => {
     mockFetch(() => Promise.reject());
 
     const error = new ConnectionLostError("/some_url");
-    await expect(download({ data: {}, url: "/some_url" })).rejects.toThrow(error);
+    await expect(download({data: {}, url: "/some_url"})).rejects.toThrow(error);
 });
 
 test("handles business error from server", async () => {
@@ -32,7 +32,7 @@ test("handles business error from server", async () => {
         message: "Odoo Server Error",
     };
 
-    mockFetch(() => new Blob([JSON.stringify(serverError)], { type: "text/html" }));
+    mockFetch(() => new Blob([JSON.stringify(serverError)], {type: "text/html"}));
 
     let error = null;
     try {
@@ -50,7 +50,7 @@ test("handles business error from server", async () => {
 test("handles arbitrary error", async () => {
     const serverError = /* xml */ `<html><body><div>HTML error message</div></body></html>`;
 
-    mockFetch(() => new Blob([JSON.stringify(serverError)], { type: "text/html" }));
+    mockFetch(() => new Blob([JSON.stringify(serverError)], {type: "text/html"}));
 
     let error = null;
     try {
@@ -72,14 +72,14 @@ test("handles success download", async () => {
     // This test relies on a implementation detail of the lowest layer of download
     // That is, a link will be created with the download attribute
 
-    mockFetch((_, { body }) => {
+    mockFetch((_, {body}) => {
         expect(body).toBeInstanceOf(FormData);
         expect(body.get("someKey")).toBe("someValue");
         expect(body.has("token")).toBe(true);
         expect(body.has("csrf_token")).toBe(true);
         expect.step("fetching file");
 
-        return new Blob(["some plain text file"], { type: "text/plain" });
+        return new Blob(["some plain text file"], {type: "text/plain"});
     });
 
     const deferred = new Deferred();
@@ -100,8 +100,8 @@ test("handles success download", async () => {
     document.addEventListener("click", downloadOnClick);
     after(() => document.removeEventListener("click", downloadOnClick));
 
-    expect("a[download]").toHaveCount(0); // link will be added by download
-    download({ data: { someKey: "someValue" }, url: "/some_url" });
+    expect("a[download]").toHaveCount(0); // Link will be added by download
+    download({data: {someKey: "someValue"}, url: "/some_url"});
     await deferred;
     expect.verifySteps(["fetching file", "file downloaded"]);
 });

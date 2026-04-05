@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command, models, _
+from odoo import Command, _, models
 from odoo.exceptions import UserError
 
 

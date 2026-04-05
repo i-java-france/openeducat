@@ -7,9 +7,10 @@ from unittest.mock import patch
 from odoo.fields import Command
 from odoo.tests import new_test_user, tagged
 
-from .dummy_methods import DummyMethods
 from odoo.addons.api_doc.controllers.api_doc import DocController, parse_signature
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+
+from .dummy_methods import DummyMethods
 
 
 @tagged("-at_install", "post_install")

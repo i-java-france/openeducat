@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, Command
+from odoo import Command, api, fields, models
 from odoo.tools import float_round
 
 
@@ -72,7 +71,7 @@ class MrpProductionSplit(models.TransientModel):
 
     def action_split(self):
         productions = self.production_id._split_productions({self.production_id: [detail.quantity for detail in self.production_detailed_vals_ids]})
-        for production, detail in zip(productions, self.production_detailed_vals_ids):
+        for production, detail in zip(productions, self.production_detailed_vals_ids, strict=False):
             production.user_id = detail.user_id
             production.date_start = detail.date
         if self.production_split_multi_id:

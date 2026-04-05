@@ -1,9 +1,12 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { hover, leave } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {hover, leave} from "@odoo/hoot-dom";
 
-import { switchToEditMode } from "../../helpers";
+import {switchToEditMode} from "../../helpers";
 
 setupInteractionWhiteList("website.hoverable_dropdown");
 
@@ -11,7 +14,7 @@ describe.current.tags("interaction_dev");
 
 test.tags("desktop");
 test("[EDIT] onMouseLeave doesn't work in edit mode", async () => {
-    const { core } = await startInteractions(
+    const {core} = await startInteractions(
         `
         <header class="o_hoverable_dropdown" style="display: flex; height: 50px; background-color: #CCFFCC;">
             <div class="dropdown" style="margin: auto;">
@@ -24,7 +27,7 @@ test("[EDIT] onMouseLeave doesn't work in edit mode", async () => {
             </div>
         </header>
     `,
-        { waitForStart: true, editMode: true }
+        {waitForStart: true, editMode: true}
     );
     await switchToEditMode(core);
     expect(".dropdown-toggle").not.toHaveClass("show");
@@ -39,7 +42,7 @@ test("[EDIT] onMouseLeave doesn't work in edit mode", async () => {
 
 test.tags("desktop");
 test("[EDIT] onMouseEnter doesn't work in edit mode if another dropdown is opened", async () => {
-    const { core } = await startInteractions(
+    const {core} = await startInteractions(
         `
         <header class="o_hoverable_dropdown" style="display: flex; height: 50px; background-color: #CCFFCC;">
             <div id="D1" class="dropdown" style="margin: auto;">
@@ -60,7 +63,7 @@ test("[EDIT] onMouseEnter doesn't work in edit mode if another dropdown is opene
             </div>
         </header>
     `,
-        { waitForStart: true, editMode: true }
+        {waitForStart: true, editMode: true}
     );
     await switchToEditMode(core);
     expect(".dropdown-toggle").not.toHaveClass("show");

@@ -1,4 +1,4 @@
-import { onMounted, onWillUnmount } from "@odoo/owl";
+import {onMounted, onWillUnmount} from "@odoo/owl";
 
 /**
  * `useTimedPress` — A hook to detect and respond to different press durations on a DOM element.
@@ -50,7 +50,7 @@ export function useTimedPress(ref, ranges = []) {
         }
         timerStart = performance.now();
 
-        for (const { delay = 0, type = "release", callback } of ranges) {
+        for (const {delay = 0, type = "release", callback} of ranges) {
             if (type === "hold" && typeof callback === "function") {
                 const timer = setTimeout(() => {
                     callback(event, delay);
@@ -69,9 +69,12 @@ export function useTimedPress(ref, ranges = []) {
         timerStart = null;
         clearAllHoldTimers();
 
-        for (const { delay = 0, maxDelay, type = "release", callback } of ranges) {
+        for (const {delay = 0, maxDelay, type = "release", callback} of ranges) {
             if (type === "release" && typeof callback === "function") {
-                if (elapsed >= delay && (maxDelay === undefined || elapsed < maxDelay)) {
+                if (
+                    elapsed >= delay &&
+                    (maxDelay === undefined || elapsed < maxDelay)
+                ) {
                     callback(event, elapsed);
                 }
             }

@@ -1,4 +1,4 @@
-import { triggerEvent } from "@web/../tests/helpers/utils";
+import {triggerEvent} from "@web/../tests/helpers/utils";
 
 export function simulateBarCode(chars, target = document.body, selector = undefined) {
     for (let char of chars) {

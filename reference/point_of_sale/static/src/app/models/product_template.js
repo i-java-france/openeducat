@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { markup } from "@odoo/owl";
-import { ProductTemplateAccounting } from "./accounting/product_template_accounting";
-import { normalize } from "@web/core/l10n/utils";
+import {registry} from "@web/core/registry";
+import {markup} from "@odoo/owl";
+import {ProductTemplateAccounting} from "./accounting/product_template_accounting";
+import {normalize} from "@web/core/l10n/utils";
 
 /**
  * ProductProduct, shadow of product.product in python.
@@ -42,7 +42,9 @@ export class ProductTemplate extends ProductTemplateAccounting {
         return (
             this.isConfigurable() &&
             this.attribute_line_ids.length > 0 &&
-            this.attribute_line_ids.some((l) => l.attribute_id.create_variant === "no_variant")
+            this.attribute_line_ids.some(
+                (l) => l.attribute_id.create_variant === "no_variant"
+            )
         );
     }
 
@@ -137,9 +139,13 @@ export class ProductTemplate extends ProductTemplateAccounting {
             .join(" ");
 
         const templateContent = normalize(raw);
-        const variantContent = this.product_variant_ids.map((v) => v.searchString).join(" ");
+        const variantContent = this.product_variant_ids
+            .map((v) => v.searchString)
+            .join(" ");
 
-        return variantContent ? templateContent + " " + variantContent : templateContent;
+        return variantContent
+            ? templateContent + " " + variantContent
+            : templateContent;
     }
 
     get normalizedName() {
@@ -152,4 +158,6 @@ export class ProductTemplate extends ProductTemplateAccounting {
             : this.display_name;
     }
 }
-registry.category("pos_available_models").add(ProductTemplate.pythonModel, ProductTemplate);
+registry
+    .category("pos_available_models")
+    .add(ProductTemplate.pythonModel, ProductTemplate);

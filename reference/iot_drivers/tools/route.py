@@ -1,7 +1,8 @@
 import logging
 
-from odoo.addons.iot_drivers.tools.system import IS_RPI
 from odoo import http
+
+from odoo.addons.iot_drivers.tools.system import IS_RPI
 
 _logger = logging.getLogger(__name__)
 

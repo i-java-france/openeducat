@@ -1,16 +1,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
+from unittest.mock import patch
 
+import pytz
 from dateutil.relativedelta import relativedelta
-from odoo.tests.common import new_test_user
+
+from odoo import Command, tools
 from odoo.exceptions import ValidationError
+from odoo.tests.common import new_test_user
+
 from odoo.addons.google_calendar.models.res_users import ResUsers
 from odoo.addons.google_calendar.tests.test_sync_common import TestSyncGoogle, patch_api
-from odoo.addons.google_calendar.utils.google_calendar import GoogleEvent, GoogleCalendarService
-from odoo import Command, tools
-from unittest.mock import patch
+from odoo.addons.google_calendar.utils.google_calendar import (
+    GoogleCalendarService,
+    GoogleEvent,
+)
 
 
 @patch.object(ResUsers, '_get_google_calendar_token', lambda user: 'dummy-token')

@@ -1,6 +1,6 @@
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
-import { BasePrinter } from "@point_of_sale/app/utils/printer/base_printer";
+import {BasePrinter} from "@point_of_sale/app/utils/printer/base_printer";
 
 /**
  * Printer that sends print requests thru /hw_proxy endpoints.
@@ -17,20 +17,20 @@ export class HWPrinter extends BasePrinter {
     }
 
     sendAction(data) {
-        return rpc(`${this.url}/hw_proxy/default_printer_action`, { data });
+        return rpc(`${this.url}/hw_proxy/default_printer_action`, {data});
     }
 
     /**
      * @override
      */
     openCashbox() {
-        return this.sendAction({ action: "cashbox" });
+        return this.sendAction({action: "cashbox"});
     }
 
     /**
      * @override
      */
     sendPrintingJob(img) {
-        return this.sendAction({ action: "print_receipt", receipt: img });
+        return this.sendAction({action: "print_receipt", receipt: img});
     }
 }

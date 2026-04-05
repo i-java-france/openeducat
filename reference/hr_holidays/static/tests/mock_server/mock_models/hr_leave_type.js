@@ -1,4 +1,4 @@
-import { fields, models } from "@web/../tests/web_test_helpers";
+import {fields, models} from "@web/../tests/web_test_helpers";
 
 export class HrLeaveType extends models.Model {
     _name = "hr.leave.type";

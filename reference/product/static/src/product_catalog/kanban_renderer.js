@@ -1,7 +1,7 @@
-import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
-import { useService } from "@web/core/utils/hooks";
+import {KanbanRenderer} from "@web/views/kanban/kanban_renderer";
+import {useService} from "@web/core/utils/hooks";
 
-import { ProductCatalogKanbanRecord } from "./kanban_record";
+import {ProductCatalogKanbanRecord} from "./kanban_record";
 
 export class ProductCatalogKanbanRenderer extends KanbanRenderer {
     static template = "ProductCatalogKanbanRenderer";

@@ -1,9 +1,8 @@
-# -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, get_lang
 
 
@@ -106,7 +105,7 @@ class PurchaseOrder(models.Model):
                     'target': 'new',
                     'context': dict(self.env.context, default_alternative_po_ids=alternative_po_ids.ids, default_po_ids=self.ids),
                 }
-        res = super(PurchaseOrder, self).button_confirm()
+        res = super().button_confirm()
         return res
 
     @api.model_create_multi
@@ -132,7 +131,7 @@ class PurchaseOrder(models.Model):
         if vals.get('purchase_group_id', False):
             # store in case linking to a PO with existing linkages
             orig_purchase_group = self.purchase_group_id
-        result = super(PurchaseOrder, self).write(vals)
+        result = super().write(vals)
         if vals.get('requisition_id'):
             for order in self:
                 order.message_post_with_source(

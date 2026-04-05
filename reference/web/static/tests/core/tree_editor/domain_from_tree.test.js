@@ -1,9 +1,9 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 
-import { makeMockEnv } from "@web/../tests/web_test_helpers";
+import {makeMockEnv} from "@web/../tests/web_test_helpers";
 
-import { condition } from "@web/core/tree_editor/condition_tree";
-import { domainFromTree } from "@web/core/tree_editor/domain_from_tree";
+import {condition} from "@web/core/tree_editor/condition_tree";
+import {domainFromTree} from "@web/core/tree_editor/domain_from_tree";
 
 test("domainFromTree", async () => {
     await makeMockEnv();
@@ -29,7 +29,9 @@ test("domainFromTree", async () => {
             result: `[("foo", "=ilike", "hello%")]`,
         },
     ];
-    for (const { tree, result } of toTest) {
-        expect(domainFromTree(tree).replace(/[\s\n]+/g, "")).toBe(result.replace(/[\s\n]+/g, ""));
+    for (const {tree, result} of toTest) {
+        expect(domainFromTree(tree).replace(/[\s\n]+/g, "")).toBe(
+            result.replace(/[\s\n]+/g, "")
+        );
     }
 });

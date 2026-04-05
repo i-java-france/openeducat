@@ -1,8 +1,8 @@
-import { fields } from "@mail/core/common/record";
-import { Store } from "@mail/core/common/store_service";
-import { router } from "@web/core/browser/router";
+import {fields} from "@mail/core/common/record";
+import {Store} from "@mail/core/common/store_service";
+import {router} from "@web/core/browser/router";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Store} */
 const StorePatch = {

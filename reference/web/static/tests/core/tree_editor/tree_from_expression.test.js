@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 
 import {
     complexCondition,
@@ -6,25 +6,25 @@ import {
     connector,
     expression,
 } from "@web/core/tree_editor/condition_tree";
-import { treeFromExpression } from "@web/core/tree_editor/tree_from_expression";
+import {treeFromExpression} from "@web/core/tree_editor/tree_from_expression";
 
 test("treeFromExpression", () => {
     const options = {
         getFieldDef: (name) => {
             if (["foo", "bar"].includes(name)) {
-                return { type: "any" }; // any field
+                return {type: "any"}; // Any field
             }
             if (["foo_ids", "bar_ids"].includes(name)) {
-                return { type: "many2many" };
+                return {type: "many2many"};
             }
             if (name === "date_field") {
-                return { type: "date" };
+                return {type: "date"};
             }
             if (name === "datetime_field") {
-                return { type: "datetime" };
+                return {type: "datetime"};
             }
             if (name === "integer") {
-                return { type: "integer" };
+                return {type: "integer"};
             }
             return null;
         },
@@ -69,7 +69,10 @@ test("treeFromExpression", () => {
         {
             expression: `foo >= 1 if bar else foo <= uid`,
             result: connector("|", [
-                connector("&", [condition("bar", "set", false), condition("foo", ">=", 1)]),
+                connector("&", [
+                    condition("bar", "set", false),
+                    condition("foo", ">=", 1),
+                ]),
                 connector("&", [
                     condition("bar", "not set", false),
                     condition("foo", "<=", expression("uid")),
@@ -214,8 +217,8 @@ test("treeFromExpression", () => {
             result: complexCondition(`expr in []`),
         },
     ];
-    for (const { expression, result, extraOptions } of toTest) {
-        const o = { ...options, ...extraOptions };
+    for (const {expression, result, extraOptions} of toTest) {
+        const o = {...options, ...extraOptions};
         expect(treeFromExpression(expression, o)).toEqual(result);
     }
 });

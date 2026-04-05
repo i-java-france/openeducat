@@ -3,10 +3,11 @@
 import re
 
 from odoo import _, api, fields, models, tools
+from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.tools.misc import limited_field_access_token
+
 from odoo.addons.mail.tools.discuss import Store
-from odoo.exceptions import AccessError
 
 
 class ResPartner(models.Model):
@@ -228,7 +229,7 @@ class ResPartner(models.Model):
                 ),
                 self.env['res.partner']
             )
-            for (name, email_normalized), email in zip(name_emails, emails)
+            for (name, email_normalized), email in zip(name_emails, emails, strict=False)
         ]
 
     # ------------------------------------------------------------

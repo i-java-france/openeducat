@@ -1,4 +1,4 @@
-import { removeClass } from "@html_editor/utils/dom";
+import {removeClass} from "@html_editor/utils/dom";
 
 function dispatchTo(editor, resourceId, ...args) {
     (editor.resources[resourceId] || []).forEach((fn) => fn(...args));

@@ -3,13 +3,15 @@
 from ast import literal_eval
 from collections import OrderedDict
 from random import randint, sample
+
 from werkzeug.exceptions import Forbidden
 
 from odoo import http
-from odoo.addons.website_event.controllers.main import WebsiteEventController
 from odoo.fields import Domain
 from odoo.http import request
 from odoo.tools import format_duration
+
+from odoo.addons.website_event.controllers.main import WebsiteEventController
 
 
 class ExhibitorController(WebsiteEventController):

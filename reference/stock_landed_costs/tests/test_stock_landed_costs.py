@@ -2,10 +2,11 @@
 
 from unittest import skip
 
-from odoo.addons.stock_landed_costs.tests.common import TestStockLandedCostsCommon
+from odoo import fields
 from odoo.exceptions import ValidationError
 from odoo.tests import tagged
-from odoo import fields
+
+from odoo.addons.stock_landed_costs.tests.common import TestStockLandedCostsCommon
 
 
 @tagged('post_install', '-at_install')

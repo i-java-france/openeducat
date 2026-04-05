@@ -1,7 +1,7 @@
-import { localization } from "@web/core/l10n/localization";
-import { isIOS } from "@web/core/browser/feature_detection";
+import {localization} from "@web/core/l10n/localization";
+import {isIOS} from "@web/core/browser/feature_detection";
 
-import { useRef, useEffect } from "@odoo/owl";
+import {useRef, useEffect} from "@odoo/owl";
 
 function onKeydown(ev) {
     const decimalPoint = localization.decimalPoint;
@@ -13,7 +13,12 @@ function onKeydown(ev) {
         return;
     }
     ev.preventDefault();
-    ev.target.setRangeText(decimalPoint, ev.target.selectionStart, ev.target.selectionEnd, "end");
+    ev.target.setRangeText(
+        decimalPoint,
+        ev.target.selectionStart,
+        ev.target.selectionEnd,
+        "end"
+    );
 }
 
 function onFocus(ev) {

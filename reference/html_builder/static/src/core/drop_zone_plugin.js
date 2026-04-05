@@ -1,8 +1,8 @@
-import { isVisible } from "@html_builder/utils/utils";
-import { Plugin } from "@html_editor/plugin";
-import { isElement } from "@html_editor/utils/dom_info";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { _t } from "@web/core/l10n/translation";
+import {isVisible} from "@html_builder/utils/utils";
+import {Plugin} from "@html_editor/plugin";
+import {isElement} from "@html_editor/utils/dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {_t} from "@web/core/l10n/translation";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 /**
@@ -43,9 +43,14 @@ export class DropZonePlugin extends Plugin {
     resources = {
         savable_mutation_record_predicates: (record) => {
             if (record.type === "childList") {
-                const addedOrRemovedNode = (record.addedTrees[0] || record.removedTrees[0]).node;
+                const addedOrRemovedNode = (
+                    record.addedTrees[0] || record.removedTrees[0]
+                ).node;
                 // Do not record the addition/removal of the dropzones.
-                if (isElement(addedOrRemovedNode) && addedOrRemovedNode.matches(".oe_drop_zone")) {
+                if (
+                    isElement(addedOrRemovedNode) &&
+                    addedOrRemovedNode.matches(".oe_drop_zone")
+                ) {
                     return false;
                 }
             }
@@ -106,7 +111,8 @@ export class DropZonePlugin extends Plugin {
         const selectorExcludeAncestor = [];
         const selectorLockedWithin = [];
 
-        const editableAreaEls = this.dependencies.setup_editor_plugin.getEditableAreas();
+        const editableAreaEls =
+            this.dependencies.setup_editor_plugin.getEditableAreas();
         const rootEl = this.getDropRootElement();
         this.dropzoneSelectors.forEach((dropzoneSelector) => {
             const {
@@ -129,7 +135,9 @@ export class DropZonePlugin extends Plugin {
                 }
                 if (dropIn) {
                     selectorChildren.push(
-                        ...this.getSelectorChildren(editableAreaEls, rootEl, { selector: dropIn })
+                        ...this.getSelectorChildren(editableAreaEls, rootEl, {
+                            selector: dropIn,
+                        })
                     );
                 }
                 if (dropLockWithin) {
@@ -153,8 +161,12 @@ export class DropZonePlugin extends Plugin {
         }
         if (selectorExcludeAncestor.length) {
             const excludeAncestor = selectorExcludeAncestor.join(",");
-            selectorSiblings = selectorSiblings.filter((el) => !el.closest(excludeAncestor));
-            selectorChildren = selectorChildren.filter((el) => !el.closest(excludeAncestor));
+            selectorSiblings = selectorSiblings.filter(
+                (el) => !el.closest(excludeAncestor)
+            );
+            selectorChildren = selectorChildren.filter(
+                (el) => !el.closest(excludeAncestor)
+            );
         }
 
         // Prevent dropping an element outside a given direct or indirect parent
@@ -215,7 +227,9 @@ export class DropZonePlugin extends Plugin {
                 }
                 return true;
             };
-            selectorSiblings = selectorSiblings.filter((el) => filterGrids(el.parentElement));
+            selectorSiblings = selectorSiblings.filter((el) =>
+                filterGrids(el.parentElement)
+            );
             selectorChildren = selectorChildren.filter((el) => filterGrids(el));
 
             // If specified, only filter out the grids.
@@ -269,7 +283,7 @@ export class DropZonePlugin extends Plugin {
      * with a parent matching it.
      * @returns {Array<HTMLElement>}
      */
-    getSelectorSiblings(editableAreaEls, rootEl, { selector, excludeParent = false }) {
+    getSelectorSiblings(editableAreaEls, rootEl, {selector, excludeParent = false}) {
         const filterFct = (el) =>
             this.checkSelectors(el, rootEl) &&
             // Do not drop blocks into an image field.
@@ -297,12 +311,14 @@ export class DropZonePlugin extends Plugin {
      * @param {String} selector `dropIn` selector
      * @returns {Array<HTMLElement>}
      */
-    getSelectorChildren(editableAreaEls, rootEl, { selector }) {
+    getSelectorChildren(editableAreaEls, rootEl, {selector}) {
         const filterFct = (el) =>
             this.checkSelectors(el, rootEl) &&
             // Do not drop blocks into an image field.
             !el.closest("[data-oe-type=image]") &&
-            !el.matches('.o_not_editable :not([contenteditable="true"]), .o_not_editable');
+            !el.matches(
+                '.o_not_editable :not([contenteditable="true"]), .o_not_editable'
+            );
 
         const dropAreaEls = [];
         editableAreaEls.forEach((el) => {
@@ -361,7 +377,9 @@ export class DropZonePlugin extends Plugin {
             "text-uppercase"
         );
         const messageEl = this.document.createElement("p");
-        messageEl.textContent = _t("For technical reasons, this block cannot be dropped here");
+        messageEl.textContent = _t(
+            "For technical reasons, this block cannot be dropped here"
+        );
         dropzoneEl.prepend(messageEl);
         return dropzoneEl;
     }
@@ -404,7 +422,7 @@ export class DropZonePlugin extends Plugin {
         const parentStyle = window.getComputedStyle(parentEl);
 
         const float = hookStyle.float || hookStyle.cssFloat;
-        const { display, flexDirection } = parentStyle;
+        const {display, flexDirection} = parentStyle;
 
         if (
             toInsertInline ||
@@ -417,9 +435,11 @@ export class DropZonePlugin extends Plugin {
             }
             // Compute the parent content width and the element outer width.
             const parentPaddingX =
-                parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
+                parseFloat(parentStyle.paddingLeft) +
+                parseFloat(parentStyle.paddingRight);
             const parentBorderX =
-                parseFloat(parentStyle.borderLeft) + parseFloat(parentStyle.borderRight);
+                parseFloat(parentStyle.borderLeft) +
+                parseFloat(parentStyle.borderRight);
             const hookMarginX =
                 parseFloat(hookStyle.marginLeft) + parseFloat(hookStyle.marginRight);
 
@@ -439,7 +459,7 @@ export class DropZonePlugin extends Plugin {
             }
         }
 
-        return { vertical, style };
+        return {vertical, style};
     }
 
     /**
@@ -468,13 +488,15 @@ export class DropZonePlugin extends Plugin {
      * @returns
      */
     activateDropzones(
-        { selectorSiblings, selectorChildren, selectorSanitized, selectorGrids },
-        { toInsertInline, isContentInIframe = true } = {}
+        {selectorSiblings, selectorChildren, selectorSanitized, selectorGrids},
+        {toInsertInline, isContentInIframe = true} = {}
     ) {
         const isIgnored = (el) => el.matches(".o_we_no_overlay") || !isVisible(el);
         let hookEls = [];
         for (const parentEl of selectorChildren) {
-            const validChildrenEls = [...parentEl.children].filter((el) => !isIgnored(el));
+            const validChildrenEls = [...parentEl.children].filter(
+                (el) => !isIgnored(el)
+            );
             hookEls.push(...validChildrenEls);
             parentEl.prepend(this.createDropzone(parentEl));
         }
@@ -487,7 +509,11 @@ export class DropZonePlugin extends Plugin {
         // Inserting the normal dropzones.
         for (const hookEl of hookEls) {
             const parentEl = hookEl.parentElement;
-            const { vertical, style } = this.setDropzoneDirection(hookEl, parentEl, toInsertInline);
+            const {vertical, style} = this.setDropzoneDirection(
+                hookEl,
+                parentEl,
+                toInsertInline
+            );
 
             let previousEl = hookEl.previousElementSibling;
             while (previousEl && isIgnored(previousEl)) {
@@ -541,7 +567,11 @@ export class DropZonePlugin extends Plugin {
             });
         }
 
-        return [...this.editable.querySelectorAll(".oe_drop_zone:not(.oe_sanitized_drop_zone)")];
+        return [
+            ...this.editable.querySelectorAll(
+                ".oe_drop_zone:not(.oe_sanitized_drop_zone)"
+            ),
+        ];
     }
 
     /**

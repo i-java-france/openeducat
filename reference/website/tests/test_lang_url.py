@@ -1,11 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import lxml.html
 from urllib.parse import urlparse
 
-from odoo.addons.http_routing.tests.common import MockRequest
+import lxml.html
+
 from odoo.tests import HttpCase, tagged
+
+from odoo.addons.http_routing.tests.common import MockRequest
 
 
 class TestLangUrlCommon(HttpCase):

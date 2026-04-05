@@ -1,12 +1,15 @@
-# -*- coding: utf-8 -*-
 
-from collections import defaultdict, OrderedDict
-from datetime import date, datetime, time, timedelta
 import json
+from collections import OrderedDict, defaultdict
+from datetime import date, datetime, time, timedelta
 
-from odoo import api, fields, models, _
-from odoo.tools import float_compare, float_round, format_date, float_is_zero, float_repr
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import (
+    float_repr,
+    float_round,
+    format_date,
+)
 
 
 class ReportMrpReport_Bom_Structure(models.AbstractModel):

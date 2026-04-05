@@ -6,7 +6,6 @@ from markupsafe import Markup
 from odoo import Command, _, api, models, modules, tools
 from odoo.exceptions import UserError, ValidationError
 
-
 _logger = logging.getLogger(__name__)
 
 

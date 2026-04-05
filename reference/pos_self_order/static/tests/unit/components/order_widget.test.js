@@ -1,32 +1,32 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { OrderWidget } from "@pos_self_order/app/components/order_widget/order_widget";
-import { setupSelfPosEnv, getFilledSelfOrder } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {OrderWidget} from "@pos_self_order/app/components/order_widget/order_widget";
+import {getFilledSelfOrder, setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
 test("buttonToShow", async () => {
     const store = await setupSelfPosEnv();
     const models = store.models;
-    const comp = await mountWithCleanup(OrderWidget, { props: { action: () => {} } });
+    const comp = await mountWithCleanup(OrderWidget, {props: {action: () => {}}});
 
     store.router.activeSlot = "product_list";
-    expect(comp.buttonToShow).toMatchObject({ label: "Checkout", disabled: true });
+    expect(comp.buttonToShow).toMatchObject({label: "Checkout", disabled: true});
 
     await getFilledSelfOrder(store);
-    expect(comp.buttonToShow).toMatchObject({ label: "Checkout", disabled: false });
+    expect(comp.buttonToShow).toMatchObject({label: "Checkout", disabled: false});
 
     store.router.activeSlot = "cart";
-    expect(comp.buttonToShow).toMatchObject({ label: "Order", disabled: false });
+    expect(comp.buttonToShow).toMatchObject({label: "Order", disabled: false});
     // With valid payment method
     models["pos.payment.method"].getFirst().use_payment_terminal = "stripe";
-    expect(comp.buttonToShow).toMatchObject({ label: "Pay", disabled: false });
+    expect(comp.buttonToShow).toMatchObject({label: "Pay", disabled: false});
 });
 
 test("lineNotSend", async () => {
     const store = await setupSelfPosEnv();
-    const comp = await mountWithCleanup(OrderWidget, { props: { action: () => {} } });
+    const comp = await mountWithCleanup(OrderWidget, {props: {action: () => {}}});
 
     expect(comp.lineNotSend).toMatchObject({
         priceWithTax: 0,
@@ -54,7 +54,7 @@ test("lineNotSend", async () => {
 
 test("shouldGoBack", async () => {
     const store = await setupSelfPosEnv();
-    const comp = await mountWithCleanup(OrderWidget, { props: { action: () => {} } });
+    const comp = await mountWithCleanup(OrderWidget, {props: {action: () => {}}});
 
     // No orderlines
     expect(comp.shouldGoBack()).toBe(true);

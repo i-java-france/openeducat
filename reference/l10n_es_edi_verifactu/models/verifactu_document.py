@@ -1,20 +1,20 @@
-from datetime import datetime, timedelta
-from psycopg2 import OperationalError
-from pytz import timezone
-from werkzeug.urls import url_quote_plus, url_encode
-
 import hashlib
+import json
 import logging
 import math
-import requests.exceptions
-import json
+from datetime import datetime, timedelta
 
+import requests.exceptions
+from psycopg2 import OperationalError
+from pytz import timezone
+from werkzeug.urls import url_encode, url_quote_plus
+
+import odoo.release
 from odoo import _, api, fields, models
-from odoo.addons.certificate.tools import CertificateAdapter
 from odoo.exceptions import UserError
 from odoo.tools import float_repr, float_round, frozendict, zeep
 
-import odoo.release
+from odoo.addons.certificate.tools import CertificateAdapter
 
 _logger = logging.getLogger(__name__)
 
@@ -1090,7 +1090,7 @@ class L10nEsEdiVerifactuDocument(models.Model):
             }
 
         # Store the information from the response split over the individual documents
-        for document, document_dict in zip(self, document_dict_list):
+        for document, document_dict in zip(self, document_dict_list, strict=False):
             response_info = (
                 batch_failure_info
                 or info['record_info'].get(self._extract_record_key(document_dict), None)

@@ -1,9 +1,9 @@
-import { Component } from "@odoo/owl";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { _t } from "@web/core/l10n/translation";
-import { Domain } from "@web/core/domain";
-import { registry } from "@web/core/registry";
-import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {_t} from "@web/core/l10n/translation";
+import {Domain} from "@web/core/domain";
+import {registry} from "@web/core/registry";
+import {useOwnedDialogs, useService} from "@web/core/utils/hooks";
 
 const SEARCH_LIMIT = 7;
 const SEARCH_MORE_LIMIT = 320;
@@ -15,14 +15,14 @@ export class RecordAutocomplete extends Component {
         multiSelect: Boolean,
         getIds: Function,
         value: String,
-        domain: { type: Array, optional: true },
-        context: { type: Object, optional: true },
-        className: { type: String, optional: true },
-        fieldString: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
-        slots: { optional: true },
+        domain: {type: Array, optional: true},
+        context: {type: Object, optional: true},
+        className: {type: String, optional: true},
+        fieldString: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
+        slots: {optional: true},
     };
-    static components = { AutoComplete };
+    static components = {AutoComplete};
     static template = "web.RecordAutocomplete";
 
     setup() {
@@ -59,7 +59,7 @@ export class RecordAutocomplete extends Component {
         this.addNames(nameGets);
         const options = nameGets.map(([id, label]) => ({
             data: {
-                record: { id, display_name: label },
+                record: {id, display_name: label},
             },
             label,
             onSelect: () => this.props.update([id]),
@@ -72,13 +72,13 @@ export class RecordAutocomplete extends Component {
             });
         }
         if (options.length === 0) {
-            options.push({ label: _t("(no result)") });
+            options.push({label: _t("(no result)")});
         }
         return options;
     }
 
     async onSearchMore(name) {
-        const { fieldString, multiSelect, resModel } = this.props;
+        const {fieldString, multiSelect, resModel} = this.props;
         let operator;
         const ids = [];
         if (name) {
@@ -133,7 +133,7 @@ export class RecordAutocomplete extends Component {
         });
     }
 
-    onChange({ inputValue }) {
+    onChange({inputValue}) {
         if (!inputValue.length) {
             this.props.update([]);
         }

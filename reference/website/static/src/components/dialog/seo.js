@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { deduceURLfromText } from "@html_editor/main/link/utils";
-import { pyToJsLocale, jsToPyLocale } from "@web/core/l10n/utils";
-import { htmlToTextContentInline } from "@mail/utils/common/format";
-import { rpc } from "@web/core/network/rpc";
-import { escapeRegExp } from "@web/core/utils/strings";
-import { useService, useAutofocus } from "@web/core/utils/hooks";
-import { isVisible } from "@web/core/utils/ui";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { MediaDialog } from "@html_editor/main/media/media_dialog/media_dialog";
-import { WebsiteDialog } from "./dialog";
+import {_t} from "@web/core/l10n/translation";
+import {deduceURLfromText} from "@html_editor/main/link/utils";
+import {pyToJsLocale, jsToPyLocale} from "@web/core/l10n/utils";
+import {htmlToTextContentInline} from "@mail/utils/common/format";
+import {rpc} from "@web/core/network/rpc";
+import {escapeRegExp} from "@web/core/utils/strings";
+import {useService, useAutofocus} from "@web/core/utils/hooks";
+import {isVisible} from "@web/core/utils/ui";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {MediaDialog} from "@html_editor/main/media/media_dialog/media_dialog";
+import {WebsiteDialog} from "./dialog";
 import {
     Component,
     onMounted,
@@ -41,8 +41,8 @@ const LINK_CHECK_BASE_OPTIONS = {
     referrerPolicy: "no-referrer",
     credentials: "omit",
 };
-const LINK_CHECK_MANUAL_OPTIONS = { ...LINK_CHECK_BASE_OPTIONS, redirect: "manual" };
-const LINK_CHECK_NO_CORS_OPTIONS = { ...LINK_CHECK_BASE_OPTIONS, mode: "no-cors" };
+const LINK_CHECK_MANUAL_OPTIONS = {...LINK_CHECK_BASE_OPTIONS, redirect: "manual"};
+const LINK_CHECK_NO_CORS_OPTIONS = {...LINK_CHECK_BASE_OPTIONS, mode: "no-cors"};
 
 const inspectLink = async (url, options) => {
     try {
@@ -59,7 +59,7 @@ const inspectLink = async (url, options) => {
     }
 };
 
-const checkLinkStatus = async (url, { useNoCorsFallback = false } = {}) => {
+const checkLinkStatus = async (url, {useNoCorsFallback = false} = {}) => {
     let status = await inspectLink(url, LINK_CHECK_BASE_OPTIONS);
     if (status === "failed") {
         const fallbackStatus = await inspectLink(url, LINK_CHECK_MANUAL_OPTIONS);
@@ -85,7 +85,7 @@ const getSeo = async (self, onlyKeywords = false) => {
     const maxNGrams = 2;
 
     const getKeywordsFromText = (text, weight, wordCounts) => {
-        const segmenter = new Intl.Segmenter(lang, { granularity: "word" });
+        const segmenter = new Intl.Segmenter(lang, {granularity: "word"});
         const segmentedText = segmenter.segment(text);
         const words = [...segmentedText]
             .filter((s) => s.isWordLike)
@@ -169,7 +169,9 @@ const getSeo = async (self, onlyKeywords = false) => {
             (el) => isVisible(el) && el.innerText.trim().replace(/[\W\d]/g, "")
         );
         if (headersEls.length) {
-            return headersEls.map((el) => el.innerText.trim().replace(/\s+/g, " ")).join(", ");
+            return headersEls
+                .map((el) => el.innerText.trim().replace(/\s+/g, " "))
+                .join(", ");
         }
         return self.seoContext.title || self.seoContext.description || "";
     };
@@ -208,7 +210,9 @@ class ImageSelector extends Component {
 
         this.seoContext = useState(seoContext);
 
-        const firstImageId = this.props.hasSocialDefaultImage ? "social_default_image" : "logo";
+        const firstImageId = this.props.hasSocialDefaultImage
+            ? "social_default_image"
+            : "logo";
         const firstImageSrc = `/web/image/website/${encodeURIComponent(
             this.website.currentWebsite.id
         )}/${firstImageId}`;
@@ -232,7 +236,7 @@ class ImageSelector extends Component {
         if (
             this.seoContext.metaImage &&
             !this.state.images
-                .map(({ src }) => this.getImagePathname(src))
+                .map(({src}) => this.getImagePathname(src))
                 .includes(this.getImagePathname(this.seoContext.metaImage))
         ) {
             this.state.images.push({
@@ -248,7 +252,7 @@ class ImageSelector extends Component {
     }
 
     get activeMetaImage() {
-        const activeImage = this.state.images.find(({ active }) => active);
+        const activeImage = this.state.images.find(({active}) => active);
         return activeImage && activeImage.src;
     }
 
@@ -331,11 +335,11 @@ class Keyword extends Component {
             usedInContent: _t('"%(keyword)s" is used in page content', {
                 keyword: this.props.keyword,
             }),
-            suggestionTag: (suggestion) => _t('Add "%(suggestion)s"', { suggestion }),
+            suggestionTag: (suggestion) => _t('Add "%(suggestion)s"', {suggestion}),
             googleTrendsTitle: _t("See Google Trends about '%(keyword)s'", {
                 keyword: this.props.keyword,
             }),
-            removeBtn: _t('Remove "%(keyword)s"', { keyword: this.props.keyword }),
+            removeBtn: _t('Remove "%(keyword)s"', {keyword: this.props.keyword}),
         };
 
         onMounted(async () => {
@@ -344,7 +348,9 @@ class Keyword extends Component {
                 keywords: this.props.keyword,
             });
             const regex = new RegExp(
-                WORD_SEPARATORS_REGEX + escapeRegExp(this.props.keyword) + WORD_SEPARATORS_REGEX,
+                WORD_SEPARATORS_REGEX +
+                    escapeRegExp(this.props.keyword) +
+                    WORD_SEPARATORS_REGEX,
                 "gi"
             );
             this.state.suggestions = [
@@ -359,7 +365,9 @@ class Keyword extends Component {
 
     isKeywordIn(string) {
         return new RegExp(
-            WORD_SEPARATORS_REGEX + escapeRegExp(this.props.keyword) + WORD_SEPARATORS_REGEX,
+            WORD_SEPARATORS_REGEX +
+                escapeRegExp(this.props.keyword) +
+                WORD_SEPARATORS_REGEX,
             "gi"
         ).test(string);
     }
@@ -456,7 +464,9 @@ class MetaKeywords extends Component {
     }
 
     removeKeyword(keyword) {
-        this.seoContext.keywords = this.seoContext.keywords.filter((kw) => kw !== keyword);
+        this.seoContext.keywords = this.seoContext.keywords.filter(
+            (kw) => kw !== keyword
+        );
     }
 }
 
@@ -549,7 +559,7 @@ class TitleDescription extends Component {
         canEditUrl: Boolean,
         canEditTitle: Boolean,
         seoNameHelp: String,
-        seoNameDefault: { optional: true, String },
+        seoNameDefault: {optional: true, String},
         isIndexed: Boolean,
         defaultTitle: String,
         previewDescription: String,
@@ -574,7 +584,7 @@ class TitleDescription extends Component {
 
         this.titleTooltip = _t(
             'Add your own title or leave empty to use "%(defaultTitle)s". Your page title should contain max 65 characters.',
-            { defaultTitle: this.props.defaultTitle }
+            {defaultTitle: this.props.defaultTitle}
         );
 
         // Update the title when its input value changes
@@ -640,7 +650,9 @@ class TitleDescription extends Component {
         }
         if (this.seoContext.description.length < this.minRecommendedDescriptionSize) {
             return _t("Too short (min 50 chars)");
-        } else if (this.seoContext.description.length > this.maxRecommendedDescriptionSize) {
+        } else if (
+            this.seoContext.description.length > this.maxRecommendedDescriptionSize
+        ) {
             return _t("Too long (max 160 chars)");
         }
         return false;
@@ -761,7 +773,7 @@ export class SeoChecks extends Component {
         this.website = useService("website");
         this.seoContext = useState(seoContext);
         const {
-            metadata: { mainObject, seoObject },
+            metadata: {mainObject, seoObject},
         } = this.website.currentWebsite;
         this.object = seoObject || mainObject;
         this.state = useState({
@@ -783,14 +795,17 @@ export class SeoChecks extends Component {
 
     imgUpdated(img) {
         img.updated = true;
-        this.seoContext.updatedAlts = this.state.altAttributes.filter((img) => img.updated);
+        this.seoContext.updatedAlts = this.state.altAttributes.filter(
+            (img) => img.updated
+        );
     }
 
     async getAltAttributes() {
         const uniqueRecords = new Set();
 
         // Select all relevant <img> elements in the editable page.
-        const imgEls = this.website.pageDocument.documentElement.querySelectorAll("#wrapwrap img");
+        const imgEls =
+            this.website.pageDocument.documentElement.querySelectorAll("#wrapwrap img");
 
         imgEls.forEach((el) => {
             // Find the closest ancestor element containing Odoo metadata.
@@ -816,10 +831,10 @@ export class SeoChecks extends Component {
         // Transform the Set of unique strings back into structured objects.
         const models = Array.from(uniqueRecords).map((entry) => {
             const [model, id, field, type] = entry.split("||");
-            return { model, id: parseInt(id), field, type };
+            return {model, id: parseInt(id), field, type};
         });
 
-        const results = await rpc("/website/get_alt_images", { models });
+        const results = await rpc("/website/get_alt_images", {models});
 
         return JSON.parse(results);
     }
@@ -855,7 +870,8 @@ export class SeoChecks extends Component {
                     return false;
                 }
                 const hashIndex = el.href.indexOf("#");
-                const cleanedUrl = hashIndex !== -1 ? el.href.substring(0, hashIndex) : el.href;
+                const cleanedUrl =
+                    hashIndex !== -1 ? el.href.substring(0, hashIndex) : el.href;
                 const path = new URL(cleanedUrl);
                 let label = "";
                 let isImageLink = false;
@@ -869,14 +885,19 @@ export class SeoChecks extends Component {
                         isImageLink = true;
                     } else if (el.querySelector(".fa")) {
                         label =
-                            el.ariaLabel || el.title || el.href.split("/").filter(Boolean).pop();
+                            el.ariaLabel ||
+                            el.title ||
+                            el.href.split("/").filter(Boolean).pop();
                         isImageLink = true;
                     }
                 }
                 return {
                     link: path.pathname + path.search,
                     res_model: recordEl.dataset.resModel || recordEl.dataset.oeModel,
-                    res_id: parseInt(recordEl.dataset.resId || recordEl.dataset.oeId, 10),
+                    res_id: parseInt(
+                        recordEl.dataset.resId || recordEl.dataset.oeId,
+                        10
+                    ),
                     field: recordEl.dataset.oeField || null,
                     label: label,
                     isImageLink: isImageLink,
@@ -956,7 +977,7 @@ export class OptimizeSEODialog extends Component {
             // from the iframe DOM.
             await this.waitForIframe();
             const {
-                metadata: { mainObject, seoObject, path },
+                metadata: {mainObject, seoObject, path},
             } = this.website.currentWebsite;
             this.object = seoObject || mainObject;
             this.data = await rpc("/website/get_seo_data", {
@@ -965,13 +986,15 @@ export class OptimizeSEODialog extends Component {
             });
 
             this.canEditSeo = this.data.can_edit_seo;
-            this.canEditDescription = this.canEditSeo && "website_meta_description" in this.data;
+            this.canEditDescription =
+                this.canEditSeo && "website_meta_description" in this.data;
             this.canEditTitle = this.canEditSeo && "website_meta_title" in this.data;
             this.canEditUrl = this.canEditSeo && "seo_name" in this.data;
             seoContext.title = this.canEditTitle && this.data.website_meta_title;
 
             // If website.page, hide the google preview & tell user his page is currently unindexed
-            this.isIndexed = "website_indexed" in this.data ? this.data.website_indexed : true;
+            this.isIndexed =
+                "website_indexed" in this.data ? this.data.website_indexed : true;
             this.seoNameHelp = _t(
                 "This value will be escaped to be compliant with all major browsers and used in url. Keep it empty to use the default name of the record."
             );
@@ -979,16 +1002,16 @@ export class OptimizeSEODialog extends Component {
             seoContext.seoName = this.previousSeoName;
             this.seoNameDefault = this.canEditUrl && this.data.seo_name_default;
 
-            seoContext.description = this.getMeta({ name: "description" });
+            seoContext.description = this.getMeta({name: "description"});
             this.previewDescription = _t(
                 "Your page description should be between 50 and 160 characters long."
             );
-            this.defaultTitle = this.getMeta({ name: "default_title" }) || "";
+            this.defaultTitle = this.getMeta({name: "default_title"}) || "";
             seoContext.defaultTitle = this.defaultTitle;
             this.url = path;
 
             seoContext.metaImage =
-                this.data.website_meta_og_img || this.getMeta({ property: "og:image" });
+                this.data.website_meta_og_img || this.getMeta({property: "og:image"});
 
             this.pageImages = this.getImages();
             this.socialPreviewDescription = _t(
@@ -997,7 +1020,7 @@ export class OptimizeSEODialog extends Component {
             this.hasSocialDefaultImage = this.data.has_social_default_image;
 
             this.canEditKeywords = "website_meta_keywords" in this.data;
-            seoContext.keywords = this.getMeta({ name: "keywords" });
+            seoContext.keywords = this.getMeta({name: "keywords"});
         });
     }
 
@@ -1009,7 +1032,7 @@ export class OptimizeSEODialog extends Component {
             if (!iframeEl || iframeEl.contentDocument?.readyState === "complete") {
                 return resolve();
             }
-            iframeEl.addEventListener("load", resolve, { once: true });
+            iframeEl.addEventListener("load", resolve, {once: true});
         });
     }
 
@@ -1028,7 +1051,7 @@ export class OptimizeSEODialog extends Component {
         ];
     }
 
-    getMeta({ name, property }) {
+    getMeta({name, property}) {
         let query = "";
         if (name) {
             query = `meta[name="${name}"]`;
@@ -1093,7 +1116,10 @@ export class OptimizeSEODialog extends Component {
         await Promise.all(rpcCalls);
 
         this.website.goToWebsite({
-            path: this.url.replace(this.previousSeoName || this.seoNameDefault, seoContext.seoName),
+            path: this.url.replace(
+                this.previousSeoName || this.seoNameDefault,
+                seoContext.seoName
+            ),
         });
     }
 }

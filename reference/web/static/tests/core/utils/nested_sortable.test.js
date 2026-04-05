@@ -1,17 +1,17 @@
-import { expect, test } from "@odoo/hoot";
-import { queryFirst, queryOne, queryRect } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, reactive, useRef, useState, xml } from "@odoo/owl";
-import { contains, mountWithCleanup, sortableDrag } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryFirst, queryOne, queryRect} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, reactive, useRef, useState, xml} from "@odoo/owl";
+import {contains, mountWithCleanup, sortableDrag} from "@web/../tests/web_test_helpers";
 
-import { useNestedSortable } from "@web/core/utils/nested_sortable";
+import {useNestedSortable} from "@web/core/utils/nested_sortable";
 
 /**
  * @param {import("@odoo/hoot-dom").Target} from
  * @param {import("@odoo/hoot-dom").Target} to
  */
 const dragAndDrop = async (from, to) => {
-    const { drop, moveUnder } = await sortableDrag(from);
+    const {drop, moveUnder} = await sortableDrag(from);
     await moveUnder(to);
     await drop();
 };
@@ -55,7 +55,9 @@ test("Parameters error handling", async () => {
                 elements: ".item",
                 groups: ".list",
             })
-        ).toThrow(`Error in hook useNestedSortable: missing required property "ref" in parameter`);
+        ).toThrow(
+            `Error in hook useNestedSortable: missing required property "ref" in parameter`
+        );
     });
 
     // Correct params
@@ -109,12 +111,21 @@ test("Sorting in a single group without nesting", async () => {
                 ref: useRef("root"),
                 elements: ".sortable_list > li",
                 touchDelay: 0,
-                onDragStart({ element, group }) {
+                onDragStart({element, group}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "1");
                     expect(group).toBe(undefined);
                 },
-                onMove({ element, previous, next, parent, group, newGroup, prevPos, placeholder }) {
+                onMove({
+                    element,
+                    previous,
+                    next,
+                    parent,
+                    group,
+                    newGroup,
+                    prevPos,
+                    placeholder,
+                }) {
                     expect.step("move");
                     expect(element).toHaveAttribute("id", "1");
                     expect(previous).toHaveAttribute("id", "2");
@@ -126,9 +137,20 @@ test("Sorting in a single group without nesting", async () => {
                     expect(prevPos.next).toHaveAttribute("id", "2");
                     expect(prevPos.parent).toBe(null);
                     expect(prevPos.group).toBe(false);
-                    expect(placeholder.previousElementSibling).toHaveAttribute("id", "2");
+                    expect(placeholder.previousElementSibling).toHaveAttribute(
+                        "id",
+                        "2"
+                    );
                 },
-                onDrop({ element, previous, next, parent, group, newGroup, placeholder }) {
+                onDrop({
+                    element,
+                    previous,
+                    next,
+                    parent,
+                    group,
+                    newGroup,
+                    placeholder,
+                }) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "1");
                     expect(previous).toHaveAttribute("id", "2");
@@ -136,9 +158,12 @@ test("Sorting in a single group without nesting", async () => {
                     expect(parent).toBe(null);
                     expect(group).toBe(undefined);
                     expect(newGroup).toBe(null);
-                    expect(placeholder.previousElementSibling).toHaveAttribute("id", "2");
+                    expect(placeholder.previousElementSibling).toHaveAttribute(
+                        "id",
+                        "2"
+                    );
                 },
-                onDragEnd({ element, group }) {
+                onDragEnd({element, group}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "1");
                     expect(group).toBe(undefined);
@@ -155,7 +180,7 @@ test("Sorting in a single group without nesting", async () => {
     expect.verifySteps([]);
 
     // Move first item after second item
-    const { drop, moveUnder } = await sortableDrag(".sortable_list > .item:first-child");
+    const {drop, moveUnder} = await sortableDrag(".sortable_list > .item:first-child");
     await moveUnder(".sortable_list > .item:nth-child(2)");
     expect(".sortable_list > .item:first").toHaveClass("o_dragged");
 
@@ -193,12 +218,21 @@ test("Sorting in groups without nesting", async () => {
                 groups: "section",
                 connectGroups: true,
                 touchDelay: 0,
-                onDragStart({ element, group }) {
+                onDragStart({element, group}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "2.2");
                     expect(group).toHaveAttribute("id", "2");
                 },
-                onMove({ element, previous, next, parent, group, newGroup, prevPos, placeholder }) {
+                onMove({
+                    element,
+                    previous,
+                    next,
+                    parent,
+                    group,
+                    newGroup,
+                    prevPos,
+                    placeholder,
+                }) {
                     expect.step("move");
                     expect(element).toHaveAttribute("id", "2.2");
                     expect(previous).toHaveAttribute("id", "1.2");
@@ -210,19 +244,30 @@ test("Sorting in groups without nesting", async () => {
                     expect(prevPos.next).toBe(null);
                     expect(prevPos.parent).toBe(null);
                     expect(prevPos.group).toHaveAttribute("id", "2");
-                    expect(placeholder.previousElementSibling).toHaveAttribute("id", "1.2");
+                    expect(placeholder.previousElementSibling).toHaveAttribute(
+                        "id",
+                        "1.2"
+                    );
                 },
-                onGroupEnter({ placeholder, group }) {
+                onGroupEnter({placeholder, group}) {
                     expect.step("enter");
                     expect(placeholder).toHaveClass("2.2");
                     expect(group).toHaveAttribute("id", "1");
                 },
-                onGroupLeave({ placeholder, group }) {
+                onGroupLeave({placeholder, group}) {
                     expect.step("leave");
                     expect(placeholder).toHaveClass("2.2");
                     expect(group).toHaveAttribute("id", "2");
                 },
-                onDrop({ element, previous, next, parent, group, newGroup, placeholder }) {
+                onDrop({
+                    element,
+                    previous,
+                    next,
+                    parent,
+                    group,
+                    newGroup,
+                    placeholder,
+                }) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "2.2");
                     expect(previous).toHaveAttribute("id", "1.2");
@@ -230,9 +275,12 @@ test("Sorting in groups without nesting", async () => {
                     expect(parent).toBe(null);
                     expect(group).toHaveAttribute("id", "2");
                     expect(newGroup).toHaveAttribute("id", "1");
-                    expect(placeholder.previousElementSibling).toHaveAttribute("id", "1.2");
+                    expect(placeholder.previousElementSibling).toHaveAttribute(
+                        "id",
+                        "1.2"
+                    );
                 },
-                onDragEnd({ element, group }) {
+                onDragEnd({element, group}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "2.2");
                     expect(group).toHaveAttribute("id", "2");
@@ -248,7 +296,10 @@ test("Sorting in groups without nesting", async () => {
     expect(".item").toHaveCount(18);
     expect.verifySteps([]);
     // Append second item of second list to first list
-    await dragAndDrop("section:nth-child(2) > ul > .item:nth-child(2)", "section:first-child");
+    await dragAndDrop(
+        "section:nth-child(2) > ul > .item:nth-child(2)",
+        "section:first-child"
+    );
 
     expect(".sortable_list").toHaveCount(3);
     expect(".item").toHaveCount(18);
@@ -280,12 +331,12 @@ test("Sorting with nesting - move right", async () => {
                 ref: useRef("root"),
                 elements: ".item",
                 nest: true,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "2");
                     firstMove = true;
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     if (firstMove) {
                         expect.step("move 1");
                         expect(element).toHaveAttribute("id", "2");
@@ -307,14 +358,14 @@ test("Sorting with nesting - move right", async () => {
                         expect(prevPos.parent).toHaveAttribute("id", "1");
                     }
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "2");
                     expect(previous).toBe(null);
                     expect(next).toBe(null);
                     expect(parent).toHaveAttribute("id", "sub1");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "2");
                 },
@@ -328,7 +379,7 @@ test("Sorting with nesting - move right", async () => {
     expect.verifySteps([]);
 
     const movedEl = queryFirst(".sortable_list > .item:nth-child(2)");
-    const { drop, moveTo } = await sortableDrag(movedEl);
+    const {drop, moveTo} = await sortableDrag(movedEl);
     await moveTo(movedEl, {
         position: {
             x: queryRect(movedEl).width / 2 + 15,
@@ -387,11 +438,11 @@ test("Sorting with nesting - move left", async () => {
                 elements: ".item",
                 nest: true,
                 nestInterval: 20,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     expect.step("move");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toHaveAttribute("id", "sub1");
@@ -401,14 +452,14 @@ test("Sorting with nesting - move left", async () => {
                     expect(prevPos.next).toBe(null);
                     expect(prevPos.parent).toHaveAttribute("id", "sub1");
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toHaveAttribute("id", "sub1");
                     expect(next).toHaveAttribute("id", "sub2");
                     expect(parent).toHaveAttribute("id", "parent");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
@@ -422,7 +473,7 @@ test("Sorting with nesting - move left", async () => {
     expect.verifySteps([]);
 
     const movedEl = queryOne(".item#dragged");
-    const { drop, moveTo } = await sortableDrag(movedEl);
+    const {drop, moveTo} = await sortableDrag(movedEl);
     // No move if distance traveled is smaller than the nest interval
     await moveTo(movedEl, {
         position: {
@@ -478,12 +529,12 @@ test("Sorting with nesting - move root down", async () => {
                 elements: ".item",
                 nest: true,
                 touchDelay: 0,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "dragged");
                     this.firstMove = true;
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     if (this.firstMove) {
                         expect.step("move 1");
                         expect(element).toHaveAttribute("id", "dragged");
@@ -505,14 +556,14 @@ test("Sorting with nesting - move root down", async () => {
                         expect(prevPos.parent).toBe(null);
                     }
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toBe(null);
                     expect(next).toHaveAttribute("id", "child");
                     expect(parent).toHaveAttribute("id", "parent");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
@@ -523,7 +574,7 @@ test("Sorting with nesting - move root down", async () => {
     await mountWithCleanup(NestedSortable);
     expect.verifySteps([]);
 
-    const { drop, moveUnder } = await sortableDrag(".item#dragged");
+    const {drop, moveUnder} = await sortableDrag(".item#dragged");
     await moveUnder(".item#noChild");
     // Move under the content of the row, not under the rows nested inside the row
     await moveUnder(".item#parent > span");
@@ -565,12 +616,12 @@ test("Sorting with nesting - move child down", async () => {
                 elements: ".item",
                 nest: true,
                 touchDelay: 0,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "dragged");
                     this.firstMove = true;
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     if (this.firstMove) {
                         expect.step("move 1");
                         expect(element).toHaveAttribute("id", "dragged");
@@ -592,14 +643,14 @@ test("Sorting with nesting - move child down", async () => {
                         expect(prevPos.parent).toHaveAttribute("id", "parent");
                     }
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toHaveAttribute("id", "noChild");
                     expect(next).toBe(null);
                     expect(parent).toBe(null);
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
@@ -609,7 +660,7 @@ test("Sorting with nesting - move child down", async () => {
     await mountWithCleanup(NestedSortable);
     expect.verifySteps([]);
 
-    const { drop, moveUnder } = await sortableDrag(".item#dragged");
+    const {drop, moveUnder} = await sortableDrag(".item#dragged");
     await moveUnder(".item#child");
     await moveUnder(".item#noChild");
     await drop();
@@ -648,12 +699,12 @@ test("Sorting with nesting - move root up", async () => {
                 ref: useRef("root"),
                 elements: ".item",
                 nest: true,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "dragged");
                     this.firstMove = true;
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     if (this.firstMove) {
                         expect.step("move 1");
                         expect(element).toHaveAttribute("id", "dragged");
@@ -675,14 +726,14 @@ test("Sorting with nesting - move root up", async () => {
                         expect(prevPos.parent).toBe(null);
                     }
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toBe(null);
                     expect(next).toHaveAttribute("id", "child");
                     expect(parent).toHaveAttribute("id", "parent");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
@@ -693,7 +744,7 @@ test("Sorting with nesting - move root up", async () => {
     await mountWithCleanup(NestedSortable);
     expect.verifySteps([]);
 
-    const { drop, moveAbove } = await sortableDrag(".item#dragged");
+    const {drop, moveAbove} = await sortableDrag(".item#dragged");
     await moveAbove(".item#noChild");
     await moveAbove(".item#child");
     await drop();
@@ -730,12 +781,12 @@ test("Sorting with nesting - move child up", async () => {
                 ref: useRef("root"),
                 elements: ".item",
                 nest: true,
-                onDragStart({ element }) {
+                onDragStart({element}) {
                     expect.step("start");
                     expect(element).toHaveAttribute("id", "dragged");
                     this.firstMove = true;
                 },
-                onMove({ element, previous, next, parent, prevPos }) {
+                onMove({element, previous, next, parent, prevPos}) {
                     if (this.firstMove) {
                         expect.step("move 1");
                         expect(element).toHaveAttribute("id", "dragged");
@@ -757,14 +808,14 @@ test("Sorting with nesting - move child up", async () => {
                         expect(prevPos.parent).toHaveAttribute("id", "parent");
                     }
                 },
-                onDrop({ element, previous, next, parent }) {
+                onDrop({element, previous, next, parent}) {
                     expect.step("drop");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(previous).toBe(null);
                     expect(next).toHaveAttribute("id", "parent");
                     expect(parent).toBe(null);
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                 },
@@ -775,7 +826,7 @@ test("Sorting with nesting - move child up", async () => {
     await mountWithCleanup(NestedSortable);
     expect.verifySteps([]);
 
-    const { drop, moveAbove } = await sortableDrag(".item#dragged");
+    const {drop, moveAbove} = await sortableDrag(".item#dragged");
     await moveAbove(".item#child");
     await moveAbove(".item#parent");
     await drop();
@@ -787,7 +838,7 @@ test("Sorting with nesting - move child up", async () => {
 test("Dynamically disable NestedSortable feature", async () => {
     expect.assertions(3);
 
-    const state = reactive({ enableNestedSortable: true });
+    const state = reactive({enableNestedSortable: true});
     class NestedSortable extends Component {
         static props = ["*"];
         static template = xml`
@@ -855,19 +906,19 @@ test("Drag has a default tolerance of 10 pixels before initiating the dragging",
     await mountWithCleanup(NestedSortable);
 
     const listItem = queryFirst(".item");
-    const { cancel, moveTo } = await sortableDrag(listItem, {
-        position: { x: 0, y: 0 }, // Move the element from only 5 pixels
+    const {cancel, moveTo} = await sortableDrag(listItem, {
+        position: {x: 0, y: 0}, // Move the element from only 5 pixels
         relative: true,
     });
     await moveTo(listItem, {
-        position: { x: 0, y: 5 },
+        position: {x: 0, y: 5},
         relative: true,
     });
 
     expect.verifySteps([]);
 
     await moveTo(listItem, {
-        position: { x: 10, y: 10 }, // Move the element from more than 10 pixels
+        position: {x: 10, y: 10}, // Move the element from more than 10 pixels
         relative: true,
     });
 
@@ -913,11 +964,13 @@ test("shouldn't drag above max level", async () => {
                 onDrop() {
                     expect.step("drop");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(element.parentElement.closest("#parent")).toBe(null);
-                    expect(element.previousSibling).toHaveClass("o_nested_sortable_placeholder");
+                    expect(element.previousSibling).toHaveClass(
+                        "o_nested_sortable_placeholder"
+                    );
                 },
             });
         }
@@ -925,7 +978,7 @@ test("shouldn't drag above max level", async () => {
 
     await mountWithCleanup(NestedSortable);
 
-    // cant move draggable under parent
+    // Cant move draggable under parent
     await contains(".item#dragged").dragAndDrop("#parent", {
         position: "right",
     });
@@ -978,17 +1031,29 @@ test("shouldn't drag outside a nest level", async () => {
                 onDrop() {
                     expect.step("drop");
                 },
-                onDragEnd({ element }) {
+                onDragEnd({element}) {
                     expect.step("end");
                     const placeholder = queryFirst(".o_nested_sortable_placeholder");
                     if (element.id === "D1") {
-                        expect(placeholder.nextElementSibling).toHaveAttribute("id", "C");
+                        expect(placeholder.nextElementSibling).toHaveAttribute(
+                            "id",
+                            "C"
+                        );
                     } else if (element.id === "D2") {
-                        expect(placeholder.previousElementSibling).toHaveAttribute("id", "E");
+                        expect(placeholder.previousElementSibling).toHaveAttribute(
+                            "id",
+                            "E"
+                        );
                     } else if (element.id === "D3") {
-                        expect(placeholder.previousElementSibling).toHaveAttribute("id", "D3");
+                        expect(placeholder.previousElementSibling).toHaveAttribute(
+                            "id",
+                            "D3"
+                        );
                     } else if (element.id === "D4") {
-                        expect(placeholder.previousElementSibling).toHaveAttribute("id", "D4");
+                        expect(placeholder.previousElementSibling).toHaveAttribute(
+                            "id",
+                            "D4"
+                        );
                     }
                 },
             });
@@ -1001,25 +1066,25 @@ test("shouldn't drag outside a nest level", async () => {
     let drop, moveAbove, moveUnder;
     // Move before a sibling (success)
     dragged.id = "D1";
-    ({ drop, moveAbove } = await sortableDrag("#D1"));
+    ({drop, moveAbove} = await sortableDrag("#D1"));
     await moveAbove("#C > span");
     await drop();
     expect.verifySteps(["start", "move", "drop", "end"]);
     // Move after a sibling (success)
     dragged.id = "D2";
-    ({ drop, moveUnder } = await sortableDrag("#D2"));
+    ({drop, moveUnder} = await sortableDrag("#D2"));
     await moveUnder("#E > span");
     await drop();
     expect.verifySteps(["start", "move", "drop", "end"]);
     // Attempt to change parent by going above the current parent (fail)
     dragged.id = "D3";
-    ({ drop, moveAbove } = await sortableDrag("#D3"));
+    ({drop, moveAbove} = await sortableDrag("#D3"));
     await moveAbove("#B > span");
     await drop();
     expect.verifySteps(["start", "end"]);
     // Attempt to change parent by becoming the child of a sibling (fail)
     dragged.id = "D4";
-    ({ drop, moveUnder } = await sortableDrag("#D4"));
+    ({drop, moveUnder} = await sortableDrag("#D4"));
     await moveUnder("#F > span");
     await drop();
     expect.verifySteps(["start", "end"]);
@@ -1106,12 +1171,16 @@ test("placeholder and drag element have same size", async () => {
                 elements: ".item",
                 useElementSize: true,
                 touchDelay: 0,
-                onDrop({ element, placeholder }) {
+                onDrop({element, placeholder}) {
                     expect(element).toHaveAttribute("id", "dragged");
                     expect(placeholder).toHaveClass("dragged");
-                    expect(placeholder).toHaveClass("o_nested_sortable_placeholder_realsize");
-                    expect(placeholder).not.toHaveClass("o_nested_sortable_placeholder");
-                    expect(element).toHaveRect({ height: queryRect(placeholder).height });
+                    expect(placeholder).toHaveClass(
+                        "o_nested_sortable_placeholder_realsize"
+                    );
+                    expect(placeholder).not.toHaveClass(
+                        "o_nested_sortable_placeholder"
+                    );
+                    expect(element).toHaveRect({height: queryRect(placeholder).height});
                 },
             });
         }

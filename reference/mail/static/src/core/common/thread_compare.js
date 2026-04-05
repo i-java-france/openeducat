@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 /**
  * Registry of functions to sort threads in messaging menu.
@@ -24,7 +24,7 @@ threadCompareRegistry.add(
             return 1;
         }
     },
-    { sequence: 10 }
+    {sequence: 10}
 );
 
 threadCompareRegistry.add(
@@ -42,9 +42,13 @@ threadCompareRegistry.add(
         if (!bMessageDateTime && aMessageDatetime) {
             return -1;
         }
-        if (aMessageDatetime && bMessageDateTime && aMessageDatetime !== bMessageDateTime) {
+        if (
+            aMessageDatetime &&
+            bMessageDateTime &&
+            aMessageDatetime !== bMessageDateTime
+        ) {
             return bMessageDateTime - aMessageDatetime;
         }
     },
-    { sequence: 40 }
+    {sequence: 40}
 );

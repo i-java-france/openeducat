@@ -3,8 +3,9 @@
 from lxml import etree
 
 from odoo import Command, tools
-from odoo.exceptions import UserError, ValidationError, RedirectWarning
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.tests import tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

@@ -1,5 +1,5 @@
-import { serverState } from "../../mock_server_state.hoot";
-import { ServerModel } from "../mock_model";
+import {serverState} from "../../mock_server_state.hoot";
+import {ServerModel} from "../mock_model";
 
 export class ResUsers extends ServerModel {
     _name = "res.users";
@@ -46,7 +46,9 @@ export class ResUsers extends ServerModel {
         const userId = super.create(...arguments);
         const [user] = this.env["res.users"].browse(userId);
         if (user && !user.partner_id) {
-            this.env["res.users"].write(userId, { partner_id: this.env["res.partner"].create({}) });
+            this.env["res.users"].write(userId, {
+                partner_id: this.env["res.partner"].create({}),
+            });
         }
         return userId;
     }

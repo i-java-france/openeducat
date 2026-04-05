@@ -1,4 +1,4 @@
-import { goToTheme, registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {goToTheme, registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "website_snippets_menu_tabs",

@@ -3,11 +3,11 @@
 import datetime
 import logging
 import random
-
 from ast import literal_eval
+
 from markupsafe import Markup
 
-from odoo import api, exceptions, fields, models, modules, _
+from odoo import _, api, exceptions, fields, models, modules
 from odoo.fields import Domain
 from odoo.tools import float_compare, float_round
 from odoo.tools.safe_eval import safe_eval

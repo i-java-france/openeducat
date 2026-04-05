@@ -57,7 +57,7 @@ class CrmTeam(models.Model):
         return self.env.context.get('in_sales_app')
 
     def _compute_dashboard_button_name(self):
-        super(CrmTeam,self)._compute_dashboard_button_name()
+        super()._compute_dashboard_button_name()
         if self._in_sale_scope():
             self.dashboard_button_name = _("Sales Analysis")
 

@@ -1,4 +1,4 @@
-import { scrollTo } from "@html_builder/utils/scrolling";
+import {scrollTo} from "@html_builder/utils/scrolling";
 import {
     Component,
     onMounted,
@@ -12,11 +12,11 @@ import {
 export class BackgroundPositionOverlay extends Component {
     static template = "html_builder.BackgroundPositionOverlay";
     static props = {
-        editingElement: { validate: (p) => p.nodeType === Node.ELEMENT_NODE },
-        mockEditingElOnImg: { validate: (p) => p.tagName === "IMG" },
-        applyPosition: { type: Function },
-        discardPosition: { type: Function },
-        editable: { validate: (p) => p.nodeType === Node.ELEMENT_NODE },
+        editingElement: {validate: (p) => p.nodeType === Node.ELEMENT_NODE},
+        mockEditingElOnImg: {validate: (p) => p.tagName === "IMG"},
+        applyPosition: {type: Function},
+        discardPosition: {type: Function},
+        editable: {validate: (p) => p.nodeType === Node.ELEMENT_NODE},
         history: Object,
     };
 
@@ -33,7 +33,9 @@ export class BackgroundPositionOverlay extends Component {
         // If there is a Scroll Effect, a span.s_parallax_bg inside the section
         // contains the background. Otherwise it's the section itself.
         // And targetContainerEl should always be the section.
-        this.targetContainerEl = this.props.editingElement.classList.contains("s_parallax_bg")
+        this.targetContainerEl = this.props.editingElement.classList.contains(
+            "s_parallax_bg"
+        )
             ? this.props.editingElement.parentElement
             : this.props.editingElement;
 
@@ -45,8 +47,16 @@ export class BackgroundPositionOverlay extends Component {
         useExternalListener(document, "pointerdown", this.discard.bind(this));
 
         useExternalListener(window, "resize", this._dimensionOverlay);
-        useExternalListener(this.iframe.contentWindow, "resize", this._dimensionOverlay);
-        useExternalListener(this.iframe.contentWindow, "scroll", this._dimensionOverlay);
+        useExternalListener(
+            this.iframe.contentWindow,
+            "resize",
+            this._dimensionOverlay
+        );
+        useExternalListener(
+            this.iframe.contentWindow,
+            "scroll",
+            this._dimensionOverlay
+        );
 
         onWillStart(async () => {
             const position = getComputedStyle(this.props.editingElement)
@@ -55,7 +65,7 @@ export class BackgroundPositionOverlay extends Component {
             const delta = this.getBackgroundDelta();
             // originalPosition kept in % for when movement in one direction
             // doesn't make sense.
-            this.originalPosition = { left: position[0], top: position[1] };
+            this.originalPosition = {left: position[0], top: position[1]};
             // Convert % values to pixels for current position because
             // mouse movement is in pixels.
             this.currentPosition = {
@@ -66,9 +76,10 @@ export class BackgroundPositionOverlay extends Component {
             const rect = this.targetContainerEl.getBoundingClientRect();
             const isEditingElEntirelyVisible =
                 rect.top >= 0 &&
-                rect.bottom <= this.targetContainerEl.ownerDocument.defaultView.innerHeight;
+                rect.bottom <=
+                    this.targetContainerEl.ownerDocument.defaultView.innerHeight;
             if (!isEditingElEntirelyVisible) {
-                await scrollTo(this.targetContainerEl, { extraOffset: 50 });
+                await scrollTo(this.targetContainerEl, {extraOffset: 50});
             }
         });
 
@@ -121,7 +132,7 @@ export class BackgroundPositionOverlay extends Component {
                 this.backgroundOverlayRef.el.classList.remove("o_we_grabbing");
                 documentEl.removeEventListener("mousemove", onDragBackgroundMove);
             },
-            { once: true }
+            {once: true}
         );
     }
 
@@ -133,8 +144,14 @@ export class BackgroundPositionOverlay extends Component {
         ev.preventDefault();
 
         const delta = this.getBackgroundDelta();
-        this.currentPosition.left = clamp(this.currentPosition.left + ev.movementX, [0, delta.x]);
-        this.currentPosition.top = clamp(this.currentPosition.top + ev.movementY, [0, delta.y]);
+        this.currentPosition.left = clamp(this.currentPosition.left + ev.movementX, [
+            0,
+            delta.x,
+        ]);
+        this.currentPosition.top = clamp(this.currentPosition.top + ev.movementY, [
+            0,
+            delta.y,
+        ]);
 
         const percentPosition = {
             left: (this.currentPosition.left / delta.x) * 100,
@@ -199,10 +216,20 @@ export class BackgroundPositionOverlay extends Component {
             left: `${scaledRect.left}px`,
             top: `${scaledRect.top}px`,
         });
-        const overlayButtonsEl = this.overlayContentRef.el.querySelector(".o_we_overlay_buttons");
+        const overlayButtonsEl = this.overlayContentRef.el.querySelector(
+            ".o_we_overlay_buttons"
+        );
         overlayButtonsEl.style.top = `${Math.max(0, -scaledRect.top)}px`;
-        this.bgDraggerRef.el.style.setProperty("width", `${scaledRect.width}px`, "important");
-        this.bgDraggerRef.el.style.setProperty("height", `${scaledRect.height}px`, "important");
+        this.bgDraggerRef.el.style.setProperty(
+            "width",
+            `${scaledRect.width}px`,
+            "important"
+        );
+        this.bgDraggerRef.el.style.setProperty(
+            "height",
+            `${scaledRect.height}px`,
+            "important"
+        );
 
         // Refresh tooltip position after overlay reposition
         if (this.tooltip) {

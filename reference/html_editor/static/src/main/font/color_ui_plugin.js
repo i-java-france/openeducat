@@ -1,11 +1,11 @@
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { ColorSelector } from "./color_selector";
-import { reactive } from "@odoo/owl";
-import { isTextNode } from "@html_editor/utils/dom_info";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { isCSSColor, RGBA_REGEX, rgbaToHex } from "@web/core/utils/colors";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {ColorSelector} from "./color_selector";
+import {reactive} from "@odoo/owl";
+import {isTextNode} from "@html_editor/utils/dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {isCSSColor, RGBA_REGEX, rgbaToHex} from "@web/core/utils/colors";
 
 const RGBA_OPACITY = 0.6;
 const HEX_OPACITY = "99";
@@ -42,11 +42,12 @@ export class ColorUIPlugin extends Plugin {
         ],
         selectionchange_handlers: this.updateSelectedColor.bind(this),
         get_background_color_processors: this.getBackgroundColorProcessor.bind(this),
-        apply_background_color_processors: this.applyBackgroundColorProcessor.bind(this),
+        apply_background_color_processors:
+            this.applyBackgroundColorProcessor.bind(this),
     };
 
     setup() {
-        this.selectedColors = reactive({ color: "", backgroundColor: "" });
+        this.selectedColors = reactive({color: "", backgroundColor: ""});
         this.previewableApplyColor = this.dependencies.history.makePreviewableOperation(
             (color, mode, previewMode) =>
                 this.dependencies.color.applyColor(color, mode, previewMode)
@@ -64,13 +65,15 @@ export class ColorUIPlugin extends Plugin {
 
             getUsedCustomColors: () => this.getUsedCustomColors(mode),
             getSelectedColors: () => this.selectedColors,
-            applyColor: (color) => this.applyColorCommit({ color, mode }),
-            applyColorPreview: (color) => this.applyColorPreview({ color, mode }),
+            applyColor: (color) => this.applyColorCommit({color, mode}),
+            applyColorPreview: (color) => this.applyColorPreview({color, mode}),
             applyColorResetPreview: this.applyColorResetPreview.bind(this),
             colorPrefix: mode === "color" ? "text-" : "bg-",
             onClose: () => this.dependencies.selection.focusEditable(),
             getTargetedElements: () => {
-                const nodes = this.dependencies.selection.getTargetedNodes().filter(isTextNode);
+                const nodes = this.dependencies.selection
+                    .getTargetedNodes()
+                    .filter(isTextNode);
                 return nodes.map((node) => closestElement(node));
             },
         };
@@ -83,7 +86,7 @@ export class ColorUIPlugin extends Plugin {
      * @param {string} param.color hexadecimal or bg-name/text-name class
      * @param {string} param.mode 'color' or 'backgroundColor'
      */
-    applyColorCommit({ color, mode }) {
+    applyColorCommit({color, mode}) {
         this.previewableApplyColor.commit(color, mode);
         this.updateSelectedColor();
     }
@@ -95,7 +98,7 @@ export class ColorUIPlugin extends Plugin {
      * @param {string} param.color hexadecimal or bg-name/text-name class
      * @param {string} param.mode 'color' or 'backgroundColor'
      */
-    applyColorPreview({ color, mode }) {
+    applyColorPreview({color, mode}) {
         // Preview the color before applying it.
         this.previewableApplyColor.preview(color, mode, true);
         this.updateSelectedColor();
@@ -129,14 +132,20 @@ export class ColorUIPlugin extends Plugin {
             return;
         }
 
-        Object.assign(this.selectedColors, this.dependencies.color.getElementColors(el));
+        Object.assign(
+            this.selectedColors,
+            this.dependencies.color.getElementColors(el)
+        );
     }
 
     getBackgroundColorProcessor(backgroundColor) {
         const activeTab = document
             .querySelector(".o_font_color_selector button.active")
             ?.innerHTML.trim();
-        if (backgroundColor.startsWith("rgba") && (!activeTab || activeTab === "Solid")) {
+        if (
+            backgroundColor.startsWith("rgba") &&
+            (!activeTab || activeTab === "Solid")
+        ) {
             // Buttons in the solid tab of color selector have no
             // opacity, hence to match selected color correctly,
             // we need to remove applied 0.6 opacity.

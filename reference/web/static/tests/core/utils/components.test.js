@@ -1,7 +1,7 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ErrorHandler } from "@web/core/utils/components";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ErrorHandler} from "@web/core/utils/components";
 
 test("ErrorHandler component", async () => {
     class Boom extends Component {
@@ -20,7 +20,7 @@ test("ErrorHandler component", async () => {
                 <t t-else="">not boom</t>
             </div>
         `;
-        static components = { Boom, ErrorHandler };
+        static components = {Boom, ErrorHandler};
         static props = ["*"];
         setup() {
             this.flag = true;
@@ -31,6 +31,6 @@ test("ErrorHandler component", async () => {
         }
     }
 
-    await mountWithCleanup(Parent, { noMainContainer: true });
+    await mountWithCleanup(Parent, {noMainContainer: true});
     expect(getFixture()).toHaveText("not boom");
 });

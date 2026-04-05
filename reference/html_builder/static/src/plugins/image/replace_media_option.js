@@ -1,5 +1,5 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { _t } from "@web/core/l10n/translation";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {_t} from "@web/core/l10n/translation";
 
 export class ReplaceMediaOption extends BaseOptionComponent {
     static template = "html_builder.ReplaceMediaOption";

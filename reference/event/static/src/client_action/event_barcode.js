@@ -1,19 +1,19 @@
-import { _t } from "@web/core/l10n/translation";
-import { BarcodeScanner } from "@barcodes/components/barcode_scanner";
-import { Component, onWillStart } from "@odoo/owl";
-import { isDisplayStandalone } from "@web/core/browser/feature_detection";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { url } from '@web/core/utils/urls';
-import { EventRegistrationSummaryDialog } from "./event_registration_summary_dialog";
-import { scanBarcode } from "@web/core/barcode/barcode_dialog";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
+import {_t} from "@web/core/l10n/translation";
+import {BarcodeScanner} from "@barcodes/components/barcode_scanner";
+import {Component, onWillStart} from "@odoo/owl";
+import {isDisplayStandalone} from "@web/core/browser/feature_detection";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {url} from "@web/core/utils/urls";
+import {EventRegistrationSummaryDialog} from "./event_registration_summary_dialog";
+import {scanBarcode} from "@web/core/barcode/barcode_dialog";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
 
 export class EventScanView extends Component {
     static template = "event.EventScanView";
-    static components = { BarcodeScanner };
-    static props = { ...standardActionServiceProps };
+    static components = {BarcodeScanner};
+    static props = {...standardActionServiceProps};
 
     setup() {
         this.actionService = useService("action");
@@ -21,13 +21,16 @@ export class EventScanView extends Component {
         this.notification = useService("notification");
         this.orm = useService("orm");
 
-        const { default_event_id, active_model, active_id } = this.props.action.context;
-        this.eventId = default_event_id || (active_model === "event.event" && active_id);
+        const {default_event_id, active_model, active_id} = this.props.action.context;
+        this.eventId =
+            default_event_id || (active_model === "event.event" && active_id);
         this.isMultiEvent = !this.eventId;
         this.isDisplayStandalone = isDisplayStandalone();
 
         const barcode = useService("barcode");
-        useBus(barcode.bus, "barcode_scanned", (ev) => this.onBarcodeScanned(ev.detail.barcode));
+        useBus(barcode.bus, "barcode_scanned", (ev) =>
+            this.onBarcodeScanned(ev.detail.barcode)
+        );
 
         onWillStart(this.onWillStart);
     }
@@ -65,10 +68,15 @@ export class EventScanView extends Component {
      * @param {function} onNextScanTriggered
      */
     async onBarcodeScanned(barcode, onNextScanTriggered = () => {}) {
-        const result = await this.orm.call("event.registration", "register_attendee", [], {
-            barcode: barcode,
-            event_id: this.eventId,
-        });
+        const result = await this.orm.call(
+            "event.registration",
+            "register_attendee",
+            [],
+            {
+                barcode: barcode,
+                event_id: this.eventId,
+            }
+        );
 
         if (result.error && result.error === "invalid_ticket") {
             this.playSound("error");
@@ -78,14 +86,11 @@ export class EventScanView extends Component {
         } else {
             this.registrationId = result.id;
             this.closeLastDialog?.();
-            this.closeLastDialog = this.dialog.add(
-                EventRegistrationSummaryDialog,
-                {
-                    playSound: (type) => this.playSound(type),
-                    doNextScan: onNextScanTriggered,
-                    registration: result
-                }
-            );
+            this.closeLastDialog = this.dialog.add(EventRegistrationSummaryDialog, {
+                playSound: (type) => this.playSound(type),
+                doNextScan: onNextScanTriggered,
+                registration: result,
+            });
         }
     }
 
@@ -131,7 +136,9 @@ export class EventScanView extends Component {
 
     onClickBackToEvents() {
         if (this.isMultiEvent) {
-            this.actionService.doAction("event.action_event_view", { clearBreadcrumbs: true });
+            this.actionService.doAction("event.action_event_view", {
+                clearBreadcrumbs: true,
+            });
         } else {
             this.actionService.restore();
         }

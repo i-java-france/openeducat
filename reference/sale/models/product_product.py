@@ -4,7 +4,6 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_round
 
 
 class ProductProduct(models.Model):
@@ -113,7 +112,7 @@ class ProductProduct(models.Model):
             so_lines.product_uom_id = to_uom_id
         return super()._update_uom(to_uom_id)
 
-    def _trigger_uom_warning(self):        
+    def _trigger_uom_warning(self):
         res = super()._trigger_uom_warning()
         if res:
             return res

@@ -1,15 +1,15 @@
-import { AttachmentView } from "@mail/core/common/attachment_view";
-import { Chatter } from "@mail/chatter/web_portal/chatter";
+import {AttachmentView} from "@mail/core/common/attachment_view";
+import {Chatter} from "@mail/chatter/web_portal/chatter";
 
-import { onMounted, onWillUnmount, useState } from "@odoo/owl";
+import {onMounted, onWillUnmount, useState} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { router } from "@web/core/browser/router";
-import { SIZES } from "@web/core/ui/ui_service";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { useDebounced } from "@web/core/utils/timing";
-import { FormRenderer } from "@web/views/form/form_renderer";
+import {browser} from "@web/core/browser/browser";
+import {router} from "@web/core/browser/router";
+import {SIZES} from "@web/core/ui/ui_service";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {useDebounced} from "@web/core/utils/timing";
+import {FormRenderer} from "@web/views/form/form_renderer";
 
 patch(FormRenderer.prototype, {
     setup() {

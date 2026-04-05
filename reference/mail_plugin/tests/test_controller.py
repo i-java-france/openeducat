@@ -1,12 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 from unittest.mock import Mock, patch
 
-from odoo.addons.iap.tools import iap_tools
-from odoo.addons.mail_plugin.tests.common import TestMailPluginControllerCommon, mock_auth_method_outlook
 from odoo.exceptions import AccessError
+
+from odoo.addons.iap.tools import iap_tools
+from odoo.addons.mail_plugin.tests.common import (
+    TestMailPluginControllerCommon,
+    mock_auth_method_outlook,
+)
 
 
 class TestMailPluginController(TestMailPluginControllerCommon):

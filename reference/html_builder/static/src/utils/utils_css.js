@@ -1,8 +1,19 @@
-import { EDITOR_COLOR_CSS_VARIABLES, isColorCombinationName } from "@html_editor/utils/color";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { backgroundImageCssToParts, getBgImageURLFromURL } from "@html_editor/utils/image";
-import { normalizeCSSColor, isCSSColor, isColorGradient, rgbaToHex } from "@web/core/utils/colors";
-import { convertNumericToUnit, getCSSVariableValue } from "@html_editor/utils/formatting";
+import {
+    EDITOR_COLOR_CSS_VARIABLES,
+    isColorCombinationName,
+} from "@html_editor/utils/color";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {
+    backgroundImageCssToParts,
+    getBgImageURLFromURL,
+} from "@html_editor/utils/image";
+import {
+    normalizeCSSColor,
+    isCSSColor,
+    isColorGradient,
+    rgbaToHex,
+} from "@web/core/utils/colors";
+import {convertNumericToUnit, getCSSVariableValue} from "@html_editor/utils/formatting";
 
 /**
  * window.getComputedStyle cannot work properly with CSS shortcuts (like
@@ -377,7 +388,7 @@ export async function isImageCorsProtected(img) {
         //    same database behind.
         // 2. A "attachment-url" which is just a redirect to the real image
         //    which could be hosted on another website.
-        isCorsProtected = await fetch(src, { method: "HEAD" })
+        isCorsProtected = await fetch(src, {method: "HEAD"})
             .then(() => false)
             .catch(() => true);
     }
@@ -403,7 +414,7 @@ export function applyNeededCss(
     cssProp,
     cssValue,
     computedStyle = el.ownerDocument.defaultView.getComputedStyle(el),
-    { force = false, allowImportant = true } = {}
+    {force = false, allowImportant = true} = {}
 ) {
     if (force) {
         el.style.setProperty(cssProp, cssValue, allowImportant ? "important" : "");
@@ -448,7 +459,11 @@ export function setBuilderCSSVariables(htmlStyle) {
         styles.push(`--hb-cp-${style}: ${value};`);
     }
     builderStylesheet.replaceSync(`html { ${styles.join(" ")} }`);
-    if (!window.top.document.adoptedStyleSheets.find((style) => style === builderStylesheet)) {
+    if (
+        !window.top.document.adoptedStyleSheets.find(
+            (style) => style === builderStylesheet
+        )
+    ) {
         window.top.document.adoptedStyleSheets.push(builderStylesheet);
     }
 }
@@ -488,7 +503,9 @@ export function getAllUsedColors(el) {
     // Shapes & illustrations.
     const collectUrlColors = (urlString) => {
         const url = new URL(urlString, window.location);
-        for (const colorKey of [...url.searchParams.keys()].filter((key) => /c\d/.test(key))) {
+        for (const colorKey of [...url.searchParams.keys()].filter((key) =>
+            /c\d/.test(key)
+        )) {
             collectColor(url.searchParams.get(colorKey));
         }
     };

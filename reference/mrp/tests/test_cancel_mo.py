@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests import Form
-from datetime import datetime, timedelta
 
-from odoo.fields import Datetime as Dt
 from odoo.exceptions import UserError
+from odoo.tests import Form
+
 from odoo.addons.mrp.tests.common import TestMrpCommon
 
 

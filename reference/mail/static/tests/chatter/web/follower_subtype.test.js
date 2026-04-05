@@ -6,8 +6,8 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {serverState} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -31,7 +31,7 @@ test("simplest layout of a followed subtype", async () => {
     await click("[title='Edit subscription']");
     await contains(
         `.o-mail-FollowerSubtypeDialog-subtype[data-follower-subtype-id='${subtypeId}'] label`,
-        { text: "TestSubtype" }
+        {text: "TestSubtype"}
     );
     await contains(
         `.o-mail-FollowerSubtypeDialog-subtype[data-follower-subtype-id='${subtypeId}'] input[type='checkbox']:checked`
@@ -131,7 +131,7 @@ test("follower subtype apply", async () => {
     await contains(
         `.o-mail-FollowerSubtypeDialog-subtype[data-follower-subtype-id='${subtypeId2}'] input[type='checkbox']:checked`
     );
-    await click(".modal-footer button", { text: "Apply" });
+    await click(".modal-footer button", {text: "Apply"});
     await contains(".o_notification", {
         text: "The subscription preferences were successfully applied.",
     });

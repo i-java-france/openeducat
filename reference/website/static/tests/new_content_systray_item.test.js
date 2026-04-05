@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { mountWithCleanup, onRpc, contains } from "@web/../tests/web_test_helpers";
-import { NewContentSystrayItem } from "@website/client_actions/website_preview/new_content_systray_item";
-import { defineWebsiteModels } from "./builder/website_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains, mountWithCleanup, onRpc} from "@web/../tests/web_test_helpers";
+import {NewContentSystrayItem} from "@website/client_actions/website_preview/new_content_systray_item";
+import {defineWebsiteModels} from "./builder/website_helpers";
 
 defineWebsiteModels();
 
@@ -21,7 +21,7 @@ function setupTest() {
 }
 
 test("can display a newcontent modal", async () => {
-    onRpc(({ route }) => {
+    onRpc(({route}) => {
         expect.step(route);
         return false;
     });

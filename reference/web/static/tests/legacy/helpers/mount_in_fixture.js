@@ -1,16 +1,16 @@
 /** @odoo-module alias=@web/../tests/helpers/mount_in_fixture default=false**/
 
-import { App, Component, xml } from "@odoo/owl";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { mocks } from "@web/../tests/helpers/mock_services";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { registry } from "@web/core/registry";
-import { getTemplate } from "@web/core/templates";
+import {App, Component, xml} from "@odoo/owl";
+import {registerCleanup} from "@web/../tests/helpers/cleanup";
+import {makeTestEnv} from "@web/../tests/helpers/mock_env";
+import {mocks} from "@web/../tests/helpers/mock_services";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {registry} from "@web/core/registry";
+import {getTemplate} from "@web/core/templates";
 
 class TestComponent extends Component {
     static props = {
-        components: { type: Array },
+        components: {type: Array},
     };
 
     static template = xml`
@@ -86,17 +86,17 @@ export async function mountInFixture(Comp, target, config = {}) {
         }
     }
 
-    const components = [{ component: Comp, props: config.props || {} }];
+    const components = [{component: Comp, props: config.props || {}}];
     if (isServiceRegistered("overlay")) {
         await addService("localization", mocks.localization);
-        components.push({ component: MainComponentsContainer, props: {} });
+        components.push({component: MainComponentsContainer, props: {}});
     }
 
     if (!isEnvInitialized) {
         env = await makeTestEnv(env);
     }
 
-    const app = getApp(env, { components });
+    const app = getApp(env, {components});
 
     if (config.templates) {
         app.addTemplates(config.templates);

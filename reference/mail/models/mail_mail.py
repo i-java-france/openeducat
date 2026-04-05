@@ -1,23 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
 import datetime
 import json
 import logging
-import psycopg2
-import pytz
 import re
 import smtplib
 from collections import defaultdict
-
 from datetime import timedelta
+
+import psycopg2
+import pytz
 from dateutil.parser import parse
 
-from odoo import _, api, fields, models, modules, SUPERUSER_ID, tools
-from odoo.addons.base.models.ir_mail_server import MailDeliveryException
+from odoo import SUPERUSER_ID, _, api, fields, models, modules, tools
 from odoo.exceptions import UserError, ValidationError
 from odoo.modules.registry import Registry
+
+from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 
 _logger = logging.getLogger(__name__)
 _UNFOLLOW_REGEX = re.compile(r'<span\s*(t-if="show_unfollow")?\s*id="mail_unfollow".*?<\/span>', re.DOTALL)
@@ -118,13 +118,13 @@ class MailMail(models.Model):
         Compute the attachments we have access to,
         and the number of attachments we do not have access to.
         """
-        for mail_sudo, mail in zip(self.sudo(), self):
+        for mail_sudo, mail in zip(self.sudo(), self, strict=False):
             mail.unrestricted_attachment_ids = mail_sudo.attachment_ids.sudo(False)._filtered_access('read')
             mail.restricted_attachment_count = len(mail_sudo.attachment_ids) - len(mail.unrestricted_attachment_ids)
 
     def _inverse_unrestricted_attachment_ids(self):
         """We can only remove the attachments we have access to."""
-        for mail_sudo, mail in zip(self.sudo(), self):
+        for mail_sudo, mail in zip(self.sudo(), self, strict=False):
             restricted_attaments = mail_sudo.attachment_ids - mail_sudo.attachment_ids.sudo(False)._filtered_access('read')
             mail_sudo.attachment_ids = restricted_attaments | mail.unrestricted_attachment_ids
 
@@ -145,7 +145,7 @@ class MailMail(models.Model):
         new_mails = super().create(vals_list)
 
         new_mails_w_attach = self.env['mail.mail']
-        for mail, values in zip(new_mails, vals_list):
+        for mail, values in zip(new_mails, vals_list, strict=False):
             if values.get('attachment_ids'):
                 new_mails_w_attach += mail
         if new_mails_w_attach:
@@ -157,7 +157,7 @@ class MailMail(models.Model):
         if vals.get('scheduled_date'):
             parsed_datetime = self._parse_scheduled_datetime(vals['scheduled_date'])
             vals['scheduled_date'] = parsed_datetime.replace(tzinfo=None) if parsed_datetime else False
-        res = super(MailMail, self).write(vals)
+        res = super().write(vals)
         if vals.get('attachment_ids'):
             self.attachment_ids.check_access('read')
         return res
@@ -165,7 +165,7 @@ class MailMail(models.Model):
     def unlink(self):
         # cascade-delete the parent message for all mails that are not created for a notification
         mail_msg_cascade_ids = [mail.mail_message_id.id for mail in self if not mail.is_notification]
-        res = super(MailMail, self).unlink()
+        res = super().unlink()
         if mail_msg_cascade_ids:
             self.env['mail.message'].browse(mail_msg_cascade_ids).unlink()
         return res
@@ -546,7 +546,7 @@ class MailMail(models.Model):
 
         # First group the <mail.mail> per mail_server_id, per alias_domain (if no server) and per email_from
         group_per_email_from = defaultdict(list)
-        for mail, values in zip(self, mail_values):
+        for mail, values in zip(self, mail_values, strict=False):
             # protect against ill-formatted email_from when formataddr was used on an already formatted email
             emails_from = tools.mail.email_split_and_format_normalize(values['email_from'])
             email_from = emails_from[0] if emails_from else values['email_from']

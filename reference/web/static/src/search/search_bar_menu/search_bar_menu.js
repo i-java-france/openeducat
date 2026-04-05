@@ -1,14 +1,14 @@
-import { Component, useState } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { PropertiesGroupByItem } from "@web/search/properties_group_by_item/properties_group_by_item";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { sortBy } from "@web/core/utils/arrays";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { AccordionItem } from "@web/core/dropdown/accordion_item";
-import { CustomGroupByItem } from "@web/search/custom_group_by_item/custom_group_by_item";
-import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
-import { FACET_ICONS, GROUPABLE_TYPES } from "@web/search/utils/misc";
+import {Component, useState} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {PropertiesGroupByItem} from "@web/search/properties_group_by_item/properties_group_by_item";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {sortBy} from "@web/core/utils/arrays";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {AccordionItem} from "@web/core/dropdown/accordion_item";
+import {CustomGroupByItem} from "@web/search/custom_group_by_item/custom_group_by_item";
+import {CheckboxItem} from "@web/core/dropdown/checkbox_item";
+import {FACET_ICONS, GROUPABLE_TYPES} from "@web/search/utils/misc";
 
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
@@ -27,10 +27,10 @@ export class SearchBarMenu extends Component {
             type: Object,
             optional: true,
             shape: {
-                default: { optional: true },
+                default: {optional: true},
             },
         },
-        dropdownState: { ...Dropdown.props.state },
+        dropdownState: {...Dropdown.props.state},
     };
 
     setup() {
@@ -39,14 +39,16 @@ export class SearchBarMenu extends Component {
         this.actionService = useService("action");
         // GroupBy
         const fields = [];
-        for (const [fieldName, field] of Object.entries(this.env.searchModel.searchViewFields)) {
+        for (const [fieldName, field] of Object.entries(
+            this.env.searchModel.searchViewFields
+        )) {
             if (this.validateField(fieldName, field)) {
-                fields.push(Object.assign({ name: fieldName }, field));
+                fields.push(Object.assign({name: fieldName}, field));
             }
         }
         this.fields = sortBy(fields, "string");
         // Favorite
-        this.state = useState({ sharedFavoritesExpanded: false });
+        this.state = useState({sharedFavoritesExpanded: false});
         useBus(this.env.searchModel, "update", this.render);
     }
 
@@ -66,7 +68,7 @@ export class SearchBarMenu extends Component {
      * @param {number} param0.itemId
      * @param {number} [param0.optionId]
      */
-    onFilterSelected({ itemId, optionId }) {
+    onFilterSelected({itemId, optionId}) {
         if (optionId) {
             this.env.searchModel.toggleDateFilter(itemId, optionId);
         } else {
@@ -88,7 +90,8 @@ export class SearchBarMenu extends Component {
     get groupByItems() {
         return this.env.searchModel.getSearchItems(
             (searchItem) =>
-                ["groupBy", "dateGroupBy"].includes(searchItem.type) && !searchItem.isProperty
+                ["groupBy", "dateGroupBy"].includes(searchItem.type) &&
+                !searchItem.isProperty
         );
     }
 
@@ -98,7 +101,7 @@ export class SearchBarMenu extends Component {
      * @returns {boolean}
      */
     validateField(fieldName, field) {
-        const { groupable, type } = field;
+        const {groupable, type} = field;
         return groupable && fieldName !== "id" && GROUPABLE_TYPES.includes(type);
     }
 
@@ -107,7 +110,7 @@ export class SearchBarMenu extends Component {
      * @param {number} param0.itemId
      * @param {number} [param0.optionId]
      */
-    onGroupBySelected({ itemId, optionId }) {
+    onGroupBySelected({itemId, optionId}) {
         if (optionId) {
             this.env.searchModel.toggleDateGroupBy(itemId, optionId);
         } else {
@@ -126,13 +129,15 @@ export class SearchBarMenu extends Component {
 
     get favorites() {
         return this.env.searchModel.getSearchItems(
-            (searchItem) => searchItem.type === "favorite" && searchItem.userIds.length === 1
+            (searchItem) =>
+                searchItem.type === "favorite" && searchItem.userIds.length === 1
         );
     }
 
     get sharedFavorites() {
         const sharedFavorites = this.env.searchModel.getSearchItems(
-            (searchItem) => searchItem.type === "favorite" && searchItem.userIds.length !== 1
+            (searchItem) =>
+                searchItem.type === "favorite" && searchItem.userIds.length !== 1
         );
         if (sharedFavorites.length <= 4 || this.state.sharedFavoritesExpanded) {
             this.state.sharedFavoritesExpanded = true;

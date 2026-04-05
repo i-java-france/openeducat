@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 import json
-
 from ast import literal_eval
 from datetime import timedelta
 from itertools import chain, product
 from unittest.mock import patch
 
 from odoo import Command
+from odoo.exceptions import AccessError, UserError
+from odoo.fields import Datetime as FieldDatetime
+from odoo.tests import Form, tagged, users
+from odoo.tools import email_normalize, formataddr, mute_logger
+
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.addons.mail.wizard.mail_compose_message import MailComposeMessage
 from odoo.addons.test_mail.models.mail_test_ticket import MailTestTicket
 from odoo.addons.test_mail.tests.common import TestRecipients
-from odoo.fields import Datetime as FieldDatetime
-from odoo.exceptions import AccessError, UserError
-from odoo.tests import Form, tagged, users
-from odoo.tools import email_normalize, mute_logger, formataddr
 
 
 @tagged('mail_composer')
@@ -184,7 +183,7 @@ class TestComposerForm(TestMailComposer):
             (self.company_2, self.mail_alias_domain_c2),
             (self.company_admin, self.mail_alias_domain),  # env company
         ]
-        for company, (exp_company, exp_alias_domain) in zip(source_company, expected):
+        for company, (exp_company, exp_alias_domain) in zip(source_company, expected, strict=False):
             with self.subTest(cmopany=company):
                 test_record.write({'company_id': company.id})
                 composer_form = Form(self.env['mail.compose.message'].with_context(
@@ -1763,7 +1762,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
         test_records = self.test_records
         test_companies = self.company_admin + self.company_2
         self.company_2.alias_domain_id = self.mail_alias_domain
-        for company, record in zip(test_companies, test_records):
+        for company, record in zip(test_companies, test_records, strict=False):
             record.company_id = company.id
 
         # various from / servers configuration
@@ -1789,7 +1788,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
                     [f'"{self.env.user.name}" <user.from@{self.alias_domain}>', f'"{self.env.user.name}" <notifications@{self.alias_domain}>'],
                     self.alias_domain
                 ),  # no spoof
-            ],
+            ], strict=False,
         ):
             with self.subTest(emails_from=emails_from,
                               servers_active=servers_active):
@@ -1803,7 +1802,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
                 self.mail_alias_domain.default_from = default_from
                 self.env['ir.config_parameter'].sudo().set_param('mail.default.from_filter', from_filter)
 
-                for email_from, exp_smtp_from, exp_msg_from in zip(emails_from, exp_smtp_from_lst, exp_msg_from_lst):
+                for email_from, exp_smtp_from, exp_msg_from in zip(emails_from, exp_smtp_from_lst, exp_msg_from_lst, strict=False):
                     self.env.user.email = email_from
 
                     # open a composer and run it in comment mode
@@ -2068,7 +2067,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
                             self.env['mail.mail'].sudo().process_email_queue()
 
                 # template is sent only to partners (email_to are transformed)
-                for test_record, exp_lang in zip(test_records, langs):
+                for test_record, exp_lang in zip(test_records, langs, strict=False):
                     message = test_record.message_ids[0]
 
                     # check created mail.mail and outgoing emails. In comment
@@ -2224,7 +2223,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
                               companies=companies):
                 # update test configuration
                 test_records = self.test_records if batch else self.test_record
-                for company, record in zip(companies, test_records):
+                for company, record in zip(companies, test_records, strict=False):
                     record.company_id = company.id
 
                 # open a composer and run it in comment mode
@@ -2245,7 +2244,7 @@ class TestComposerResultsComment(TestMailComposer, CronMixinCase):
                 self.assertEqual(len(new_partner), 1)
                 # check output, company-specific values mainly for this test
                 for record, exp_company, exp_alias_domain in zip(
-                    test_records, expected_companies, expected_alias_domains
+                    test_records, expected_companies, expected_alias_domains, strict=False
                 ):
                     message = record.message_ids[0]
                     for recipient in [self.partner_employee_2, new_partner, record.customer_id]:
@@ -2495,7 +2494,7 @@ class TestComposerResultsCommentStatus(TestMailComposer):
         Record1: Record4 has the same email (but no customer set)
         Record5 and Record6 have same email (notlinked to any customer)
         """
-        super(TestComposerResultsCommentStatus, cls).setUpClass()
+        super().setUpClass()
 
         # add 2 new records with customers
         cls.test_records, cls.test_partners = cls._create_records_for_batch(
@@ -2578,7 +2577,7 @@ class TestComposerResultsMass(TestMailComposer):
 
     @classmethod
     def setUpClass(cls):
-        super(TestComposerResultsMass, cls).setUpClass()
+        super().setUpClass()
         cls.template.write({
             "scheduled_date": False,
         })
@@ -2724,7 +2723,7 @@ class TestComposerResultsMass(TestMailComposer):
             for change in template_changes:
                 test_template_values.update(change)
             self.template.write(test_template_values)
-            for customer, base_vals, update_vals in zip(customer_ids, base_customer_values, customer_changes):
+            for customer, base_vals, update_vals in zip(customer_ids, base_customer_values, customer_changes, strict=False):
                 customer.write({**base_vals, **update_vals})
             with self.subTest(template_values=test_template_values, customer_changes=customer_changes):
                 composer = _instanciate_composer()
@@ -2776,7 +2775,7 @@ class TestComposerResultsMass(TestMailComposer):
                 test_template_values.update(change)
             self.template.write(test_template_values)
             # reset customers to have the same email
-            for customer, base_vals in zip(customer_ids, base_customer_values):
+            for customer, base_vals in zip(customer_ids, base_customer_values, strict=False):
                 customer.write(base_vals)
             with self.subTest(composer_attachments=composer_attachment, template_values=test_template_values):
                 composer = _instanciate_composer(composer_attachments=composer_attachment)
@@ -2843,7 +2842,7 @@ class TestComposerResultsMass(TestMailComposer):
                 (2, False, "outgoing"),
                 (2, True, "sent"),
                 (1, False, "outgoing"),
-            ]
+            ], strict=False
         ):
             with self.subTest(batch_size=batch_size, send_limit=send_limit):
                 self.env['ir.config_parameter'].sudo().set_param(
@@ -3033,7 +3032,7 @@ class TestComposerResultsMass(TestMailComposer):
                         self.assertEqual(len(self._mails), 10, 'Should have sent 5 emails per record')
 
                 # check email content
-                for record, exp_lang in zip(self.test_records, langs):
+                for record, exp_lang in zip(self.test_records, langs, strict=False):
                     # message copy is kept
                     message = record.message_ids[0]
 
@@ -3153,7 +3152,7 @@ class TestComposerResultsMass(TestMailComposer):
             with self.subTest(companies=companies):
                 # update test configuration
                 test_records = self.test_records
-                for company, record in zip(companies, test_records):
+                for company, record in zip(companies, test_records, strict=False):
                     record.company_id = company.id
 
                 # open a composer and run it in comment mode
@@ -3174,7 +3173,7 @@ class TestComposerResultsMass(TestMailComposer):
                 self.assertEqual(len(new_partner), 1)
                 # check output, company-specific values mainly for this test
                 for record, exp_company, exp_alias_domain in zip(
-                    test_records, expected_companies, expected_alias_domains
+                    test_records, expected_companies, expected_alias_domains, strict=False
                 ):
                     # message copy is kept
                     message = record.message_ids[0]
@@ -3665,7 +3664,7 @@ class TestComposerResultsMassStatus(TestMailComposer):
         Record1: Record4 has the same email (but no customer set)
         Record5 and Record6 have same email (notlinked to any customer)
         """
-        super(TestComposerResultsMassStatus, cls).setUpClass()
+        super().setUpClass()
 
         # add 2 new records with customers
         cls.test_records, cls.test_partners = cls._create_records_for_batch(
@@ -3729,7 +3728,7 @@ class TestComposerResultsMassStatus(TestMailComposer):
         for record, expected_state, expected_ft in zip(
             test_records,
             ['cancel', 'sent'],
-            ['mail_bl', False]
+            ['mail_bl', False], strict=False
         ):
             with self.subTest(record=record, expected_state=expected_state, expected_ft=expected_ft):
                 self.assertMailMail(
@@ -3760,7 +3759,7 @@ class TestComposerResultsMassStatus(TestMailComposer):
         for record, expected_state, expected_ft in zip(
             test_records,
             ['sent', 'sent'],
-            [False, False]
+            [False, False], strict=False
         ):
             with self.subTest(record=record, expected_state=expected_state, expected_ft=expected_ft):
                 self.assertMailMail(

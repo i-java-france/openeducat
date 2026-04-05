@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
@@ -8,9 +7,10 @@ import lxml
 import markupsafe
 from werkzeug import urls
 
-from odoo import api, models, tools
+from odoo import api, models
+from odoo.tools.mail import TEXT_URL_REGEX, URL_SKIP_PROTOCOL_REGEX, is_html_empty
+
 from odoo.addons.link_tracker.tools.html import find_links_with_urls_and_labels
-from odoo.tools.mail import is_html_empty, URL_SKIP_PROTOCOL_REGEX, TEXT_URL_REGEX
 
 
 class MailRenderMixin(models.AbstractModel):
@@ -52,7 +52,7 @@ class MailRenderMixin(models.AbstractModel):
         links_trackers = self.env['link.tracker'].search_or_create([
             dict(link_tracker_vals, **url_and_label) for url_and_label in urls_and_labels
         ])
-        for node, link_tracker in zip(link_nodes, links_trackers):
+        for node, link_tracker in zip(link_nodes, links_trackers, strict=False):
             node.set("href", link_tracker.short_url)
 
         new_html = lxml.html.tostring(root_node, encoding="unicode", method="xml")

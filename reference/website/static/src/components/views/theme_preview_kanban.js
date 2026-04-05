@@ -1,11 +1,11 @@
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { KanbanController } from "@web/views/kanban/kanban_controller";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { useLoaderOnClick } from "./theme_preview_form";
-import { KanbanRecord } from "@web/views/kanban/kanban_record";
-import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {useLoaderOnClick} from "./theme_preview_form";
+import {KanbanRecord} from "@web/views/kanban/kanban_record";
+import {KanbanRenderer} from "@web/views/kanban/kanban_renderer";
 
 class ThemePreviewKanbanController extends KanbanController {
     /**

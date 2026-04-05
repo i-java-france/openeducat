@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 export class CoreSetupEditorPlugin extends Plugin {
     // TODO: remove in master

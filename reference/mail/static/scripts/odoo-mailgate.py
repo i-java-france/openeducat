@@ -26,6 +26,7 @@ EX_CONFIG = 78
 
 
 import sys
+
 try:
     import traceback
     try:
@@ -94,7 +95,7 @@ def main():
             postfix_exit(EX_NOUSER, "alias does not exist in odoo\n", o.debug)
         else:
             postfix_exit(EX_SOFTWARE, "xmlrpclib.Fault\n", o.debug)
-    except (socket.error, socket.gaierror) as e:
+    except (OSError, socket.gaierror) as e:
         postfix_exit(
             exit_code=EX_TEMPFAIL if o.retry else EX_NOHOST,
             message="connection error: %s: %s (%s)\n" % (e.__class__.__name__, e, o.host),

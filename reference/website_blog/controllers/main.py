@@ -1,18 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import werkzeug
-import pytz
-import babel.dates
 from collections import defaultdict
 
-from odoo import http, fields, tools, models
-from odoo.addons.website.controllers.main import QueryURL
+import babel.dates
+import werkzeug
+
+from odoo import fields, http, models, tools
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import html2plaintext
+from odoo.tools import html2plaintext, sql
 from odoo.tools.misc import get_lang
-from odoo.tools import sql
 from odoo.tools.translate import LazyTranslate
+
+from odoo.addons.website.controllers.main import QueryURL
 
 _lt = LazyTranslate(__name__)
 

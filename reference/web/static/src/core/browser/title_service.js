@@ -1,4 +1,4 @@
-import { registry } from "../registry";
+import {registry} from "../registry";
 
 export const titleService = {
     start() {
@@ -34,7 +34,10 @@ export const titleService = {
         }
 
         function updateTitle() {
-            const counter = Object.values(titleCounters).reduce((acc, count) => acc + count, 0);
+            const counter = Object.values(titleCounters).reduce(
+                (acc, count) => acc + count,
+                0
+            );
             const name = Object.values(titleParts).join(" - ") || "Odoo";
             if (!counter) {
                 document.title = name;

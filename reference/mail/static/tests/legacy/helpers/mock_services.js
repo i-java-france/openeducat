@@ -1,6 +1,6 @@
 import * as viewHelpers from "@web/../tests/views/helpers";
 import * as webClientHelpers from "@web/../tests/webclient/helpers";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 const serviceRegistry = registry.category("services");
 
@@ -20,20 +20,20 @@ function registerFakemailPopoutService() {
     }
 }
 
-const superSetupViewRegistries = viewHelpers.setupViewRegistries
+const superSetupViewRegistries = viewHelpers.setupViewRegistries;
 viewHelpers.setupViewRegistries = () => {
-    registerFakemailPopoutService()
+    registerFakemailPopoutService();
     return superSetupViewRegistries();
-}
+};
 
-const superSetupWebClientRegistries = webClientHelpers.setupWebClientRegistries
+const superSetupWebClientRegistries = webClientHelpers.setupWebClientRegistries;
 webClientHelpers.setupWebClientRegistries = () => {
-    registerFakemailPopoutService()
+    registerFakemailPopoutService();
     return superSetupWebClientRegistries();
-}
+};
 
-const superCreateWebClient = webClientHelpers.createWebClient
+const superCreateWebClient = webClientHelpers.createWebClient;
 webClientHelpers.createWebClient = (params) => {
-    registerFakemailPopoutService()
+    registerFakemailPopoutService();
     return superCreateWebClient(params);
-}
+};

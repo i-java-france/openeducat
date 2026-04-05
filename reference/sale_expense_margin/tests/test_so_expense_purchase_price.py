@@ -80,6 +80,6 @@ class TestExpenseMargin(TestExpenseCommon):
         self.assertFalse(sale_order.order_line[0].is_expense)
 
         # Expense Lines
-        for line, expected_purchase_price in zip(sale_order.order_line[1:], [86.96, 100.0, 869.5666667, 1000.0]):
+        for line, expected_purchase_price in zip(sale_order.order_line[1:], [86.96, 100.0, 869.5666667, 1000.0], strict=False):
             self.assertAlmostEqual(line.purchase_price, expected_purchase_price)
             self.assertTrue(line.is_expense)

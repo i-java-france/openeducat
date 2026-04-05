@@ -1,9 +1,9 @@
-import { App } from "@odoo/owl";
+import {App} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { getTemplate } from "@web/core/templates";
+import {browser} from "@web/core/browser/browser";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {getTemplate} from "@web/core/templates";
 
 const DEFAULT_ID = Symbol("default");
 
@@ -29,7 +29,7 @@ export const mailPopoutService = {
          * @param {Object} [options]
          * @param {Boolean} [options.useAlternativeAssets]
          */
-        async function reset(id, { useAlternativeAssets } = {}) {
+        async function reset(id, {useAlternativeAssets} = {}) {
             const popout = popouts.get(id);
             if (!popout) {
                 return;
@@ -85,7 +85,12 @@ export const mailPopoutService = {
             component,
             {
                 props,
-                options: { width, height, aspectRatio = 16 / 9, useAlternativeAssets = false } = {},
+                options: {
+                    width,
+                    height,
+                    aspectRatio = 16 / 9,
+                    useAlternativeAssets = false,
+                } = {},
             } = {}
         ) {
             const popout = popouts.get(id);
@@ -94,13 +99,15 @@ export const mailPopoutService = {
                 const hooks = popout.hooks;
                 hooks?.beforePopout?.();
                 height =
-                    height || (width ? width / aspectRatio : Math.min(240, window.innerHeight));
+                    height ||
+                    (width ? width / aspectRatio : Math.min(240, window.innerHeight));
                 width = width || height * aspectRatio;
                 if (window.documentPictureInPicture) {
-                    externalWindow = await window.documentPictureInPicture.requestWindow({
-                        width,
-                        height,
-                    });
+                    externalWindow =
+                        await window.documentPictureInPicture.requestWindow({
+                            width,
+                            height,
+                        });
                 } else {
                     externalWindow = browser.open(
                         "about:blank",
@@ -111,7 +118,7 @@ export const mailPopoutService = {
                 popout.externalWindow = externalWindow;
                 pollClosedWindow(id);
             }
-            await reset(id, { useAlternativeAssets });
+            await reset(id, {useAlternativeAssets});
             popout.app = new App(component, {
                 name: "Popout",
                 env: Object.assign({}, env, {
@@ -190,7 +197,7 @@ export const mailPopoutService = {
                  * @param {Function} afterPopoutClosed - called after the external window is closed.
                  */
                 addHooks(beforePopout = () => {}, afterPopoutClosed = () => {}) {
-                    addHooks(id, { beforePopout, afterPopoutClosed });
+                    addHooks(id, {beforePopout, afterPopoutClosed});
                 },
 
                 /**
@@ -238,7 +245,7 @@ export const mailPopoutService = {
             };
         }
 
-        return Object.assign(createManager(), { createManager });
+        return Object.assign(createManager(), {createManager});
     },
 };
 

@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { GraphArchParser } from "./graph_arch_parser";
-import { GraphModel } from "./graph_model";
-import { GraphController } from "./graph_controller";
-import { GraphRenderer } from "./graph_renderer";
-import { GraphSearchModel } from "./graph_search_model";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {GraphArchParser} from "./graph_arch_parser";
+import {GraphModel} from "./graph_model";
+import {GraphController} from "./graph_controller";
+import {GraphRenderer} from "./graph_renderer";
+import {GraphSearchModel} from "./graph_search_model";
 
 const viewRegistry = registry.category("views");
 
@@ -23,7 +23,7 @@ export const graphView = {
         if (genericProps.state) {
             modelParams = genericProps.state.metaData;
         } else {
-            const { arch, fields, resModel } = genericProps;
+            const {arch, fields, resModel} = genericProps;
             const parser = new view.ArchParser();
             const archInfo = parser.parse(arch, fields);
             modelParams = {

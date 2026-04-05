@@ -1,18 +1,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from freezegun import freeze_time
 from datetime import timedelta
 
-from odoo.addons.gamification.tests.common import TransactionCaseGamification
+from freezegun import freeze_time
+
 from odoo.exceptions import UserError
 from odoo.tools import mute_logger
+
+from odoo.addons.gamification.tests.common import TransactionCaseGamification
 
 
 class TestGamificationCommon(TransactionCaseGamification):
 
     def setUp(self):
-        super(TestGamificationCommon, self).setUp()
+        super().setUp()
         employees_group = self.env.ref('base.group_user')
         self.user_ids = employees_group.all_user_ids
 

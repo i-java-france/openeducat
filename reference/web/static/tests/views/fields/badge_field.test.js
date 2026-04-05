@@ -1,11 +1,17 @@
-import { expect, test } from "@odoo/hoot";
-import { defineModels, fields, models, mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    defineModels,
+    fields,
+    models,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
     _name = "res.partner";
     _rec_name = "display_name";
 
-    many2one_field = fields.Many2one({ relation: "res.partner" });
+    many2one_field = fields.Many2one({relation: "res.partner"});
     selection_field = fields.Selection({
         selection: [
             ["normal", "Normal"],
@@ -29,7 +35,7 @@ class Partner extends models.Model {
         },
         {
             id: 3,
-            display_name: "", // empty value
+            display_name: "", // Empty value
             selection_field: "done",
         },
         {
@@ -52,8 +58,12 @@ test("BadgeField component on a char field in list view", async () => {
     });
 
     expect(`.o_field_badge[name="display_name"]:contains(first record)`).toHaveCount(1);
-    expect(`.o_field_badge[name="display_name"]:contains(second record)`).toHaveCount(1);
-    expect(`.o_field_badge[name="display_name"]:contains(fourth record)`).toHaveCount(1);
+    expect(`.o_field_badge[name="display_name"]:contains(second record)`).toHaveCount(
+        1
+    );
+    expect(`.o_field_badge[name="display_name"]:contains(fourth record)`).toHaveCount(
+        1
+    );
 });
 
 test("BadgeField component on a selection field in list view", async () => {
@@ -75,8 +85,12 @@ test("BadgeField component on a many2one field in list view", async () => {
         arch: `<list><field name="many2one_field" widget="badge"/></list>`,
     });
 
-    expect(`.o_field_badge[name="many2one_field"]:contains(first record)`).toHaveCount(1);
-    expect(`.o_field_badge[name="many2one_field"]:contains(fourth record)`).toHaveCount(1);
+    expect(`.o_field_badge[name="many2one_field"]:contains(first record)`).toHaveCount(
+        1
+    );
+    expect(`.o_field_badge[name="many2one_field"]:contains(fourth record)`).toHaveCount(
+        1
+    );
 });
 
 test("BadgeField component with decoration-xxx attributes", async () => {
@@ -111,6 +125,6 @@ test("BadgeField component with color_field option", async () => {
     expect(`.o_field_badge[name="display_name"]`).toHaveCount(4);
     expect(`.o_field_badge[name="display_name"] .o_badge_color_1`).toHaveCount(1);
     expect(`.o_field_badge[name="display_name"] .o_badge_color_2`).toHaveCount(1);
-    expect(`.o_field_badge[name="display_name"] .o_badge_color_3`).toHaveCount(0); //empty value
+    expect(`.o_field_badge[name="display_name"] .o_badge_color_3`).toHaveCount(0); // Empty value
     expect(`.o_field_badge[name="display_name"] .o_badge_color_4`).toHaveCount(1);
 });

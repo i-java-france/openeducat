@@ -1,10 +1,10 @@
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
-onRpc("hierarchy_read", function hierarchyRead({ model, args, kwargs }) {
+onRpc("hierarchy_read", function hierarchyRead({model, args, kwargs}) {
     const [domain, specification, parentFieldName, childFieldName, order] = args;
     kwargs.order = order;
     if (!(parentFieldName in specification)) {
-        specification[parentFieldName] = { fields: { display_name: {} } };
+        specification[parentFieldName] = {fields: {display_name: {}}};
     }
     const result = this.env[model].web_search_read(domain, specification, kwargs);
     let focusedRecordId = false;
@@ -30,7 +30,8 @@ onRpc("hierarchy_read", function hierarchyRead({ model, args, kwargs }) {
             ];
         }
         records.push(
-            ...(this.env[model].web_search_read(domain, specification, kwargs)?.records || [])
+            ...(this.env[model].web_search_read(domain, specification, kwargs)
+                ?.records || [])
         );
     } else {
         fetchChildIdsForAllRecords = true;

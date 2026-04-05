@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { Base } from "@point_of_sale/app/models/related_models";
+import {registry} from "@web/core/registry";
+import {Base} from "@point_of_sale/app/models/related_models";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class LoyaltyCard extends Base {
     static pythonModel = "loyalty.card";
@@ -12,7 +12,10 @@ export class LoyaltyCard extends Base {
             return false;
         }
 
-        return DateTime.fromISO(this.expiration_date).toMillis() < DateTime.now().toMillis();
+        return (
+            DateTime.fromISO(this.expiration_date).toMillis() <
+            DateTime.now().toMillis()
+        );
     }
 }
 

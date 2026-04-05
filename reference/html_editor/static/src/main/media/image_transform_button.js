@@ -1,9 +1,13 @@
-import { Component, useExternalListener, useState } from "@odoo/owl";
-import { toolbarButtonProps } from "@html_editor/main/toolbar/toolbar";
-import { registry } from "@web/core/registry";
-import { ImageTransformation } from "./image_transformation";
+import {Component, useExternalListener, useState} from "@odoo/owl";
+import {toolbarButtonProps} from "@html_editor/main/toolbar/toolbar";
+import {registry} from "@web/core/registry";
+import {ImageTransformation} from "./image_transformation";
 
-export function useImageTransform({ document, closeImageTransformation, buttonSelector }) {
+export function useImageTransform({
+    document,
+    closeImageTransformation,
+    buttonSelector,
+}) {
     let pointerDownInsideTransform = false;
 
     // We close the image transform when we click outside any element not
@@ -29,7 +33,7 @@ export function useImageTransform({ document, closeImageTransformation, buttonSe
             }
             pointerDownInsideTransform = false;
         },
-        { capture: true }
+        {capture: true}
     );
     // When we click on any character the image is deleted and we need to close
     // the image transform. We handle this by selectionchange.
@@ -47,7 +51,10 @@ export function useImageTransform({ document, closeImageTransformation, buttonSe
         if (node.matches(buttonSelector)) {
             return true;
         }
-        if (isImageTransformationOpen() && node.matches(".transfo-controls, .transfo-controls *")) {
+        if (
+            isImageTransformationOpen() &&
+            node.matches(".transfo-controls, .transfo-controls *")
+        ) {
             return true;
         }
         return false;
@@ -57,7 +64,7 @@ export function useImageTransform({ document, closeImageTransformation, buttonSe
         return registry.category("main_components").contains("ImageTransformation");
     }
 
-    return { isImageTransformationOpen };
+    return {isImageTransformationOpen};
 }
 
 export class ImageTransformButton extends Component {
@@ -69,14 +76,14 @@ export class ImageTransformButton extends Component {
         getTargetedImage: Function,
         resetImageTransformation: Function,
         addStep: Function,
-        document: { validate: (p) => p.nodeType === Node.DOCUMENT_NODE },
-        editable: { validate: (p) => p.nodeType === Node.ELEMENT_NODE },
+        document: {validate: (p) => p.nodeType === Node.DOCUMENT_NODE},
+        editable: {validate: (p) => p.nodeType === Node.ELEMENT_NODE},
         ...toolbarButtonProps,
         activeTitle: String,
     };
 
     setup() {
-        this.state = useState({ active: false });
+        this.state = useState({active: false});
         this.transform = useImageTransform({
             document: this.props.document,
             closeImageTransformation: this.closeImageTransformation.bind(this),

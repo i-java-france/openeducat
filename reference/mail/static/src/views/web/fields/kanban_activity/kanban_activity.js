@@ -1,12 +1,12 @@
-import { ActivityButton } from "@mail/core/web/activity_button";
+import {ActivityButton} from "@mail/core/web/activity_button";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 export class KanbanActivity extends Component {
-    static components = { ActivityButton };
+    static components = {ActivityButton};
     // used in children, in particular in ActivityButton
     static fieldDependencies = [
         {
@@ -14,11 +14,11 @@ export class KanbanActivity extends Component {
             type: "selection",
             selection: [("warning", "Alert"), ("danger", "Error")],
         },
-        { name: "activity_exception_icon", type: "char" },
-        { name: "activity_state", type: "selection" },
-        { name: "activity_summary", type: "char" },
-        { name: "activity_type_icon", type: "char" },
-        { name: "activity_type_id", type: "many2one", relation: "mail.activity.type" },
+        {name: "activity_exception_icon", type: "char"},
+        {name: "activity_state", type: "selection"},
+        {name: "activity_summary", type: "char"},
+        {name: "activity_type_icon", type: "char"},
+        {name: "activity_type_id", type: "many2one", relation: "mail.activity.type"},
     ];
     static props = standardFieldProps;
     static template = "mail.KanbanActivity";

@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
-from odoo.tools import html2plaintext
 
 from odoo import Command
-from odoo.tests import Form, tagged
 from odoo.exceptions import AccessError
-from odoo.addons.stock.tests.test_report import TestReportsCommon
+from odoo.tests import Form, tagged
+from odoo.tools import html2plaintext
+
 from odoo.addons.sale.tests.common import TestSaleCommon
+from odoo.addons.stock.tests.test_report import TestReportsCommon
 
 
 class TestSaleStockReports(TestReportsCommon):
@@ -223,7 +223,7 @@ class TestSaleStockReports(TestReportsCommon):
 class TestSaleStockInvoices(TestSaleCommon):
 
     def setUp(self):
-        super(TestSaleStockInvoices, self).setUp()
+        super().setUp()
         self.env.ref('base.group_user').write({'implied_ids': [(4, self.env.ref('stock.group_production_lot').id)]})
         self.product_by_lot = self.env['product.product'].create({
             'name': 'Product By Lot',

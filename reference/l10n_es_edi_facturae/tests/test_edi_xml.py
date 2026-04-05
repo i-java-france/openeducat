@@ -9,10 +9,11 @@ import lxml
 from freezegun import freeze_time
 
 from odoo import Command, fields
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import file_open
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 _logger = logging.getLogger(__name__)
 

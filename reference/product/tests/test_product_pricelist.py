@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
 import time
+from datetime import datetime
 
 from odoo.exceptions import ValidationError
 from odoo.fields import Command

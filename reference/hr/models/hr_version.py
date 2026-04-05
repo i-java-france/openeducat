@@ -1,15 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 from collections import defaultdict
 from datetime import date
-from dateutil.relativedelta import relativedelta
+
 from babel.dates import format_date, get_date_format
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import get_lang, babel_locale_parse
+from odoo.tools import babel_locale_parse, get_lang
 
-import logging
 _logger = logging.getLogger(__name__)
 
 

@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     defineActions,
@@ -12,17 +12,17 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { user } from "@web/core/user";
-import { WebClient } from "@web/webclient/webclient";
+import {user} from "@web/core/user";
+import {WebClient} from "@web/webclient/webclient";
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         form: `
@@ -80,20 +80,20 @@ defineActions([
 
 test.tags("desktop");
 test("rainbowman integrated to webClient", async () => {
-    patchWithCleanup(user, { showEffect: true });
+    patchWithCleanup(user, {showEffect: true});
 
     await mountWithCleanup(WebClient);
     await getService("action").doAction(1);
     expect(".o_kanban_view").toHaveCount(1);
     expect(".o_reward").toHaveCount(0);
-    getService("effect").add({ type: "rainbow_man", message: "", fadeout: "no" });
+    getService("effect").add({type: "rainbow_man", message: "", fadeout: "no"});
     await animationFrame();
     expect(".o_reward").toHaveCount(1);
     expect(".o_kanban_view").toHaveCount(1);
     await contains(".o_reward").click();
     expect(".o_reward").toHaveCount(0);
     expect(".o_kanban_view").toHaveCount(1);
-    getService("effect").add({ type: "rainbow_man", message: "", fadeout: "no" });
+    getService("effect").add({type: "rainbow_man", message: "", fadeout: "no"});
     await animationFrame();
     expect(".o_reward").toHaveCount(1);
     expect(".o_kanban_view").toHaveCount(1);
@@ -106,7 +106,7 @@ test("rainbowman integrated to webClient", async () => {
 
 test.tags("desktop");
 test("on close with effect from server", async () => {
-    patchWithCleanup(user, { showEffect: true });
+    patchWithCleanup(user, {showEffect: true});
     onRpc("/web/dataset/call_button/*", () => {
         return {
             type: "ir.actions.act_window_close",
@@ -125,9 +125,9 @@ test("on close with effect from server", async () => {
 
 test.tags("desktop");
 test("on close with effect in xml on desktop", async () => {
-    patchWithCleanup(user, { showEffect: true });
+    patchWithCleanup(user, {showEffect: true});
 
-    Partner._views["form"] = `
+    Partner._views.form = `
         <form>
             <header>
             <button string="Call method" name="object" type="object"
@@ -147,9 +147,9 @@ test("on close with effect in xml on desktop", async () => {
 
 test.tags("mobile");
 test("on close with effect in xml on mobile", async () => {
-    patchWithCleanup(user, { showEffect: true });
+    patchWithCleanup(user, {showEffect: true});
 
-    Partner._views["form"] = `
+    Partner._views.form = `
         <form>
             <header>
             <button string="Call method" name="object" type="object"

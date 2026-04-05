@@ -3,9 +3,9 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { expect, test, describe } from "@odoo/hoot";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     animationFrame,
     click,
@@ -15,9 +15,9 @@ import {
     runAllTimers,
     tick,
 } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 describe.current.tags("desktop");
 
@@ -25,7 +25,7 @@ test("call a specific action with some params and value (BuilderSelectItem)", as
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ params: { mainParam: testParam }, value }) {
+            apply({params: {mainParam: testParam}, value}) {
                 expect.step(`customAction ${testParam} ${value}`);
             }
         },
@@ -48,7 +48,10 @@ test("call a specific action with some params and value (BuilderSelectItem)", as
     await click(".popover [data-action-id='customAction']");
     await animationFrame();
     // The function `apply` should be called twice (on hover (for preview), then, on click).
-    expect.verifySteps(["customAction myParam myValue", "customAction myParam myValue"]);
+    expect.verifySteps([
+        "customAction myParam myValue",
+        "customAction myParam myValue",
+    ]);
 });
 test("set the label of the select from the active select item and be updated on undo/redo", async () => {
     addBuilderOption(
@@ -62,7 +65,9 @@ test("set the label of the select from the active select item and be updated on 
                 </BuilderSelect>`;
         }
     );
-    await setupHTMLBuilder(`<div class="test-options-target" customAttribute="a">x</div>`);
+    await setupHTMLBuilder(
+        `<div class="test-options-target" customAttribute="a">x</div>`
+    );
     setSelection({
         anchorNode: queryFirst(":iframe .test-options-target").childNodes[0],
         anchorOffset: 0,
@@ -123,7 +128,7 @@ test("hide/display BuilderSelect based on applyTo", async () => {
                     </BuilderSelect>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><div class="child-target b">b</div></div>`
     );
     const editableContent = getEditableContent();
@@ -162,7 +167,7 @@ test("hide/display BuilderSelectItem base on applyTo", async () => {
                     </BuilderSelect>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><div class="child-target">b</div></div>`
     );
     const editableContent = getEditableContent();
@@ -181,7 +186,11 @@ test("hide/display BuilderSelectItem base on applyTo", async () => {
     );
     expect("[data-class-action='my-custom-class']").toHaveClass("active");
     await contains(".options-container button.dropdown-toggle").click();
-    expect(queryAllTexts(".o-dropdown--menu div.o-dropdown-item")).toEqual(["A", "B", "C"]);
+    expect(queryAllTexts(".o-dropdown--menu div.o-dropdown-item")).toEqual([
+        "A",
+        "B",
+        "C",
+    ]);
 });
 
 test("hide/display BuilderSelect base on applyTo in BuilderSelectItem", async () => {
@@ -200,7 +209,9 @@ test("hide/display BuilderSelect base on applyTo in BuilderSelectItem", async ()
                     </BuilderSelect>`;
         }
     );
-    await setupHTMLBuilder(`<div class="parent-target"><div class="child-target b">b</div></div>`);
+    await setupHTMLBuilder(
+        `<div class="parent-target"><div class="child-target b">b</div></div>`
+    );
     await contains(":iframe .parent-target").click();
     expect(".options-container button.dropdown-toggle").not.toBeVisible();
 
@@ -220,7 +231,9 @@ test("use BuilderSelect with styleAction", async () => {
                     </BuilderSelect>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(`<div class="parent-target">b</div>`);
+    const {getEditableContent} = await setupHTMLBuilder(
+        `<div class="parent-target">b</div>`
+    );
     const editableContent = getEditableContent();
     await contains(":iframe .parent-target").click();
     expect(".we-bg-options-container .dropdown").toHaveText("none");
@@ -258,10 +271,10 @@ test("do not put inline style on an element which already has this style through
     expect(".we-bg-options-container .dropdown").toHaveText("inset");
     await contains(".we-bg-options-container .dropdown").click();
     await contains(".o-dropdown--menu div.o-dropdown-item:contains('dotted')").click();
-    expect(":iframe hr").toHaveStyle({ "border-top-style": "dotted" });
+    expect(":iframe hr").toHaveStyle({"border-top-style": "dotted"});
     await contains(".we-bg-options-container .dropdown").click();
     await contains(".o-dropdown--menu div.o-dropdown-item:contains('inset')").click();
-    expect(":iframe hr").not.toHaveStyle("border-top-style", { inline: true });
+    expect(":iframe hr").not.toHaveStyle("border-top-style", {inline: true});
 });
 test("revert a preview when cancelling a BuilderSelect by clicking outside of it", async () => {
     addBuilderOption(
@@ -347,7 +360,7 @@ test("isApplied shouldn't be called when the element is removed from the DOM", a
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            isApplied({ editingElement: el }) {
+            isApplied({editingElement: el}) {
                 expect(el.isConnected).toBe(true);
             }
         },

@@ -1,13 +1,13 @@
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class SlideUploadSourceTypes extends Component {
     static props = {
         attributes: {
             type: Object,
             shape: {
-                sourceTypeLabel: { type: String, optional: true },
-                selectFileLabel: { type: String, optional: true },
-                acceptedFiles: { type: String, optional: true },
+                sourceTypeLabel: {type: String, optional: true},
+                selectFileLabel: {type: String, optional: true},
+                acceptedFiles: {type: String, optional: true},
                 urlInputLabel: String,
                 urlInputName: String,
             },
@@ -20,6 +20,6 @@ export class SlideUploadSourceTypes extends Component {
     static template = "website_slides.SlideUploadSourceTypes";
 
     setup() {
-        this.state = useState({ url: "" });
+        this.state = useState({url: ""});
     }
 }

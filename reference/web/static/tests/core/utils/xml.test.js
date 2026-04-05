@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { parseXML } from "@web/core/utils/xml";
+import {parseXML} from "@web/core/utils/xml";
 
 describe.current.tags("headless");
 

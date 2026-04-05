@@ -1,6 +1,6 @@
-import { mailModels } from "@mail/../tests/mail_test_helpers";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
 
-import { getKwArgs, makeKwArgs, serverState } from "@web/../tests/web_test_helpers";
+import {getKwArgs, makeKwArgs, serverState} from "@web/../tests/web_test_helpers";
 
 export class ResPartner extends mailModels.ResPartner {
     /**
@@ -29,7 +29,7 @@ export class ResPartner extends mailModels.ResPartner {
             return;
         }
         const activeLivechatPartners = LivechatChannel._filter([])
-            .map(({ available_operator_ids }) => available_operator_ids)
+            .map(({available_operator_ids}) => available_operator_ids)
             .flat()
             .map((userId) => ResUsers.browse(userId)[0].partner_id);
         for (const partner of ResPartner.browse(ids)) {
@@ -41,7 +41,9 @@ export class ResPartner extends mailModels.ResPartner {
                 is_available: activeLivechatPartners.includes(partner.id),
             };
             if (partner.lang) {
-                data.lang_name = ResLang.search_read([["code", "=", partner.lang]])[0].name;
+                data.lang_name = ResLang.search_read([
+                    ["code", "=", partner.lang],
+                ])[0].name;
             }
             if (partner.user_ids.length) {
                 const [user] = ResUsers.browse(partner.user_ids[0]);
@@ -55,9 +57,15 @@ export class ResPartner extends mailModels.ResPartner {
                     );
                 }
             }
-            store.add(this.browse(partner.id), makeKwArgs({ fields: ["user_livechat_username"] }));
+            store.add(
+                this.browse(partner.id),
+                makeKwArgs({fields: ["user_livechat_username"]})
+            );
             store.add(this.browse(partner.id), data);
-            store.add(this.browse(partner.id), makeKwArgs({ extra_fields: ["is_in_call"] }));
+            store.add(
+                this.browse(partner.id),
+                makeKwArgs({extra_fields: ["is_in_call"]})
+            );
         }
     }
     /**

@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { click, queryFirst } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {click, queryFirst} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { Notebook } from "@web/core/notebook/notebook";
+import {Notebook} from "@web/core/notebook/notebook";
 
 test("not rendered if empty slots", async () => {
     await mountWithCleanup(Notebook);
@@ -27,7 +27,7 @@ test("notebook with multiple pages given as slots", async () => {
                     <p>TODO find a great secret about OWLs.</p>
                 </t>
             </Notebook>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
     }
 
@@ -37,7 +37,8 @@ test("notebook with multiple pages given as slots", async () => {
         message: "default orientation is set as horizontal",
     });
     expect(".nav").toHaveClass("flex-row", {
-        message: "navigation container uses the right class to display as horizontal tabs",
+        message:
+            "navigation container uses the right class to display as horizontal tabs",
     });
     expect(".o_notebook_headers a.nav-link").toHaveCount(2, {
         message: "navigation link is present for each visible page",
@@ -75,7 +76,7 @@ test("notebook with defaultPage props", async () => {
                     <p>TODO find a great secret about OWLs.</p>
                 </t>
             </Notebook>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
     }
 
@@ -106,7 +107,7 @@ test("notebook with defaultPage set on invisible page", async () => {
                         <p>TODO find a great secret to reveal about OWLs.</p>
                     </t>
                 </Notebook>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
     }
 
@@ -129,7 +130,7 @@ test("notebook set vertically", async () => {
                     <p>Owls are called raptors, or birds of prey, which means they use sharp talons and curved bills to hunt, kill, and eat other animals.</p>
                 </t>
             </Notebook>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
     }
 
@@ -139,7 +140,8 @@ test("notebook set vertically", async () => {
         message: "orientation is set as vertical",
     });
     expect(".nav").toHaveClass("flex-column", {
-        message: "navigation container uses the right class to display as vertical buttons",
+        message:
+            "navigation container uses the right class to display as vertical buttons",
     });
 });
 
@@ -165,7 +167,7 @@ test("notebook pages rendered by a template component", async () => {
                     <h3>Page 4</h3>
                 </t>
             </Notebook>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
         setup() {
             this.pages = [
@@ -180,7 +182,7 @@ test("notebook pages rendered by a template component", async () => {
                 },
                 {
                     Component: NotebookPageRenderer,
-                    id: "page_three", // required to be set as default page
+                    id: "page_three", // Required to be set as default page
                     index: 2,
                     title: "Page 3",
                     props: {
@@ -200,9 +202,12 @@ test("notebook pages rendered by a template component", async () => {
 
     await click(".o_notebook_headers .nav-item:nth-child(2) a");
     await animationFrame();
-    expect(".o_notebook_content p").toHaveText("Second page rendered by a template component", {
-        message: "displayed content corresponds to the current page",
-    });
+    expect(".o_notebook_content p").toHaveText(
+        "Second page rendered by a template component",
+        {
+            message: "displayed content corresponds to the current page",
+        }
+    );
 });
 
 test("each page is different", async () => {
@@ -213,7 +218,7 @@ test("each page is different", async () => {
 
     class Parent extends Component {
         static template = xml`<Notebook pages="pages"/>`;
-        static components = { Notebook };
+        static components = {Notebook};
         static props = ["*"];
         setup() {
             this.pages = [
@@ -245,7 +250,7 @@ test("each page is different", async () => {
 test("defaultPage recomputed when isVisible is dynamic", async () => {
     let defaultPageVisible = false;
     class Parent extends Component {
-        static components = { Notebook };
+        static components = {Notebook};
         static template = xml`
                 <Notebook defaultPage="'3'">
                     <t t-set-slot="1" title="'page1'" isVisible="true">
@@ -287,7 +292,7 @@ test("defaultPage recomputed when isVisible is dynamic", async () => {
 
 test("disabled pages are greyed out and can't be toggled", async () => {
     class Parent extends Component {
-        static components = { Notebook };
+        static components = {Notebook};
         static template = xml`
             <Notebook defaultPage="'1'">
                 <t t-set-slot="1" title="'page1'" isVisible="true">
@@ -324,7 +329,7 @@ test("disabled pages are greyed out and can't be toggled", async () => {
 
 test("icons can be given for each page tab", async () => {
     class Parent extends Component {
-        static components = { Notebook };
+        static components = {Notebook};
         static template = xml`
             <Notebook defaultPage="'1'" icons="icons">
                 <t t-set-slot="1" title="'page1'" isVisible="true">

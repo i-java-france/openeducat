@@ -5,7 +5,7 @@
             <ControlPanel>
                 <!-- Buttons bar -->
                 <t t-set-slot="control-panel-create-button">
-                    <StockValuationReportButtonsBar/>
+                    <StockValuationReportButtonsBar />
                 </t>
                 <!-- <t t-set-slot="control-panel-additional-actions">
                     <AccountReportCogMenu/>
@@ -13,20 +13,31 @@
 
                 <!-- Filters -->
                 <t t-set-slot="layout-actions">
-                   <div class="d-flex gap-1 flex-wrap">
-                       <StockValuationReportFilters/>
-                   </div>
+                    <div class="d-flex gap-1 flex-wrap">
+                        <StockValuationReportFilters />
+                    </div>
                 </t>
             </ControlPanel>
-             <div class="o_content">
-                <div id="warnings" class="warnings d-print-none"/>
+            <div class="o_content">
+                <div id="warnings" class="warnings d-print-none" />
                 <div class="fit-content w-print-100">
-                    <table class="table table-borderless table-hover w-print-100 mx-auto">
+                    <table
+                        class="table table-borderless table-hover w-print-100 mx-auto"
+                    >
                         <tbody>
-                            <t t-call="stock_account.StockValuationReport.InitialBalance"/>
-                            <t t-if="data.inventory_loss" t-call="stock_account.StockValuationReport.InventoryLoss"/>
-                            <t t-call="stock_account.StockValuationReport.StockVariation"/>
-                            <t t-call="stock_account.StockValuationReport.EndingStock"/>
+                            <t
+                                t-call="stock_account.StockValuationReport.InitialBalance"
+                            />
+                            <t
+                                t-if="data.inventory_loss"
+                                t-call="stock_account.StockValuationReport.InventoryLoss"
+                            />
+                            <t
+                                t-call="stock_account.StockValuationReport.StockVariation"
+                            />
+                            <t
+                                t-call="stock_account.StockValuationReport.EndingStock"
+                            />
                             <!-- <t t-call="stock_account.StockValuationReport.Accrual"/> -->
                         </tbody>
                     </table>
@@ -36,7 +47,9 @@
     </t>
 
     <t t-name="stock_account.StockValuationReport.EmptyLine">
-        <tr class="empty"><td colspan="3"/></tr>
+        <tr class="empty">
+            <td colspan="3" />
+        </tr>
     </t>
 
     <t t-name="stock_account.StockValuationReport.InitialBalance">
@@ -45,8 +58,9 @@
             level="0"
             onClickMethod.bind="openAccountMoves"
             sublines="data.initial_balance.lines"
-            value="data.initial_balance.value"/>
-        <t t-call="stock_account.StockValuationReport.EmptyLine"/>
+            value="data.initial_balance.value"
+        />
+        <t t-call="stock_account.StockValuationReport.EmptyLine" />
     </t>
 
     <t t-name="stock_account.StockValuationReport.StockVariation">
@@ -55,8 +69,9 @@
             level="0"
             sublines="data.stock_variation.lines"
             displayDebitCredit="true"
-            value="data.stock_variation.value"/>
-        <t t-call="stock_account.StockValuationReport.EmptyLine"/>
+            value="data.stock_variation.value"
+        />
+        <t t-call="stock_account.StockValuationReport.EmptyLine" />
     </t>
 
     <t t-name="stock_account.StockValuationReport.EndingStock">
@@ -65,8 +80,9 @@
             level="0"
             onClickMethod.bind="openStockReport"
             sublines="data.ending_stock.lines"
-            value="data.ending_stock.value"/>
-        <t t-call="stock_account.StockValuationReport.EmptyLine"/>
+            value="data.ending_stock.value"
+        />
+        <t t-call="stock_account.StockValuationReport.EmptyLine" />
     </t>
 
     <t t-name="stock_account.StockValuationReport.InventoryLoss">
@@ -76,8 +92,9 @@
             displayDebitCredit="true"
             onClickMethod.bind="openInventoryLoss"
             sublines="data.inventory_loss.lines"
-            value="data.inventory_loss.value"/>
-        <t t-call="stock_account.StockValuationReport.EmptyLine"/>
+            value="data.inventory_loss.value"
+        />
+        <t t-call="stock_account.StockValuationReport.EmptyLine" />
     </t>
 
     <t t-name="stock_account.StockValuationReport.Accrual">
@@ -85,7 +102,8 @@
             <StockValuationReportToggleLine
                 label.translate="Accrual"
                 sublines="accrual.lines"
-                level="0"/>
+                level="0"
+            />
         </t>
     </t>
 </templates>

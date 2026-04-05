@@ -1,9 +1,9 @@
-import { CarouselSlider } from "@website/interactions/carousel/carousel_slider";
-import { registry } from "@web/core/registry";
+import {CarouselSlider} from "@website/interactions/carousel/carousel_slider";
+import {registry} from "@web/core/registry";
 
 const CarouselSliderPreview = (I) =>
     class extends I {
-        carouselOptions = { ride: true, pause: true, interval: 500 };
+        carouselOptions = {ride: true, pause: true, interval: 500};
 
         dynamicSelectors = {
             ...this.dynamicSelectors,

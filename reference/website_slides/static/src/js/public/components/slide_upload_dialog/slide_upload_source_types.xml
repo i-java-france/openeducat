@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="website_slides.SlideUploadSourceTypes" owl="1">
         <div t-if="props.attributes.urlInputName === 'video_url'" class="mb-3">
@@ -24,7 +24,8 @@
                     for="source_type"
                     class="col-form-label"
                     t-out="props.attributes.sourceTypeLabel"
-                /><br/>
+                />
+                <br />
                 <div class="d-flex flex-wrap">
                     <div class="form-check ms-2">
                         <input

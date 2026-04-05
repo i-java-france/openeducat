@@ -1,10 +1,10 @@
-import { fields, Record } from "@mail/core/common/record";
-import { markRaw } from "@odoo/owl";
+import {fields, Record} from "@mail/core/common/record";
+import {markRaw} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 export class Failure extends Record {
-    static nextId = markRaw({ value: 1 });
+    static nextId = markRaw({value: 1});
     static id = "id";
 
     notifications = fields.Many("mail.notification", {

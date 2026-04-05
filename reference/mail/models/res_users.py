@@ -1,12 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict
 import contextlib
+from collections import defaultdict
 
-from odoo import _, api, Command, fields, models, modules, tools
+from odoo import Command, _, api, fields, models, modules, tools
 from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.tools import email_normalize, str2bool
+
 from odoo.addons.mail.tools.discuss import Store
 
 

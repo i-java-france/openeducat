@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
 
 import PurchaseAdditionalTourSteps from "@purchase/js/tours/purchase_steps";
 
@@ -53,7 +53,8 @@ registry.category("web_tour.tours").add("purchase_tour", {
             run: "click",
         },
         {
-            trigger: ".o_field_res_partner_many2one[name='partner_id'] .o_external_button",
+            trigger:
+                ".o_field_res_partner_many2one[name='partner_id'] .o_external_button",
         },
         {
             trigger: ".o_field_x2many_list_row_add > a",
@@ -65,7 +66,8 @@ registry.category("web_tour.tours").add("purchase_tour", {
             trigger: ".o_purchase_order",
         },
         {
-            trigger: ".o_field_widget[name=product_id], .o_field_widget[name=product_template_id]",
+            trigger:
+                ".o_field_widget[name=product_id], .o_field_widget[name=product_template_id]",
             content: _t("Select a product, or create a new one on the fly."),
             tooltipPosition: "right",
             async run(actions) {
@@ -92,7 +94,8 @@ registry.category("web_tour.tours").add("purchase_tour", {
         },
         {
             isActive: ["auto", "mobile"],
-            trigger: ".o_statusbar_buttons .o_arrow_button_current[name='action_rfq_send']",
+            trigger:
+                ".o_statusbar_buttons .o_arrow_button_current[name='action_rfq_send']",
         },
         ...stepUtils.statusbarButtonsSteps(
             "Send by Email",
@@ -127,7 +130,10 @@ registry.category("web_tour.tours").add("purchase_tour", {
             trigger: ".o_purchase_order",
             run: "click",
         },
-        ...stepUtils.statusbarButtonsSteps("Confirm Order", _t("Confirm your purchase.")),
+        ...stepUtils.statusbarButtonsSteps(
+            "Confirm Order",
+            _t("Confirm your purchase.")
+        ),
         ...new PurchaseAdditionalTourSteps()._get_purchase_stock_steps(),
     ],
 });

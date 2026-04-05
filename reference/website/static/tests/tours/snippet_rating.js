@@ -12,8 +12,8 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...insertSnippet({ id: "s_rating", name: "Rating" }),
-        ...clickOnSnippet({ id: "s_rating", name: "Rating" }),
+        ...insertSnippet({id: "s_rating", name: "Rating"}),
+        ...clickOnSnippet({id: "s_rating", name: "Rating"}),
         ...changeOptionInPopover(
             "Rating",
             "Title Position",

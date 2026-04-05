@@ -2,7 +2,6 @@
 
 from odoo.tools import LazyTranslate
 
-
 _lt = LazyTranslate(__name__)
 
 PROXY_URL = 'https://mercadopago.api.odoo.com/api/mercado_pago'

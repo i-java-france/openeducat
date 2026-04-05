@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class ColorPickerThemeTab extends Component {
     static template = "html_builder.ColorPickerThemeTab";
@@ -11,8 +11,8 @@ export class ColorPickerThemeTab extends Component {
         onColorPointerLeave: Function,
         onFocusin: Function,
         onFocusout: Function,
-        selectedColorCombination: { type: String, optional: true },
-        "*": { optional: true },
+        selectedColorCombination: {type: String, optional: true},
+        "*": {optional: true},
     };
 }
 
@@ -23,5 +23,5 @@ registry.category("color_picker_tabs").add(
         name: _t("Theme"),
         component: ColorPickerThemeTab,
     },
-    { sequence: 10 }
+    {sequence: 10}
 );

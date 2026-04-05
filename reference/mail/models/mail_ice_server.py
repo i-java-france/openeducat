@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
-from odoo.addons.mail.tools.discuss import get_twilio_credentials
 import logging
+
 import requests
+
+from odoo import fields, models
+
+from odoo.addons.mail.tools.discuss import get_twilio_credentials
 
 _logger = logging.getLogger(__name__)
 

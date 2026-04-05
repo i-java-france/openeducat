@@ -1,12 +1,12 @@
-import { renderToElement } from "@web/core/utils/render";
-import { useDebounced } from "@web/core/utils/timing";
+import {renderToElement} from "@web/core/utils/render";
+import {useDebounced} from "@web/core/utils/timing";
 import {
     formatDate,
     formatDateTime,
     toLocaleDateString,
     toLocaleDateTimeString,
 } from "@web/core/l10n/dates";
-import { localization } from "@web/core/l10n/localization";
+import {localization} from "@web/core/l10n/localization";
 
 import {
     onMounted,
@@ -118,7 +118,7 @@ export function resetDateFieldWidths() {
  * them into the DOM and compute their width.
  */
 function computeOptimalDateWidths() {
-    const { timeFormat } = localization;
+    const {timeFormat} = localization;
     const values = {
         date: [],
         datetime: [],
@@ -136,18 +136,25 @@ function computeOptimalDateWidths() {
         if (timeFormat === "hh:mm:ss a") {
             // generate a date in the afternoon if time is displayed with AM/PM or equivalent
             values.datetime.push(
-                toLocaleDateTimeString(luxon.DateTime.local(2017, month, 25, 22, 0, 0), {
-                    showSeconds: true,
-                })
+                toLocaleDateTimeString(
+                    luxon.DateTime.local(2017, month, 25, 22, 0, 0),
+                    {
+                        showSeconds: true,
+                    }
+                )
             );
         }
     }
     // dates in the "numeric" format
     values.numericDate.push(formatDate(luxon.DateTime.local(2017, 1, 1)));
-    values.numericDatetime.push(formatDateTime(luxon.DateTime.local(2017, 1, 1, 10, 0, 0)));
+    values.numericDatetime.push(
+        formatDateTime(luxon.DateTime.local(2017, 1, 1, 10, 0, 0))
+    );
     if (timeFormat === "hh:mm:ss a") {
         // generate a date in the afternoon if time is displayed with AM/PM or equivalent
-        values.numericDatetime.push(formatDateTime(luxon.DateTime.local(2017, 1, 1, 22, 0, 0)));
+        values.numericDatetime.push(
+            formatDateTime(luxon.DateTime.local(2017, 1, 1, 22, 0, 0))
+        );
     }
 
     const template = xml`
@@ -158,7 +165,7 @@ function computeOptimalDateWidths() {
                 </div>
             </div>
         </div>`;
-    const div = renderToElement(template, { values });
+    const div = renderToElement(template, {values});
     document.body.append(div);
     _dateWidths = {};
     for (const key in values) {
@@ -220,7 +227,7 @@ function computeWidths(table, state, allowedWidth, startingWidths) {
     const columnOffset = state.hasSelectors ? 1 : 0;
     for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
         const thIndex = columnIndex + columnOffset;
-        const { minWidth, maxWidth } = columnWidthSpecs[columnIndex];
+        const {minWidth, maxWidth} = columnWidthSpecs[columnIndex];
         if (_columnWidths[thIndex] < minWidth) {
             _columnWidths[thIndex] = minWidth;
         } else if (maxWidth && _columnWidths[thIndex] > maxWidth) {
@@ -237,16 +244,16 @@ function computeWidths(table, state, allowedWidth, startingWidths) {
         let totalAvailableSpace = 0; // total space we can gain by shrinking columns
         for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
             const thIndex = columnIndex + columnOffset;
-            const { minWidth, canShrink } = columnWidthSpecs[columnIndex];
+            const {minWidth, canShrink} = columnWidthSpecs[columnIndex];
             if (_columnWidths[thIndex] > minWidth && canShrink) {
-                shrinkableColumns.push({ thIndex, minWidth });
+                shrinkableColumns.push({thIndex, minWidth});
                 totalAvailableSpace += _columnWidths[thIndex] - minWidth;
             }
         }
         if (diff > totalAvailableSpace) {
             // We can't find enough space => set all columns to their min width, and there'll be an
             // horizontal scrollbar
-            for (const { thIndex, minWidth } of shrinkableColumns) {
+            for (const {thIndex, minWidth} of shrinkableColumns) {
                 _columnWidths[thIndex] = minWidth;
             }
         } else {
@@ -254,7 +261,7 @@ function computeWidths(table, state, allowedWidth, startingWidths) {
             let remainingColumnsToShrink = shrinkableColumns.length;
             while (diff >= 1) {
                 const colDiff = diff / remainingColumnsToShrink;
-                for (const { thIndex, minWidth } of shrinkableColumns) {
+                for (const {thIndex, minWidth} of shrinkableColumns) {
                     const currentWidth = _columnWidths[thIndex];
                     if (currentWidth === minWidth) {
                         continue;
@@ -276,7 +283,7 @@ function computeWidths(table, state, allowedWidth, startingWidths) {
             const thIndex = columnIndex + columnOffset;
             const maxWidth = columnWidthSpecs[columnIndex].maxWidth;
             if (!maxWidth || _columnWidths[thIndex] < maxWidth) {
-                expandableColumns.push({ thIndex, maxWidth });
+                expandableColumns.push({thIndex, maxWidth});
             }
         }
         // Expand all expandable columns uniformly (i.e. at most, expand columns with a maxWidth
@@ -284,9 +291,12 @@ function computeWidths(table, state, allowedWidth, startingWidths) {
         let remainingExpandableColumns = expandableColumns.length;
         while (diff >= 1 && remainingExpandableColumns > 0) {
             const colDiff = diff / remainingExpandableColumns;
-            for (const { thIndex, maxWidth } of expandableColumns) {
+            for (const {thIndex, maxWidth} of expandableColumns) {
                 const currentWidth = _columnWidths[thIndex];
-                const newWidth = Math.min(currentWidth + colDiff, maxWidth || Number.MAX_VALUE);
+                const newWidth = Math.min(
+                    currentWidth + colDiff,
+                    maxWidth || Number.MAX_VALUE
+                );
                 diff -= newWidth - currentWidth;
                 _columnWidths[thIndex] = newWidth;
                 if (newWidth === maxWidth) {
@@ -342,7 +352,7 @@ function getWidthSpecs(columns) {
                 minWidth = DEFAULT_MIN_WIDTH;
             }
         }
-        return { minWidth, maxWidth, canShrink: column.type === "field" };
+        return {minWidth, maxWidth, canShrink: column.type === "field"};
     });
 }
 
@@ -353,7 +363,7 @@ function getWidthSpecs(columns) {
  * @returns {Number}
  */
 function getHorizontalPadding(el) {
-    const { paddingLeft, paddingRight } = getComputedStyle(el);
+    const {paddingLeft, paddingRight} = getComputedStyle(el);
     return parseFloat(paddingLeft) + parseFloat(paddingRight);
 }
 
@@ -400,8 +410,12 @@ export function useMagicColumnWidths(tableRef, getState) {
 
         const parentPadding = getHorizontalPadding(table.parentNode);
         const cellPaddings = headers.map((th) => getHorizontalPadding(th));
-        const totalCellPadding = cellPaddings.reduce((total, padding) => padding + total, 0);
-        const nextAllowedWidth = table.parentNode.clientWidth - parentPadding - totalCellPadding;
+        const totalCellPadding = cellPaddings.reduce(
+            (total, padding) => padding + total,
+            0
+        );
+        const nextAllowedWidth =
+            table.parentNode.clientWidth - parentPadding - totalCellPadding;
         const allowedWidthDiff = Math.abs(allowedWidth - nextAllowedWidth);
         allowedWidth = nextAllowedWidth;
 
@@ -544,7 +558,7 @@ export function useMagicColumnWidths(tableRef, getState) {
                 }
             },
             200,
-            { immediate: true, trailing: true }
+            {immediate: true, trailing: true}
         );
         const resizeObserver = new ResizeObserver(() => {
             const newParentWidth = tableRef.el.parentNode.clientWidth;

@@ -1,6 +1,6 @@
-import { MessagingMenu } from "@mail/core/public_web/messaging_menu";
-import { _t } from "@web/core/l10n/translation";
-import { patch } from "@web/core/utils/patch";
+import {MessagingMenu} from "@mail/core/public_web/messaging_menu";
+import {_t} from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
 
 patch(MessagingMenu.prototype, {
     openFailureView(failure) {
@@ -24,7 +24,9 @@ patch(MessagingMenu.prototype, {
     },
     getFailureNotificationName(failure) {
         if (failure.type === "snail") {
-            return _t("Snailmail Failure: %(modelName)s", { modelName: failure.modelName });
+            return _t("Snailmail Failure: %(modelName)s", {
+                modelName: failure.modelName,
+            });
         }
         return super.getFailureNotificationName(...arguments);
     },

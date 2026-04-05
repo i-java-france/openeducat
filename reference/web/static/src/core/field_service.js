@@ -1,5 +1,5 @@
-import { Domain } from "@web/core/domain";
-import { registry } from "@web/core/registry";
+import {Domain} from "@web/core/domain";
+import {registry} from "@web/core/registry";
 
 /**
  * @typedef {Object} LoadFieldsOptions
@@ -26,7 +26,7 @@ export const fieldService = {
         "loadPropertyDefinitions",
         "loadPathDescription",
     ],
-    start(env, { orm }) {
+    start(env, {orm}) {
         /**
          * @param {string} resModel
          * @param {LoadFieldsOptions} [options]
@@ -37,7 +37,7 @@ export const fieldService = {
                 throw new Error(`Invalid model name: ${resModel}`);
             }
             return orm
-                .cache({ type: "disk" })
+                .cache({type: "disk"})
                 .call(resModel, "fields_get", [options.fieldNames, options.attributes]);
         }
 
@@ -47,7 +47,12 @@ export const fieldService = {
          * @param {import("@web/core/domain").DomainListRepr} [domain=[]]
          * @returns {Promise<Object>}
          */
-        async function _loadPropertyDefinitions(resModel, fieldDefs, name, domain = []) {
+        async function _loadPropertyDefinitions(
+            resModel,
+            fieldDefs,
+            name,
+            domain = []
+        ) {
             const {
                 definition_record: definitionRecord,
                 definition_record_field: definitionRecordField,
@@ -64,7 +69,10 @@ export const fieldService = {
                 );
             } else {
                 // @ts-ignore
-                domain = Domain.and([[[definitionRecordField, "!=", false]], domain]).toList();
+                domain = Domain.and([
+                    [[definitionRecordField, "!=", false]],
+                    domain,
+                ]).toList();
                 result = await orm.webSearchRead(definitionRecordModel, domain, {
                     specification: {
                         display_name: {},
@@ -83,7 +91,7 @@ export const fieldService = {
                         // differentiate definitions with same name but on different parent
                         record_id: record.id,
                         record_name: record.display_name,
-                        ...(definition.comodel ? { relation: definition.comodel } : {}),
+                        ...(definition.comodel ? {relation: definition.comodel} : {}),
                         ...definition,
                     };
                 }
@@ -108,30 +116,42 @@ export const fieldService = {
          * @param {string[]} names
          * @param {boolean} [followRelationalProperties=false]
          */
-        async function _loadPath(resModel, fieldDefs, names, followRelationalProperties = false) {
+        async function _loadPath(
+            resModel,
+            fieldDefs,
+            names,
+            followRelationalProperties = false
+        ) {
             if (!fieldDefs) {
-                return { isInvalid: "path", names, modelsInfo: [] };
+                return {isInvalid: "path", names, modelsInfo: []};
             }
 
             const [name, ...remainingNames] = names;
-            const modelsInfo = [{ resModel, fieldDefs }];
+            const modelsInfo = [{resModel, fieldDefs}];
             if (resModel === "*" && remainingNames.length) {
-                return { isInvalid: "path", names, modelsInfo };
+                return {isInvalid: "path", names, modelsInfo};
             }
 
             const fieldDef = fieldDefs[name];
-            if ((name !== "*" && !fieldDef) || (name === "*" && remainingNames.length)) {
-                return { isInvalid: "path", names, modelsInfo };
+            if (
+                (name !== "*" && !fieldDef) ||
+                (name === "*" && remainingNames.length)
+            ) {
+                return {isInvalid: "path", names, modelsInfo};
             }
 
             if (!remainingNames.length) {
-                return { names, modelsInfo };
+                return {names, modelsInfo};
             }
 
             let subResult;
             const relation = getRelation(fieldDef, followRelationalProperties);
             if (relation) {
-                subResult = await _loadPath(relation, await loadFields(relation), remainingNames);
+                subResult = await _loadPath(
+                    relation,
+                    await loadFields(relation),
+                    remainingNames
+                );
             } else if (fieldDef.type === "properties") {
                 subResult = await _loadPath(
                     followRelationalProperties ? resModel : "*",
@@ -151,7 +171,7 @@ export const fieldService = {
                 return result;
             }
 
-            return { isInvalid: "path", names, modelsInfo };
+            return {isInvalid: "path", names, modelsInfo};
         }
 
         /**
@@ -161,12 +181,21 @@ export const fieldService = {
          * @param {string} path
          * @returns {Promise<Object>}
          */
-        async function loadPath(resModel, path = "*", followRelationalProperties = false) {
+        async function loadPath(
+            resModel,
+            path = "*",
+            followRelationalProperties = false
+        ) {
             const fieldDefs = await loadFields(resModel);
             if (typeof path !== "string" || !path) {
                 throw new Error(`Invalid path: ${path}`);
             }
-            return _loadPath(resModel, fieldDefs, path.split("."), followRelationalProperties);
+            return _loadPath(
+                resModel,
+                fieldDefs,
+                path.split("."),
+                followRelationalProperties
+            );
         }
 
         /**
@@ -176,15 +205,15 @@ export const fieldService = {
          */
         async function loadFieldInfo(resModel, path) {
             if (typeof path !== "string" || !path || path === "*") {
-                return { resModel, fieldDef: null };
+                return {resModel, fieldDef: null};
             }
-            const { isInvalid, names, modelsInfo } = await loadPath(resModel, path);
+            const {isInvalid, names, modelsInfo} = await loadPath(resModel, path);
             if (isInvalid) {
-                return { resModel, fieldDef: null };
+                return {resModel, fieldDef: null};
             }
             const name = names.at(-1);
             const modelInfo = modelsInfo.at(-1);
-            return { resModel: modelInfo.resModel, fieldDef: modelInfo.fieldDefs[name] };
+            return {resModel: modelInfo.resModel, fieldDef: modelInfo.fieldDefs[name]};
         }
 
         function makeString(value) {
@@ -193,20 +222,22 @@ export const fieldService = {
 
         async function loadPathDescription(resModel, path, allowEmpty) {
             if ([0, 1].includes(path)) {
-                return { isInvalid: false, displayNames: [makeString(path)] };
+                return {isInvalid: false, displayNames: [makeString(path)]};
             }
             if (allowEmpty && !path) {
-                return { isInvalid: false, displayNames: [] };
+                return {isInvalid: false, displayNames: []};
             }
             if (typeof path !== "string" || !path || path === "*") {
-                return { isInvalid: true, displayNames: [makeString()] };
+                return {isInvalid: true, displayNames: [makeString()]};
             }
-            const { isInvalid, modelsInfo, names } = await loadPath(resModel, path);
-            const result = { isInvalid: !!isInvalid, displayNames: [] };
+            const {isInvalid, modelsInfo, names} = await loadPath(resModel, path);
+            const result = {isInvalid: !!isInvalid, displayNames: []};
             if (!isInvalid) {
                 const lastName = names.at(-1);
                 const lastFieldDef = modelsInfo.at(-1).fieldDefs[lastName];
-                if (["properties", "properties_definition"].includes(lastFieldDef.type)) {
+                if (
+                    ["properties", "properties_definition"].includes(lastFieldDef.type)
+                ) {
                     // there is no known case where we want to select a 'properties' field directly
                     result.isInvalid = true;
                 }

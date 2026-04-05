@@ -1,16 +1,16 @@
-import { _t } from "@web/core/l10n/translation";
-import { AccordionItem } from "@web/core/dropdown/accordion_item";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {AccordionItem} from "@web/core/dropdown/accordion_item";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component, useRef, useState } from "@odoo/owl";
+import {Component, useRef, useState} from "@odoo/owl";
 
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
 export class CustomFavoriteItem extends Component {
     static template = "web.CustomFavoriteItem";
-    static components = { CheckBox, AccordionItem };
+    static components = {CheckBox, AccordionItem};
     static props = {};
 
     setup() {
@@ -28,14 +28,17 @@ export class CustomFavoriteItem extends Component {
      */
     async saveFavorite(ev, isShared = false) {
         if (!this.state.description) {
-            this.notificationService.add(_t("A name for your favorite filter is required."), {
-                type: "danger",
-            });
+            this.notificationService.add(
+                _t("A name for your favorite filter is required."),
+                {
+                    type: "danger",
+                }
+            );
             ev.stopPropagation();
             this.descriptionRef.el.focus();
             return false;
         }
-        const { description, isDefault } = this.state;
+        const {description, isDefault} = this.state;
         const embeddedActionId = this.env.config.currentEmbeddedActionId || false;
         const serverSideId = await this.env.searchModel.createNewFavorite({
             description,
@@ -90,6 +93,6 @@ export class CustomFavoriteItem extends Component {
 
 favoriteMenuRegistry.add(
     "custom-favorite-item",
-    { Component: CustomFavoriteItem, groupNumber: 3 },
-    { sequence: 0 }
+    {Component: CustomFavoriteItem, groupNumber: 3},
+    {sequence: 0}
 );

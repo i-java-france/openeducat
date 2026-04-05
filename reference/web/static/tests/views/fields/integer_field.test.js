@@ -1,5 +1,5 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
 import {
     clickSave,
     contains,
@@ -18,7 +18,7 @@ class Product extends models.Model {
 defineModels([Product]);
 
 test("human readable format 1", async () => {
-    Product._records = [{ id: 1, price: 3.756754e6 }];
+    Product._records = [{id: 1, price: 3.756754e6}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -31,7 +31,7 @@ test("human readable format 1", async () => {
 });
 
 test("human readable format 2", async () => {
-    Product._records = [{ id: 1, price: 2.034e3 }];
+    Product._records = [{id: 1, price: 2.034e3}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -44,7 +44,7 @@ test("human readable format 2", async () => {
 });
 
 test("human readable format 3", async () => {
-    Product._records = [{ id: 1, price: 6.67543577586e12 }];
+    Product._records = [{id: 1, price: 6.67543577586e12}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -57,7 +57,7 @@ test("human readable format 3", async () => {
 });
 
 test("still human readable when readonly", async () => {
-    Product._records = [{ id: 1, price: 6.67543577586e12 }];
+    Product._records = [{id: 1, price: 6.67543577586e12}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -68,7 +68,7 @@ test("still human readable when readonly", async () => {
 });
 
 test("should be 0 when unset", async () => {
-    Product._records = [{ id: 1 }];
+    Product._records = [{id: 1}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -80,7 +80,7 @@ test("should be 0 when unset", async () => {
 });
 
 test("basic form view flow", async () => {
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -96,7 +96,7 @@ test("basic form view flow", async () => {
 });
 
 test("no need to focus out of the input to save the record after correcting an invalid input", async () => {
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -113,11 +113,11 @@ test("no need to focus out of the input to save the record after correcting an i
     expect(".o_field_widget input").toHaveValue("1");
     expect(".o_form_status_indicator span i.fa-warning").toHaveCount(0);
     expect(".o_form_button_save[disabled]").toHaveCount(0);
-    await clickSave(); // makes sure there is an enabled save button
+    await clickSave(); // Makes sure there is an enabled save button
 });
 
 test("rounded when using formula in form view", async () => {
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -130,7 +130,7 @@ test("rounded when using formula in form view", async () => {
 
 test("with input type 'number' option", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -145,7 +145,7 @@ test("with input type 'number' option", async () => {
 });
 
 test("with 'step' option", async () => {
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -156,7 +156,7 @@ test("with 'step' option", async () => {
 });
 
 test("with 'min'/'max' option", async () => {
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -169,7 +169,7 @@ test("with 'min'/'max' option", async () => {
 
 test("without input type option", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 10 }];
+    Product._records = [{id: 1, price: 10}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -184,7 +184,7 @@ test("without input type option", async () => {
 
 test("is formatted by default", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 8069 }];
+    Product._records = [{id: 1, price: 8069}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -195,7 +195,7 @@ test("is formatted by default", async () => {
 });
 
 test("basic flow in editable list view", async () => {
-    Product._records = [{ id: 1 }, { id: 2, price: 10 }];
+    Product._records = [{id: 1}, {id: 2, price: 10}];
     onRpc("has_group", () => true);
     await mountView({
         type: "list",
@@ -217,7 +217,7 @@ test("basic flow in editable list view", async () => {
 
 test("with enable_formatting option as false", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 8069 }];
+    Product._records = [{id: 1, price: 8069}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -239,13 +239,13 @@ test("value is formatted on Enter", async () => {
 
     expect(".o_field_widget input").toHaveValue("0");
 
-    await fieldInput("price").edit("1000", { confirm: "Enter" });
+    await fieldInput("price").edit("1000", {confirm: "Enter"});
     expect(".o_field_widget input").toHaveValue("1,000");
 });
 
 test("value is formatted on Enter (even if same value)", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 8069 }];
+    Product._records = [{id: 1, price: 8069}];
 
     await mountView({
         type: "form",
@@ -256,13 +256,13 @@ test("value is formatted on Enter (even if same value)", async () => {
 
     expect(".o_field_widget input").toHaveValue("8,069");
 
-    await fieldInput("price").edit("8069", { confirm: "Enter" });
+    await fieldInput("price").edit("8069", {confirm: "Enter"});
     expect(".o_field_widget input").toHaveValue("8,069");
 });
 
 test("value is formatted on click out (even if same value)", async () => {
     // `localization > grouping` required for this test is [3, 0], which is the default in mock server
-    Product._records = [{ id: 1, price: 8069 }];
+    Product._records = [{id: 1, price: 8069}];
 
     await mountView({
         type: "form",
@@ -273,7 +273,7 @@ test("value is formatted on click out (even if same value)", async () => {
 
     expect(".o_field_widget input").toHaveValue("8,069");
 
-    await fieldInput("price").edit("8069", { confirm: false });
+    await fieldInput("price").edit("8069", {confirm: false});
     expect(".o_field_widget input").toHaveValue("8069");
 
     await contains(".o_control_panel").click();

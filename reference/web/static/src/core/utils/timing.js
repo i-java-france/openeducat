@@ -1,5 +1,5 @@
-import { browser } from "@web/core/browser/browser";
-import { onWillUnmount, useComponent } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {onWillUnmount, useComponent} from "@odoo/owl";
 
 /**
  * Creates a batched version of a callback so that all calls to it in the same
@@ -131,11 +131,13 @@ export function setRecurringAnimationFrame(callback) {
 export function throttleForAnimation(func) {
     let handle = null;
     const calls = new Set();
-    const funcName = func.name ? `${func.name} (throttleForAnimation)` : "throttleForAnimation";
+    const funcName = func.name
+        ? `${func.name} (throttleForAnimation)`
+        : "throttleForAnimation";
     const pending = () => {
         if (calls.size) {
             handle = browser.requestAnimationFrame(pending);
-            const { args, resolve } = [...calls].pop();
+            const {args, resolve} = [...calls].pop();
             calls.clear();
             Promise.resolve(func.apply(this, args)).then(resolve);
         } else {
@@ -152,7 +154,7 @@ export function throttleForAnimation(func) {
                         handle = browser.requestAnimationFrame(pending);
                         Promise.resolve(func.apply(this, args)).then(resolve);
                     } else {
-                        calls.add({ args, resolve });
+                        calls.add({args, resolve});
                     }
                 });
             },
@@ -188,10 +190,13 @@ export function throttleForAnimation(func) {
 export function useDebounced(
     callback,
     delay,
-    { execBeforeUnmount = false, immediate = false, trailing = !immediate } = {}
+    {execBeforeUnmount = false, immediate = false, trailing = !immediate} = {}
 ) {
     const component = useComponent();
-    const debounced = debounce(callback.bind(component), delay, { leading: immediate, trailing });
+    const debounced = debounce(callback.bind(component), delay, {
+        leading: immediate,
+        trailing,
+    });
     onWillUnmount(() => debounced.cancel(execBeforeUnmount));
     return debounced;
 }

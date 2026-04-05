@@ -1,9 +1,9 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { post } from "@web/core/network/http_service";
-import { Component, markup } from "@odoo/owl";
-import { rpc, RPCError } from "@web/core/network/rpc";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {post} from "@web/core/network/http_service";
+import {Component, markup} from "@odoo/owl";
+import {rpc, RPCError} from "@web/core/network/rpc";
 
 /**
  * Display the composer (according to access right)
@@ -19,10 +19,16 @@ export class PortalComposer extends Interaction {
             "t-on-click": this.onAttachmentButtonClick,
         },
         ".o_portal_chatter_attachment_delete": {
-            "t-on-click.prevent.stop.withTarget": this.locked(this.onAttachmentDeleteClick, true),
+            "t-on-click.prevent.stop.withTarget": this.locked(
+                this.onAttachmentDeleteClick,
+                true
+            ),
         },
         ".o_portal_chatter_composer_btn": {
-            "t-on-click.prevent.withTarget": this.locked(this.onSubmitButtonClick, true),
+            "t-on-click.prevent.withTarget": this.locked(
+                this.onSubmitButtonClick,
+                true
+            ),
         },
     };
 
@@ -50,9 +56,12 @@ export class PortalComposer extends Interaction {
     }
 
     setup() {
-        this.options = this.env.portalComposerOptions || PortalComposer.prepareOptions({});
+        this.options =
+            this.env.portalComposerOptions || PortalComposer.prepareOptions({});
         this.attachments = [];
-        this.attachmentButtonEl = this.el.querySelector(".o_portal_chatter_attachment_btn");
+        this.attachmentButtonEl = this.el.querySelector(
+            ".o_portal_chatter_attachment_btn"
+        );
         this.fileInputEl = this.el.querySelector(".o_portal_chatter_file_input");
         this.sendButtonEl = this.el.querySelector(".o_portal_chatter_composer_btn");
         this.attachmentsEl = this.el.querySelector(
@@ -93,7 +102,9 @@ export class PortalComposer extends Interaction {
                 access_token: accessToken,
             })
         );
-        this.attachments = this.attachments.filter((attachment) => attachment.id !== attachmentId);
+        this.attachments = this.attachments.filter(
+            (attachment) => attachment.id !== attachmentId
+        );
         this.updateAttachments();
         this.sendButtonEl.disabled = false;
     }
@@ -123,9 +134,9 @@ export class PortalComposer extends Interaction {
                             this.waitFor(post("/mail/attachment/upload", data))
                                 .then((res) => {
                                     const attachmentId = res.data["attachment_id"];
-                                    const attachment = res.data["store_data"]["ir.attachment"].find(
-                                        (att) => att.id === attachmentId
-                                    );
+                                    const attachment = res.data["store_data"][
+                                        "ir.attachment"
+                                    ].find((att) => att.id === attachmentId);
                                     attachment.state = "pending";
                                     this.attachments.push(attachment);
                                     this.updateAttachments();
@@ -138,7 +149,7 @@ export class PortalComposer extends Interaction {
                                                 "Could not save file %s",
                                                 markup`<strong>${file.name}</strong>`
                                             ),
-                                            { type: "warning", sticky: true }
+                                            {type: "warning", sticky: true}
                                         );
                                         resolve();
                                     }

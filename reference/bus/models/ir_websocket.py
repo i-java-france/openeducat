@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models
-from odoo.http import request, SessionExpiredException
-from odoo.tools.misc import OrderedSet
+from odoo.http import SessionExpiredException, request
 from odoo.service import security
+from odoo.tools.misc import OrderedSet
+
 from ..models.bus import dispatch
 from ..websocket import wsrequest
 

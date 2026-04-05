@@ -1,17 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from ast import literal_eval
 import logging
-import pytz
-
-from collections import defaultdict, Counter
+from ast import literal_eval
+from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
+
+import pytz
 from dateutil.relativedelta import MO, relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError
 from odoo.tools import is_html_empty
 from odoo.tools.misc import clean_context, get_lang, groupby
+
 from odoo.addons.mail.tools.discuss import Store
 
 _logger = logging.getLogger(__name__)
@@ -272,7 +273,7 @@ class MailActivity(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        activities = super(MailActivity, self).create(vals_list)
+        activities = super().create(vals_list)
 
         # find partners related to responsible users, separate readable from unreadable
         if any(user != self.env.user for user in activities.user_id):
@@ -539,7 +540,7 @@ class MailActivity(models.Model):
             # method, the activity is archived which ensure the user has enough right on the activities.
             records_sudo = self.env[model].sudo().browse(activity_data['record_ids'])
             existing = records_sudo.exists()  # in case record was cascade-deleted in DB, skipping unlink override
-            for record_sudo, activity in zip(records_sudo, activity_data['activities']):
+            for record_sudo, activity in zip(records_sudo, activity_data['activities'], strict=False):
                 # extract value to generate next activities
                 if activity.chaining_type == 'trigger':
                     vals = activity.with_context(activity_previous_deadline=activity.date_deadline)._prepare_next_activity_values()

@@ -116,7 +116,7 @@ class MailMessage(models.Model):
         vals_list = self._read_format(fnames)
 
         note_id = self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note')
-        for message, values in zip(self, vals_list):
+        for message, values in zip(self, vals_list, strict=False):
             values["body"] = ["markup", values["body"]]
             if message_to_attachments:
                 values['attachment_ids'] = message_to_attachments.get(message.id, {})

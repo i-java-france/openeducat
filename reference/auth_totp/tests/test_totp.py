@@ -1,12 +1,12 @@
-import logging
 import json
+import logging
 import time
 from xmlrpc.client import Fault
 
 from passlib.totp import TOTP
 
 from odoo import http
-from odoo.tests import tagged, get_db_name, new_test_user, HttpCase
+from odoo.tests import HttpCase, get_db_name, new_test_user, tagged
 from odoo.tools import mute_logger
 
 from odoo.addons.auth_totp.models.totp import TOTP as auth_TOTP

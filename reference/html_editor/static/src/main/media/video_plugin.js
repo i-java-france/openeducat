@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { VideoSelector } from "./media_dialog/video_selector";
-import { _t } from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {VideoSelector} from "./media_dialog/video_selector";
+import {_t} from "@web/core/l10n/translation";
 
 export class VideoPlugin extends Plugin {
     static id = "video";

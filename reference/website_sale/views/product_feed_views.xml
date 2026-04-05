@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="product_feed_search" model="ir.ui.view">
         <field name="name">product.feed.view.search</field>
         <field name="model">product.feed</field>
         <field name="arch" type="xml">
             <search>
-                <field name="website_id" groups="website.group_multi_website"/>
-                <field name="pricelist_id" groups="product.group_product_pricelist"/>
-                <field name="lang_id"/>
-                <field name="product_category_ids"/>
+                <field name="website_id" groups="website.group_multi_website" />
+                <field name="pricelist_id" groups="product.group_product_pricelist" />
+                <field name="lang_id" />
+                <field name="product_category_ids" />
                 <group>
                     <filter
                         name="groupby_website"
@@ -43,7 +42,7 @@
         <field name="model">product.feed</field>
         <field name="arch" type="xml">
             <list string="Product Feeds" editable="top" multi_edit="True">
-                <field name="name"/>
+                <field name="name" />
                 <field
                     name="website_id"
                     column_invisible="context.get('hide_website_column')"
@@ -56,7 +55,7 @@
                     options="{'no_create': True}"
                     groups="product.group_product_pricelist"
                 />
-                <field name="lang_id" options="{'no_create': True}"/>
+                <field name="lang_id" options="{'no_create': True}" />
                 <field
                     name="product_category_ids"
                     placeholder="All Categories"
@@ -85,15 +84,25 @@
             <form string="Product Feed">
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name"/></h1>
+                        <h1>
+                            <field name="name" />
+                        </h1>
                     </div>
                     <div name="button_box">
-                        <field name="url" string="Copy URL" widget="CopyClipboardButton"/>
+                        <field
+                            name="url"
+                            string="Copy URL"
+                            widget="CopyClipboardButton"
+                        />
                     </div>
                     <group>
-                        <field name="website_id"/>
-                        <field name="pricelist_id" placeholder="Default" groups="product.group_product_pricelist"/>
-                        <field name="lang_id" options="{'no_create': True}"/>
+                        <field name="website_id" />
+                        <field
+                            name="pricelist_id"
+                            placeholder="Default"
+                            groups="product.group_product_pricelist"
+                        />
+                        <field name="lang_id" options="{'no_create': True}" />
                         <field
                             name="product_category_ids"
                             placeholder="All Categories"
@@ -113,12 +122,11 @@
 
     <record id="action_invalidate_cache" model="ir.actions.server">
         <field name="name">Reset Cache</field>
-        <field name="model_id" ref="model_product_feed"/>
-        <field name="binding_model_id" ref="website_sale.model_product_feed"/>
+        <field name="model_id" ref="model_product_feed" />
+        <field name="binding_model_id" ref="website_sale.model_product_feed" />
         <field name="binding_view_types">list,form</field>
         <field name="state">code</field>
         <field name="code">action = records.action_invalidate_cache()</field>
-        <field name="group_ids" eval="[Command.link(ref('base.group_no_one'))]"/>
+        <field name="group_ids" eval="[Command.link(ref('base.group_no_one'))]" />
     </record>
-
 </odoo>

@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+
 from freezegun import freeze_time
 
 from odoo import Command, exceptions
-from odoo.addons.test_event_full.tests.common import TestEventFullCommon
 from odoo.tests.common import users
+
+from odoo.addons.test_event_full.tests.common import TestEventFullCommon
 
 
 class TestEventEvent(TestEventFullCommon):

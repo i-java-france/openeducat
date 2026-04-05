@@ -1,6 +1,13 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, onWillStart, onWillUpdateProps, useState, useSubEnv, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {
+    Component,
+    onWillStart,
+    onWillUpdateProps,
+    useState,
+    useSubEnv,
+    xml,
+} from "@odoo/owl";
 import {
     defineModels,
     fields,
@@ -13,12 +20,12 @@ import {
     toggleSearchBarMenu,
 } from "@web/../tests/web_test_helpers";
 
-import { SearchBarMenu } from "@web/search/search_bar_menu/search_bar_menu";
-import { WithSearch } from "@web/search/with_search/with_search";
+import {SearchBarMenu} from "@web/search/search_bar_menu/search_bar_menu";
+import {WithSearch} from "@web/search/with_search/with_search";
 
 class Animal extends models.Model {
     name = fields.Char();
-    birthday = fields.Date({ groupable: false });
+    birthday = fields.Date({groupable: false});
     type = fields.Selection({
         groupable: false,
         selection: [
@@ -72,7 +79,7 @@ test("search query props are passed as props to concrete component", async () =>
 
         setup() {
             expect.step("setup");
-            const { context, domain, groupBy, orderBy } = this.props;
+            const {context, domain, groupBy, orderBy} = this.props;
             expect(context).toEqual({
                 allowed_company_ids: [1],
                 lang: "en",
@@ -82,7 +89,7 @@ test("search query props are passed as props to concrete component", async () =>
             });
             expect(domain).toEqual([[0, "=", 1]]);
             expect(groupBy).toEqual(["birthday"]);
-            expect(orderBy).toEqual([{ name: "bar", asc: true }]);
+            expect(orderBy).toEqual([{name: "bar", asc: true}]);
         }
     }
 
@@ -90,8 +97,8 @@ test("search query props are passed as props to concrete component", async () =>
         resModel: "animal",
         domain: [[0, "=", 1]],
         groupBy: ["birthday"],
-        context: { key: "val" },
-        orderBy: [{ name: "bar", asc: true }],
+        context: {key: "val"},
+        orderBy: [{name: "bar", asc: true}],
     });
     expect.verifySteps(["setup"]);
 });
@@ -102,7 +109,7 @@ test("do not load search view description by default", async () => {
         static template = xml`<div class="o_test_component">Test component content</div>`;
     }
 
-    onRpc("get_views", ({ method }) => {
+    onRpc("get_views", ({method}) => {
         expect.step(method);
         throw new Error("No get_views should be done");
     });
@@ -118,7 +125,7 @@ test("load search view description if not provided and loadSearchView=true", asy
         static template = xml`<div class="o_test_component">Test component content</div>`;
     }
 
-    onRpc("get_views", ({ method, kwargs }) => {
+    onRpc("get_views", ({method, kwargs}) => {
         expect.step(method);
         delete kwargs.options.mobile;
         expect(kwargs).toMatchObject({
@@ -145,7 +152,7 @@ test("do not load the search view description if provided even if loadSearchView
         static template = xml`<div class="o_test_component">Test component content</div>`;
     }
 
-    onRpc("get_views", ({ method }) => {
+    onRpc("get_views", ({method}) => {
         expect.step(method);
         throw new Error("No get_views should be done");
     });
@@ -164,7 +171,7 @@ test("load view description if it is not complete and loadSearchView=true", asyn
         static template = xml`<div class="o_test_component">Test component content</div>`;
     }
 
-    onRpc("get_views", ({ method, kwargs }) => {
+    onRpc("get_views", ({method, kwargs}) => {
         expect.step(method);
         delete kwargs.options.mobile;
         expect(kwargs.options).toEqual({
@@ -188,11 +195,11 @@ test("load view description if it is not complete and loadSearchView=true", asyn
 test("load view description with given id if it is not provided and loadSearchView=true", async () => {
     class TestComponent extends Component {
         static props = ["*"];
-        static components = { SearchBarMenu };
+        static components = {SearchBarMenu};
         static template = xml`<div class="o_test_component"><SearchBarMenu/></div>`;
     }
 
-    onRpc("get_views", ({ method, kwargs }) => {
+    onRpc("get_views", ({method, kwargs}) => {
         expect.step(method);
         expect(kwargs.views).toEqual([[1, "search"]]);
     });
@@ -215,7 +222,7 @@ test("load view description with given id if it is not provided and loadSearchVi
 test("toggle a filter render the underlying component with an updated domain", async () => {
     class TestComponent extends Component {
         static props = ["*"];
-        static components = { SearchBarMenu };
+        static components = {SearchBarMenu};
         static template = xml`<div class="o_test_component"><SearchBarMenu/></div>`;
 
         setup() {
@@ -265,9 +272,9 @@ test("react to prop 'domain' changes", async () => {
                 <TestComponent domain="search.domain"/>
             </WithSearch>
         `;
-        static components = { WithSearch, TestComponent };
+        static components = {WithSearch, TestComponent};
         setup() {
-            useSubEnv({ config: {} });
+            useSubEnv({config: {}});
             this.searchState = useState({
                 resModel: "animal",
                 domain: [["type", "=", "carnivorous"]],
@@ -291,7 +298,7 @@ test("search defaults are removed from context at reload", async function () {
 
     class TestComponent extends Component {
         static template = xml`<div class="o_test_component">Test component content</div>`;
-        static props = { context: Object };
+        static props = {context: Object};
         setup() {
             onWillStart(() => {
                 expect.step("willStart");
@@ -323,9 +330,9 @@ test("search defaults are removed from context at reload", async function () {
                 />
             </WithSearch>
         `;
-        static components = { WithSearch, TestComponent };
+        static components = {WithSearch, TestComponent};
         setup() {
-            useSubEnv({ config: {} });
+            useSubEnv({config: {}});
             this.searchState = useState({
                 resModel: "animal",
                 domain: [["type", "=", "carnivorous"]],

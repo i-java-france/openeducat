@@ -67,7 +67,8 @@ export class Colibri {
                 "this.addListener can only be called after the interaction is started. Maybe move the call in the start method."
             );
         }
-        const re = /^(?<event>.*)\.(?<suffix>prevent|stop|capture|once|noUpdate|withTarget)$/;
+        const re =
+            /^(?<event>.*)\.(?<suffix>prevent|stop|capture|once|noUpdate|withTarget)$/;
         let groups = re.exec(event)?.groups;
         while (groups) {
             fn = {
@@ -112,7 +113,10 @@ export class Colibri {
         const handler = fn.isHandler
             ? fn
             : async (...args) => {
-                  if (SKIP_IMPLICIT_UPDATE !== (await fn.call(this.interaction, ...args))) {
+                  if (
+                      SKIP_IMPLICIT_UPDATE !==
+                      (await fn.call(this.interaction, ...args))
+                  ) {
                       if (!this.isDestroyed) {
                           this.updateContent();
                       }
@@ -159,7 +163,7 @@ export class Colibri {
         if (this.listeners.has(sel)) {
             this.listeners.get(sel)[event] = [handler, options];
         } else {
-            this.listeners.set(sel, { [event]: [handler, options] });
+            this.listeners.set(sel, {[event]: [handler, options]});
         }
     }
 
@@ -285,7 +289,11 @@ export class Colibri {
                 const value = descr[directive];
                 if (directive.startsWith("t-on-")) {
                     const ev = directive.slice(5);
-                    const [event, handler, options] = this.addListener(nodes, ev, value);
+                    const [event, handler, options] = this.addListener(
+                        nodes,
+                        ev,
+                        value
+                    );
                     this.mapSelectorToListeners(sel, event, handler, options);
                 } else if (directive.startsWith("t-att-")) {
                     const attr = directive.slice(6);
@@ -296,9 +304,9 @@ export class Colibri {
                         initialValues: null,
                     });
                 } else if (directive === "t-out") {
-                    this.tOuts.push({ sel, definition: value, initialValue: null });
+                    this.tOuts.push({sel, definition: value, initialValue: null});
                 } else if (directive === "t-component") {
-                    const { Component } = odoo.loader.modules.get("@odoo/owl");
+                    const {Component} = odoo.loader.modules.get("@odoo/owl");
                     if (Object.prototype.isPrototypeOf.call(Component, value)) {
                         for (const node of nodes) {
                             this.mountComponent(node, value);
@@ -309,7 +317,9 @@ export class Colibri {
                         }
                     }
                 } else {
-                    const suffix = directive.startsWith("t-") ? "" : " (should start with t-)";
+                    const suffix = directive.startsWith("t-")
+                        ? ""
+                        : " (should start with t-)";
                     throw new Error(`Invalid directive: '${directive}'${suffix}`);
                 }
             }
@@ -323,7 +333,9 @@ export class Colibri {
             );
         }
         if (this.isUpdating) {
-            throw new Error("Updatecontent should not be called while interaction is updating");
+            throw new Error(
+                "Updatecontent should not be called while interaction is updating"
+            );
         }
         this.isUpdating = true;
         if (this.hasStarted) {
@@ -332,7 +344,7 @@ export class Colibri {
         const errors = [];
         const interaction = this.interaction;
         for (const dynamicAttr of this.dynamicAttrs) {
-            let { sel, attr, definition, initialValues } = dynamicAttr;
+            let {sel, attr, definition, initialValues} = dynamicAttr;
             const nodes = this.dynamicNodes.get(sel) || [];
             if (!initialValues && nodes.length) {
                 initialValues = new Map();
@@ -347,16 +359,20 @@ export class Colibri {
                             case "class":
                                 attrValue = {};
                                 for (const classNames of Object.keys(value)) {
-                                    attrValue[classNames] = node.classList.contains(classNames);
+                                    attrValue[classNames] =
+                                        node.classList.contains(classNames);
                                 }
                                 break;
                             case "style":
                                 attrValue = {};
                                 for (const property of Object.keys(value)) {
-                                    const propertyValue = node.style.getPropertyValue(property);
-                                    const priority = node.style.getPropertyPriority(property);
+                                    const propertyValue =
+                                        node.style.getPropertyValue(property);
+                                    const priority =
+                                        node.style.getPropertyPriority(property);
                                     attrValue[property] = propertyValue
-                                        ? propertyValue + (priority ? ` !${priority}` : "")
+                                        ? propertyValue +
+                                          (priority ? ` !${priority}` : "")
                                         : undefined;
                                 }
                                 break;
@@ -365,14 +381,19 @@ export class Colibri {
                         }
                         initialValues.set(node, attrValue);
                     }
-                    this.applyAttr(node, attr, value, dynamicAttr.initialValues.get(node));
+                    this.applyAttr(
+                        node,
+                        attr,
+                        value,
+                        dynamicAttr.initialValues.get(node)
+                    );
                 } catch (e) {
-                    errors.push({ error: e, attribute: attr });
+                    errors.push({error: e, attribute: attr});
                 }
             }
         }
         for (const tOut of this.tOuts) {
-            let { sel, definition, initialValue } = tOut;
+            let {sel, definition, initialValue} = tOut;
             const nodes = this.dynamicNodes.get(sel) || [];
             if (!initialValue && nodes.length) {
                 initialValue = new Map();
@@ -397,10 +418,10 @@ export class Colibri {
         }
         this.isUpdating = false;
         if (errors.length) {
-            const { attribute, error } = errors[0];
+            const {attribute, error} = errors[0];
             throw Error(
                 `An error occured while updating dynamic attribute '${attribute}' (in interaction '${this.interaction.constructor.name}')`,
-                { cause: error }
+                {cause: error}
             );
         }
     }
@@ -408,7 +429,7 @@ export class Colibri {
     destroy() {
         // restore t-att to their initial values
         for (const dynAttrs of this.dynamicAttrs) {
-            const { sel, attr, initialValues } = dynAttrs;
+            const {sel, attr, initialValues} = dynAttrs;
             if (!initialValues) {
                 continue;
             }
@@ -421,7 +442,7 @@ export class Colibri {
         }
 
         for (const tOut of this.tOuts) {
-            const { sel, initialValue } = tOut;
+            const {sel, initialValue} = tOut;
             if (!initialValue) {
                 continue;
             }

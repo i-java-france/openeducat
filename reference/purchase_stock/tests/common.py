@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 from datetime import timedelta
 
 from odoo import Command, fields
+
 from odoo.addons.stock_account.tests.common import TestStockValuationCommon
-from odoo import tools
 
 
 class PurchaseTestCommon(TestStockValuationCommon):
@@ -77,4 +76,3 @@ class PurchaseTestCommon(TestStockValuationCommon):
         super().setUpClass()
         cls.purchase_user = cls._create_new_internal_user(name='Purchase User', login='purchase_user', groups='purchase.group_purchase_user')
         cls.route_buy = cls.warehouse.buy_pull_id.route_id
-

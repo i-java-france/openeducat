@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.http import request
+
 from odoo.addons.mail.controllers.webclient import WebclientController
 from odoo.addons.mail.tools.discuss import Store
 

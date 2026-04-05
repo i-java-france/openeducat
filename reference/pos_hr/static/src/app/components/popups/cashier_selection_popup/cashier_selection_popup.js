@@ -1,14 +1,14 @@
-import { Component } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
+import {Component} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
 export class CashierSelectionPopup extends Component {
     static template = "pos_hr.CashierSelectionPopup";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         close: Function,
         getPayload: Function,
-        currentCashier: { type: Object, optional: true },
-        employees: { type: Array },
+        currentCashier: {type: Object, optional: true},
+        employees: {type: Array},
     };
 
     setup() {

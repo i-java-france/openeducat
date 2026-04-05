@@ -5,12 +5,12 @@ import {
     SetShadowModeAction,
     shadowToString,
 } from "@html_builder/plugins/shadow_option_plugin";
-import { StyleAction } from "@html_builder/core/core_builder_action_plugin";
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { HeaderBoxOption } from "./header_box_option";
-import { HEADER_BOX } from "./header_option_plugin";
+import {StyleAction} from "@html_builder/core/core_builder_action_plugin";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {HeaderBoxOption} from "./header_box_option";
+import {HEADER_BOX} from "./header_option_plugin";
 
 class HeaderBoxOptionPlugin extends Plugin {
     static id = "HeaderBoxOptionPlugin";
@@ -35,14 +35,14 @@ export class StyleActionHeaderAction extends StyleAction {
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
     getValue(...args) {
-        const { params } = args[0];
+        const {params} = args[0];
         const value = super.getValue(...args);
         if (params.mainParam === "border-width") {
             return value.replace(/(^|\s)0px/gi, "").trim() || value;
         }
         return value;
     }
-    async apply({ params, value }) {
+    async apply({params, value}) {
         const styleName = params.mainParam;
 
         if (styleName === "border-color") {
@@ -63,8 +63,9 @@ export class SetShadowModeHeaderAction extends SetShadowModeAction {
         this.preview = false;
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
-    async apply({ value: shadowMode }) {
-        const defaultShadow = shadowMode === "none" ? "none" : getDefaultShadow(shadowMode);
+    async apply({value: shadowMode}) {
+        const defaultShadow =
+            shadowMode === "none" ? "none" : getDefaultShadow(shadowMode);
         return this.dependencies.customizeWebsite.customizeWebsiteVariables({
             "menu-box-shadow": defaultShadow,
         });
@@ -78,7 +79,7 @@ export class SetShadowHeaderAction extends SetShadowAction {
         this.preview = false;
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
-    async apply({ editingElement, params: { mainParam: attributeName }, value }) {
+    async apply({editingElement, params: {mainParam: attributeName}, value}) {
         const shadow = getCurrentShadow(editingElement);
         shadow[attributeName] = value;
 
@@ -88,4 +89,6 @@ export class SetShadowHeaderAction extends SetShadowAction {
     }
 }
 
-registry.category("website-plugins").add(HeaderBoxOptionPlugin.id, HeaderBoxOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(HeaderBoxOptionPlugin.id, HeaderBoxOptionPlugin);

@@ -1,6 +1,7 @@
+from odoo.tests.common import tagged
+
 from odoo.addons.hr.tests.common import TestHrCommon
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.tests.common import tagged
 
 
 @tagged('post_install', '-at_install', 'mail_flow')

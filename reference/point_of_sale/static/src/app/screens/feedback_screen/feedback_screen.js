@@ -1,18 +1,25 @@
-import { registry } from "@web/core/registry";
-import { Component, useRef, onMounted, useEffect, useState, onWillUnmount } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { PriceFormatter } from "@point_of_sale/app/components/price_formatter/price_formatter";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {
+    Component,
+    useRef,
+    onMounted,
+    useEffect,
+    useState,
+    onWillUnmount,
+} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {PriceFormatter} from "@point_of_sale/app/components/price_formatter/price_formatter";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 export class FeedbackScreen extends Component {
     static template = "point_of_sale.FeedbackScreen";
     static storeOnOrder = false;
-    static components = { PriceFormatter };
+    static components = {PriceFormatter};
     static props = {
         orderUuid: String,
-        waitFor: { type: Object, optional: true },
-        paymentMethodId: { type: Number, optional: true, default: null },
+        waitFor: {type: Object, optional: true},
+        paymentMethodId: {type: Number, optional: true, default: null},
     };
 
     setup() {
@@ -69,7 +76,9 @@ export class FeedbackScreen extends Component {
     onClick() {
         if (this.state.loading) {
             this.notification.add(
-                _t("A request is still being processed in the background. Please wait."),
+                _t(
+                    "A request is still being processed in the background. Please wait."
+                ),
                 {
                     type: "warning",
                 }

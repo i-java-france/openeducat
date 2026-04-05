@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { CalendarController } from "@web/views/calendar/calendar_controller";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { onWillStart } from "@odoo/owl";
-import { CalendarQuickCreate } from "@calendar/views/calendar_form/calendar_quick_create";
+import {_t} from "@web/core/l10n/translation";
+import {CalendarController} from "@web/views/calendar/calendar_controller";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {onWillStart} from "@odoo/owl";
+import {CalendarQuickCreate} from "@calendar/views/calendar_form/calendar_quick_create";
 export class AttendeeCalendarController extends CalendarController {
     static template = "calendar.AttendeeCalendarController";
     static components = {
@@ -58,7 +58,7 @@ export class AttendeeCalendarController extends CalendarController {
         return {
             ...props,
             size: "md",
-            context: { ...props.context, ...this.props.context },
+            context: {...props.context, ...this.props.context},
             onRecordSaved: () => onDialogClosed(),
         };
     }
@@ -81,21 +81,24 @@ export class AttendeeCalendarController extends CalendarController {
         ) {
             if (record.rawRecord.recurrency) {
                 this.openRecurringDeletionWizard(record);
-            } else if (user.partnerId === record.attendeeId &&
-                record.rawRecord.attendees_count == 1) {
+            } else if (
+                user.partnerId === record.attendeeId &&
+                record.rawRecord.attendees_count == 1
+            ) {
                 super.deleteRecord(...arguments);
             } else {
-                this.orm.call("calendar.event", "action_unlink_event", [
-                    record.id,
-                    record.attendeeId,
-                ])
-                .then((action) => {
-                    if (action && action.context) {
-                        this.actionService.doAction(action);
-                    } else {
-                        location.reload();
-                    }
-                });
+                this.orm
+                    .call("calendar.event", "action_unlink_event", [
+                        record.id,
+                        record.attendeeId,
+                    ])
+                    .then((action) => {
+                        if (action && action.context) {
+                            this.actionService.doAction(action);
+                        } else {
+                            location.reload();
+                        }
+                    });
             }
         } else {
             // Decline event
@@ -116,7 +119,7 @@ export class AttendeeCalendarController extends CalendarController {
                 context: {
                     default_calendar_event_id: record.id,
                     default_attendee_id: record.attendeeId,
-                    form_view_ref: 'calendar.calendar_popover_delete_view',
+                    form_view_ref: "calendar.calendar_popover_delete_view",
                 },
                 target: "new",
             },

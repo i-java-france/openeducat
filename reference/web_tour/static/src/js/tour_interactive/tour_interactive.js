@@ -1,10 +1,10 @@
-import { tourState } from "@web_tour/js/tour_state";
-import { debounce } from "@web/core/utils/timing";
+import {tourState} from "@web_tour/js/tour_state";
+import {debounce} from "@web/core/utils/timing";
 import * as hoot from "@odoo/hoot-dom";
-import { utils } from "@web/core/ui/ui_service";
-import { TourStep } from "@web_tour/js/tour_step";
-import { MacroMutationObserver } from "@web/core/macro";
-import { getScrollParent } from "@web_tour/js/utils/tour_utils";
+import {utils} from "@web/core/ui/ui_service";
+import {TourStep} from "@web_tour/js/tour_step";
+import {MacroMutationObserver} from "@web/core/macro";
+import {getScrollParent} from "@web_tour/js/utils/tour_utils";
 
 /**
  * @typedef ConsumeEvent
@@ -36,7 +36,10 @@ export class TourInteractive {
      */
     start(env, pointer, onTourEnd) {
         env.bus.addEventListener("ACTION_MANAGER:UPDATE", () => (this.isBusy = true));
-        env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", () => (this.isBusy = false));
+        env.bus.addEventListener(
+            "ACTION_MANAGER:UI-UPDATED",
+            () => (this.isBusy = false)
+        );
 
         this.pointer = pointer;
         this.debouncedToggleOpen = debounce(this.pointer.showContent, 50, true);
@@ -76,7 +79,7 @@ export class TourInteractive {
 
         return anchor
             .split(/,\s*(?![^(]*\))/)
-            .map((part) => hoot.queryFirst(part, { visible: true }))
+            .map((part) => hoot.queryFirst(part, {visible: true}))
             .filter((el) => !!el)
             .map((el) => this.getAnchorEl(el, this.currentAction.event))
             .filter((el) => !!el);
@@ -127,7 +130,10 @@ export class TourInteractive {
         const cleanups = this.anchorEls.flatMap((anchorEl, index) => {
             const toListen = {
                 anchorEl,
-                consumeEvents: this.getConsumeEventType(anchorEl, this.currentAction.event),
+                consumeEvents: this.getConsumeEventType(
+                    anchorEl,
+                    this.currentAction.event
+                ),
                 onConsume: () => {
                     this.pointer.hide();
                     this.currentActionIndex++;
@@ -202,7 +208,11 @@ export class TourInteractive {
         const cleanups = [
             () => {
                 for (const consume of consumeEvents) {
-                    consume.target.removeEventListener(consume.type, consume.listener, true);
+                    consume.target.removeEventListener(
+                        consume.type,
+                        consume.listener,
+                        true
+                    );
                 }
                 anchorEl.removeEventListener("mouseenter", onMouseEnter);
                 anchorEl.removeEventListener("mouseleave", onMouseLeave);
@@ -213,7 +223,9 @@ export class TourInteractive {
         if (scrollEl) {
             const debouncedOnScroll = debounce(onScroll, 50);
             scrollEl.addEventListener("scroll", debouncedOnScroll);
-            cleanups.push(() => scrollEl.removeEventListener("scroll", debouncedOnScroll));
+            cleanups.push(() =>
+                scrollEl.removeEventListener("scroll", debouncedOnScroll)
+            );
         }
 
         return cleanups;
@@ -319,7 +331,9 @@ export class TourInteractive {
 
                 // Pressing enter in the input group does the same as clicking on the button
                 if (element.closest(".input-group")) {
-                    for (const inputEl of element.parentElement.querySelectorAll("input")) {
+                    for (const inputEl of element.parentElement.querySelectorAll(
+                        "input"
+                    )) {
                         consumeEvents.push({
                             name: "keydown",
                             target: inputEl,
@@ -333,7 +347,9 @@ export class TourInteractive {
         if (["fill", "edit"].includes(runCommand)) {
             if (
                 utils.isSmall() &&
-                element.closest(".o_field_widget")?.matches(".o_field_many2one, .o_field_many2many")
+                element
+                    .closest(".o_field_widget")
+                    ?.matches(".o_field_many2one, .o_field_many2many")
             ) {
                 consumeEvents.push({
                     name: "click",
@@ -355,7 +371,9 @@ export class TourInteractive {
                                     ".o-autocomplete--dropdown-item .ui-state-active"
                                 )
                             ) {
-                                const nextStep = this.actions.at(this.currentActionIndex + 1);
+                                const nextStep = this.actions.at(
+                                    this.currentActionIndex + 1
+                                );
                                 if (
                                     this.findTriggers(nextStep.anchor)
                                         .at(0)
@@ -373,7 +391,9 @@ export class TourInteractive {
                         target: element.ownerDocument,
                         conditional: (ev) => {
                             if (ev.target.closest(".o-autocomplete--dropdown-item")) {
-                                const nextStep = this.actions.at(this.currentActionIndex + 1);
+                                const nextStep = this.actions.at(
+                                    this.currentActionIndex + 1
+                                );
                                 if (
                                     this.findTriggers(nextStep.anchor)
                                         .at(0)
@@ -435,7 +455,10 @@ export class TourInteractive {
             );
         }
 
-        if (consumeEvent === "input" && !["textarea", "input"].includes(el.tagName.toLowerCase())) {
+        if (
+            consumeEvent === "input" &&
+            !["textarea", "input"].includes(el.tagName.toLowerCase())
+        ) {
             return el.closest("[contenteditable='true']");
         }
         if (consumeEvent === "sort") {
@@ -460,8 +483,8 @@ export class TourInteractive {
             } else if (!tempAnchors.length && this.anchorEls.length) {
                 this.pointer.hide();
                 if (
-                    !hoot.queryFirst(".o_home_menu", { visible: true }) &&
-                    !hoot.queryFirst(".dropdown-item.o_loading", { visible: true }) &&
+                    !hoot.queryFirst(".o_home_menu", {visible: true}) &&
+                    !hoot.queryFirst(".dropdown-item.o_loading", {visible: true}) &&
                     !this.isBusy
                 ) {
                     this.backward();

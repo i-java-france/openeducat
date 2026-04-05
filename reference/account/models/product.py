@@ -1,9 +1,8 @@
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 from odoo.tools import format_amount
 from odoo.tools.misc import split_every
-
 
 ACCOUNT_DOMAIN = "[('account_type', 'not in', ('asset_receivable','liability_payable','asset_cash','liability_credit_card','off_balance'))]"
 

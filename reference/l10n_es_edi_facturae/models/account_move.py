@@ -9,9 +9,10 @@ from markupsafe import Markup
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_round, float_repr, float_compare, date_utils, SQL
-from odoo.tools.xml_utils import cleanup_xml_node, find_xml_value
+from odoo.tools import SQL, date_utils, float_compare, float_repr, float_round
 from odoo.tools.sql import column_exists, create_column
+from odoo.tools.xml_utils import cleanup_xml_node, find_xml_value
+
 from odoo.addons.l10n_es_edi_facturae.xml_utils import (
     NS_MAP,
     _canonicalize_node,

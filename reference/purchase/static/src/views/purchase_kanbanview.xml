@@ -1,5 +1,9 @@
 <templates>
-    <t t-name="purchase.PurchaseKanbanView" t-inherit="account.FileUploadKanbanRenderer" t-inherit-mode="primary">
+    <t
+        t-name="purchase.PurchaseKanbanView"
+        t-inherit="account.FileUploadKanbanRenderer"
+        t-inherit-mode="primary"
+    >
         <xpath expr="//div[hasclass('o_kanban_renderer')]" position="before">
             <PurchaseDashBoard />
         </xpath>

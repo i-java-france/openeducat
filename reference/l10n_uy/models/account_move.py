@@ -26,7 +26,7 @@ class AccountMove(models.Model):
         return "%s A%07d" % (self.l10n_latam_document_type_id.doc_code_prefix, number)
 
     def _get_last_sequence_domain(self, relaxed=False):
-        where_string, param = super(AccountMove, self)._get_last_sequence_domain(relaxed)
+        where_string, param = super()._get_last_sequence_domain(relaxed)
         if self.company_id.account_fiscal_country_id.code == "UY" and self.l10n_latam_use_documents:
             where_string += " AND l10n_latam_document_type_id = %(l10n_latam_document_type_id)s"
             param['l10n_latam_document_type_id'] = self.l10n_latam_document_type_id.id or 0

@@ -1,6 +1,6 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { click, edit } from "@odoo/hoot-dom";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click, edit} from "@odoo/hoot-dom";
 import {
     defineModels,
     fields,
@@ -16,9 +16,9 @@ class PaymentLinkWizard extends models.Model {
             record.link = `/payment/pay?amount=${record.amount}`;
         },
     });
-    link = fields.Char({ type: "char" });
+    link = fields.Char({type: "char"});
 
-    _records = [{ id: 1, amount: 15, link: "/payment/pay?amount=15" }];
+    _records = [{id: 1, amount: 15, link: "/payment/pay?amount=15"}];
 }
 
 defineModels([PaymentLinkWizard]);
@@ -49,7 +49,7 @@ test("copy link immediatly after entering the amount", async () => {
         resId: 1,
     });
 
-    // not awaiting the events
+    // Not awaiting the events
     await click(".o_field_widget[name=amount] input");
     await edit("13");
     await click(".o_clipboard_button");

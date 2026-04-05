@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import Command
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase
-
 from odoo.tests import tagged
-from odoo.tests.common import new_test_user
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 @tagged("post_install", "-at_install")
@@ -13,7 +10,7 @@ class IrModelAccessTest(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(IrModelAccessTest, cls).setUpClass()
+        super().setUpClass()
 
         cls.env['ir.model.access'].create({
             'name': "read",

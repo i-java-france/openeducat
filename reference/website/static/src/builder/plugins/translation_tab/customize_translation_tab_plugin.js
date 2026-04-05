@@ -1,12 +1,12 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { uniqueId } from "@web/core/utils/functions";
-import { TranslateWebpageOption } from "./translate_webpage_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {uniqueId} from "@web/core/utils/functions";
+import {TranslateWebpageOption} from "./translate_webpage_option";
 
 /**
  * @typedef { Object } CustomizeTranslationTabShared
@@ -25,16 +25,23 @@ class TranslateToAction extends BuilderAction {
     }
 
     async apply() {
-        const translationState = this.dependencies.customizeTranslationTab.getTranslationState();
+        const translationState =
+            this.dependencies.customizeTranslationTab.getTranslationState();
         try {
             translationState.isTranslating = true;
             const language = this.services.website.currentWebsite.metadata.langName;
-            const { translationChunks, translationMap } = this.generateTranslationChunks(
+            const {translationChunks, translationMap} = this.generateTranslationChunks(
                 this.editable
             );
             if (translationChunks) {
-                const responses = await this.runTranslationChunks(translationChunks, language);
-                const failedNodeCount = this.applyTranslationsToDOM(translationMap, responses);
+                const responses = await this.runTranslationChunks(
+                    translationChunks,
+                    language
+                );
+                const failedNodeCount = this.applyTranslationsToDOM(
+                    translationMap,
+                    responses
+                );
                 if (failedNodeCount > 0) {
                     this.showNotification(
                         _t(
@@ -63,7 +70,8 @@ class TranslateToAction extends BuilderAction {
         const text = el.textContent.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
         const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const PHONE_REGEX = /^[+\d][\d\s\-().]{6,}$/;
-        const URL_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(:\d+)?(\/[\w\-./?%&=]*)?(#\S*)?$/i;
+        const URL_REGEX =
+            /^(https?:\/\/)?([\w-]+\.)+[\w-]+(:\d+)?(\/[\w\-./?%&=]*)?(#\S*)?$/i;
         const LETTER_OR_NUMBER_REGEX = /\p{L}|\p{N}/u;
         return (
             !LETTER_OR_NUMBER_REGEX.test(text) ||
@@ -114,11 +122,11 @@ class TranslateToAction extends BuilderAction {
                     continue;
                 }
                 const text = node.textContent.trim();
-                const itemSize = JSON.stringify({ id: nodeId, text }).length;
+                const itemSize = JSON.stringify({id: nodeId, text}).length;
                 if (currentChunkLength + itemSize > limit && currentChunk.length) {
                     flushChunk();
                 }
-                currentChunk.push({ el: node, id: nodeId, originalText: text });
+                currentChunk.push({el: node, id: nodeId, originalText: text});
                 translationMap.set(nodeId, node);
                 currentChunkLength += itemSize;
             }
@@ -134,7 +142,7 @@ class TranslateToAction extends BuilderAction {
             );
             return {};
         }
-        return { translationChunks, translationMap };
+        return {translationChunks, translationMap};
     }
 
     /**
@@ -157,11 +165,14 @@ class TranslateToAction extends BuilderAction {
 
         const tasks = translationChunks.map((chunk) => async () => {
             const prompt = JSON.stringify(
-                chunk.map(({ id, originalText }) => ({ id, text: originalText }))
+                chunk.map(({id, originalText}) => ({id, text: originalText}))
             );
             const conversation = [
                 systemMessage,
-                { role: "user", content: `Translate the following to ${language}:\n\n${prompt}` },
+                {
+                    role: "user",
+                    content: `Translate the following to ${language}:\n\n${prompt}`,
+                },
             ];
             return rpc(
                 "/html_editor/generate_text",
@@ -169,7 +180,7 @@ class TranslateToAction extends BuilderAction {
                     prompt: prompt,
                     conversation_history: conversation,
                 },
-                { silent: true }
+                {silent: true}
             );
         });
 
@@ -209,7 +220,7 @@ class TranslateToAction extends BuilderAction {
                 continue;
             }
 
-            for (const { id, text } of translations) {
+            for (const {id, text} of translations) {
                 const node = translationMap.get(id);
                 if (!node) {
                     continue;
@@ -220,7 +231,9 @@ class TranslateToAction extends BuilderAction {
                     continue;
                 }
                 node.textContent = translated;
-                const parentEl = node.parentElement?.closest("[data-oe-translation-state]");
+                const parentEl = node.parentElement?.closest(
+                    "[data-oe-translation-state]"
+                );
                 if (parentEl) {
                     parentEl.dataset.oeTranslationState = "translated";
                 }

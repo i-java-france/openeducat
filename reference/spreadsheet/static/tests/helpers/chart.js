@@ -1,7 +1,7 @@
-import { animationFrame } from "@odoo/hoot-mock";
+import {animationFrame} from "@odoo/hoot-mock";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 /**
@@ -16,7 +16,7 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
  * @param {import("@spreadsheet/chart/odoo_chart/odoo_chart").OdooChartDefinition} definition
  */
 export function insertChartInSpreadsheet(model, type = "odoo_bar", definition = {}) {
-    definition = { ...getChartDefinition(type), ...definition };
+    definition = {...getChartDefinition(type), ...definition};
     model.dispatch("CREATE_CHART", {
         sheetId: model.getters.getActiveSheetId(),
         chartId: definition.id,
@@ -42,12 +42,12 @@ export function insertChartInSpreadsheet(model, type = "odoo_bar", definition = 
  * @returns { Promise<{ model: OdooSpreadsheetModel, env: Object }>}
  */
 export async function createSpreadsheetWithChart(params = {}) {
-    const { model, env } = await createModelWithDataSource(params);
+    const {model, env} = await createModelWithDataSource(params);
 
     insertChartInSpreadsheet(model, params.type, params.definition);
 
     await animationFrame();
-    return { model, env };
+    return {model, env};
 }
 
 function getChartDefinition(type) {
@@ -66,7 +66,7 @@ function getChartDefinition(type) {
             orderBy: [],
         },
         stacked: true,
-        title: { text: "Partners" },
+        title: {text: "Partners"},
         background: "#FFFFFF",
         legendPosition: "top",
         verticalAxisPosition: "left",

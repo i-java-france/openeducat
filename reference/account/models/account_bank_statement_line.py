@@ -1,9 +1,8 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.fields import Command, Domain
-
 from xmlrpc.client import MAXINT
 
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Command, Domain
 from odoo.tools import SQL
 from odoo.tools.misc import str2bool
 
@@ -401,7 +400,7 @@ class AccountBankStatementLine(models.Model):
             **vals,
         } for vals in vals_list])
         to_create_lines_vals = []
-        for i, (st_line, vals) in enumerate(zip(st_lines, vals_list)):
+        for i, (st_line, vals) in enumerate(zip(st_lines, vals_list, strict=False)):
             if 'line_ids' not in vals_list[i]:
                 to_create_lines_vals.extend(
                     line_vals

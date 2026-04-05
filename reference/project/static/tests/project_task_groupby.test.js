@@ -1,7 +1,7 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { mountView, quickCreateKanbanColumn } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {mountView, quickCreateKanbanColumn} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, ProjectTask } from "./project_models";
+import {ProjectTask, defineProjectModels} from "./project_models";
 
 defineProjectModels();
 

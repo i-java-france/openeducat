@@ -1,13 +1,13 @@
-import { Component } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
+import {Component} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
 
 export class UnavailableProductsDialog extends Component {
     static template = "pos_self_order.UnavailableProductsDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
-        productNames: { type: Array },
-        onClose: { type: Function, optional: true },
-        close: { type: Function, optional: true },
+        productNames: {type: Array},
+        onClose: {type: Function, optional: true},
+        close: {type: Function, optional: true},
     };
 
     onConfirm() {

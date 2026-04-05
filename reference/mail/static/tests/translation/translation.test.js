@@ -1,4 +1,4 @@
-import { LONG_PRESS_DELAY } from "@mail/utils/common/hooks";
+import {LONG_PRESS_DELAY} from "@mail/utils/common/hooks";
 import {
     click,
     contains,
@@ -8,10 +8,10 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { pointerDown } from "@odoo/hoot-dom";
-import { advanceTime, mockTouch, mockUserAgent } from "@odoo/hoot-mock";
-import { asyncStep, serverState, waitForSteps } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {pointerDown} from "@odoo/hoot-dom";
+import {advanceTime, mockTouch, mockUserAgent} from "@odoo/hoot-mock";
+import {asyncStep, serverState, waitForSteps} from "@web/../tests/web_test_helpers";
 
 defineMailModels();
 
@@ -27,21 +27,21 @@ test("Toggle display of original/translated version of chatter message", async (
     });
     onRpcBefore("/mail/message/translate", () => {
         asyncStep("Request");
-        return { body: "To bad weather, good face.", lang_name: "Spanish", error: null };
+        return {body: "To bad weather, good face.", lang_name: "Spanish", error: null};
     });
     await start();
     await openFormView("res.partner", partnerId);
     await contains("[title='Translate']");
-    await contains("[title='Revert']", { count: 0 });
+    await contains("[title='Revert']", {count: 0});
     // Click acts as a toogle affecting its appearence and the actual message content displayed.
     await click("[title='Translate']");
     await contains(".o-mail-Message-body", {
         text: "To bad weather, good face.(Translated from: Spanish)",
     });
-    await contains("[title='Translate']", { count: 0 });
+    await contains("[title='Translate']", {count: 0});
     await contains("[title='Revert']");
     await click("[title='Revert']");
-    await contains(".o-mail-Message", { text: "Al mal tiempo, buena cara." });
+    await contains(".o-mail-Message", {text: "Al mal tiempo, buena cara."});
     await click("[title='Translate']");
     // The translation button should not trigger more than one external request for a single message.
     await waitForSteps(["Request"]);
@@ -67,13 +67,13 @@ test("translation of email message", async () => {
     await openFormView("res.partner", partnerId);
     await contains("span", {
         text: "Al mal tiempo, buena cara.",
-        parent: [".o-mail-Message-body > div", { shadowRoot: true }],
+        parent: [".o-mail-Message-body > div", {shadowRoot: true}],
     });
     await click("button[title='Expand']");
     await click(".o-dropdown-item:contains('Translate')");
     await contains("span", {
         text: "To bad weather, good face.",
-        parent: [".o-mail-Message-body > div", { shadowRoot: true }],
+        parent: [".o-mail-Message-body > div", {shadowRoot: true}],
     });
     await contains(".o-mail-Message-body", {
         text: "(Translated from: Spanish)",
@@ -82,7 +82,7 @@ test("translation of email message", async () => {
     await click(".o-dropdown-item:contains('Revert')");
     await contains("span", {
         text: "Al mal tiempo, buena cara.",
-        parent: [".o-mail-Message-body > div", { shadowRoot: true }],
+        parent: [".o-mail-Message-body > div", {shadowRoot: true}],
     });
 });
 
@@ -90,7 +90,9 @@ test.tags("desktop");
 test("Do not show translate action if message body is empty", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
-    const subtypeId = pyEnv["mail.message.subtype"].create({ description: "Task created" });
+    const subtypeId = pyEnv["mail.message.subtype"].create({
+        description: "Task created",
+    });
     const attachmentId = pyEnv["ir.attachment"].create({
         mimetype: "text/plain",
         name: "Blah.txt",
@@ -116,7 +118,7 @@ test("Do not show translate action if message body is empty", async () => {
     ]);
     await start();
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Message", { count: 3 });
+    await contains(".o-mail-Message", {count: 3});
     expect("button[title='Expand']").toHaveCount(0);
     expect(".o-mail-Message:eq(0) [title='Translate']").toHaveCount(1);
     expect(".o-mail-Message:eq(1) [title='Translate']").toHaveCount(0);

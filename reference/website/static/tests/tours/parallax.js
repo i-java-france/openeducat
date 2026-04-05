@@ -7,7 +7,7 @@ import {
     registerWebsitePreviewTour,
 } from "@website/js/tours/tour_utils";
 
-const coverSnippet = { id: "s_cover", name: "Cover", groupName: "Intro" };
+const coverSnippet = {id: "s_cover", name: "Cover", groupName: "Intro"};
 
 registerWebsitePreviewTour(
     "test_parallax",
@@ -20,7 +20,8 @@ registerWebsitePreviewTour(
         ...clickOnSnippet(coverSnippet),
         ...changeOptionInPopover("Cover", "Filter", "Blur"),
         {
-            content: "Check that the Cover snippet has the Blur filter on its background image",
+            content:
+                "Check that the Cover snippet has the Blur filter on its background image",
             trigger: ":iframe .s_cover span[data-gl-filter='blur']",
         },
         ...changeOptionInPopover("Cover", "Scroll Effect", "None"),
@@ -53,7 +54,8 @@ registerWebsitePreviewTour(
         ...changeOptionInPopover("Cover", "Scroll Effect", "Parallax to Top"),
         {
             content: "Check that the option was correctly applied",
-            trigger: ":iframe span.s_parallax_bg[style*=top][style*=bottom][style*=transform]",
+            trigger:
+                ":iframe span.s_parallax_bg[style*=top][style*=bottom][style*=transform]",
         },
         ...changeOptionInPopover("Cover", "Scroll Effect", "Zoom In"),
         {

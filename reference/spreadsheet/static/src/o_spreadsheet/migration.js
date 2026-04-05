@@ -1,6 +1,6 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
-const { tokenize, parse, convertAstNodes, astToFormula } = spreadsheet;
-const { migrationStepRegistry } = spreadsheet.registries;
+const {tokenize, parse, convertAstNodes, astToFormula} = spreadsheet;
+const {migrationStepRegistry} = spreadsheet.registries;
 
 const MAP_V1 = {
     PIVOT: "ODOO.PIVOT",
@@ -56,7 +56,10 @@ migrationStepRegistry.add("18.3.2", {
 migrationStepRegistry.add("18.4.10", {
     migrate(data) {
         for (const globalFilter of data.globalFilters || []) {
-            if (globalFilter.type === "text" && typeof globalFilter.defaultValue == "string") {
+            if (
+                globalFilter.type === "text" &&
+                typeof globalFilter.defaultValue == "string"
+            ) {
                 if (globalFilter.defaultValue === "") {
                     delete globalFilter.defaultValue;
                 } else {
@@ -64,7 +67,9 @@ migrationStepRegistry.add("18.4.10", {
                 }
             }
             if (globalFilter.type === "text" && globalFilter.rangeOfAllowedValues) {
-                globalFilter.rangesOfAllowedValues = [globalFilter.rangeOfAllowedValues];
+                globalFilter.rangesOfAllowedValues = [
+                    globalFilter.rangeOfAllowedValues,
+                ];
                 delete globalFilter.rangeOfAllowedValues;
             }
         }
@@ -75,7 +80,10 @@ migrationStepRegistry.add("18.4.10", {
 migrationStepRegistry.add("18.4.11", {
     migrate(data) {
         for (const globalFilter of data.globalFilters || []) {
-            if (globalFilter.type === "date" && globalFilter.rangeType === "fixedPeriod") {
+            if (
+                globalFilter.type === "date" &&
+                globalFilter.rangeType === "fixedPeriod"
+            ) {
                 if (typeof globalFilter.defaultValue !== "string") {
                     // If the defaultValue is not a string, it's probably a
                     // something very old that we do not support anymore
@@ -109,7 +117,11 @@ const defaultValueMap = {
 migrationStepRegistry.add("18.4.13", {
     migrate(data) {
         for (const globalFilter of data.globalFilters || []) {
-            if (["last_six_month", "last_three_years"].includes(globalFilter.defaultValue)) {
+            if (
+                ["last_six_month", "last_three_years"].includes(
+                    globalFilter.defaultValue
+                )
+            ) {
                 delete globalFilter.defaultValue;
             }
             if (globalFilter.defaultValue in defaultValueMap) {
@@ -155,7 +167,7 @@ migrationStepRegistry.add("18.5.10", {
                 }
             }
         }
-        const re = /ODOO\.FILTER\.VALUE/gi
+        const re = /ODOO\.FILTER\.VALUE/gi;
         for (const sheet of data.sheets || []) {
             for (const xc in sheet.cells || {}) {
                 const content = sheet.cells[xc];
@@ -212,9 +224,9 @@ function migrateOdooData(data) {
 function parseDimension(dimension) {
     const [name, granularity] = dimension.split(":");
     if (granularity) {
-        return { name, granularity };
+        return {name, granularity};
     }
-    return { name };
+    return {name};
 }
 
 function renameFunctions(data, map) {
@@ -326,7 +338,7 @@ function migrate4to5(data) {
             if (!data.pivots[id].fieldMatching) {
                 data.pivots[id].fieldMatching = {};
             }
-            data.pivots[id].fieldMatching[filter.id] = { chain: fm.field, type: fm.type };
+            data.pivots[id].fieldMatching[filter.id] = {chain: fm.field, type: fm.type};
             if ("offset" in fm) {
                 data.pivots[id].fieldMatching[filter.id].offset = fm.offset;
             }
@@ -341,7 +353,7 @@ function migrate4to5(data) {
             if (!data.lists[id].fieldMatching) {
                 data.lists[id].fieldMatching = {};
             }
-            data.lists[id].fieldMatching[filter.id] = { chain: fm.field, type: fm.type };
+            data.lists[id].fieldMatching[filter.id] = {chain: fm.field, type: fm.type};
             if ("offset" in fm) {
                 data.lists[id].fieldMatching[filter.id].offset = fm.offset;
             }
@@ -366,7 +378,7 @@ function migrate4to5(data) {
             if (!figure.data.fieldMatching) {
                 figure.data.fieldMatching = {};
             }
-            figure.data.fieldMatching[filter.id] = { chain: fm.field, type: fm.type };
+            figure.data.fieldMatching[filter.id] = {chain: fm.field, type: fm.type};
             if ("offset" in fm) {
                 figure.data.fieldMatching[filter.id].offset = fm.offset;
             }
@@ -406,7 +418,10 @@ function migrate5to6(data) {
         return data;
     }
     for (const filter of data.globalFilters) {
-        if (filter.type === "date" && ["year", "quarter", "month"].includes(filter.rangeType)) {
+        if (
+            filter.type === "date" &&
+            ["year", "quarter", "month"].includes(filter.rangeType)
+        ) {
             if (filter.defaultsToCurrentPeriod) {
                 filter.defaultValue = `this_${filter.rangeType}`;
             }

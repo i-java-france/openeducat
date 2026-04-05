@@ -1,9 +1,9 @@
-import { FileInput } from "@web/core/file_input/file_input";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { checkFileSize } from "@web/core/utils/files";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { Component } from "@odoo/owl";
+import {FileInput} from "@web/core/file_input/file_input";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {checkFileSize} from "@web/core/utils/files";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {Component} from "@odoo/owl";
 
 export class AttachDocumentWidget extends Component {
     static template = "web.AttachDocument";
@@ -12,9 +12,9 @@ export class AttachDocumentWidget extends Component {
     };
     static props = {
         ...standardWidgetProps,
-        string: { type: String },
-        action: { type: String, optional: true },
-        highlight: { type: Boolean },
+        string: {type: String},
+        action: {type: String, optional: true},
+        highlight: {type: Boolean},
     };
 
     setup() {
@@ -58,9 +58,9 @@ export class AttachDocumentWidget extends Component {
     }
 
     async onFileUploaded(files) {
-        const { action, record } = this.props;
+        const {action, record} = this.props;
         if (action) {
-            const { resId, resModel } = record;
+            const {resId, resModel} = record;
             await this.env.services.orm.call(resModel, action, [resId], {
                 attachment_ids: files.map((file) => file.id),
             });
@@ -75,8 +75,8 @@ export class AttachDocumentWidget extends Component {
 
 export const attachDocumentWidget = {
     component: AttachDocumentWidget,
-    extractProps: ({ attrs }) => {
-        const { action, highlight, string } = attrs;
+    extractProps: ({attrs}) => {
+        const {action, highlight, string} = attrs;
         return {
             action,
             highlight: !!highlight,

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from odoo import api, models, _
+from odoo import _, api, models
 from odoo.exceptions import UserError
 
 
@@ -16,7 +15,7 @@ class ResUsers(models.Model):
     def _set_password(self):
         self._check_password_policy(self.mapped('password'))
 
-        super(ResUsers, self)._set_password()
+        super()._set_password()
 
     def _check_password_policy(self, passwords):
         failures = []
@@ -30,4 +29,4 @@ class ResUsers(models.Model):
                 failures.append(_("Your password must contain at least %(minimal_length)d characters and only has %(current_count)d.", minimal_length=minlength, current_count=len(password)))
 
         if failures:
-            raise UserError(u'\n\n '.join(failures))
+            raise UserError('\n\n '.join(failures))

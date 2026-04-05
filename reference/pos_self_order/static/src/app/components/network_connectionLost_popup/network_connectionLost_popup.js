@@ -1,7 +1,7 @@
-import { Component, onMounted, onWillUnmount, useState } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { ConnectionLostError, rpc } from "@web/core/network/rpc";
-import { _t } from "@web/core/l10n/translation";
+import {Component, onMounted, onWillUnmount, useState} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {ConnectionLostError, rpc} from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
 
 export class NetworkConnectionLostPopup extends Component {
     static template = "pos_self_order.NetworkConnectionLostPopup";
@@ -51,7 +51,7 @@ export class NetworkConnectionLostPopup extends Component {
     async checkConnectivity() {
         try {
             clearTimeout(this.checkConnectivityTimeout);
-            await rpc("/pos-self/ping", { access_token: this.props.access_token });
+            await rpc("/pos-self/ping", {access_token: this.props.access_token});
 
             clearInterval(this.interval);
             this.state.online = true;

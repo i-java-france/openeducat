@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, tools
@@ -46,15 +45,15 @@ class MailMessageSubtype(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         self.env.registry.clear_cache()  # _get_auto_subscription_subtypes
-        return super(MailMessageSubtype, self).create(vals_list)
+        return super().create(vals_list)
 
     def write(self, vals):
         self.env.registry.clear_cache()  # _get_auto_subscription_subtypes
-        return super(MailMessageSubtype, self).write(vals)
+        return super().write(vals)
 
     def unlink(self):
         self.env.registry.clear_cache()  # _get_auto_subscription_subtypes
-        return super(MailMessageSubtype, self).unlink()
+        return super().unlink()
 
     @tools.ormcache('model_name')
     def _get_auto_subscription_subtypes(self, model_name):

@@ -1,5 +1,5 @@
-import { components } from "@odoo/o-spreadsheet";
-import { patch } from "@web/core/utils/patch";
+import {components} from "@odoo/o-spreadsheet";
+import {patch} from "@web/core/utils/patch";
 
 patch(components.ChartJsComponent.prototype, {
     createChart(chartData) {

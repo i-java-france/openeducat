@@ -1,18 +1,18 @@
-import { _t } from "@web/core/l10n/translation";
-import { loadBundle } from "@web/core/assets";
-import { registry } from "@web/core/registry";
-import { formatFloat } from "@web/views/fields/formatters";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {loadBundle} from "@web/core/assets";
+import {registry} from "@web/core/registry";
+import {formatFloat} from "@web/views/fields/formatters";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
+import {Component, onWillStart, useEffect, useRef} from "@odoo/owl";
 
 export class GaugeField extends Component {
     static template = "web.GaugeField";
     static props = {
         ...standardFieldProps,
-        maxValueField: { type: String, optional: true },
-        maxValue: { type: Number, optional: true },
-        title: { type: String, optional: true },
+        maxValueField: {type: String, optional: true},
+        maxValue: {type: Number, optional: true},
+        title: {type: String, optional: true},
     };
     static defaultProps = {
         maxValue: 100,
@@ -35,7 +35,9 @@ export class GaugeField extends Component {
     }
 
     get title() {
-        return this.props.title || this.props.record.fields[this.props.name].string || "";
+        return (
+            this.props.title || this.props.record.fields[this.props.name].string || ""
+        );
     }
 
     get formattedValue() {
@@ -47,7 +49,9 @@ export class GaugeField extends Component {
 
     renderChart() {
         const gaugeValue = this.props.record.data[this.props.name];
-        let maxValue = this.props.maxValueField ? this.props.record.data[this.props.maxValueField] : this.props.maxValue;
+        let maxValue = this.props.maxValueField
+            ? this.props.record.data[this.props.maxValueField]
+            : this.props.maxValue;
         maxValue = Math.max(gaugeValue, maxValue);
         let maxLabel = maxValue;
         if (gaugeValue === 0 && maxValue === 0) {
@@ -85,9 +89,9 @@ export class GaugeField extends Component {
                         callbacks: {
                             label: function (tooltipItem) {
                                 if (tooltipItem.dataIndex === 0) {
-                                    return _t("Value: %(value)s", { value: gaugeValue });
+                                    return _t("Value: %(value)s", {value: gaugeValue});
                                 }
-                                return _t("Max: %(max)s", { max: maxLabel });
+                                return _t("Max: %(max)s", {max: maxLabel});
                             },
                         },
                     },
@@ -119,7 +123,7 @@ export const gaugeField = {
             type: "string",
         },
     ],
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         maxValueField: options.max_field,
         maxValue: options.max_value,
         title: options.title,

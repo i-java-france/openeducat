@@ -1,10 +1,11 @@
 import re
-import requests
 from unittest.mock import patch
 
+import requests
+
 import odoo
-from odoo.modules.registry import Registry, DummyRLock
-from odoo.tests.common import BaseCase, tagged, get_db_name
+from odoo.modules.registry import DummyRLock, Registry
+from odoo.tests.common import BaseCase, get_db_name, tagged
 
 
 @tagged("-standard", "-at_install", "post_install", "database_breaking")

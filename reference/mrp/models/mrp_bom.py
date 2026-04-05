@@ -1,12 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from collections import defaultdict
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
 from odoo.tools import float_compare
-from odoo.tools.misc import clean_context, OrderedSet
-
-from collections import defaultdict
+from odoo.tools.misc import OrderedSet, clean_context
 
 
 class MrpBom(models.Model):
@@ -57,7 +57,7 @@ class MrpBom(models.Model):
     picking_type_id = fields.Many2one(
         'stock.picking.type', 'Operation Type', domain="[('code', '=', 'mrp_operation')]",
         check_company=True,
-        help=u"When a procurement has a ‘produce’ route with a operation type set, it will try to create "
+        help="When a procurement has a ‘produce’ route with a operation type set, it will try to create "
              "a Manufacturing Order for that product using a BoM of the same operation type.If not,"
              "the operation type is not taken into account in the BoM search. That allows "
              "to define stock rules which trigger different manufacturing orders with different BoMs.")
@@ -273,10 +273,10 @@ class MrpBom(models.Model):
 
     def copy(self, default=None):
         new_boms = super().copy(default)
-        for old_bom, new_bom in zip(self, new_boms):
+        for old_bom, new_bom in zip(self, new_boms, strict=False):
             if old_bom.operation_ids:
                 operations_mapping = {}
-                for original, copied in zip(old_bom.operation_ids, new_bom.operation_ids.sorted()):
+                for original, copied in zip(old_bom.operation_ids, new_bom.operation_ids.sorted(), strict=False):
                     operations_mapping[original] = copied
                 for bom_line in new_bom.bom_line_ids:
                     if bom_line.operation_id:
@@ -303,7 +303,7 @@ class MrpBom(models.Model):
                 self.browse(result[0]).code = name
                 return result
             raise UserError(_("You cannot create a new Bill of Material from here."))
-        return super(MrpBom, self).name_create(name)
+        return super().name_create(name)
 
     def action_archive(self):
         self.with_context(active_test=False).operation_ids.action_archive()
@@ -739,7 +739,7 @@ class MrpBomLine(models.Model):
         for values in vals_list:
             if 'product_id' in values and 'product_uom_id' not in values:
                 values['product_uom_id'] = self.env['product.product'].browse(values['product_id']).uom_id.id
-        return super(MrpBomLine, self).create(vals_list)
+        return super().create(vals_list)
 
     def _skip_bom_line(self, product, never_attribute_values=False):
         """ Control if a BoM line should be produced, can be inherited to add custom control.

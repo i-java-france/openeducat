@@ -1,9 +1,9 @@
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { Tooltip } from "./tooltip";
-import { hasTouch } from "@web/core/browser/feature_detection";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {Tooltip} from "./tooltip";
+import {hasTouch} from "@web/core/browser/feature_detection";
 
-import { whenReady } from "@odoo/owl";
+import {whenReady} from "@odoo/owl";
 
 /**
  * The tooltip service allows to display custom tooltips on every elements with
@@ -45,7 +45,7 @@ export const SHOW_AFTER_DELAY = 250;
 
 export const tooltipService = {
     dependencies: ["popover"],
-    start(env, { popover }) {
+    start(env, {popover}) {
         let openTooltipTimeout;
         let closeTooltip;
         let showTimer;
@@ -60,7 +60,8 @@ export const tooltipService = {
         function isHelpNode(el) {
             return (
                 el.textContent === "?" &&
-                (el.hasAttribute("data-tooltip") || el.hasAttribute("data-tooltip-template"))
+                (el.hasAttribute("data-tooltip") ||
+                    el.hasAttribute("data-tooltip-template"))
             );
         }
 
@@ -107,7 +108,10 @@ export const tooltipService = {
          * @param {number} [param1.delay] delay after which the popover should
          *  open
          */
-        function openTooltip(el, { tooltip = "", template, info, position, delay = OPEN_DELAY }) {
+        function openTooltip(
+            el,
+            {tooltip = "", template, info, position, delay = OPEN_DELAY}
+        ) {
             cleanup();
             if (!tooltip && !template) {
                 return;
@@ -123,8 +127,8 @@ export const tooltipService = {
                     closeTooltip = popover.add(
                         target,
                         Tooltip,
-                        { tooltip, template, info },
-                        { position }
+                        {tooltip, template, info},
+                        {position}
                     );
                 }
             }, timeoutDelay);
@@ -247,10 +251,12 @@ export const tooltipService = {
             }
 
             // Listen (using event delegation) to "mouseenter" events to open the tooltip if any
-            document.body.addEventListener("mouseenter", onMouseenter, { capture: true });
+            document.body.addEventListener("mouseenter", onMouseenter, {capture: true});
             // Listen (using event delegation) to "mouseleave" events to close the tooltip if any
-            document.body.addEventListener("mouseleave", cleanupTooltip, { capture: true });
-            document.body.addEventListener("click", onClick, { capture: true });
+            document.body.addEventListener("mouseleave", cleanupTooltip, {
+                capture: true,
+            });
+            document.body.addEventListener("click", onClick, {capture: true});
         });
 
         return {

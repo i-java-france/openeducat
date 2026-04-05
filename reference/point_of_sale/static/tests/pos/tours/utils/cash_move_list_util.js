@@ -1,4 +1,4 @@
-import { negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
 
 export function checkCashMoveShown(amount) {
     return {
@@ -29,7 +29,9 @@ export function checkNumberOfRows(number) {
         content: "check number of cash moves",
         trigger: ".cash-move-list .cash-move-row",
         run: () => {
-            const cashMoveRows = document.querySelectorAll(".cash-move-list .cash-move-row").length;
+            const cashMoveRows = document.querySelectorAll(
+                ".cash-move-list .cash-move-row"
+            ).length;
             if (cashMoveRows !== number) {
                 throw new Error(`Expected ${number} cash moves, found ${cashMoveRows}`);
             }

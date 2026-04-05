@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
@@ -47,7 +47,7 @@ class ResUsers(models.Model):
 
     @api.model
     def _get_login_order(self):
-        return 'website_id, ' + super(ResUsers, self)._get_login_order()
+        return 'website_id, ' + super()._get_login_order()
 
     @api.model
     def _signup_create_user(self, values):
@@ -59,13 +59,13 @@ class ResUsers(models.Model):
         values['company_ids'] = [Command.link(current_website.company_id.id)]
         if request and current_website.specific_user_account:
             values['website_id'] = current_website.id
-        new_user = super(ResUsers, self)._signup_create_user(values)
+        new_user = super()._signup_create_user(values)
         return new_user
 
     @api.model
     def _get_signup_invitation_scope(self):
         current_website = self.env['website'].sudo().get_current_website()
-        return current_website.auth_signup_uninvited or super(ResUsers, self)._get_signup_invitation_scope()
+        return current_website.auth_signup_uninvited or super()._get_signup_invitation_scope()
 
     def authenticate(self, credential, user_agent_env):
         """ Override to link the logged in user's res.partner to website.visitor.

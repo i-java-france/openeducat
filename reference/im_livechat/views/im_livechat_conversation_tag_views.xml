@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <data>
         <record id="im_livechat_channel_conversation_tag_view_list" model="ir.ui.view">
@@ -6,8 +6,8 @@
             <field name="model">im_livechat.conversation.tag</field>
             <field name="arch" type="xml">
                 <list string="Tags" editable="bottom" sample="1" duplicate="0">
-                    <field name="name"/>
-                    <field name="color" widget="color_picker"/>
+                    <field name="name" />
+                    <field name="color" widget="color_picker" />
                 </list>
             </field>
         </record>
@@ -19,8 +19,8 @@
                 <form string="Tags">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="color" widget="color_picker"/>
+                            <field name="name" />
+                            <field name="color" widget="color_picker" />
                         </group>
                     </sheet>
                 </form>

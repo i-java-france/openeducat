@@ -134,7 +134,7 @@ function getNodeHeight(node) {
 function getImageSize(targetNode, options = {}) {
     const width = options.width || getNodeWidth(targetNode);
     const height = options.height || getNodeHeight(targetNode);
-    return { width, height };
+    return {width, height};
 }
 function getPixelRatio() {
     let ratio;
@@ -144,7 +144,8 @@ function getPixelRatio() {
     } catch {
         // pass
     }
-    const val = FINAL_PROCESS && FINAL_PROCESS.env ? FINAL_PROCESS.env.devicePixelRatio : null;
+    const val =
+        FINAL_PROCESS && FINAL_PROCESS.env ? FINAL_PROCESS.env.devicePixelRatio : null;
     if (val) {
         ratio = parseInt(val, 10);
         if (Number.isNaN(ratio)) {
@@ -157,7 +158,10 @@ function getPixelRatio() {
 const canvasDimensionLimit = 16384;
 function checkCanvasDimensions(canvas) {
     if (canvas.width > canvasDimensionLimit || canvas.height > canvasDimensionLimit) {
-        if (canvas.width > canvasDimensionLimit && canvas.height > canvasDimensionLimit) {
+        if (
+            canvas.width > canvasDimensionLimit &&
+            canvas.height > canvasDimensionLimit
+        ) {
             if (canvas.width > canvas.height) {
                 canvas.height *= canvasDimensionLimit / canvas.width;
                 canvas.width = canvasDimensionLimit;
@@ -328,7 +332,7 @@ function makeDataUrl(content, mimeType) {
     return `data:${mimeType};base64,${content}`;
 }
 async function fetchAsDataURL(url, init, process) {
-    const res = await fetch(url, { ...init, mode: "no-cors" });
+    const res = await fetch(url, {...init, mode: "no-cors"});
     if (res.status === 404) {
         throw new Error(`Resource "${res.url}" not found`);
     }
@@ -338,7 +342,7 @@ async function fetchAsDataURL(url, init, process) {
         reader.onerror = reject;
         reader.onloadend = () => {
             try {
-                resolve(process({ res, result: reader.result }));
+                resolve(process({res, result: reader.result}));
             } catch (error) {
                 reject(error);
             }
@@ -373,7 +377,7 @@ async function resourceToDataURL(resourceUrl, contentType, options) {
         const content = await fetchAsDataURL(
             resourceUrl,
             options.fetchRequestInit,
-            ({ res, result }) => {
+            ({res, result}) => {
                 if (!contentType) {
                     // eslint-disable-next-line no-param-reassign
                     contentType = res.headers.get("Content-Type") || "";
@@ -440,7 +444,8 @@ async function cloneSingleNode(node, options) {
     }
     return node.cloneNode(false);
 }
-const isSlotElement = (node) => node.tagName != null && node.tagName.toUpperCase() === "SLOT";
+const isSlotElement = (node) =>
+    node.tagName != null && node.tagName.toUpperCase() === "SLOT";
 async function cloneChildren(nativeNode, clonedNode, options) {
     let children = [];
     if (isSlotElement(nativeNode) && nativeNode.assignedNodes) {
@@ -609,7 +614,7 @@ async function embed(cssText, resourceURL, baseURL, options, getContentFromUrl) 
     }
     return cssText;
 }
-function filterPreferredFontFormat(str, { preferredFontFormat }) {
+function filterPreferredFontFormat(str, {preferredFontFormat}) {
     return !preferredFontFormat
         ? str
         : str.replace(FONT_SRC_REGEX, (match) => {
@@ -644,7 +649,11 @@ async function embedProp(propName, node, options) {
     const propValue = node.style?.getPropertyValue(propName);
     if (propValue) {
         const cssString = await embedResources(propValue, null, options);
-        node.style.setProperty(propName, cssString, node.style.getPropertyPriority(propName));
+        node.style.setProperty(
+            propName,
+            cssString,
+            node.style.getPropertyPriority(propName)
+        );
         return true;
     }
     return false;
@@ -661,7 +670,10 @@ async function embedImageNode(clonedNode, options) {
     const isImageElement = isInstanceOfElement(clonedNode, HTMLImageElement);
     if (
         !(isImageElement && !isDataUrl(clonedNode.src)) &&
-        !(isInstanceOfElement(clonedNode, SVGImageElement) && !isDataUrl(clonedNode.href.baseVal))
+        !(
+            isInstanceOfElement(clonedNode, SVGImageElement) &&
+            !isDataUrl(clonedNode.href.baseVal)
+        )
     ) {
         return;
     }
@@ -699,7 +711,7 @@ async function embedImages(clonedNode, options) {
 }
 
 function applyStyle(node, options) {
-    const { style } = node;
+    const {style} = node;
     if (options.backgroundColor) {
         style.backgroundColor = options.backgroundColor;
     }
@@ -726,7 +738,7 @@ async function fetchCSS(url) {
     }
     const res = await fetch(url);
     const cssText = await res.text();
-    cache = { url, cssText };
+    cache = {url, cssText};
     cssFetchCache[url] = cache;
     return cache;
 }
@@ -739,7 +751,7 @@ async function embedFonts(data, options) {
         if (!url.startsWith("https://")) {
             url = new URL(url, data.url).href;
         }
-        return fetchAsDataURL(url, options.fetchRequestInit, ({ result }) => {
+        return fetchAsDataURL(url, options.fetchRequestInit, ({result}) => {
             cssText = cssText.replace(loc, `url(${result})`);
             return [loc, result];
         });
@@ -755,7 +767,10 @@ function parseCSS(source) {
     // strip out comments
     let cssText = source.replace(commentsRegex, "");
     // eslint-disable-next-line prefer-regex-literals
-    const keyframesRegex = new RegExp("((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})", "gi");
+    const keyframesRegex = new RegExp(
+        "((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})",
+        "gi"
+    );
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const matches = keyframesRegex.exec(cssText);
@@ -812,10 +827,13 @@ async function getCSSRules(styleSheets, options) {
                                                 : sheet.cssRules.length
                                         );
                                     } catch (error) {
-                                        console.error("Error inserting rule from remote css", {
-                                            rule,
-                                            error,
-                                        });
+                                        console.error(
+                                            "Error inserting rule from remote css",
+                                            {
+                                                rule,
+                                                error,
+                                            }
+                                        );
                                     }
                                 })
                             )
@@ -826,7 +844,8 @@ async function getCSSRules(styleSheets, options) {
                     }
                 });
             } catch (e) {
-                const inline = styleSheets.find((a) => a.href == null) || document.styleSheets[0];
+                const inline =
+                    styleSheets.find((a) => a.href == null) || document.styleSheets[0];
                 if (sheet.href != null) {
                     deferreds.push(
                         fetchCSS(sheet.href)
@@ -854,7 +873,10 @@ async function getCSSRules(styleSheets, options) {
                         ret.push(item);
                     });
                 } catch (e) {
-                    console.error(`Error while reading CSS rules from ${sheet.href}`, e);
+                    console.error(
+                        `Error while reading CSS rules from ${sheet.href}`,
+                        e
+                    );
                 }
             }
         });
@@ -889,8 +911,8 @@ async function embedWebFonts(clonedNode, options) {
         options.fontEmbedCSS != null
             ? options.fontEmbedCSS
             : options.skipFonts
-            ? null
-            : await getWebFontCSS(clonedNode, options);
+              ? null
+              : await getWebFontCSS(clonedNode, options);
     if (cssText) {
         const styleNode = document.createElement("style");
         const sytleContent = document.createTextNode(cssText);
@@ -904,7 +926,7 @@ async function embedWebFonts(clonedNode, options) {
 }
 
 async function toSvg(node, options = {}) {
-    const { width, height } = getImageSize(node, options);
+    const {width, height} = getImageSize(node, options);
     const clonedNode = await cloneNode(node, options, true);
     await embedWebFonts(clonedNode, options);
     await embedImages(clonedNode, options);
@@ -913,7 +935,7 @@ async function toSvg(node, options = {}) {
     return datauri;
 }
 async function toCanvas(node, options = {}) {
-    const { width, height } = getImageSize(node, options);
+    const {width, height} = getImageSize(node, options);
     const svg = await toSvg(node, options);
     const img = await createImage(svg);
     const canvas = document.createElement("canvas");
@@ -936,7 +958,7 @@ async function toCanvas(node, options = {}) {
     return canvas;
 }
 async function toPixelData(node, options = {}) {
-    const { width, height } = getImageSize(node, options);
+    const {width, height} = getImageSize(node, options);
     const canvas = await toCanvas(node, options);
     const ctx = canvas.getContext("2d");
     return ctx.getImageData(0, 0, width, height).data;
@@ -958,4 +980,4 @@ async function getFontEmbedCSS(node, options = {}) {
     return getWebFontCSS(node, options);
 }
 
-export { getFontEmbedCSS, toBlob, toCanvas, toJpeg, toPixelData, toPng, toSvg };
+export {getFontEmbedCSS, toBlob, toCanvas, toJpeg, toPixelData, toPng, toSvg};

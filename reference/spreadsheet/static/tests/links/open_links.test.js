@@ -1,20 +1,24 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { makeSpreadsheetMockEnv } from "@spreadsheet/../tests/helpers/model";
-import { makeMockEnv, mockService, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {makeSpreadsheetMockEnv} from "@spreadsheet/../tests/helpers/model";
+import {
+    makeMockEnv,
+    mockService,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
 
-import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
+import {getMenuServerData} from "@spreadsheet/../tests/links/menu_data_utils";
 
-import { setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
+import {setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
-const { Model } = spreadsheet;
-const { urlRepresentation, openLink } = spreadsheet.links;
+const {Model} = spreadsheet;
+const {urlRepresentation, openLink} = spreadsheet.links;
 
 test("click a web link", async () => {
     patchWithCleanup(window, {
@@ -26,11 +30,11 @@ test("click a web link", async () => {
     const data = {
         sheets: [
             {
-                cells: { A1: "[Odoo](https://odoo.com)" },
+                cells: {A1: "[Odoo](https://odoo.com)"},
             },
         ],
     };
-    const model = new Model(data, { custom: { env } });
+    const model = new Model(data, {custom: {env}});
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("https://odoo.com");
     openLink(cell.link, env);
@@ -47,15 +51,15 @@ test("click a menu link", async () => {
         loadAction: undefined,
     };
     mockService("action", fakeActionService);
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
     const data = {
         sheets: [
             {
-                cells: { A1: "[label](odoo://ir_menu_xml_id/test_menu)" },
+                cells: {A1: "[label](odoo://ir_menu_xml_id/test_menu)"},
             },
         ],
     };
-    const model = new Model(data, { custom: { env } });
+    const model = new Model(data, {custom: {env}});
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("menu with xmlid");
     openLink(cell.link, env);
@@ -73,16 +77,16 @@ test("middle-click a menu link", async () => {
         },
     });
 
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
     const data = {
         sheets: [
             {
-                cells: { A1: "[label](odoo://ir_menu_xml_id/test_menu)" },
+                cells: {A1: "[label](odoo://ir_menu_xml_id/test_menu)"},
             },
         ],
     };
 
-    const model = new Model(data, { custom: { env } });
+    const model = new Model(data, {custom: {env}});
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("menu with xmlid");
     openLink(cell.link, env, true);
@@ -105,7 +109,7 @@ test("click a menu link [2]", async () => {
         loadAction: undefined,
     };
     mockService("action", fakeActionService);
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
     const view = {
         name: "an odoo view",
         viewType: "list",
@@ -115,7 +119,7 @@ test("click a menu link [2]", async () => {
         },
     };
 
-    const model = new Model({}, { custom: { env } });
+    const model = new Model({}, {custom: {env}});
     setCellContent(model, "A1", `[a view](odoo://view/${JSON.stringify(view)})`);
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("an odoo view");
@@ -135,7 +139,7 @@ test("Click a link containing an action xml id", async () => {
             expect(action.domain).toEqual([[1, "=", 1]]);
         },
     });
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
 
     const view = {
         name: "My Action Name",
@@ -148,8 +152,12 @@ test("Click a link containing an action xml id", async () => {
         },
     };
 
-    const model = new Model({}, { custom: { env } });
-    setCellContent(model, "A1", `[an action link](odoo://view/${JSON.stringify(view)})`);
+    const model = new Model({}, {custom: {env}});
+    setCellContent(
+        model,
+        "A1",
+        `[an action link](odoo://view/${JSON.stringify(view)})`
+    );
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("My Action Name");
     await openLink(cell.link, env);
@@ -158,7 +166,7 @@ test("Click a link containing an action xml id", async () => {
 });
 
 test("Can open link when some views are absent from the referred action", async () => {
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
     env.services.action = {
         ...env.services.action,
         doAction(action) {
@@ -189,8 +197,12 @@ test("Can open link when some views are absent from the referred action", async 
         },
     };
 
-    const model = new Model({}, { custom: { env } });
-    setCellContent(model, "A1", `[an action link](odoo://view/${JSON.stringify(view)})`);
+    const model = new Model({}, {custom: {env}});
+    setCellContent(
+        model,
+        "A1",
+        `[an action link](odoo://view/${JSON.stringify(view)})`
+    );
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("My Action Name");
     await openLink(cell.link, env);
@@ -199,12 +211,12 @@ test("Can open link when some views are absent from the referred action", async 
 });
 
 test("Context is passed correctly to the action service", async () => {
-    const env = await makeSpreadsheetMockEnv({ serverData: getMenuServerData() });
+    const env = await makeSpreadsheetMockEnv({serverData: getMenuServerData()});
     env.services.action = {
         ...env.services.action,
         loadAction(_, context) {
             expect.step("load-action");
-            expect(context).toEqual({ search_default_partner: 1 });
+            expect(context).toEqual({search_default_partner: 1});
         },
     };
 
@@ -216,12 +228,16 @@ test("Context is passed correctly to the action service", async () => {
             views: [[false, "list"]],
             domain: [(1, "=", 1)],
             xmlId: "spreadsheet.action1",
-            context: { search_default_partner: 1 },
+            context: {search_default_partner: 1},
         },
     };
 
-    const model = new Model({}, { custom: { env } });
-    setCellContent(model, "A1", `[an action link](odoo://view/${JSON.stringify(view)})`);
+    const model = new Model({}, {custom: {env}});
+    setCellContent(
+        model,
+        "A1",
+        `[an action link](odoo://view/${JSON.stringify(view)})`
+    );
     const cell = getEvaluatedCell(model, "A1");
     expect(urlRepresentation(cell.link, model.getters)).toBe("My Action Name");
     await openLink(cell.link, env);

@@ -1,8 +1,8 @@
 /* global posmodel */
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export function confirmPopup() {
     return [Dialog.confirm()];
@@ -34,7 +34,7 @@ export function waitForMenuOptionsToOpen() {
         trigger: `span.dropdown-item`,
     };
 }
-export function clickMenuDropdownOption(name, { expectUnloadPage = false } = {}) {
+export function clickMenuDropdownOption(name, {expectUnloadPage = false} = {}) {
     return {
         content: `click on something in the burger menu`,
         trigger: `span.dropdown-item:contains(${name})`,
@@ -91,7 +91,8 @@ export function doCashMove(amount, reason) {
         })),
         {
             isActive: ["mobile"],
-            trigger: ".o-overlay-item:nth-child(2) .modal-footer button:contains('Confirm')",
+            trigger:
+                ".o-overlay-item:nth-child(2) .modal-footer button:contains('Confirm')",
             run: "click",
         },
         Dialog.confirm(),
@@ -127,7 +128,7 @@ export function startPoS() {
         },
     ];
 }
-export function clickBtn(name, { expectUnloadPage = false } = {}) {
+export function clickBtn(name, {expectUnloadPage = false} = {}) {
     return {
         content: `Click on ${name}`,
         trigger: `body button:contains(${name})`,
@@ -149,7 +150,7 @@ export function fillTextArea(target, value) {
     };
 }
 export function createFloatingOrder() {
-    return { trigger: ".pos-leftheader .list-plus-btn", run: "click" };
+    return {trigger: ".pos-leftheader .list-plus-btn", run: "click"};
 }
 
 function _hasFloatingOrder(name, yes) {
@@ -188,7 +189,7 @@ export function noFloatingOrder(name) {
     return _hasFloatingOrder(name, false);
 }
 export function clickOrders() {
-    return { trigger: ".pos-leftheader .orders-button", run: "click" };
+    return {trigger: ".pos-leftheader .orders-button", run: "click"};
 }
 export function selectPresetTimingSlotHour(hour) {
     return [
@@ -204,16 +205,16 @@ export function selectPresetTimingSlotHour(hour) {
     ];
 }
 export function presetTimingSlotIs(hour) {
-    return { trigger: `.pos-leftheader .preset-time-btn:contains('${hour}')` };
+    return {trigger: `.pos-leftheader .preset-time-btn:contains('${hour}')`};
 }
 export function selectPresetTimingSlot(slot) {
-    return { trigger: `.modal button:contains('${slot}')`, run: "click" };
+    return {trigger: `.modal button:contains('${slot}')`, run: "click"};
 }
 export function presetTimingSlotHourNotExists(hour) {
-    return { trigger: negate(`.modal button:visible:contains('${hour}')`) };
+    return {trigger: negate(`.modal button:visible:contains('${hour}')`)};
 }
 export function presetTimingSlotHourExists(hour) {
-    return { trigger: `.modal button:contains('${hour}')` };
+    return {trigger: `.modal button:contains('${hour}')`};
 }
 export function selectSlotDays(d) {
     return {
@@ -228,7 +229,7 @@ export function selectPresetTimingSlotIndex(index) {
     };
 }
 export function clickRegister() {
-    return { trigger: ".pos-leftheader .register-label", run: "click" };
+    return {trigger: ".pos-leftheader .register-label", run: "click"};
 }
 export function waitRequest() {
     return [
@@ -236,15 +237,19 @@ export function waitRequest() {
             trigger: "body",
             content: "Wait loading is finished if it is shown",
             timeout: 15000,
-            async run({ waitFor }) {
+            async run({waitFor}) {
                 let isLoading = false;
                 try {
-                    isLoading = await waitFor("body:has(.fa-circle-o-notch)", { timeout: 2000 });
+                    isLoading = await waitFor("body:has(.fa-circle-o-notch)", {
+                        timeout: 2000,
+                    });
                 } catch {
                     /* fa-circle-o-notch will certainly never appears :'( */
                 }
                 if (isLoading) {
-                    await waitFor("body:not(:has(.fa-circle-o-notch))", { timeout: 10000 });
+                    await waitFor("body:not(:has(.fa-circle-o-notch))", {
+                        timeout: 10000,
+                    });
                 }
             },
         },
@@ -292,14 +297,16 @@ export function CustomerDisplayHasThisDeviceButton() {
     return {
         isActive: ["desktop"],
         content: "Check that the customer display popup has a 'This device' button",
-        trigger: ".o_dialog .modal-body .container .btn-primary:contains('This device')",
+        trigger:
+            ".o_dialog .modal-body .container .btn-primary:contains('This device')",
     };
 }
 export function CustomerDisplayHasQRButton() {
     return {
         isActive: ["desktop"],
         content: "Check that the customer display popup has a 'Display QR' button",
-        trigger: ".o_dialog .modal-body .container .btn-secondary:contains('Display QR')",
+        trigger:
+            ".o_dialog .modal-body .container .btn-secondary:contains('Display QR')",
     };
 }
 export function ClickCustomerDisplayThisDeviceButton() {

@@ -1,4 +1,4 @@
-import { webModels } from "@web/../tests/web_test_helpers";
+import {webModels} from "@web/../tests/web_test_helpers";
 
 export class ResCurrency extends webModels.ResCurrency {
     _name = "res.currency";

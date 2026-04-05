@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
 
-from odoo.addons.mass_mailing.tests.common import MassMailCommon
-from odoo.tests import Form, users, tagged
-from odoo.tools import mute_logger
 from odoo import fields
+from odoo.tests import Form, tagged, users
+from odoo.tools import mute_logger
+
+from odoo.addons.mass_mailing.tests.common import MassMailCommon
 
 
 @tagged('post_install', '-at_install')

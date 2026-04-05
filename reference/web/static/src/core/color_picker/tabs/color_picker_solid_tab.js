@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class ColorPickerSolidTab extends Component {
     static template = "web.ColorPickerSolidTab";
@@ -11,12 +11,12 @@ export class ColorPickerSolidTab extends Component {
         onColorPointerOut: Function,
         onFocusin: Function,
         onFocusout: Function,
-        currentCustomColor: { type: String, optional: true },
-        defaultColorSet: { type: String | Boolean, optional: true },
-        cssVarColorPrefix: { type: String, optional: true },
+        currentCustomColor: {type: String, optional: true},
+        defaultColorSet: {type: String | Boolean, optional: true},
+        cssVarColorPrefix: {type: String, optional: true},
         defaultColors: Array,
         defaultThemeColorVars: Array,
-        "*": { optional: true },
+        "*": {optional: true},
     };
 }
 

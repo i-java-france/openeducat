@@ -1,13 +1,13 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { InputConfirmationDialog } from "@portal/js/components/input_confirmation_dialog/input_confirmation_dialog";
-import { handleCheckIdentity } from "@portal/interactions/portal_security";
-import { browser } from "@web/core/browser/browser";
-import { user } from "@web/core/user";
-import { _t } from "@web/core/l10n/translation";
+import {InputConfirmationDialog} from "@portal/js/components/input_confirmation_dialog/input_confirmation_dialog";
+import {handleCheckIdentity} from "@portal/interactions/portal_security";
+import {browser} from "@web/core/browser/browser";
+import {user} from "@web/core/user";
+import {_t} from "@web/core/l10n/translation";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
 /**
  * Replaces specific <field> elements by normal HTML, strip out the rest entirely
@@ -48,10 +48,17 @@ function fromField(f, record) {
             copySpanText.textContent = _t(" Copy");
 
             const copyButton = document.createElement("button");
-            copyButton.setAttribute("class", "btn btn-sm btn-primary o_clipboard_button o_btn_char_copy py-0 px-2");
+            copyButton.setAttribute(
+                "class",
+                "btn btn-sm btn-primary o_clipboard_button o_btn_char_copy py-0 px-2"
+            );
             copyButton.onclick = async function (event) {
                 event.preventDefault();
-                $(copyButton).tooltip({ title: _t("Copied!"), trigger: "manual", placement: "bottom" });
+                $(copyButton).tooltip({
+                    title: _t("Copied!"),
+                    trigger: "manual",
+                    placement: "bottom",
+                });
                 await browser.navigator.clipboard.writeText($(secretSpan)[0].innerText);
                 $(copyButton).tooltip("show");
                 setTimeout(() => $(copyButton).tooltip("hide"), 800);
@@ -62,7 +69,10 @@ function fromField(f, record) {
 
             // CopyClipboard Div
             const secretDiv = document.createElement("div");
-            secretDiv.setAttribute("class", "o_field_copy d-flex justify-content-center align-items-center");
+            secretDiv.setAttribute(
+                "class",
+                "o_field_copy d-flex justify-content-center align-items-center"
+            );
             secretDiv.appendChild(secretSpan);
             secretDiv.appendChild(copyButton);
 
@@ -86,7 +96,9 @@ function fromField(f, record) {
  * to fixup *should* be relatively simple.
  */
 function fixupViewBody(oldNode, record) {
-    let qrcode = null, code = null, node = null;
+    let qrcode = null,
+        code = null,
+        node = null;
 
     switch (oldNode.nodeType) {
         case 1: // element
@@ -98,7 +110,7 @@ function fixupViewBody(oldNode, record) {
                         break;
                     case "code":
                         code = node;
-                        break
+                        break;
                 }
                 break; // no need to recurse here
             }
@@ -109,37 +121,50 @@ function fixupViewBody(oldNode, record) {
             }
             for (let j = 0; j < oldNode.childNodes.length; ++j) {
                 const [ch, qr, co] = fixupViewBody(oldNode.childNodes[j], record);
-                if (ch) { node.appendChild(ch); }
-                if (qr) { qrcode = qr; }
-                if (co) { code = co; }
+                if (ch) {
+                    node.appendChild(ch);
+                }
+                if (qr) {
+                    qrcode = qr;
+                }
+                if (co) {
+                    code = co;
+                }
             }
             break;
-        case 3: case 4: // text, cdata
+        case 3:
+        case 4: // text, cdata
             node = document.createTextNode(oldNode.data);
             break;
         default:
         // don't care about PI & al
     }
 
-    return [node, qrcode, code]
+    return [node, qrcode, code];
 }
 
 export class TOTPEnable extends Interaction {
     static selector = "#auth_totp_portal_enable";
     dynamicContent = {
-        _root: { "t-on-click.prevent": this.onClick },
+        _root: {"t-on-click.prevent": this.onClick},
     };
 
     async onClick() {
-        const data = await this.waitFor(handleCheckIdentity(
-            this.waitFor(this.services.orm.call("res.users", "action_totp_enable_wizard", [user.userId])),
-            this.services.orm,
-            this.services.dialog,
-        ));
+        const data = await this.waitFor(
+            handleCheckIdentity(
+                this.waitFor(
+                    this.services.orm.call("res.users", "action_totp_enable_wizard", [
+                        user.userId,
+                    ])
+                ),
+                this.services.orm,
+                this.services.dialog
+            )
+        );
 
         if (!data) {
             // TOTP probably already enabled, just reload page
-            location.reload()
+            location.reload();
             return;
         }
 
@@ -157,9 +182,11 @@ export class TOTPEnable extends Interaction {
 
         this.services.dialog.add(InputConfirmationDialog, {
             body: markup(body.outerHTML),
-            onInput: ({ inputEl }) => { inputEl.setCustomValidity("") },
+            onInput: ({inputEl}) => {
+                inputEl.setCustomValidity("");
+            },
             confirmLabel: _t("Activate"),
-            confirm: async ({ inputEl }) => {
+            confirm: async ({inputEl}) => {
                 if (!inputEl.reportValidity()) {
                     inputEl.classList.add("is-invalid");
                     return false;
@@ -167,19 +194,21 @@ export class TOTPEnable extends Interaction {
 
                 try {
                     await handleCheckIdentity(
-                        this.waitFor(this.services.orm.call(model, "enable",
-                            [ record.id ],
-                            { 'context': {'code': inputEl.value} },
-                        )),
+                        this.waitFor(
+                            this.services.orm.call(model, "enable", [record.id], {
+                                context: {code: inputEl.value},
+                            })
+                        ),
                         this.services.orm,
                         this.services.dialog
                     );
                 } catch (e) {
-                    const errorMessage = (
-                        !e.message ? e.toString()
-                            : !e.message.data ? e.message.message
-                                : e.message.data.message || _t("Operation failed for unknown reason.")
-                    );
+                    const errorMessage = !e.message
+                        ? e.toString()
+                        : !e.message.data
+                          ? e.message.message
+                          : e.message.data.message ||
+                            _t("Operation failed for unknown reason.");
                     inputEl.classList.add("is-invalid");
                     // show custom validity error message
                     inputEl.setCustomValidity(errorMessage);
@@ -189,7 +218,7 @@ export class TOTPEnable extends Interaction {
                 // reloads page, avoid window.location.reload() because it re-posts forms
                 location.reload();
             },
-            cancel: () => { },
+            cancel: () => {},
         });
     }
 }

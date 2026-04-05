@@ -1,4 +1,4 @@
-from odoo import models, _
+from odoo import _, models
 
 
 class AccountEdiXmlUbl_Bis3(models.AbstractModel):

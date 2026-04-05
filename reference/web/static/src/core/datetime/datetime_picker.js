@@ -1,12 +1,18 @@
-import { Component, onWillRender, onWillUpdateProps, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { MAX_VALID_DATE, MIN_VALID_DATE, clampDate, isInRange, today } from "../l10n/dates";
-import { localization } from "../l10n/localization";
-import { ensureArray } from "../utils/arrays";
-import { TimePicker } from "@web/core/time_picker/time_picker";
-import { Time } from "@web/core/l10n/time";
+import {Component, onWillRender, onWillUpdateProps, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {
+    MAX_VALID_DATE,
+    MIN_VALID_DATE,
+    clampDate,
+    isInRange,
+    today,
+} from "../l10n/dates";
+import {localization} from "../l10n/localization";
+import {ensureArray} from "../utils/arrays";
+import {TimePicker} from "@web/core/time_picker/time_picker";
+import {Time} from "@web/core/l10n/time";
 
-const { DateTime, Info } = luxon;
+const {DateTime, Info} = luxon;
 
 /**
  * @typedef DateItem
@@ -88,8 +94,8 @@ const getStartOfCentury = (date) => Math.floor(date.year / 100) * 100;
  * @param {DateTime} date
  */
 const getStartOfWeek = (date) => {
-    const { weekStart } = localization;
-    return date.set({ weekday: date.weekday < weekStart ? weekStart - 7 : weekStart });
+    const {weekStart} = localization;
+    return date.set({weekday: date.weekday < weekStart ? weekStart - 7 : weekStart});
 };
 
 /**
@@ -103,7 +109,11 @@ const numberRange = (min, max) => [...Array(max - min)].map((_, i) => i + min);
  * @param {NullableDateTime | "today"} defaultValue
  */
 const parseLimitDate = (value, defaultValue) =>
-    clampDate(value === "today" ? today() : value || defaultValue, MIN_VALID_DATE, MAX_VALID_DATE);
+    clampDate(
+        value === "today" ? today() : value || defaultValue,
+        MIN_VALID_DATE,
+        MAX_VALID_DATE
+    );
 
 /**
  * @param {Object} params
@@ -114,7 +124,13 @@ const parseLimitDate = (value, defaultValue) =>
  * @param {[DateTime, DateTime]} params.range
  * @returns {DateItem}
  */
-const toDateItem = ({ isOutOfRange = false, isValid = true, label, range, extraClass }) => ({
+const toDateItem = ({
+    isOutOfRange = false,
+    isValid = true,
+    label,
+    range,
+    extraClass,
+}) => ({
     id: range[0].toISODate(),
     includesToday: isInRange(today(), range),
     isOutOfRange,
@@ -142,9 +158,12 @@ const PRECISION_LEVELS = new Map()
         mainTitle: _t("Select month"),
         nextTitle: _t("Next month"),
         prevTitle: _t("Previous month"),
-        step: { month: 1 },
+        step: {month: 1},
         getTitle: (date) => `${date.monthLong} ${date.year}`,
-        getItems: (date, { maxDate, minDate, showWeekNumbers, isDateValid, dayCellClass }) => {
+        getItems: (
+            date,
+            {maxDate, minDate, showWeekNumbers, isDateValid, dayCellClass}
+        ) => {
             const startDates = [date];
 
             /** @type {WeekItem[]} */
@@ -162,18 +181,20 @@ const PRECISION_LEVELS = new Map()
                     const weekDayItems = [];
                     // Generate all days of the week
                     for (let d = 0; d < DAYS_PER_WEEK; d++) {
-                        const day = startOfNextWeek.plus({ day: d });
+                        const day = startOfNextWeek.plus({day: d});
                         const range = [day, day.endOf("day")];
                         const dayItem = toDateItem({
                             isOutOfRange: !isInRange(day, monthRange),
-                            isValid: isInRange(range, [minDate, maxDate]) && isDateValid?.(day),
+                            isValid:
+                                isInRange(range, [minDate, maxDate]) &&
+                                isDateValid?.(day),
                             label: "day",
                             range,
                             extraClass: dayCellClass?.(day) || "",
                         });
                         weekDayItems.push(dayItem);
                         if (d === DAYS_PER_WEEK - 1) {
-                            startOfNextWeek = day.plus({ day: 1 });
+                            startOfNextWeek = day.plus({day: 1});
                         }
                         if (w === WEEKS_PER_MONTH - 1) {
                             shouldAddLastWeek = true;
@@ -192,7 +213,9 @@ const PRECISION_LEVELS = new Map()
                 const daysOfWeek = weeks[0].days.map((d) => [
                     d.range[0].weekdayShort,
                     d.range[0].weekdayLong,
-                    Info.weekdays("narrow", { locale: d.range[0].locale })[d.range[0].weekday - 1],
+                    Info.weekdays("narrow", {locale: d.range[0].locale})[
+                        d.range[0].weekday - 1
+                    ],
                 ]);
                 if (showWeekNumbers) {
                     daysOfWeek.unshift(["", _t("Week numbers"), ""]);
@@ -220,12 +243,12 @@ const PRECISION_LEVELS = new Map()
         mainTitle: _t("Select year"),
         nextTitle: _t("Next year"),
         prevTitle: _t("Previous year"),
-        step: { year: 1 },
+        step: {year: 1},
         getTitle: (date) => String(date.year),
-        getItems: (date, { maxDate, minDate }) => {
+        getItems: (date, {maxDate, minDate}) => {
             const startOfYear = date.startOf("year");
             return numberRange(0, 12).map((i) => {
-                const startOfMonth = startOfYear.plus({ month: i });
+                const startOfMonth = startOfYear.plus({month: i});
                 const range = [startOfMonth, startOfMonth.endOf("month")];
                 return toDateItem({
                     isValid: isInRange(range, [minDate, maxDate]),
@@ -239,12 +262,15 @@ const PRECISION_LEVELS = new Map()
         mainTitle: _t("Select decade"),
         nextTitle: _t("Next decade"),
         prevTitle: _t("Previous decade"),
-        step: { year: 10 },
-        getTitle: (date) => `${getStartOfDecade(date) - 1} - ${getStartOfDecade(date) + 10}`,
-        getItems: (date, { maxDate, minDate }) => {
-            const startOfDecade = date.startOf("year").set({ year: getStartOfDecade(date) });
+        step: {year: 10},
+        getTitle: (date) =>
+            `${getStartOfDecade(date) - 1} - ${getStartOfDecade(date) + 10}`,
+        getItems: (date, {maxDate, minDate}) => {
+            const startOfDecade = date
+                .startOf("year")
+                .set({year: getStartOfDecade(date)});
             return numberRange(-GRID_MARGIN, GRID_COUNT + GRID_MARGIN).map((i) => {
-                const startOfYear = startOfDecade.plus({ year: i });
+                const startOfYear = startOfDecade.plus({year: i});
                 const range = [startOfYear, startOfYear.endOf("year")];
                 return toDateItem({
                     isOutOfRange: i < 0 || i >= GRID_COUNT,
@@ -259,13 +285,19 @@ const PRECISION_LEVELS = new Map()
         mainTitle: _t("Select century"),
         nextTitle: _t("Next century"),
         prevTitle: _t("Previous century"),
-        step: { year: 100 },
-        getTitle: (date) => `${getStartOfCentury(date) - 10} - ${getStartOfCentury(date) + 100}`,
-        getItems: (date, { maxDate, minDate }) => {
-            const startOfCentury = date.startOf("year").set({ year: getStartOfCentury(date) });
+        step: {year: 100},
+        getTitle: (date) =>
+            `${getStartOfCentury(date) - 10} - ${getStartOfCentury(date) + 100}`,
+        getItems: (date, {maxDate, minDate}) => {
+            const startOfCentury = date
+                .startOf("year")
+                .set({year: getStartOfCentury(date)});
             return numberRange(-GRID_MARGIN, GRID_COUNT + GRID_MARGIN).map((i) => {
-                const startOfDecade = startOfCentury.plus({ year: i * 10 });
-                const range = [startOfDecade, startOfDecade.plus({ year: 10, millisecond: -1 })];
+                const startOfDecade = startOfCentury.plus({year: i * 10});
+                const range = [
+                    startOfDecade,
+                    startOfDecade.plus({year: 10, millisecond: -1}),
+                ];
                 return toDateItem({
                     label: "year",
                     isOutOfRange: i < 0 || i >= GRID_COUNT,
@@ -279,7 +311,7 @@ const PRECISION_LEVELS = new Map()
 // Other constants
 const GRID_COUNT = 10;
 const GRID_MARGIN = 1;
-const NULLABLE_DATETIME_PROPERTY = [DateTime, { value: false }, { value: null }];
+const NULLABLE_DATETIME_PROPERTY = [DateTime, {value: false}, {value: null}];
 
 const DAYS_PER_WEEK = 7;
 const WEEKS_PER_MONTH = 6;
@@ -287,41 +319,41 @@ const WEEKS_PER_MONTH = 6;
 /** @extends {Component<DateTimePickerProps>} */
 export class DateTimePicker extends Component {
     static props = {
-        focusedDateIndex: { type: Number, optional: true },
-        showWeekNumbers: { type: Boolean, optional: true },
-        daysOfWeekFormat: { type: String, optional: true },
-        maxDate: { type: [NULLABLE_DATETIME_PROPERTY, { value: "today" }], optional: true },
+        focusedDateIndex: {type: Number, optional: true},
+        showWeekNumbers: {type: Boolean, optional: true},
+        daysOfWeekFormat: {type: String, optional: true},
+        maxDate: {type: [NULLABLE_DATETIME_PROPERTY, {value: "today"}], optional: true},
         maxPrecision: {
-            type: [...PRECISION_LEVELS.keys()].map((value) => ({ value })),
+            type: [...PRECISION_LEVELS.keys()].map((value) => ({value})),
             optional: true,
         },
-        minDate: { type: [NULLABLE_DATETIME_PROPERTY, { value: "today" }], optional: true },
+        minDate: {type: [NULLABLE_DATETIME_PROPERTY, {value: "today"}], optional: true},
         minPrecision: {
-            type: [...PRECISION_LEVELS.keys()].map((value) => ({ value })),
+            type: [...PRECISION_LEVELS.keys()].map((value) => ({value})),
             optional: true,
         },
-        onReset: { type: Function, optional: true },
-        onSelect: { type: Function, optional: true },
-        onToggleRange: { type: Function, optional: true },
-        range: { type: Boolean, optional: true },
-        rounding: { type: Number, optional: true },
-        showRangeToggler: { type: Boolean, optional: true },
+        onReset: {type: Function, optional: true},
+        onSelect: {type: Function, optional: true},
+        onToggleRange: {type: Function, optional: true},
+        range: {type: Boolean, optional: true},
+        rounding: {type: Number, optional: true},
+        showRangeToggler: {type: Boolean, optional: true},
         slots: {
             type: Object,
-            shape: { buttons: { type: Object, optional: true } },
+            shape: {buttons: {type: Object, optional: true}},
             optional: true,
         },
-        type: { type: [{ value: "date" }, { value: "datetime" }], optional: true },
+        type: {type: [{value: "date"}, {value: "datetime"}], optional: true},
         value: {
             type: [
                 NULLABLE_DATETIME_PROPERTY,
-                { type: Array, element: NULLABLE_DATETIME_PROPERTY },
+                {type: Array, element: NULLABLE_DATETIME_PROPERTY},
             ],
             optional: true,
         },
-        isDateValid: { type: Function, optional: true },
-        dayCellClass: { type: Function, optional: true },
-        tz: { type: String, optional: true },
+        isDateValid: {type: Function, optional: true},
+        dayCellClass: {type: Function, optional: true},
+        tz: {type: String, optional: true},
     };
 
     static defaultProps = {
@@ -335,7 +367,7 @@ export class DateTimePicker extends Component {
     };
 
     static template = "web.DateTimePicker";
-    static components = { TimePicker };
+    static components = {TimePicker};
 
     //-------------------------------------------------------------------------
     // Getters
@@ -406,7 +438,9 @@ export class DateTimePicker extends Component {
         }
 
         if (this.maxDate < this.minDate) {
-            throw new Error(`DateTimePicker error: given "maxDate" comes before "minDate".`);
+            throw new Error(
+                `DateTimePicker error: given "maxDate" comes before "minDate".`
+            );
         }
 
         this.state.timeValues = this.getTimeValues(props);
@@ -415,8 +449,9 @@ export class DateTimePicker extends Component {
     }
 
     onWillRender() {
-        const { dayCellClass, focusedDateIndex, isDateValid, range, showWeekNumbers } = this.props;
-        const { focusDate, hoveredDate } = this.state;
+        const {dayCellClass, focusedDateIndex, isDateValid, range, showWeekNumbers} =
+            this.props;
+        const {focusDate, hoveredDate} = this.state;
         const precision = this.activePrecisionLevel;
         const getterParams = {
             maxDate: this.maxDate,
@@ -430,7 +465,11 @@ export class DateTimePicker extends Component {
         this.items = precision.getItems(focusDate, getterParams);
 
         this.selectedRange = [...this.values];
-        if (range && focusedDateIndex > 0 && (!this.values[1] || hoveredDate > this.values[0])) {
+        if (
+            range &&
+            focusedDateIndex > 0 &&
+            (!this.values[1] || hoveredDate > this.values[0])
+        ) {
             this.selectedRange[1] = hoveredDate;
         }
     }
@@ -449,7 +488,9 @@ export class DateTimePicker extends Component {
         }
 
         const dateToFocus =
-            values[focusedDateIndex] || values[focusedDateIndex === 1 ? 0 : 1] || today();
+            values[focusedDateIndex] ||
+            values[focusedDateIndex === 1 ? 0 : 1] ||
+            today();
 
         this.shouldAdjustFocusDate = false;
         this.state.focusDate = this.clamp(dateToFocus.startOf("month"));
@@ -468,7 +509,10 @@ export class DateTimePicker extends Component {
      */
     filterPrecisionLevels(minPrecision, maxPrecision) {
         const levels = [...PRECISION_LEVELS.keys()];
-        return levels.slice(levels.indexOf(minPrecision), levels.indexOf(maxPrecision) + 1);
+        return levels.slice(
+            levels.indexOf(minPrecision),
+            levels.indexOf(maxPrecision) + 1
+        );
     }
 
     /**
@@ -485,7 +529,7 @@ export class DateTimePicker extends Component {
      *      > range: current start date or current end date.
      * @param {DateItem} item
      */
-    getActiveRangeInfo({ range }) {
+    getActiveRangeInfo({range}) {
         const result = {
             isSelected: isInRange(this.selectedRange, range),
             isSelectStart: false,
@@ -534,7 +578,7 @@ export class DateTimePicker extends Component {
     /**
      * @param {DateItem} item
      */
-    isSelectedDate({ range }) {
+    isSelectedDate({range}) {
         return this.values.some((value) => isInRange(value, range));
     }
 
@@ -545,7 +589,7 @@ export class DateTimePicker extends Component {
      */
     next(ev) {
         ev.preventDefault();
-        const { step } = this.activePrecisionLevel;
+        const {step} = this.activePrecisionLevel;
         this.state.focusDate = this.clamp(this.state.focusDate.plus(step));
     }
 
@@ -556,7 +600,7 @@ export class DateTimePicker extends Component {
      */
     previous(ev) {
         ev.preventDefault();
-        const { step } = this.activePrecisionLevel;
+        const {step} = this.activePrecisionLevel;
         this.state.focusDate = this.clamp(this.state.focusDate.minus(step));
     }
 
@@ -586,8 +630,8 @@ export class DateTimePicker extends Component {
 
         if (this.props.type === "datetime") {
             // Adjusts result according to the current time values
-            const { hour, minute, second } = this.state.timeValues[valueIndex];
-            result[valueIndex] = result[valueIndex].set({ hour, minute, second });
+            const {hour, minute, second} = this.state.timeValues[valueIndex];
+            result[valueIndex] = result[valueIndex].set({hour, minute, second});
         }
         if (!isInRange(result[valueIndex], [this.minDate, this.maxDate])) {
             // Date is outside range defined by min and max dates

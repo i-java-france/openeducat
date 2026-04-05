@@ -1,25 +1,25 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { getContent, setSelection } from "./_helpers/selection";
-import { animationFrame, click, press, queryOne, waitFor } from "@odoo/hoot-dom";
-import { insertText, splitBlock } from "./_helpers/user_actions";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {getContent, setSelection} from "./_helpers/selection";
+import {animationFrame, click, press, queryOne, waitFor} from "@odoo/hoot-dom";
+import {insertText, splitBlock} from "./_helpers/user_actions";
 import {
     compareHighlightedContent,
     highlightedPre,
     patchPrism,
     testTextareaRange,
 } from "./_helpers/syntax_highlighting";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
-import { unformat } from "./_helpers/format";
-import { parseHTML } from "@html_editor/utils/html";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
+import {unformat} from "./_helpers/format";
+import {parseHTML} from "@html_editor/utils/html";
 
 // Press a key combination, then wait for useEffect to kick in.
 const pressAndWait = async (...args) => {
     await press(...args);
-    await animationFrame(); // wait for effect
+    await animationFrame(); // Wait for effect
 };
 
 const insertPre = async (editor) => {
@@ -40,12 +40,12 @@ const changeLanguage = async (textarea, from, to) => {
     await click(`.o_language_selector .o-dropdown-item[name='${to}']`);
     // Code Toolbar should show the new language name.
     await waitFor(`.o_code_toolbar button[name='language'][title='${to}']`);
-    await animationFrame(); // wait for effect
+    await animationFrame(); // Wait for effect
 };
 
 const configWithEmbeddings = {
     Plugins: [...MAIN_PLUGINS, ...EMBEDDED_COMPONENT_PLUGINS],
-    resources: { embedded_components: MAIN_EMBEDDINGS },
+    resources: {embedded_components: MAIN_EMBEDDINGS},
 };
 const testEditorWithHighlightedContent = async (config) =>
     await testEditor({
@@ -61,14 +61,14 @@ test("starting edition with a pre activates syntax highlighting", async () => {
         contentBefore: "<pre>some code</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "some code" }) +
+            highlightedPre({value: "some code"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             await pressAndWait(["ctrl", "z"]);
         },
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "some code" }) +
+            highlightedPre({value: "some code"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>', // Undo did nothing.
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">some code</pre>`,
     });
@@ -81,14 +81,14 @@ test("starting edition with a pre activates syntax highlighting (with dataset va
         // the respective values of which match the dataset.
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "Hello world!", language: "javascript" }) +
+            highlightedPre({value: "Hello world!", language: "javascript"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async (editor) => {
             await pressAndWait(["ctrl", "z"]);
             await compareHighlightedContent(
                 getContent(editor.editable),
                 '<p data-selection-placeholder=""><br></p>' +
-                    highlightedPre({ value: "Hello world!", language: "javascript" }) +
+                    highlightedPre({value: "Hello world!", language: "javascript"}) +
                     '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                 "Undo should have done nothing.",
                 editor
@@ -129,7 +129,7 @@ test("inserting a code block activates syntax highlighting plugin, typing trigge
             await compareHighlightedContent(
                 getContent(editor.editable),
                 '<p data-selection-placeholder=""><br></p>' +
-                    highlightedPre({ value: "abc", textareaRange: 3 }) +
+                    highlightedPre({value: "abc", textareaRange: 3}) +
                     '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                 "The syntax highlighting wrapper was inserted, the paragraph's content is its value and the selection in at the end of the textarea.",
                 editor
@@ -138,7 +138,7 @@ test("inserting a code block activates syntax highlighting plugin, typing trigge
         },
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abcd", textareaRange: 4 }) +
+            highlightedPre({value: "abcd", textareaRange: 4}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>', // The change of value in the textarea is reflected in the pre.
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abcd</pre>[]`,
     });
@@ -150,7 +150,7 @@ test("inserting an empty code block activates syntax highlighting plugin with an
         stepFunction: insertPre,
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "", textareaRange: 0 }) +
+            highlightedPre({value: "", textareaRange: 0}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext"><br></pre>[]`,
     });
@@ -163,13 +163,13 @@ test("inserting a code block in an empty paragraph with a style placeholder acti
             await pressAndWait(["ctrl", "b"]);
             expect(getContent(editor.editable)).toBe(
                 `<p o-we-hint-text='Type "/" for commands' class="o-we-hint"><strong data-oe-zws-empty-inline="">[]\u200B</strong></p>`,
-                { message: "The style placeholder was inserted." }
+                {message: "The style placeholder was inserted."}
             );
             splitBlock(editor);
             expect(getContent(editor.editable)).toBe(
                 `<p><strong data-oe-zws-empty-inline="">\u200B</strong></p>` +
                     `<p o-we-hint-text='Type "/" for commands' class="o-we-hint"><strong data-oe-zws-empty-inline="">[]\u200B</strong></p>`,
-                { message: "The paragraph was split." }
+                {message: "The paragraph was split."}
             );
             await insertPre(editor);
         },
@@ -193,18 +193,18 @@ test("inserting text and undo after an empty code block activates the syntax hig
             await compareHighlightedContent(
                 getContent(editor.editable),
                 '<p data-selection-placeholder=""><br></p>' +
-                    highlightedPre({ value: "", textareaRange: 0 }) +
+                    highlightedPre({value: "", textareaRange: 0}) +
                     '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                 editor
             );
             const p = document.querySelector("p");
-            setSelection({ anchorNode: p, anchorOffset: 0 });
+            setSelection({anchorNode: p, anchorOffset: 0});
             await insertText(editor, "a");
             await pressAndWait(["ctrl", "z"]);
         },
         contentAfterEdit:
             `<p data-selection-placeholder="" class="o-horizontal-caret o-we-hint" o-we-hint-text='Type "/" for commands'>[]<br></p>` +
-            highlightedPre({ value: "" }) +
+            highlightedPre({value: ""}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         contentAfter: `[]<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext"><br></pre>`,
     });
@@ -215,7 +215,7 @@ test("changing languages in a code block changes its highlighting", async () => 
         contentBefore: "<pre>some code</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "some code", language: "plaintext" }) +
+            highlightedPre({value: "some code", language: "plaintext"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             await changeLanguage(queryOne("textarea"), "Plain Text", "Javascript");
@@ -237,7 +237,7 @@ test("should fill an empty pre", async () => {
         contentBefore: "<pre>abc</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abc" }) +
+            highlightedPre({value: "abc"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             const textarea = queryOne("textarea");
@@ -247,7 +247,7 @@ test("should fill an empty pre", async () => {
         },
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "", textareaRange: 0 }) +
+            highlightedPre({value: "", textareaRange: 0}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>', // Note: the BR is outside the highlight.
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext"><br></pre>[]`,
     });
@@ -258,7 +258,7 @@ test("should convert empty codeblock into base container on backspace", async ()
         contentBefore: "<pre></pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "" }) +
+            highlightedPre({value: ""}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             const textarea = queryOne("textarea");
@@ -275,7 +275,7 @@ test("the textarea should never contains zws", async () => {
         contentBefore: "<pre>a\u200bb\ufeffc</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abc" }) +
+            highlightedPre({value: "abc"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             const textarea = queryOne("textarea");
@@ -283,7 +283,7 @@ test("the textarea should never contains zws", async () => {
         },
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abc", textareaRange: 3 }) +
+            highlightedPre({value: "abc", textareaRange: 3}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abc</pre>[]`,
     });
@@ -299,12 +299,12 @@ test("can copy content with the copy button", async () => {
         contentBefore: "<pre>abc</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abc" }) +
+            highlightedPre({value: "abc"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async (editor) => {
             const textarea = queryOne("textarea");
             await click(textarea);
-            testTextareaRange(editor, { el: textarea, value: "abc", range: 3 });
+            testTextareaRange(editor, {el: textarea, value: "abc", range: 3});
             await animationFrame();
             await waitFor(".o_code_toolbar");
             // Copy "abc".
@@ -312,18 +312,18 @@ test("can copy content with the copy button", async () => {
             expect.verifySteps(["abc"]);
             // Change text.
             await click(textarea);
-            testTextareaRange(editor, { el: textarea, value: "abc", range: 3 });
+            testTextareaRange(editor, {el: textarea, value: "abc", range: 3});
             await pressAndWait("d");
-            testTextareaRange(editor, { el: textarea, value: "abcd", range: 4 });
+            testTextareaRange(editor, {el: textarea, value: "abcd", range: 4});
             // Copy "abcd"
             await click(".o_code_toolbar .o_clipboard_button");
             expect.verifySteps(["abcd"]);
             textarea.focus();
-            await animationFrame(); // wait for effect
+            await animationFrame(); // Wait for effect
         },
         contentAfterEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "abcd", textareaRange: 4 }) +
+            highlightedPre({value: "abcd", textareaRange: 4}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         contentAfter: `<pre data-embedded="readonlySyntaxHighlighting" data-language-id="plaintext">abcd</pre>[]`,
     });
@@ -334,7 +334,7 @@ test("tab in code block inserts 4 spaces", async () => {
         contentBefore: "<pre>code</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "code" }) +
+            highlightedPre({value: "code"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             await click("textarea");
@@ -359,7 +359,7 @@ test("tab in selection in code block indents each selected line", async () => {
         contentBefore: "<pre>a<br>b c<br> d</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "a\nb c\n d" }) +
+            highlightedPre({value: "a\nb c\n d"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async () => {
             await click("textarea");
@@ -387,7 +387,7 @@ test("shift+tab in code block outdents the current line", async () => {
         contentBefore: "<pre>    some<br>       co    de<br>    for you</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "    some\n       co    de\n    for you" }) +
+            highlightedPre({value: "    some\n       co    de\n    for you"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async (editor) => {
             await click("textarea");
@@ -426,7 +426,7 @@ test("shift+tab in selection in code block outdents each selected line", async (
         contentBefore: "<pre>    a<br>    b c<br>     d</pre>",
         contentBeforeEdit:
             '<p data-selection-placeholder=""><br></p>' +
-            highlightedPre({ value: "    a\n    b c\n     d" }) +
+            highlightedPre({value: "    a\n    b c\n     d"}) +
             '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
         stepFunction: async (editor) => {
             await click("textarea");
@@ -460,51 +460,52 @@ test("shift+tab in selection in code block outdents each selected line", async (
 
 test.tags("focus required");
 test("can switch between code blocks without issues", async () => {
-    const { editor } = await setupEditor(`<p>ab</p><pre>de</pre><p>gh</p><pre>jk</pre>`, {
+    const {editor} = await setupEditor(`<p>ab</p><pre>de</pre><p>gh</p><pre>jk</pre>`, {
         config: configWithEmbeddings,
     });
     await compareHighlightedContent(
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de" })}
+            ${highlightedPre({value: "de"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jk" })}
+            ${highlightedPre({value: "jk"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         "The content was highlighted",
         editor
     );
-    const [p1, textarea1, p2, textarea2] = editor.document.querySelectorAll("p, textarea");
+    const [p1, textarea1, p2, textarea2] =
+        editor.document.querySelectorAll("p, textarea");
     await click(textarea1);
-    testTextareaRange(editor, { el: textarea1, value: "de", range: 2 });
+    testTextareaRange(editor, {el: textarea1, value: "de", range: 2});
     await click(textarea2);
-    testTextareaRange(editor, { el: textarea2, value: "jk", range: 2 });
+    testTextareaRange(editor, {el: textarea2, value: "jk", range: 2});
     // Action 1: insert "l" in second pre.
     await pressAndWait("l");
     await compareHighlightedContent(
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de" })}
+            ${highlightedPre({value: "de"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `1. Inserted "l" into the second pre and highlighted it.`,
         editor
     );
     await click(textarea1);
-    testTextareaRange(editor, { el: textarea1, value: "de", range: 2 });
+    testTextareaRange(editor, {el: textarea1, value: "de", range: 2});
     // Action 2: insert "f" in first pre.
     await pressAndWait("f");
     await compareHighlightedContent(
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "def", textareaRange: 3 })}
+            ${highlightedPre({value: "def", textareaRange: 3})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `2. Inserted "f" into the first pre and highlighted it.`,
@@ -518,9 +519,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc[]</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `3. Inserted "c" into the first paragraph.`,
@@ -534,9 +535,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>ghi[]</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `4. Inserted "i" into the second paragraph.`,
@@ -548,9 +549,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript", textareaRange: 3 })}
+            ${highlightedPre({value: "def", language: "javascript", textareaRange: 3})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `5. Changed the language of the first textarea to "javascript".`,
@@ -562,9 +563,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript" })}
+            ${highlightedPre({value: "def", language: "javascript"})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl", language: "python", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", language: "python", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `6. Changed the language of the second textarea to "python".`,
@@ -580,9 +581,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript" })}
+            ${highlightedPre({value: "def", language: "javascript"})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         // TODO: is it correct to not move the focus?
@@ -595,9 +596,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", textareaRange: 3 })}
+            ${highlightedPre({value: "def", textareaRange: 3})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         // TODO: is it correct to move the focus?
@@ -610,9 +611,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>gh[]</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Undo 4 removed the "i" from the second paragraph.`,
@@ -624,9 +625,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab[]</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Undo 3 removed the "c" from the first paragraph.`,
@@ -638,9 +639,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de", textareaRange: 2 })}
+            ${highlightedPre({value: "de", textareaRange: 2})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Undo 2 removed the "f" from the first pre and un-highlighted it.`,
@@ -652,9 +653,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de" })}
+            ${highlightedPre({value: "de"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jk", textareaRange: 2 })}
+            ${highlightedPre({value: "jk", textareaRange: 2})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Undo 1 removed the "l" from the second pre and un-highlighted it.`,
@@ -666,9 +667,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de" })}
+            ${highlightedPre({value: "de"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jk", textareaRange: 2 })}
+            ${highlightedPre({value: "jk", textareaRange: 2})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         "Undo did nothing.",
@@ -684,9 +685,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "de" })}
+            ${highlightedPre({value: "de"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 1 reinserted "l" into the second pre and re-highlighted it.`,
@@ -698,9 +699,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>ab</p>
-            ${highlightedPre({ value: "def", textareaRange: 3 })}
+            ${highlightedPre({value: "def", textareaRange: 3})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 2 reinserted "f" into the first pre and re-highlighted it.`,
@@ -712,9 +713,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc[]</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>gh</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 3 reinserted "c" into the first paragraph.`,
@@ -726,9 +727,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def" })}
+            ${highlightedPre({value: "def"})}
             <p>ghi[]</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 4 reinserted "i" into the second paragraph.`,
@@ -740,9 +741,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript", textareaRange: 3 })}
+            ${highlightedPre({value: "def", language: "javascript", textareaRange: 3})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl" })}
+            ${highlightedPre({value: "jkl"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 5 changed back the language of the first textarea to "javascript".`,
@@ -754,9 +755,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript" })}
+            ${highlightedPre({value: "def", language: "javascript"})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl", language: "python", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", language: "python", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         `Redo 6 changed back the language of the second textarea to "python".`,
@@ -768,9 +769,9 @@ test("can switch between code blocks without issues", async () => {
         getContent(editor.editable),
         unformat(
             `<p>abc</p>
-            ${highlightedPre({ value: "def", language: "javascript" })}
+            ${highlightedPre({value: "def", language: "javascript"})}
             <p>ghi</p>
-            ${highlightedPre({ value: "jkl", language: "python", textareaRange: 3 })}
+            ${highlightedPre({value: "jkl", language: "python", textareaRange: 3})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         "Redo did nothing.",
@@ -780,7 +781,7 @@ test("can switch between code blocks without issues", async () => {
 
 test.tags("focus required");
 test("multiple ctrl+z in a highlighted code block undo changes in the block and any other changes before (all redone with ctrl+y or ctrl+shift+z)", async () => {
-    const { editor } = await setupEditor(`<pre>some code</pre><p>hell[]</p>`, {
+    const {editor} = await setupEditor(`<pre>some code</pre><p>hell[]</p>`, {
         config: configWithEmbeddings,
     });
 
@@ -797,13 +798,16 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
     // ------------------------------------------
 
     // Write in the P.
-    actions.push("type: insert 'o' into the paragraph", "type: insert '!' into the paragraph");
+    actions.push(
+        "type: insert 'o' into the paragraph",
+        "type: insert '!' into the paragraph"
+    );
     await insertText(editor, "o!"); // <wrapper><pre>some code</pre></wrapper><p>hello![]</p>
     await compareHighlightedContent(
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code" })}
+            ${highlightedPre({value: "some code"})}
             <p>hello![]</p>
         `),
         listActions(1, 2),
@@ -817,7 +821,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", language: "javascript", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", language: "javascript", textareaRange: 9})}
             <p>hello!</p>
         `),
         listActions(3),
@@ -832,7 +836,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeno", language: "javascript", textareaRange: 11 })}
+            ${highlightedPre({value: "some codeno", language: "javascript", textareaRange: 11})}
             <p>hello!</p>
         `),
         listActions(4, 5),
@@ -854,14 +858,17 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript", textareaRange: 12 })}
+            ${highlightedPre({value: "some codeyes", language: "javascript", textareaRange: 12})}
             <p>hello!</p>
         `),
         listActions(6, 7, 8, 9, 10),
         editor
     );
     // Write in the P again.
-    actions.push("type: insert 'o' into the paragraph", "type: insert 'k' into the paragraph");
+    actions.push(
+        "type: insert 'o' into the paragraph",
+        "type: insert 'k' into the paragraph"
+    );
     const p = queryOne("p:not([data-selection-placeholder])");
     await click(p);
     editor.shared.selection.setCursorEnd(p);
@@ -870,7 +877,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript" })}
+            ${highlightedPre({value: "some codeyes", language: "javascript"})}
             <p>hello!ok[]</p>
         `),
         listActions(11, 12),
@@ -884,7 +891,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyesh", language: "javascript", textareaRange: 13 })}
+            ${highlightedPre({value: "some codeyesh", language: "javascript", textareaRange: 13})}
             <p>hello!ok</p>
         `),
         listActions(13),
@@ -899,7 +906,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript", textareaRange: 12 })}
+            ${highlightedPre({value: "some codeyes", language: "javascript", textareaRange: 12})}
             <p>hello!ok</p>
         `),
         `undo:\n${listActions(13)}`,
@@ -911,7 +918,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript" })}
+            ${highlightedPre({value: "some codeyes", language: "javascript"})}
             <p>hello![]</p>
         `),
         `undo:\n${listActions(12, 11)}`,
@@ -924,7 +931,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", language: "javascript", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", language: "javascript", textareaRange: 9})}
             <p>hello!</p>
         `),
         `undo:\n${listActions(10, 9, 8)}`,
@@ -936,7 +943,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeno", language: "javascript", textareaRange: 11 })}
+            ${highlightedPre({value: "some codeno", language: "javascript", textareaRange: 11})}
             <p>hello!</p>
         `),
         `undo:\n${listActions(7, 6)}`,
@@ -948,7 +955,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", language: "javascript", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", language: "javascript", textareaRange: 9})}
             <p>hello!</p>
         `),
         `undo:\n${listActions(5, 4)}`,
@@ -959,7 +966,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", textareaRange: 9})}
             <p>hello!</p>
         `),
         `undo:\n${listActions(3)}`,
@@ -971,7 +978,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code" })}
+            ${highlightedPre({value: "some code"})}
             <p>hell[]</p>
         `),
         `undo:\n${listActions(2, 1)}`,
@@ -982,7 +989,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code" })}
+            ${highlightedPre({value: "some code"})}
             <p>hell[]</p>
         `),
         "undo: should have done nothing",
@@ -998,7 +1005,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(
             `<p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code" })}
+            ${highlightedPre({value: "some code"})}
             <p>hello![]</p>`
         ),
         `redo:\n${listActions(1, 2)}`,
@@ -1009,7 +1016,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", language: "javascript", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", language: "javascript", textareaRange: 9})}
             <p>hello!</p>
         `),
         `redo:\n${listActions(3)}`,
@@ -1021,7 +1028,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeno", language: "javascript", textareaRange: 11 })}
+            ${highlightedPre({value: "some codeno", language: "javascript", textareaRange: 11})}
             <p>hello!</p>
         `),
         `redo:\n${listActions(4, 5)}`,
@@ -1033,7 +1040,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some code", language: "javascript", textareaRange: 9 })}
+            ${highlightedPre({value: "some code", language: "javascript", textareaRange: 9})}
             <p>hello!</p>
         `),
         `redo:\n${listActions(6, 7)}`,
@@ -1046,7 +1053,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript", textareaRange: 12 })}
+            ${highlightedPre({value: "some codeyes", language: "javascript", textareaRange: 12})}
             <p>hello!</p>
         `),
         `redo:\n${listActions(8, 9, 10)}`,
@@ -1058,7 +1065,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyes", language: "javascript" })}
+            ${highlightedPre({value: "some codeyes", language: "javascript"})}
             <p>hello!ok[]</p>
         `),
         `redo:\n${listActions(11, 12)}`,
@@ -1069,7 +1076,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyesh", language: "javascript", textareaRange: 13 })}
+            ${highlightedPre({value: "some codeyesh", language: "javascript", textareaRange: 13})}
             <p>hello!ok</p>
         `),
         `redo:\n${listActions(13)}`,
@@ -1081,7 +1088,7 @@ test("multiple ctrl+z in a highlighted code block undo changes in the block and 
         getContent(editor.editable),
         unformat(`
             <p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "some codeyesh", language: "javascript", textareaRange: 13 })}
+            ${highlightedPre({value: "some codeyesh", language: "javascript", textareaRange: 13})}
             <p>hello!ok</p>
         `),
         "redo: should have done nothing",
@@ -1098,12 +1105,12 @@ test("can copy/paste a highlighted code block", async () => {
         ),
         contentBeforeEdit: unformat(
             `<p>[ab</p>
-            ${highlightedPre({ language: "javascript", value: "some code" })}
+            ${highlightedPre({language: "javascript", value: "some code"})}
             <p>cd]</p>`
         ),
         stepFunction: async (editor) => {
             const clipboardData = new DataTransfer();
-            await press(["ctrl", "c"], { dataTransfer: clipboardData });
+            await press(["ctrl", "c"], {dataTransfer: clipboardData});
             const copiedValue = unformat(
                 `<p>ab</p>
                 <pre data-embedded="readonlySyntaxHighlighting" data-language-id="javascript">some code</pre>
@@ -1120,7 +1127,7 @@ test("can copy/paste a highlighted code block", async () => {
         },
         contentAfterEdit: unformat(
             `<p>ab</p>
-            ${highlightedPre({ language: "javascript", value: "some code" })}
+            ${highlightedPre({language: "javascript", value: "some code"})}
             <p>cd[]</p>`
         ),
         contentAfter: unformat(
@@ -1190,7 +1197,7 @@ test("restore paragraph from code block", async () => {
 });
 
 test("should keep textarea focused when changing code block language", async () => {
-    const { editor } = await setupEditor(`<pre>ab</pre>`, {
+    const {editor} = await setupEditor(`<pre>ab</pre>`, {
         config: configWithEmbeddings,
     });
 
@@ -1198,7 +1205,7 @@ test("should keep textarea focused when changing code block language", async () 
         getContent(editor.editable),
         unformat(
             `<p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "ab" })}
+            ${highlightedPre({value: "ab"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         "Initial code block is highlighted",
@@ -1229,14 +1236,14 @@ test("should keep textarea focused when changing code block language", async () 
 });
 
 test("should keep textarea focused after copying code content", async () => {
-    const { editor } = await setupEditor(`<pre>ab</pre>`, {
+    const {editor} = await setupEditor(`<pre>ab</pre>`, {
         config: configWithEmbeddings,
     });
     await compareHighlightedContent(
         getContent(editor.editable),
         unformat(
             `<p data-selection-placeholder=""><br></p>
-            ${highlightedPre({ value: "ab" })}
+            ${highlightedPre({value: "ab"})}
             <p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>`
         ),
         "Initial code block is highlighted",

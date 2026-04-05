@@ -1,6 +1,6 @@
 /* global StripeTerminal */
 
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 export class StripeError extends Error {}
 
@@ -56,7 +56,9 @@ export class Stripe {
             await this.connectReader();
             const clientSecret = paymentStatus.client_secret;
             const paymentMethod = await this.collectPaymentMethod(clientSecret);
-            const processPayment = await this.processPayment(paymentMethod.paymentIntent);
+            const processPayment = await this.processPayment(
+                paymentMethod.paymentIntent
+            );
             await this.capturePayment(processPayment.paymentIntent.id, savedOrder);
         } catch (error) {
             this.errorCallback(error);
@@ -111,7 +113,8 @@ export class Stripe {
         const discoverReaders = await this.discoverReaders();
         const discoveredReaders = discoverReaders.discoveredReaders;
         const findLinkedReader = discoveredReaders.find(
-            (reader) => reader.serial_number == this.stripePaymentMethod.stripe_serial_number
+            (reader) =>
+                reader.serial_number == this.stripePaymentMethod.stripe_serial_number
         );
 
         const result = await this.terminal.connectReader(findLinkedReader, {

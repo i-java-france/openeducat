@@ -1,15 +1,19 @@
-import { Component, onMounted, onWillDestroy, useRef, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { Tooltip } from "@web/core/tooltip/tooltip";
-import { closestScrollableY, getScrollingElement, isScrollableY } from "@web/core/utils/scrolling";
-import { _t } from "@web/core/l10n/translation";
-import { closest } from "@web/core/utils/ui";
-import { useDragAndDrop } from "@html_editor/utils/drag_and_drop";
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
-import { useSnippets } from "@html_builder/snippets/snippet_service";
-import { scrollTo } from "@html_builder/utils/scrolling";
-import { Snippet } from "./snippet";
-import { CustomInnerSnippet } from "./custom_inner_snippet";
+import {Component, onMounted, onWillDestroy, useRef, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {Tooltip} from "@web/core/tooltip/tooltip";
+import {
+    closestScrollableY,
+    getScrollingElement,
+    isScrollableY,
+} from "@web/core/utils/scrolling";
+import {_t} from "@web/core/l10n/translation";
+import {closest} from "@web/core/utils/ui";
+import {useDragAndDrop} from "@html_editor/utils/drag_and_drop";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
+import {useSnippets} from "@html_builder/snippets/snippet_service";
+import {scrollTo} from "@html_builder/utils/scrolling";
+import {Snippet} from "./snippet";
+import {CustomInnerSnippet} from "./custom_inner_snippet";
 
 /**
  * @typedef {import("@html_builder/core/drag_and_drop_plugin").DragState} DragState
@@ -24,7 +28,7 @@ import { CustomInnerSnippet } from "./custom_inner_snippet";
 
 export class BlockTab extends Component {
     static template = "html_builder.BlockTab";
-    static components = { Snippet, CustomInnerSnippet };
+    static components = {Snippet, CustomInnerSnippet};
     static props = {
         snippetsName: String,
     };
@@ -36,7 +40,7 @@ export class BlockTab extends Component {
         this.snippetModel = useSnippets(this.props.snippetsName);
         this.blockTabRef = useRef("block-tab");
         // Needed to avoid race condition in tours.
-        this.state = useState({ ongoingInsertion: false });
+        this.state = useState({ongoingInsertion: false});
 
         onMounted(() => {
             this.makeSnippetDraggable();
@@ -82,12 +86,15 @@ export class BlockTab extends Component {
 
                                 // Add the dropzones corresponding to a section and
                                 // make them invisible.
-                                const selectors = this.shared.dropzone.getSelectors(baseSectionEl);
+                                const selectors =
+                                    this.shared.dropzone.getSelectors(baseSectionEl);
                                 const dropzoneEls =
                                     this.shared.dropzone.activateDropzones(selectors);
                                 this.editable
                                     .querySelectorAll(".oe_drop_zone")
-                                    .forEach((dropzoneEl) => dropzoneEl.classList.add("invisible"));
+                                    .forEach((dropzoneEl) =>
+                                        dropzoneEl.classList.add("invisible")
+                                    );
 
                                 // Find the dropzone closest to the center of the
                                 // viewport and not located in the top quarter of
@@ -99,7 +106,8 @@ export class BlockTab extends Component {
                                 };
                                 const validDropzoneEls = dropzoneEls.filter(
                                     (el) =>
-                                        el.getBoundingClientRect().top >= viewPortCenterPoint.y / 2
+                                        el.getBoundingClientRect().top >=
+                                        viewPortCenterPoint.y / 2
                                 );
                                 const closestDropzoneEl =
                                     closest(validDropzoneEls, viewPortCenterPoint) ||
@@ -119,7 +127,7 @@ export class BlockTab extends Component {
                 });
 
                 if (snippetEl) {
-                    await scrollTo(snippetEl, { extraOffset: 50 });
+                    await scrollTo(snippetEl, {extraOffset: 50});
                     await this.processDroppedSnippet(snippetEl);
                 }
                 this.state.ongoingInsertion = false;
@@ -147,8 +155,12 @@ export class BlockTab extends Component {
         // current position.
         const hookParentEl = hookEl.parentElement;
         this.snippetModel.snippetStructures.forEach((snippet) => {
-            const { selectorChildren } = this.shared.dropzone.getSelectors(snippet.content);
-            snippet.isExcluded = ![...selectorChildren].some((el) => el === hookParentEl);
+            const {selectorChildren} = this.shared.dropzone.getSelectors(
+                snippet.content
+            );
+            snippet.isExcluded = ![...selectorChildren].some(
+                (el) => el === hookParentEl
+            );
         });
 
         // Open the snippet dialog.
@@ -177,7 +189,7 @@ export class BlockTab extends Component {
         });
 
         if (selectedSnippetEl) {
-            await scrollTo(selectedSnippetEl, { extraOffset: 50 });
+            await scrollTo(selectedSnippetEl, {extraOffset: 50});
             await this.processDroppedSnippet(selectedSnippetEl);
         } else {
             this.cancelDragAndDrop();
@@ -223,13 +235,14 @@ export class BlockTab extends Component {
                 this.editable.querySelector(".o_editable");
             if (!isScrollableY(scrollingElement)) {
                 scrollingElement =
-                    closestScrollableY(this.document.defaultView.frameElement) ?? scrollingElement;
+                    closestScrollableY(this.document.defaultView.frameElement) ??
+                    scrollingElement;
             }
             return scrollingElement;
         };
 
         const dragAndDropOptions = {
-            ref: { el: this.blockTabRef.el },
+            ref: {el: this.blockTabRef.el},
             iframeWindow,
             cursor: "move",
             el: this.blockTabRef.el,
@@ -237,7 +250,7 @@ export class BlockTab extends Component {
             scrollingElement,
             handle: ".o_snippet_thumbnail:not(.o_we_ongoing_insertion .o_snippet_thumbnail)",
             dropzones: () => dropzoneEls,
-            helper: ({ element, helperOffset }) => {
+            helper: ({element, helperOffset}) => {
                 snippet = element;
                 const draggedEl = element.cloneNode(true);
                 draggedEl
@@ -248,12 +261,14 @@ export class BlockTab extends Component {
                 draggedEl.style.position = "fixed";
                 document.body.append(draggedEl);
                 // Center the helper on the thumbnail image.
-                const thumbnailImgEl = element.querySelector(".o_snippet_thumbnail_img");
+                const thumbnailImgEl = element.querySelector(
+                    ".o_snippet_thumbnail_img"
+                );
                 helperOffset.x = thumbnailImgEl.offsetWidth / 2;
                 helperOffset.y = thumbnailImgEl.offsetHeight / 2;
                 return draggedEl;
             },
-            onDragStart: ({ element }) => {
+            onDragStart: ({element}) => {
                 const dragAndDropProm = new Promise(
                     (resolve) => (dragAndDropResolve = () => resolve())
                 );
@@ -279,7 +294,9 @@ export class BlockTab extends Component {
                 // Stop marking the elements with mutations as dirty and make
                 // some changes on the page to ease the drag and drop.
                 const restoreCallbacks = [];
-                for (const prepareDrag of this.env.editor.getResource("on_prepare_drag_handlers")) {
+                for (const prepareDrag of this.env.editor.getResource(
+                    "on_prepare_drag_handlers"
+                )) {
                     const restore = prepareDrag();
                     restoreCallbacks.unshift(restore);
                 }
@@ -324,17 +341,28 @@ export class BlockTab extends Component {
                             );
                         }
                     });
-                    dynamicSvgEl.src = colorCustomizedURL.pathname + colorCustomizedURL.search;
+                    dynamicSvgEl.src =
+                        colorCustomizedURL.pathname + colorCustomizedURL.search;
                 });
 
                 // The dragged element may change while dragging.
-                Object.assign(this.dragState, { draggedEl: snippetEl, snippetEl, snippet });
+                Object.assign(this.dragState, {
+                    draggedEl: snippetEl,
+                    snippetEl,
+                    snippet,
+                });
 
                 // Add the dropzones.
                 const withGrids =
                     !isSnippetGroup &&
-                    (this.env.editor.config.isMobileView(this.editable) ? "filterOnly" : true);
-                const selectors = this.shared.dropzone.getSelectors(snippetEl, false, withGrids);
+                    (this.env.editor.config.isMobileView(this.editable)
+                        ? "filterOnly"
+                        : true);
+                const selectors = this.shared.dropzone.getSelectors(
+                    snippetEl,
+                    false,
+                    withGrids
+                );
                 dropzoneEls = this.shared.dropzone.activateDropzones(selectors, {
                     toInsertInline: isInlineSnippet,
                 });
@@ -344,7 +372,7 @@ export class BlockTab extends Component {
                     dragState: this.dragState,
                 });
             },
-            dropzoneOver: ({ dropzone }) => {
+            dropzoneOver: ({dropzone}) => {
                 const dropzoneEl = dropzone.el;
                 if (isSnippetGroup) {
                     dropzoneEl.classList.add("o_dropzone_highlighted");
@@ -360,7 +388,7 @@ export class BlockTab extends Component {
                     dragState: this.dragState,
                 });
             },
-            onDrag: ({ x, y }) => {
+            onDrag: ({x, y}) => {
                 if (!this.dragState.currentDropzoneEl) {
                     return;
                 }
@@ -372,7 +400,7 @@ export class BlockTab extends Component {
                     y,
                 });
             },
-            dropzoneOut: ({ dropzone }) => {
+            dropzoneOut: ({dropzone}) => {
                 const dropzoneEl = dropzone.el;
                 if (isSnippetGroup) {
                     dropzoneEl.classList.remove("o_dropzone_highlighted");
@@ -389,7 +417,7 @@ export class BlockTab extends Component {
                 dropzoneEl.classList.remove("invisible");
                 this.dragState.currentDropzoneEl = null;
             },
-            onDragEnd: async ({ x, y, helper }) => {
+            onDragEnd: async ({x, y, helper}) => {
                 this.document.body.classList.remove("oe_dropzone_active");
                 let currentDropzoneEl = this.dragState.currentDropzoneEl;
                 const isDroppedOver = !!currentDropzoneEl;
@@ -397,9 +425,13 @@ export class BlockTab extends Component {
                 // If the snippet was dropped outside of a dropzone, find the
                 // dropzone that is the nearest to the dropping point.
                 if (!currentDropzoneEl) {
-                    const blockTabLeft = this.blockTabRef.el.getBoundingClientRect().left;
-                    if (y > 3 && x + helper.getBoundingClientRect().height < blockTabLeft) {
-                        const closestDropzoneEl = closest(dropzoneEls, { x, y });
+                    const blockTabLeft =
+                        this.blockTabRef.el.getBoundingClientRect().left;
+                    if (
+                        y > 3 &&
+                        x + helper.getBoundingClientRect().height < blockTabLeft
+                    ) {
+                        const closestDropzoneEl = closest(dropzoneEls, {x, y});
                         if (closestDropzoneEl) {
                             currentDropzoneEl = closestDropzoneEl;
                         }
@@ -474,8 +506,13 @@ export class BlockTab extends Component {
     async processDroppedSnippet(snippetEl) {
         this.updateDroppedSnippet(snippetEl);
         // Build the snippet.
-        for (const onSnippetDropped of this.env.editor.getResource("on_snippet_dropped_handlers")) {
-            const cancel = await onSnippetDropped({ snippetEl, dragState: this.dragState });
+        for (const onSnippetDropped of this.env.editor.getResource(
+            "on_snippet_dropped_handlers"
+        )) {
+            const cancel = await onSnippetDropped({
+                snippetEl,
+                dragState: this.dragState,
+            });
             // Cancel everything if the resource asked to.
             if (cancel) {
                 this.cancelDragAndDrop();

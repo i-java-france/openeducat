@@ -1,6 +1,6 @@
-from odoo import fields, models, api, _
-from odoo.fields import Domain
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Domain
 from odoo.tools import Query
 
 COMPANY_OFFSET = 10000
@@ -42,7 +42,7 @@ class AccountCodeMapping(models.Model):
             vals['account_id'] * COMPANY_OFFSET + vals['company_id']
             for vals in vals_list
         ])
-        for mapping, vals in zip(mappings, vals_list):
+        for mapping, vals in zip(mappings, vals_list, strict=False):
             mapping.code = vals['code']
         return mappings
 

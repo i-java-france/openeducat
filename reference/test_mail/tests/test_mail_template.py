@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 import datetime
+from unittest.mock import patch
 
 from freezegun import freeze_time
-from unittest.mock import patch
+
+from odoo.tests import tagged, users, warmup
+from odoo.tools import mute_logger, safe_eval
 
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.test_mail.tests.common import TestRecipients
-from odoo.tests import tagged, users, warmup
-from odoo.tools import mute_logger, safe_eval
 
 
 class TestMailTemplateCommon(MailCommon, TestRecipients):
@@ -256,7 +256,7 @@ class TestMailTemplateLanguages(TestMailTemplateCommon):
             mails_sudo = template.send_mail_batch(self.test_records_batch.ids)
 
         self.assertEqual(len(mails_sudo), 100)
-        for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch)):
+        for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch, strict=False)):
             self.assertEqual(sorted(mail.attachment_ids.mapped('name')), ['first.txt', 'second.txt'])
             self.assertEqual(mail.attachment_ids.mapped("res_id"), [template.id] * 2)
             self.assertEqual(mail.attachment_ids.mapped("res_model"), [template._name] * 2)
@@ -297,7 +297,7 @@ class TestMailTemplateLanguages(TestMailTemplateCommon):
             mails_sudo = template.send_mail_batch(self.test_records_batch.ids)
 
         self.assertEqual(len(mails_sudo), 100)
-        for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch)):
+        for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch, strict=False)):
             self.assertEqual(
                 sorted(mail.attachment_ids.mapped('name')),
                 [f'TestReport for {record.name}.html', f'TestReport2 for {record.name}.html', 'first.txt', 'second.txt']
@@ -344,7 +344,7 @@ class TestMailTemplateLanguages(TestMailTemplateCommon):
 
                 self.assertEqual(self.mail_mail_create_mocked.call_count, exp_mail_create_count)
                 self.assertEqual(len(mails_sudo), 100)
-                for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch)):
+                for idx, (mail, record) in enumerate(zip(mails_sudo, self.test_records_batch, strict=False)):
                     self.assertEqual(
                         sorted(mail.attachment_ids.mapped('name')),
                         [f'TestReport for {record.name}.html', f'TestReport2 for {record.name}.html', 'first.txt', 'second.txt']

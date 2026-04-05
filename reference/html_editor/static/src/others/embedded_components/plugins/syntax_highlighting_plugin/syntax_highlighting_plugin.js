@@ -1,12 +1,12 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { getEmbeddedProps } from "@html_editor/others/embedded_component_utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {getEmbeddedProps} from "@html_editor/others/embedded_component_utils";
 import {
     DEFAULT_LANGUAGE_ID,
     getPreValue,
     newlinesToLineBreaks,
 } from "../../core/syntax_highlighting/syntax_highlighting_utils";
-import { removeInvisibleWhitespace } from "@html_editor/utils/dom";
+import {removeInvisibleWhitespace} from "@html_editor/utils/dom";
 
 const CODE_BLOCK_CLASS = "o_syntax_highlighting";
 const CODE_BLOCK_SELECTOR = `div.${CODE_BLOCK_CLASS}`;
@@ -36,7 +36,7 @@ export class SyntaxHighlightingPlugin extends Plugin {
         normalize_handlers: (root) => this.addCodeBlocks(root, true),
         post_undo_handlers: () => this.addCodeBlocks(this.editable, true),
         post_redo_handlers: () => this.addCodeBlocks(this.editable, true),
-        clean_for_save_handlers: withSequence(0, ({ root }) => this.cleanForSave(root)),
+        clean_for_save_handlers: withSequence(0, ({root}) => this.cleanForSave(root)),
         before_set_tag_handlers: (el, newTagName, cursors) => {
             if (newTagName.toLowerCase() === "pre") {
                 // Remove invisible whitespace that would become visible in a `<pre>` element.
@@ -45,7 +45,8 @@ export class SyntaxHighlightingPlugin extends Plugin {
         },
 
         /** Processors */
-        clipboard_content_processors: (clonedContent) => this.cleanForSave(clonedContent),
+        clipboard_content_processors: (clonedContent) =>
+            this.cleanForSave(clonedContent),
     };
 
     setup() {
@@ -89,19 +90,20 @@ export class SyntaxHighlightingPlugin extends Plugin {
                 value: getPreValue(pre),
                 languageId: pre.dataset.languageId || DEFAULT_LANGUAGE_ID,
             });
-            const codeBlock = this.dependencies.embeddedComponents.renderBlueprintToElement(
-                "html_editor.EmbeddedSyntaxHighlightingBlueprint",
-                { embeddedProps },
-                () => {
-                    if (preserveFocus && isPreInSelection) {
-                        const textarea = codeBlock.querySelector("textarea");
-                        if (textarea !== codeBlock.ownerDocument.activeElement) {
-                            textarea.focus();
-                            this.dependencies.history.stageFocus();
+            const codeBlock =
+                this.dependencies.embeddedComponents.renderBlueprintToElement(
+                    "html_editor.EmbeddedSyntaxHighlightingBlueprint",
+                    {embeddedProps},
+                    () => {
+                        if (preserveFocus && isPreInSelection) {
+                            const textarea = codeBlock.querySelector("textarea");
+                            if (textarea !== codeBlock.ownerDocument.activeElement) {
+                                textarea.focus();
+                                this.dependencies.history.stageFocus();
+                            }
                         }
                     }
-                }
-            );
+                );
             pre.before(codeBlock);
             if (isPreInSelection) {
                 // Removing the pre will make us lose the selection. The DOM
@@ -113,15 +115,16 @@ export class SyntaxHighlightingPlugin extends Plugin {
         }
     }
 
-    setupNewCodeBlock({ name, props }) {
+    setupNewCodeBlock({name, props}) {
         if (name === "syntaxHighlighting") {
             Object.assign(props, {
                 onTextareaFocus: () => this.dependencies.history.stageFocus(),
-                convertToParagraph: ({ target }) => {
+                convertToParagraph: ({target}) => {
                     this.dependencies.history.stageSelection();
                     const component = target.closest(`[data-embedded='${name}']`);
                     const embeddedProps = getEmbeddedProps(component);
-                    const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                    const baseContainer =
+                        this.dependencies.baseContainer.createBaseContainer();
                     baseContainer.textContent = embeddedProps.value;
                     component.replaceWith(baseContainer);
                     newlinesToLineBreaks(baseContainer);

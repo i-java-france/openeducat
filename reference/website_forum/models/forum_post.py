@@ -5,10 +5,10 @@ import math
 import re
 from datetime import datetime
 
-from odoo import api, fields, models, tools, _
-from odoo.exceptions import UserError, ValidationError, AccessError
+from odoo import _, api, fields, models, tools
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Domain
-from odoo.tools import sql, SQL
+from odoo.tools import SQL, sql
 from odoo.tools.json import scriptsafe as json_safe
 
 _logger = logging.getLogger(__name__)
@@ -240,7 +240,7 @@ class ForumPost(models.Model):
         is_admin = self.env.is_admin()
         # sudoed recordset instead of individual posts so values can be
         # prefetched in bulk
-        for post, post_sudo in zip(self, self.sudo()):
+        for post, post_sudo in zip(self, self.sudo(), strict=False):
             is_creator = post.create_uid == user
 
             post.karma_accept = post.forum_id.karma_answer_accept_own if post.parent_id.create_uid == user else post.forum_id.karma_answer_accept_all
@@ -918,7 +918,7 @@ class ForumPost(models.Model):
     def _search_render_results(self, fetch_fields, mapping, icon, limit):
         with_date = 'detail' in mapping
         results_data = super()._search_render_results(fetch_fields, mapping, icon, limit)
-        for post, data in zip(self, results_data):
+        for post, data in zip(self, results_data, strict=False):
             if with_date:
                 data['date'] = self.env['ir.qweb.field.date'].record_to_html(post, 'write_date', {})
         return results_data

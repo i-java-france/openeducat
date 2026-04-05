@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     defineActions,
     defineModels,
@@ -10,14 +10,14 @@ import {
     stepAllNetworkCalls,
 } from "@web/../tests/web_test_helpers";
 
-import { WebClient } from "@web/webclient/webclient";
+import {WebClient} from "@web/webclient/webclient";
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         form: `
@@ -66,14 +66,18 @@ test("can execute server actions from db ID", async () => {
     ]);
     onRpc(
         "/web/action/run",
-        async () => 1 // execute action 1
+        async () => 1 // Execute action 1
     );
     stepAllNetworkCalls();
 
     await mountWithCleanup(WebClient);
-    await getService("action").doAction(2, { additionalContext: { someKey: 44 } });
-    expect(".o_control_panel").toHaveCount(1, { message: "should have rendered a control panel" });
-    expect(".o_kanban_view").toHaveCount(1, { message: "should have rendered a kanban view" });
+    await getService("action").doAction(2, {additionalContext: {someKey: 44}});
+    expect(".o_control_panel").toHaveCount(1, {
+        message: "should have rendered a control panel",
+    });
+    expect(".o_kanban_view").toHaveCount(1, {
+        message: "should have rendered a kanban view",
+    });
     expect.verifySteps([
         "/web/webclient/translations",
         "/web/webclient/load_menus",
@@ -104,19 +108,21 @@ test("handle server actions returning false", async function (assert) {
     onRpc("/web/action/run", async () => false);
     stepAllNetworkCalls();
     await mountWithCleanup(WebClient);
-    // execute an action in target="new"
+    // Execute an action in target="new"
     function onClose() {
         expect.step("close handler");
     }
-    await getService("action").doAction(5, { onClose });
+    await getService("action").doAction(5, {onClose});
     expect(".o_technical_modal .o_form_view").toHaveCount(1, {
         message: "should have rendered a form view in a modal",
     });
 
-    // execute a server action that returns false
+    // Execute a server action that returns false
     await getService("action").doAction(2);
     await animationFrame();
-    expect(".o_technical_modal").toHaveCount(0, { message: "should have closed the modal" });
+    expect(".o_technical_modal").toHaveCount(0, {
+        message: "should have closed the modal",
+    });
     expect.verifySteps([
         "/web/webclient/translations",
         "/web/webclient/load_menus",

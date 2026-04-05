@@ -3,8 +3,8 @@
 from odoo import Command
 from odoo.tests import tagged
 
-from odoo.addons.product.tests.common import ProductVariantsCommon
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
+from odoo.addons.product.tests.common import ProductVariantsCommon
 
 
 @tagged('post_install', '-at_install')

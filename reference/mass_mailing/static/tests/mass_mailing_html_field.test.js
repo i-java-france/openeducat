@@ -1,22 +1,22 @@
-import { expect, test, describe, beforeEach, getFixture } from "@odoo/hoot";
+import {beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
 import {
+    clickSave,
+    contains,
     defineModels,
     fields,
+    getPagerLimit,
+    getPagerValue,
     models,
     mountView,
     onRpc,
-    clickSave,
     patchWithCleanup,
-    contains,
-    getPagerValue,
-    getPagerLimit,
 } from "@web/../tests/web_test_helpers";
-import { click, queryAny, queryOne, waitFor } from "@odoo/hoot-dom";
-import { runAllTimers } from "@odoo/hoot-mock";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { unmockedOrm } from "@web/../tests/_framework/module_set.hoot";
-import { MassMailingIframe } from "../src/iframe/mass_mailing_iframe";
-import { MassMailingHtmlField } from "../src/fields/html_field/mass_mailing_html_field";
+import {click, queryAny, queryOne, waitFor} from "@odoo/hoot-dom";
+import {runAllTimers} from "@odoo/hoot-mock";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {unmockedOrm} from "@web/../tests/_framework/module_set.hoot";
+import {MassMailingIframe} from "../src/iframe/mass_mailing_iframe";
+import {MassMailingHtmlField} from "../src/fields/html_field/mass_mailing_html_field";
 
 class Mailing extends models.Model {
     _name = "mailing.mailing";
@@ -25,12 +25,12 @@ class Mailing extends models.Model {
     subject = fields.Char();
     body_arch = fields.Html();
     body_html = fields.Html();
-    mailing_model_id = fields.Many2one({ relation: "ir.model", string: "Recipients" });
+    mailing_model_id = fields.Many2one({relation: "ir.model", string: "Recipients"});
     mailing_model_real = fields.Char({
         string: "Recipients Model Name (real)",
         compute: "compute_model_real",
     });
-    mailing_model_name = fields.Char({ string: "Recipients Model Name" });
+    mailing_model_name = fields.Char({string: "Recipients Model Name"});
     state = fields.Selection({
         string: "Status",
         default: "draft",
@@ -164,7 +164,7 @@ class Event extends models.Model {
     name = fields.Char();
     country = fields.Char();
 
-    _records = [{ id: 1, name: "BE Event", country: "be" }];
+    _records = [{id: 1, name: "BE Event", country: "be"}];
 }
 
 defineMailModels();
@@ -213,7 +213,7 @@ describe("field HTML", () => {
         });
     });
     test("save arch and html", async () => {
-        onRpc("web_save", ({ args }) => {
+        onRpc("web_save", ({args}) => {
             expect(args[1].body_arch).toMatch(/^<div/);
             expect(args[1].body_html).toMatch(/^<table/);
             expect.step("web_save mail body");
@@ -231,7 +231,9 @@ describe("field HTML", () => {
             )
         );
         await waitFor(".o_mass_mailing_iframe_wrapper iframe:not(.d-none)");
-        expect(await waitFor(":iframe .o_layout", { timeout: 3000 })).toHaveClass("o_empty_theme");
+        expect(await waitFor(":iframe .o_layout", {timeout: 3000})).toHaveClass(
+            "o_empty_theme"
+        );
         await clickSave();
         await expect.waitForSteps(["web_save mail body"]);
     });
@@ -243,12 +245,12 @@ describe("field HTML", () => {
             arch: mailViewArch,
         });
         await waitFor(".o_mass_mailing_iframe_wrapper iframe:not(.d-none)");
-        const tElement = await waitFor(":iframe t", { timeout: 3000 });
+        const tElement = await waitFor(":iframe t", {timeout: 3000});
 
-        // assert that we are in readonly mode (sanity check)
+        // Assert that we are in readonly mode (sanity check)
         expect(":iframe .o_mass_mailing_value.o_readonly").toHaveCount(1);
 
-        // assert that tElement style has inline attibute
+        // Assert that tElement style has inline attibute
         expect(tElement).toHaveAttribute("data-oe-t-inline", "true");
     });
 
@@ -261,11 +263,11 @@ describe("field HTML", () => {
         const base64Img =
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII=";
         onRpc("/html_editor/get_image_info", () => ({
-            original: { image_src: base64Img },
+            original: {image_src: base64Img},
         }));
         class SomeModel extends models.Model {
             _name = "some.model";
-            mailing_ids = fields.One2many({ relation: "mailing.mailing" });
+            mailing_ids = fields.One2many({relation: "mailing.mailing"});
 
             _records = [
                 {
@@ -275,7 +277,7 @@ describe("field HTML", () => {
             ];
         }
 
-        Mailing._views["form"] = mailViewArch;
+        Mailing._views.form = mailViewArch;
         defineModels([SomeModel]);
         const arch = `<form><field name="mailing_ids"> <list><field name="display_name" /></list> </field></form>`;
         await mountView({
@@ -287,8 +289,8 @@ describe("field HTML", () => {
         await contains(".o_data_cell").click();
         await waitFor(".o_dialog");
         await contains(".o_dialog [data-name='event']").click();
-        await waitFor(".o_dialog .o_mass_mailing-builder_sidebar", { timeout: 1000 });
-        await contains(".o_dialog :iframe p", { timeout: 1000 }).click();
+        await waitFor(".o_dialog .o_mass_mailing-builder_sidebar", {timeout: 1000});
+        await contains(".o_dialog :iframe p", {timeout: 1000}).click();
         await waitFor(
             ".o_dialog .o_mass_mailing-builder_sidebar .options-container-header:contains(Text)"
         );
@@ -305,18 +307,22 @@ describe("field HTML", () => {
             resId: 1,
             arch: mailViewArch,
         });
-        await click(waitFor(".o_mailing_template_preview_wrapper [data-name='default']"));
+        await click(
+            waitFor(".o_mailing_template_preview_wrapper [data-name='default']")
+        );
         await waitFor(".o_mass_mailing_iframe_wrapper iframe:not(.d-none)");
-        expect(await waitFor(":iframe .o_layout", { timeout: 3000 })).toHaveClass(
+        expect(await waitFor(":iframe .o_layout", {timeout: 3000})).toHaveClass(
             "o_default_theme"
         );
         await runAllTimers();
         const section = queryAny(":iframe section");
         section.dataset.filterDomain = JSON.stringify([["id", "=", 1]]);
-        htmlField.editor.config.onChange({ isPreviewing: false });
+        htmlField.editor.config.onChange({isPreviewing: false});
         await click(section);
         await waitFor(".hb-row .hb-row-label span:contains(Domain)");
-        expect(queryOne(".hb-row span.fa-filter + span").textContent.toLowerCase()).toBe("id = 1");
+        expect(
+            queryOne(".hb-row span.fa-filter + span").textContent.toLowerCase()
+        ).toBe("id = 1");
         await clickSave();
         await waitFor("table[t-if]");
         expect(queryOne("table[t-if]")).toHaveAttribute(
@@ -340,39 +346,53 @@ describe("field HTML", () => {
             resIds: [3, 4, 5],
             resId: 3,
         });
-        // readonly default
-        expect(await waitFor(":iframe .o_layout", { timeout: 3000 })).toHaveClass(
+        // Readonly default
+        expect(await waitFor(":iframe .o_layout", {timeout: 3000})).toHaveClass(
             "o_default_theme"
         );
         expect(getPagerValue()).toEqual([1]);
         expect(getPagerLimit()).toBe(3);
         expect(htmlField.state.activeTheme).toBe("default");
-        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(0);
-        // editable basic
+        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(
+            0
+        );
+        // Editable basic
         await contains(`.o_pager_next`).click();
-        await waitFor(".o_mass_mailing_iframe_wrapper :iframe .o_layout.o_basic_theme:only-child", {
-            timeout: 3000,
-        });
+        await waitFor(
+            ".o_mass_mailing_iframe_wrapper :iframe .o_layout.o_basic_theme:only-child",
+            {
+                timeout: 3000,
+            }
+        );
         expect(getPagerValue()).toEqual([2]);
         expect(htmlField.state.activeTheme).toBe("basic");
-        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(0);
-        // editable builder
+        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(
+            0
+        );
+        // Editable builder
         await contains(`.o_pager_next`).click();
-        await waitFor(".o_mass_mailing_iframe_wrapper :iframe .o_layout.o_empty_theme:only-child", {
-            timeout: 3000,
-        });
+        await waitFor(
+            ".o_mass_mailing_iframe_wrapper :iframe .o_layout.o_empty_theme:only-child",
+            {
+                timeout: 3000,
+            }
+        );
         expect(getPagerValue()).toEqual([3]);
         expect(htmlField.state.activeTheme).toBe("empty");
-        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(1);
-        // readonly default
+        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(
+            1
+        );
+        // Readonly default
         await contains(`.o_pager_next`).click();
         await waitFor(
             ".o_mass_mailing_iframe_wrapper :iframe .o_layout.o_default_theme:only-child",
-            { timeout: 3000 }
+            {timeout: 3000}
         );
         expect(getPagerValue()).toEqual([1]);
         expect(htmlField.state.activeTheme).toBe("default");
-        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(0);
+        expect(fixture.querySelectorAll(".o_mass_mailing-builder_sidebar")).toHaveCount(
+            0
+        );
     });
 });
 describe("field HTML: with loaded assets", () => {
@@ -383,9 +403,11 @@ describe("field HTML: with loaded assets", () => {
             resId: 1,
             arch: mailViewArch,
         });
-        await click(waitFor(".o_mailing_template_preview_wrapper [data-name='default']"));
+        await click(
+            waitFor(".o_mailing_template_preview_wrapper [data-name='default']")
+        );
         await waitFor(".o_mass_mailing_iframe_wrapper iframe:not(.d-none)");
-        const { bundleControls } = await htmlField.ensureIframeLoaded();
+        const {bundleControls} = await htmlField.ensureIframeLoaded();
 
         expect(
             htmlField.iframeRef.el.contentDocument.head.querySelectorAll(

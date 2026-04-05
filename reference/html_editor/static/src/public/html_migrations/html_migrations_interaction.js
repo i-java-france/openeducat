@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
-import { VERSION_SELECTOR } from "@html_editor/html_migrations/html_migrations_utils";
-import { HtmlUpgradeManager } from "@html_editor/html_migrations/html_upgrade_manager";
-import { markup } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {VERSION_SELECTOR} from "@html_editor/html_migrations/html_migrations_utils";
+import {HtmlUpgradeManager} from "@html_editor/html_migrations/html_upgrade_manager";
+import {markup} from "@odoo/owl";
 
 const upgradeElementToInteractionMap = new Map();
 

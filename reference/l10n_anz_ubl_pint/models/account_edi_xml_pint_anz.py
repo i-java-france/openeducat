@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, _
+from odoo import _, models
 from odoo.tools import float_is_zero
 
 ANZ_TAX_CATEGORIES = {'S', 'E', 'Z', 'G', 'O'}

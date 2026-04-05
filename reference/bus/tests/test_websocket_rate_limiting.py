@@ -4,14 +4,16 @@ import json
 import time
 
 try:
-    from websocket._exceptions import WebSocketProtocolException
     from websocket._abnf import VALID_CLOSE_STATUS
+    from websocket._exceptions import WebSocketProtocolException
 except ImportError:
     pass
 
 from odoo.tests import common
-from .common import WebsocketCase
+
 from ..websocket import CloseCode, Websocket
+from .common import WebsocketCase
+
 
 @common.tagged('post_install', '-at_install')
 class TestWebsocketRateLimiting(WebsocketCase):

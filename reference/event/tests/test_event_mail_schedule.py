@@ -1,18 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import contextlib
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from unittest.mock import patch
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import exceptions
-from odoo.addons.base.tests.test_ir_cron import CronMixinCase
-from odoo.addons.event.tests.common import EventCase
-from odoo.addons.event.models.event_mail import EventMail
-from odoo.addons.mail.tests.common import MailCase
 from odoo.tests import tagged, users, warmup
 from odoo.tools import formataddr, mute_logger
+
+from odoo.addons.base.tests.test_ir_cron import CronMixinCase
+from odoo.addons.event.models.event_mail import EventMail
+from odoo.addons.event.tests.common import EventCase
+from odoo.addons.mail.tests.common import MailCase
 
 
 class EventMailCommon(EventCase, MailCase, CronMixinCase):

@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
-from markupsafe import Markup
 from typing import Literal
 
+from markupsafe import Markup
+from stdnum.no import mva
+
 from odoo import _, api, models
-from odoo.tools.misc import formatLang, NON_BREAKING_SPACE
+from odoo.tools.misc import NON_BREAKING_SPACE, formatLang
+
 from odoo.addons.account.tools import dict_to_xml
 from odoo.addons.account_edi_ubl_cii.models.account_edi_common import (
-    FloatFmt,
-    GST_COUNTRY_CODES,
     EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES,
+    GST_COUNTRY_CODES,
+    FloatFmt,
 )
 from odoo.addons.account_edi_ubl_cii.models.account_edi_xml_ubl_20 import UBL_NAMESPACES
-
-from stdnum.no import mva
 
 CHORUS_PRO_PEPPOL_ID = "0009:11000201100044"
 
@@ -823,7 +823,7 @@ class AccountEdiXmlUbl_Bis3(models.AbstractModel):
                     "%s should have a KVK or OIN number set in Company ID field or as Peppol e-address (EAS code 0106 or 0190).",
                     vals['supplier'].display_name
                 ) if (
-                    not vals['supplier'].peppol_eas in ('0106', '0190') and
+                    vals['supplier'].peppol_eas not in ('0106', '0190') and
                     (not vals['supplier'].company_registry or len(vals['supplier'].company_registry) not in (8, 9))
                 ) else '',
 
@@ -847,7 +847,7 @@ class AccountEdiXmlUbl_Bis3(models.AbstractModel):
                         "%s should have a KVK or OIN number set in Company ID field or as Peppol e-address (EAS code 0106 or 0190).",
                         vals['customer'].display_name
                     ) if (
-                        not vals['customer'].commercial_partner_id.peppol_eas in ('0106', '0190') and
+                        vals['customer'].commercial_partner_id.peppol_eas not in ('0106', '0190') and
                         (not vals['customer'].commercial_partner_id.company_registry or len(vals['customer'].commercial_partner_id.company_registry) not in (8, 9))
                     ) else '',
                 })

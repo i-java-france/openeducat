@@ -30,7 +30,7 @@
         &.disabled {
             .nav-link {
                 cursor: not-allowed;
-                opacity: .3;
+                opacity: 0.3;
             }
         }
     }
@@ -39,18 +39,27 @@
         border-color: var(--Notebook__link-border-color, transparent);
 
         &.active {
-            &, &:hover, &:focus, &:active {
+            &,
+            &:hover,
+            &:focus,
+            &:active {
                 border-color: var(--Notebook__link-border-color--active);
-                border-top-color: var(--Notebook__link-border-top-color--active, var(--Notebook__link-border-color--active));
+                border-top-color: var(
+                    --Notebook__link-border-top-color--active,
+                    var(--Notebook__link-border-color--active)
+                );
                 border-bottom-color: $o-view-background-color;
             }
         }
 
-        &:hover, &:focus, &:active {
+        &:hover,
+        &:focus,
+        &:active {
             outline: none;
         }
 
-        &:focus-visible, &.active:focus-visible {
+        &:focus-visible,
+        &.active:focus-visible {
             box-shadow: inset 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
         }
 
@@ -59,7 +68,7 @@
         }
 
         &.o_page_invalid {
-            color: o-text-color('danger') !important;
+            color: o-text-color("danger") !important;
             background-color: #{$o-input-invalid-bg} !important;
         }
     }
@@ -90,9 +99,15 @@
             margin-bottom: 0;
 
             &.active {
-                &, &:hover, &:focus, &:active {
+                &,
+                &:hover,
+                &:focus,
+                &:active {
                     border-color: var(--Notebook__link-border-color--active);
-                    border-left-color: var(--Notebook__link-border-top-color--active, var(--Notebook__link-border-color--active));
+                    border-left-color: var(
+                        --Notebook__link-border-top-color--active,
+                        var(--Notebook__link-border-color--active)
+                    );
                     border-right-color: $o-view-background-color;
                 }
             }

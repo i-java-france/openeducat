@@ -8,8 +8,8 @@ import {
     serverState,
     webModels,
 } from "@web/../tests/web_test_helpers";
-import { mailModels } from "@mail/../tests/mail_test_helpers";
-import { RPCError } from "@web/core/network/rpc";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
+import {RPCError} from "@web/core/network/rpc";
 
 /**
  * @typedef {object} ServerData
@@ -122,7 +122,7 @@ export function getBasicListArchs() {
     };
 }
 
-function mockSpreadsheetDataController(_request, { res_model, res_id }) {
+function mockSpreadsheetDataController(_request, {res_model, res_id}) {
     const [record] = this.env[res_model].search_read([["id", "=", parseInt(res_id)]]);
     if (!record) {
         const error = new RPCError(`Spreadsheet ${res_id} does not exist`);
@@ -138,7 +138,10 @@ function mockSpreadsheetDataController(_request, { res_model, res_id }) {
     };
 }
 
-onRpc("/spreadsheet/data/<string:res_model>/<int:res_id>", mockSpreadsheetDataController);
+onRpc(
+    "/spreadsheet/data/<string:res_model>/<int:res_id>",
+    mockSpreadsheetDataController
+);
 
 export function defineSpreadsheetModels() {
     defineModels(SpreadsheetModels);
@@ -172,9 +175,9 @@ export class IrModel extends webModels.IrModel {
         for (const model of models) {
             const record = records.find((record) => record.model === model);
             if (record) {
-                result.push({ model: model, display_name: record.name });
+                result.push({model: model, display_name: record.name});
             } else {
-                result.push({ model: model, display_name: model });
+                result.push({model: model, display_name: model});
             }
         }
         return result;
@@ -223,9 +226,9 @@ export class IrModel extends webModels.IrModel {
 export class IrUIMenu extends models.Model {
     _name = "ir.ui.menu";
 
-    name = fields.Char({ string: "Name" });
-    action = fields.Char({ string: "Action" });
-    group_ids = fields.Many2many({ string: "Groups", relation: "res.group" });
+    name = fields.Char({string: "Name"});
+    action = fields.Char({string: "Action"});
+    group_ids = fields.Many2many({string: "Groups", relation: "res.group"});
 }
 
 export class IrActions extends models.Model {
@@ -233,26 +236,26 @@ export class IrActions extends models.Model {
 }
 export class ResGroup extends models.Model {
     _name = "res.group";
-    name = fields.Char({ string: "Name" });
+    name = fields.Char({string: "Name"});
 }
 
 export class ResUsers extends mailModels.ResUsers {
     _name = "res.users";
 
-    name = fields.Char({ string: "Name" });
-    group_ids = fields.Many2many({ string: "Groups", relation: "res.group" });
+    name = fields.Char({string: "Name"});
+    group_ids = fields.Many2many({string: "Groups", relation: "res.group"});
 }
 
 export class SpreadsheetMixin extends models.Model {
     _name = "spreadsheet.mixin";
 
-    spreadsheet_binary_data = fields.Binary({ string: "Spreadsheet file" });
+    spreadsheet_binary_data = fields.Binary({string: "Spreadsheet file"});
     spreadsheet_data = fields.Text();
     display_thumbnail = fields.Binary();
 
     get_display_names_for_spreadsheet(args) {
         const result = [];
-        for (const { model, id } of args) {
+        for (const {model, id} of args) {
             const record = this.env[model].search_read([["id", "=", id]])[0];
             result.push(record?.display_name ?? null);
         }
@@ -273,8 +276,8 @@ export class SpreadsheetMixin extends models.Model {
 export class ResCurrency extends models.Model {
     _name = "res.currency";
 
-    name = fields.Char({ string: "Code" });
-    symbol = fields.Char({ string: "Symbol" });
+    name = fields.Char({string: "Code"});
+    symbol = fields.Char({string: "Symbol"});
     position = fields.Selection({
         string: "Position",
         selection: [
@@ -282,7 +285,7 @@ export class ResCurrency extends models.Model {
             ["before", "B"],
         ],
     });
-    decimal_places = fields.Integer({ string: "decimal" });
+    decimal_places = fields.Integer({string: "decimal"});
 
     get_company_currency_for_spreadsheet() {
         return {
@@ -313,27 +316,39 @@ export class ResCurrency extends models.Model {
 
 export class ResCountry extends webModels.ResCountry {
     _name = "res.country";
-    name = fields.Char({ string: "Country" });
-    code = fields.Char({ string: "Code" });
+    name = fields.Char({string: "Country"});
+    code = fields.Char({string: "Code"});
 
     _records = [
-        { id: 1, name: "Belgium", code: "BE" },
-        { id: 2, name: "France", code: "FR" },
-        { id: 3, name: "United States", code: "US" },
+        {id: 1, name: "Belgium", code: "BE"},
+        {id: 2, name: "France", code: "FR"},
+        {id: 3, name: "United States", code: "US"},
     ];
 }
 
 export class ResCountryState extends models.Model {
     _name = "res.country.state";
-    name = fields.Char({ string: "Name" });
-    code = fields.Char({ string: "Code" });
-    country_id = fields.Many2one({ relation: "res.country" });
-    display_name = fields.Char({ string: "Display Name" });
+    name = fields.Char({string: "Name"});
+    code = fields.Char({string: "Code"});
+    country_id = fields.Many2one({relation: "res.country"});
+    display_name = fields.Char({string: "Display Name"});
 
     _records = [
-        { id: 1, name: "California", code: "CA", country_id: 3, display_name: "California (US)" },
-        { id: 2, name: "New York", code: "NY", country_id: 3, display_name: "New York (US)" },
-        { id: 3, name: "Texas", code: "TX", country_id: 3, display_name: "Texas (US)" },
+        {
+            id: 1,
+            name: "California",
+            code: "CA",
+            country_id: 3,
+            display_name: "California (US)",
+        },
+        {
+            id: 2,
+            name: "New York",
+            code: "NY",
+            country_id: 3,
+            display_name: "New York (US)",
+        },
+        {id: 3, name: "Texas", code: "TX", country_id: 3, display_name: "Texas (US)"},
     ];
 }
 
@@ -435,7 +450,7 @@ export class Partner extends models.Model {
         definition_record: "product_id",
         definition_record_field: "properties_definitions",
     });
-    jsonField = fields.Json({ string: "Json Field", store: true, groupable: false });
+    jsonField = fields.Json({string: "Json Field", store: true, groupable: false});
     user_ids = fields.Many2many({
         relation: "res.users",
         string: "Users",
@@ -513,9 +528,9 @@ export class Partner extends models.Model {
 export class Product extends models.Model {
     _name = "product";
 
-    name = fields.Char({ string: "Product Name" });
-    display_name = fields.Char({ string: "Product Name" });
-    active = fields.Boolean({ string: "Active", default: true });
+    name = fields.Char({string: "Product Name"});
+    display_name = fields.Char({string: "Product Name"});
+    active = fields.Boolean({string: "Active", default: true});
     template_id = fields.Many2one({
         string: "Template",
         relation: "product",
@@ -565,7 +580,7 @@ export class Product extends models.Model {
 export class Tag extends models.Model {
     _name = "tag";
 
-    name = fields.Char({ string: "Tag Name" });
+    name = fields.Char({string: "Tag Name"});
 
     _records = [
         {

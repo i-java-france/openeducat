@@ -1,12 +1,12 @@
-import { charField, CharField } from "@web/views/fields/char/char_field";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
+import {charField, CharField} from "@web/views/fields/char/char_field";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
 
 export class TourStartWidget extends CharField {
     static template = "web_tour.TourStartWidget";
     static props = {
         ...CharField.props,
-        link: { type: Boolean, optional: true },
+        link: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -40,7 +40,7 @@ export class TourStartWidget extends CharField {
 export const tourStartWidgetField = {
     ...charField,
     component: TourStartWidget,
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         link: options.link,
     }),
 };

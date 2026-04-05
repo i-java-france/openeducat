@@ -1,7 +1,7 @@
-import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
-import { patch } from "@web/core/utils/patch";
-import { onMounted } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import {patch} from "@web/core/utils/patch";
+import {onMounted} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 patch(PaymentScreen.prototype, {
     setup() {
@@ -26,7 +26,8 @@ patch(PaymentScreen.prototype, {
     },
     async addNewPaymentLine(paymentMethod) {
         if (paymentMethod.use_payment_terminal === "razorpay" && this.isRefundOrder) {
-            const refundedOrder = this.currentOrder.lines[0]?.refunded_orderline_id?.order_id;
+            const refundedOrder =
+                this.currentOrder.lines[0]?.refunded_orderline_id?.order_id;
             if (!refundedOrder) {
                 return false;
             }
@@ -44,7 +45,7 @@ patch(PaymentScreen.prototype, {
                     _t(
                         "Adding a new Razorpay payment line is not allowed under the current conditions."
                     ),
-                    { type: "warning", sticky: false }
+                    {type: "warning", sticky: false}
                 );
                 return false;
             }

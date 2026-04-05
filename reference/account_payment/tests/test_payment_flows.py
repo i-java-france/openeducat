@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest.mock import patch
 
 from odoo import Command
 from odoo.exceptions import AccessError
-from odoo.tests import tagged, JsonRpcException
+from odoo.tests import JsonRpcException, tagged
 from odoo.tools import mute_logger
 
 from odoo.addons.account_payment.controllers.payment import PaymentPortal

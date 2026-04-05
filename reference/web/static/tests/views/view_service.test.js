@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     defineModels,
     getService,
@@ -32,7 +32,7 @@ test("stores calls in cache in success", async () => {
         {
             resModel: "take.five",
             views: [[99, "list"]],
-            context: { default_field_value: 1 },
+            context: {default_field_value: 1},
         },
         {}
     );
@@ -40,7 +40,7 @@ test("stores calls in cache in success", async () => {
         {
             resModel: "take.five",
             views: [[99, "list"]],
-            context: { default_field_value: 2 },
+            context: {default_field_value: 2},
         },
         {}
     );
@@ -86,18 +86,18 @@ test("clear cache when updating ir.ui.view", async () => {
             {
                 resModel: "take.five",
                 views: [[99, "list"]],
-                context: { default_field_value: 1 },
+                context: {default_field_value: 1},
             },
             {}
         );
     await loadView();
     expect.verifySteps(["get_views"]);
     await loadView();
-    expect.verifySteps([]); // cache works => no actual rpc
+    expect.verifySteps([]); // Cache works => no actual rpc
     await getService("orm").unlink("ir.ui.view", [3]);
     await loadView();
-    expect.verifySteps(["get_views"]); // cache was invalidated
+    expect.verifySteps(["get_views"]); // Cache was invalidated
     await getService("orm").unlink("take.five", [3]);
     await loadView();
-    expect.verifySteps([]); // cache was not invalidated
+    expect.verifySteps([]); // Cache was not invalidated
 });

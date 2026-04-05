@@ -1,14 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from uuid import uuid4
-import requests
 import json
 import logging
+from uuid import uuid4
+
+import requests
 
 from odoo import fields
-from odoo.addons.google_calendar.utils.google_event import GoogleEvent
-from odoo.addons.google_account.models.google_service import TIMEOUT
 
+from odoo.addons.google_account.models.google_service import TIMEOUT
+from odoo.addons.google_calendar.utils.google_event import GoogleEvent
 
 _logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ def requires_auth_token(func):
 class InvalidSyncToken(Exception):
     pass
 
-class GoogleCalendarService():
+class GoogleCalendarService:
 
     def __init__(self, google_service):
         self.google_service = google_service

@@ -1,9 +1,9 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { after, DEFAULT } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {after, DEFAULT} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 const COURSES_LIST_PAGE = DEFAULT;
 

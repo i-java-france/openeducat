@@ -1,19 +1,23 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import math
 import base64
 import logging
 import re
 
 from lxml import etree
 
-from odoo import fields, models, api, _
-from odoo.http import request
+from odoo import _, api, fields, models
 from odoo.exceptions import LockError, UserError, ValidationError
-from odoo.tools import formatLang, float_compare, float_is_zero, float_round, float_repr, cleanup_xml_node, groupby
+from odoo.http import request
+from odoo.tools import cleanup_xml_node, float_repr, float_round, formatLang, groupby
 from odoo.tools.misc import split_every
+
 from odoo.addons.base_iban.models.res_partner_bank import normalize_iban
-from odoo.addons.l10n_hu_edi.models.l10n_hu_edi_connection import format_bool, L10nHuEdiConnection, L10nHuEdiConnectionError
+from odoo.addons.l10n_hu_edi.models.l10n_hu_edi_connection import (
+    L10nHuEdiConnection,
+    L10nHuEdiConnectionError,
+    format_bool,
+)
 
 _logger = logging.getLogger(__name__)
 

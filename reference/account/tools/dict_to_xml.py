@@ -1,4 +1,5 @@
 from lxml import etree
+
 from odoo.tools.xml_utils import remove_control_characters
 
 

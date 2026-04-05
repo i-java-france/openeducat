@@ -1,18 +1,25 @@
-import { Builder } from "@html_builder/builder";
-import { CORE_PLUGINS } from "@html_builder/core/core_plugins";
-import { Img } from "@html_builder/core/img";
-import { SetupEditorPlugin } from "@html_builder/core/setup_editor_plugin";
-import { revertPreview } from "@html_builder/core/utils";
-import { unformat } from "@html_editor/../tests/_helpers/format";
-import { setContent } from "@html_editor/../tests/_helpers/selection";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { LocalOverlayContainer } from "@html_editor/local_overlay_container";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { after, queryFirst } from "@odoo/hoot";
-import { animationFrame, waitForNone, queryOne, waitFor, advanceTime, tick } from "@odoo/hoot-dom";
-import { Component, onMounted, useRef, useState, useSubEnv, xml } from "@odoo/owl";
+import {Builder} from "@html_builder/builder";
+import {CORE_PLUGINS} from "@html_builder/core/core_plugins";
+import {Img} from "@html_builder/core/img";
+import {SetupEditorPlugin} from "@html_builder/core/setup_editor_plugin";
+import {revertPreview} from "@html_builder/core/utils";
+import {unformat} from "@html_editor/../tests/_helpers/format";
+import {setContent} from "@html_editor/../tests/_helpers/selection";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {LocalOverlayContainer} from "@html_editor/local_overlay_container";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {after, queryFirst} from "@odoo/hoot";
+import {
+    animationFrame,
+    waitForNone,
+    queryOne,
+    waitFor,
+    advanceTime,
+    tick,
+} from "@odoo/hoot-dom";
+import {Component, onMounted, useRef, useState, useSubEnv, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -21,11 +28,11 @@ import {
     patchWithCleanup,
     waitUntilIdle,
 } from "@web/../tests/web_test_helpers";
-import { loadBundle } from "@web/core/assets";
-import { isBrowserFirefox } from "@web/core/browser/feature_detection";
-import { registry } from "@web/core/registry";
-import { uniqueId } from "@web/core/utils/functions";
-import { delay } from "@web/core/utils/concurrency";
+import {loadBundle} from "@web/core/assets";
+import {isBrowserFirefox} from "@web/core/browser/feature_detection";
+import {registry} from "@web/core/registry";
+import {uniqueId} from "@web/core/utils/functions";
+import {delay} from "@web/core/utils/concurrency";
 
 export function patchWithCleanupImg() {
     const defaultImg =
@@ -42,7 +49,8 @@ export function patchWithCleanupImg() {
 }
 
 export function getSnippetView(snippets) {
-    const { snippet_groups, snippet_custom, snippet_structure, snippet_content } = snippets;
+    const {snippet_groups, snippet_custom, snippet_structure, snippet_content} =
+        snippets;
     return `
     <snippets id="snippet_groups" string="Categories">
         ${(snippet_groups || []).join("")}
@@ -110,7 +118,7 @@ class BuilderContainer extends Component {
                 <Builder t-props="this.getBuilderProps()"/>
             </div>
         </div>`;
-    static components = { Builder, LocalOverlayContainer };
+    static components = {Builder, LocalOverlayContainer};
     static props = {
         content: String,
         editableSelector: String,
@@ -120,7 +128,7 @@ class BuilderContainer extends Component {
     };
 
     setup() {
-        this.state = useState({ isMobile: false, isEditing: false, showSidebar: true });
+        this.state = useState({isMobile: false, isEditing: false, showSidebar: true});
         this.iframeRef = useRef("iframe");
         const originalIframeLoaded = new Promise((resolve) => {
             this._originalIframeLoadedResolve = resolve;
@@ -466,7 +474,7 @@ export async function modifyText(editor, editableContent) {
  */
 export function getBasicSection(
     content,
-    { name, snippet = "s_test", additionalClassOnRoot = "" } = {}
+    {name, snippet = "s_test", additionalClassOnRoot = ""} = {}
 ) {
     let classes = snippet;
     if (additionalClassOnRoot) {
@@ -479,7 +487,7 @@ export function getBasicSection(
     );
 }
 
-export function createTestSnippets({ snippets: snippetConfigs = [], withName = false }) {
+export function createTestSnippets({snippets: snippetConfigs = [], withName = false}) {
     return snippetConfigs.map((snippetConfig) => {
         const {
             name,

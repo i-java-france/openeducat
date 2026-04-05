@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import date, timedelta
+from datetime import timedelta
 
 from odoo import Command
-from odoo.fields import Date
-from odoo.tools import float_is_zero
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
+from odoo.fields import Date
+from odoo.tests import Form, new_test_user, tagged
+from odoo.tools import float_is_zero
+
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
-from odoo.tests import Form, tagged, new_test_user
+
 
 @tagged('-at_install', 'post_install')
 class TestSaleTimesheet(TestCommonSaleTimesheet):
@@ -462,10 +463,10 @@ class TestSaleTimesheet(TestCommonSaleTimesheet):
             'unit_amount': 30,
             'employee_id': self.employee_manager.id
         })
-        
+
         with self.assertRaises(AccessError, msg="The user should not have access to the SOL"):
             so_line_deliver_timesheet.with_user(self.user_employee_without_sales_access).read(['name'])
-    
+
         # invalidate cache to make sure the SOL set on the timesheet is not in the cache since the user
         # should not be able to access on the SOL.
         self.env['sale.order.line'].invalidate_model()

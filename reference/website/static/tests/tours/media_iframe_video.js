@@ -1,4 +1,4 @@
-import { insertSnippet, registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {insertSnippet, registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "website_media_iframe_video",
@@ -54,7 +54,7 @@ registerWebsitePreviewTour(
             run() {
                 const inputEl = this.anchor;
                 inputEl.value = "";
-                inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+                inputEl.dispatchEvent(new Event("input", {bubbles: true}));
             },
         },
         {

@@ -1,34 +1,37 @@
 // = Icons
 // ============================================================================
 
-
 // Sizes
 // ----------------------------------------------------------------------------
 
-$oi-default-size: 1em;   // Normally 13px
+$oi-default-size: 1em; // Normally 13px
 $oi-fw-ratio: 1.28571429; // Matches .fa-fw
 
 $oi-sizes: (
-    'small': (
-        'font-size': .769em,    // ~ 10px
-        'vertical-align': 10%,
+    "small": (
+        "font-size": 0.769em,
+        // ~ 10px
+        "vertical-align": 10%,
     ),
-    'normal': (
-        'font-size': $oi-default-size,
+    "normal": (
+        "font-size": $oi-default-size,
     ),
-    'large': (
-        'font-size': 1.315em,   // ~ 17px
-        'vertical-align': -6%,
+    "large": (
+        "font-size": 1.315em,
+        // ~ 17px
+        "vertical-align": -6%,
     ),
-    'larger': (
-        'font-size': 1.462em,   // ~ 19px
-        'vertical-align': -10%,
+    "larger": (
+        "font-size": 1.462em,
+        // ~ 19px
+        "vertical-align": -10%,
     ),
 );
 
 // Force font-weight to normal
 // ----------------------------------------------------------------------------
-.oi, .fa {
+.oi,
+.fa {
     font-weight: $font-weight-normal;
 }
 
@@ -36,7 +39,8 @@ $oi-sizes: (
 // Allows to dinamically update rules according to the context and eventual
 // utility classes.
 // ----------------------------------------------------------------------------
-.oi, .fa {
+.oi,
+.fa {
     &:before {
         font-size: var(--oi-font-size, $oi-default-size);
         vertical-align: var(--oi-vertical-align, 0);
@@ -58,7 +62,7 @@ $oi-sizes: (
         @each $-key, $-values in $oi-sizes {
             .oi#{$-infix}-#{$-key} {
                 @each $-rule, $-value in $-values {
-                    @include print-variable('oi-#{$-rule}', $-value);
+                    @include print-variable("oi-#{$-rule}", $-value);
                 }
             }
         }
@@ -76,8 +80,8 @@ $oi-sizes: (
 }
 
 .o_barcode {
-    -webkit-mask: url('/web/static/img/barcode.svg') center/contain no-repeat;
-    mask: url('/web/static/img/barcode.svg') center/contain no-repeat;
+    -webkit-mask: url("/web/static/img/barcode.svg") center/contain no-repeat;
+    mask: url("/web/static/img/barcode.svg") center/contain no-repeat;
     background-color: $o-brand-primary;
 }
 

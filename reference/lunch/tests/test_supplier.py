@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
-
 from datetime import datetime, time, timedelta
-from freezegun import freeze_time
 from unittest.mock import patch
+
+import pytz
+from freezegun import freeze_time
 
 from odoo import fields
 from odoo.tests import common
@@ -14,7 +14,7 @@ from odoo.addons.lunch.tests.common import TestsCommon
 
 class TestSupplier(TestsCommon):
     def setUp(self):
-        super(TestSupplier, self).setUp()
+        super().setUp()
 
         self.monday_1am = datetime(2018, 10, 29, 1, 0, 0)
         self.monday_10am = datetime(2018, 10, 29, 10, 0, 0)

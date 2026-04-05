@@ -3,7 +3,7 @@ import {
     stripVersion,
     VERSION_SELECTOR,
 } from "@html_editor/html_migrations/html_migrations_utils";
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 export class EditorVersionPlugin extends Plugin {
     static id = "editorVersion";
@@ -20,7 +20,7 @@ export class EditorVersionPlugin extends Plugin {
         stripVersion(element);
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         const VERSIONS = htmlEditorVersions();
         const firstChild = root.firstElementChild;
         const version = VERSIONS.at(-1);

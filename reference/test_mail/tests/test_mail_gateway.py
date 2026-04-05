@@ -1,26 +1,31 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 import itertools
 import socket
-
 from datetime import datetime
-from unittest.mock import DEFAULT
-from unittest.mock import patch
+from unittest.mock import DEFAULT, patch
 
 from odoo import exceptions
-from odoo.addons.mail.models.mail_message import MailMessage
-from odoo.addons.mail.models.mail_thread import MailThread
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
-from odoo.addons.test_mail.data import test_mail_data
-from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE, MAIL_TEMPLATE_EXTRA_HTML, THAI_EMAIL_WINDOWS_874
-from odoo.addons.test_mail.models.mail_test_ticket import MailTestTicket
-from odoo.addons.test_mail.models.test_mail_models import MailTestGateway, MailTestGatewayGroups
 from odoo.sql_db import Cursor
-from odoo.tests import Form, tagged, RecordCapturer
+from odoo.tests import Form, RecordCapturer, tagged
 from odoo.tools import mute_logger
 from odoo.tools.mail import email_normalize, email_split_and_format, formataddr
+
+from odoo.addons.mail.models.mail_message import MailMessage
+from odoo.addons.mail.models.mail_thread import MailThread
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
+from odoo.addons.test_mail.data import test_mail_data
+from odoo.addons.test_mail.data.test_mail_data import (
+    MAIL_TEMPLATE,
+    MAIL_TEMPLATE_EXTRA_HTML,
+    THAI_EMAIL_WINDOWS_874,
+)
+from odoo.addons.test_mail.models.mail_test_ticket import MailTestTicket
+from odoo.addons.test_mail.models.test_mail_models import (
+    MailTestGateway,
+    MailTestGatewayGroups,
+)
 
 
 @tagged('mail_gateway')
@@ -1051,7 +1056,7 @@ class TestMailgateway(MailGatewayCommon):
                 # Test with 'mail.catchall.domain.allowed' set in system parameters
                 # and with a domain allowed
                 (test_domain, test_domain),
-            ], [True, True, False, True]):
+            ], [True, True, False, True], strict=False):
             with self.subTest(alias_right_part=alias_right_part, allowed_domain=allowed_domain):
                 self.env['ir.config_parameter'].set_param('mail.catchall.domain.allowed', allowed_domain)
 
@@ -2334,7 +2339,7 @@ class TestMailGatewayLoops(MailGatewayCommon):
         self.assertSentEmail(
             f'"MAILER-DAEMON" <{self.alias_bounce}@{self.alias_domain}>',
             [customer_email],
-            subject=f'Re: Re: Re: Should Bounce (initial)')
+            subject='Re: Re: Re: Should Bounce (initial)')
 
 
 @tagged('mail_gateway', 'mail_tools')
@@ -2373,7 +2378,7 @@ class TestMailGatewayRecipients(MailGatewayCommon):
                 self.test_partners[0],  # other format should not impact
                 self.test_partners[1],
                 self.test_partners[2],  # case should not impact (lower versus stored upper)
-            ],
+            ], strict=False,
         ):
             with self.subTest(additional_to=additional_to):
                 with self.mock_mail_gateway():
@@ -2598,7 +2603,7 @@ class TestMailGatewayReplies(MailGatewayCommon):
                     'default_model': self.test_records._name,
                     'default_subject': 'Coucou Hibou',
                 }))
-                composer_form.body = f'<p>Hello <t t-out="object.name"/></p>'
+                composer_form.body = '<p>Hello <t t-out="object.name"/></p>'
                 composer_form.reply_to_mode = reply_to_mode
                 if reply_to_mode == 'new':
                     composer_form.reply_to = self.alias.display_name
@@ -2746,7 +2751,7 @@ class TestMailThreadCC(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailThreadCC, cls).setUpClass()
+        super().setUpClass()
 
         cls.email_from = 'Sylvie Lelitre <test.sylvie.lelitre@agrolait.com>'
         cls.alias = cls.env['mail.alias'].create({

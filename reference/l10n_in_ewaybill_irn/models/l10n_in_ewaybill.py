@@ -5,7 +5,8 @@ import json
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.addons.l10n_in_ewaybill.tools.ewaybill_api import EWayBillApi, EWayBillError
+
+from odoo.addons.l10n_in_ewaybill.tools.ewaybill_api import EWayBillError
 
 
 class L10nInEwaybill(models.Model):

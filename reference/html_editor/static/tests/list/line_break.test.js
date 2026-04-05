@@ -1,6 +1,6 @@
-import { test } from "@odoo/hoot";
-import { testEditor } from "../_helpers/editor";
-import { insertLineBreak } from "../_helpers/user_actions";
+import {test} from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {insertLineBreak} from "../_helpers/user_actions";
 
 test("should insert a <br> into an empty list item", async () => {
     await testEditor({

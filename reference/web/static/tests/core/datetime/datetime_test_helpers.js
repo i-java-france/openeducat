@@ -1,6 +1,6 @@
-import { expect } from "@odoo/hoot";
-import { click, edit, queryAll, queryAllTexts, queryText } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect} from "@odoo/hoot";
+import {click, edit, queryAll, queryAllTexts, queryText} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
 const PICKER_COLS = 7;
 
@@ -28,7 +28,7 @@ export function assertDateTimePicker(expectedParams) {
         return;
     }
 
-    const { title, date, time } = expectedParams;
+    const {title, date, time} = expectedParams;
 
     // Title
     if (title) {
@@ -60,8 +60,10 @@ export function assertDateTimePicker(expectedParams) {
     let invalidCells = 0;
     let todayCells = 0;
     for (let i = 0; i < date.length; i++) {
-        const { cells, daysOfWeek, weekNumbers } = date[i];
-        const cellEls = queryAll(`.o_date_picker:nth-child(${i + 1}) .o_date_item_cell`);
+        const {cells, daysOfWeek, weekNumbers} = date[i];
+        const cellEls = queryAll(
+            `.o_date_picker:nth-child(${i + 1}) .o_date_item_cell`
+        );
         const pickerRows = cells.length;
         expect(cellEls.length).toBe(pickerRows * PICKER_COLS, {
             message: `picker should have ${
@@ -82,7 +84,9 @@ export function assertDateTimePicker(expectedParams) {
 
         if (weekNumbers) {
             expect(
-                queryAllTexts(`.o_date_picker:nth-child(${i + 1}) .o_week_number_cell`).map(Number)
+                queryAllTexts(
+                    `.o_date_picker:nth-child(${i + 1}) .o_week_number_cell`
+                ).map(Number)
             ).toEqual(weekNumbers, {
                 message: `picker should display the week numbers (${weekNumbers.join(", ")})`,
             });
@@ -146,6 +150,6 @@ export async function zoomOut() {
 export async function editTime(time, timepickerIndex = 0) {
     await click(`.o_time_picker_input:eq(${timepickerIndex})`);
     await animationFrame();
-    await edit(time, { confirm: "enter" });
+    await edit(time, {confirm: "enter"});
     await animationFrame();
 }

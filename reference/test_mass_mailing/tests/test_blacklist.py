@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import users
-from odoo.addons.test_mass_mailing.tests import common
 from odoo.exceptions import AccessError
+from odoo.tests.common import users
+
+from odoo.addons.test_mass_mailing.tests import common
 
 
 class TestBLAccessRights(common.TestMassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestBLAccessRights, cls).setUpClass()
+        super().setUpClass()
         cls._create_portal_user()
 
         cls.bl_rec = cls.env['mail.blacklist'].create([
@@ -63,7 +63,7 @@ class TestBLConsistency(common.TestMassMailCommon):
     _base_list = ['Arya.Stark@example.com', 'ned.stark@example.com']
 
     def setUp(self):
-        super(TestBLConsistency, self).setUp()
+        super().setUp()
         self.bl_rec = self.env['mail.blacklist'].create([
             {'email': 'Not A Stark <john.snow@example.com>'},
         ])

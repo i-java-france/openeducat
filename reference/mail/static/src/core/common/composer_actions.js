@@ -1,11 +1,11 @@
-import { toRaw, useComponent, useEffect, useRef, useState } from "@odoo/owl";
-import { useEmojiPicker } from "@web/core/emoji_picker/emoji_picker";
+import {toRaw, useComponent, useEffect, useRef, useState} from "@odoo/owl";
+import {useEmojiPicker} from "@web/core/emoji_picker/emoji_picker";
 
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { markEventHandled } from "@web/core/utils/misc";
-import { Action, UseActions } from "@mail/core/common/action";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {markEventHandled} from "@web/core/utils/misc";
+import {Action, UseActions} from "@mail/core/common/action";
+import {useService} from "@web/core/utils/hooks";
 
 export const composerActionsRegistry = registry.category("mail.composer/actions");
 
@@ -47,7 +47,7 @@ export function pickerOnClick(component, action, ev) {
         component.setActivePicker(null);
     } else {
         component.setActivePicker(action.picker);
-        component.getActivePicker().open({ el: anchorEl });
+        component.getActivePicker().open({el: anchorEl});
     }
 }
 
@@ -62,23 +62,25 @@ export function pickerSetup(action, func) {
 }
 
 registerComposerAction("send-message", {
-    btnClass: ({ action }) => (action.isActive ? "o-sendMessageActive o-text-white shadow-sm" : ""),
-    condition: ({ composer, owner, store }) =>
-        (store.env.isSmall && composer.message) || (!owner.env.inChatter && !composer.message),
-    disabledCondition: ({ owner }) => owner.isSendButtonDisabled,
+    btnClass: ({action}) =>
+        action.isActive ? "o-sendMessageActive o-text-white shadow-sm" : "",
+    condition: ({composer, owner, store}) =>
+        (store.env.isSmall && composer.message) ||
+        (!owner.env.inChatter && !composer.message),
+    disabledCondition: ({owner}) => owner.isSendButtonDisabled,
     icon: "fa fa-paper-plane-o",
-    isActive: ({ owner }) => owner.sendMessageState.active,
-    name: ({ composer, owner }) =>
+    isActive: ({owner}) => owner.sendMessageState.active,
+    name: ({composer, owner}) =>
         composer.message
             ? _t("Save editing")
             : composer.targetThread?.model === "discuss.channel"
-            ? _t("Send")
-            : owner.props.type === "note"
-            ? _t("Log")
-            : _t("Send"),
-    onSelected: ({ owner }) => owner.sendMessage(),
-    setup: ({ owner }) => {
-        owner.sendMessageState = useState({ active: false });
+              ? _t("Send")
+              : owner.props.type === "note"
+                ? _t("Log")
+                : _t("Send"),
+    onSelected: ({owner}) => owner.sendMessage(),
+    setup: ({owner}) => {
+        owner.sendMessageState = useState({active: false});
         useEffect(
             () => {
                 owner.sendMessageState.active = !owner.isSendButtonDisabled;
@@ -93,11 +95,11 @@ registerComposerAction("add-emoji", {
     isPicker: true,
     pickerName: _t("Emoji"),
     name: _t("Add Emojis"),
-    onSelected({ owner }, ev) {
+    onSelected({owner}, ev) {
         pickerOnClick(owner, this, ev);
         markEventHandled(ev, "Composer.onClickAddEmoji");
     },
-    setup({ owner }) {
+    setup({owner}) {
         pickerSetup(this, () =>
             useEmojiPicker(
                 undefined,
@@ -105,27 +107,27 @@ registerComposerAction("add-emoji", {
                     onSelect: (emoji) => owner.addEmoji(emoji),
                     onClose: () => owner.setActivePicker(null),
                 },
-                { arrow: false }
+                {arrow: false}
             )
         );
     },
     sequenceQuick: 20,
 });
 registerComposerAction("upload-files", {
-    condition: ({ owner }) => owner.allowUpload,
+    condition: ({owner}) => owner.allowUpload,
     icon: "fa fa-paperclip",
     name: _t("Attach Files"),
-    onSelected: ({ composer: comp, owner }, ev) => {
+    onSelected: ({composer: comp, owner}, ev) => {
         owner.fileUploaderRef.el?.click();
         const composer = toRaw(comp);
         markEventHandled(ev, "composer.clickOnAddAttachment");
         composer.autofocus++;
     },
-    setup: ({ owner }) => (owner.fileUploaderRef = useRef("file-uploader")),
+    setup: ({owner}) => (owner.fileUploaderRef = useRef("file-uploader")),
     sequence: 20,
 });
 registerComposerAction("open-full-composer", {
-    condition: ({ composer, owner }) =>
+    condition: ({composer, owner}) =>
         !composer.message &&
         owner.props.showFullComposer &&
         composer.targetThread &&
@@ -134,11 +136,11 @@ registerComposerAction("open-full-composer", {
     hotkey: "shift+c",
     icon: "fa fa-expand",
     name: _t("Open Full Composer"),
-    onSelected: ({ owner }) => owner.onClickFullComposer(),
+    onSelected: ({owner}) => owner.onClickFullComposer(),
     sequence: 30,
 });
 registerComposerAction("add-canned-response", {
-    condition: ({ composer, store }) =>
+    condition: ({composer, store}) =>
         store.hasCannedResponses &&
         composer.targetThread &&
         store.env.services["mail.suggestion"]
@@ -146,7 +148,7 @@ registerComposerAction("add-canned-response", {
             .find(([delimiter]) => delimiter === "::"),
     icon: "fa fa-file-text-o",
     name: _t("Insert a Canned response"),
-    onSelected: ({ owner }, ev) => owner.onClickInsertCannedResponse(ev),
+    onSelected: ({owner}, ev) => owner.onClickInsertCannedResponse(ev),
     sequence: 5,
 });
 
@@ -158,13 +160,13 @@ export class ComposerAction extends Action {
      * @param {Object} param0
      * @param {Composer|() => Composer} composer
      */
-    constructor({ composer }) {
+    constructor({composer}) {
         super(...arguments);
         this.composerFn = typeof composer === "function" ? composer : () => composer;
     }
 
     get params() {
-        return Object.assign(super.params, { composer: this.composerFn() });
+        return Object.assign(super.params, {composer: this.composerFn()});
     }
 
     get isPicker() {
@@ -189,7 +191,7 @@ class UseComposerActions extends UseActions {
         groupedPickers.quick?.sort((a1, a2) => a1.sequenceQuick - a2.sequenceQuick);
         groupedPickers.other?.sort((a1, a2) => a1.sequence - a2.sequence);
         const pickers = (groupedPickers.other ?? []).concat(groupedPickers.quick ?? []);
-        return Object.assign(res, { pickers });
+        return Object.assign(res, {pickers});
     }
 }
 
@@ -197,12 +199,13 @@ class UseComposerActions extends UseActions {
  * @param {Object} [params0={}]
  * @param {Composer|() => Composer} composer
  */
-export function useComposerActions({ composer } = {}) {
+export function useComposerActions({composer} = {}) {
     const component = useComponent();
     const transformedActions = composerActionsRegistry
         .getEntries()
         .map(
-            ([id, definition]) => new ComposerAction({ owner: component, id, definition, composer })
+            ([id, definition]) =>
+                new ComposerAction({owner: component, id, definition, composer})
         );
     for (const action of transformedActions) {
         action.setup();
@@ -211,6 +214,7 @@ export function useComposerActions({ composer } = {}) {
         new UseComposerActions(component, transformedActions, useService("mail.store"))
     );
     component.getActivePicker = () => state.activePicker;
-    component.setActivePicker = (newActivePicker) => (state.activePicker = newActivePicker);
+    component.setActivePicker = (newActivePicker) =>
+        (state.activePicker = newActivePicker);
     return state;
 }

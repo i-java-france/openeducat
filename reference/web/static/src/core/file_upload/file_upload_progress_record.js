@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { FileUploadProgressBar } from "./file_upload_progress_bar";
+import {_t} from "@web/core/l10n/translation";
+import {FileUploadProgressBar} from "./file_upload_progress_bar";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class FileUploadProgressRecord extends Component {
     static template = "";
@@ -10,7 +10,7 @@ export class FileUploadProgressRecord extends Component {
     };
     static props = {
         fileUpload: Object,
-        selector: { type: String, optional: true },
+        selector: {type: String, optional: true},
     };
     getProgressTexts() {
         const fileUpload = this.props.fileUpload;
@@ -25,7 +25,7 @@ export class FileUploadProgressRecord extends Component {
             const mbTotal = Math.round(fileUpload.total / 1000000);
             return {
                 left: _t("Uploading... (%s%)", percent),
-                right: _t("(%(mbLoaded)s/%(mbTotal)sMB)", { mbLoaded, mbTotal }),
+                right: _t("(%(mbLoaded)s/%(mbTotal)sMB)", {mbLoaded, mbTotal}),
             };
         }
     }

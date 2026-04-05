@@ -1,11 +1,13 @@
 import uuid
+from urllib.parse import quote, urlencode, urlparse
+
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
-from urllib.parse import quote, urlencode, urlparse
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import SQL
+
 from odoo.addons.l10n_tr_nilvera.const import NILVERA_ERROR_CODE_MESSAGES
 from odoo.addons.l10n_tr_nilvera.lib.nilvera_client import _get_nilvera_client
 

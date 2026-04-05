@@ -2,13 +2,13 @@ import {
     DocumentSelector,
     renderStaticFileBox,
 } from "@html_editor/main/media/media_dialog/document_selector";
-import { Plugin } from "@html_editor/plugin";
-import { closestElement, firstLeaf, lastLeaf } from "@html_editor/utils/dom_traversal";
-import { nodeSize } from "@html_editor/utils/position";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { DISABLED_NAMESPACE } from "../toolbar/toolbar_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement, firstLeaf, lastLeaf} from "@html_editor/utils/dom_traversal";
+import {nodeSize} from "@html_editor/utils/position";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {DISABLED_NAMESPACE} from "../toolbar/toolbar_plugin";
 
 export class FilePlugin extends Plugin {
     static id = "file";
@@ -25,7 +25,8 @@ export class FilePlugin extends Plugin {
             icon: "fa-upload",
             run: this.uploadAndInsertFiles.bind(this),
             isAvailable: (selection) =>
-                this.isUploadCommandAvailable(selection) && isHtmlContentSupported(selection),
+                this.isUploadCommandAvailable(selection) &&
+                isHtmlContentSupported(selection),
         },
         powerbox_items: {
             categoryId: "media",
@@ -50,7 +51,8 @@ export class FilePlugin extends Plugin {
         toolbar_namespace_providers: withSequence(
             80,
             (targetedNodes, editableSelection) =>
-                closestElement(editableSelection.anchorNode, ".o_file_box") && DISABLED_NAMESPACE
+                closestElement(editableSelection.anchorNode, ".o_file_box") &&
+                DISABLED_NAMESPACE
         ),
 
         /** Predicates */
@@ -70,7 +72,10 @@ export class FilePlugin extends Plugin {
     }
 
     onClick(ev) {
-        const fileNameEl = closestElement(ev.target, ".o_file_name_container .o_link_readonly");
+        const fileNameEl = closestElement(
+            ev.target,
+            ".o_file_name_container .o_link_readonly"
+        );
         if (!fileNameEl || fileNameEl.isContentEditable) {
             return;
         }
@@ -94,14 +99,17 @@ export class FilePlugin extends Plugin {
         // Place the cursor at the click position if it is inside filename,
         // otherwise fall back to placing it at the start.
         if (anchorNode && fileNameEl.contains(anchorNode)) {
-            this.dependencies.selection.setSelection({ anchorNode, anchorOffset });
+            this.dependencies.selection.setSelection({anchorNode, anchorOffset});
         } else {
             this.dependencies.selection.setCursorStart(fileNameEl);
         }
     }
 
     onKeyDown(ev) {
-        const fileNameEl = closestElement(ev.target, ".o_file_name_container .o_link_readonly");
+        const fileNameEl = closestElement(
+            ev.target,
+            ".o_file_name_container .o_link_readonly"
+        );
         if (!fileNameEl) {
             return;
         }
@@ -143,7 +151,10 @@ export class FilePlugin extends Plugin {
 
     onPointerDown(ev) {
         const activeElement = this.document.activeElement;
-        const fileNameEl = closestElement(activeElement, ".o_file_name_container .o_link_readonly");
+        const fileNameEl = closestElement(
+            activeElement,
+            ".o_file_name_container .o_link_readonly"
+        );
         if (!fileNameEl || fileNameEl.contains(ev.target)) {
             return;
         }
@@ -164,10 +175,13 @@ export class FilePlugin extends Plugin {
 
     async uploadAndInsertFiles() {
         // Upload
-        const attachments = await this.services.uploadLocalFiles.upload(this.recordInfo, {
-            multiple: true,
-            accessToken: true,
-        });
+        const attachments = await this.services.uploadLocalFiles.upload(
+            this.recordInfo,
+            {
+                multiple: true,
+                accessToken: true,
+            }
+        );
         if (!attachments.length) {
             // No files selected or error during upload
             this.editable.focus();
@@ -189,7 +203,7 @@ export class FilePlugin extends Plugin {
             unique: true,
             accessToken: true,
         });
-        const { name: filename, mimetype, id } = attachment;
+        const {name: filename, mimetype, id} = attachment;
         return renderStaticFileBox(filename, mimetype, url, id);
     }
 }

@@ -1,7 +1,7 @@
-import { SnippetViewer } from "@html_builder/snippets/snippet_viewer";
-import { onMounted, onPatched, onWillPatch, onWillUnmount } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
+import {SnippetViewer} from "@html_builder/snippets/snippet_viewer";
+import {onMounted, onPatched, onWillPatch, onWillUnmount} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
 
 patch(SnippetViewer.prototype, {
     setup() {

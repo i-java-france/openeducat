@@ -1,6 +1,6 @@
-import { onWillDestroy } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { FileViewer } from "./file_viewer";
+import {onWillDestroy} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {FileViewer} from "./file_viewer";
 
 let id = 1;
 
@@ -20,7 +20,7 @@ export function createFileViewer() {
             const index = viewableFiles.indexOf(file);
             registry.category("main_components").add(fileViewerId, {
                 Component: FileViewer,
-                props: { files: viewableFiles, startIndex: index, close },
+                props: {files: viewableFiles, startIndex: index, close},
             });
         }
     }
@@ -28,11 +28,11 @@ export function createFileViewer() {
     function close() {
         registry.category("main_components").remove(fileViewerId);
     }
-    return { open, close };
+    return {open, close};
 }
 
 export function useFileViewer() {
-    const { open, close } = createFileViewer();
+    const {open, close} = createFileViewer();
     onWillDestroy(close);
-    return { open, close };
+    return {open, close};
 }

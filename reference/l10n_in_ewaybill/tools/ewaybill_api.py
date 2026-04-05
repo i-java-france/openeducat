@@ -1,16 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import logging
 import contextlib
-
+import logging
 from datetime import timedelta
+
 from markupsafe import Markup
 
 from odoo import fields
 from odoo.exceptions import AccessError
-from odoo.addons.l10n_in_ewaybill.models.error_codes import ERROR_CODES
-from odoo.tools import _, LazyTranslate
+from odoo.tools import _
 
+from odoo.addons.l10n_in_ewaybill.models.error_codes import ERROR_CODES
 
 _logger = logging.getLogger(__name__)
 

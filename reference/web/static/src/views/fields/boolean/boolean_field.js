@@ -1,13 +1,13 @@
-import { Component, useState } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { standardFieldProps } from "../standard_field_props";
+import {Component, useState} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {standardFieldProps} from "../standard_field_props";
 
 export class BooleanField extends Component {
     static template = "web.BooleanField";
-    static components = { CheckBox };
+    static components = {CheckBox};
     static props = {
         ...standardFieldProps,
     };
@@ -24,7 +24,7 @@ export class BooleanField extends Component {
      */
     onChange(newValue) {
         this.state.value = newValue;
-        this.props.record.update({ [this.props.name]: newValue });
+        this.props.record.update({[this.props.name]: newValue});
     }
 }
 

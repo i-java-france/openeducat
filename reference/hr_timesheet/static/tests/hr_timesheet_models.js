@@ -1,15 +1,21 @@
-import { mockDate } from "@odoo/hoot-mock";
-import { session } from "@web/session";
-import { defineModels, fields, models, patchWithCleanup, serverState } from "@web/../tests/web_test_helpers";
+import {mockDate} from "@odoo/hoot-mock";
+import {session} from "@web/session";
+import {
+    defineModels,
+    fields,
+    models,
+    patchWithCleanup,
+    serverState,
+} from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, projectModels } from "@project/../tests/project_models";
+import {defineProjectModels, projectModels} from "@project/../tests/project_models";
 
 export class HRTimesheet extends models.Model {
     _name = "account.analytic.line";
 
     name = fields.Char();
-    project_id = fields.Many2one({ relation: "project.project", required: true });
-    task_id = fields.Many2one({ relation: "project.task" });
+    project_id = fields.Many2one({relation: "project.project", required: true});
+    task_id = fields.Many2one({relation: "project.task"});
     unit_amount = fields.Float();
 
     _records = [
@@ -90,7 +96,7 @@ export class ProjectProject extends projectModels.ProjectProject {
 projectModels.ProjectTask = ProjectTask;
 projectModels.ProjectProject = ProjectProject;
 
-export const hrTimesheetModels = { HRTimesheet };
+export const hrTimesheetModels = {HRTimesheet};
 
 export function defineTimesheetModels() {
     defineProjectModels();

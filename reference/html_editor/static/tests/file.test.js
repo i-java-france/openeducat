@@ -1,23 +1,30 @@
-import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
+import {MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
 import {
     EMBEDDED_COMPONENT_PLUGINS,
     MAIN_PLUGINS,
     NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS,
 } from "@html_editor/plugin_sets";
-import { isZwnbsp } from "@html_editor/utils/dom_info";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, press, queryAll, queryOne, waitFor } from "@odoo/hoot-dom";
-import { onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor } from "./_helpers/editor";
-import { getContent } from "./_helpers/selection";
-import { insertText } from "./_helpers/user_actions";
-import { execCommand } from "./_helpers/userCommands";
-import { expandToolbar } from "./_helpers/toolbar";
-import { nodeSize } from "@html_editor/utils/position";
+import {isZwnbsp} from "@html_editor/utils/dom_info";
+import {describe, expect, test} from "@odoo/hoot";
+import {
+    animationFrame,
+    click,
+    press,
+    queryAll,
+    queryOne,
+    waitFor,
+} from "@odoo/hoot-dom";
+import {onRpc, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor} from "./_helpers/editor";
+import {getContent} from "./_helpers/selection";
+import {insertText} from "./_helpers/user_actions";
+import {execCommand} from "./_helpers/userCommands";
+import {expandToolbar} from "./_helpers/toolbar";
+import {nodeSize} from "@html_editor/utils/position";
 
 const configWithEmbeddedFile = {
     Plugins: [...MAIN_PLUGINS, ...EMBEDDED_COMPONENT_PLUGINS],
-    resources: { embedded_components: MAIN_EMBEDDINGS },
+    resources: {embedded_components: MAIN_EMBEDDINGS},
 };
 
 const configWithoutEmbeddedFile = {
@@ -29,7 +36,7 @@ const patchUpload = (editor) => {
         patchWithCleanup(editor.services.uploadLocalFiles, {
             async upload() {
                 resolve();
-                return [{ id: 1, name: "file.txt" }];
+                return [{id: 1, name: "file.txt"}];
             },
         });
     });
@@ -38,7 +45,7 @@ const patchUpload = (editor) => {
 
 describe("file command", () => {
     test("/file uploads a file via the system's selector, skipping the media dialog", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>", {
+        const {editor} = await setupEditor("<p>[]<br></p>", {
             config: configWithoutEmbeddedFile,
         });
         const mockedUpload = patchUpload(editor);
@@ -56,16 +63,16 @@ describe("file command", () => {
     });
 
     test("file card should have inline display, BS alert-info style and no download button", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>", {
+        const {editor} = await setupEditor("<p>[]<br></p>", {
             config: configWithoutEmbeddedFile,
         });
         patchUpload(editor);
         execCommand(editor, "uploadFile");
-        // wait for the embedded component to be mounted
+        // Wait for the embedded component to be mounted
         await waitFor('.o_file_box .o_file_name_container:contains("file.txt")');
         // Check that file card has inline display, with alert style.
         const fileCard = queryOne(".o_file_box");
-        expect(fileCard).toHaveStyle({ display: "inline-block" });
+        expect(fileCard).toHaveStyle({display: "inline-block"});
         expect(fileCard.firstElementChild).toHaveClass(["alert", "alert-info"]);
         // No download button in file card.
         expect(".o_file_box .fa-download").toHaveCount(0);
@@ -74,7 +81,7 @@ describe("file command", () => {
     describe("static file box interactions", () => {
         test.tags("desktop");
         test("should toggle file name editability independently on click", async () => {
-            const { el, editor } = await setupEditor("<p>[]<br></p>", {
+            const {el, editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithoutEmbeddedFile,
             });
             patchUpload(editor);
@@ -143,7 +150,7 @@ describe("file command", () => {
 
         test.tags("desktop");
         test("ArrowUp and ArrowDown move the caret to the start and end of a file name", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
+            const {editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithoutEmbeddedFile,
             });
             patchUpload(editor);
@@ -152,7 +159,9 @@ describe("file command", () => {
             execCommand(editor, "uploadFile");
             await waitFor('.o_file_box .o_file_name_container:contains("file.txt")');
 
-            const fileNameEl = queryOne(".o_file_box .o_file_name_container .o_link_readonly");
+            const fileNameEl = queryOne(
+                ".o_file_box .o_file_name_container .o_link_readonly"
+            );
 
             // File name is read-only by default.
             expect(fileNameEl).toHaveAttribute("contenteditable", "false");
@@ -179,7 +188,7 @@ describe("file command", () => {
 
         test.tags("desktop");
         test("ArrowLeft at start and ArrowRight at end do nothing in a file name", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
+            const {editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithoutEmbeddedFile,
             });
             patchUpload(editor);
@@ -188,7 +197,9 @@ describe("file command", () => {
             execCommand(editor, "uploadFile");
             await waitFor('.o_file_box .o_file_name_container:contains("file.txt")');
 
-            const fileNameEl = queryOne(".o_file_box .o_file_name_container .o_link_readonly");
+            const fileNameEl = queryOne(
+                ".o_file_box .o_file_name_container .o_link_readonly"
+            );
 
             // Enable editing on the file name.
             await click(fileNameEl);
@@ -215,7 +226,7 @@ describe("file command", () => {
 
         test.tags("desktop");
         test("Enter and Shift+Enter do nothing in a file name", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
+            const {editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithoutEmbeddedFile,
             });
             patchUpload(editor);
@@ -224,7 +235,9 @@ describe("file command", () => {
             execCommand(editor, "uploadFile");
             await waitFor('.o_file_box .o_file_name_container:contains("file.txt")');
 
-            const fileNameEl = queryOne(".o_file_box .o_file_name_container .o_link_readonly");
+            const fileNameEl = queryOne(
+                ".o_file_box .o_file_name_container .o_link_readonly"
+            );
 
             // Enable editing on the file name.
             await click(fileNameEl);
@@ -252,7 +265,7 @@ describe("file command", () => {
 });
 
 test("Should not apply color to file box", async () => {
-    const { editor } = await setupEditor("<p>a[]b</p>", {
+    const {editor} = await setupEditor("<p>a[]b</p>", {
         config: configWithEmbeddedFile,
     });
     const mockedUpload = patchUpload(editor);
@@ -286,8 +299,8 @@ describe("document tab in media dialog", () => {
 
     describe("without File nor EmbeddedFile plugin", () => {
         test("Document tab is not available by default", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
-                config: { Plugins: MAIN_PLUGINS },
+            const {editor} = await setupEditor("<p>[]<br></p>", {
+                config: {Plugins: MAIN_PLUGINS},
             });
             execCommand(editor, "insertMedia");
             await animationFrame();
@@ -297,7 +310,7 @@ describe("document tab in media dialog", () => {
 
     describe("with EmbeddedFile plugin", () => {
         test("file upload via media dialog inserts a file card in the editable", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
+            const {editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithEmbeddedFile,
             });
             execCommand(editor, "insertMedia");
@@ -305,7 +318,7 @@ describe("document tab in media dialog", () => {
             await click(".nav-link:contains('Documents')");
             await animationFrame();
             await click(".o_we_attachment_highlight .o_button_area");
-            // wait for the embedded component to be mounted
+            // Wait for the embedded component to be mounted
             await waitFor('[data-embedded="file"] .o_file_name:contains("file.txt")');
             expect('[data-embedded="file"]').toHaveCount(1);
         });
@@ -313,7 +326,7 @@ describe("document tab in media dialog", () => {
 
     describe("with File plugin (no embedded component)", () => {
         test("file upload via media dialog inserts a link in the editable", async () => {
-            const { editor } = await setupEditor("<p>[]<br></p>", {
+            const {editor} = await setupEditor("<p>[]<br></p>", {
                 config: configWithoutEmbeddedFile,
             });
             execCommand(editor, "insertMedia");
@@ -321,14 +334,16 @@ describe("document tab in media dialog", () => {
             await click(".nav-link:contains('Documents')");
             await animationFrame();
             await click(".o_we_attachment_highlight .o_button_area");
-            expect(".odoo-editor-editable .o_file_box a:contains('file.txt')").toHaveCount(1);
+            expect(
+                ".odoo-editor-editable .o_file_box a:contains('file.txt')"
+            ).toHaveCount(1);
         });
     });
 });
 
 describe("powerbutton", () => {
     test("file powerbutton uploads a file directly via the system's selector", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>", {
+        const {editor} = await setupEditor("<p>[]<br></p>", {
             config: configWithoutEmbeddedFile,
         });
         const mockedUpload = patchUpload(editor);
@@ -343,7 +358,9 @@ describe("powerbutton", () => {
     });
 
     test("file powerbutton uploads a file directly via the system's selector (embedded component)", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>", { config: configWithEmbeddedFile });
+        const {editor} = await setupEditor("<p>[]<br></p>", {
+            config: configWithEmbeddedFile,
+        });
         const mockedUpload = patchUpload(editor);
         // Click on the upload powerbutton.
         await click(".power_button.fa-upload");
@@ -358,12 +375,12 @@ describe("powerbutton", () => {
 
 describe("zero width no-break space", () => {
     test("file card should be padded with zero-width no-break spaces", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>", {
+        const {editor} = await setupEditor("<p>[]<br></p>", {
             config: configWithoutEmbeddedFile,
         });
         patchUpload(editor);
         execCommand(editor, "uploadFile");
-        // wait for the the file to be uploaded and the card rendered
+        // Wait for the the file to be uploaded and the card rendered
         await waitFor('.o_file_box a:contains("file.txt")');
         // Check that file card is padded with ZWNBSP on both sides.
         const fileCard = queryOne(".o_file_box");
@@ -372,26 +389,26 @@ describe("zero width no-break space", () => {
     });
 
     test("should not add two contiguous ZWNBSP between two file cards", async () => {
-        const { editor, el } = await setupEditor("<p>[]<br></p>", {
-            config: { ...configWithEmbeddedFile, resources: {} }, // disable embedded component rendering
+        const {editor, el} = await setupEditor("<p>[]<br></p>", {
+            config: {...configWithEmbeddedFile, resources: {}}, // Disable embedded component rendering
         });
         let mockUpload = patchUpload(editor);
         execCommand(editor, "uploadFile");
         await mockUpload;
-        // patch again to get new Promise
+        // Patch again to get new Promise
         mockUpload = patchUpload(editor);
         execCommand(editor, "uploadFile");
         await mockUpload;
         let content = getContent(el);
-        // replace embedded component root with a <FILE/> placeholder for readability
+        // Replace embedded component root with a <FILE/> placeholder for readability
         content = content.replace(/<span data-embedded="file".*?<\/span>/g, "<FILE/>");
         expect(content).toBe("<p>\ufeff<FILE/>\ufeff<FILE/>\ufeff[]</p>");
     });
 
     test("should not add two contiguous ZWNBSP between two file cards (2)", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p>abc<span data-embedded="file" class="o_file_box"></span>x[]<span data-embedded="file" class="o_file_box"></span></p>',
-            { config: { ...configWithEmbeddedFile, resources: {} } } // disable embedded component rendering
+            {config: {...configWithEmbeddedFile, resources: {}}} // Disable embedded component rendering
         );
         expect(getContent(el)).toBe(
             '<p>abc\ufeff<span data-embedded="file" class="o_file_box"></span>\ufeffx[]\ufeff<span data-embedded="file" class="o_file_box"></span>\ufeff</p>'

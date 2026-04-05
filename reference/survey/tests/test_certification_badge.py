@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.survey.tests import common
 from psycopg2 import IntegrityError
+
 from odoo.exceptions import AccessError
 from odoo.tools import mute_logger
+
+from odoo.addons.survey.tests import common
 
 
 class TestCertificationBadge(common.TestSurveyCommon):
 
     def setUp(self):
-        super(TestCertificationBadge, self).setUp()
+        super().setUp()
         self.certification_survey = self.env['survey.survey'].with_user(self.survey_manager).create({
             'title': 'Certification Survey',
             'access_mode': 'public',
@@ -80,7 +81,7 @@ class TestCertificationBadge(common.TestSurveyCommon):
         """ Test badge synchronization """
         # add a certification badge on a new survey
         challenge = self.env['gamification.challenge'].search([('reward_id', '=', self.certification_badge.id)])
-        self.assertEqual(len(challenge), 0, """A challenge should not exist or be linked to the certification badge 
+        self.assertEqual(len(challenge), 0, """A challenge should not exist or be linked to the certification badge
             if the certification badge have not been activated on a certification survey""")
 
         self.certification_survey.write({

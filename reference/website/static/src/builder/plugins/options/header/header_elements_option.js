@@ -1,5 +1,5 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { basicHeaderOptionSettings } from "./basicHeaderOptionSettings";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {basicHeaderOptionSettings} from "./basicHeaderOptionSettings";
 
 export class HeaderElementsOption extends BaseOptionComponent {
     static template = "website.HeaderElementsOption";
@@ -8,12 +8,17 @@ export class HeaderElementsOption extends BaseOptionComponent {
     setup() {
         super.setup();
         this.customizeWebsite = this.dependencies.customizeWebsite;
-        const views = ["website.option_header_brand_logo", "website.option_header_brand_name"];
-        this.customizeWebsite.loadConfigKey({ views });
+        const views = [
+            "website.option_header_brand_logo",
+            "website.option_header_brand_name",
+        ];
+        this.customizeWebsite.loadConfigKey({views});
     }
 
     get websiteLogoParams() {
-        const views = this.customizeWebsite.getConfigKey("website.option_header_brand_name")
+        const views = this.customizeWebsite.getConfigKey(
+            "website.option_header_brand_name"
+        )
             ? ["website.option_header_brand_name"]
             : ["website.option_header_brand_logo"];
         return {

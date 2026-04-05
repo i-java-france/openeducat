@@ -1,14 +1,14 @@
-import { Component, onMounted, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { redirect } from "@web/core/utils/urls";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { ModuleToInstallIcon, SlideCategoryIcon } from "./slide_upload_dialog_select";
-import { SlideInstallModule } from "./slide_install_module";
-import { SlideUploadCategory } from "./slide_upload_category";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { rpc } from "@web/core/network/rpc";
+import {Component, onMounted, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {redirect} from "@web/core/utils/urls";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {ModuleToInstallIcon, SlideCategoryIcon} from "./slide_upload_dialog_select";
+import {SlideInstallModule} from "./slide_install_module";
+import {SlideUploadCategory} from "./slide_upload_category";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {rpc} from "@web/core/network/rpc";
 
 export class SlideUploadDialog extends Component {
     static baseSettings = {
@@ -20,11 +20,11 @@ export class SlideUploadDialog extends Component {
         installModuleData: null,
     };
     static categoryData = {
-        document: { icon: "fa-file-pdf-o", label: _t("Presentation / Doc") },
-        infographic: { icon: "fa-file-image-o", label: _t("Image") },
-        article: { icon: "fa-file-text", label: _t("Article") },
-        video: { icon: "fa-file-video-o", label: _t("Video") },
-        quiz: { icon: "fa-question-circle", label: _t("Quiz") },
+        document: {icon: "fa-file-pdf-o", label: _t("Presentation / Doc")},
+        infographic: {icon: "fa-file-image-o", label: _t("Image")},
+        article: {icon: "fa-file-text", label: _t("Article")},
+        video: {icon: "fa-file-video-o", label: _t("Video")},
+        quiz: {icon: "fa-question-circle", label: _t("Quiz")},
     };
     static components = {
         Dialog,
@@ -48,11 +48,11 @@ export class SlideUploadDialog extends Component {
     static props = {
         canPublish: Boolean,
         canUpload: Boolean,
-        categoryId: { type: String, optional: true },
+        categoryId: {type: String, optional: true},
         channelId: Number,
         close: Function,
-        modulesToInstall: { type: Array, optional: true },
-        openModal: { type: String, optional: true },
+        modulesToInstall: {type: Array, optional: true},
+        openModal: {type: String, optional: true},
     };
     static template = "website_slides.SlideUploadDialog";
 
@@ -63,9 +63,12 @@ export class SlideUploadDialog extends Component {
         this.orm = useService("orm");
         this.pagesTemplates = this.constructor.pagesTemplates;
         this.slideCategoryData = this.constructor.categoryData;
-        this.state = useState({ ...this.constructor.baseSettings });
+        this.state = useState({...this.constructor.baseSettings});
         onMounted(() => {
-            if (this.props.openModal && this.props.openModal in this.slideCategoryData) {
+            if (
+                this.props.openModal &&
+                this.props.openModal in this.slideCategoryData
+            ) {
                 // Sets the appropriate category's upload template if one has to be opened on load.
                 this.onClickSlideCategoryIcon(this.props.openModal);
             }
@@ -83,7 +86,9 @@ export class SlideUploadDialog extends Component {
 
     onClickInstallModuleIcon(moduleId) {
         this.state.page = "install_module";
-        this.state.installModuleData = this.props.modulesToInstall.find((m) => m.id === moduleId);
+        this.state.installModuleData = this.props.modulesToInstall.find(
+            (m) => m.id === moduleId
+        );
         this.state.size = "md";
     }
 
@@ -108,7 +113,7 @@ export class SlideUploadDialog extends Component {
             // If we need to enter edit mode, it should be done to the top
             // window so that we end up refreshing the backend client action
             // in edit mode.
-            const { origin, pathname } = window.top.location;
+            const {origin, pathname} = window.top.location;
             const url = new URL(data.url, `${origin}${pathname}`);
             if (url.origin === origin) {
                 window.top.location = url.href;

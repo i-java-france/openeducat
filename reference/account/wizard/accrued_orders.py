@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from collections import defaultdict
-from dateutil.relativedelta import relativedelta
 import json
-from odoo import models, fields, api, _, Command
-from odoo.tools import float_is_zero, format_date
+from collections import defaultdict
+
+from dateutil.relativedelta import relativedelta
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import date_utils
+from odoo.tools import date_utils, float_is_zero, format_date
 from odoo.tools.misc import formatLang
 
 

@@ -1,6 +1,6 @@
-import { ClassAction, StyleAction } from "@html_builder/core/core_builder_action_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {ClassAction, StyleAction} from "@html_builder/core/core_builder_action_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class CardWidthOptionPlugin extends Plugin {
     static id = "cardWidthOption";
@@ -13,11 +13,13 @@ class CardWidthOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(CardWidthOptionPlugin.id, CardWidthOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(CardWidthOptionPlugin.id, CardWidthOptionPlugin);
 
 export class SetCardAlignmentAction extends ClassAction {
     static id = "setCardAlignment";
-    isApplied({ editingElement: el, params: { mainParam: classNames } }) {
+    isApplied({editingElement: el, params: {mainParam: classNames}}) {
         if (classNames === "me-auto") {
             return !["mx-auto", "ms-auto"].some((cls) => el.classList.contains(cls));
         }

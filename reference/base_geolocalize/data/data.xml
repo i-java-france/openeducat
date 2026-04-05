@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="geoprovider_open_street" model="base.geo_provider">
         <field name="tech_name">openstreetmap</field>

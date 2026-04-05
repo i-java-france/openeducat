@@ -1,12 +1,12 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { getBgImageURLFromEl, normalizeColor } from "@html_builder/utils/utils_css";
-import { ImageSize } from "../image/image_size";
-import { getHtmlStyle } from "@html_editor/utils/formatting";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {getBgImageURLFromEl, normalizeColor} from "@html_builder/utils/utils_css";
+import {ImageSize} from "../image/image_size";
+import {getHtmlStyle} from "@html_editor/utils/formatting";
 
 export class BackgroundImageOption extends BaseOptionComponent {
     static template = "html_builder.BackgroundImageOption";
     static dependencies = ["history", "backgroundImageOption"];
-    static components = { ImageSize };
+    static components = {ImageSize};
     setup() {
         this.editingElement = this.env.getEditingElement();
         super.setup();
@@ -17,11 +17,17 @@ export class BackgroundImageOption extends BaseOptionComponent {
     toggleBgImageClasses() {
         this.dependencies.history.ignoreDOMMutations(() => {
             const backgroundURL = getBgImageURLFromEl(this.editingElement);
-            this.dependencies.backgroundImageOption.setImageBackground(this.editingElement, backgroundURL);
+            this.dependencies.backgroundImageOption.setImageBackground(
+                this.editingElement,
+                backgroundURL
+            );
         });
     }
     showMainColorPicker() {
-        const src = new URL(getBgImageURLFromEl(this.editingElement), window.location.origin);
+        const src = new URL(
+            getBgImageURLFromEl(this.editingElement),
+            window.location.origin
+        );
         return (
             src.origin === window.location.origin &&
             (src.pathname.startsWith("/html_editor/shape/") ||
@@ -46,6 +52,9 @@ export function getBackgroundImageColor(editingEl, colorName) {
         window.location.origin
     ).searchParams.get(colorName);
     if (backgroundImageColor) {
-        return normalizeColor(backgroundImageColor, getHtmlStyle(editingEl.ownerDocument));
+        return normalizeColor(
+            backgroundImageColor,
+            getHtmlStyle(editingEl.ownerDocument)
+        );
     }
 }

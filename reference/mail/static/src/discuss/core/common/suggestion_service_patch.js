@@ -1,8 +1,8 @@
-import { SuggestionService } from "@mail/core/common/suggestion_service";
-import { cleanTerm } from "@mail/utils/common/format";
+import {SuggestionService} from "@mail/core/common/suggestion_service";
+import {cleanTerm} from "@mail/utils/common/format";
 
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
 
 const commandRegistry = registry.category("discuss.channel_commands");
 
@@ -21,8 +21,9 @@ const suggestionServicePatch = {
                 id: command.id,
                 name,
             }))
-            .filter(({ condition, channel_types }) => {
-                const passesCondition = !condition || condition({ store: this.store, thread });
+            .filter(({condition, channel_types}) => {
+                const passesCondition =
+                    !condition || condition({store: this.store, thread});
                 const passesChannelType =
                     !channel_types || channel_types.includes(thread.channel_type);
                 return passesCondition && passesChannelType;
@@ -67,7 +68,9 @@ const suggestionServicePatch = {
             );
             if (thread.channel_type === "channel") {
                 const group = (thread.parent_channel_id || thread).group_public_id;
-                group.partners.forEach((partner) => partnersById.set(partner.id, partner));
+                group.partners.forEach((partner) =>
+                    partnersById.set(partner.id, partner)
+                );
             }
             return Array.from(partnersById.values());
         } else {
@@ -77,7 +80,7 @@ const suggestionServicePatch = {
     /**
      * @override
      */
-    searchSuggestions({ delimiter, term }, { thread } = {}) {
+    searchSuggestions({delimiter, term}, {thread} = {}) {
         if (delimiter === "/") {
             return this.searchChannelCommand(cleanTerm(term), thread);
         }
@@ -88,7 +91,7 @@ const suggestionServicePatch = {
             // channel commands are channel specific
             return;
         }
-        const commands = this.getChannelCommands(thread).filter(({ name }) =>
+        const commands = this.getChannelCommands(thread).filter(({name}) =>
             cleanTerm(name).includes(cleanedSearchTerm)
         );
         const sortFunc = (c1, c2) => {

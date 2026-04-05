@@ -1,9 +1,9 @@
-import { withSequence } from "@html_editor/utils/resource";
-import { Plugin } from "../../plugin";
-import { _t } from "@web/core/l10n/translation";
-import { MediaDialog } from "./media_dialog/media_dialog";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { ICON_SELECTOR, isElement } from "@html_editor/utils/dom_info";
+import {withSequence} from "@html_editor/utils/resource";
+import {Plugin} from "../../plugin";
+import {_t} from "@web/core/l10n/translation";
+import {MediaDialog} from "./media_dialog/media_dialog";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {ICON_SELECTOR, isElement} from "@html_editor/utils/dom_info";
 
 export class IconPlugin extends Plugin {
     static id = "icon";
@@ -15,31 +15,31 @@ export class IconPlugin extends Plugin {
             {
                 id: "resizeIcon1",
                 description: _t("Resize icon 1x"),
-                run: () => this.resizeIcon({ size: "1" }),
+                run: () => this.resizeIcon({size: "1"}),
                 isAvailable: isHtmlContentSupported,
             },
             {
                 id: "resizeIcon2",
                 description: _t("Resize icon 2x"),
-                run: () => this.resizeIcon({ size: "2" }),
+                run: () => this.resizeIcon({size: "2"}),
                 isAvailable: isHtmlContentSupported,
             },
             {
                 id: "resizeIcon3",
                 description: _t("Resize icon 3x"),
-                run: () => this.resizeIcon({ size: "3" }),
+                run: () => this.resizeIcon({size: "3"}),
                 isAvailable: isHtmlContentSupported,
             },
             {
                 id: "resizeIcon4",
                 description: _t("Resize icon 4x"),
-                run: () => this.resizeIcon({ size: "4" }),
+                run: () => this.resizeIcon({size: "4"}),
                 isAvailable: isHtmlContentSupported,
             },
             {
                 id: "resizeIcon5",
                 description: _t("Resize icon 5x"),
-                run: () => this.resizeIcon({ size: "5" }),
+                run: () => this.resizeIcon({size: "5"}),
                 isAvailable: isHtmlContentSupported,
             },
             {
@@ -65,7 +65,8 @@ export class IconPlugin extends Plugin {
                         (node) =>
                             node.classList?.contains("fa") ||
                             node.parentElement.classList.contains("fa") ||
-                            (node.querySelector?.(".fa") && node.isContentEditable !== false)
+                            (node.querySelector?.(".fa") &&
+                                node.isContentEditable !== false)
                     )
                 ) {
                     return this.toolbarNamespace;
@@ -73,9 +74,9 @@ export class IconPlugin extends Plugin {
             },
         ],
         toolbar_groups: [
-            withSequence(2, { id: "icon_size", namespaces: ["icon"] }),
-            withSequence(3, { id: "icon_spin", namespaces: ["icon"] }),
-            withSequence(3, { id: "icon_replace", namespaces: ["icon"] }),
+            withSequence(2, {id: "icon_size", namespaces: ["icon"]}),
+            withSequence(3, {id: "icon_spin", namespaces: ["icon"]}),
+            withSequence(3, {id: "icon_replace", namespaces: ["icon"]}),
         ],
         toolbar_items: [
             {
@@ -130,10 +131,12 @@ export class IconPlugin extends Plugin {
 
     getTargetedIcon() {
         const targetedNodes = this.dependencies.selection.getTargetedNodes();
-        return targetedNodes.find((node) => isElement(node) && node.matches(ICON_SELECTOR));
+        return targetedNodes.find(
+            (node) => isElement(node) && node.matches(ICON_SELECTOR)
+        );
     }
 
-    resizeIcon({ size }) {
+    resizeIcon({size}) {
         const targetedIcon = this.getTargetedIcon();
         if (!targetedIcon) {
             return;

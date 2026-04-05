@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tools.json import scriptsafe as json_scriptsafe
-
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.fields import Domain
+from odoo.tools.json import scriptsafe as json_scriptsafe
 
 from .base_automation import get_webhook_request_payload
 

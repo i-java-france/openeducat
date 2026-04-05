@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { ColorList } from "@web/core/colorlist/colorlist";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {ColorList} from "@web/core/colorlist/colorlist";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 class KanbanColorPickerField extends Component {
     static template = "web.KanbanColorPickerField";
@@ -14,7 +14,7 @@ class KanbanColorPickerField extends Component {
     }
 
     selectColor(colorIndex) {
-        return this.props.record.update({ [this.props.name]: colorIndex }, { save: true });
+        return this.props.record.update({[this.props.name]: colorIndex}, {save: true});
     }
 }
 

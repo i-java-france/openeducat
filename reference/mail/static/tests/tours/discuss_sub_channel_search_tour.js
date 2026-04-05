@@ -1,12 +1,12 @@
-import { SubChannelList } from "@mail/discuss/core/public_web/sub_channel_list";
+import {SubChannelList} from "@mail/discuss/core/public_web/sub_channel_list";
 
-import { status } from "@odoo/owl";
+import {status} from "@odoo/owl";
 
-import { registry } from "@web/core/registry";
-import { Deferred } from "@web/core/utils/concurrency";
-import { patch } from "@web/core/utils/patch";
-import { effect } from "@web/core/utils/reactive";
-import { contains, dragenterFiles, dropFiles, scroll } from "@web/../tests/utils";
+import {registry} from "@web/core/registry";
+import {Deferred} from "@web/core/utils/concurrency";
+import {patch} from "@web/core/utils/patch";
+import {effect} from "@web/core/utils/reactive";
+import {contains, dragenterFiles, dropFiles, scroll} from "@web/../tests/utils";
 
 let waitForLoadMoreToDisappearDef;
 registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
@@ -44,12 +44,13 @@ registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
                     await contains(".o-mail-SubChannelPreview", {
                         text: `Sub Channel ${i}`,
                     });
-                    await contains(".o-mail-SubChannelPreview", { count: 30 });
+                    await contains(".o-mail-SubChannelPreview", {count: 30});
                 }
             },
         },
         {
-            trigger: ".o-mail-ActionPanel:has(.o-mail-SubChannelList) .o_searchview_input",
+            trigger:
+                ".o-mail-ActionPanel:has(.o-mail-SubChannelList) .o_searchview_input",
             run: "edit Sub Channel 10",
         },
         {
@@ -60,7 +61,7 @@ registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
         {
             trigger: ".o-mail-SubChannelPreview:contains(Sub Channel 10)",
             async run() {
-                await contains(".o-mail-SubChannelPreview", { count: 1 });
+                await contains(".o-mail-SubChannelPreview", {count: 1});
                 waitForLoadMoreToDisappearDef = new Deferred();
             },
         },
@@ -71,7 +72,7 @@ registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
         {
             trigger: ".o-mail-SubChannelPreview:contains(Sub Channel 99)",
             async run() {
-                await contains(".o-mail-SubChannelPreview", { count: 31 });
+                await contains(".o-mail-SubChannelPreview", {count: 31});
                 // Already fetched sub channels are shown in addition to the one
                 // that was fetched during the search.
                 for (let i = 99; i > 69; i--) {
@@ -79,17 +80,20 @@ registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
                         text: `Sub Channel ${i}`,
                     });
                 }
-                await contains(".o-mail-SubChannelPreview", { text: `Sub Channel 10` });
+                await contains(".o-mail-SubChannelPreview", {text: `Sub Channel 10`});
                 // Ensure lazy loading is still working after a search.
                 await waitForLoadMoreToDisappearDef;
                 waitForLoadMoreToDisappearDef = new Deferred();
-                await scroll(".o-mail-ActionPanel:has(.o-mail-SubChannelList)", "bottom");
+                await scroll(
+                    ".o-mail-ActionPanel:has(.o-mail-SubChannelList)",
+                    "bottom"
+                );
             },
         },
         {
             trigger: ".o-mail-SubChannelPreview:contains(Sub Channel 40)",
             async run() {
-                await contains(".o-mail-SubChannelPreview", { count: 61 });
+                await contains(".o-mail-SubChannelPreview", {count: 61});
                 for (let i = 99; i > 39; i--) {
                     await contains(".o-mail-SubChannelPreview", {
                         text: `Sub Channel ${i}`,
@@ -97,26 +101,32 @@ registry.category("web_tour.tours").add("test_discuss_sub_channel_search", {
                 }
                 await waitForLoadMoreToDisappearDef;
                 waitForLoadMoreToDisappearDef = new Deferred();
-                await scroll(".o-mail-ActionPanel:has(.o-mail-SubChannelList)", "bottom");
+                await scroll(
+                    ".o-mail-ActionPanel:has(.o-mail-SubChannelList)",
+                    "bottom"
+                );
             },
         },
         {
             trigger: ".o-mail-SubChannelPreview:contains(Sub Channel 11)",
             async run() {
-                await contains(".o-mail-SubChannelPreview", { count: 90 });
+                await contains(".o-mail-SubChannelPreview", {count: 90});
                 for (let i = 99; i > 9; i--) {
                     await contains(".o-mail-SubChannelPreview", {
                         text: `Sub Channel ${i}`,
                     });
                 }
                 await waitForLoadMoreToDisappearDef;
-                await scroll(".o-mail-ActionPanel:has(.o-mail-SubChannelList)", "bottom");
+                await scroll(
+                    ".o-mail-ActionPanel:has(.o-mail-SubChannelList)",
+                    "bottom"
+                );
             },
         },
         {
             trigger: ".o-mail-SubChannelPreview:contains(Sub Channel 0)",
             async run() {
-                await contains(".o-mail-SubChannelPreview", { count: 100 });
+                await contains(".o-mail-SubChannelPreview", {count: 100});
                 for (let i = 99; i > 0; i--) {
                     await contains(".o-mail-SubChannelPreview", {
                         text: `Sub Channel ${i}`,
@@ -138,13 +148,16 @@ registry.category("web_tour.tours").add("create_thread_for_attachment_without_bo
             content: "Drop a file",
             trigger: ".o-mail-DiscussContent-main",
             async run() {
-                const files = [new File(["hi there"], "file2.txt", { type: "text/plain" })];
+                const files = [
+                    new File(["hi there"], "file2.txt", {type: "text/plain"}),
+                ];
                 await dragenterFiles(".o-mail-DiscussContent-main", files);
                 await dropFiles(".o-Dropzone", files);
             },
         },
         {
-            trigger: '.o-mail-AttachmentContainer:not(.o-isUploading):contains("file2.txt")',
+            trigger:
+                '.o-mail-AttachmentContainer:not(.o-isUploading):contains("file2.txt")',
         },
         {
             content: "Click on send button",

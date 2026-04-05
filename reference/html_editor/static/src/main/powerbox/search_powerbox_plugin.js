@@ -1,5 +1,5 @@
-import { fuzzyLookup } from "@web/core/utils/search";
-import { Plugin } from "../../plugin";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {Plugin} from "../../plugin";
 
 /**
  * @typedef {import("./powerbox_plugin").PowerboxCategory} CommandGroup
@@ -51,9 +51,15 @@ export class SearchPowerboxPlugin extends Plugin {
             this.dependencies.powerbox.closePowerbox();
             return;
         }
-        const searchTerm = this.searchNode.nodeValue.slice(this.offset + 1, selection.endOffset);
+        const searchTerm = this.searchNode.nodeValue.slice(
+            this.offset + 1,
+            selection.endOffset
+        );
         if (!searchTerm) {
-            this.dependencies.powerbox.updatePowerbox(this.enabledCommands, this.categories);
+            this.dependencies.powerbox.updatePowerbox(
+                this.enabledCommands,
+                this.categories
+            );
             return;
         }
         if (searchTerm.includes(" ")) {
@@ -94,7 +100,8 @@ export class SearchPowerboxPlugin extends Plugin {
     openPowerbox() {
         const selection = this.dependencies.selection.getEditableSelection();
         this.offset = selection.startOffset - 1;
-        this.enabledCommands = this.dependencies.powerbox.getAvailablePowerboxCommands();
+        this.enabledCommands =
+            this.dependencies.powerbox.getAvailablePowerboxCommands();
         this.dependencies.powerbox.openPowerbox({
             commands: this.enabledCommands,
             categories: this.categories,

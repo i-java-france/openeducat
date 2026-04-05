@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields
-from odoo.addons.account_edi.tests.common import AccountEdiTestCommon
 from odoo.exceptions import UserError
-from odoo.tests import tagged, Form
+from odoo.tests import Form, tagged
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.account_edi.tests.common import AccountEdiTestCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

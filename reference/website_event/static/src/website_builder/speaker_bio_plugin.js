@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class SpeakerBioPlugin extends Plugin {
     static id = "speakerBio";

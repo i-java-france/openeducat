@@ -1,7 +1,7 @@
 // ! WARNING: this module cannot depend on modules not ending with ".hoot" (except libs) !
 
-import { definePreset, defineTags, isHootReady } from "@odoo/hoot";
-import { runTests } from "./module_set.hoot";
+import {definePreset, defineTags, isHootReady} from "@odoo/hoot";
+import {runTests} from "./module_set.hoot";
 
 function beforeFocusRequired(test) {
     if (!document.hasFocus()) {
@@ -46,4 +46,4 @@ defineTags(
 );
 
 // Invoke tests after the interface has finished loading.
-isHootReady.then(() => runTests({ fileSuffix: ".test" }));
+isHootReady.then(() => runTests({fileSuffix: ".test"}));

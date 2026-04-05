@@ -1,8 +1,8 @@
-import { cookie as cookieManager } from "@web/core/browser/cookie";
+import {cookie as cookieManager} from "@web/core/browser/cookie";
 
 export class EventBus extends EventTarget {
     trigger(name, payload) {
-        this.dispatchEvent(new CustomEvent(name, { detail: payload }));
+        this.dispatchEvent(new CustomEvent(name, {detail: payload}));
     }
 }
 

@@ -1,18 +1,18 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryAll, press, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { getBasicData, Product } from "@spreadsheet/../tests/helpers/data";
-import { createSpreadsheetDashboard } from "@spreadsheet_dashboard/../tests/helpers/dashboard_action";
+import {describe, expect, test} from "@odoo/hoot";
+import {press, queryAll, queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Product, getBasicData} from "@spreadsheet/../tests/helpers/data";
+import {createSpreadsheetDashboard} from "@spreadsheet_dashboard/../tests/helpers/dashboard_action";
 import {
     defineSpreadsheetDashboardModels,
     getDashboardServerData,
 } from "@spreadsheet_dashboard/../tests/helpers/data";
-import { contains, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { RPCError } from "@web/core/network/rpc";
-import { Deferred } from "@web/core/utils/concurrency";
-import { range } from "@web/core/utils/numbers";
-import { THIS_YEAR_GLOBAL_FILTER } from "@spreadsheet/../tests/helpers/global_filter";
+import {contains, onRpc, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {RPCError} from "@web/core/network/rpc";
+import {Deferred} from "@web/core/utils/concurrency";
+import {range} from "@web/core/utils/numbers";
+import {THIS_YEAR_GLOBAL_FILTER} from "@spreadsheet/../tests/helpers/global_filter";
 
 describe.current.tags("desktop");
 defineSpreadsheetDashboardModels();
@@ -53,7 +53,9 @@ test("display the active spreadsheet", async () => {
     expect(".o_search_panel li.active").toHaveCount(1, {
         message: "It should have one active element",
     });
-    expect(".o-spreadsheet").toHaveCount(1, { message: "It should display the spreadsheet" });
+    expect(".o-spreadsheet").toHaveCount(1, {
+        message: "It should display the spreadsheet",
+    });
 });
 
 test("Fold/unfold the search panel", async function () {
@@ -93,12 +95,12 @@ test("Fold button invisible in the search panel without any dashboard", async fu
     const serverData = getDashboardServerData();
     serverData.models["spreadsheet.dashboard"].records = [];
     serverData.models["spreadsheet.dashboard.group"].records = [];
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
     expect(".o_spreadsheet_dashboard_search_panel button").toHaveCount(0);
 });
 
 test("load action with specific dashboard", async () => {
-    await createSpreadsheetDashboard({ spreadsheetId: 3 });
+    await createSpreadsheetDashboard({spreadsheetId: 3});
     expect(".o_search_panel li.active").toHaveText("Dashboard Accounting 1");
 });
 
@@ -119,8 +121,11 @@ test("can switch spreadsheet", async () => {
 
 test("display no dashboard message", async () => {
     await createSpreadsheetDashboard({
-        mockRPC: function (route, { model, method, args }) {
-            if (method === "web_search_read" && model === "spreadsheet.dashboard.group") {
+        mockRPC: function (route, {model, method, args}) {
+            if (
+                method === "web_search_read" &&
+                model === "spreadsheet.dashboard.group"
+            ) {
                 return {
                     records: [],
                     length: 0,
@@ -144,14 +149,22 @@ test("display error message", async () => {
         throw error;
     });
     await createSpreadsheetDashboard();
-    expect(".o-spreadsheet").toHaveCount(1, { message: "It should display the spreadsheet" });
+    expect(".o-spreadsheet").toHaveCount(1, {
+        message: "It should display the spreadsheet",
+    });
     await contains(".o_search_panel li:eq(1)").click();
-    expect(".o_spreadsheet_dashboard_action .dashboard-loading-status.error").toHaveCount(1, {
+    expect(
+        ".o_spreadsheet_dashboard_action .dashboard-loading-status.error"
+    ).toHaveCount(1, {
         message: "It should display an error",
     });
     await contains(".o_search_panel li:eq(0)").click();
-    expect(".o-spreadsheet").toHaveCount(1, { message: "It should display the spreadsheet" });
-    expect(".o_renderer .error").toHaveCount(0, { message: "It should not display an error" });
+    expect(".o-spreadsheet").toHaveCount(1, {
+        message: "It should display the spreadsheet",
+    });
+    expect(".o_renderer .error").toHaveCount(0, {
+        message: "It should not display an error",
+    });
     expect.verifyErrors(["RPC_ERROR"]);
 });
 
@@ -160,7 +173,9 @@ test("load dashboard that doesn't exist", async () => {
     await createSpreadsheetDashboard({
         spreadsheetId: 999,
     });
-    expect(".o_spreadsheet_dashboard_action .dashboard-loading-status.error").toHaveCount(1, {
+    expect(
+        ".o_spreadsheet_dashboard_action .dashboard-loading-status.error"
+    ).toHaveCount(1, {
         message: "It should display an error",
     });
     expect.verifyErrors(["RPC_ERROR"]);
@@ -172,7 +187,7 @@ test("Last selected spreadsheet is kept when go back from breadcrumb", async fun
         sheets: [
             {
                 id: "sheet1",
-                cells: { A1: { content: '=PIVOT.VALUE("1", "probability")' } },
+                cells: {A1: {content: '=PIVOT.VALUE("1", "probability")'}},
             },
         ],
         pivots: {
@@ -180,7 +195,7 @@ test("Last selected spreadsheet is kept when go back from breadcrumb", async fun
                 id: 1,
                 colGroupBys: ["foo"],
                 domain: [],
-                measures: [{ field: "probability", operator: "avg" }],
+                measures: [{field: "probability", operator: "avg"}],
                 model: "partner",
                 rowGroupBys: ["bar"],
             },
@@ -194,8 +209,10 @@ test("Last selected spreadsheet is kept when go back from breadcrumb", async fun
         spreadsheet_data: JSON.stringify(spreadsheetData),
         dashboard_group_id: 1,
     });
-    serverData.models["spreadsheet.dashboard.group"].records[0].published_dashboard_ids.push(790);
-    await createSpreadsheetDashboard({ serverData });
+    serverData.models[
+        "spreadsheet.dashboard.group"
+    ].records[0].published_dashboard_ids.push(790);
+    await createSpreadsheetDashboard({serverData});
     await contains(".o_search_panel li:last-child").click();
     await contains(".o-dashboard-clickable-cell").click();
     expect(".o_list_view").toHaveCount(1);
@@ -220,7 +237,7 @@ test("Can clear filter date filter value that defaults to current period", async
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
     const year = luxon.DateTime.local().year;
     expect(".o_control_panel_actions .o_facet_value").toHaveText(String(year));
     await contains(".o_searchview_facet_label").click();
@@ -257,7 +274,9 @@ test("share dashboard from dashboard view", async function () {
     expect(".spreadsheet_share_dropdown").toHaveCount(0);
     await contains("i.fa-share-alt").click();
     await animationFrame();
-    expect(".spreadsheet_share_dropdown .o_loading_state").toHaveText("Generating sharing link");
+    expect(".spreadsheet_share_dropdown .o_loading_state").toHaveText(
+        "Generating sharing link"
+    );
     def.resolve();
     await animationFrame();
     expect(".spreadsheet_share_dropdown .o_loading_state").toHaveCount(0);
@@ -297,7 +316,7 @@ test("Changing filter values will create a new share", async function () {
     await animationFrame();
     expect(".o_field_CopyClipboardChar").toHaveText(`localhost:8069/share/url/1`);
 
-    await contains("i.fa-share-alt").click(); // close share dropdown
+    await contains("i.fa-share-alt").click(); // Close share dropdown
 
     await contains("i.fa-share-alt").click();
     await animationFrame();
@@ -317,7 +336,7 @@ test("Changing filter values will create a new share", async function () {
 });
 
 test("Should toggle favorite status of a dashboard when the 'Favorite' icon is clicked", async function () {
-    onRpc("spreadsheet.dashboard", "action_toggle_favorite", ({ method }) => {
+    onRpc("spreadsheet.dashboard", "action_toggle_favorite", ({method}) => {
         expect.step(method);
         return true;
     });
@@ -329,9 +348,9 @@ test("Should toggle favorite status of a dashboard when the 'Favorite' icon is c
     });
     expect(".o_search_panel_section").toHaveCount(3);
     expect.verifySteps(["action_toggle_favorite"]);
-    expect(".o_search_panel_section.o_search_panel_category:first header b:first").toHaveText(
-        "FAVORITES"
-    );
+    expect(
+        ".o_search_panel_section.o_search_panel_category:first header b:first"
+    ).toHaveText("FAVORITES");
     await contains(".o_dashboard_star").click();
     expect(".o_dashboard_star").not.toHaveClass("fa-star", {
         message: "The star should not be filled",
@@ -359,10 +378,10 @@ test("Global filter with same id is not shared between dashboards", async functi
         spreadsheet_data: JSON.stringify(spreadsheetData),
         dashboard_group_id: 1,
     });
-    serverData.models["spreadsheet.dashboard.group"].records[0].published_dashboard_ids = [
-        789, 790,
-    ];
-    await createSpreadsheetDashboard({ serverData });
+    serverData.models[
+        "spreadsheet.dashboard.group"
+    ].records[0].published_dashboard_ids = [789, 790];
+    await createSpreadsheetDashboard({serverData});
     expect(".o_searchview_facet").toHaveCount(0);
     await contains(".o_spreadsheet_dashboard_action .dropdown-toggle").click();
 
@@ -383,7 +402,7 @@ test("Search bar is not present if there is no global filters", async function (
         globalFilters: [],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     expect(".o_sp_dashboard_search").toHaveCount(0);
 });
@@ -400,7 +419,7 @@ test("Can add a new global filter from the search bar", async function () {
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     await contains(".o_spreadsheet_dashboard_action .dropdown-toggle").click();
 
@@ -411,7 +430,9 @@ test("Can add a new global filter from the search bar", async function () {
     await contains(".o-filter-values-footer .btn-primary").click();
 
     expect(".o_searchview_facet").toHaveCount(1);
-    expect(".o_searchview_facet .o_searchview_facet_label").toHaveText("Relation Filter");
+    expect(".o_searchview_facet .o_searchview_facet_label").toHaveText(
+        "Relation Filter"
+    );
     expect(".o_searchview_facet .o_facet_value").toHaveText("xphone");
 });
 
@@ -423,12 +444,12 @@ test("Can open the dialog by clicking on a facet", async function () {
                 type: "relation",
                 label: "Relation Filter",
                 modelName: "product",
-                defaultValue: { operator: "in", ids: [37] }, // xphone
+                defaultValue: {operator: "in", ids: [37]}, // Xphone
             },
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     expect(".o_searchview_facet").toHaveCount(1);
     await contains(".o_searchview_facet .o_searchview_facet_label ").click();
@@ -443,12 +464,12 @@ test("Can open the dialog by clicking on the search bar", async function () {
                 type: "relation",
                 label: "Relation Filter",
                 modelName: "product",
-                defaultValue: { operator: "in", ids: [37] }, // xphone
+                defaultValue: {operator: "in", ids: [37]}, // Xphone
             },
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
 
     await contains(".o_searchview input").click();
     expect(".o-filter-values").toHaveCount(1);
@@ -466,7 +487,7 @@ test("Changes of global filters are not dispatched while inside the dialog", asy
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    const { model } = await createSpreadsheetDashboard({ serverData });
+    const {model} = await createSpreadsheetDashboard({serverData});
 
     expect(model.getters.getGlobalFilterValue("1")).toBe(undefined);
 
@@ -476,7 +497,10 @@ test("Changes of global filters are not dispatched while inside the dialog", asy
     await contains(".o-autocomplete--dropdown-item").click();
     expect(model.getters.getGlobalFilterValue("1")).toBe(undefined);
     await contains(".o-filter-values-footer .btn-primary").click();
-    expect(model.getters.getGlobalFilterValue("1")).toEqual({ operator: "in", ids: [37] });
+    expect(model.getters.getGlobalFilterValue("1")).toEqual({
+        operator: "in",
+        ids: [37],
+    });
 });
 
 test("First global filter date is displayed as button", async function () {
@@ -487,7 +511,7 @@ test("First global filter date is displayed as button", async function () {
                 type: "relation",
                 label: "Relation Filter",
                 modelName: "product",
-                defaultValue: { operator: "in", ids: [37] },
+                defaultValue: {operator: "in", ids: [37]},
             },
             {
                 id: "2",
@@ -498,7 +522,7 @@ test("First global filter date is displayed as button", async function () {
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
     expect(".o_sp_date_filter_button").toHaveCount(1);
     expect(".o_searchview_facet").toHaveCount(1);
 });
@@ -515,7 +539,7 @@ test("No date buttons are displayed if there is no date filter", async function 
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
     expect(".o_sp_date_filter_button").toHaveCount(0);
 });
 
@@ -527,14 +551,16 @@ test("Unknown value for relation filter is displayed as inaccessible", async fun
                 type: "relation",
                 label: "Relation Filter",
                 modelName: "product",
-                defaultValue: { operator: "in", ids: [9999] }, // unknown product
+                defaultValue: {operator: "in", ids: [9999]}, // Unknown product
             },
         ],
     };
     const serverData = getServerData(spreadsheetData);
-    await createSpreadsheetDashboard({ serverData });
+    await createSpreadsheetDashboard({serverData});
     expect(".o_searchview_facet").toHaveCount(1);
-    expect(".o_searchview_facet .o_facet_value").toHaveText("Inaccessible/missing record ID");
+    expect(".o_searchview_facet .o_facet_value").toHaveText(
+        "Inaccessible/missing record ID"
+    );
 });
 
 describe("Quick search bar", () => {
@@ -554,36 +580,36 @@ describe("Quick search bar", () => {
     };
 
     test("Can quick search a string in a relational filter", async function () {
-        const spreadsheetData = { globalFilters: [productFilter] };
+        const spreadsheetData = {globalFilters: [productFilter]};
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("phone");
         expect(".o-dropdown-item.focus").toHaveText("Search Product for: phone");
         await press("Enter");
 
         const filterValue = model.getters.getGlobalFilterValue(productFilter.id);
-        expect(filterValue).toEqual({ operator: "ilike", strings: ["phone"] });
+        expect(filterValue).toEqual({operator: "ilike", strings: ["phone"]});
     });
 
     test("Can quick search a string in a relational filter if a record was already selected", async function () {
-        const filter = { ...productFilter, defaultValue: { operator: "in", ids: [37] } };
-        const spreadsheetData = { globalFilters: [filter] };
+        const filter = {...productFilter, defaultValue: {operator: "in", ids: [37]}};
+        const spreadsheetData = {globalFilters: [filter]};
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("test");
         expect(".o-dropdown-item.focus").toHaveText("Search Product for: test");
         await press("Enter");
 
         const filterValue = model.getters.getGlobalFilterValue(productFilter.id);
-        expect(filterValue).toEqual({ operator: "ilike", strings: ["test"] });
+        expect(filterValue).toEqual({operator: "ilike", strings: ["test"]});
     });
 
     test("Can quick search a specific record in a relational filter", async function () {
-        const spreadsheetData = { globalFilters: [productFilter] };
+        const spreadsheetData = {globalFilters: [productFilter]};
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("x");
         expect(".o-dropdown-item.focus").toHaveText("Search Product for: x");
@@ -594,15 +620,15 @@ describe("Quick search bar", () => {
         await contains(children[0]).click();
 
         const filterValue = model.getters.getGlobalFilterValue(productFilter.id);
-        expect(filterValue).toEqual({ operator: "in", ids: [37] });
+        expect(filterValue).toEqual({operator: "in", ids: [37]});
     });
 
     test("Can load more records in the quick search", async function () {
         for (let i = 0; i < 15; i++) {
-            Product._records.push({ id: i, display_name: "name" + i });
+            Product._records.push({id: i, display_name: "name" + i});
         }
-        const serverData = getServerData({ globalFilters: [productFilter] });
-        await createSpreadsheetDashboard({ serverData });
+        const serverData = getServerData({globalFilters: [productFilter]});
+        await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("name");
         expect(".o-dropdown-item.focus").toHaveText("Search Product for: name");
@@ -621,21 +647,29 @@ describe("Quick search bar", () => {
     });
 
     test("Can quick search a string in a text filter", async function () {
-        const spreadsheetData = { globalFilters: [{ id: "2", type: "text", label: "Text" }] };
+        const spreadsheetData = {
+            globalFilters: [{id: "2", type: "text", label: "Text"}],
+        };
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("phone");
         expect(".o-dropdown-item.focus").toHaveText("Search Text for: phone");
         await press("Enter");
 
         const filterValue = model.getters.getGlobalFilterValue("2");
-        expect(filterValue).toEqual({ operator: "ilike", strings: ["phone"] });
+        expect(filterValue).toEqual({operator: "ilike", strings: ["phone"]});
     });
 
     test("Can quick search a string in a text filter with a range of allowed values", async function () {
         const spreadsheetData = {
-            sheets: [{ id: "sh1", name: "Sh1", cells: { A1: "phone", A2: "tablet", A3: "table" } }],
+            sheets: [
+                {
+                    id: "sh1",
+                    name: "Sh1",
+                    cells: {A1: "phone", A2: "tablet", A3: "table"},
+                },
+            ],
             globalFilters: [
                 {
                     id: "2",
@@ -646,7 +680,7 @@ describe("Quick search bar", () => {
             ],
         };
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("a");
         expect(".o-dropdown-item.focus").toHaveText("Search Text for: a");
@@ -658,12 +692,18 @@ describe("Quick search bar", () => {
         await contains(children[1]).click();
 
         const filterValue = model.getters.getGlobalFilterValue("2");
-        expect(filterValue).toEqual({ operator: "ilike", strings: ["table"] });
+        expect(filterValue).toEqual({operator: "ilike", strings: ["table"]});
     });
 
     test("Cannot search for a string that is not in rangesOfAllowedValues", async function () {
         const spreadsheetData = {
-            sheets: [{ id: "sh1", name: "Sh1", cells: { A1: "phone", A2: "tablet", A3: "table" } }],
+            sheets: [
+                {
+                    id: "sh1",
+                    name: "Sh1",
+                    cells: {A1: "phone", A2: "tablet", A3: "table"},
+                },
+            ],
             globalFilters: [
                 {
                     id: "2",
@@ -674,7 +714,7 @@ describe("Quick search bar", () => {
             ],
         };
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("desk");
         expect(".o-dropdown-item.focus").toHaveText("Search Text for: desk");
@@ -685,9 +725,9 @@ describe("Quick search bar", () => {
     });
 
     test("Can quick search a selection filter value", async function () {
-        const spreadsheetData = { globalFilters: [selectionFilter] };
+        const spreadsheetData = {globalFilters: [selectionFilter]};
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("a");
         expect(".o-dropdown-item.focus").toHaveText("Search Selection Filter for: a");
@@ -698,16 +738,21 @@ describe("Quick search bar", () => {
         await contains(children[0]).click();
 
         const filterValue = model.getters.getGlobalFilterValue(selectionFilter.id);
-        expect(filterValue).toEqual({ operator: "in", selectionValues: ["after"] });
+        expect(filterValue).toEqual({operator: "in", selectionValues: ["after"]});
     });
 
     test("Date and numeric filters are not in the quick search results", async function () {
-        const numericFilter = { id: "255", type: "numeric", label: "Numeric Filter" };
+        const numericFilter = {id: "255", type: "numeric", label: "Numeric Filter"};
         const spreadsheetData = {
-            globalFilters: [productFilter, THIS_YEAR_GLOBAL_FILTER, numericFilter, selectionFilter],
+            globalFilters: [
+                productFilter,
+                THIS_YEAR_GLOBAL_FILTER,
+                numericFilter,
+                selectionFilter,
+            ],
         };
         const serverData = getServerData(spreadsheetData);
-        await createSpreadsheetDashboard({ serverData });
+        await createSpreadsheetDashboard({serverData});
 
         await contains(".o_searchview_input").edit("phone");
         expect(queryAllTexts(".o-dropdown-item")).toEqual([
@@ -717,13 +762,13 @@ describe("Quick search bar", () => {
     });
 
     test("Pressing backspace will remove the last facet", async function () {
-        const filter = { ...productFilter, defaultValue: { operator: "in", ids: [37] } };
-        const spreadsheetData = { globalFilters: [filter] };
+        const filter = {...productFilter, defaultValue: {operator: "in", ids: [37]}};
+        const spreadsheetData = {globalFilters: [filter]};
         const serverData = getServerData(spreadsheetData);
-        const { model } = await createSpreadsheetDashboard({ serverData });
+        const {model} = await createSpreadsheetDashboard({serverData});
 
         let filterValue = model.getters.getGlobalFilterValue(productFilter.id);
-        expect(filterValue).toEqual({ operator: "in", ids: [37] });
+        expect(filterValue).toEqual({operator: "in", ids: [37]});
 
         await contains(".o_searchview_input").focus();
         await press("Backspace");

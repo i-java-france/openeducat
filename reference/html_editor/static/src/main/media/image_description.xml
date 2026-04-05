@@ -1,6 +1,10 @@
 <templates xml:space="preserve">
     <t t-name="html_editor.ImageDescription">
-        <button class="btn btn-light" t-att-title="props.title" t-on-click="this.props.openImageDescriptionPopover">
+        <button
+            class="btn btn-light"
+            t-att-title="props.title"
+            t-on-click="this.props.openImageDescriptionPopover"
+        >
             Description
         </button>
     </t>
@@ -25,8 +29,14 @@
                 class="border-dark-subtle form-control mb-2"
             />
             <div class="mt-3">
-                <button class="o_we_apply_link btn btn-sm btn-primary" t-on-click="this.onSave">Apply</button>
-                <button class="o_we_discard_link btn btn-sm btn-dark ms-1" t-on-click="this.props.close">Discard</button>
+                <button
+                    class="o_we_apply_link btn btn-sm btn-primary"
+                    t-on-click="this.onSave"
+                >Apply</button>
+                <button
+                    class="o_we_discard_link btn btn-sm btn-dark ms-1"
+                    t-on-click="this.props.close"
+                >Discard</button>
             </div>
         </div>
     </t>

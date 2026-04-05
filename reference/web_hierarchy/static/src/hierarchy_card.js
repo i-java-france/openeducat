@@ -1,13 +1,13 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { Field } from "@web/views/fields/field";
-import { Record } from "@web/model/record";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { useViewCompiler } from "@web/views/view_compiler";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {Field} from "@web/views/fields/field";
+import {Record} from "@web/model/record";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {useViewCompiler} from "@web/views/view_compiler";
 
-import { HierarchyCompiler } from "./hierarchy_compiler";
-import { getFormattedRecord } from "@web/views/kanban/kanban_record";
+import {HierarchyCompiler} from "./hierarchy_compiler";
+import {getFormattedRecord} from "@web/views/kanban/kanban_record";
 
 export class HierarchyCard extends Component {
     static components = {
@@ -19,7 +19,7 @@ export class HierarchyCard extends Component {
         node: Object,
         openRecord: Function,
         archInfo: Object,
-        classNames: { type: String, optional: true },
+        classNames: {type: String, optional: true},
     };
     static defaultProps = {
         classNames: "",
@@ -28,8 +28,11 @@ export class HierarchyCard extends Component {
     static Compiler = HierarchyCompiler;
 
     setup() {
-        const { archInfo } = this.props;
-        this.templates = useViewCompiler(this.constructor.Compiler, archInfo.templateDocs);
+        const {archInfo} = this.props;
+        this.templates = useViewCompiler(
+            this.constructor.Compiler,
+            archInfo.templateDocs
+        );
         this.evaluateBooleanExpr = evaluateBooleanExpr;
     }
 
@@ -48,7 +51,7 @@ export class HierarchyCard extends Component {
             JSON,
             luxon,
             record,
-            __comp__: Object.assign(Object.create(this), { this: this }),
+            __comp__: Object.assign(Object.create(this), {this: this}),
             __record__: data.record,
         };
     }

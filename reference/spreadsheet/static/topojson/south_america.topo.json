@@ -859,99 +859,109 @@
         {
           "arcs": [[0, 1, 2, 3]],
           "type": "Polygon",
-          "properties": { "name": "Costa Rica" },
+          "properties": {"name": "Costa Rica"},
           "id": "CR"
         },
-        { "arcs": [[-3, 4]], "type": "Polygon", "properties": { "name": "Nicaragua" }, "id": "NI" },
+        {
+          "arcs": [[-3, 4]],
+          "type": "Polygon",
+          "properties": {"name": "Nicaragua"},
+          "id": "NI"
+        },
         {
           "arcs": [[5, 6, -1, 7]],
           "type": "Polygon",
-          "properties": { "name": "Panama" },
+          "properties": {"name": "Panama"},
           "id": "PA"
         },
         {
           "arcs": [[8]],
           "type": "Polygon",
-          "properties": { "name": "Trinidad and Tobago" },
+          "properties": {"name": "Trinidad and Tobago"},
           "id": "TT"
         },
         {
           "arcs": [[[9, 10]], [[11, 12, 13, 14]]],
           "type": "MultiPolygon",
-          "properties": { "name": "Chile" },
+          "properties": {"name": "Chile"},
           "id": "CL"
         },
         {
           "arcs": [[15, 16, 17, -12, 18]],
           "type": "Polygon",
-          "properties": { "name": "Bolivia" },
+          "properties": {"name": "Bolivia"},
           "id": "BO"
         },
         {
           "arcs": [[19, -19, -15, 20, 21, 22]],
           "type": "Polygon",
-          "properties": { "name": "Peru" },
+          "properties": {"name": "Peru"},
           "id": "PE"
         },
         {
           "arcs": [[[23, -10]], [[24, 25, -13, -18, 26, 27]]],
           "type": "MultiPolygon",
-          "properties": { "name": "Argentina" },
+          "properties": {"name": "Argentina"},
           "id": "AR"
         },
         {
           "arcs": [[28, 29, 30, 31]],
           "type": "Polygon",
-          "properties": { "name": "Suriname" },
+          "properties": {"name": "Suriname"},
           "id": "SR"
         },
         {
           "arcs": [[32, 33, 34, -30]],
           "type": "Polygon",
-          "properties": { "name": "Guyana" },
+          "properties": {"name": "Guyana"},
           "id": "GY"
         },
         {
           "arcs": [[35, -28, 36, -16, -20, 37, 38, -33, -29, 39, 40]],
           "type": "Polygon",
-          "properties": { "name": "Brazil" },
+          "properties": {"name": "Brazil"},
           "id": "BR"
         },
         {
           "arcs": [[-36, 41, -25]],
           "type": "Polygon",
-          "properties": { "name": "Uruguay" },
+          "properties": {"name": "Uruguay"},
           "id": "UY"
         },
         {
           "arcs": [[-22, 42, 43]],
           "type": "Polygon",
-          "properties": { "name": "Ecuador" },
+          "properties": {"name": "Ecuador"},
           "id": "EC"
         },
         {
           "arcs": [[-38, -23, -44, 44, -6, 45, 46]],
           "type": "Polygon",
-          "properties": { "name": "Colombia" },
+          "properties": {"name": "Colombia"},
           "id": "CO"
         },
         {
           "arcs": [[-37, -27, -17]],
           "type": "Polygon",
-          "properties": { "name": "Paraguay" },
+          "properties": {"name": "Paraguay"},
           "id": "PY"
         },
         {
           "arcs": [[-39, -47, 47, -34]],
           "type": "Polygon",
-          "properties": { "name": "Venezuela" },
+          "properties": {"name": "Venezuela"},
           "id": "VE"
         },
-        { "arcs": [[48]], "type": "Polygon", "properties": { "name": "Falkland Is." }, "id": "FK" },
+        {
+          "arcs": [[48]],
+          "type": "Polygon",
+          "properties": {"name": "Falkland Is."},
+          "id": "FK"
+        },
         {
           "arcs": [[-40, -32, 49]],
           "type": "Polygon",
-          "properties": { "name": "France" },
+          "properties": {"name": "France"},
           "id": "FR"
         }
       ]

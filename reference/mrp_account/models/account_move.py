@@ -1,8 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-
 from collections import defaultdict
+
+from odoo import _, api, fields, models
 
 
 class AccountMove(models.Model):
@@ -16,7 +16,7 @@ class AccountMove(models.Model):
 
     def copy(self, default=None):
         records = super().copy(default)
-        for record, source in zip(records.sudo(), self.sudo()):
+        for record, source in zip(records.sudo(), self.sudo(), strict=False):
             record.wip_production_ids = source.wip_production_ids
         return records
 

@@ -1,9 +1,9 @@
 /** @odoo-module alias=@web/../tests/qunit default=false */
 
-import { isVisible as isElemVisible } from "@web/core/utils/ui";
-import { fullTraceback, fullAnnotatedTraceback } from "@web/core/errors/error_utils";
-import { registry } from "@web/core/registry";
-import { Component, whenReady } from "@odoo/owl";
+import {isVisible as isElemVisible} from "@web/core/utils/ui";
+import {fullTraceback, fullAnnotatedTraceback} from "@web/core/errors/error_utils";
+import {registry} from "@web/core/registry";
+import {Component, whenReady} from "@odoo/owl";
 
 const consoleError = console.error;
 
@@ -60,7 +60,9 @@ export function setupQUnit() {
         } else {
             $el = target instanceof Element ? $(target) : target;
         }
-        msg = msg || `Selector '${selector}' should have exactly ${n} matches inside the target`;
+        msg =
+            msg ||
+            `Selector '${selector}' should have exactly ${n} matches inside the target`;
         QUnit.assert.strictEqual($el.find(selector).length, n, msg);
     }
 
@@ -208,11 +210,17 @@ export function setupQUnit() {
     }
     function verifyErrors(expectedErrors) {
         if (!QUnit.config.current.expectErrors) {
-            QUnit.pushFailure(`assert.expectErrors() must be called at the beginning of the test`);
+            QUnit.pushFailure(
+                `assert.expectErrors() must be called at the beginning of the test`
+            );
             return;
         }
         const unverifiedErrors = QUnit.config.current.unverifiedErrors;
-        QUnit.config.current.assert.deepEqual(unverifiedErrors, expectedErrors, "verifying errors");
+        QUnit.config.current.assert.deepEqual(
+            unverifiedErrors,
+            expectedErrors,
+            "verifying errors"
+        );
         QUnit.config.current.unverifiedErrors = [];
     }
     QUnit.assert.containsN = containsN;
@@ -245,7 +253,9 @@ export function setupQUnit() {
         console.info(
             infos
                 .map((info) =>
-                    info.source ? `${info.error}\n${info.source.replace(/^/gm, "\t")}\n` : info
+                    info.source
+                        ? `${info.error}\n${info.source.replace(/^/gm, "\t")}\n`
+                        : info
                 )
                 .join("\n")
         );
@@ -377,7 +387,7 @@ export function setupQUnit() {
 
     // Append a "Rerun in debug" link.
     // Only works if the test is not hidden.
-    QUnit.testDone(async ({ testId }) => {
+    QUnit.testDone(async ({testId}) => {
         if (errorMessages.length > 0) {
             logErrors();
         }
@@ -405,7 +415,8 @@ export function setupQUnit() {
     // Do not really crash on non-errors rejections
     const qunitUnhandledReject = QUnit.onUnhandledRejection;
     QUnit.onUnhandledRejection = (reason) => {
-        const error = reason instanceof Error && "cause" in reason ? reason.cause : reason;
+        const error =
+            reason instanceof Error && "cause" in reason ? reason.cause : reason;
         if (error instanceof Error) {
             qunitUnhandledReject(reason);
         }
@@ -416,7 +427,9 @@ export function setupQUnit() {
     const windowUnhandledReject = window.onunhandledrejection;
     window.onunhandledrejection = (ev) => {
         const error =
-            ev.reason instanceof Error && "cause" in ev.reason ? ev.reason.cause : ev.reason;
+            ev.reason instanceof Error && "cause" in ev.reason
+                ? ev.reason.cause
+                : ev.reason;
         if (!(error instanceof Error)) {
             ev.stopImmediatePropagation();
             ev.preventDefault();
@@ -465,14 +478,18 @@ export function setupQUnit() {
      */
     function addSortButton() {
         sortButtonAppended = true;
-        var $sort = $("<label> sort by time (desc)</label>").css({ float: "right" });
+        var $sort = $("<label> sort by time (desc)</label>").css({float: "right"});
         $("h2#qunit-userAgent").append($sort);
         $sort.click(function () {
             var $ol = $("ol#qunit-tests");
             var $results = $ol.children("li").get();
             $results.sort(function (a, b) {
-                var timeA = Number($(a).find("span.runtime").first().text().split(" ")[0]);
-                var timeB = Number($(b).find("span.runtime").first().text().split(" ")[0]);
+                var timeA = Number(
+                    $(a).find("span.runtime").first().text().split(" ")[0]
+                );
+                var timeB = Number(
+                    $(b).find("span.runtime").first().text().split(" ")[0]
+                );
                 if (timeA < timeB) {
                     return 1;
                 } else if (timeA > timeB) {
@@ -503,7 +520,9 @@ export function setupQUnit() {
     let todoCompletedEl;
     let todoUncompletedEl;
     function insertStats() {
-        const toolbar = document.querySelector("#qunit-testrunner-toolbar .qunit-url-config");
+        const toolbar = document.querySelector(
+            "#qunit-testrunner-toolbar .qunit-url-config"
+        );
         const statsEl = document.createElement("label");
         passedEl = document.createElement("span");
         passedEl.classList.add("text-success", "ms-5", "me-3");
@@ -528,7 +547,7 @@ export function setupQUnit() {
     let testSkippedCount = 0;
     let todoCompletedCount = 0;
     let todoUncompletedCount = 0;
-    QUnit.testDone(({ skipped, failed, todo }) => {
+    QUnit.testDone(({skipped, failed, todo}) => {
         if (!passedEl) {
             insertStats();
         }
@@ -581,7 +600,7 @@ export function setupQUnit() {
     // -----------------------------------------------------------------------------
 
     QUnit.on("OdooAfterTestHook", (info) => {
-        const { expectErrors, unverifiedErrors } = QUnit.config.current;
+        const {expectErrors, unverifiedErrors} = QUnit.config.current;
         if (expectErrors && unverifiedErrors.length) {
             QUnit.pushFailure(
                 `Expected assert.verifyErrors() to be called before end of test. Unverified errors: ${unverifiedErrors}`
@@ -589,7 +608,7 @@ export function setupQUnit() {
         }
     });
 
-    const { onUnhandledRejection } = QUnit;
+    const {onUnhandledRejection} = QUnit;
     QUnit.onUnhandledRejection = () => {};
     QUnit.onError = () => {};
 
@@ -628,7 +647,8 @@ export function setupQUnit() {
         }
         if (
             ev.message === "ResizeObserver loop limit exceeded" ||
-            ev.message === "ResizeObserver loop completed with undelivered notifications."
+            ev.message ===
+                "ResizeObserver loop completed with undelivered notifications."
         ) {
             return;
         }
@@ -655,7 +675,9 @@ export function setupQUnit() {
     // from the handler registry and assume it is the default one, which handles all "not already
     // handled" errors, like tracebacks.
     const errorHandlerRegistry = registry.category("error_handlers");
-    const [defaultHandlerName, defaultHandler] = errorHandlerRegistry.getEntries().at(-1);
+    const [defaultHandlerName, defaultHandler] = errorHandlerRegistry
+        .getEntries()
+        .at(-1);
     const testDefaultHandler = (env, uncaughtError, originalError) => {
         onUncaughtErrorInTest(originalError);
         return defaultHandler(env, uncaughtError, originalError);

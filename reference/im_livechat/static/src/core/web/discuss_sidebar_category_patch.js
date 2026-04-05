@@ -2,7 +2,7 @@ import {
     DiscussSidebarCategory,
     DiscussSidebarChannel,
 } from "@mail/discuss/core/public_web/discuss_sidebar_categories";
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("@mail/discuss/core/public_web/discuss_sidebar_categories").DiscussSidebarCategory} */
 const DiscussSidebarCategoryPatch = {
@@ -16,9 +16,9 @@ const DiscussSidebarCategoryPatch = {
             actions.push({
                 onSelect: () => {
                     if (this.category.livechat_channel_id.are_you_inside) {
-                        this.category.livechat_channel_id.leave({ notify: false });
+                        this.category.livechat_channel_id.leave({notify: false});
                     } else {
-                        this.category.livechat_channel_id.join({ notify: false });
+                        this.category.livechat_channel_id.join({notify: false});
                     }
                 },
                 label: this.category.livechat_channel_id.are_you_inside

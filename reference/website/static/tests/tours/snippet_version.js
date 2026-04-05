@@ -22,7 +22,8 @@ registerWebsitePreviewTour(
             groupName: "Content",
         }),
         {
-            content: "Test t-snippet and t-snippet-call: snippets have data-snippet set",
+            content:
+                "Test t-snippet and t-snippet-call: snippets have data-snippet set",
             trigger: ".o-snippets-menu .o_snippets_container_body > .o_snippet",
             run: function () {
                 // Tests done here as all these are not visible on the page

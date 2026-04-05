@@ -1,4 +1,5 @@
 import base64
+
 import stdnum.pl.nip
 
 from odoo import api, fields, models

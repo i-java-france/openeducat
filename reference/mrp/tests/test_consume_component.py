@@ -1,7 +1,7 @@
 import copy
 
 from odoo.exceptions import UserError
-from odoo.tests import common, tagged, Form
+from odoo.tests import Form, common, tagged
 
 
 class TestConsumeComponentCommon(common.TransactionCase):
@@ -154,7 +154,7 @@ class TestConsumeComponentCommon(common.TransactionCase):
             quantities = [1 for i in range(len(products))]
 
         vals = []
-        for product, seq in zip(products, range(len(products))):
+        for product, seq in zip(products, range(len(products)), strict=False):
             vals.append({
                 'product_id': product.id,
                 'product_qty': quantities[seq],

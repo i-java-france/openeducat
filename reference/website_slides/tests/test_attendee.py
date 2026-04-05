@@ -1,15 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from http import HTTPStatus
 from urllib.parse import parse_qs
 
 from odoo import fields
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.base.tests.common import HttpCaseWithUserPortal
-from odoo.addons.website_slides.tests import common
 from odoo.exceptions import AccessError
 from odoo.tests import tagged, users
+
+from odoo.addons.base.tests.common import HttpCaseWithUserPortal
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.website_slides.tests import common
+
 
 @tagged('post_install', '-at_install')
 class TestAttendee(common.SlidesCase):
@@ -253,7 +254,7 @@ class TestAttendee(common.SlidesCase):
 class TestAttendeeCase(HttpCaseWithUserPortal):
 
     def setUp(self):
-        super(TestAttendeeCase, self).setUp()
+        super().setUp()
         self.user_admin = self.env.ref('base.user_admin')
         self.user_admin.write({
             'email': 'mitchell.admin@example.com',

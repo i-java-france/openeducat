@@ -9,8 +9,11 @@ import {
     loadImageDataURL,
     loadImageInfo,
 } from "@html_editor/utils/image_processing";
-import { Plugin } from "../../plugin";
-import { getAffineApproximation, getProjective } from "@html_editor/utils/perspective_utils";
+import {Plugin} from "../../plugin";
+import {
+    getAffineApproximation,
+    getProjective,
+} from "@html_editor/utils/perspective_utils";
 
 export const DEFAULT_IMAGE_QUALITY = "92";
 
@@ -58,7 +61,7 @@ export class ImagePostProcessPlugin extends Plugin {
      * @returns {{ url: string, newDataset: object }} Object containing the image
      * URL and the updated dataset.
      */
-    async _processImage({ img, newDataset = {}, onImageInfoLoaded }) {
+    async _processImage({img, newDataset = {}, onImageInfoLoaded}) {
         const processContext = {};
         if (!newDataset.originalSrc || !newDataset.mimetypeBeforeConversion) {
             Object.assign(newDataset, await loadImageInfo(img));
@@ -78,7 +81,7 @@ export class ImagePostProcessPlugin extends Plugin {
             }
         }
 
-        const data = getImageTransformationData({ ...img.dataset, ...newDataset });
+        const data = getImageTransformationData({...img.dataset, ...newDataset});
         const {
             mimetypeBeforeConversion,
             formatMimetype,
@@ -92,7 +95,7 @@ export class ImagePostProcessPlugin extends Plugin {
             quality,
         } = data;
 
-        const { postProcessCroppedCanvas, perspective, getHeight } = processContext;
+        const {postProcessCroppedCanvas, perspective, getHeight} = processContext;
 
         // loadImage may have ended up loading a different src (see: LOAD_IMAGE_404)
         const originalImg = await loadImage(data.originalSrc);
@@ -104,7 +107,7 @@ export class ImagePostProcessPlugin extends Plugin {
                 newDataset,
                 processContext
             );
-            return { url: postUrl, newDataset: postDataset };
+            return {url: postUrl, newDataset: postDataset};
         }
         // Crop
         const container = document.createElement("div");
@@ -112,7 +115,8 @@ export class ImagePostProcessPlugin extends Plugin {
         const cropper = await activateCropper(originalImg, aspectRatio, data);
         const croppedCanvas = cropper.getCroppedCanvas(width, height);
         cropper.destroy();
-        const processedCanvas = (await postProcessCroppedCanvas?.(croppedCanvas)) || croppedCanvas;
+        const processedCanvas =
+            (await postProcessCroppedCanvas?.(croppedCanvas)) || croppedCanvas;
 
         // Width
         const canvas = document.createElement("canvas");
@@ -138,10 +142,22 @@ export class ImagePostProcessPlugin extends Plugin {
                 h = processedCanvas.height;
 
             const project = getProjective(w, h, [
-                [(canvas.width / 100) * points[0][0], (canvas.height / 100) * points[0][1]], // Top-left [x, y]
-                [(canvas.width / 100) * points[1][0], (canvas.height / 100) * points[1][1]], // Top-right [x, y]
-                [(canvas.width / 100) * points[2][0], (canvas.height / 100) * points[2][1]], // bottom-right [x, y]
-                [(canvas.width / 100) * points[3][0], (canvas.height / 100) * points[3][1]], // bottom-left [x, y]
+                [
+                    (canvas.width / 100) * points[0][0],
+                    (canvas.height / 100) * points[0][1],
+                ], // Top-left [x, y]
+                [
+                    (canvas.width / 100) * points[1][0],
+                    (canvas.height / 100) * points[1][1],
+                ], // Top-right [x, y]
+                [
+                    (canvas.width / 100) * points[2][0],
+                    (canvas.height / 100) * points[2][1],
+                ], // bottom-right [x, y]
+                [
+                    (canvas.width / 100) * points[3][0],
+                    (canvas.height / 100) * points[3][1],
+                ], // bottom-left [x, y]
             ]);
 
             for (let i = 0; i < divisions; i++) {
@@ -161,15 +177,19 @@ export class ImagePostProcessPlugin extends Plugin {
                         overlap: 0.1,
                     };
 
-                    for (const { origin, sides, flange, overlap } of [upper, lower]) {
+                    for (const {origin, sides, flange, overlap} of [upper, lower]) {
                         const [[a, c, e], [b, d, f]] = getAffineApproximation(project, [
                             origin,
                             [origin[0] + sides[0], origin[1]],
                             [origin[0], origin[1] + sides[1]],
                         ]);
 
-                        const ox = (i !== divisions ? overlap * sides[0] : 0) + flange * sides[0];
-                        const oy = (j !== divisions ? overlap * sides[1] : 0) + flange * sides[1];
+                        const ox =
+                            (i !== divisions ? overlap * sides[0] : 0) +
+                            flange * sides[0];
+                        const oy =
+                            (j !== divisions ? overlap * sides[1] : 0) +
+                            flange * sides[1];
 
                         origin[0] += flange * sides[0];
                         origin[1] += flange * sides[1];
@@ -249,24 +269,32 @@ export class ImagePostProcessPlugin extends Plugin {
             originalImg.height !== processedCanvas.height;
 
         let url =
-            isChanged || originalSize >= newSize ? dataURL : await loadImageDataURL(originalSrc);
-        [url, newDataset] = await this.postProcessImage(url, newDataset, processContext);
-        return { url, newDataset };
+            isChanged || originalSize >= newSize
+                ? dataURL
+                : await loadImageDataURL(originalSrc);
+        [url, newDataset] = await this.postProcessImage(
+            url,
+            newDataset,
+            processContext
+        );
+        return {url, newDataset};
     }
     async processImage(params) {
         const processed = await this._processImage(params);
         if (!processed) {
             return () => {};
         }
-        return () => this.updateImageAttributes(params.img, processed.url, processed.newDataset);
+        return () =>
+            this.updateImageAttributes(params.img, processed.url, processed.newDataset);
     }
     async getProcessedImageSize(img) {
-        const processed = await this._processImage({ img });
+        const processed = await this._processImage({img});
         return getDataURLBinarySize(processed.url);
     }
     async postProcessImage(url, newDataset, processContext) {
         for (const cb of this.getResource("process_image_post_handlers")) {
-            const [newUrl, handlerDataset] = (await cb(url, newDataset, processContext)) || [];
+            const [newUrl, handlerDataset] =
+                (await cb(url, newDataset, processContext)) || [];
             url = newUrl || url;
             newDataset = handlerDataset || newDataset;
         }
@@ -287,7 +315,7 @@ export class ImagePostProcessPlugin extends Plugin {
                 delete el.dataset[key];
             }
         }
-        this.dispatchTo("on_image_updated_handlers", { imageEl: el });
+        this.dispatchTo("on_image_updated_handlers", {imageEl: el});
     }
 }
 
@@ -502,7 +530,10 @@ const glFilters = {
     },
 
     custom: (filter, cv, filterOptions) => {
-        const options = Object.assign(defaultImageFilterOptions, JSON.parse(filterOptions || "{}"));
+        const options = Object.assign(
+            defaultImageFilterOptions,
+            JSON.parse(filterOptions || "{}")
+        );
         const filters = [];
         if (options.filterColor) {
             const ctx = cv.getContext("2d");
@@ -513,7 +544,10 @@ const glFilters = {
         delete options.blend;
         delete options.filterColor;
         filters.push(
-            ...Object.entries(options).map(([filter, amount]) => [filter, parseInt(amount) / 100])
+            ...Object.entries(options).map(([filter, amount]) => [
+                filter,
+                parseInt(amount) / 100,
+            ])
         );
         applyAll(filter, filters);
     },

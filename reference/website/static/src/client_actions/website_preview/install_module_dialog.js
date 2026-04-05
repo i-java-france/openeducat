@@ -1,9 +1,9 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { WebsiteDialog } from "@website/components/dialog/dialog";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {WebsiteDialog} from "@website/components/dialog/dialog";
 
 export class InstallModuleDialog extends Component {
-    static components = { WebsiteDialog };
+    static components = {WebsiteDialog};
     static template = "website.InstallModuleDialog";
     static props = {
         title: String,

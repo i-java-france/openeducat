@@ -3,9 +3,9 @@
 import json
 import logging
 
-from odoo import api, fields, models, _
-from odoo.fields import Command
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Command
 from odoo.tools import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ class SaleOrder(models.Model):
         the default function on the warehouse_id field.
         """
         if column_name != "warehouse_id":
-            return super(SaleOrder, self)._init_column(column_name)
+            return super()._init_column(column_name)
 
         default_warehouse = self.env["stock.warehouse"].search([], limit=1)
 
@@ -104,7 +104,7 @@ class SaleOrder(models.Model):
 
     @api.depends('picking_policy')
     def _compute_expected_date(self):
-        super(SaleOrder, self)._compute_expected_date()
+        super()._compute_expected_date()
 
     @api.depends('picking_ids.products_availability_state')
     def _compute_late_availability(self):
@@ -212,7 +212,7 @@ class SaleOrder(models.Model):
 
     def _action_confirm(self):
         self.order_line._action_launch_stock_rule()
-        return super(SaleOrder, self)._action_confirm()
+        return super()._action_confirm()
 
     @api.depends('picking_ids')
     def _compute_picking_ids(self):
@@ -296,7 +296,7 @@ class SaleOrder(models.Model):
         return action
 
     def _prepare_invoice(self):
-        invoice_vals = super(SaleOrder, self)._prepare_invoice()
+        invoice_vals = super()._prepare_invoice()
         invoice_vals['invoice_incoterm_id'] = self.incoterm.id
         invoice_vals['delivery_date'] = self.effective_date
         return invoice_vals

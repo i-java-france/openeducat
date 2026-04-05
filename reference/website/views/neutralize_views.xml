@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="website.neutralize_ribbon"  name="Neutralize Ribbon" inherit_id="website.layout" active="False">
+    <template
+        id="website.neutralize_ribbon"
+        name="Neutralize Ribbon"
+        inherit_id="website.layout"
+        active="False"
+    >
         <xpath expr="//body" position="inside">
             <div>
-                <span id="oe_neutralize_ribbon" t-attf-style="
+                <span
+                    id="oe_neutralize_ribbon"
+                    t-attf-style="
                         width: 400px;
                         top: 55px;
                         left: -100px;
@@ -20,7 +27,8 @@
                         pointer-events: none;
                         text-transform: uppercase;
                         z-index: 9999;
-                        {{ neutralize_ribbon_style or ''}}">
+                        {{ neutralize_ribbon_style or ''}}"
+                >
                     <t t-out="neutralize_ribbon_text">Neutralized</t>
                 </span>
             </div>

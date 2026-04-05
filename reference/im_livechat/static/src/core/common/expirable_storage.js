@@ -1,5 +1,5 @@
-import { EventBus } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
+import {EventBus} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
 
 const BASE_STORAGE_KEY = "EXPIRABLE_STORAGE_";
 const CLEAR_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -8,7 +8,8 @@ function cleanupExpirableStorage() {
     const now = Date.now();
     // Next line is for testing compatibility as for..in is not supported by
     // the `MockStorage` class.
-    const keys = browser.localStorage.items?.keys() ?? Object.keys(browser.localStorage);
+    const keys =
+        browser.localStorage.items?.keys() ?? Object.keys(browser.localStorage);
     for (const key of keys) {
         if (key.startsWith(BASE_STORAGE_KEY)) {
             const item = JSON.parse(browser.localStorage.getItem(key));
@@ -21,7 +22,7 @@ function cleanupExpirableStorage() {
 
 const storageBus = new EventBus();
 const storageFnToWrapper = new Map();
-browser.addEventListener("storage", ({ key, newValue }) => {
+browser.addEventListener("storage", ({key, newValue}) => {
     if (key?.startsWith(BASE_STORAGE_KEY)) {
         const actualKey = key.slice(BASE_STORAGE_KEY.length);
         storageBus.trigger(actualKey, newValue ? JSON.parse(newValue).value : null);
@@ -50,7 +51,7 @@ export const expirableStorage = {
         }
         browser.localStorage.setItem(
             `${BASE_STORAGE_KEY}${key}`,
-            JSON.stringify({ value, expires })
+            JSON.stringify({value, expires})
         );
     },
     /** @param {string} key */
@@ -62,7 +63,7 @@ export const expirableStorage = {
      * @param {(value: any) => void} fn
      */
     onChange(key, fn) {
-        storageFnToWrapper.set(fn, ({ detail }) => fn(detail));
+        storageFnToWrapper.set(fn, ({detail}) => fn(detail));
         storageBus.addEventListener(key, storageFnToWrapper.get(fn));
     },
     /**

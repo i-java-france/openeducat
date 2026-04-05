@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import random
 import re
+
 import werkzeug
 
 from odoo.tools import mail
+
 from odoo.addons.link_tracker.tests.common import MockLinkTracker
 from odoo.addons.mass_mailing.tests.common import MassMailCommon
 from odoo.addons.sms.tests.common import SMSCase, SMSCommon
@@ -100,7 +101,7 @@ class MassSMSCase(SMSCase, MockLinkTracker):
         # check each trace
         if not sms_links_info:
             sms_links_info = [None] * len(recipients_info)
-        for recipient_info, link_info, record in zip(recipients_info, sms_links_info, records):
+        for recipient_info, link_info, record in zip(recipients_info, sms_links_info, records, strict=False):
             # check input
             invalid = set(recipient_info.keys()) - {
                 'content',
@@ -251,4 +252,4 @@ class MassSMSCommon(SMSCommon, MassSMSCase, MassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(MassSMSCommon, cls).setUpClass()
+        super().setUpClass()

@@ -1,14 +1,14 @@
-import { Component, onWillStart, useExternalListener, useState, xml } from "@odoo/owl";
+import {Component, onWillStart, useExternalListener, useState, xml} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { debounce } from "@web/core/utils/timing";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { useService } from "@web/core/utils/hooks";
-import { useMicrophoneVolume } from "@mail/utils/common/hooks";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
-import { DeviceSelect } from "@mail/discuss/call/common/device_select";
-import { Dialog } from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {debounce} from "@web/core/utils/timing";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {useService} from "@web/core/utils/hooks";
+import {useMicrophoneVolume} from "@mail/utils/common/hooks";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
+import {DeviceSelect} from "@mail/discuss/call/common/device_select";
+import {Dialog} from "@web/core/dialog/dialog";
 
 export class CallSettings extends Component {
     static template = "discuss.CallSettings";
@@ -16,7 +16,7 @@ export class CallSettings extends Component {
     static defaultProps = {
         withActionPanel: true,
     };
-    static components = { ActionPanel, DeviceSelect };
+    static components = {ActionPanel, DeviceSelect};
 
     setup() {
         super.setup();
@@ -40,19 +40,22 @@ export class CallSettings extends Component {
                 this.store.settings.edgeBlurAmount.toString()
             );
         }, 2000);
-        useExternalListener(browser, "keydown", this._onKeyDown, { capture: true });
-        useExternalListener(browser, "keyup", this._onKeyUp, { capture: true });
+        useExternalListener(browser, "keydown", this._onKeyDown, {capture: true});
+        useExternalListener(browser, "keyup", this._onKeyUp, {capture: true});
         onWillStart(async () => {
             if (!browser.navigator.mediaDevices) {
                 // zxing-js: isMediaDevicesSuported or canEnumerateDevices is false.
                 this.notification.add(
                     _t("Media devices unobtainable. SSL might not be set up properly."),
-                    { type: "warning" }
+                    {type: "warning"}
                 );
-                console.warn("Media devices unobtainable. SSL might not be set up properly.");
+                console.warn(
+                    "Media devices unobtainable. SSL might not be set up properly."
+                );
                 return;
             }
-            this.state.userDevices = await browser.navigator.mediaDevices.enumerateDevices();
+            this.state.userDevices =
+                await browser.navigator.mediaDevices.enumerateDevices();
         });
     }
 
@@ -65,11 +68,15 @@ export class CallSettings extends Component {
     }
 
     get pushToTalkKeyText() {
-        const { shiftKey, ctrlKey, altKey, key } = this.store.settings.pushToTalkKeyFormat();
+        const {shiftKey, ctrlKey, altKey, key} =
+            this.store.settings.pushToTalkKeyFormat();
         const f = (k, name) => (k ? name : "");
-        const keys = [f(ctrlKey, "Ctrl"), f(altKey, "Alt"), f(shiftKey, "Shift"), key].filter(
-            Boolean
-        );
+        const keys = [
+            f(ctrlKey, "Ctrl"),
+            f(altKey, "Alt"),
+            f(shiftKey, "Shift"),
+            key,
+        ].filter(Boolean);
         return keys.join(" + ");
     }
 
@@ -104,7 +111,7 @@ export class CallSettings extends Component {
     }
 
     onClickDownloadLogs() {
-        this.rtc.dumpLogs({ download: true });
+        this.rtc.dumpLogs({download: true});
     }
 
     onClickRegisterKeyButton() {
@@ -154,5 +161,5 @@ export class CallSettingsDialog extends Component {
         </Dialog>
     `;
     static props = ["*"];
-    static components = { CallSettings, Dialog };
+    static components = {CallSettings, Dialog};
 }

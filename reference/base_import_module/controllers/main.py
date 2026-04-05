@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-import functools
 
 from odoo import _
 from odoo.exceptions import AccessError
-from odoo.http import Controller, route, request, Response
+from odoo.http import Controller, Response, request, route
 
 
 class ImportModule(Controller):

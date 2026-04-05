@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo
@@ -14,7 +13,7 @@ class TestPosSimpleInvoicedOrders(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPosSimpleInvoicedOrders, self).setUp()
+        super().setUp()
         self.config = self.basic_config
         self.product100 = self.create_product('Product_100', self.categ_basic, 100, 50)
 

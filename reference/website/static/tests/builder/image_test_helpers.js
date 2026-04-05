@@ -1,5 +1,5 @@
-import { before, globals } from "@odoo/hoot";
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {before, globals} from "@odoo/hoot";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
 function onRpcReal(route) {
     onRpc(route, () => globals.fetch.call(window, route));
@@ -25,7 +25,7 @@ export function mockImageRequests() {
     before(() => {
         onRpc("/html_editor/get_image_info", async (data) => {
             const body = await data.body.getReader().read();
-            const { src } = JSON.parse(new TextDecoder().decode(body.value)).params;
+            const {src} = JSON.parse(new TextDecoder().decode(body.value)).params;
             if (src === testGifImgSrc) {
                 return {
                     attachment: {
@@ -45,7 +45,8 @@ export function mockImageRequests() {
                 },
                 original: {
                     id: 1,
-                    image_src: "/website/static/src/img/snippets_demo/s_text_image.webp",
+                    image_src:
+                        "/website/static/src/img/snippets_demo/s_text_image.webp",
                     mimetype: "image/webp",
                 },
             };
@@ -55,7 +56,9 @@ export function mockImageRequests() {
         onRpcReal("/html_builder/static/image_shapes/geometric/geo_tetris.svg");
         onRpcReal("/web/image/website.s_text_image_default_image");
         onRpcReal("/website/static/src/img/snippets_demo/s_text_image.webp");
-        onRpcReal("/website/static/src/img/snippets_options/header_effect_fade_out.gif");
+        onRpcReal(
+            "/website/static/src/img/snippets_options/header_effect_fade_out.gif"
+        );
         onRpcReal("/web/image/123/transparent.png");
         onRpcReal("/website/static/src/svg/hover_effects.svg");
         onRpcReal("/html_builder/static/image_shapes/geometric/geo_square.svg");

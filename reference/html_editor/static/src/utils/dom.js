@@ -1,4 +1,4 @@
-import { closestBlock, isBlock } from "./blocks";
+import {closestBlock, isBlock} from "./blocks";
 import {
     isEmptyTextNode,
     isParagraphRelatedElement,
@@ -7,10 +7,10 @@ import {
     nextLeaf,
     previousLeaf,
 } from "./dom_info";
-import { callbacksForCursorUpdate } from "./selection";
-import { isEmptyBlock, isPhrasingContent } from "../utils/dom_info";
-import { childNodes, descendants } from "./dom_traversal";
-import { childNodeIndex, DIRECTIONS, nodeSize } from "./position";
+import {callbacksForCursorUpdate} from "./selection";
+import {isEmptyBlock, isPhrasingContent} from "../utils/dom_info";
+import {childNodes, descendants} from "./dom_traversal";
+import {childNodeIndex, DIRECTIONS, nodeSize} from "./position";
 import {
     baseContainerGlobalSelector,
     createBaseContainer,
@@ -50,7 +50,7 @@ export function makeContentsInline(node) {
  */
 export function wrapInlinesInBlocks(
     element,
-    { baseContainerNodeName = "P", cursors = { update: () => {} } } = {}
+    {baseContainerNodeName = "P", cursors = {update: () => {}}} = {}
 ) {
     // Helpers to manipulate preserving selection.
     const wrapInBlock = (node, cursors) => {
@@ -72,7 +72,10 @@ export function wrapInlinesInBlocks(
         return block;
     };
     const appendToCurrentBlock = (currentBlock, node, cursors) => {
-        if (currentBlock.matches(baseContainerGlobalSelector) && !isPhrasingContent(node)) {
+        if (
+            currentBlock.matches(baseContainerGlobalSelector) &&
+            !isPhrasingContent(node)
+        ) {
             const block = currentBlock.ownerDocument.createElement("DIV");
             cursors.update(callbacksForCursorUpdate.before(currentBlock, block));
             currentBlock.before(block);
@@ -166,7 +169,11 @@ export function removeStyle(element, ...styleProperties) {
  */
 export function fillEmpty(el) {
     const document = el.ownerDocument;
-    if (!isBlock(el) && !isVisible(el) && !el.hasAttribute("data-oe-zws-empty-inline")) {
+    if (
+        !isBlock(el) &&
+        !isVisible(el) &&
+        !el.hasAttribute("data-oe-zws-empty-inline")
+    ) {
         const zws = document.createTextNode("\u200B");
         el.appendChild(zws);
         el.setAttribute("data-oe-zws-empty-inline", "");
@@ -174,7 +181,7 @@ export function fillEmpty(el) {
         if (previousSibling && previousSibling.nodeName === "BR") {
             previousSibling.remove();
         }
-        return { zws };
+        return {zws};
     } else {
         // If a ZWS was inserted, there is no need for a <br>.
         return fillShrunkPhrasingParent(el);
@@ -274,7 +281,9 @@ export function cleanTextNode(node, char, cursors) {
     } else {
         cursors?.update((cursor) => {
             if (cursor.node === node) {
-                cursor.offset -= removedIndexes.filter((index) => cursor.offset > index).length;
+                cursor.offset -= removedIndexes.filter(
+                    (index) => cursor.offset > index
+                ).length;
             }
         });
     }
@@ -336,8 +345,11 @@ export function removeInvisibleWhitespace(el, cursors) {
     const [countLeadingWhitespace, countTrailingWhitespace] = [/^\s+/, /\s+$/].map(
         (regex) => (node) => node?.textContent.match(regex)?.[0]?.length || 0
     );
-    const isInlineElement = (node) => node?.nodeType === Node.ELEMENT_NODE && !isBlock(node);
-    const textChildren = descendants(el).filter((child) => child.nodeType === Node.TEXT_NODE);
+    const isInlineElement = (node) =>
+        node?.nodeType === Node.ELEMENT_NODE && !isBlock(node);
+    const textChildren = descendants(el).filter(
+        (child) => child.nodeType === Node.TEXT_NODE
+    );
     let removedTrailingSpaceBefore = false;
     let index = 0;
     for (const child of textChildren) {

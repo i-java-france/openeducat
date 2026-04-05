@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { uniqueId } from "@web/core/utils/functions";
-import { getElementsWithOption } from "@html_builder/utils/utils";
-import { NavTabsHeaderMiddleButtons } from "./navtabs_header_buttons";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {uniqueId} from "@web/core/utils/functions";
+import {getElementsWithOption} from "@html_builder/utils/utils";
+import {NavTabsHeaderMiddleButtons} from "./navtabs_header_buttons";
 
 const tabsSectionSelector = "section.s_tabs, section.s_tabs_images";
 
@@ -75,14 +75,14 @@ class NavTabsOptionPlugin extends Plugin {
         activePaneEl.remove();
     }
 
-    onSnippetDropped({ snippetEl }) {
+    onSnippetDropped({snippetEl}) {
         const tabsEls = getElementsWithOption(snippetEl, tabsSectionSelector);
         for (const tabsEl of tabsEls) {
             this.generateUniqueIDs(tabsEl);
         }
     }
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         const tabsEls = getElementsWithOption(cloneEl, tabsSectionSelector);
         for (const tabsEl of tabsEls) {
             this.generateUniqueIDs(tabsEl);

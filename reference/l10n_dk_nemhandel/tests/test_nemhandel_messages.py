@@ -1,17 +1,17 @@
 import json
 from base64 import b64encode
 from contextlib import contextmanager
-from requests import PreparedRequest, Response, Session
 from unittest.mock import patch
 from urllib import parse
 
+from requests import PreparedRequest, Response, Session
+
 from odoo import Command
 from odoo.exceptions import UserError
-from odoo.tests.common import tagged, freeze_time
+from odoo.tests.common import freeze_time, tagged
 from odoo.tools.misc import file_open
 
 from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
-
 
 ID_CLIENT = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
 FAKE_UUID = ['yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy',

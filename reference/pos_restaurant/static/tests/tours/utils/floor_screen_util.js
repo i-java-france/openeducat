@@ -1,7 +1,13 @@
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 
-export function table({ name, withClass = "", withoutClass, run = () => {}, numOfSeats }) {
+export function table({
+    name,
+    withClass = "",
+    withoutClass,
+    run = () => {},
+    numOfSeats,
+}) {
     let trigger = `.floor-map .table${withClass}`;
     if (withoutClass) {
         trigger += `:not(${withoutClass})`;
@@ -15,16 +21,16 @@ export function table({ name, withClass = "", withoutClass, run = () => {}, numO
         run: typeof run === "string" ? run : (helpers) => run(helpers, trigger),
     };
 }
-export const clickTable = (name) => table({ name, run: "click" });
-export const hasTable = (name) => table({ name });
-export const selectedTableIs = (name) => table({ name, withClass: ".selected" });
+export const clickTable = (name) => table({name, run: "click"});
+export const hasTable = (name) => table({name});
+export const selectedTableIs = (name) => table({name, withClass: ".selected"});
 export const ctrlClickTable = (name) =>
     table({
         name,
         run: (helpers, trigger) => {
             helpers
                 .queryOne(trigger)
-                .dispatchEvent(new MouseEvent("click", { bubbles: true, ctrlKey: true }));
+                .dispatchEvent(new MouseEvent("click", {bubbles: true, ctrlKey: true}));
         },
     });
 export function clickFloor(name) {
@@ -129,8 +135,8 @@ export function linkTables(child, parent) {
             await new Promise((resolve) => setTimeout(resolve, helpers.delay));
         };
         const element = helpers.anchor;
-        const { drag } = odoo.loader.modules.get("@odoo/hoot-dom");
-        const { drop, moveTo } = await drag(element);
+        const {drag} = odoo.loader.modules.get("@odoo/hoot-dom");
+        const {drop, moveTo} = await drag(element);
         await dragEffectDelay();
         await helpers.hover(element, {
             position: {
@@ -154,20 +160,20 @@ export function linkTables(child, parent) {
     }
     return {
         content: `Drag table ${child} onto table ${parent} in order to link them`,
-        trigger: table({ name: child }).trigger,
+        trigger: table({name: child}).trigger,
         async run(helpers) {
             helpers.delay = 500;
             await drag_multiple_and_then_drop(
                 helpers,
                 [
-                    table({ name: parent }).trigger,
+                    table({name: parent}).trigger,
                     {
                         position: "top",
                         relative: true,
                     },
                 ],
                 [
-                    table({ name: parent }).trigger,
+                    table({name: parent}).trigger,
                     {
                         position: "center",
                         relative: true,
@@ -180,7 +186,7 @@ export function linkTables(child, parent) {
 export function unlinkTables(child, parent) {
     return {
         content: `Drag table ${child} away from table ${parent} to unlink them`,
-        trigger: table({ name: child }).trigger,
+        trigger: table({name: child}).trigger,
         async run(helpers) {
             await helpers.drag_and_drop(`div.floor-map`, {
                 position: {
@@ -194,11 +200,11 @@ export function unlinkTables(child, parent) {
 export function isChildTable(child) {
     return {
         content: `Verify that table ${child} is a child table`,
-        trigger: table({ name: child }).trigger + ` .info.opacity-25`,
+        trigger: table({name: child}).trigger + ` .info.opacity-25`,
     };
 }
 export function clickNewOrder() {
-    return { trigger: ".new-order", run: "click" };
+    return {trigger: ".new-order", run: "click"};
 }
 
 export function addFloor(floorName) {

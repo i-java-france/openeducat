@@ -1,5 +1,9 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<T:TicketBai xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#" xmlns:T="urn:ticketbai:emision" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<?xml version='1.0' encoding='UTF-8' ?>
+<T:TicketBai
+    xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#"
+    xmlns:T="urn:ticketbai:emision"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+>
     <Cabecera>
         <IDVersionTBAI>1.2</IDVersionTBAI>
     </Cabecera>
@@ -14,7 +18,8 @@
                     <IDType>02</IDType>
                     <ID>BE0477472701</ID>
                 </IDOtro>
-                <ApellidosNombreRazonSocial>&amp;@&#224;&#193;$&#163;&#8364;&#232;&#234;&#200;&#202;&#246;&#212;&#199;&#231;&#161;&#8539;&#8482;&#179;</ApellidosNombreRazonSocial>
+                <ApellidosNombreRazonSocial
+                >&amp;@&#224;&#193;$&#163;&#8364;&#232;&#234;&#200;&#202;&#246;&#212;&#199;&#231;&#161;&#8539;&#8482;&#179;</ApellidosNombreRazonSocial>
                 <CodigoPostal>___ignore___</CodigoPostal>
                 <Direccion>___ignore___</Direccion>
             </IDDestinatario>

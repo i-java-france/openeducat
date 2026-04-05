@@ -3,9 +3,8 @@ from dateutil.relativedelta import relativedelta
 from pytz import UTC
 
 from odoo import api, models
-
-from odoo.tools.intervals import Intervals
 from odoo.tools.date_utils import localized, sum_intervals
+from odoo.tools.intervals import Intervals
 
 
 class CalendarEvent(models.Model):

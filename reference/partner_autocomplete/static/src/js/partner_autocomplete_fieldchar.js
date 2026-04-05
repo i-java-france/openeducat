@@ -1,11 +1,11 @@
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { CharField, charField } from "@web/views/fields/char/char_field";
-import { useInputField } from "@web/views/fields/input_field_hook";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {CharField, charField} from "@web/views/fields/char/char_field";
+import {useInputField} from "@web/views/fields/input_field_hook";
 
-import { usePartnerAutocomplete } from "@partner_autocomplete/js/partner_autocomplete_core";
-import { PartnerAutoComplete } from "@partner_autocomplete/js/partner_autocomplete_component";
+import {usePartnerAutocomplete} from "@partner_autocomplete/js/partner_autocomplete_core";
+import {PartnerAutoComplete} from "@partner_autocomplete/js/partner_autocomplete_component";
 
 export class PartnerAutoCompleteCharField extends CharField {
     static template = "partner_autocomplete.PartnerAutoCompleteCharField";
@@ -20,7 +20,11 @@ export class PartnerAutoCompleteCharField extends CharField {
         this.partnerAutocomplete = usePartnerAutocomplete();
 
         this.inputRef = useChildRef();
-        useInputField({ getValue: () => this.props.record.data[this.props.name] || "", parse: (v) => this.parse(v), ref: this.inputRef});
+        useInputField({
+            getValue: () => this.props.record.data[this.props.name] || "",
+            parse: (v) => this.parse(v),
+            ref: this.inputRef,
+        });
     }
 
     async validateSearchTerm(request) {
@@ -32,24 +36,29 @@ export class PartnerAutoCompleteCharField extends CharField {
             {
                 options: async (request, shouldSearchWorldWide) => {
                     if (await this.validateSearchTerm(request)) {
-                        let queryCountryId = this.props.record.data?.country_id ? this.props.record.data.country_id.id : false;
-                        if (shouldSearchWorldWide){
-                        	queryCountryId = 0;
+                        let queryCountryId = this.props.record.data?.country_id
+                            ? this.props.record.data.country_id.id
+                            : false;
+                        if (shouldSearchWorldWide) {
+                            queryCountryId = 0;
                         }
-                        const suggestions = await this.partnerAutocomplete.autocomplete(request, queryCountryId);
+                        const suggestions = await this.partnerAutocomplete.autocomplete(
+                            request,
+                            queryCountryId
+                        );
                         return suggestions.map((suggestion) => ({
                             cssClass: "partner_autocomplete_dropdown_char",
                             data: suggestion,
                             label: suggestion.name,
-                            onSelect: () => this.onSelectPartnerAutocompleteOption(suggestion),
+                            onSelect: () =>
+                                this.onSelectPartnerAutocompleteOption(suggestion),
                         }));
-                    }
-                    else {
+                    } else {
                         return [];
                     }
                 },
                 optionSlot: "partnerOption",
-                placeholder: _t('Searching Autocomplete...'),
+                placeholder: _t("Searching Autocomplete..."),
             },
         ];
     }
@@ -61,28 +70,35 @@ export class PartnerAutoCompleteCharField extends CharField {
         }
 
         if (data.logo) {
-            const logoField = this.props.record.resModel === 'res.partner' ? 'image_1920' : 'logo';
+            const logoField =
+                this.props.record.resModel === "res.partner" ? "image_1920" : "logo";
             data.company[logoField] = data.logo;
         }
 
         const additionalData = {
-            entity_type : data.company.entity_type,
-            unspsc_codes : data.company.unspsc_codes,
+            entity_type: data.company.entity_type,
+            unspsc_codes: data.company.unspsc_codes,
         };
         // Delete useless fields before updating record
-        data.company = this.partnerAutocomplete.removeUselessFields(data.company, Object.keys(this.props.record.fields));
+        data.company = this.partnerAutocomplete.removeUselessFields(
+            data.company,
+            Object.keys(this.props.record.fields)
+        );
 
         // Update record with retrieved values
         if (data.company.name) {
-            await this.props.record.update({name: data.company.name});  // Needed otherwise name it is not saved
+            await this.props.record.update({name: data.company.name}); // Needed otherwise name it is not saved
         }
         await this.props.record.update(data.company);
 
         // Post message with company info card
-        if (this.props.record.resModel === 'res.partner') {
+        if (this.props.record.resModel === "res.partner") {
             const saved = await this.props.record.save();
             if (saved && data.isEnrichAccessible) {
-                await this.orm.call("res.partner", "enrich_company_message_post", [this.props.record.resId, additionalData]);
+                await this.orm.call("res.partner", "enrich_company_message_post", [
+                    this.props.record.resId,
+                    additionalData,
+                ]);
                 this.props.record.load();
             }
         }
@@ -97,4 +113,6 @@ export const partnerAutoCompleteCharField = {
     component: PartnerAutoCompleteCharField,
 };
 
-registry.category("fields").add("field_partner_autocomplete", partnerAutoCompleteCharField);
+registry
+    .category("fields")
+    .add("field_partner_autocomplete", partnerAutoCompleteCharField);

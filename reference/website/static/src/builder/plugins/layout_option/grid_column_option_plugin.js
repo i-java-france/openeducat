@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { GridColumnsOption } from "./grid_column_option";
-import { withSequence } from "@html_editor/utils/resource";
-import { GRID_COLUMNS } from "@website/builder/option_sequence";
-import { StyleAction } from "@html_builder/core/core_builder_action_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {GridColumnsOption} from "./grid_column_option";
+import {withSequence} from "@html_editor/utils/resource";
+import {GRID_COLUMNS} from "@website/builder/option_sequence";
+import {StyleAction} from "@html_builder/core/core_builder_action_plugin";
 
 export class GridColumnsOptionPlugin extends Plugin {
     static id = "GridColumnsOption";
@@ -17,7 +17,9 @@ export class GridColumnsOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(GridColumnsOptionPlugin.id, GridColumnsOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(GridColumnsOptionPlugin.id, GridColumnsOptionPlugin);
 
 const removePaddingPreview = (event) => {
     const editingElement = event.target;
@@ -27,8 +29,8 @@ const removePaddingPreview = (event) => {
 export class SetGridColumnsPaddingAction extends StyleAction {
     static id = "setGridColumnsPadding";
     apply(...args) {
-        const { editingElement } = args[0];
-        removePaddingPreview({ target: editingElement });
+        const {editingElement} = args[0];
+        removePaddingPreview({target: editingElement});
         super.apply(...args);
         editingElement.classList.add("o_we_padding_highlight");
         editingElement.addEventListener("animationend", removePaddingPreview);

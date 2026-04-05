@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
@@ -6,6 +5,7 @@ import logging as logger
 import os
 import struct
 import textwrap
+from urllib.parse import urlsplit
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -13,7 +13,6 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
-from urllib.parse import urlsplit
 
 from . import jwt
 
@@ -155,7 +154,7 @@ def push_to_end_point(base_url, device, payload, vapid_private_key, vapid_public
         # aud: The “Audience” is a JWT construct that indicates the recipient scheme and host
         # e.g. for an endpoint like https://updates.push.services.mozilla.com/wpush/v2/gAAAAABY...,
         #      the “aud” would be https://updates.push.services.mozilla.com
-        'aud': '{}://{}'.format(url.scheme, url.netloc),
+        'aud': f'{url.scheme}://{url.netloc}',
         # sub: the sub value needs to be either a URL address. This is so that if a push service needed to reach out
         # to sender, it can find contact information from the JWT.
         'sub': base_url,
@@ -167,7 +166,7 @@ def push_to_end_point(base_url, device, payload, vapid_private_key, vapid_public
         #  Authorization header field contains these parameters:
         #  - "t" is the JWT;
         #  - "k" the base64url-encoded key that signed that token.
-        'Authorization': 'vapid t={}, k={}'.format(token, vapid_public_key),
+        'Authorization': f'vapid t={token}, k={vapid_public_key}',
         'Content-Encoding': 'aes128gcm',
         # The TTL is set to '60' as workaround because the push notifications
         # are not received on Edge with TTL ='0'.

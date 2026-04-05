@@ -1,8 +1,8 @@
-import { describe, expect, test, getFixture } from "@odoo/hoot";
-import { makeMockEnv, contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { getTemplate } from "@web/core/templates";
-import { SelectionFilterValue } from "@spreadsheet/global_filters/components/selection_filter_value/selection_filter_value";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {contains, makeMockEnv, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {getTemplate} from "@web/core/templates";
+import {SelectionFilterValue} from "@spreadsheet/global_filters/components/selection_filter_value/selection_filter_value";
 
 describe.current.tags("desktop");
 defineSpreadsheetModels();
@@ -12,11 +12,11 @@ defineSpreadsheetModels();
  * @param {{ model: Model, filter: object}} props
  */
 async function mountSelectionFilterValue(env, props) {
-    await mountWithCleanup(SelectionFilterValue, { props, env, getTemplate });
+    await mountWithCleanup(SelectionFilterValue, {props, env, getTemplate});
 }
 
 /**
- * res.currency.position is a selection field with 2 options:
+ * Res.currency.position is a selection field with 2 options:
  * - after (A)
  * - before (B)
  */

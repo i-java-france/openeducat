@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class WidthOptionPlugin extends Plugin {
     static id = "mass_mailing.WidthOption";

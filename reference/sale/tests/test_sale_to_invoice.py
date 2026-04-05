@@ -372,7 +372,7 @@ class TestSaleToInvoice(TestSaleCommon):
         invoice.action_post()
 
         # Check discount appeared on both SO lines and invoice lines
-        for line, inv_line in zip(self.sale_order.order_line, invoice.invoice_line_ids):
+        for line, inv_line in zip(self.sale_order.order_line, invoice.invoice_line_ids, strict=False):
             self.assertEqual(line.discount, inv_line.discount, 'Discount on lines of order and invoice should be same')
 
     def test_invoice(self):
@@ -588,7 +588,7 @@ class TestSaleToInvoice(TestSaleCommon):
             'tax_ids': [],
             'combo_item_id': combo.combo_item_ids.id,
             'linked_line_id': sale_order.order_line.id,
-        }) for product, combo in zip(product_a + product_b, combo_a + combo_b)]
+        }) for product, combo in zip(product_a + product_b, combo_a + combo_b, strict=False)]
 
         # Confirm the SO
         sale_order.action_confirm()

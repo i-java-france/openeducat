@@ -2,20 +2,21 @@
 
 import base64
 import json
-import psycopg2
+import re
 
+import psycopg2
 from markupsafe import Markup
 from psycopg2 import IntegrityError
-import re
 from werkzeug.exceptions import BadRequest
 
-from odoo import http, SUPERUSER_ID
-from odoo.addons.base.models.ir_qweb_fields import nl2br, nl2br_enclose
+from odoo import SUPERUSER_ID, http
+from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.http import request
 from odoo.tools import plaintext2html
-from odoo.exceptions import AccessDenied, ValidationError, UserError
-from odoo.tools.misc import hmac, consteq
-from odoo.tools.translate import _, LazyTranslate
+from odoo.tools.misc import consteq, hmac
+from odoo.tools.translate import LazyTranslate, _
+
+from odoo.addons.base.models.ir_qweb_fields import nl2br, nl2br_enclose
 
 _lt = LazyTranslate(__name__)
 
@@ -233,7 +234,7 @@ class WebsiteForm(http.Controller):
             elif field_name not in ('context', 'website_form_signature'):
                 custom_fields.append((field_name, field_value))
 
-        data['custom'] = "\n".join([u"%s : %s" % v for v in custom_fields])
+        data['custom'] = "\n".join(["%s : %s" % v for v in custom_fields])
 
         # Add metadata if enabled  # ICP for retrocompatibility
         if request.env['ir.config_parameter'].sudo().get_param('website_form_enable_metadata'):

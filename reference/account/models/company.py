@@ -1,20 +1,19 @@
-# -*- coding: utf-8 -*-
 
-from collections import defaultdict
-from datetime import timedelta, datetime, date
 import calendar
+from collections import defaultdict
+from datetime import date, datetime, timedelta
 
-from odoo import fields, models, api, _, Command
-from odoo.exceptions import LockError, ValidationError, UserError, RedirectWarning
-from odoo.tools import date_utils, format_list, SQL
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import LockError, RedirectWarning, UserError, ValidationError
+from odoo.fields import Domain
+from odoo.tools import SQL, date_utils, format_list
 from odoo.tools.mail import is_html_empty
 from odoo.tools.misc import format_date
-from odoo.addons.account.models.account_move import MAX_HASH_VERSION
-from odoo.addons.account.models.product import ACCOUNT_DOMAIN
-from odoo.addons.account.models.partner import _ref_company_registry
-from odoo.addons.base_vat.models.res_partner import _ref_vat
-from odoo.fields import Domain
 
+from odoo.addons.account.models.account_move import MAX_HASH_VERSION
+from odoo.addons.account.models.partner import _ref_company_registry
+from odoo.addons.account.models.product import ACCOUNT_DOMAIN
+from odoo.addons.base_vat.models.res_partner import _ref_vat
 
 MONTH_SELECTION = [
     ('1', 'January'),

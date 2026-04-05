@@ -1,4 +1,4 @@
-import { loadJS } from "../assets"; // use the real, non patched (in tests), loadJS
+import {loadJS} from "../assets"; // use the real, non patched (in tests), loadJS
 
 /** @typedef {import("./error_service").UncaughtError} UncaughtError */
 
@@ -67,7 +67,12 @@ export async function fullAnnotatedTraceback(error) {
             current = current.cause;
         }
     } catch (e) {
-        console.warn("Failed to annotate traceback for error:", error, "failure reason:", e);
+        console.warn(
+            "Failed to annotate traceback for error:",
+            error,
+            "failure reason:",
+            e
+        );
         traceback = fullTraceback(error);
     }
     error.annotatedTraceback = traceback;
@@ -83,7 +88,11 @@ export async function fullAnnotatedTraceback(error) {
  * @param {boolean} annotated
  * @returns {Promise<void>}
  */
-export async function completeUncaughtError(uncaughtError, originalError, annotated = false) {
+export async function completeUncaughtError(
+    uncaughtError,
+    originalError,
+    annotated = false
+) {
     uncaughtError.name = combineErrorNames(uncaughtError, originalError);
     if (annotated) {
         uncaughtError.traceback = await fullAnnotatedTraceback(originalError);

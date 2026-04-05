@@ -1,9 +1,13 @@
 import logging
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon, AccountTestInvoicingHttpCommon
 from odoo.exceptions import UserError
 from odoo.fields import Command
-from odoo.tests import tagged, new_test_user
+from odoo.tests import new_test_user, tagged
+
+from odoo.addons.account.tests.common import (
+    AccountTestInvoicingCommon,
+    AccountTestInvoicingHttpCommon,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -46,7 +50,7 @@ class TestAuditTrail(AccountTestInvoicingCommon):
 
     def assertTrail(self, trail, expected):
         self.assertEqual(len(trail), len(expected))
-        for message, expected_needle in zip(trail, expected[::-1]):
+        for message, expected_needle in zip(trail, expected[::-1], strict=False):
             self.assertIn(expected_needle, message.account_audit_log_preview)
 
     def test_can_unlink_draft(self):

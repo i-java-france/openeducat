@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
-import { Component, useRef, useState, useExternalListener } from "@odoo/owl";
+import {Component, useRef, useState, useExternalListener} from "@odoo/owl";
 
 export class ColorList extends Component {
     static COLORS = [
@@ -23,17 +23,17 @@ export class ColorList extends Component {
         isExpanded: false,
     };
     static props = {
-        canToggle: { type: Boolean, optional: true },
+        canToggle: {type: Boolean, optional: true},
         colors: Array,
-        forceExpanded: { type: Boolean, optional: true },
-        isExpanded: { type: Boolean, optional: true },
+        forceExpanded: {type: Boolean, optional: true},
+        isExpanded: {type: Boolean, optional: true},
         onColorSelected: Function,
-        selectedColor: { type: Number, optional: true },
+        selectedColor: {type: Number, optional: true},
     };
 
     setup() {
         this.colorlistRef = useRef("colorlist");
-        this.state = useState({ isExpanded: this.props.isExpanded });
+        this.state = useState({isExpanded: this.props.isExpanded});
         useExternalListener(window, "click", this.onOutsideClick);
     }
     get colors() {

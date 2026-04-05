@@ -1,14 +1,14 @@
-import { expect, test } from "@odoo/hoot";
-import { EventConfiguratorPopup } from "@pos_event/app/components/popup/event_configurator_popup/event_configurator_popup";
-import { mountPosDialog, setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {EventConfiguratorPopup} from "@pos_event/app/components/popup/event_configurator_popup/event_configurator_popup";
+import {mountPosDialog, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
 test("confirm payload and getTicketMaxQty and ticketIsAvailable", async () => {
     const store = await setupPosEnv();
     const tickets = [store.models["event.event.ticket"].get(1)];
-    const avaibilityByTicket = { 1: tickets[0].seats_available || "unlimited" };
+    const avaibilityByTicket = {1: tickets[0].seats_available || "unlimited"};
     let payload = [];
 
     const comp = await mountPosDialog(EventConfiguratorPopup, {
@@ -24,7 +24,7 @@ test("confirm payload and getTicketMaxQty and ticketIsAvailable", async () => {
     expect(comp.getTicketMaxQty(tickets[0])).toBe(5);
     expect(comp.ticketIsAvailable(tickets[0])).toBe(true);
 
-    comp.state[1] = { qty: 1 };
+    comp.state[1] = {qty: 1};
     comp.confirm();
 
     expect(payload).toHaveLength(1);

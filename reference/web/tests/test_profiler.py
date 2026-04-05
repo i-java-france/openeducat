@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import datetime
 import json
-
 from unittest.mock import patch
 
-from odoo.tools import mute_logger
 from odoo.tests.common import HttpCase, tagged
 
 
@@ -55,10 +52,10 @@ class TestProfilingWeb(ProfilingHttpCase):
         self.assertTrue(res['result']['session'])
         self.assertEqual(last_profile, self.env['ir.profile'].search([], limit=1, order='id desc'), "profiling route shouldn't have been profiled")
         # Profile a page
-        res = self.url_open(f'/web/login')  # profile a light route
+        res = self.url_open('/web/login')  # profile a light route
         new_profile = self.env['ir.profile'].search([], limit=1, order='id desc')
         self.assertNotEqual(last_profile, new_profile, "A new profile should have been created")
-        self.assertEqual(new_profile.name, f'/web/login?')
+        self.assertEqual(new_profile.name, '/web/login?')
 
     def test_profile_test_tool(self):
         with self.profile():

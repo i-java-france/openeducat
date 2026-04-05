@@ -1,15 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from contextlib import nullcontext
-from markupsafe import Markup
 from unittest.mock import patch
 
+from markupsafe import Markup
+
 from odoo import Command, fields
+from odoo.tests import Form, tagged, users, warmup
+from odoo.tools import formataddr, mute_logger
+
 from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.addons.mail.tools.discuss import Store
-from odoo.tests import Form, users, warmup, tagged
-from odoo.tools import mute_logger, formataddr
 
 
 @tagged('mail_performance', 'post_install', '-at_install')

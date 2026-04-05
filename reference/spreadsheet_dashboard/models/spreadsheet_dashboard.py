@@ -77,6 +77,6 @@ class SpreadsheetDashboard(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for dashboard, vals in zip(self, vals_list):
+            for dashboard, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", dashboard.name)
         return vals_list

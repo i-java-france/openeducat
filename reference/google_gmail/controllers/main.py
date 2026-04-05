@@ -1,17 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 import logging
-import requests
 
+import requests
 from werkzeug.exceptions import Forbidden
 
 from odoo import _, http
 from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.tools import consteq, email_normalize
-from odoo.addons.google_gmail.models.google_gmail_mixin import GMAIL_TOKEN_REQUEST_TIMEOUT
+
+from odoo.addons.google_gmail.models.google_gmail_mixin import (
+    GMAIL_TOKEN_REQUEST_TIMEOUT,
+)
 
 _logger = logging.getLogger(__name__)
 

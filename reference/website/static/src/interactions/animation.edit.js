@@ -1,5 +1,5 @@
-import { Animation } from "./animation";
-import { registry } from "@web/core/registry";
+import {Animation} from "./animation";
+import {registry} from "@web/core/registry";
 
 const AnimationEdit = (I) =>
     class extends I {

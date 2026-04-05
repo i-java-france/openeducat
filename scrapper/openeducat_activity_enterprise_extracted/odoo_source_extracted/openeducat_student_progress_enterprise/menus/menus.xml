@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="student_progrss_analysis_menu"
+              name="Student Progression"
+              sequence="40" parent="Students/General" action="ir.actions.act_window,1202"/>
+    <menuitem id="menu_op_student_progress_analysis"
+              name="Student Progress Analysis"
+              sequence="40" parent="Students/Reporting" action="ir.actions.act_window,1203"/>
+</odoo>

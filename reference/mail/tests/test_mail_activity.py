@@ -1,8 +1,9 @@
 from freezegun import freeze_time
 
 from odoo import exceptions
+from odoo.tests import HttpCase, tagged
+
 from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
-from odoo.tests import tagged, HttpCase
 
 
 @tagged("mail_activity", "-at_install", "post_install")

@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { reactive, toRaw } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {reactive, toRaw} from "@odoo/owl";
 
 const {
     DateTime,
@@ -19,11 +19,11 @@ describe.current.tags("headless");
 test(`Luxon objects can't be made reactive`, async () => {
     const obj = reactive({
         DateTime: DateTime.now(),
-        Duration: Duration.fromObject({ seconds: 10 }),
+        Duration: Duration.fromObject({seconds: 10}),
         FixedOffsetZone: FixedOffsetZone.instance(0),
         IANAZone: IANAZone.create("CET"),
         Info: Info,
-        Interval: Interval.before(DateTime.now(), { seconds: 10 }),
+        Interval: Interval.before(DateTime.now(), {seconds: 10}),
         InvalidZone: new InvalidZone("invalid"),
         Settings: new Settings(),
         SystemZone: new SystemZone(),

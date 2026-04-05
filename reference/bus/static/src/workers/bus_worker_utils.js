@@ -37,7 +37,7 @@ export class Deferred extends Promise {
             resolve = res;
             reject = rej;
         });
-        return Object.assign(prom, { resolve, reject });
+        return Object.assign(prom, {resolve, reject});
     }
 }
 
@@ -70,7 +70,10 @@ export class Logger {
                     transaction.onerror = (e) => rej(e.target.error);
                 });
             } catch (error) {
-                console.error(`Failed to clear logs for logger "${logger._name}":`, error);
+                console.error(
+                    `Failed to clear logs for logger "${logger._name}":`,
+                    error
+                );
             }
         }
     }
@@ -98,7 +101,7 @@ export class Logger {
                     const store = event.target.result.createObjectStore("logs", {
                         autoIncrement: true,
                     });
-                    store.createIndex("timestamp", "timestamp", { unique: false });
+                    store.createIndex("timestamp", "timestamp", {unique: false});
                 }
             };
             request.onerror = rej;
@@ -109,7 +112,7 @@ export class Logger {
         await this._ensureDatabaseAvailable();
         const transaction = this._db.transaction("logs", "readwrite");
         const store = transaction.objectStore("logs");
-        const addRequest = store.add({ timestamp: Date.now(), message });
+        const addRequest = store.add({timestamp: Date.now(), message});
         return new Promise((res, rej) => {
             addRequest.onsuccess = res;
             addRequest.onerror = rej;
@@ -123,7 +126,8 @@ export class Logger {
         const store = transaction.objectStore("logs");
         const request = store.getAll();
         return new Promise((res, rej) => {
-            request.onsuccess = (ev) => res(ev.target.result.map(({ message }) => message));
+            request.onsuccess = (ev) =>
+                res(ev.target.result.map(({message}) => message));
             request.onerror = rej;
         });
     }

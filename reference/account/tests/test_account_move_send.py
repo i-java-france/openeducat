@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
-
 from datetime import date
 from unittest.mock import patch
 
 from odoo import Command
+from odoo.exceptions import UserError
+from odoo.tests import Form, tagged, users, warmup
+from odoo.tools import formataddr, mute_logger
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.exceptions import UserError
-from odoo.tests import users, warmup, tagged, Form
-from odoo.tools import formataddr, mute_logger
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install', 'mail_flow')
@@ -169,7 +168,7 @@ class TestAccountComposerPerformance(AccountTestInvoicingCommon, MailCommon):
 
         # check results: emails (mailing mode when being in multi)
         self.assertEqual(len(self._mails), 20, 'Should send an email to each invoice followers (accountman + partner)')
-        for move, customer in zip(test_moves, test_customers):
+        for move, customer in zip(test_moves, test_customers, strict=False):
             with self.subTest(move=move, customer=customer):
                 _exp_move_name = move.name
                 _exp_report_name = f"{move.name}.pdf"
@@ -489,7 +488,7 @@ class TestAccountMoveSendCommon(AccountTestInvoicingCommon):
 
     def _assert_mail_attachments_widget(self, wizard, expected_values_list):
         self.assertEqual(len(wizard.mail_attachments_widget), len(expected_values_list))
-        for values, expected_values in zip(wizard.mail_attachments_widget, expected_values_list):
+        for values, expected_values in zip(wizard.mail_attachments_widget, expected_values_list, strict=False):
             try:
                 int(values['id'])
                 check_id_needed = True

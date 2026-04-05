@@ -1,7 +1,7 @@
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { SIZES, utils } from "@web/core/ui/ui_service";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {SIZES, utils} from "@web/core/ui/ui_service";
 import {
     getButtons,
     EMPTY,
@@ -13,7 +13,7 @@ import {
 export class NumpadDropdown extends Component {
     static template = "pos_restaurant.NumpadDropdown";
     static props = {};
-    static components = { Numpad };
+    static components = {Numpad};
 
     setup() {
         this.pos = usePos();
@@ -21,7 +21,7 @@ export class NumpadDropdown extends Component {
         this.numberBuffer = useService("number_buffer");
         this.numberBuffer.use({
             triggerAtEnter: () => this.pos.searchOrder(this.state.buffer),
-            triggerAtInput: ({ buffer }) => this.checkIsValid(buffer),
+            triggerAtInput: ({buffer}) => this.checkIsValid(buffer),
         });
         this.state = useState({
             buffer: "",
@@ -34,13 +34,15 @@ export class NumpadDropdown extends Component {
             [BACKSPACE.value]: "o_colorlist_item_numpad_color_1",
         };
 
-        return getButtons([{ ...EMPTY, disabled: true }, ZERO, BACKSPACE]).map((button, index) => ({
-            ...button,
-            class: `
+        return getButtons([{...EMPTY, disabled: true}, ZERO, BACKSPACE]).map(
+            (button, index) => ({
+                ...button,
+                class: `
                 ${button.class}
                 ${colorClassMap[button.value] || ""}
             `,
-        }));
+            })
+        );
     }
 
     searchOrder() {

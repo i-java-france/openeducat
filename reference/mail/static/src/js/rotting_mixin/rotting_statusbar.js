@@ -2,8 +2,8 @@ import {
     statusBarDurationField,
     StatusBarDurationField,
 } from "@mail/views/fields/statusbar_duration/statusbar_duration_field";
-import { registry } from "@web/core/registry";
-import { getRottingDaysTitle } from "./rotting_widget";
+import {registry} from "@web/core/registry";
+import {getRottingDaysTitle} from "./rotting_widget";
 
 export class RottingStatusBarDurationField extends StatusBarDurationField {
     static template = "mail.RottingStatusBarDurationField";
@@ -22,4 +22,6 @@ export const rottingStatusBarDurationField = {
     component: RottingStatusBarDurationField,
 };
 
-registry.category("fields").add("rotting_statusbar_duration", rottingStatusBarDurationField);
+registry
+    .category("fields")
+    .add("rotting_statusbar_duration", rottingStatusBarDurationField);

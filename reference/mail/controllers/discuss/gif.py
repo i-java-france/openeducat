@@ -1,12 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+
 import requests
 import urllib3
 import werkzeug.urls
 from werkzeug.exceptions import BadRequest
 
-from odoo.http import request, route, Controller
+from odoo.http import Controller, request, route
 
 TENOR_CONTENT_FILTER = "medium"
 TENOR_GIF_LIMIT = 8

@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.sql import column_exists, create_column
 
@@ -39,13 +39,13 @@ class StockMove(models.Model):
         (self - moves_with_weight).weight = 0
 
     def _get_new_picking_values(self):
-        vals = super(StockMove, self)._get_new_picking_values()
+        vals = super()._get_new_picking_values()
         carrier_id = self.reference_ids.sale_ids.carrier_id.id
         vals['carrier_id'] = any(rule.propagate_carrier for rule in self.rule_id) and carrier_id
         return vals
 
     def _key_assign_picking(self):
-        keys = super(StockMove, self)._key_assign_picking()
+        keys = super()._key_assign_picking()
         return keys + (self.sale_line_id.order_id.carrier_id,)
 
 
@@ -68,7 +68,7 @@ class StockMoveLine(models.Model):
                 unit_price = move_line.product_id.list_price
                 qty = move_line.product_uom_id._compute_quantity(move_line.quantity, move_line.product_id.uom_id)
             move_line.sale_price = unit_price * qty
-        super(StockMoveLine, self)._compute_sale_price()
+        super()._compute_sale_price()
 
     def _get_aggregated_product_quantities(self, **kwargs):
         """Returns dictionary of products and corresponding values of interest + hs_code

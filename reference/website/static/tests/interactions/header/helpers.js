@@ -1,9 +1,9 @@
-import { expect } from "@odoo/hoot";
-import { scroll } from "@odoo/hoot-dom";
+import {expect} from "@odoo/hoot";
+import {scroll} from "@odoo/hoot-dom";
 
-import { endTransition } from "@website/../tests/interactions/snippets/helpers";
+import {endTransition} from "@website/../tests/interactions/snippets/helpers";
 
-export { setupTest } from "@website/../tests/interactions/snippets/helpers";
+export {setupTest} from "@website/../tests/interactions/snippets/helpers";
 
 /**
  * @param {Parameters<scroll>[0]} scrollingElement
@@ -15,8 +15,8 @@ export async function customScroll(scrollingElement, start, end) {
     // Ensure the update of variables with the scroll.
     // Otherwise, we would teleport and not update the
     // values correctly.
-    await scroll(scrollingElement, { y: start + step });
-    await scroll(scrollingElement, { y: end });
+    await scroll(scrollingElement, {y: start + step});
+    await scroll(scrollingElement, {y: end});
     await endTransition();
 }
 
@@ -29,11 +29,13 @@ export async function customScroll(scrollingElement, start, end) {
  */
 export function checkHeader(header, main, core, expectedStatus) {
     const message = `Interaction visibility should be ${expectedStatus.visibility}`;
-    expect(core.interactions[0].interaction.isVisible).toBe(expectedStatus.visibility, { message });
-    expect(`${main.style.paddingTop ? Math.round(parseFloat(main.style.paddingTop)) : 0}px`).toBe(
-        expectedStatus.paddingTop
-    );
-    expect(header).toHaveStyle({ transform: expectedStatus.transform });
+    expect(core.interactions[0].interaction.isVisible).toBe(expectedStatus.visibility, {
+        message,
+    });
+    expect(
+        `${main.style.paddingTop ? Math.round(parseFloat(main.style.paddingTop)) : 0}px`
+    ).toBe(expectedStatus.paddingTop);
+    expect(header).toHaveStyle({transform: expectedStatus.transform});
     expect(header).toHaveClass(expectedStatus.classList);
 }
 

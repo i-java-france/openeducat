@@ -1,7 +1,12 @@
-import { COMPARATORS, TERM_OPERATORS_NEGATION_EXTENDED } from "./operators";
+import {COMPARATORS, TERM_OPERATORS_NEGATION_EXTENDED} from "./operators";
 
 export function isBool(ast) {
-    return ast.type === 8 && ast.fn.type === 5 && ast.fn.value === "bool" && ast.args.length === 1;
+    return (
+        ast.type === 8 &&
+        ast.fn.type === 5 &&
+        ast.fn.value === "bool" &&
+        ast.args.length === 1
+    );
 }
 
 export function isNot(ast) {
@@ -13,12 +18,12 @@ export function not(ast) {
         return ast.right;
     }
     if (ast.type === 2) {
-        return { ...ast, value: !ast.value };
+        return {...ast, value: !ast.value};
     }
     if (ast.type === 7 && COMPARATORS.includes(ast.op)) {
-        return { ...ast, op: TERM_OPERATORS_NEGATION_EXTENDED[ast.op] }; // do not use this if ast is within a domain context!
+        return {...ast, op: TERM_OPERATORS_NEGATION_EXTENDED[ast.op]}; // do not use this if ast is within a domain context!
     }
-    return { type: 6, op: "not", right: isBool(ast) ? ast.args[0] : ast };
+    return {type: 6, op: "not", right: isBool(ast) ? ast.args[0] : ast};
 }
 
 export function isValidPath(ast, options) {

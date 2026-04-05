@@ -1,8 +1,8 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { makeMockEnv, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {makeMockEnv, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { localization } from "@web/core/l10n/localization";
-import { nbsp } from "@web/core/utils/strings";
+import {localization} from "@web/core/l10n/localization";
+import {nbsp} from "@web/core/utils/strings";
 import {
     parseFloat,
     parseFloatTime,
@@ -23,7 +23,7 @@ test("parseFloat", () => {
     expect(parseFloat("1,234.567")).toBe(1234.567);
     expect(() => parseFloat("1.000.000")).toThrow();
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: "." });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: "."});
     expect(parseFloat("1.234,567")).toBe(1234.567);
 
     // Can evaluate expression from locale with decimal point different from ".".
@@ -32,10 +32,10 @@ test("parseFloat", () => {
     expect(parseFloat("=1000,00 + 11122,00")).toBe(12122);
     expect(parseFloat("=1000 + 11123")).toBe(12123);
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: false });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: false});
     expect(parseFloat("1234,567")).toBe(1234.567);
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: nbsp });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: nbsp});
     expect(parseFloat("9 876,543")).toBe(9876.543);
     expect(parseFloat("1  234 567,89")).toBe(1234567.89);
     expect(parseFloat(`98${nbsp}765 432,1`)).toBe(98765432.1);
@@ -71,14 +71,14 @@ test("parseInteger", () => {
     expect(() => parseInteger("-2,147,483,649")).toThrow();
     expect(() => parseInteger("2,147,483,648")).toThrow();
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: "." });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: "."});
 
     expect(parseInteger("1.000.000")).toBe(1000000);
     expect(() => parseInteger("1.234,567")).toThrow();
-    // fallback to en localization
+    // Fallback to en localization
     expect(parseInteger("1,000,000")).toBe(1000000);
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: false });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: false});
     expect(parseInteger("1000000")).toBe(1000000);
 });
 
@@ -91,7 +91,7 @@ test("parsePercentage", () => {
     expect(parsePercentage("50%")).toBe(0.5);
     expect(() => parsePercentage("50%40")).toThrow();
 
-    patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: "." });
+    patchWithCleanup(localization, {decimalPoint: ",", thousandsSep: "."});
 
     expect(parsePercentage("1.234,56")).toBe(12.3456);
     expect(parsePercentage("6,02")).toBe(0.0602);
@@ -130,20 +130,20 @@ test("parseMonetary", () => {
     expect(() => parseMonetary("1$\u00a01")).toThrow();
     expect(() => parseMonetary("$\u00a012.00\u00a034")).toThrow();
 
-    // nbsp as thousands separator
-    patchWithCleanup(localization, { thousandsSep: "\u00a0", decimalPoint: "," });
+    // Nbsp as thousands separator
+    patchWithCleanup(localization, {thousandsSep: "\u00a0", decimalPoint: ","});
     expect(parseMonetary("1\u00a0000,06\u00a0€")).toBe(1000.06);
     expect(parseMonetary("$\u00a01\u00a0000,07")).toBe(1000.07);
     expect(parseMonetary("1000000,08")).toBe(1000000.08);
     expect(parseMonetary("$ -1\u00a0000,09")).toBe(-1000.09);
 
-    // symbol not separated from the value
+    // Symbol not separated from the value
     expect(parseMonetary("1\u00a0000,08€")).toBe(1000.08);
     expect(parseMonetary("€1\u00a0000,09")).toBe(1000.09);
     expect(parseMonetary("$1\u00a0000,10")).toBe(1000.1);
     expect(parseMonetary("$-1\u00a0000,11")).toBe(-1000.11);
 
-    // any symbol
+    // Any symbol
     expect(parseMonetary("1\u00a0000,11EUROS")).toBe(1000.11);
     expect(parseMonetary("EUR1\u00a0000,12")).toBe(1000.12);
     expect(parseMonetary("DOL1\u00a0000,13")).toBe(1000.13);
@@ -151,8 +151,8 @@ test("parseMonetary", () => {
     expect(parseMonetary("DOLLARS+1\u00a0000,15")).toBe(1000.15);
     expect(parseMonetary("EURO-1\u00a0000,16DOGE")).toBe(-1000.16);
 
-    // comma as decimal point and dot as thousands separator
-    patchWithCleanup(localization, { thousandsSep: ".", decimalPoint: "," });
+    // Comma as decimal point and dot as thousands separator
+    patchWithCleanup(localization, {thousandsSep: ".", decimalPoint: ","});
     expect(parseMonetary("10,08")).toBe(10.08);
     expect(parseMonetary("")).toBe(0);
     expect(parseMonetary("0")).toBe(0);

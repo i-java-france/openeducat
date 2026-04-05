@@ -1,34 +1,34 @@
-import { Component, markup, whenReady, validate } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
-import { loadBundle } from "@web/core/assets";
-import { createPointerState } from "@web_tour/js/tour_pointer/tour_pointer_state";
-import { tourState } from "@web_tour/js/tour_state";
-import { callWithUnloadCheck } from "@web_tour/js/utils/tour_utils";
+import {Component, markup, whenReady, validate} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
+import {loadBundle} from "@web/core/assets";
+import {createPointerState} from "@web_tour/js/tour_pointer/tour_pointer_state";
+import {tourState} from "@web_tour/js/tour_state";
+import {callWithUnloadCheck} from "@web_tour/js/utils/tour_utils";
 import {
     tourRecorderState,
     TOUR_RECORDER_ACTIVE_LOCAL_STORAGE_KEY,
 } from "@web_tour/js/tour_recorder/tour_recorder_state";
-import { redirect } from "@web/core/utils/urls";
+import {redirect} from "@web/core/utils/urls";
 
 class OnboardingItem extends Component {
-    static components = { DropdownItem };
+    static components = {DropdownItem};
     static template = "web_tour.OnboardingItem";
     static props = {
-        toursEnabled: { type: Boolean },
-        toggleItem: { type: Function },
+        toursEnabled: {type: Boolean},
+        toggleItem: {type: Function},
     };
     setup() {}
 }
 
 const StepSchema = {
-    id: { type: [String], optional: true },
-    content: { type: [String, Object], optional: true }, //allow object(_t && markup)
-    debugHelp: { type: String, optional: true },
-    isActive: { type: Array, element: String, optional: true },
-    run: { type: [String, Function, Boolean], optional: true },
+    id: {type: [String], optional: true},
+    content: {type: [String, Object], optional: true}, //allow object(_t && markup)
+    debugHelp: {type: String, optional: true},
+    isActive: {type: Array, element: String, optional: true},
+    run: {type: [String, Function, Boolean], optional: true},
     timeout: {
         optional: true,
         validate(value) {
@@ -41,18 +41,18 @@ const StepSchema = {
             return ["top", "bottom", "left", "right"].includes(value);
         },
     },
-    trigger: { type: String },
-    expectUnloadPage: { type: Boolean, optional: true },
+    trigger: {type: String},
+    expectUnloadPage: {type: Boolean, optional: true},
     //ONLY IN DEBUG MODE
-    pause: { type: Boolean, optional: true },
-    break: { type: Boolean, optional: true },
+    pause: {type: Boolean, optional: true},
+    break: {type: Boolean, optional: true},
 };
 
 const TourSchema = {
-    name: { type: String, optional: true },
+    name: {type: String, optional: true},
     steps: Function,
-    url: { type: String, optional: true },
-    wait_for: { type: [Function, Object], optional: true },
+    url: {type: String, optional: true},
+    wait_for: {type: [Function, Object], optional: true},
 };
 
 registry.category("web_tour.tours").addValidation(TourSchema);
@@ -61,7 +61,7 @@ const debugMenuRegistry = registry.category("debug").category("default");
 export const tourService = {
     // localization dependency to make sure translations used by tours are loaded
     dependencies: ["orm", "effect", "overlay", "localization"],
-    start: async (env, { orm, effect, overlay }) => {
+    start: async (env, {orm, effect, overlay}) => {
         await whenReady();
         let toursEnabled = session?.tour_enabled;
         const tourRegistry = registry.category("web_tour.tours");
@@ -99,7 +99,9 @@ export const tourService = {
         }
 
         async function getTourFromDB(tourName) {
-            const tour = await orm.call("web_tour.tour", "get_tour_json_by_name", [tourName]);
+            const tour = await orm.call("web_tour.tour", "get_tour_json_by_name", [
+                tourName,
+            ]);
             if (!tour) {
                 throw new Error(`Tour '${tourName}' is not found in the database.`);
             }
@@ -133,9 +135,13 @@ export const tourService = {
                 return;
             }
 
-            const tour = options.fromDB ? { name: tourName, url: options.url } : tourFromRegistry;
+            const tour = options.fromDB
+                ? {name: tourName, url: options.url}
+                : tourFromRegistry;
             if (!session.is_public && !toursEnabled && options.mode === "manual") {
-                toursEnabled = await orm.call("res.users", "switch_tour_enabled", [!toursEnabled]);
+                toursEnabled = await orm.call("res.users", "switch_tour_enabled", [
+                    !toursEnabled,
+                ]);
             }
 
             let tourConfig = {
@@ -154,7 +160,11 @@ export const tourService = {
             tourState.setCurrentIndex(0);
 
             const willUnload = callWithUnloadCheck(() => {
-                if (tour.url && tourConfig.startUrl != tour.url && tourConfig.redirect) {
+                if (
+                    tour.url &&
+                    tourConfig.startUrl != tour.url &&
+                    tourConfig.redirect
+                ) {
                     redirect(tour.url);
                 }
             });
@@ -178,45 +188,56 @@ export const tourService = {
             tour.steps.forEach((step) => validateStep(step));
 
             if (tourConfig.mode === "auto") {
-                if (!odoo.loader.modules.get("@web_tour/js/tour_automatic/tour_automatic")) {
-                    await loadBundle("web_tour.automatic", { css: false });
+                if (
+                    !odoo.loader.modules.get(
+                        "@web_tour/js/tour_automatic/tour_automatic"
+                    )
+                ) {
+                    await loadBundle("web_tour.automatic", {css: false});
                 }
-                const { TourAutomatic } = odoo.loader.modules.get(
+                const {TourAutomatic} = odoo.loader.modules.get(
                     "@web_tour/js/tour_automatic/tour_automatic"
                 );
                 new TourAutomatic(tour).start();
             } else {
                 await loadBundle("web_tour.interactive");
-                const { TourPointer } = odoo.loader.modules.get(
+                const {TourPointer} = odoo.loader.modules.get(
                     "@web_tour/js/tour_pointer/tour_pointer"
                 );
                 pointer.stop = overlay.add(
                     TourPointer,
                     {
                         pointerState: pointer.state,
-                        bounce: !(tourConfig.mode === "auto" && tourConfig.keepWatchBrowser),
+                        bounce: !(
+                            tourConfig.mode === "auto" && tourConfig.keepWatchBrowser
+                        ),
                     },
                     {
                         sequence: 1100, // sequence based on bootstrap z-index values.
                     }
                 );
-                const { TourInteractive } = odoo.loader.modules.get(
+                const {TourInteractive} = odoo.loader.modules.get(
                     "@web_tour/js/tour_interactive/tour_interactive"
                 );
                 new TourInteractive(tour).start(env, pointer, async () => {
                     pointer.stop();
                     tourState.clear();
                     browser.console.log("tour succeeded");
-                    let message = tourConfig.rainbowManMessage || tour.rainbowManMessage;
+                    let message =
+                        tourConfig.rainbowManMessage || tour.rainbowManMessage;
                     if (message) {
-                        message = window.DOMPurify.sanitize(tourConfig.rainbowManMessage);
+                        message = window.DOMPurify.sanitize(
+                            tourConfig.rainbowManMessage
+                        );
                         effect.add({
                             type: "rainbow_man",
                             message: markup(message),
                         });
                     }
 
-                    const nextTour = await orm.call("web_tour.tour", "consume", [tour.name]);
+                    const nextTour = await orm.call("web_tour.tour", "consume", [
+                        tour.name,
+                    ]);
                     if (nextTour) {
                         startTour(nextTour.name, {
                             mode: "manual",
@@ -230,7 +251,7 @@ export const tourService = {
 
         async function tourRecorder() {
             await loadBundle("web_tour.recorder");
-            const { TourRecorder } = odoo.loader.modules.get(
+            const {TourRecorder} = odoo.loader.modules.get(
                 "@web_tour/js/tour_recorder/tour_recorder"
             );
             const remove = overlay.add(
@@ -238,11 +259,13 @@ export const tourService = {
                 {
                     onClose: () => {
                         remove();
-                        browser.localStorage.removeItem(TOUR_RECORDER_ACTIVE_LOCAL_STORAGE_KEY);
+                        browser.localStorage.removeItem(
+                            TOUR_RECORDER_ACTIVE_LOCAL_STORAGE_KEY
+                        );
                         tourRecorderState.clear();
                     },
                 },
-                { sequence: 99999 }
+                {sequence: 99999}
             );
         }
 
@@ -254,9 +277,11 @@ export const tourService = {
         }
 
         if (!window.frameElement) {
-            const paramsTourName = new URLSearchParams(browser.location.search).get("tour");
+            const paramsTourName = new URLSearchParams(browser.location.search).get(
+                "tour"
+            );
             if (paramsTourName) {
-                startTour(paramsTourName, { mode: "manual", fromDB: true });
+                startTour(paramsTourName, {mode: "manual", fromDB: true});
             }
 
             if (tourState.getCurrentTour()) {
@@ -282,7 +307,8 @@ export const tourService = {
         }
 
         odoo.startTour = startTour;
-        odoo.isTourReady = (tourName) => getTourFromRegistry(tourName).wait_for.then(() => true);
+        odoo.isTourReady = (tourName) =>
+            getTourFromRegistry(tourName).wait_for.then(() => true);
 
         return {
             startTour,

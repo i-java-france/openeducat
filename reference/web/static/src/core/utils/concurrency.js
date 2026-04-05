@@ -187,6 +187,6 @@ export class Deferred extends Promise {
             resolve = res;
             reject = rej;
         });
-        return Object.assign(prom, { resolve, reject });
+        return Object.assign(prom, {resolve, reject});
     }
 }

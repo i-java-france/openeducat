@@ -1,5 +1,5 @@
 declare module "models" {
-    export interface Thread {
-        fetchThreadData: (requestList: string[]) => Promise<void>;
-    }
+  export interface Thread {
+    fetchThreadData: (requestList: string[]) => Promise<void>;
+  }
 }

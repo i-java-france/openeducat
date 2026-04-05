@@ -11,21 +11,23 @@ import {
     WEBSOCKET_REQUESTS,
     XML_REQUESTS,
 } from "@pos_glory_cash/utils/constants";
-import { SocketIoService } from "@pos_glory_cash/utils/socket_io";
-import { reactive } from "@odoo/owl";
-import { sortBy } from "@web/core/utils/arrays";
-import { browser } from "@web/core/browser/browser";
-import { Logger } from "@bus/workers/bus_worker_utils";
-import { uuid } from "@web/core/utils/strings";
+import {SocketIoService} from "@pos_glory_cash/utils/socket_io";
+import {reactive} from "@odoo/owl";
+import {sortBy} from "@web/core/utils/arrays";
+import {browser} from "@web/core/browser/browser";
+import {Logger} from "@bus/workers/bus_worker_utils";
+import {uuid} from "@web/core/utils/strings";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 const WEBSOCKET_PORT = browser.location.protocol === "https:" ? 3001 : 3000;
 const WEBSOCKET_PROTOCOL = browser.location.protocol === "https:" ? "wss:" : "ws:";
 const WEBSOCKET_URL = "/socket.io/?transport=websocket&EIO=3";
 
 const convertObjectValuesToInt = (object) =>
-    Object.fromEntries(Object.entries(object).map(([key, value]) => [key, parseInt(value)]));
+    Object.fromEntries(
+        Object.entries(object).map(([key, value]) => [key, parseInt(value)])
+    );
 
 export class GloryService {
     /**
@@ -123,7 +125,7 @@ export class GloryService {
         this.paymentInProgress = true;
         this._newSequenceNumber();
 
-        const { xmlResponse } = await this._sendXmlRequest(XML_REQUESTS.startPayment, [
+        const {xmlResponse} = await this._sendXmlRequest(XML_REQUESTS.startPayment, [
             {
                 name: "Amount",
                 children: [amountInCents.toString()],
@@ -131,7 +133,7 @@ export class GloryService {
             {
                 // Option Type 1 = Enable cancellation when there is insufficient change
                 name: "Option",
-                attributes: { type: "1" },
+                attributes: {type: "1"},
             },
         ]);
 
@@ -157,7 +159,7 @@ export class GloryService {
             }
         }
 
-        const { statusCode } = await this._sendXmlRequest(XML_REQUESTS.cancelPayment);
+        const {statusCode} = await this._sendXmlRequest(XML_REQUESTS.cancelPayment);
 
         if (this.occupied && !this.paymentInProgress) {
             await this._release();
@@ -208,7 +210,9 @@ export class GloryService {
         await this._login();
 
         if (!this.settings) {
-            const settings = await this._sendWebsocketRequest(WEBSOCKET_REQUESTS.getSettings);
+            const settings = await this._sendWebsocketRequest(
+                WEBSOCKET_REQUESTS.getSettings
+            );
             this.settings = convertObjectValuesToInt(settings.FunctionSetting);
         }
 
@@ -219,9 +223,9 @@ export class GloryService {
         await this._setDateAndTime();
         await this._checkStatusAndVerifyIfNeeded();
 
-        const { xmlResponse } = await this._sendXmlRequest(XML_REQUESTS.getInventory, [
+        const {xmlResponse} = await this._sendXmlRequest(XML_REQUESTS.getInventory, [
             // Option Type 2 = 'Payable' inventory, see p76 of the IF Specification document
-            { name: "Option", attributes: { type: "2" } },
+            {name: "Option", attributes: {type: "2"}},
         ]);
         this._inventoryChangeHandler(xmlResponse);
     }
@@ -277,8 +281,8 @@ export class GloryService {
 
     async _checkStatusAndVerifyIfNeeded() {
         const firstConnection = this.state.inventory.length === 0;
-        const { xmlResponse } = await this._sendXmlRequest(XML_REQUESTS.getStatus, [
-            { name: "RequireVerification", attributes: { type: "1" } },
+        const {xmlResponse} = await this._sendXmlRequest(XML_REQUESTS.getStatus, [
+            {name: "RequireVerification", attributes: {type: "1"}},
         ]);
         this._statusChangeHandler(xmlResponse);
 
@@ -287,8 +291,11 @@ export class GloryService {
             return;
         }
 
-        const { statusCode } = await this._sendXmlRequest(XML_REQUESTS.collect, [
-            { name: "RequireVerification", attributes: { type: requireVerifyType.toString() } },
+        const {statusCode} = await this._sendXmlRequest(XML_REQUESTS.collect, [
+            {
+                name: "RequireVerification",
+                attributes: {type: requireVerifyType.toString()},
+            },
         ]);
 
         return statusCode;
@@ -334,7 +341,8 @@ export class GloryService {
      * @param {Element} deviceErrorResponse
      */
     _deviceErrorHandler(deviceErrorResponse) {
-        const errorMessageElement = deviceErrorResponse.getElementsByTagName("ErrorMessage")[0];
+        const errorMessageElement =
+            deviceErrorResponse.getElementsByTagName("ErrorMessage")[0];
         this.state.lastDeviceError = errorMessageElement.textContent;
     }
 
@@ -342,7 +350,9 @@ export class GloryService {
      * @param {Element} cashElement
      */
     _parseGloryCashElement(cashElement) {
-        const denominationElements = Array.from(cashElement.getElementsByTagName("Denomination"));
+        const denominationElements = Array.from(
+            cashElement.getElementsByTagName("Denomination")
+        );
         return denominationElements.map((denomination) => ({
             value: parseInt(denomination.getAttribute("fv")),
             amount: parseInt(denomination.getElementsByTagName("Piece")[0].textContent),
@@ -358,7 +368,10 @@ export class GloryService {
      */
     _getTotalFromGloryCashElement(cashElement) {
         const denominations = this._parseGloryCashElement(cashElement);
-        return denominations.reduce((total, next) => total + next.amount * next.value, 0);
+        return denominations.reduce(
+            (total, next) => total + next.amount * next.value,
+            0
+        );
     }
 
     _newSequenceNumber() {
@@ -395,7 +408,8 @@ export class GloryService {
         );
         const cashGiven = this._getTotalFromGloryCashElement(cashGivenElement);
         const cashReturned = this._getTotalFromGloryCashElement(cashReturnedElement);
-        const transactionId = paymentResponse.getElementsByTagName("TransactionId")[0].textContent;
+        const transactionId =
+            paymentResponse.getElementsByTagName("TransactionId")[0].textContent;
 
         return {
             cashGiven,
@@ -405,7 +419,7 @@ export class GloryService {
     }
 
     async _occupy() {
-        const { statusCode } = await this._sendXmlRequest(XML_REQUESTS.occupy);
+        const {statusCode} = await this._sendXmlRequest(XML_REQUESTS.occupy);
         if (statusCode === "SUCCESS") {
             this.occupied = true;
         }
@@ -455,7 +469,7 @@ export class GloryService {
             return this._sendXmlRequest(request, children, true);
         }
 
-        return { statusCode, xmlResponse };
+        return {statusCode, xmlResponse};
     }
 
     /**

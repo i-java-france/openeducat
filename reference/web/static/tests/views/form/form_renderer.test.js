@@ -1,21 +1,27 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { defineModels, fields, models, mountView, contains } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts, queryOne} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {
+    contains,
+    defineModels,
+    fields,
+    models,
+    mountView,
+} from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 class Partner extends models.Model {
     name = fields.Char();
     charfield = fields.Char();
 
-    _records = [{ id: 1, name: "firstRecord", charfield: "content of charfield" }];
+    _records = [{id: 1, name: "firstRecord", charfield: "content of charfield"}];
 }
 defineModels([Partner]);
 
 test("compile form with modifiers", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <div invisible="display_name == uid">
                     <field name="charfield"/>
@@ -35,7 +41,7 @@ test("compile form with modifiers", async () => {
 
 test("compile notebook with modifiers", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <sheet>
                     <notebook>
@@ -57,7 +63,7 @@ test("compile notebook with modifiers", async () => {
 
 test("compile header and buttons", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <header>
                     <button string="ActionButton" class="oe_highlight" name="action_button" type="object"/>
@@ -71,7 +77,9 @@ test("compile header and buttons", async () => {
         type: "form",
         resId: 1,
     });
-    expect(`.o_statusbar_buttons button[name=action_button]:contains(ActionButton)`).toHaveCount(1);
+    expect(
+        `.o_statusbar_buttons button[name=action_button]:contains(ActionButton)`
+    ).toHaveCount(1);
 });
 
 test("render field with placeholder", async () => {
@@ -83,16 +91,18 @@ test("render field with placeholder", async () => {
                 static template = xml`<div/>`;
                 setup() {
                     expect.step("setup field component");
-                    expect(this.props.placeholder).toBe("e.g. Contact's Name or //someinfo...");
+                    expect(this.props.placeholder).toBe(
+                        "e.g. Contact's Name or //someinfo..."
+                    );
                 }
             },
-            extractProps: ({ attrs }) => ({ placeholder: attrs.placeholder }),
+            extractProps: ({attrs}) => ({placeholder: attrs.placeholder}),
         },
-        { force: true }
+        {force: true}
     );
 
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <field name="display_name" placeholder="e.g. Contact's Name or //someinfo..." />
             </form>
@@ -110,7 +120,7 @@ test("render field with placeholder", async () => {
 test.tags("desktop");
 test("compile a button with id on desktop", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <header>
                     <button id="action_button" string="ActionButton"/>
@@ -130,7 +140,7 @@ test("compile a button with id on desktop", async () => {
 test.tags("mobile");
 test("compile a button with id on mobile", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <header>
                     <button id="action_button" string="ActionButton"/>
@@ -150,7 +160,7 @@ test("compile a button with id on mobile", async () => {
 
 test("compile a button with disabled", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <button id="action_button" string="ActionButton" name="action_button" type="object" disabled="disabled"/>
             </form>
@@ -168,7 +178,7 @@ test("compile a button with disabled", async () => {
 test.tags("desktop");
 test("statusbar stay visible when scrolling (sticky)", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <header>
                     <button id="action_button" string="ActionButton"/>
@@ -191,15 +201,21 @@ test("statusbar stay visible when scrolling (sticky)", async () => {
 
     const scrollTarget = queryOne(".o_form_view .o_content");
     const scrollRect = scrollTarget.getBoundingClientRect();
-    expect(statusBar.getBoundingClientRect().top).toBeWithin(scrollRect.top, scrollRect.bottom);
-    scrollTarget.scrollTop = scrollTarget.scrollHeight; // scroll to bottom
-    expect(statusBar.getBoundingClientRect().top).toBeWithin(scrollRect.top, scrollRect.bottom);
+    expect(statusBar.getBoundingClientRect().top).toBeWithin(
+        scrollRect.top,
+        scrollRect.bottom
+    );
+    scrollTarget.scrollTop = scrollTarget.scrollHeight; // Scroll to bottom
+    expect(statusBar.getBoundingClientRect().top).toBeWithin(
+        scrollRect.top,
+        scrollRect.bottom
+    );
 });
 
 test.tags("mobile");
 test("statusbar is non-sticky on mobile", async () => {
     Partner._views = {
-        form: /*xml*/ `
+        form: /* xml*/ `
             <form>
                 <header>
                     <button id="action_button" string="ActionButton"/>
@@ -222,7 +238,13 @@ test("statusbar is non-sticky on mobile", async () => {
 
     const scrollTarget = queryOne(".o_form_view .o_form_view_container");
     const scrollRect = scrollTarget.getBoundingClientRect();
-    expect(statusBar.getBoundingClientRect().top).toBeWithin(scrollRect.top, scrollRect.bottom);
-    scrollTarget.scrollTop = scrollTarget.scrollHeight; // scroll to bottom
-    expect(statusBar.getBoundingClientRect().top).not.toBeWithin(scrollRect.top, scrollRect.bottom);
+    expect(statusBar.getBoundingClientRect().top).toBeWithin(
+        scrollRect.top,
+        scrollRect.bottom
+    );
+    scrollTarget.scrollTop = scrollTarget.scrollHeight; // Scroll to bottom
+    expect(statusBar.getBoundingClientRect().top).not.toBeWithin(
+        scrollRect.top,
+        scrollRect.bottom
+    );
 });

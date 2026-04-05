@@ -45,4 +45,3 @@ class TestPaymentProvider(NuveiCommon):
         )
         received_signature = self.payment_data.get('advanceResponseChecksum')
         self.assertEqual(calculated_signature, received_signature)
-

@@ -1,12 +1,13 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { markup } from "@odoo/owl";
-import { AnchorDialog } from "./anchor_dialog";
-import { getElementsWithOption } from "@html_builder/utils/utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {markup} from "@odoo/owl";
+import {AnchorDialog} from "./anchor_dialog";
+import {getElementsWithOption} from "@html_builder/utils/utils";
 
-const anchorSelector = ":not(p).oe_structure > *, :not(p)[data-oe-type=html] > *, .accordion-item";
+const anchorSelector =
+    ":not(p).oe_structure > *, :not(p)[data-oe-type=html] > *, .accordion-item";
 const anchorExclude =
     ".modal *, .oe_structure .oe_structure *, [data-oe-type=html] .oe_structure *, .s_popup";
 
@@ -40,7 +41,7 @@ export class AnchorPlugin extends Plugin {
         ),
     };
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         const anchorEls = getElementsWithOption(cloneEl, anchorSelector, anchorExclude);
         anchorEls.forEach((anchorEl) => this.deleteAnchor(anchorEl));
     }
@@ -78,7 +79,8 @@ export class AnchorPlugin extends Plugin {
 
     createAnchor(element) {
         const titleEls = element.querySelectorAll(TITLE_SELECTOR);
-        const title = titleEls.length > 0 ? titleEls[0].innerText : element.dataset.name;
+        const title =
+            titleEls.length > 0 ? titleEls[0].innerText : element.dataset.name;
         const anchorName = this.formatAnchor(title);
 
         let n = "";
@@ -127,7 +129,8 @@ export class AnchorPlugin extends Plugin {
                         this.services.dialog.add(AnchorDialog, {
                             currentAnchorName: decodeURIComponent(element.id),
                             renameAnchor: async (anchorName) => {
-                                const alreadyExists = !!this.document.getElementById(anchorName);
+                                const alreadyExists =
+                                    !!this.document.getElementById(anchorName);
                                 if (alreadyExists) {
                                     return false;
                                 }

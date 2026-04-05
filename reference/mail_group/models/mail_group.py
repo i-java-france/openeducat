@@ -1,22 +1,26 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 import logging
-import lxml
-
 from ast import literal_eval
 from datetime import datetime
+
+import lxml
 from dateutil import relativedelta
 from markupsafe import Markup
 from werkzeug import urls
 
 from odoo import _, api, fields, models, tools
-from odoo.addons.mail.tools.alias_error import AliasError
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import hmac
-from odoo.tools.mail import email_normalize, generate_tracking_message_id, append_content_to_html
+from odoo.tools.mail import (
+    append_content_to_html,
+    email_normalize,
+    generate_tracking_message_id,
+)
+
+from odoo.addons.mail.tools.alias_error import AliasError
 
 _logger = logging.getLogger(__name__)
 
@@ -230,7 +234,7 @@ class MailGroup(models.Model):
 
     def _alias_get_creation_values(self):
         """Return the default values for the automatically created alias."""
-        values = super(MailGroup, self)._alias_get_creation_values()
+        values = super()._alias_get_creation_values()
         values['alias_model_id'] = self.env['ir.model']._get('mail.group').id
         values['alias_force_thread_id'] = self.id
         values['alias_defaults'] = literal_eval(self.alias_defaults or '{}')

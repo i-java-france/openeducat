@@ -1,10 +1,10 @@
-import { Plugin } from "@html_editor/plugin";
-import { reactive } from "@odoo/owl";
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { getScrollingElement, getScrollingTarget } from "@web/core/utils/scrolling";
-import { checkElement } from "../builder_options_plugin";
-import { OverlayButtons } from "./overlay_buttons";
-import { withSequence } from "@html_editor/utils/resource";
+import {Plugin} from "@html_editor/plugin";
+import {reactive} from "@odoo/owl";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {getScrollingElement, getScrollingTarget} from "@web/core/utils/scrolling";
+import {checkElement} from "../builder_options_plugin";
+import {OverlayButtons} from "./overlay_buttons";
+import {withSequence} from "@html_editor/utils/resource";
 
 /** @typedef {import("@html_builder/core/builder_options_plugin").BuilderButtonDescriptor} BuilderButtonDescriptor */
 /**
@@ -61,7 +61,7 @@ export class OverlayButtonsPlugin extends Plugin {
             },
             // The buttons should appear under other overlays, like the link
             // popover. The default sequence is 50.
-            { sequence: 49 }
+            {sequence: 49}
         );
         this.target = null;
         this.state = reactive({
@@ -106,7 +106,7 @@ export class OverlayButtonsPlugin extends Plugin {
                     this.showOverlayButtons();
                 }, 250);
             }),
-            { capture: true }
+            {capture: true}
         );
 
         this._cleanups.push(() => {
@@ -120,8 +120,10 @@ export class OverlayButtonsPlugin extends Plugin {
             return;
         }
         const buttons = [];
-        for (const { getButtons, editableOnly } of this.getResource("get_overlay_buttons")) {
-            if (checkElement(this.target, { editableOnly })) {
+        for (const {getButtons, editableOnly} of this.getResource(
+            "get_overlay_buttons"
+        )) {
+            if (checkElement(this.target, {editableOnly})) {
                 buttons.push(...getButtons(this.target));
             }
         }
@@ -172,7 +174,7 @@ export class OverlayButtonsPlugin extends Plugin {
                     state: this.state,
                 },
             });
-            this.resizeObserver.observe(this.target, { box: "border-box" });
+            this.resizeObserver.observe(this.target, {box: "border-box"});
         }
     }
 

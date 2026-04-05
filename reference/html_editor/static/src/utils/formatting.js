@@ -1,8 +1,14 @@
-import { normalizeCSSColor } from "@web/core/utils/colors";
-import { removeClass } from "./dom";
-import { isBold, isDirectionSwitched, isItalic, isStrikeThrough, isUnderline } from "./dom_info";
-import { closestElement, closestPath, findNode } from "./dom_traversal";
-import { closestBlock, isBlock } from "./blocks";
+import {normalizeCSSColor} from "@web/core/utils/colors";
+import {removeClass} from "./dom";
+import {
+    isBold,
+    isDirectionSwitched,
+    isItalic,
+    isStrikeThrough,
+    isUnderline,
+} from "./dom_info";
+import {closestElement, closestPath, findNode} from "./dom_traversal";
+import {closestBlock, isBlock} from "./blocks";
 
 /**
  * Array of all the classes used by the editor to change the font size.
@@ -23,7 +29,13 @@ export const FONT_SIZE_CLASSES = [
     "o_small-fs",
 ];
 
-export const TEXT_STYLE_CLASSES = ["display-1", "display-2", "display-3", "display-4", "lead"];
+export const TEXT_STYLE_CLASSES = [
+    "display-1",
+    "display-2",
+    "display-3",
+    "display-4",
+    "lead",
+];
 
 export const DEFAULT_FONT_SIZE_CLASSES = [
     "h1",
@@ -35,7 +47,17 @@ export const DEFAULT_FONT_SIZE_CLASSES = [
     "o_default_font_size",
 ];
 
-export const FORMATTABLE_TAGS = ["SPAN", "FONT", "B", "STRONG", "I", "EM", "U", "S", "CODE"];
+export const FORMATTABLE_TAGS = [
+    "SPAN",
+    "FONT",
+    "B",
+    "STRONG",
+    "I",
+    "EM",
+    "U",
+    "S",
+    "CODE",
+];
 
 export const formatsSpecs = {
     italic: {
@@ -129,20 +151,24 @@ export const formatsSpecs = {
                           closestPath(node),
                           (el) => el.classList?.contains(props.className),
                           (el) => el === closestBlock(node).parentElement
-                      ) || closestElement(node, "li")?.classList?.contains(props.className)
+                      ) ||
+                      closestElement(node, "li")?.classList?.contains(props.className)
                   )
                 : !!findNode(
                       closestPath(node),
-                      (el) => FONT_SIZE_CLASSES.find((cls) => el.classList?.contains(cls)),
+                      (el) =>
+                          FONT_SIZE_CLASSES.find((cls) => el.classList?.contains(cls)),
                       (el) => el === closestBlock(node).parentElement
                   ) ||
                   FONT_SIZE_CLASSES.find((cls) =>
                       closestElement(node, "li")?.classList.contains(cls)
                   ),
         hasStyle: (node, props) =>
-            [...FONT_SIZE_CLASSES, ...TEXT_STYLE_CLASSES, ...DEFAULT_FONT_SIZE_CLASSES].find(
-                (cls) => node.classList.contains(cls)
-            ),
+            [
+                ...FONT_SIZE_CLASSES,
+                ...TEXT_STYLE_CLASSES,
+                ...DEFAULT_FONT_SIZE_CLASSES,
+            ].find((cls) => node.classList.contains(cls)),
         addStyle: (node, props) => {
             node.style.removeProperty("font-size");
             node.classList.add(props.className);
@@ -314,12 +340,12 @@ export function getFontSizeOrClass(node) {
     }
 
     if (node.style.fontSize) {
-        return { type: "font-size", value: node.style.fontSize };
+        return {type: "font-size", value: node.style.fontSize};
     }
 
     const fontSizeClass = FONT_SIZE_CLASSES.find((cls) => node.classList.contains(cls));
     if (fontSizeClass) {
-        return { type: "class", value: fontSizeClass };
+        return {type: "class", value: fontSizeClass};
     }
     return null;
 }

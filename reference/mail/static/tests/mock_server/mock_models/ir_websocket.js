@@ -1,7 +1,7 @@
-import { busModels } from "@bus/../tests/bus_test_helpers";
+import {busModels} from "@bus/../tests/bus_test_helpers";
 
-import { makeKwArgs } from "@web/../tests/web_test_helpers";
-import { isIterable } from "@web/core/utils/arrays";
+import {makeKwArgs} from "@web/../tests/web_test_helpers";
+import {isIterable} from "@web/core/utils/arrays";
 
 export class IrWebSocket extends busModels.IrWebSocket {
     /**
@@ -24,14 +24,14 @@ export class IrWebSocket extends busModels.IrWebSocket {
         const [authenticatedPartner] = authenticatedUserId
             ? ResPartner.search_read(
                   [["user_ids", "in", [authenticatedUserId]]],
-                  makeKwArgs({ context: { active_test: false } })
+                  makeKwArgs({context: {active_test: false}})
               )
             : [];
         if (!authenticatedPartner && !guest) {
             return channels;
         }
         if (guest) {
-            channels.push({ model: "mail.guest", id: guest.id });
+            channels.push({model: "mail.guest", id: guest.id});
         }
         const discussChannelIds = channels
             .filter((c) => typeof c === "string" && c.startsWith("discuss.channel_"))
@@ -51,7 +51,9 @@ export class IrWebSocket extends busModels.IrWebSocket {
                         : ["partner_id", "=", authenticatedPartner.id],
                     ["channel_id", "in", discussChannelIds],
                 ]).map((member) =>
-                    isIterable(member.channel_id) ? member.channel_id[0] : member.channel_id
+                    isIterable(member.channel_id)
+                        ? member.channel_id[0]
+                        : member.channel_id
                 ),
             ],
         ]);

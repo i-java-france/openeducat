@@ -1,9 +1,9 @@
 /** @odoo-module alias=@web/../tests/mobile/core/action_swiper_tests default=false */
 
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { hover, queryFirst } from "@odoo/hoot-dom";
-import { advanceTime, animationFrame, mockTouch } from "@odoo/hoot-mock";
-import { Component, onPatched, xml } from "@odoo/owl";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {hover, queryFirst} from "@odoo/hoot-dom";
+import {advanceTime, animationFrame, mockTouch} from "@odoo/hoot-mock";
+import {Component, onPatched, xml} from "@odoo/owl";
 import {
     contains,
     defineParams,
@@ -12,8 +12,8 @@ import {
     swipeLeft,
     swipeRight,
 } from "@web/../tests/web_test_helpers";
-import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
-import { Deferred } from "@web/core/utils/concurrency";
+import {ActionSwiper} from "@web/core/action_swiper/action_swiper";
+import {Deferred} from "@web/core/utils/concurrency";
 
 beforeEach(() => mockTouch(true));
 
@@ -23,7 +23,7 @@ beforeEach(() => mockTouch(true));
 test("render only its target if no props is given", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                 <div class="d-flex">
                     <ActionSwiper>
@@ -67,7 +67,7 @@ test("only render the necessary divs", async () => {
 test("render with the height of its content", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                 <div class="o-container d-flex" style="width: 200px; height: 200px; overflow: auto">
                     <ActionSwiper onRightSwipe = "{
@@ -87,18 +87,18 @@ test("render with the height of its content", async () => {
     await mountWithCleanup(Parent);
     expect(queryFirst(".o_actionswiper").scrollHeight).toBe(
         queryFirst(".target-component").scrollHeight,
-        { message: "the swiper has the height of its content" }
+        {message: "the swiper has the height of its content"}
     );
     expect(queryFirst(".o_actionswiper").scrollHeight).toBeGreaterThan(
         queryFirst(".o_actionswiper").clientHeight,
-        { message: "the height of the swiper must make the parent div scrollable" }
+        {message: "the height of the swiper must make the parent div scrollable"}
     );
 });
 
 test("can perform actions by swiping to the right", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
             <div class="d-flex">
                 <ActionSwiper onRightSwipe = "{
@@ -160,7 +160,7 @@ test("can perform actions by swiping in both directions", async () => {
     expect.assertions(5);
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                     <div class="d-flex">
                         <ActionSwiper
@@ -238,7 +238,7 @@ test("invert the direction of swipes when language is rtl", async () => {
     });
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                     <div class="d-flex">
                         <ActionSwiper
@@ -280,7 +280,7 @@ test("swiping when the swiper contains scrollable areas", async () => {
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
             <div class="d-flex">
                 <ActionSwiper
@@ -318,9 +318,10 @@ test("swiping when the swiper contains scrollable areas", async () => {
     const swiper = queryFirst(".o_actionswiper");
     const targetContainer = queryFirst(".o_actionswiper_target_container");
     const scrollable = queryFirst(".large-content");
-    const largeText = queryFirst(".large-text", { root: scrollable });
+    const largeText = queryFirst(".large-text", {root: scrollable});
     const clientYMiddleScrollBar = Math.floor(
-        scrollable.getBoundingClientRect().top + scrollable.getBoundingClientRect().height / 2
+        scrollable.getBoundingClientRect().top +
+            scrollable.getBoundingClientRect().height / 2
     );
 
     // The scrollable element is set as scrollable
@@ -338,7 +339,8 @@ test("swiping when the swiper contains scrollable areas", async () => {
         },
     });
     expect(targetContainer.style.transform).toInclude("translateX", {
-        message: "the swiper can swipe if the scrollable area is not under touch pressure",
+        message:
+            "the swiper can swipe if the scrollable area is not under touch pressure",
     });
     await dragHelper.moveTo(swiper, {
         position: {
@@ -412,7 +414,8 @@ test("swiping when the swiper contains scrollable areas", async () => {
     await dragHelper.drop();
 
     // The scrollable element is set at its right limit
-    scrollable.scrollLeft = scrollable.scrollWidth - scrollable.getBoundingClientRect().right;
+    scrollable.scrollLeft =
+        scrollable.scrollWidth - scrollable.getBoundingClientRect().right;
     await hover(largeText, {
         position: {
             clientX: scrollable.clientWidth,
@@ -450,7 +453,7 @@ test("preventing swipe on scrollable areas when language is rtl", async () => {
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
             <div class="d-flex">
                 <ActionSwiper
@@ -487,9 +490,10 @@ test("preventing swipe on scrollable areas when language is rtl", async () => {
     await mountWithCleanup(Parent);
     const targetContainer = queryFirst(".o_actionswiper_target_container");
     const scrollable = queryFirst(".large-content");
-    const largeText = queryFirst(".large-text", { root: scrollable });
+    const largeText = queryFirst(".large-text", {root: scrollable});
     const scrollableMiddleClientY = Math.floor(
-        scrollable.getBoundingClientRect().top + scrollable.getBoundingClientRect().height / 2
+        scrollable.getBoundingClientRect().top +
+            scrollable.getBoundingClientRect().height / 2
     );
     // RIGHT => Left trigger
     // The scrollable element is set as scrollable
@@ -566,7 +570,8 @@ test("preventing swipe on scrollable areas when language is rtl", async () => {
     });
     await dragHelper.drop();
     // The scrollable element is set at its right limit
-    scrollable.scrollLeft = scrollable.scrollWidth - scrollable.getBoundingClientRect().right;
+    scrollable.scrollLeft =
+        scrollable.scrollWidth - scrollable.getBoundingClientRect().right;
     await hover(largeText, {
         position: {
             clientX: scrollable.clientWidth,
@@ -601,7 +606,7 @@ test("swipeInvalid prop prevents swiping", async () => {
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                 <div class="d-flex">
                     <ActionSwiper onRightSwipe = "{
@@ -649,7 +654,7 @@ test("action should be done before a new render", async () => {
 
     class Parent extends Component {
         static props = [];
-        static components = { ActionSwiper };
+        static components = {ActionSwiper};
         static template = xml`
                 <div class="d-flex">
                    <ActionSwiper animationType="'forwards'" onRightSwipe = "{

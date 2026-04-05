@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command, fields
 from odoo.exceptions import UserError
-from odoo.tests import tagged, common, Form, HttpCase
+from odoo.tests import Form, HttpCase, common, tagged
 from odoo.tools import float_compare, float_is_zero
 
 

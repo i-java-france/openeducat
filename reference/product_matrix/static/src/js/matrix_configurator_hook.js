@@ -1,10 +1,15 @@
-import { useService } from "@web/core/utils/hooks";
-import { ProductMatrixDialog } from "./product_matrix_dialog";
+import {useService} from "@web/core/utils/hooks";
+import {ProductMatrixDialog} from "./product_matrix_dialog";
 
 export function useMatrixConfigurator() {
     const dialog = useService("dialog");
 
-    const openDialog = (rootRecord, jsonInfo, productTemplateId, editedCellAttributes) => {
+    const openDialog = (
+        rootRecord,
+        jsonInfo,
+        productTemplateId,
+        editedCellAttributes
+    ) => {
         const infos = JSON.parse(jsonInfo);
         dialog.add(ProductMatrixDialog, {
             header: infos.header,
@@ -26,10 +31,12 @@ export function useMatrixConfigurator() {
         const updatedLineAttributes = [];
         if (edit) {
             // provide attributes of edited line to automatically focus on matching cell in the matrix
-            for (const ptnvav of record.data.product_no_variant_attribute_value_ids.records) {
+            for (const ptnvav of record.data.product_no_variant_attribute_value_ids
+                .records) {
                 updatedLineAttributes.push(ptnvav.resId);
             }
-            for (const ptav of record.data.product_template_attribute_value_ids.records) {
+            for (const ptav of record.data.product_template_attribute_value_ids
+                .records) {
                 updatedLineAttributes.push(ptav.resId);
             }
             updatedLineAttributes.sort((a, b) => a - b);
@@ -48,5 +55,5 @@ export function useMatrixConfigurator() {
         }
     };
 
-    return { open };
+    return {open};
 }

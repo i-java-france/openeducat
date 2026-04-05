@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
-import { markup } from "@odoo/owl";
-import { patch } from "@web/core/utils/patch";
+import {markup} from "@odoo/owl";
+import {patch} from "@web/core/utils/patch";
 
 patch(OrderPaymentValidation.prototype, {
     setup(vals) {

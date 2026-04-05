@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.UrlField">
         <t t-if="props.readonly">
-            <a class="o_field_widget o_form_uri" t-on-click.stop="" t-on-auxclick.stop="" t-att-href="formattedHref" t-esc="props.text || props.record.data[props.name] || ''" target="_blank"/>
+            <a
+                class="o_field_widget o_form_uri"
+                t-on-click.stop=""
+                t-on-auxclick.stop=""
+                t-att-href="formattedHref"
+                t-esc="props.text || props.record.data[props.name] || ''"
+                target="_blank"
+            />
         </t>
         <t t-else="">
             <div class="d-inline-flex w-100">
@@ -28,7 +35,11 @@
                 class="ms-3 d-inline-flex align-items-center"
                 target="_blank"
             >
-                <i class="fa fa-globe" data-tooltip="Go to URL" aria-label="Go to URL"></i>
+                <i
+                    class="fa fa-globe"
+                    data-tooltip="Go to URL"
+                    aria-label="Go to URL"
+                />
             </a>
         </xpath>
     </t>

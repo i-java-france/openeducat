@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains as webContains, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {onRpc, contains as webContains} from "@web/../tests/web_test_helpers";
 import {
     contains,
     openFormView,
@@ -7,7 +7,7 @@ import {
     startServer,
 } from "@mail/../tests/mail_test_helpers";
 
-import { defineCrmTeamModels } from "@sales_team/../tests/crm_team_test_helpers";
+import {defineCrmTeamModels} from "@sales_team/../tests/crm_team_test_helpers";
 
 defineCrmTeamModels();
 
@@ -15,8 +15,8 @@ test("crm team form activate multi-team option via alert", async () => {
     expect.assertions(7);
 
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Maria" });
-    const userId = pyEnv["res.users"].create({ partner_id: partnerId });
+    const partnerId = pyEnv["res.partner"].create({name: "Maria"});
+    const userId = pyEnv["res.users"].create({partner_id: partnerId});
     const [teamId_1] = pyEnv["crm.team"].create([
         {
             name: "Team1",
@@ -28,12 +28,12 @@ test("crm team form activate multi-team option via alert", async () => {
         },
     ]);
 
-    onRpc("has_group", ({ args }) => {
+    onRpc("has_group", ({args}) => {
         expect.step("has_group");
         expect(args[1]).toBe("sales_team.group_sale_manager");
         return true;
     });
-    onRpc("set_param", ({ args }) => {
+    onRpc("set_param", ({args}) => {
         expect.step("set_param");
         expect(args[0]).toBe("sales_team.membership_multi");
         return true;
@@ -66,15 +66,18 @@ test("crm team form activate multi-team option via alert", async () => {
     });
 
     // Members list should have Maria which is already in Team2 => Alert should be shown
-    await expect(".o_field_widget[name='member_ids'] .o_kanban_record:visible:not(.o-kanban-button-new)").toHaveCount(1);
-    await expect(".o_field_widget[name='member_ids'] .o_kanban_record:visible:not(.o-kanban-button-new)").toHaveText("Maria");
-    await contains(".alert:visible", { count: 1 });
+    await expect(
+        ".o_field_widget[name='member_ids'] .o_kanban_record:visible:not(.o-kanban-button-new)"
+    ).toHaveCount(1);
+    await expect(
+        ".o_field_widget[name='member_ids'] .o_kanban_record:visible:not(.o-kanban-button-new)"
+    ).toHaveText("Maria");
+    await contains(".alert:visible", {count: 1});
 
     // Clicking on the button should update the multi-team option and remove the alert
-    await webContains(".alert button[name='crm_team_activate_multi_membership']").click();
-    await contains(".alert:visible", { count: 0 });
-    expect.verifySteps([
-        "has_group",
-        "set_param",
-    ]);
+    await webContains(
+        ".alert button[name='crm_team_activate_multi_membership']"
+    ).click();
+    await contains(".alert:visible", {count: 0});
+    expect.verifySteps(["has_group", "set_param"]);
 });

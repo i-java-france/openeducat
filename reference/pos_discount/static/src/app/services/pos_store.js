@@ -1,10 +1,10 @@
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { accountTaxHelpers } from "@account/helpers/account_tax";
-import { _t } from "@web/core/l10n/translation";
-import { debounce } from "@web/core/utils/timing";
-import { PosOrderAccounting } from "@point_of_sale/app/models/accounting/pos_order_accounting";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
+import {_t} from "@web/core/l10n/translation";
+import {debounce} from "@web/core/utils/timing";
+import {PosOrderAccounting} from "@point_of_sale/app/models/accounting/pos_order_accounting";
 
 patch(PosStore.prototype, {
     async setup() {
@@ -32,7 +32,7 @@ patch(PosStore.prototype, {
             }
         });
 
-        this.models["pos.order"].addEventListener("update", ({ id, fields }) => {
+        this.models["pos.order"].addEventListener("update", ({id, fields}) => {
             const areAccountingFields = fields?.some((field) =>
                 PosOrderAccounting.accountingFields.has(field)
             );
@@ -75,7 +75,9 @@ patch(PosStore.prototype, {
         const isGlobalDiscountBtnClicked = Object.keys(discountLinesMap).length === 0;
 
         const lines = order.getOrderlines();
-        const discountableLines = lines.filter((line) => line.isGlobalDiscountApplicable());
+        const discountableLines = lines.filter((line) =>
+            line.isGlobalDiscountApplicable()
+        );
         const baseLines = discountableLines.map((line) =>
             accountTaxHelpers.prepare_base_line_for_taxes_computation(
                 line,
@@ -86,8 +88,8 @@ patch(PosStore.prototype, {
         accountTaxHelpers.round_base_lines_tax_details(baseLines, order.company_id);
 
         const groupingFunction = (base_line) => ({
-            grouping_key: { product_id: product },
-            raw_grouping_key: { product_id: product.id },
+            grouping_key: {product_id: product},
+            raw_grouping_key: {product_id: product.id},
         });
 
         const globalDiscountBaseLines = accountTaxHelpers.prepare_global_discount_lines(
@@ -102,7 +104,8 @@ patch(PosStore.prototype, {
         );
         let lastDiscountLine = null;
         for (const baseLine of globalDiscountBaseLines) {
-            const extra_tax_data = accountTaxHelpers.export_base_line_extra_tax_data(baseLine);
+            const extra_tax_data =
+                accountTaxHelpers.export_base_line_extra_tax_data(baseLine);
             extra_tax_data.discount_percentage = percent;
 
             const key = taxKey(baseLine.tax_ids);
@@ -123,7 +126,7 @@ patch(PosStore.prototype, {
                         extra_tax_data: extra_tax_data,
                     },
                     order,
-                    { force: true },
+                    {force: true},
                     false
                 );
             }

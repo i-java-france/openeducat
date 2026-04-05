@@ -1,13 +1,13 @@
-import { Plugin } from "@html_editor/plugin";
-import { getHtmlStyle } from "@html_editor/utils/formatting";
+import {Plugin} from "@html_editor/plugin";
+import {getHtmlStyle} from "@html_editor/utils/formatting";
 import {
     CSS_SHORTHANDS,
     applyNeededCss,
     areCssValuesEqual,
     normalizeColor,
 } from "@html_builder/utils/utils_css";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { getValueFromVar } from "@html_builder/utils/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {getValueFromVar} from "@html_builder/utils/utils";
 
 /** @typedef {import("@html_builder/core/builder_action").ActionParams} ActionParams */
 /** @typedef {import("@html_builder/core/builder_action").ActionValue} ActionValue */
@@ -49,7 +49,9 @@ export class CoreBuilderActionPlugin extends Plugin {
 function getStyleValue(el, styleName) {
     const computedStyle = window.getComputedStyle(el);
     const cssProps = CSS_SHORTHANDS[styleName] || [styleName];
-    const cssValues = cssProps.map((cssProp) => computedStyle.getPropertyValue(cssProp).trim());
+    const cssValues = cssProps.map((cssProp) =>
+        computedStyle.getPropertyValue(cssProp).trim()
+    );
     if (
         cssValues.length === 4 &&
         areCssValuesEqual(cssValues[3], cssValues[1], styleName, computedStyle)
@@ -71,7 +73,12 @@ function getStyleValue(el, styleName) {
     return cssValues.join(" ");
 }
 
-function setStyle(el, styleName, value, { extraClass, force = false, allowImportant = true } = {}) {
+function setStyle(
+    el,
+    styleName,
+    value,
+    {extraClass, force = false, allowImportant = true} = {}
+) {
     const computedStyle = window.getComputedStyle(el);
     const cssProps = CSS_SHORTHANDS[styleName] || [styleName];
     // Always reset the inline style first to not put inline style on an
@@ -126,10 +133,10 @@ function setStyle(el, styleName, value, { extraClass, force = false, allowImport
 
 export class ClassAction extends BuilderAction {
     static id = "classAction";
-    getPriority({ params: { mainParam: classNames } = {} }) {
+    getPriority({params: {mainParam: classNames} = {}}) {
         return (classNames || "")?.trim().split(/\s+/).filter(Boolean).length || 0;
     }
-    isApplied({ editingElement, params: { mainParam: classNames } = {} }) {
+    isApplied({editingElement, params: {mainParam: classNames} = {}}) {
         if (classNames === undefined || classNames === "") {
             return true;
         }
@@ -137,14 +144,14 @@ export class ClassAction extends BuilderAction {
             .split(" ")
             .every((className) => editingElement.classList.contains(className));
     }
-    apply({ editingElement, params: { mainParam: classNames } = {} }) {
+    apply({editingElement, params: {mainParam: classNames} = {}}) {
         for (const className of (classNames || "").split(" ")) {
             if (className !== "") {
                 editingElement.classList.add(className);
             }
         }
     }
-    clean({ editingElement, params: { mainParam: classNames } = {} }) {
+    clean({editingElement, params: {mainParam: classNames} = {}}) {
         for (const className of (classNames || "").split(" ")) {
             if (className !== "") {
                 editingElement.classList.remove(className);
@@ -155,10 +162,10 @@ export class ClassAction extends BuilderAction {
 
 class AttributeAction extends BuilderAction {
     static id = "attributeAction";
-    getValue({ editingElement, params: { mainParam: attributeName } = {} }) {
+    getValue({editingElement, params: {mainParam: attributeName} = {}}) {
         return editingElement.getAttribute(attributeName);
     }
-    isApplied({ editingElement, params: { mainParam: attributeName } = {}, value }) {
+    isApplied({editingElement, params: {mainParam: attributeName} = {}, value}) {
         if (value) {
             return (
                 editingElement.hasAttribute(attributeName) &&
@@ -168,21 +175,21 @@ class AttributeAction extends BuilderAction {
             return !editingElement.hasAttribute(attributeName);
         }
     }
-    apply({ editingElement, params: { mainParam: attributeName } = {}, value }) {
+    apply({editingElement, params: {mainParam: attributeName} = {}, value}) {
         if (value) {
             editingElement.setAttribute(attributeName, value);
         } else {
             editingElement.removeAttribute(attributeName);
         }
     }
-    clean({ editingElement, params: { mainParam: attributeName } = {} }) {
+    clean({editingElement, params: {mainParam: attributeName} = {}}) {
         editingElement.removeAttribute(attributeName);
     }
 }
 
 export class DataAttributeAction extends BuilderAction {
     static id = "dataAttributeAction";
-    getValue({ editingElement, params: { mainParam: attributeName } = {} }) {
+    getValue({editingElement, params: {mainParam: attributeName} = {}}) {
         if (!/(^color|Color)($|(?=[A-Z]))/.test(attributeName)) {
             return editingElement.dataset[attributeName];
         }
@@ -192,7 +199,7 @@ export class DataAttributeAction extends BuilderAction {
         );
         return color;
     }
-    isApplied({ editingElement, params: { mainParam: attributeName } = {}, value }) {
+    isApplied({editingElement, params: {mainParam: attributeName} = {}, value}) {
         if (value) {
             value = getValueFromVar(value.toString());
             return editingElement.dataset[attributeName] === value;
@@ -200,7 +207,7 @@ export class DataAttributeAction extends BuilderAction {
             return !(attributeName in editingElement.dataset);
         }
     }
-    apply({ editingElement, params: { mainParam: attributeName } = {}, value }) {
+    apply({editingElement, params: {mainParam: attributeName} = {}, value}) {
         if (value) {
             value = getValueFromVar(value.toString());
             editingElement.dataset[attributeName] = value;
@@ -208,7 +215,7 @@ export class DataAttributeAction extends BuilderAction {
             delete editingElement.dataset[attributeName];
         }
     }
-    clean({ editingElement, params: { mainParam: attributeName } = {} }) {
+    clean({editingElement, params: {mainParam: attributeName} = {}}) {
         delete editingElement.dataset[attributeName];
     }
 }
@@ -216,7 +223,7 @@ export class DataAttributeAction extends BuilderAction {
 // TODO maybe find a better place for this
 class SetClassRangeAction extends BuilderAction {
     static id = "setClassRange";
-    getValue({ editingElement, params: { mainParam: classNames } }) {
+    getValue({editingElement, params: {mainParam: classNames}}) {
         for (const index in classNames) {
             const className = classNames[index];
             if (editingElement.classList.contains(className)) {
@@ -224,7 +231,7 @@ class SetClassRangeAction extends BuilderAction {
             }
         }
     }
-    apply({ editingElement, params: { mainParam: classNames }, value: index }) {
+    apply({editingElement, params: {mainParam: classNames}, value: index}) {
         for (const className of classNames) {
             if (editingElement.classList.contains(className)) {
                 editingElement.classList.remove(className);
@@ -237,7 +244,7 @@ class SetClassRangeAction extends BuilderAction {
 export class StyleAction extends BuilderAction {
     static id = "styleAction";
     static dependencies = ["color"];
-    getValue({ editingElement: el, params: { mainParam: styleName } }) {
+    getValue({editingElement: el, params: {mainParam: styleName}}) {
         if (
             styleName === "--box-border-width" ||
             CSS_SHORTHANDS["--box-border-width"].includes(styleName) ||
@@ -261,7 +268,11 @@ export class StyleAction extends BuilderAction {
         if (styleName === "box-shadow") {
             const value = getStyleValue(el, styleName);
             const inset = value.includes("inset");
-            let values = value.replace(/,\s/g, ",").replace("inset", "").trim().split(/\s+/g);
+            let values = value
+                .replace(/,\s/g, ",")
+                .replace("inset", "")
+                .trim()
+                .split(/\s+/g);
             const color = values.find((s) => !s.match(/^\d/));
             values = values.join(" ").replace(color, "").trim();
             return `${color} ${values}${inset ? " inset" : ""}`;
@@ -293,20 +304,22 @@ export class StyleAction extends BuilderAction {
         }
         return this._getValueWithoutTransition(el, styleName);
     }
-    isApplied({ editingElement: el, params: { mainParam: styleName }, value }) {
+    isApplied({editingElement: el, params: {mainParam: styleName}, value}) {
         const currentValue = this.getValue({
             editingElement: el,
-            params: { mainParam: styleName },
+            params: {mainParam: styleName},
         });
         return currentValue === value;
     }
-    apply({ editingElement, params = {}, value }) {
-        if (!this.delegateTo("apply_custom_css_style", { editingElement, params, value })) {
-            this.applyCssStyle({ editingElement, params, value });
+    apply({editingElement, params = {}, value}) {
+        if (
+            !this.delegateTo("apply_custom_css_style", {editingElement, params, value})
+        ) {
+            this.applyCssStyle({editingElement, params, value});
         }
     }
-    applyCssStyle({ editingElement, params = {}, value }) {
-        params = { ...params };
+    applyCssStyle({editingElement, params = {}, value}) {
+        params = {...params};
         const styleName = params.mainParam;
         delete params.mainParam;
         // Disable all transitions for the duration of the method as many

@@ -59,13 +59,17 @@ function _getTemplate(name, blockId = null) {
             );
         }
         const element = getClone(processedTemplate);
-        processedTemplate = applyInheritance(getClone(parentTemplate), element, info[name].url);
+        processedTemplate = applyInheritance(
+            getClone(parentTemplate),
+            element,
+            info[name].url
+        );
         if (processedTemplate.tagName !== element.tagName) {
             const temp = processedTemplate;
             processedTemplate = new Document().createElement(element.tagName);
             processedTemplate.append(...temp.childNodes);
         }
-        for (const { name, value } of element.attributes) {
+        for (const {name, value} of element.attributes) {
             if (!["t-inherit", "t-inherit-mode"].includes(name)) {
                 processedTemplate.setAttribute(name, value);
             }
@@ -82,14 +86,16 @@ function _getTemplate(name, blockId = null) {
         }
         if (!(otherBlockId in parsedTemplateExtensions[name])) {
             parsedTemplateExtensions[name][otherBlockId] = [];
-            for (const { templateString, url } of templateExtensions[name][otherBlockId]) {
+            for (const {templateString, url} of templateExtensions[name][
+                otherBlockId
+            ]) {
                 parsedTemplateExtensions[name][otherBlockId].push({
                     template: getParsedTemplate(templateString),
                     url,
                 });
             }
         }
-        for (const { template, url } of parsedTemplateExtensions[name][otherBlockId]) {
+        for (const {template, url} of parsedTemplateExtensions[name][otherBlockId]) {
             if (!urlFilters.every((filter) => filter(url))) {
                 continue;
             }
@@ -97,7 +103,11 @@ function _getTemplate(name, blockId = null) {
                 cloned = true;
                 processedTemplate = getClone(processedTemplate);
             }
-            processedTemplate = applyInheritance(processedTemplate, getClone(template), url);
+            processedTemplate = applyInheritance(
+                processedTemplate,
+                getClone(template),
+                url
+            );
         }
     }
 
@@ -163,11 +173,14 @@ export function registerTemplate(name, url, templateString) {
         blockType = "templates";
         blockId++;
     }
-    if (name in templates && (info[name].url !== url || templates[name] !== templateString)) {
+    if (
+        name in templates &&
+        (info[name].url !== url || templates[name] !== templateString)
+    ) {
         throw new Error(`Template ${name} already exists`);
     }
     templates[name] = templateString;
-    info[name] = { blockId, url };
+    info[name] = {blockId, url};
 
     return function unregisterTemplate() {
         delete templates[name];

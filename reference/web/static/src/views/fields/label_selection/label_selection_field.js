@@ -1,22 +1,24 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { standardFieldProps } from "../standard_field_props";
-import { formatSelection } from "../formatters";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {standardFieldProps} from "../standard_field_props";
+import {formatSelection} from "../formatters";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class LabelSelectionField extends Component {
     static template = "web.LabelSelectionField";
     static props = {
         ...standardFieldProps,
-        classesObj: { type: Object, optional: true },
+        classesObj: {type: Object, optional: true},
     };
     static defaultProps = {
         classesObj: {},
     };
 
     get className() {
-        return this.props.classesObj[this.props.record.data[this.props.name]] || "primary";
+        return (
+            this.props.classesObj[this.props.record.data[this.props.name]] || "primary"
+        );
     }
     get string() {
         return formatSelection(this.props.record.data[this.props.name], {
@@ -36,7 +38,7 @@ export const labelSelectionField = {
         },
     ],
     supportedTypes: ["selection"],
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         classesObj: options.classes,
     }),
 };

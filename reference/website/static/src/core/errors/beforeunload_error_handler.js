@@ -1,5 +1,5 @@
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
 
 const errorHandlerRegistry = registry.category("error_handlers");
 
@@ -25,4 +25,4 @@ function beforeUnloadHandler(env, error) {
     return false;
 }
 
-errorHandlerRegistry.add("beforeUnloadHandler", beforeUnloadHandler, { sequence: 1 });
+errorHandlerRegistry.add("beforeUnloadHandler", beforeUnloadHandler, {sequence: 1});

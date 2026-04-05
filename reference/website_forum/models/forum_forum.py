@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import textwrap
 from collections import defaultdict
 from operator import itemgetter
 
@@ -343,6 +341,6 @@ class ForumForum(models.Model):
 
     def _search_render_results(self, fetch_fields, mapping, icon, limit):
         results_data = super()._search_render_results(fetch_fields, mapping, icon, limit)
-        for forum, data in zip(self, results_data):
+        for forum, data in zip(self, results_data, strict=False):
             data['website_url'] = forum._compute_website_url()
         return results_data

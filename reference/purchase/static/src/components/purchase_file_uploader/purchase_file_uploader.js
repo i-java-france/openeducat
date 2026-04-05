@@ -1,20 +1,20 @@
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { FileUploader } from "@web/views/fields/file_handler";
-import { WarningDialog } from "@web/core/errors/error_dialogs";
-import { _t } from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {FileUploader} from "@web/views/fields/file_handler";
+import {WarningDialog} from "@web/core/errors/error_dialogs";
+import {_t} from "@web/core/l10n/translation";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class PurchaseFileUploader extends Component {
     static template = "purchase.DocumentFileUploader";
     static props = {
         ...standardWidgetProps,
-        record: { type: Object, optional: true },
-        list: { type: Object, optional: true },
+        record: {type: Object, optional: true},
+        list: {type: Object, optional: true},
     };
-    static components = { FileUploader };
+    static components = {FileUploader};
 
     setup() {
         this.orm = useService("orm");
@@ -42,11 +42,15 @@ export class PurchaseFileUploader extends Component {
         if (this.env.config.viewType !== "list") {
             return;
         }
-        const vendorSet = new Set(this.props.list.selection.map((record) => record.data.partner_id.id));
+        const vendorSet = new Set(
+            this.props.list.selection.map((record) => record.data.partner_id.id)
+        );
         if (vendorSet.size > 1) {
             this.dialog.add(WarningDialog, {
                 title: _t("Validation Error"),
-                message: _t("You can only upload a bill for a single vendor at a time."),
+                message: _t(
+                    "You can only upload a bill for a single vendor at a time."
+                ),
             });
             return false;
         }
@@ -59,7 +63,7 @@ export class PurchaseFileUploader extends Component {
             datas: file.data,
         };
         const [att_id] = await this.orm.create("ir.attachment", [att_data], {
-            context: { ...this.env.searchModel.context },
+            context: {...this.env.searchModel.context},
         });
         this.attachmentIdsToProcess.push(att_id);
     }
@@ -73,7 +77,7 @@ export class PurchaseFileUploader extends Component {
                 resModel,
                 "action_create_invoice",
                 [ids, this.attachmentIdsToProcess],
-                { context: { ...this.env.searchModel.context } }
+                {context: {...this.env.searchModel.context}}
             );
         } finally {
             // ensures attachments are cleared on success as well as on error

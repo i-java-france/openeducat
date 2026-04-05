@@ -1,24 +1,24 @@
 /** @odoo-module alias=@web/../tests/setup default=false */
 
-import { assets } from "@web/core/assets";
-import { user, _makeUser } from "@web/core/user";
-import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
-import { patchTimeZone, patchWithCleanup } from "@web/../tests/helpers/utils";
-import { memoize } from "@web/core/utils/functions";
-import { registerCleanup } from "./helpers/cleanup";
-import { prepareRegistriesWithCleanup } from "./helpers/mock_env";
-import { session as sessionInfo } from "@web/session";
-import { config as transitionConfig } from "@web/core/transition";
-import { loadLanguages } from "@web/core/l10n/translation";
+import {assets} from "@web/core/assets";
+import {user, _makeUser} from "@web/core/user";
+import {browser, makeRAMLocalStorage} from "@web/core/browser/browser";
+import {patchTimeZone, patchWithCleanup} from "@web/../tests/helpers/utils";
+import {memoize} from "@web/core/utils/functions";
+import {registerCleanup} from "./helpers/cleanup";
+import {prepareRegistriesWithCleanup} from "./helpers/mock_env";
+import {session as sessionInfo} from "@web/session";
+import {config as transitionConfig} from "@web/core/transition";
+import {loadLanguages} from "@web/core/l10n/translation";
 
 transitionConfig.disabled = true;
 
-import { patch } from "@web/core/utils/patch";
-import { App, EventBus, whenReady } from "@odoo/owl";
-import { currencies } from "@web/core/currency";
-import { cookie } from "@web/core/browser/cookie";
-import { router } from "@web/core/browser/router";
-import { registerTemplateProcessor } from "@web/core/templates";
+import {patch} from "@web/core/utils/patch";
+import {App, EventBus, whenReady} from "@odoo/owl";
+import {currencies} from "@web/core/currency";
+import {cookie} from "@web/core/browser/cookie";
+import {router} from "@web/core/browser/router";
+import {registerTemplateProcessor} from "@web/core/templates";
 
 function forceLocaleAndTimezoneWithCleanup() {
     const originalLocale = luxon.Settings.defaultLocale;
@@ -118,7 +118,10 @@ function patchBrowserWithCleanup() {
         navigator: {
             mediaDevices: browser.navigator.mediaDevices,
             permissions: browser.navigator.permissions,
-            userAgent: browser.navigator.userAgent.replace(/\([^)]*\)/, "(X11; Linux x86_64)"),
+            userAgent: browser.navigator.userAgent.replace(
+                /\([^)]*\)/,
+                "(X11; Linux x86_64)"
+            ),
             sendBeacon: () => {
                 throw new Error("sendBeacon called in test but not mocked");
             },
@@ -143,7 +146,7 @@ function patchBrowserWithCleanup() {
                     throw new Error("there is no history");
                 }
                 mockLocation.assign(url);
-                window.dispatchEvent(new PopStateEvent("popstate", { state }));
+                window.dispatchEvent(new PopStateEvent("popstate", {state}));
             },
             forward() {
                 currentHistoryStack++;
@@ -152,7 +155,7 @@ function patchBrowserWithCleanup() {
                     throw new Error("No more history");
                 }
                 mockLocation.assign(url);
-                window.dispatchEvent(new PopStateEvent("popstate", { state }));
+                window.dispatchEvent(new PopStateEvent("popstate", {state}));
             },
             get length() {
                 return historyStack.length;
@@ -187,7 +190,9 @@ function patchBrowserWithCleanup() {
         // XHR: we don't want tests to do real RPCs
         XMLHttpRequest: class MockXHR {
             constructor() {
-                throw new Error("XHR not patched in a test. Consider using patchRPCWithCleanup.");
+                throw new Error(
+                    "XHR not patched in a test. Consider using patchRPCWithCleanup."
+                );
             }
         },
     });
@@ -234,7 +239,7 @@ function patchSessionInfo() {
         // Commit: 3e847fc8f499c96b8f2d072ab19f35e105fd7749
         // to see what user_companies is
         user_companies: {
-            allowed_companies: { 1: { id: 1, name: "Hermit" } },
+            allowed_companies: {1: {id: 1, name: "Hermit"}},
             current_company: 1,
         },
         user_context: {
@@ -242,7 +247,8 @@ function patchSessionInfo() {
             tz: "taht",
         },
         db: "test",
-        registry_hash: "05500d71e084497829aa807e3caa2e7e9782ff702c15b2f57f87f2d64d049bd0",
+        registry_hash:
+            "05500d71e084497829aa807e3caa2e7e9782ff702c15b2f57f87f2d64d049bd0",
         is_admin: true,
         is_system: true,
         username: "thewise@odoo.com",
@@ -254,10 +260,10 @@ function patchSessionInfo() {
     });
     const mockedUser = _makeUser(sessionInfo);
     patchWithCleanup(user, mockedUser);
-    patchWithCleanup(user, { hasGroup: () => Promise.resolve(false) });
+    patchWithCleanup(user, {hasGroup: () => Promise.resolve(false)});
     patchWithCleanup(currencies, {
-        1: { name: "USD", digits: [69, 2], position: "before", symbol: "$" },
-        2: { name: "EUR", digits: [69, 2], position: "after", symbol: "€" },
+        1: {name: "USD", digits: [69, 2], position: "before", symbol: "$"},
+        2: {name: "EUR", digits: [69, 2], position: "after", symbol: "€"},
     });
 }
 
@@ -278,7 +284,9 @@ registerTemplateProcessor((template) => {
     // server.
     for (const attrName of ["alt", "src"]) {
         for (const prefix of ["", "t-att-", "t-attf-"]) {
-            for (const element of template.querySelectorAll(`*[${prefix}${attrName}]`)) {
+            for (const element of template.querySelectorAll(
+                `*[${prefix}${attrName}]`
+            )) {
                 replaceAttr(attrName, prefix, element);
             }
         }
@@ -286,7 +294,7 @@ registerTemplateProcessor((template) => {
 });
 
 function patchAssets() {
-    const { getBundle, loadJS, loadCSS } = assets;
+    const {getBundle, loadJS, loadCSS} = assets;
     patch(assets, {
         getBundle: memoize(async function (xmlID) {
             console.log(
@@ -378,7 +386,7 @@ export async function setupTests() {
 
     // make sure images do not trigger a GET on the server
     new MutationObserver((mutations) => {
-        const nodes = mutations.flatMap(({ target }) => {
+        const nodes = mutations.flatMap(({target}) => {
             if (target.nodeName === "IMG" || target.nodeName === "IFRAME") {
                 return target;
             }

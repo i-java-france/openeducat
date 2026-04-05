@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { allowTranslations, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {allowTranslations, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { localization } from "@web/core/l10n/localization";
+import {localization} from "@web/core/l10n/localization";
 import {
     clamp,
     floatIsZero,
@@ -265,22 +265,22 @@ describe("formatFloat", () => {
         expect(formatFloat(3.12, options)).toBe("3.12");
         expect(formatFloat(3.129, options)).toBe("3.13");
 
-        options = { digits: [15, 3] };
+        options = {digits: [15, 3]};
         expect(formatFloat(3, options)).toBe("3.000");
         expect(formatFloat(3.1, options)).toBe("3.100");
         expect(formatFloat(3.123, options)).toBe("3.123");
         expect(formatFloat(3.1239, options)).toBe("3.124");
 
-        options = { minDigits: 3 };
+        options = {minDigits: 3};
         expect(formatFloat(0, options)).toBe("0.000");
         expect(formatFloat(3, options)).toBe("3.000");
         expect(formatFloat(3.1, options)).toBe("3.100");
         expect(formatFloat(3.123, options)).toBe("3.123");
         expect(formatFloat(3.1239, options)).toBe("3.1239");
         expect(formatFloat(3.1231239, options)).toBe("3.123124");
-        expect(formatFloat(1234567890.1234567890, options)).toBe("1,234,567,890.12346");
+        expect(formatFloat(1234567890.123456789, options)).toBe("1,234,567,890.12346");
 
-        options = { minDigits: 3, digits: [15, 4] };
+        options = {minDigits: 3, digits: [15, 4]};
         expect(formatFloat(3, options)).toBe("3.000");
         expect(formatFloat(3.1, options)).toBe("3.100");
         expect(formatFloat(3.123, options)).toBe("3.123");
@@ -296,24 +296,26 @@ describe("formatFloat", () => {
         });
         expect(formatFloat(1000000)).toBe("1,000,000.00");
 
-        const options = { grouping: [3, 2, -1], decimalPoint: "?", thousandsSep: "€" };
+        const options = {grouping: [3, 2, -1], decimalPoint: "?", thousandsSep: "€"};
         expect(formatFloat(106500, options)).toBe("1€06€500?00");
 
-        expect(formatFloat(1500, { thousandsSep: "" })).toBe("1500.00");
+        expect(formatFloat(1500, {thousandsSep: ""})).toBe("1500.00");
         expect(formatFloat(-1.01)).toBe("-1.01");
         expect(formatFloat(-0.01)).toBe("-0.01");
 
-        expect(formatFloat(38.0001, { trailingZeros: false })).toBe("38");
-        expect(formatFloat(38.1, { trailingZeros: false })).toBe("38.1");
-        expect(formatFloat(38.0001, { digits: [16, 0], trailingZeros: false })).toBe("38");
+        expect(formatFloat(38.0001, {trailingZeros: false})).toBe("38");
+        expect(formatFloat(38.1, {trailingZeros: false})).toBe("38.1");
+        expect(formatFloat(38.0001, {digits: [16, 0], trailingZeros: false})).toBe(
+            "38"
+        );
 
-        patchWithCleanup(localization, { grouping: [3, 3, 3, 3] });
+        patchWithCleanup(localization, {grouping: [3, 3, 3, 3]});
         expect(formatFloat(1000000)).toBe("1,000,000.00");
 
-        patchWithCleanup(localization, { grouping: [3, 2, -1] });
+        patchWithCleanup(localization, {grouping: [3, 2, -1]});
         expect(formatFloat(106500)).toBe("1,06,500.00");
 
-        patchWithCleanup(localization, { grouping: [1, 2, -1] });
+        patchWithCleanup(localization, {grouping: [1, 2, -1]});
         expect(formatFloat(106500)).toBe("106,50,0.00");
 
         patchWithCleanup(localization, {
@@ -332,11 +334,11 @@ describe("formatFloat", () => {
             thousandsSep: ",",
         });
 
-        const options = { humanReadable: true };
+        const options = {humanReadable: true};
         expect(formatFloat(1e18, options)).toBe("1E");
         expect(formatFloat(-1e18, options)).toBe("-1E");
 
-        Object.assign(options, { decimals: 2, minDigits: 1 });
+        Object.assign(options, {decimals: 2, minDigits: 1});
         expect(formatFloat(1020, options)).toBe("1.02k");
         expect(formatFloat(1002, options)).toBe("1.00k");
         expect(formatFloat(101, options)).toBe("101.00");
@@ -355,7 +357,7 @@ describe("formatFloat", () => {
         expect(formatFloat(-1.012e43, options)).toBe("-1.01e+43");
         expect(formatFloat(-0.0000001, options)).toBe("0.00");
 
-        Object.assign(options, { decimals: 2, minDigits: 2 });
+        Object.assign(options, {decimals: 2, minDigits: 2});
         expect(formatFloat(1020000, options)).toBe("1,020k");
         expect(formatFloat(10200000, options)).toBe("10.20M");
         expect(formatFloat(1.012e43, options)).toBe("1.01e+43");
@@ -363,23 +365,27 @@ describe("formatFloat", () => {
         expect(formatFloat(-10200000, options)).toBe("-10.20M");
         expect(formatFloat(-1.012e43, options)).toBe("-1.01e+43");
 
-        Object.assign(options, { decimals: 3, minDigits: 1 });
+        Object.assign(options, {decimals: 3, minDigits: 1});
         expect(formatFloat(1.0045e22, options)).toBe("1.005e+22");
         expect(formatFloat(-1.0045e22, options)).toBe("-1.004e+22");
 
         [
-            { val: 2.35, decimals: 1, resFixed: "2.4", resHuman: "2.4" },
-            { val: 2.55, decimals: 1, resFixed: "2.5", resHuman: "2.6" },
-            { val: 2.925, decimals: 2, resFixed: "2.92", resHuman: "2.93" },
-            { val: 1.925, decimals: 2, resFixed: "1.93", resHuman: "1.93" },
-        ].forEach(({ val, decimals, resFixed, resHuman }) => {
-            Object.assign(options, { decimals });
+            {val: 2.35, decimals: 1, resFixed: "2.4", resHuman: "2.4"},
+            {val: 2.55, decimals: 1, resFixed: "2.5", resHuman: "2.6"},
+            {val: 2.925, decimals: 2, resFixed: "2.92", resHuman: "2.93"},
+            {val: 1.925, decimals: 2, resFixed: "1.93", resHuman: "1.93"},
+        ].forEach(({val, decimals, resFixed, resHuman}) => {
+            Object.assign(options, {decimals});
             const value = parseFloat(val);
             expect(value.toFixed(decimals)).toBe(resFixed);
             expect(formatFloat(value, options)).toBe(resHuman);
         });
 
-        Object.assign(options, { humanReadable: false, digits: undefined, minDigits: undefined});
+        Object.assign(options, {
+            humanReadable: false,
+            digits: undefined,
+            minDigits: undefined,
+        });
         expect(formatFloat(-0.0000001, options)).toBe("0.00");
     });
 });

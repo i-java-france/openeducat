@@ -1,8 +1,13 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { waitFor, waitForNone, press, manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { getContent } from "./_helpers/selection";
-import { insertText, splitBlock } from "./_helpers/user_actions";
+import {describe, expect, test} from "@odoo/hoot";
+import {
+    manuallyDispatchProgrammaticEvent,
+    press,
+    waitFor,
+    waitForNone,
+} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {getContent} from "./_helpers/selection";
+import {insertText, splitBlock} from "./_helpers/user_actions";
 
 async function simulateEnter(editor) {
     press("enter");
@@ -78,7 +83,7 @@ describe("SplitBlock", () => {
 });
 describe("Enter Key", () => {
     test("blockquote should create br on Enter", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]</p>");
+        const {el, editor} = await setupEditor("<p>ab[]</p>");
         expect(getContent(el)).toBe(`<p>ab[]</p>`);
 
         await insertText(editor, "/");
@@ -98,12 +103,12 @@ describe("Enter Key", () => {
         expect(getContent(el)).toBe("<blockquote>abc<br>def[]</blockquote>");
     });
     test("blockquote should create br on Enter (2)", async () => {
-        const { el, editor } = await setupEditor("<blockquote>a[]b</blockquote>");
+        const {el, editor} = await setupEditor("<blockquote>a[]b</blockquote>");
         await simulateEnter(editor);
         expect(getContent(el)).toBe("<blockquote>a<br>[]b</blockquote>");
     });
     test("blockquote should create br on 1st Enter then create p", async () => {
-        const { el, editor } = await setupEditor("<blockquote>abc<br>def[]</blockquote>");
+        const {el, editor} = await setupEditor("<blockquote>abc<br>def[]</blockquote>");
         await simulateEnter(editor);
         expect(getContent(el)).toBe("<blockquote>abc<br>def<br>[]<br></blockquote>");
         await simulateEnter(editor);

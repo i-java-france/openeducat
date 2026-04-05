@@ -1,7 +1,12 @@
-import { describe, expect, getFixture, test } from "@odoo/hoot";
-import { getService, makeMockEnv, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {
+    getService,
+    makeMockEnv,
+    onRpc,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 describe.current.tags("headless");
 
@@ -18,28 +23,32 @@ test("PWA service fetches the manifest found in the page", async () => {
     mountManifestLink("/web/manifest.webmanifest");
     onRpc("/*", (request) => {
         expect.step(new URL(request.url).pathname);
-        return { name: "Odoo PWA" };
+        return {name: "Odoo PWA"};
     });
     const pwaService = await getService("pwa");
     let appManifest = await pwaService.getManifest();
-    expect(appManifest).toEqual({ name: "Odoo PWA" });
+    expect(appManifest).toEqual({name: "Odoo PWA"});
     expect.verifySteps(["/web/manifest.webmanifest"]);
     appManifest = await pwaService.getManifest();
-    expect(appManifest).toEqual({ name: "Odoo PWA" });
-    // manifest is only fetched once to get the app name
+    expect(appManifest).toEqual({name: "Odoo PWA"});
+    // Manifest is only fetched once to get the app name
     expect.verifySteps([]);
 });
 
 test("PWA installation process", async () => {
     const beforeInstallPromptEvent = new CustomEvent("beforeinstallprompt");
     beforeInstallPromptEvent.preventDefault = () => {};
-    beforeInstallPromptEvent.prompt = async () => ({ outcome: "accepted" });
+    beforeInstallPromptEvent.prompt = async () => ({outcome: "accepted"});
     browser.BeforeInstallPromptEvent = beforeInstallPromptEvent;
     await makeMockEnv();
     mountManifestLink("/web/manifest.scoped_app_manifest");
     onRpc("/*", (request) => {
         expect.step(new URL(request.url).pathname);
-        return { name: "My App", scope: "/scoped_app/myApp", start_url: "/scoped_app/myApp" };
+        return {
+            name: "My App",
+            scope: "/scoped_app/myApp",
+            start_url: "/scoped_app/myApp",
+        };
     });
     patchWithCleanup(browser.localStorage, {
         setItem(key, value) {
@@ -62,5 +71,8 @@ test("PWA installation process", async () => {
         },
     });
     expect(pwaService.canPromptToInstall).toBe(false);
-    expect.verifySteps(['{"/odoo":"accepted"}', "onDone call with installation accepted"]);
+    expect.verifySteps([
+        '{"/odoo":"accepted"}',
+        "onDone call with installation accepted",
+    ]);
 });

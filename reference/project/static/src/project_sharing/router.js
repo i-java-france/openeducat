@@ -1,6 +1,6 @@
-import { browser } from "@web/core/browser/browser";
-import { startUrl, router } from "@web/core/browser/router";
-import { patch } from "@web/core/utils/patch";
+import {browser} from "@web/core/browser/browser";
+import {startUrl, router} from "@web/core/browser/router";
+import {patch} from "@web/core/utils/patch";
 
 patch(router, {
     /**
@@ -12,7 +12,7 @@ patch(router, {
         return url.replace(startUrl(), "my/projects");
     },
     urlToState(urlObj) {
-        const { pathname } = urlObj;
+        const {pathname} = urlObj;
         urlObj.pathname = pathname.replace(
             /\/my\/projects\/([1234567890]+)\/project_sharing/,
             "/odoo/project.project/$1/project_sharing"

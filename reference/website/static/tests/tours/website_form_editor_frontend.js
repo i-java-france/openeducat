@@ -1,5 +1,5 @@
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("website_form_editor_tour_submit", {
     steps: () => [
@@ -48,7 +48,8 @@ registry.category("web_tour.tours").add("website_form_editor_tour_submit", {
                 ":has(.s_website_form_field:has(label:contains('Invoice Scan')):not(.o_has_error))",
         },
         {
-            content: "Check if required fields were detected and complete the Subject field",
+            content:
+                "Check if required fields were detected and complete the Subject field",
             trigger: "input[name=subject]",
             run: "edit Jane Smith",
         },
@@ -72,7 +73,8 @@ registry.category("web_tour.tours").add("website_form_editor_tour_submit", {
                 ":has(.s_website_form_field:has(label:contains('Invoice Scan')):not(.o_has_error))",
         },
         {
-            content: "Check if required fields were detected and complete the Message field",
+            content:
+                "Check if required fields were detected and complete the Message field",
             trigger: "textarea[name=body_html]",
             run: "edit A useless message",
         },
@@ -151,10 +153,14 @@ registry.category("web_tour.tours").add("website_form_editor_tour_submit", {
             trigger: "body",
             run: function () {
                 const style = window.getComputedStyle(
-                    this.anchor.getElementsByClassName("s_website_form_field_hidden_if")[0]
+                    this.anchor.getElementsByClassName(
+                        "s_website_form_field_hidden_if"
+                    )[0]
                 );
                 if (style.display !== "none") {
-                    console.error("error This field should be invisible when the name is not odoo");
+                    console.error(
+                        "error This field should be invisible when the name is not odoo"
+                    );
                 }
             },
         },

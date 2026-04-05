@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 
-from odoo.addons.stock.tests.common import TestStockCommon
+from odoo import Command, fields
 from odoo.exceptions import ValidationError
 from odoo.tests import Form, HttpCase, tagged
 from odoo.tests.common import users
-from odoo.tools import mute_logger, float_round
-from odoo import Command, fields
+from odoo.tools import float_round, mute_logger
+
+from odoo.addons.stock.tests.common import TestStockCommon
 
 
 class TestStockFlow(TestStockCommon):

@@ -1,9 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from odoo.addons.l10n_it_edi.tests.common import TestItEdi
-from odoo.tests.common import tagged
+
 from odoo import Command
+from odoo.tests.common import tagged
+
+from odoo.addons.l10n_it_edi.tests.common import TestItEdi
+
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class TestItEdiPa(TestItEdi):

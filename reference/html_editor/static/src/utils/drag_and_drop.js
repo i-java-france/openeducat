@@ -1,8 +1,8 @@
-import { makeDraggableHook } from "@web/core/utils/draggable_hook_builder";
-import { pick } from "@web/core/utils/objects";
-import { reactive } from "@odoo/owl";
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { closest, touching } from "@web/core/utils/ui";
+import {makeDraggableHook} from "@web/core/utils/draggable_hook_builder";
+import {pick} from "@web/core/utils/objects";
+import {reactive} from "@odoo/owl";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {closest, touching} from "@web/core/utils/ui";
 
 /** @typedef {import("@web/core/utils/draggable_hook_builder").DraggableHandlerParams} DraggableHandlerParams */
 /** @typedef {import("@web/core/utils/draggable_hook_builder").DraggableBuilderParams} DraggableBuilderParams */
@@ -53,7 +53,7 @@ import { closest, touching } from "@web/core/utils/ui";
 export function useNativeDraggable(hookParams, initialParams) {
     const setupFunctions = new Map();
     const cleanupFunctions = [];
-    const currentParams = { ...initialParams };
+    const currentParams = {...initialParams};
     const setupHooks = {
         wrapState: reactive,
         throttle: throttleForAnimation,
@@ -75,7 +75,9 @@ export function useNativeDraggable(hookParams, initialParams) {
     el.classList.add("o_draggable");
     cleanupFunctions.push(() => el.classList.remove("o_draggable"));
 
-    const draggableState = makeDraggableHook({ setupHooks, ...hookParams })(currentParams);
+    const draggableState = makeDraggableHook({setupHooks, ...hookParams})(
+        currentParams
+    );
     draggableState.enable = true;
     const draggableComponent = {
         state: draggableState,
@@ -91,8 +93,8 @@ export function useNativeDraggable(hookParams, initialParams) {
     return draggableComponent;
 }
 
-function updateElementPosition(el, { x, y }, styleFn, offset = { x: 0, y: 0 }) {
-    return styleFn(el, { top: `${y - offset.y}px`, left: `${x - offset.x}px` });
+function updateElementPosition(el, {x, y}, styleFn, offset = {x: 0, y: 0}) {
+    return styleFn(el, {top: `${y - offset.y}px`, left: `${x - offset.x}px`});
 }
 /** @type DraggableBuilderParams */
 const dragAndDropHookParams = {
@@ -103,21 +105,21 @@ const dragAndDropHookParams = {
         helper: [Function],
         extraWindow: [Object, Function],
     },
-    edgeScrolling: { enabled: true },
-    onComputeParams({ ctx, params }) {
+    edgeScrolling: {enabled: true},
+    onComputeParams({ctx, params}) {
         // The helper is mandatory and will follow the cursor instead
         ctx.followCursor = false;
         ctx.getScrollingElement = params.scrollingElement;
         ctx.getHelper = params.helper;
         ctx.getDropZones = params.dropzones;
     },
-    onWillStartDrag: ({ ctx }) => {
+    onWillStartDrag: ({ctx}) => {
         ctx.current.container = ctx.getScrollingElement();
-        ctx.current.helperOffset = { x: 0, y: 0 };
+        ctx.current.helperOffset = {x: 0, y: 0};
     },
-    onDragStart: ({ ctx, addStyle, addCleanup }) => {
+    onDragStart: ({ctx, addStyle, addCleanup}) => {
         // Use the helper as the tracking element to properly update scroll values.
-        ctx.current.helper = ctx.getHelper({ ...ctx.current, ...ctx.pointer });
+        ctx.current.helper = ctx.getHelper({...ctx.current, ...ctx.pointer});
         ctx.current.helper.style.position = "fixed";
         // We want the pointer events on the helper so that the cursor
         // is properly displayed.
@@ -130,19 +132,29 @@ const dragAndDropHookParams = {
         // the cursor.
         const frameElement = ctx.current.helper.ownerDocument.defaultView.frameElement;
         if (frameElement) {
-            addStyle(frameElement, { pointerEvents: "auto" });
+            addStyle(frameElement, {pointerEvents: "auto"});
         }
 
         addCleanup(() => ctx.current.helper.remove());
 
-        updateElementPosition(ctx.current.helper, ctx.pointer, addStyle, ctx.current.helperOffset);
+        updateElementPosition(
+            ctx.current.helper,
+            ctx.pointer,
+            addStyle,
+            ctx.current.helperOffset
+        );
 
         return pick(ctx.current, "element", "helper");
     },
-    onDrag: ({ ctx, addStyle, callHandler }) => {
+    onDrag: ({ctx, addStyle, callHandler}) => {
         ctx.current.helper.classList.add("o_draggable_dragging");
 
-        updateElementPosition(ctx.current.helper, ctx.pointer, addStyle, ctx.current.helperOffset);
+        updateElementPosition(
+            ctx.current.helper,
+            ctx.pointer,
+            addStyle,
+            ctx.current.helperOffset
+        );
         // Unfortunately, DOMRect is not an Object, so spreading operator from
         // `touching` does not work, so convert DOMRect to plain object.
         let helperRect = ctx.current.helper.getBoundingClientRect();
@@ -152,7 +164,10 @@ const dragAndDropHookParams = {
             width: helperRect.width,
             height: helperRect.height,
         };
-        const dropzoneEl = closest(touching(ctx.getDropZones(), helperRect), helperRect);
+        const dropzoneEl = closest(
+            touching(ctx.getDropZones(), helperRect),
+            helperRect
+        );
         // Update the drop zone if it's in grid mode
         if (
             ctx.current.dropzone?.el &&
@@ -164,7 +179,8 @@ const dragAndDropHookParams = {
             ctx.current.dropzone &&
             (ctx.current.dropzone.el === dropzoneEl ||
                 (!dropzoneEl &&
-                    touching([ctx.current.helper], ctx.current.dropzone.rect).length > 0))
+                    touching([ctx.current.helper], ctx.current.dropzone.rect).length >
+                        0))
         ) {
             // If no new dropzone but old one is still valid, return early.
             return pick(ctx.current, "element", "dropzone", "helper");
@@ -198,7 +214,7 @@ const dragAndDropHookParams = {
         }
         return pick(ctx.current, "element", "dropzone", "helper");
     },
-    onDragEnd({ ctx }) {
+    onDragEnd({ctx}) {
         return pick(ctx.current, "element", "dropzone", "helper");
     },
 };

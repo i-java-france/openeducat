@@ -1,5 +1,5 @@
-import { Component, onWillUpdateProps, useState, useRef } from "@odoo/owl";
-import { CustomColorPicker as ColorPicker } from "@web/core/color_picker/custom_color_picker/custom_color_picker";
+import {Component, onWillUpdateProps, useState, useRef} from "@odoo/owl";
+import {CustomColorPicker as ColorPicker} from "@web/core/color_picker/custom_color_picker/custom_color_picker";
 import {
     isColorGradient,
     standardizeGradient,
@@ -8,15 +8,15 @@ import {
 } from "@web/core/utils/colors";
 
 export class GradientPicker extends Component {
-    static components = { ColorPicker };
+    static components = {ColorPicker};
     static template = "html_editor.GradientPicker";
     static props = {
-        onGradientChange: { type: Function, optional: true },
-        onGradientPreview: { type: Function, optional: true },
-        setOnCloseCallback: { type: Function, optional: true },
-        setOperationCallbacks: { type: Function, optional: true },
-        selectedGradient: { type: String, optional: true },
-        noTransparency: { type: Boolean, optional: true },
+        onGradientChange: {type: Function, optional: true},
+        onGradientPreview: {type: Function, optional: true},
+        setOnCloseCallback: {type: Function, optional: true},
+        setOperationCallbacks: {type: Function, optional: true},
+        selectedGradient: {type: String, optional: true},
+        noTransparency: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -26,15 +26,23 @@ export class GradientPicker extends Component {
             currentColorIndex: 0,
             size: "closest-side",
         });
-        this.positions = useState({ x: 25, y: 25 });
+        this.positions = useState({x: 25, y: 25});
         this.colors = useState([
-            { hex: "#DF7CC4", percentage: 0 },
-            { hex: "#6C3582", percentage: 100 },
+            {hex: "#DF7CC4", percentage: 0},
+            {hex: "#6C3582", percentage: 100},
         ]);
-        this.cssGradients = useState({ preview: "", linear: "", radial: "", sliderThumbStyle: "" });
+        this.cssGradients = useState({
+            preview: "",
+            linear: "",
+            radial: "",
+            sliderThumbStyle: "",
+        });
         this.knobRef = useRef("gradientAngleKnob");
 
-        if (this.props.selectedGradient && isColorGradient(this.props.selectedGradient)) {
+        if (
+            this.props.selectedGradient &&
+            isColorGradient(this.props.selectedGradient)
+        ) {
             // initialization of the gradient with the selected value
             this.setGradientFromString(this.props.selectedGradient);
         } else {
@@ -62,7 +70,10 @@ export class GradientPicker extends Component {
 
         this.colors.splice(0, this.colors.length);
         for (const color of colors) {
-            this.colors.push({ hex: rgbaToHex(color[1]), percentage: color[2].replace("%", "") });
+            this.colors.push({
+                hex: rgbaToHex(color[1]),
+                percentage: color[2].replace("%", ""),
+            });
         }
 
         const isLinear = gradient.startsWith("linear-gradient(");
@@ -77,7 +88,11 @@ export class GradientPicker extends Component {
             const size = sizeMatch ? sizeMatch[0] : "farthest-corner";
             this.state.size = size;
 
-            const position = gradient.match(/ at ([0-9]+)% ([0-9]+)%/) || ["", "50", "50"];
+            const position = gradient.match(/ at ([0-9]+)% ([0-9]+)%/) || [
+                "",
+                "50",
+                "50",
+            ];
             this.positions.x = position[1];
             this.positions.y = position[2];
         }
@@ -143,7 +158,9 @@ export class GradientPicker extends Component {
     addColorStop(percentage) {
         let color;
 
-        let previousColor = this.colors.findLast((color) => color.percentage <= percentage);
+        let previousColor = this.colors.findLast(
+            (color) => color.percentage <= percentage
+        );
         let nextColor = this.colors.find((color) => color.percentage > percentage);
         if (!previousColor && nextColor) {
             // Click position is before the first color
@@ -160,7 +177,9 @@ export class GradientPicker extends Component {
             previousColor = convertCSSColorToRgba(previousColor.hex);
             nextColor = convertCSSColorToRgba(nextColor.hex);
 
-            const red = Math.round(previousRatio * previousColor.red + nextRatio * nextColor.red);
+            const red = Math.round(
+                previousRatio * previousColor.red + nextRatio * nextColor.red
+            );
             const green = Math.round(
                 previousRatio * previousColor.green + nextRatio * nextColor.green
             );
@@ -173,7 +192,7 @@ export class GradientPicker extends Component {
             color = `rgba(${red}, ${green}, ${blue}, ${opacity / 100})`;
         }
 
-        this.colors.push({ hex: color, percentage });
+        this.colors.push({hex: color, percentage});
         this.sortColors();
         this.state.currentColorIndex = this.colors.findIndex(
             (color) => color.percentage === percentage
@@ -220,7 +239,7 @@ export class GradientPicker extends Component {
 
     onColorGradientPreview() {
         this.updateCssGradients();
-        this.props.onGradientPreview?.({ gradient: this.cssGradients[this.state.type] });
+        this.props.onGradientPreview?.({gradient: this.cssGradients[this.state.type]});
     }
 
     get currentColorHex() {
@@ -255,9 +274,10 @@ export class GradientPicker extends Component {
             updateAngle(ev);
             this.onColorGradientChange();
         };
-        const onKnobMouseUp = () => document.removeEventListener("mousemove", onKnobMouseMove);
+        const onKnobMouseUp = () =>
+            document.removeEventListener("mousemove", onKnobMouseMove);
 
         document.addEventListener("mousemove", onKnobMouseMove);
-        document.addEventListener("mouseup", onKnobMouseUp, { once: true });
+        document.addEventListener("mouseup", onKnobMouseUp, {once: true});
     }
 }

@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("im_livechat_session_open", {
     steps: () => [

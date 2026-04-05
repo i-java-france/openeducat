@@ -1,22 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from freezegun import freeze_time
 from itertools import chain, repeat
 from unittest.mock import patch
 
-from odoo import exceptions, fields, _
-from odoo.addons.mail.tests.common import mail_new_test_user
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+
+from odoo import _, exceptions, fields
 from odoo.tests import common
+
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class TestKarmaTrackingCommon(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestKarmaTrackingCommon, cls).setUpClass()
+        super().setUpClass()
         cls.test_user = mail_new_test_user(
             cls.env, login='test',
             name='Test User', email='test@example.com',
@@ -293,7 +294,7 @@ class TestComputeRankCommon(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestComputeRankCommon, cls).setUpClass()
+        super().setUpClass()
 
         def _patched_send_mail(*args, **kwargs):
             pass

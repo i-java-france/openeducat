@@ -1,8 +1,8 @@
-export function mockIndexedDB(_name, { fn }) {
+export function mockIndexedDB(_name, {fn}) {
     return (requireModule, ...args) => {
         const indexedDBModule = fn(requireModule, ...args);
 
-        const { IndexedDB } = indexedDBModule;
+        const {IndexedDB} = indexedDBModule;
         class MockedIndexedDB {
             constructor() {
                 this.mockIndexedDB = {};

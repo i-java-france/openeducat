@@ -1,4 +1,4 @@
-import { insertSnippet, registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {insertSnippet, registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "website_popup_visibility_option",

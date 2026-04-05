@@ -1,10 +1,13 @@
-from odoo import Command
-from odoo.addons.account.tests.common import TestAccountMergeCommon
-from odoo.tests import Form, tagged, new_test_user
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import mute_logger
 import psycopg2
 from freezegun import freeze_time
+
+from odoo import Command
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form, new_test_user, tagged
+from odoo.tools import mute_logger
+
+from odoo.addons.account.tests.common import TestAccountMergeCommon
+
 
 @tagged('post_install', '-at_install')
 class TestAccountAccount(TestAccountMergeCommon):
@@ -909,7 +912,7 @@ class TestAccountAccount(TestAccountMergeCommon):
             ]
             actual_code_mapping_vals_list = account_form.code_mapping_ids._records
 
-            for expected_code_mapping_vals, actual_code_mapping_vals in zip(expected_code_mapping_vals_list, actual_code_mapping_vals_list):
+            for expected_code_mapping_vals, actual_code_mapping_vals in zip(expected_code_mapping_vals_list, actual_code_mapping_vals_list, strict=False):
                 for key, expected_val in expected_code_mapping_vals.items():
                     self.assertEqual(actual_code_mapping_vals[key], expected_val)
 

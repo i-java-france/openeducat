@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import date
-from markupsafe import Markup
 import json
+from datetime import date
 
-from odoo import _, api, fields, models, SUPERUSER_ID
+from markupsafe import Markup
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -120,7 +121,7 @@ class StockPicking(models.Model):
                 else:
                     raise e
 
-        return super(StockPicking, self)._send_confirmation_email()
+        return super()._send_confirmation_email()
 
     def send_to_shipper(self):
         self.ensure_one()

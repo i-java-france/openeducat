@@ -1,22 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="res_config_settings_view_form_inherit_sale" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.sale</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <!-- Remove customer accounts setting from sales settings tab -->
             <!-- It must not be in the view at all to make sure settings can be saved
                 (because auth_signup_uninvited is specified as required) -->
-            <setting id="auth_signup_documents" position="replace"/>
+            <setting id="auth_signup_documents" position="replace" />
         </field>
     </record>
 
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.website.sale</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="website_payment.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="website_payment.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <setting id="shared_user_account_setting" position="after">
                 <setting
@@ -25,7 +24,7 @@
                     help="Use Google Places API to validate addresses"
                     documentation="/applications/websites/website/configuration/address_autocomplete.html"
                 >
-                    <field name="module_website_sale_autocomplete"/>
+                    <field name="module_website_sale_autocomplete" />
                 </setting>
             </setting>
             <block id="website_payment_block" position="attributes">
@@ -52,7 +51,10 @@
                         icon="oi-arrow-right"
                     />
                 </setting>
-                <setting string="Display Product Prices" id="website_tax_inclusion_setting">
+                <setting
+                    string="Display Product Prices"
+                    id="website_tax_inclusion_setting"
+                >
                     <field
                         name="show_line_subtotals_tax_selection"
                         widget="radio"
@@ -63,7 +65,11 @@
                     id="ecommerce_access_setting"
                     title="Shop, products, cart and wishlist visibility"
                 >
-                    <field name="ecommerce_access" widget="radio" class="o_light_label"/>
+                    <field
+                        name="ecommerce_access"
+                        widget="radio"
+                        class="o_light_label"
+                    />
                 </setting>
                 <setting
                     string="Sign in/up at checkout"
@@ -72,14 +78,14 @@
                            in list view and click on 'Portal Access Management' option in the
                            dropdown menu *Action*."
                 >
-                    <field name="account_on_checkout" widget="radio"/>
+                    <field name="account_on_checkout" widget="radio" />
                 </setting>
                 <setting
                     string="Add to Cart"
                     id="cart_redirect_setting"
                     help="What should be done on &quot;Add to Cart&quot;?"
                 >
-                    <field name="add_to_cart_action" widget="radio"/>
+                    <field name="add_to_cart_action" widget="radio" />
                 </setting>
                 <setting
                     string="Invoicing Policy"
@@ -88,24 +94,31 @@
                            created but not of products already existing."
                     info="This setting is common to all websites."
                 >
-                    <field name="default_invoice_policy" widget="radio" class="o_light_label"/>
+                    <field
+                        name="default_invoice_policy"
+                        widget="radio"
+                        class="o_light_label"
+                    />
                 </setting>
                 <setting
                     id="automatic_invoice_generation_setting"
                     help="Invoice automatically on payment."
                     invisible="default_invoice_policy == 'delivery'"
                 >
-                    <field name="automatic_invoice"/>
+                    <field name="automatic_invoice" />
                     <div invisible="not automatic_invoice">
-                        <label for="invoice_mail_template_id" class="o_light_label me-2"/>
-                        <field name="invoice_mail_template_id" class="oe_inline"/>
+                        <label
+                            for="invoice_mail_template_id"
+                            class="o_light_label me-2"
+                        />
+                        <field name="invoice_mail_template_id" class="oe_inline" />
                     </div>
                 </setting>
                 <setting
                     help="Add a strikethrough price, as a comparison"
                     info="This setting is common to all websites."
                 >
-                    <field name="group_product_price_comparison"/>
+                    <field name="group_product_price_comparison" />
                 </setting>
                 <setting
                     string="Product Reference Price"
@@ -114,7 +127,7 @@
                           sale price"
                     info="This setting is common to all websites."
                 >
-                    <field name="group_show_uom_price"/>
+                    <field name="group_show_uom_price" />
                 </setting>
                 <setting
                     string="Product Variants"
@@ -122,7 +135,7 @@
                     help="One product might have different attributes (size, color, etc.)"
                     documentation="/applications/websites/ecommerce/managing_products/variants.html"
                 >
-                    <field name="group_product_variant"/>
+                    <field name="group_product_variant" />
                     <button
                         string="Attributes"
                         type="action"
@@ -149,7 +162,7 @@
                     help="Apply specific prices or currency per country, customer, products, etc."
                     documentation="/applications/sales/sales/products_prices/prices/pricing.html"
                 >
-                    <field name="group_product_pricelist"/>
+                    <field name="group_product_pricelist" />
                     <button
                         string="Pricelists"
                         type="action"
@@ -164,15 +177,18 @@
                     id="hide_add_to_cart_setting"
                     help="If product price equals 0, replace 'Add to Cart' by 'Contact us'."
                 >
-                    <field name="website_sale_prevent_zero_price_sale"/>
-                    <div class="content-group" invisible="not website_sale_prevent_zero_price_sale">
+                    <field name="website_sale_prevent_zero_price_sale" />
+                    <div
+                        class="content-group"
+                        invisible="not website_sale_prevent_zero_price_sale"
+                    >
                         <div class="row mt16">
                             <label
                                 string="Button URL"
                                 for="website_sale_contact_us_button_url"
                                 class="o_light_label col-lg-3"
                             />
-                            <field name="website_sale_contact_us_button_url"/>
+                            <field name="website_sale_contact_us_button_url" />
                         </div>
                     </div>
                 </setting>
@@ -184,7 +200,7 @@
                                 for="confirmation_email_template_id"
                                 class="o_light_label col-lg-3"
                             />
-                            <field name="confirmation_email_template_id"/>
+                            <field name="confirmation_email_template_id" />
                         </div>
                     </div>
                 </setting>
@@ -194,26 +210,35 @@
                     help="Automate abandoned checkout emails"
                     documentation="/applications/websites/ecommerce/ecommerce_management/order_handling.html#abandoned-cart"
                 >
-                    <field name="send_abandoned_cart_email"/>
-                    <div invisible="not send_abandoned_cart_email" class="content-group">
+                    <field name="send_abandoned_cart_email" />
+                    <div
+                        invisible="not send_abandoned_cart_email"
+                        class="content-group"
+                    >
                         <div class="row mt16">
                             <div class="col-12">
                                 <label
-                                    string="Send after"
-                                    for="cart_abandoned_delay"
-                                    class="o_light_label"
-                                />
+                                string="Send after"
+                                for="cart_abandoned_delay"
+                                class="o_light_label"
+                            />
                                 <field
-                                    name="cart_abandoned_delay"
-                                    widget="float_time"
-                                    class="ms-1"
-                                    style="width: 50px;"
-                                /> hours.
+                                name="cart_abandoned_delay"
+                                widget="float_time"
+                                class="ms-1"
+                                style="width: 50px;"
+                            /> hours.
                             </div>
                         </div>
                     </div>
                     <div invisible="not send_abandoned_cart_email" class="mt8">
-                        <button type="object" name="action_open_abandoned_cart_mail_template" string="Customize Abandoned Email Template" class="btn-link" icon="oi-arrow-right"/>
+                        <button
+                            type="object"
+                            name="action_open_abandoned_cart_mail_template"
+                            string="Customize Abandoned Email Template"
+                            class="btn-link"
+                            icon="oi-arrow-right"
+                        />
                     </div>
                 </setting>
                 <setting string="Orders Assignment" help="Assignment of online orders">
@@ -230,8 +255,11 @@
                             />
                         </div>
                         <div class="row">
-                            <label for="salesperson_id" class="o_light_label col-lg-3"/>
-                            <field name="salesperson_id"/>
+                            <label
+                                for="salesperson_id"
+                                class="o_light_label col-lg-3"
+                            />
+                            <field name="salesperson_id" />
                         </div>
                     </div>
                 </setting>
@@ -240,7 +268,7 @@
                     help="Allow customers to pick up their online purchases at your store and pay in person"
                     documentation="/applications/websites/ecommerce/shipping.html#click-collect"
                 >
-                    <field name="module_website_sale_collect"/>
+                    <field name="module_website_sale_collect" />
                 </setting>
             </block>
             <setting id="google_analytics_setting" position="after">
@@ -249,7 +277,7 @@
                     help="Connect your eCommerce via a product file."
                     documentation="/applications/websites/ecommerce/google_merchant_center.html"
                 >
-                    <field name="group_gmc_feed"/>
+                    <field name="group_gmc_feed" />
                     <div class="mt8" invisible="not group_gmc_feed">
                         <button
                             type="object"

@@ -1,13 +1,20 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
-import { useLongPress } from "@point_of_sale/app/hooks/long_press_hook";
-import { useBarcodeReader } from "@point_of_sale/app/hooks/barcode_reader_hook";
-import { _t } from "@web/core/l10n/translation";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { Component, onMounted, useEffect, useState, onWillRender, onWillUnmount } from "@odoo/owl";
-import { CategorySelector } from "@point_of_sale/app/components/category_selector/category_selector";
-import { Input } from "@point_of_sale/app/components/inputs/input/input";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {useTrackedAsync} from "@point_of_sale/app/hooks/hooks";
+import {useLongPress} from "@point_of_sale/app/hooks/long_press_hook";
+import {useBarcodeReader} from "@point_of_sale/app/hooks/barcode_reader_hook";
+import {_t} from "@web/core/l10n/translation";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {
+    Component,
+    onMounted,
+    useEffect,
+    useState,
+    onWillRender,
+    onWillUnmount,
+} from "@odoo/owl";
+import {CategorySelector} from "@point_of_sale/app/components/category_selector/category_selector";
+import {Input} from "@point_of_sale/app/components/inputs/input/input";
 import {
     BACKSPACE,
     Numpad,
@@ -15,21 +22,21 @@ import {
     DEFAULT_LAST_ROW,
     SWITCHSIGN,
 } from "@point_of_sale/app/components/numpad/numpad";
-import { ActionpadWidget } from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
-import { Orderline } from "@point_of_sale/app/components/orderline/orderline";
-import { OrderSummary } from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
-import { ProductCard } from "@point_of_sale/app/components/product_card/product_card";
+import {ActionpadWidget} from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
+import {Orderline} from "@point_of_sale/app/components/orderline/orderline";
+import {OrderSummary} from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
+import {ProductCard} from "@point_of_sale/app/components/product_card/product_card";
 import {
     ControlButtons,
     ControlButtonsPopup,
 } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
-import { BarcodeVideoScanner } from "@web/core/barcode/barcode_video_scanner";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { OptionalProductPopup } from "@point_of_sale/app/components/popups/optional_products_popup/optional_products_popup";
-import { useRouterParamsChecker } from "@point_of_sale/app/hooks/pos_router_hook";
-import { debounce } from "@web/core/utils/timing";
+import {BarcodeVideoScanner} from "@web/core/barcode/barcode_video_scanner";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {OptionalProductPopup} from "@point_of_sale/app/components/popups/optional_products_popup/optional_products_popup";
+import {useRouterParamsChecker} from "@point_of_sale/app/hooks/pos_router_hook";
+import {debounce} from "@web/core/utils/timing";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class ProductScreen extends Component {
     static template = "point_of_sale.ProductScreen";
@@ -45,7 +52,7 @@ export class ProductScreen extends Component {
         BarcodeVideoScanner,
     };
     static props = {
-        orderUuid: { type: String },
+        orderUuid: {type: String},
     };
 
     setup() {
@@ -110,18 +117,23 @@ export class ProductScreen extends Component {
         });
 
         this.doLoadSampleData = useTrackedAsync(() => this.pos.loadSampleData());
-        this.longPressHandlers = useLongPress((product) => this.pos.onProductInfoClick(product));
-        this.onScroll = debounce(this.longPressHandlers.onScroll, 200, { leading: true });
+        this.longPressHandlers = useLongPress((product) =>
+            this.pos.onProductInfoClick(product)
+        );
+        this.onScroll = debounce(this.longPressHandlers.onScroll, 200, {leading: true});
 
         useEffect(
             () => {
-                this.state.quantityByProductTmplId = this.currentOrder?.lines?.reduce((acc, ol) => {
-                    if (!ol.combo_parent_id) {
-                        const productTmplId = ol.product_id.product_tmpl_id.id;
-                        acc[productTmplId] = (acc[productTmplId] || 0) + ol.qty;
-                    }
-                    return acc;
-                }, {});
+                this.state.quantityByProductTmplId = this.currentOrder?.lines?.reduce(
+                    (acc, ol) => {
+                        if (!ol.combo_parent_id) {
+                            const productTmplId = ol.product_id.product_tmpl_id.id;
+                            acc[productTmplId] = (acc[productTmplId] || 0) + ol.qty;
+                        }
+                        return acc;
+                    },
+                    {}
+                );
             },
             () => [this.currentOrder, this.currentOrder.totalQuantity]
         );
@@ -137,7 +149,8 @@ export class ProductScreen extends Component {
 
     getNumpadButtons() {
         const colorClassMap = {
-            [this.env.services.localization.decimalPoint]: "o_colorlist_item_numpad_color_6",
+            [this.env.services.localization.decimalPoint]:
+                "o_colorlist_item_numpad_color_6",
             Backspace: "o_colorlist_item_numpad_color_1",
             "-": "o_colorlist_item_numpad_color_3",
         };
@@ -146,11 +159,13 @@ export class ProductScreen extends Component {
             DEFAULT_LAST_ROW.map((button) => button.value) + [BACKSPACE.value];
 
         return getButtons(DEFAULT_LAST_ROW, [
-            { value: "quantity", text: _t("Qty") },
+            {value: "quantity", text: _t("Qty")},
             {
                 value: "discount",
                 text: _t("%"),
-                disabled: !this.pos.config.manual_discount || this.pos.cashier._role === "minimal",
+                disabled:
+                    !this.pos.config.manual_discount ||
+                    this.pos.cashier._role === "minimal",
             },
             {
                 value: "price",
@@ -164,7 +179,8 @@ export class ProductScreen extends Component {
             ...button,
             disabled:
                 button.disabled ||
-                (button.value === SWITCHSIGN.value && this.pos.cashier._role === "minimal"),
+                (button.value === SWITCHSIGN.value &&
+                    this.pos.cashier._role === "minimal"),
             class: `
                 ${defaultLastRowValues.includes(button.value) ? "" : ""}
                 ${colorClassMap[button.value] || ""}
@@ -185,7 +201,10 @@ export class ProductScreen extends Component {
         if (this.pos.selectedOrder.isRefund && buttonValue !== "Backspace") {
             return this.dialog.add(AlertDialog, {
                 title: _t("%s update not allowed", this.pos.numpadMode),
-                body: _t("You can not change the %s of the refund order.", this.pos.numpadMode),
+                body: _t(
+                    "You can not change the %s of the refund order.",
+                    this.pos.numpadMode
+                ),
             });
         }
         this.numberBuffer.sendKey(buttonValue);
@@ -218,7 +237,10 @@ export class ProductScreen extends Component {
         };
     }
     async _getProductByBarcode(code) {
-        let product = this.pos.models["product.product"].getBy("barcode", code.base_code);
+        let product = this.pos.models["product.product"].getBy(
+            "barcode",
+            code.base_code
+        );
 
         if (!product) {
             const productPackaging = this.pos.models["product.uom"].getBy(
@@ -250,8 +272,8 @@ export class ProductScreen extends Component {
         }
 
         await this.pos.addLineToCurrentOrder(
-            { product_id: product, product_tmpl_id: product.product_tmpl_id },
-            { code },
+            {product_id: product, product_tmpl_id: product.product_tmpl_id},
+            {code},
             product.needToConfigure()
         );
         this.numberBuffer.reset();
@@ -260,7 +282,9 @@ export class ProductScreen extends Component {
     async _getPartnerByBarcode(code) {
         let partner = this.pos.models["res.partner"].getBy("barcode", code.code);
         if (!partner) {
-            partner = await this.pos.data.searchRead("res.partner", [["barcode", "=", code.code]]);
+            partner = await this.pos.data.searchRead("res.partner", [
+                ["barcode", "=", code.code],
+            ]);
             partner = partner.length > 0 && partner[0];
         }
         return partner;
@@ -287,7 +311,9 @@ export class ProductScreen extends Component {
      * It then uses these values to retrieve the product and add it to the current order.
      */
     async _barcodeGS1Action(parsed_results) {
-        const productBarcode = parsed_results.find((element) => element.type === "product");
+        const productBarcode = parsed_results.find(
+            (element) => element.type === "product"
+        );
         const lotBarcode = parsed_results.find((element) => element.type === "lot");
         const qty = parsed_results.find((element) => element.type === "quantity");
         const product = await this._getProductByBarcode(productBarcode);
@@ -298,7 +324,7 @@ export class ProductScreen extends Component {
             );
             return;
         }
-        const vals = { product_id: product, product_tmpl_id: product.product_tmpl_id };
+        const vals = {product_id: product, product_tmpl_id: product.product_tmpl_id};
         if (
             qty &&
             product.uom_id &&
@@ -308,7 +334,7 @@ export class ProductScreen extends Component {
             vals.qty = qty.value;
         }
 
-        await this.pos.addLineToCurrentOrder(vals, { code: lotBarcode });
+        await this.pos.addLineToCurrentOrder(vals, {code: lotBarcode});
         this.numberBuffer.reset();
         this.showOptionalProductPopupIfNeeded(product);
     }
@@ -330,7 +356,7 @@ export class ProductScreen extends Component {
     }
 
     async onPressEnterKey() {
-        const { searchProductWord } = this.pos;
+        const {searchProductWord} = this.pos;
         if (!searchProductWord) {
             return;
         }
@@ -339,7 +365,10 @@ export class ProductScreen extends Component {
         }
         const result = await this.loadProductFromDB();
         if (result.length === 0) {
-            this.notification.add(_t('No other products found for "%s".', searchProductWord), 3000);
+            this.notification.add(
+                _t('No other products found for "%s".', searchProductWord),
+                3000
+            );
         }
         if (this.state.previousSearchWord === searchProductWord) {
             this.state.currentOffset += result.length;
@@ -368,7 +397,7 @@ export class ProductScreen extends Component {
     }
 
     async loadProductFromDB() {
-        const { searchProductWord } = this.pos;
+        const {searchProductWord} = this.pos;
         if (!searchProductWord) {
             return;
         }
@@ -376,13 +405,17 @@ export class ProductScreen extends Component {
         this.pos.setSelectedCategory(0);
         const domain = this.loadProductFromDBDomain(searchProductWord);
 
-        const { limit_categories, iface_available_categ_ids } = this.pos.config;
+        const {limit_categories, iface_available_categ_ids} = this.pos.config;
         if (limit_categories && iface_available_categ_ids.length > 0) {
             const categIds = iface_available_categ_ids.map((categ) => categ.id);
             domain.push(["pos_categ_ids", "in", categIds]);
         }
 
-        const results = await this.pos.loadNewProducts(domain, this.state.currentOffset, 30);
+        const results = await this.pos.loadNewProducts(
+            domain,
+            this.state.currentOffset,
+            30
+        );
         return results["product.product"];
     }
 
@@ -397,7 +430,7 @@ export class ProductScreen extends Component {
                 options["presetVariant"] = searchedProduct[0];
             }
         }
-        await this.pos.addLineToCurrentOrder({ product_tmpl_id: product }, options);
+        await this.pos.addLineToCurrentOrder({product_tmpl_id: product}, options);
         this.showOptionalProductPopupIfNeeded(product);
     }
     showOptionalProductPopupIfNeeded(product) {

@@ -3,12 +3,14 @@
 import json
 import logging
 import os
-import requests
 import subprocess
 import time
+
+import requests
 import werkzeug
 
 from odoo import http
+
 from odoo.addons.iot_drivers.browser import Browser, BrowserState
 from odoo.addons.iot_drivers.driver import Driver
 from odoo.addons.iot_drivers.main import iot_devices

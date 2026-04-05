@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { isVisible } from "@web/core/utils/ui";
+import {isVisible} from "@web/core/utils/ui";
 
 export class FullScreenHeight extends Interaction {
     static selector = ".o_full_screen_height";
@@ -78,4 +78,6 @@ export class FullScreenHeight extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.full_screen_height", FullScreenHeight);
+registry
+    .category("public.interactions")
+    .add("website.full_screen_height", FullScreenHeight);

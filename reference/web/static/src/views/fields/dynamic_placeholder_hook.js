@@ -1,8 +1,8 @@
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { useComponent } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { DynamicPlaceholderPopover } from "./dynamic_placeholder_popover";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {useComponent} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {DynamicPlaceholderPopover} from "./dynamic_placeholder_popover";
 
 export function useDynamicPlaceholder(elementRef) {
     const TRIGGER_KEY = "#";
@@ -23,7 +23,9 @@ export function useDynamicPlaceholder(elementRef) {
         if (!element) {
             return;
         }
-        let rangeIndex = parseInt(element.getAttribute("data-oe-dynamic-placeholder-range-index"));
+        let rangeIndex = parseInt(
+            element.getAttribute("data-oe-dynamic-placeholder-range-index")
+        );
         // When the user cancel/close the popover, the path is empty.
         if (path) {
             defaultValue = defaultValue.replace("|||", "");
@@ -31,12 +33,15 @@ export function useDynamicPlaceholder(elementRef) {
                 defaultValue?.length ? ` ||| ${defaultValue}` : ""
             }}}`;
             const baseValue = element.value;
-            const splitedValue = [baseValue.slice(0, rangeIndex), baseValue.slice(rangeIndex)];
+            const splitedValue = [
+                baseValue.slice(0, rangeIndex),
+                baseValue.slice(rangeIndex),
+            ];
             const newValue =
                 splitedValue[0].replace(triggerKeyReplaceRegex, "") +
                 dynamicPlaceholder +
                 splitedValue[1];
-            const changes = { [ownerField.props.name]: newValue };
+            const changes = {[ownerField.props.name]: newValue};
             ownerField.props.record.update(changes);
             element.value = newValue;
 
@@ -63,8 +68,10 @@ export function useDynamicPlaceholder(elementRef) {
     async function open(opts) {
         if (!model) {
             return notification.add(
-                _t("You need to select a model before opening the dynamic placeholder selector."),
-                { type: "danger" }
+                _t(
+                    "You need to select a model before opening the dynamic placeholder selector."
+                ),
+                {type: "danger"}
             );
         }
         closeCallback = opts.closeCallback;
@@ -79,7 +86,10 @@ export function useDynamicPlaceholder(elementRef) {
         if (ev.target === element && ev.key === TRIGGER_KEY) {
             const currentRangeIndex = element.selectionStart;
             // +1 to take the trigger key char into account
-            element.setAttribute("data-oe-dynamic-placeholder-range-index", currentRangeIndex + 1);
+            element.setAttribute(
+                "data-oe-dynamic-placeholder-range-index",
+                currentRangeIndex + 1
+            );
             await open({
                 validateCallback: onDynamicPlaceholderValidate,
                 closeCallback: onDynamicPlaceholderClose,

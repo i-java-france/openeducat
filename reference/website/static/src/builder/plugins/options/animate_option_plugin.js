@@ -1,16 +1,20 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { getScrollingElement } from "@web/core/utils/scrolling";
-import { AnimateOption } from "./animate_option";
-import { _t } from "@web/core/l10n/translation";
-import { AnimateText } from "./animate_text";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { ancestors, closestElement, findFurthest } from "@html_editor/utils/dom_traversal";
-import { ANIMATE } from "@html_builder/utils/option_sequence";
-import { childNodeIndex, DIRECTIONS, nodeSize } from "@html_editor/utils/position";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { EmphasizeAnimatedText } from "./emphasize_animated_text";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {getScrollingElement} from "@web/core/utils/scrolling";
+import {AnimateOption} from "./animate_option";
+import {_t} from "@web/core/l10n/translation";
+import {AnimateText} from "./animate_text";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {
+    ancestors,
+    closestElement,
+    findFurthest,
+} from "@html_editor/utils/dom_traversal";
+import {ANIMATE} from "@html_builder/utils/option_sequence";
+import {childNodeIndex, DIRECTIONS, nodeSize} from "@html_editor/utils/position";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {EmphasizeAnimatedText} from "./emphasize_animated_text";
 
 /**
  * @typedef { Object } AnimateOptionShared
@@ -39,17 +43,24 @@ export class AnimateOptionPlugin extends Plugin {
                 Component: AnimateText,
                 props: {
                     config: this.config.getAnimateTextConfig(),
-                    getAnimatedTextOrCreateDefault: this.getAnimatedTextOrCreateDefault.bind(this),
+                    getAnimatedTextOrCreateDefault:
+                        this.getAnimatedTextOrCreateDefault.bind(this),
                     isActive: this.isAnimatedTextActive.bind(this),
                     isDisabled: this.isAnimatedTextDisabled.bind(this),
-                    animateOptionProps: { ...this.animateOptionProps, requireAnimation: true },
+                    animateOptionProps: {
+                        ...this.animateOptionProps,
+                        requireAnimation: true,
+                    },
                 },
                 isAvailable: isHtmlContentSupported,
             },
         ],
         toolbar_namespace_providers: [
             withSequence(90, (targetedNodes, editableSelection) =>
-                closestElement(editableSelection.commonAncestorContainer, ".o_animated_text")
+                closestElement(
+                    editableSelection.commonAncestorContainer,
+                    ".o_animated_text"
+                )
                     ? "compact"
                     : undefined
             ),
@@ -63,8 +74,9 @@ export class AnimateOptionPlugin extends Plugin {
         },
         normalize_handlers: this.normalize.bind(this),
         clean_for_save_handlers: this.cleanForSave.bind(this),
-        unsplittable_node_predicates: (node) => node.classList?.contains("o_animated_text"),
-        lower_panel_entries: withSequence(10, { Component: EmphasizeAnimatedText }),
+        unsplittable_node_predicates: (node) =>
+            node.classList?.contains("o_animated_text"),
+        lower_panel_entries: withSequence(10, {Component: EmphasizeAnimatedText}),
     };
 
     setup() {
@@ -74,38 +86,59 @@ export class AnimateOptionPlugin extends Plugin {
     getEffectsItems(isActiveItem) {
         const isOnAppearance = () => isActiveItem("animation_on_appearance_opt");
         return [
-            { className: "o_anim_fade_in", label: "Fade" },
-            { className: "o_anim_slide_in", label: "Slide", directionClass: "o_anim_from_right" },
-            { className: "o_anim_bounce_in", label: "Bounce" },
-            { className: "o_anim_rotate_in", label: "Rotate" },
-            { className: "o_anim_zoom_out", label: "Zoom Out" },
-            { className: "o_anim_zoom_in", label: "Zoom In" },
-            { className: "o_anim_flash", label: "Flash", check: isOnAppearance },
-            { className: "o_anim_pulse", label: "Pulse", check: isOnAppearance },
-            { className: "o_anim_shake", label: "Shake", check: isOnAppearance },
-            { className: "o_anim_tada", label: "Tada", check: isOnAppearance },
-            { className: "o_anim_flip_in_x", label: "Flip-In-X", check: isOnAppearance },
-            { className: "o_anim_flip_in_y", label: "Flip-In-Y", check: isOnAppearance },
+            {className: "o_anim_fade_in", label: "Fade"},
+            {
+                className: "o_anim_slide_in",
+                label: "Slide",
+                directionClass: "o_anim_from_right",
+            },
+            {className: "o_anim_bounce_in", label: "Bounce"},
+            {className: "o_anim_rotate_in", label: "Rotate"},
+            {className: "o_anim_zoom_out", label: "Zoom Out"},
+            {className: "o_anim_zoom_in", label: "Zoom In"},
+            {className: "o_anim_flash", label: "Flash", check: isOnAppearance},
+            {className: "o_anim_pulse", label: "Pulse", check: isOnAppearance},
+            {className: "o_anim_shake", label: "Shake", check: isOnAppearance},
+            {className: "o_anim_tada", label: "Tada", check: isOnAppearance},
+            {className: "o_anim_flip_in_x", label: "Flip-In-X", check: isOnAppearance},
+            {className: "o_anim_flip_in_y", label: "Flip-In-Y", check: isOnAppearance},
         ];
     }
     getDirectionsItems() {
         const isNotSlideIn = (editingElement) =>
             !editingElement.classList.contains("o_anim_slide_in");
-        const isRotate = (editingElement) => editingElement.classList.contains("o_anim_rotate_in");
+        const isRotate = (editingElement) =>
+            editingElement.classList.contains("o_anim_rotate_in");
         const isNotRotate = (editingElement) => !isRotate(editingElement);
 
         return [
-            { className: "", label: "In place", check: isNotSlideIn },
+            {className: "", label: "In place", check: isNotSlideIn},
 
-            { className: "o_anim_from_right", label: "From right", check: isNotRotate },
-            { className: "o_anim_from_left", label: "From left", check: isNotRotate },
-            { className: "o_anim_from_bottom", label: "From bottom", check: isNotRotate },
-            { className: "o_anim_from_top", label: "From top", check: isNotRotate },
+            {className: "o_anim_from_right", label: "From right", check: isNotRotate},
+            {className: "o_anim_from_left", label: "From left", check: isNotRotate},
+            {className: "o_anim_from_bottom", label: "From bottom", check: isNotRotate},
+            {className: "o_anim_from_top", label: "From top", check: isNotRotate},
 
-            { className: "o_anim_from_top_right", label: "From top right", check: isRotate },
-            { className: "o_anim_from_top_left", label: "From top left", check: isRotate },
-            { className: "o_anim_from_bottom_right", label: "From bottom right", check: isRotate },
-            { className: "o_anim_from_bottom_left", label: "From bottom left", check: isRotate },
+            {
+                className: "o_anim_from_top_right",
+                label: "From top right",
+                check: isRotate,
+            },
+            {
+                className: "o_anim_from_top_left",
+                label: "From top left",
+                check: isRotate,
+            },
+            {
+                className: "o_anim_from_bottom_right",
+                label: "From bottom right",
+                check: isRotate,
+            },
+            {
+                className: "o_anim_from_bottom_left",
+                label: "From bottom left",
+                check: isRotate,
+            },
         ];
     }
     async forceAnimation(editingElement) {
@@ -125,10 +158,12 @@ export class AnimateOptionPlugin extends Plugin {
             editingElement.addEventListener(
                 "animationend",
                 () => {
-                    this.scrollingElement.classList.remove("o_wanim_overflow_xy_hidden");
+                    this.scrollingElement.classList.remove(
+                        "o_wanim_overflow_xy_hidden"
+                    );
                     editingElement.classList.remove("o_animating");
                 },
-                { once: true }
+                {once: true}
             );
         }
     }
@@ -147,10 +182,10 @@ export class AnimateOptionPlugin extends Plugin {
 
         const existingAnimatedTextEl = this.getAnimatedText();
         if (existingAnimatedTextEl) {
-            return { element: existingAnimatedTextEl, onReset: resetAnimatedText };
+            return {element: existingAnimatedTextEl, onReset: resetAnimatedText};
         }
         const savePoint = this.dependencies.history.makeSavePoint();
-        const { element: createdAnimatedTextEl, didRemoveOtherTextAnimation } =
+        const {element: createdAnimatedTextEl, didRemoveOtherTextAnimation} =
             this.createDefaultTextAnimation();
         if (createdAnimatedTextEl) {
             return {
@@ -163,7 +198,7 @@ export class AnimateOptionPlugin extends Plugin {
             _t(
                 "Cannot apply this option on current text selection. Try clearing the format and try again."
             ),
-            { type: "danger", sticky: true }
+            {type: "danger", sticky: true}
         );
         return {};
     }
@@ -171,7 +206,7 @@ export class AnimateOptionPlugin extends Plugin {
      * @return {HTMLElement?} The `commonAncestorContainer` after the split
      * (null if splits are prevented by an unsplittable node)
      */
-    splitForAnimatedText({ anchorNode, focusNode, commonAncestorContainer }) {
+    splitForAnimatedText({anchorNode, focusNode, commonAncestorContainer}) {
         let commonAncestor = commonAncestorContainer;
         for (let [node, forward] of [
             [anchorNode, true],
@@ -179,8 +214,13 @@ export class AnimateOptionPlugin extends Plugin {
         ]) {
             let needToMeetCommonAncestor =
                 node !== commonAncestor && node.parentNode !== commonAncestor;
-            let needToMeetAnimatedTextAncestor = !!closestElement(node, ".o_animated_text");
-            let updatedCommonAncestor = needToMeetCommonAncestor ? undefined : commonAncestor;
+            let needToMeetAnimatedTextAncestor = !!closestElement(
+                node,
+                ".o_animated_text"
+            );
+            let updatedCommonAncestor = needToMeetCommonAncestor
+                ? undefined
+                : commonAncestor;
 
             // Go up to the common ancestor of the selection, or to the
             // containing animated text (whichever is the furthest)
@@ -193,7 +233,11 @@ export class AnimateOptionPlugin extends Plugin {
                 }
                 const updatingCommonAncestor = commonAncestor === node.parentNode;
                 const splitIndex = childNodeIndex(node);
-                if (forward ? splitIndex > 0 : splitIndex < node.parentNode.childNodes.length - 1) {
+                if (
+                    forward
+                        ? splitIndex > 0
+                        : splitIndex < node.parentNode.childNodes.length - 1
+                ) {
                     // Split the node if needed, abort if unsplittable (unless it is animated text)
                     if (
                         this.dependencies.split.isUnsplittable(node.parentNode) &&
@@ -248,13 +292,15 @@ export class AnimateOptionPlugin extends Plugin {
         if (!commonAncestor) {
             return {};
         }
-        const { startContainer, endContainer, direction } = selection;
+        const {startContainer, endContainer, direction} = selection;
 
         const range = new Range();
         range.setStartBefore(
             findFurthest(startContainer, commonAncestor, () => true) || startContainer
         );
-        range.setEndAfter(findFurthest(endContainer, commonAncestor, () => true) || endContainer);
+        range.setEndAfter(
+            findFurthest(endContainer, commonAncestor, () => true) || endContainer
+        );
         const span = this.document.createElement("span");
         range.surroundContents(span);
         // Remove animated text inside the span and containing the span (the ancestors have been split so it only contains the span)
@@ -287,7 +333,7 @@ export class AnimateOptionPlugin extends Plugin {
         );
         this.dependencies.history.addStep();
 
-        return { element: span, didRemoveOtherTextAnimation };
+        return {element: span, didRemoveOtherTextAnimation};
     }
     /**
      * Returns the element that is an animated text that corresponds to the
@@ -296,8 +342,12 @@ export class AnimateOptionPlugin extends Plugin {
      * @returns {HTMLElement?}
      */
     getAnimatedText() {
-        const selection = this.dependencies.selection.getSelectionData().editableSelection;
-        const ancestor = closestElement(selection.commonAncestorContainer, ".o_animated_text");
+        const selection =
+            this.dependencies.selection.getSelectionData().editableSelection;
+        const ancestor = closestElement(
+            selection.commonAncestorContainer,
+            ".o_animated_text"
+        );
         if (ancestor) {
             const selectionText = selection.textContent().replace(/\s+/g, " ").trim();
             const ancestorText = ancestor.innerText.replace(/\s+/g, " ").trim();
@@ -341,7 +391,7 @@ export class AnimateOptionPlugin extends Plugin {
             img.loading = "eager";
         }
     }
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         for (const el of root.querySelectorAll(".o_animate_preview")) {
             el.classList.remove("o_animate_preview");
         }
@@ -359,7 +409,7 @@ export class SetAnimationModeAction extends BuilderAction {
     isApplied() {
         return true;
     }
-    async clean({ editingElement, value: effectName, nextAction }) {
+    async clean({editingElement, value: effectName, nextAction}) {
         this.scrollingElement.classList.remove("o_wanim_overflow_xy_hidden");
         editingElement.classList.remove(
             "o_animating",
@@ -384,7 +434,9 @@ export class SetAnimationModeAction extends BuilderAction {
             await this.getResource("remove_hover_effect_handlers")[0](editingElement);
         }
 
-        const isNextAnimationFadein = this.animationWithFadein.includes(nextAction.value);
+        const isNextAnimationFadein = this.animationWithFadein.includes(
+            nextAction.value
+        );
         if (!isNextAnimationFadein) {
             this._removeEffectAndDirectionClasses(editingElement.classList);
             editingElement.style.setProperty("--wanim-intensity", "");
@@ -393,7 +445,7 @@ export class SetAnimationModeAction extends BuilderAction {
         }
     }
 
-    async apply({ editingElement, value: effectName, params: { forceAnimation } }) {
+    async apply({editingElement, value: effectName, params: {forceAnimation}}) {
         if (this.animationWithFadein.includes(effectName)) {
             editingElement.classList.add("o_anim_fade_in");
         }
@@ -431,11 +483,11 @@ export class SetAnimationModeAction extends BuilderAction {
     _removeEffectAndDirectionClasses(targetClassList) {
         const classes = this.dependencies.animateOption
             .getEffectsItems()
-            .map(({ className }) => className)
+            .map(({className}) => className)
             .concat(
                 this.dependencies.animateOption
                     .getDirectionsItems()
-                    .map(({ className }) => className)
+                    .map(({className}) => className)
                     .filter(Boolean)
             );
 
@@ -448,13 +500,15 @@ export class SetAnimationModeAction extends BuilderAction {
 export class SetAnimateIntensityAction extends BuilderAction {
     static id = "setAnimateIntensity";
     static dependencies = ["animateOption"];
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         const intensity = parseInt(
-            this.window.getComputedStyle(editingElement).getPropertyValue("--wanim-intensity")
+            this.window
+                .getComputedStyle(editingElement)
+                .getPropertyValue("--wanim-intensity")
         );
         return intensity;
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.style.setProperty("--wanim-intensity", `${value}`);
         this.dependencies.animateOption.forceAnimation(editingElement);
     }
@@ -466,24 +520,24 @@ export class ForceAnimationAction extends BuilderAction {
     isActive() {
         return true;
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         this.dependencies.animateOption.forceAnimation(editingElement);
     }
 }
 export class SetAnimationEffectAction extends BuilderAction {
     static id = "setAnimationEffect";
     static dependencies = ["animateOption"];
-    isApplied({ editingElement, value: className }) {
+    isApplied({editingElement, value: className}) {
         return editingElement.classList.contains(className);
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         const classNames = this.dependencies.animateOption
             .getEffectsItems()
-            .map(({ className }) => className)
+            .map(({className}) => className)
             .concat(
                 this.dependencies.animateOption
                     .getDirectionsItems()
-                    .map(({ className }) => className)
+                    .map(({className}) => className)
             );
         for (const className of classNames) {
             if (editingElement.classList.contains(className)) {
@@ -491,7 +545,11 @@ export class SetAnimationEffectAction extends BuilderAction {
             }
         }
     }
-    apply({ editingElement, params: { mainParam: directionClassName }, value: effectClassName }) {
+    apply({
+        editingElement,
+        params: {mainParam: directionClassName},
+        value: effectClassName,
+    }) {
         if (directionClassName) {
             editingElement.classList.add(directionClassName);
         }

@@ -1,10 +1,10 @@
-from odoo import _, models, Command
-from odoo.tools import float_repr, is_html_empty, html2plaintext, cleanup_xml_node
-from lxml import etree
-
+import logging
 from datetime import datetime
 
-import logging
+from lxml import etree
+
+from odoo import Command, _, models
+from odoo.tools import cleanup_xml_node, float_repr, html2plaintext, is_html_empty
 
 _logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { _t } from "@web/core/l10n/translation";
-import { reactive } from "@odoo/owl";
-import { TableAlignSelector } from "./table_align_selector";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {_t} from "@web/core/l10n/translation";
+import {reactive} from "@odoo/owl";
+import {TableAlignSelector} from "./table_align_selector";
 
 const verticalAlignmentItems = [
     {
@@ -66,11 +66,12 @@ export class TableAlignPlugin extends Plugin {
         remove_all_formats_handlers: this.setVerticalAlignment.bind(this),
 
         /** Predicates */
-        has_format_predicates: (node) => closestElement(node, "td, th")?.style.verticalAlign,
+        has_format_predicates: (node) =>
+            closestElement(node, "td, th")?.style.verticalAlign,
     };
 
     setup() {
-        this.verticalAlignMode = reactive({ displayName: "" });
+        this.verticalAlignMode = reactive({displayName: ""});
     }
 
     get currentVerticalAlign() {

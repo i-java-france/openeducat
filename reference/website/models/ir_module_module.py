@@ -1,16 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+from collections import OrderedDict, defaultdict
+
 import werkzeug
-from collections import defaultdict, OrderedDict
 
 from odoo import api, fields, models
-from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.modules import Manifest
-from odoo.tools import escape_psql, split_every, SQL
+from odoo.tools import SQL, split_every
 from odoo.tools.constants import PREFETCH_MAX
+
+from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 _logger = logging.getLogger(__name__)
 
@@ -95,7 +97,7 @@ class IrModuleModule(models.Model):
                     for website in websites_to_update:
                         module._theme_load(website)
 
-        return super(IrModuleModule, self).write(vals)
+        return super().write(vals)
 
     def _get_module_data(self, model_name):
         """
@@ -436,7 +438,7 @@ class IrModuleModule(models.Model):
 
     @api.model
     def update_list(self):
-        res = super(IrModuleModule, self).update_list()
+        res = super().update_list()
         self.update_theme_images()
         return res
 

@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
 
 from odoo import http
-from odoo.addons.website_event.controllers.community import EventCommunityController
 from odoo.http import request
+
+from odoo.addons.website_event.controllers.community import EventCommunityController
 
 
 class WebsiteEventTrackQuizCommunityController(EventCommunityController):

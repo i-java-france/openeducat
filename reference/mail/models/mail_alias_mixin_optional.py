@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
@@ -116,7 +115,7 @@ class MailAliasMixinOptional(models.AbstractModel):
             ]
             if alias_create_values:
                 aliases = self.env['mail.alias'].sudo().create(alias_create_values)
-                for record, alias in zip(self.filtered(lambda rec: not rec.alias_id), aliases):
+                for record, alias in zip(self.filtered(lambda rec: not rec.alias_id), aliases, strict=False):
                     record.alias_id = alias.id
 
         alias_vals, record_vals = self._alias_filter_fields(vals, filters=self.ALIAS_WRITEABLE_FIELDS)

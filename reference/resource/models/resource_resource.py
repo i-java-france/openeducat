@@ -1,16 +1,25 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from copy import deepcopy
 from collections import defaultdict
+from copy import deepcopy
+from datetime import datetime, time, timedelta
+
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, timedelta, time
 from pytz import timezone
 
 from odoo import api, fields, models
-from odoo.addons.base.models.res_partner import _tz_get
-from odoo.tools import get_lang, babel_locale_parse
+from odoo.tools import babel_locale_parse, get_lang
+from odoo.tools.date_utils import (
+    localized,
+    sum_intervals,
+    to_timezone,
+    weekend,
+    weeknumber,
+    weekstart,
+)
 from odoo.tools.intervals import Intervals
-from odoo.tools.date_utils import localized, sum_intervals, to_timezone, weeknumber, weekstart, weekend
+
+from odoo.addons.base.models.res_partner import _tz_get
 
 
 class ResourceResource(models.Model):
@@ -66,7 +75,7 @@ class ResourceResource(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for values in vals_list:
-            if values.get('company_id') and not 'calendar_id' in values:
+            if values.get('company_id') and 'calendar_id' not in values:
                 values['calendar_id'] = self.env['res.company'].browse(values['company_id']).resource_calendar_id.id
             if not values.get('tz'):
                 # retrieve timezone on user or calendar
@@ -78,7 +87,7 @@ class ResourceResource(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", resource.name)) for resource, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", resource.name)) for resource, vals in zip(self, vals_list, strict=False)]
 
     def write(self, vals):
         if self.env.context.get('check_idempotence') and len(self) == 1:

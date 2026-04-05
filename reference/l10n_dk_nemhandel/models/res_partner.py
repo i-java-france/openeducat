@@ -1,8 +1,9 @@
 import logging
-import requests
-from markupsafe import Markup
 from hashlib import md5
 from urllib import parse
+
+import requests
+from markupsafe import Markup
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, exceptions, fields, models, _
-from odoo.addons.mail.models.mail_alias import dot_atom_text
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import UserError
+
+from odoo.addons.mail.models.mail_alias import dot_atom_text
 
 
 class MailAliasDomain(models.Model):

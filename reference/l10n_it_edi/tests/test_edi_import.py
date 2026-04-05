@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 import uuid
-from freezegun import freeze_time
 from unittest.mock import patch
 
-from odoo import fields, sql_db, tools, Command
+from freezegun import freeze_time
+
+from odoo import Command, fields, sql_db, tools
 from odoo.exceptions import ValidationError
 from odoo.tests import new_test_user, tagged
+
 from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
-import logging
 _logger = logging.getLogger(__name__)
 
 

@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { registry } from "@web/core/registry";
-import { FormController } from "@web/views/form/form_controller";
-import { formView } from "@web/views/form/form_view";
+import {_t} from "@web/core/l10n/translation";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {registry} from "@web/core/registry";
+import {FormController} from "@web/views/form/form_controller";
+import {formView} from "@web/views/form/form_view";
 
 export class FleetFormController extends FormController {
     /**

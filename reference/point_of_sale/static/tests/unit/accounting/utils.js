@@ -1,4 +1,4 @@
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * We use a dedicated method for the price check because we don't want to use
@@ -40,7 +40,12 @@ export const getFilledOrderForPriceCheck = async (store, data = {}) => {
     return order;
 };
 
-export const prepareRoundingVals = (store, roundingAmount, roundingMethod, onlyCash = true) => {
+export const prepareRoundingVals = (
+    store,
+    roundingAmount,
+    roundingMethod,
+    onlyCash = true
+) => {
     const config = store.config;
     const product1 = store.models["product.template"].get(15);
     const product2 = store.models["product.template"].get(16);
@@ -62,5 +67,5 @@ export const prepareRoundingVals = (store, roundingAmount, roundingMethod, onlyC
         strategy: "add_invoice_line",
     });
 
-    return { config, cashPm, cardPm };
+    return {config, cashPm, cardPm};
 };

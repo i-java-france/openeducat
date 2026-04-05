@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.tools import convert
 
 
@@ -15,7 +14,7 @@ class PosConfig(models.Model):
     default_screen = fields.Selection([('tables', 'Tables'), ('register', 'Register')], string='Default Screen', default='tables')
 
     def _get_forbidden_change_fields(self):
-        forbidden_keys = super(PosConfig, self)._get_forbidden_change_fields()
+        forbidden_keys = super()._get_forbidden_change_fields()
         forbidden_keys.append('floor_ids')
         return forbidden_keys
 

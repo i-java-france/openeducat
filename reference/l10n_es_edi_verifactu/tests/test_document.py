@@ -1,11 +1,13 @@
 import datetime
-from freezegun import freeze_time
 from unittest import mock
 
-from odoo import _, Command
-from odoo.exceptions import UserError, RedirectWarning, AccessError
+from freezegun import freeze_time
+
+from odoo import Command, _
+from odoo.exceptions import AccessError, RedirectWarning, UserError
 from odoo.tests import tagged
 from odoo.tools import zeep
+
 from .common import TestL10nEsEdiVerifactuCommon
 
 

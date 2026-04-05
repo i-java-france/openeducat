@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
 from itertools import product
 
 from odoo import Command, _, api, models
 from odoo.exceptions import RedirectWarning
+
 from .eu_account_map import EU_ACCOUNT_MAP
 from .eu_field_map import EU_FIELD_MAP
 from .eu_tag_map import EU_TAG_MAP

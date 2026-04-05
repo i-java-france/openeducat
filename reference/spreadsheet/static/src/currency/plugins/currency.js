@@ -1,9 +1,9 @@
-import { EvaluationError, helpers, registries } from "@odoo/o-spreadsheet";
-import { OdooUIPlugin } from "@spreadsheet/plugins";
-import { toServerDateString } from "@spreadsheet/helpers/helpers";
-import { _t } from "@web/core/l10n/translation";
-const { featurePluginRegistry } = registries;
-const { createCurrencyFormat } = helpers;
+import {EvaluationError, helpers, registries} from "@odoo/o-spreadsheet";
+import {OdooUIPlugin} from "@spreadsheet/plugins";
+import {toServerDateString} from "@spreadsheet/helpers/helpers";
+import {_t} from "@web/core/l10n/translation";
+const {featurePluginRegistry} = registries;
+const {createCurrencyFormat} = helpers;
 
 /**
  * @typedef Currency
@@ -51,12 +51,16 @@ export class CurrencyPlugin extends OdooUIPlugin {
      * @returns {number|string}
      */
     getCurrencyRate(from, to, date, companyId) {
-        const data = this.serverData.batch.get("res.currency.rate", "get_rates_for_spreadsheet", {
-            from,
-            to,
-            date: date ? toServerDateString(date) : undefined,
-            company_id: companyId,
-        });
+        const data = this.serverData.batch.get(
+            "res.currency.rate",
+            "get_rates_for_spreadsheet",
+            {
+                from,
+                to,
+                date: date ? toServerDateString(date) : undefined,
+                company_id: companyId,
+            }
+        );
         const rate = data !== undefined ? data.rate : undefined;
         if (rate === false) {
             throw new EvaluationError(_t("Currency rate unavailable."));

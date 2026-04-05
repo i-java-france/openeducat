@@ -1,10 +1,10 @@
-import { applyFunDependOnSelectorAndExclude } from "@html_builder/plugins/utils";
-import { filterExtends } from "@html_builder/utils/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { BaseWebsiteBackgroundOption } from "./background_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { withSequence } from "@html_editor/utils/resource";
+import {applyFunDependOnSelectorAndExclude} from "@html_builder/plugins/utils";
+import {filterExtends} from "@html_builder/utils/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {BaseWebsiteBackgroundOption} from "./background_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {withSequence} from "@html_editor/utils/resource";
 
 /**
  * @typedef { Object } WebsiteParallaxShared
@@ -21,7 +21,8 @@ class WebsiteParallaxPlugin extends Plugin {
             SetParallaxTypeAction,
         },
         on_bg_image_hide_handlers: this.onBgImageHide.bind(this),
-        content_not_editable_selectors: ".s_parallax_bg, section.s_parallax > .oe_structure",
+        content_not_editable_selectors:
+            ".s_parallax_bg, section.s_parallax > .oe_structure",
         system_node_selectors: ".s_parallax_bg",
         get_target_element_providers: withSequence(1, this.getTargetElement),
     };
@@ -31,7 +32,7 @@ class WebsiteParallaxPlugin extends Plugin {
             BaseWebsiteBackgroundOption
         );
     }
-    applyParallaxType({ editingElement, value }) {
+    applyParallaxType({editingElement, value}) {
         const isParallax = value !== "none";
         editingElement.classList.toggle("parallax", isParallax);
         editingElement.classList.toggle("s_parallax_is_fixed", value === "fixed");
@@ -62,10 +63,16 @@ class WebsiteParallaxPlugin extends Plugin {
                 parallaxEl = document.createElement("span");
                 parallaxEl.classList.add("s_parallax_bg");
                 editingElement.prepend(parallaxEl);
-                this.dependencies.backgroundImageOption.changeEditingEl(editingElement, parallaxEl);
+                this.dependencies.backgroundImageOption.changeEditingEl(
+                    editingElement,
+                    parallaxEl
+                );
             }
         } else if (parallaxEl) {
-            this.dependencies.backgroundImageOption.changeEditingEl(parallaxEl, editingElement);
+            this.dependencies.backgroundImageOption.changeEditingEl(
+                parallaxEl,
+                editingElement
+            );
             parallaxEl.remove();
         }
     }
@@ -97,7 +104,9 @@ class WebsiteParallaxPlugin extends Plugin {
         }
     }
     getTargetElement(editingEl) {
-        return editingEl.classList.contains("s_parallax_bg") ? editingEl.parentElement : editingEl;
+        return editingEl.classList.contains("s_parallax_bg")
+            ? editingEl.parentElement
+            : editingEl;
     }
 }
 export class SetParallaxTypeAction extends BuilderAction {
@@ -106,7 +115,7 @@ export class SetParallaxTypeAction extends BuilderAction {
     apply(context) {
         this.dependencies.websiteParallaxPlugin.applyParallaxType(context);
     }
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         const attributeValue = parseFloat(
             editingElement.dataset.scrollBackgroundRatio?.trim() || 0
         );
@@ -133,4 +142,6 @@ export class SetParallaxTypeAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(WebsiteParallaxPlugin.id, WebsiteParallaxPlugin);
+registry
+    .category("website-plugins")
+    .add(WebsiteParallaxPlugin.id, WebsiteParallaxPlugin);

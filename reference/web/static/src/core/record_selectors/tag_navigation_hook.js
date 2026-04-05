@@ -1,5 +1,5 @@
-import { useRef } from "@odoo/owl";
-import { useNavigation } from "../navigation/navigation";
+import {useRef} from "@odoo/owl";
+import {useNavigation} from "../navigation/navigation";
 
 /**
  * This hook allows to navigate between tags in a record selector. It also
@@ -35,7 +35,9 @@ export function useTagNavigation(refName, options = {}) {
     const canNavigateFromInput = (navigator, navNext) => {
         const el = navigator.activeItem.el;
         if (el.classList.contains("o-autocomplete--input")) {
-            const menu = tagsContainerRef.el.querySelector(".o-autocomplete--dropdown-menu");
+            const menu = tagsContainerRef.el.querySelector(
+                ".o-autocomplete--dropdown-menu"
+            );
             const index = navNext ? el.value.length : 0;
             if (el.selectionStart !== index || menu) {
                 return false;
@@ -46,9 +48,10 @@ export function useTagNavigation(refName, options = {}) {
 
     useNavigation(tagsContainerRef, {
         getItems: () =>
-            tagsContainerRef.el?.querySelectorAll(":scope .o_tag, :scope .o-autocomplete--input") ??
-            [],
-        isNavigationAvailable: ({ navigator, target }) =>
+            tagsContainerRef.el?.querySelectorAll(
+                ":scope .o_tag, :scope .o-autocomplete--input"
+            ) ?? [],
+        isNavigationAvailable: ({navigator, target}) =>
             isEnabled() && navigator.isFocused && navigator.contains(target),
         hotkeys: {
             tab: null,
@@ -60,17 +63,17 @@ export function useTagNavigation(refName, options = {}) {
             arrowdown: null,
             backspace: {
                 bypassEditableProtection: true,
-                isAvailable: ({ target }) => canRemoveTag(target),
+                isAvailable: ({target}) => canRemoveTag(target),
                 callback: (navigator) => onBackspaceKeydown(navigator),
             },
             arrowleft: {
                 bypassEditableProtection: true,
-                isAvailable: ({ navigator }) => canNavigateFromInput(navigator, false),
+                isAvailable: ({navigator}) => canNavigateFromInput(navigator, false),
                 callback: (navigator) => navigator.previous(),
             },
             arrowright: {
                 bypassEditableProtection: true,
-                isAvailable: ({ navigator }) => canNavigateFromInput(navigator, true),
+                isAvailable: ({navigator}) => canNavigateFromInput(navigator, true),
                 callback: (navigator) => navigator.next(),
             },
         },

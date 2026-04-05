@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, time, timedelta
+
 import pytz
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.date_utils import sum_intervals
-from odoo.tools.intervals import Intervals
 from odoo.tools.float_utils import float_compare
+from odoo.tools.intervals import Intervals
 
 
 class HrLeave(models.Model):

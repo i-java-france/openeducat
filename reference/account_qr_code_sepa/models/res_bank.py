@@ -1,7 +1,10 @@
-# -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
-from odoo.addons.account.tools import is_valid_structured_reference, sanitize_structured_reference
+from odoo import _, api, models
+
+from odoo.addons.account.tools import (
+    is_valid_structured_reference,
+    sanitize_structured_reference,
+)
 
 
 class ResPartnerBank(models.Model):

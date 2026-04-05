@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api
-from odoo.fields import Domain
-
-import ast
 import json
+
+from odoo import api, models
+from odoo.fields import Domain
 
 
 class LoyaltyReward(models.Model):

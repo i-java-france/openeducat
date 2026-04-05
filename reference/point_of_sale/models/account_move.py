@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 
 
 class AccountMove(models.Model):
@@ -34,7 +33,7 @@ class AccountMove(models.Model):
                 move.always_tax_exigible = True
 
     def _stock_account_get_last_step_stock_moves(self):
-        stock_moves = super(AccountMove, self)._stock_account_get_last_step_stock_moves()
+        stock_moves = super()._stock_account_get_last_step_stock_moves()
         for invoice in self.filtered(lambda x: x.move_type == 'out_invoice'):
             stock_moves += invoice.sudo().mapped('pos_order_ids.picking_ids.move_ids').filtered(lambda x: x.state == 'done' and x.location_dest_id.usage == 'customer')
         for invoice in self.filtered(lambda x: x.move_type == 'out_refund'):
@@ -45,7 +44,7 @@ class AccountMove(models.Model):
     def _get_invoiced_lot_values(self):
         self.ensure_one()
 
-        lot_values = super(AccountMove, self)._get_invoiced_lot_values()
+        lot_values = super()._get_invoiced_lot_values()
 
         if self.state == 'draft':
             return lot_values

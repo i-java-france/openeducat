@@ -1,9 +1,9 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { _t } from "@web/core/l10n/translation";
-import { clamp } from "@web/core/utils/numbers";
-import { pick } from "@web/core/utils/objects";
+import {_t} from "@web/core/l10n/translation";
+import {clamp} from "@web/core/utils/numbers";
+import {pick} from "@web/core/utils/objects";
 
 export class FacebookPage extends Interaction {
     static selector = ".o_facebook_page";
@@ -44,7 +44,11 @@ export class FacebookPage extends Interaction {
      * @param {Object} params
      */
     renderIframe(params) {
-        params.width = clamp(Math.floor(this.el.getBoundingClientRect().width), 180, 500);
+        params.width = clamp(
+            Math.floor(this.el.getBoundingClientRect().width),
+            180,
+            500
+        );
         if (this.previousWidth !== params.width) {
             this.previousWidth = params.width;
             const searchParams = new URLSearchParams(params);

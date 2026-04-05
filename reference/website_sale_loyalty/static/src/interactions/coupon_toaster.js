@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class CouponToaster extends Interaction {
     static selector = ".coupon-message";
@@ -13,18 +13,27 @@ export class CouponToaster extends Interaction {
         if (contentEl) {
             message = contentEl.innerHTML;
             if (titleEl) {
-                Object.assign(options, { title: titleEl.innerHTML });
+                Object.assign(options, {title: titleEl.innerHTML});
             }
         } else if (titleEl) {
             message = titleEl.innerHTML;
         }
 
         if (this.el.classList.contains("coupon-info-message")) {
-            this.services.notification.add(message, Object.assign({ type: "success" }, options));
+            this.services.notification.add(
+                message,
+                Object.assign({type: "success"}, options)
+            );
         } else if (this.el.classList.contains("coupon-error-message")) {
-            this.services.notification.add(message, Object.assign({ type: "danger" }, options));
+            this.services.notification.add(
+                message,
+                Object.assign({type: "danger"}, options)
+            );
         } else if (this.el.classList.contains("coupon-warning-message")) {
-            this.services.notification.add(message, Object.assign({ type: "warning" }, options));
+            this.services.notification.add(
+                message,
+                Object.assign({type: "warning"}, options)
+            );
         }
     }
 }

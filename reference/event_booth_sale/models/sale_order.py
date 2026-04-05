@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 
@@ -22,7 +22,7 @@ class SaleOrder(models.Model):
             so.event_booth_count = slot_mapped.get(so.id, 0)
 
     def action_confirm(self):
-        res = super(SaleOrder, self).action_confirm()
+        res = super().action_confirm()
         for so in self:
             if not any(line.service_tracking == 'event_booth' for line in so.order_line):
                 continue

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
         <!-- Account Tags Balance Sheet -->
@@ -34,7 +34,9 @@
         </record>
         <record id="account_tag_C_PASS" model="account.account.tag">
             <field name="name">Severance pay</field>
-            <field name="name@it">Trattamento di fine rapporto di lavoro subordinato</field>
+            <field
+                name="name@it"
+            >Trattamento di fine rapporto di lavoro subordinato</field>
             <field name="applicability">accounts</field>
         </record>
         <record id="account_tag_D_PASS" model="account.account.tag">
@@ -79,8 +81,12 @@
             <field name="applicability">accounts</field>
         </record>
         <record id="account_tag_D_PL" model="account.account.tag">
-            <field name="name">Value adjustments of financial assets and liabilities</field>
-            <field name="name@it">Rettifiche di valore di attività e passività finanziarie</field>
+            <field
+                name="name"
+            >Value adjustments of financial assets and liabilities</field>
+            <field
+                name="name@it"
+            >Rettifiche di valore di attività e passività finanziarie</field>
             <field name="applicability">accounts</field>
         </record>
         <record id="account_tag_E_PL" model="account.account.tag">

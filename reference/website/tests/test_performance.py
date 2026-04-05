@@ -1,14 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-from odoo.addons.base.tests.common import HttpCaseWithUserPortal, HttpCaseWithUserDemo
-
 from contextlib import closing
 
 from odoo.sql_db import categorize_query
-from odoo.tools import mute_logger
 from odoo.tests.common import tagged
+from odoo.tools import mute_logger
 
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo, HttpCaseWithUserPortal
 
 _logger = logging.getLogger(__name__)
 

@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as tourUtils from "@website_sale/js/tours/tour_utils";
 
 registry.category("web_tour.tours").add("test_validate_customer_info_error", {
     url: "/shop",
     steps: () => [
-        ...tourUtils.addToCart({ productName: "Test Product", expectUnloadPage: true }),
-        tourUtils.goToCart({ quantity: 1 }),
+        ...tourUtils.addToCart({productName: "Test Product", expectUnloadPage: true}),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Go to checkout",
             trigger: "a[name='website_sale_main_button']",
@@ -84,8 +84,8 @@ registry.category("web_tour.tours").add("test_validate_customer_info_error", {
 registry.category("web_tour.tours").add("test_checkout_b2c_carrier", {
     url: "/shop",
     steps: () => [
-        ...tourUtils.addToCart({ productName: "Test Product", expectUnloadPage: true }),
-        tourUtils.goToCart({ quantity: 1 }),
+        ...tourUtils.addToCart({productName: "Test Product", expectUnloadPage: true}),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Go to checkout",
             trigger: "a[name='website_sale_main_button']",
@@ -161,8 +161,8 @@ registry.category("web_tour.tours").add("test_checkout_b2c_carrier", {
 registry.category("web_tour.tours").add("test_checkout_b2c_love_code", {
     url: "/shop",
     steps: () => [
-        ...tourUtils.addToCart({ productName: "Test Product", expectUnloadPage: true }),
-        tourUtils.goToCart({ quantity: 1 }),
+        ...tourUtils.addToCart({productName: "Test Product", expectUnloadPage: true}),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Go to checkout",
             trigger: "a[name='website_sale_main_button']",
@@ -234,8 +234,8 @@ registry.category("web_tour.tours").add("test_checkout_b2c_love_code", {
 registry.category("web_tour.tours").add("test_checkout_b2b", {
     url: "/shop",
     steps: () => [
-        ...tourUtils.addToCart({ productName: "Test Product", expectUnloadPage: true }),
-        tourUtils.goToCart({ quantity: 1 }),
+        ...tourUtils.addToCart({productName: "Test Product", expectUnloadPage: true}),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Go to checkout",
             trigger: "a[name='website_sale_main_button']",
@@ -290,8 +290,8 @@ registry.category("web_tour.tours").add("test_checkout_b2b", {
 registry.category("web_tour.tours").add("test_checkout_b2c_mobile_barcode", {
     url: "/shop",
     steps: () => [
-        ...tourUtils.addToCart({ productName: "Test Product", expectUnloadPage: true }),
-        tourUtils.goToCart({ quantity: 1 }),
+        ...tourUtils.addToCart({productName: "Test Product", expectUnloadPage: true}),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Go to checkout",
             trigger: "a[name='website_sale_main_button']",

@@ -1,7 +1,7 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class InfoPageOption extends BaseOptionComponent {
     static template = "website.InfoPageOption";
@@ -19,4 +19,6 @@ class WebsiteInfoPageOption extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(WebsiteInfoPageOption.id, WebsiteInfoPageOption);
+registry
+    .category("website-plugins")
+    .add(WebsiteInfoPageOption.id, WebsiteInfoPageOption);

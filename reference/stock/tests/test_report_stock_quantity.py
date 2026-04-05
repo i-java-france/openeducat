@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
 
+from freezegun import freeze_time
+
 from odoo import fields, tests
 from odoo.fields import Command
 from odoo.tests import Form
-from freezegun import freeze_time
 
 
 class TestReportStockQuantity(tests.TransactionCase):
@@ -228,7 +228,7 @@ class TestReportStockQuantity(tests.TransactionCase):
             2.0, 1.0,   # today
             2.0, 1.0,
             1.0, 2.0,   # in two days
-        ]):
+        ], strict=False):
             self.assertEqual(qty_rd, qty, f"Incorrect qty for Date '{date_day}' Warehouse '{warehouse.display_name}'")
 
     def test_past_date_quantity_with_multistep_delivery(self):

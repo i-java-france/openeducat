@@ -1,4 +1,4 @@
-import { Component, onPatched, useEffect, useExternalListener, useRef } from "@odoo/owl";
+import {Component, onPatched, useEffect, useExternalListener, useRef} from "@odoo/owl";
 
 /**
  * @todo @phoenix i think that most of the "control" code in this component
@@ -7,7 +7,7 @@ import { Component, onPatched, useEffect, useExternalListener, useRef } from "@o
 export class Powerbox extends Component {
     static template = "html_editor.Powerbox";
     static props = {
-        document: { validate: (doc) => doc.constructor.name === "HTMLDocument" },
+        document: {validate: (doc) => doc.constructor.name === "HTMLDocument"},
         close: Function,
         state: Object,
         activateCommand: Function,
@@ -20,7 +20,7 @@ export class Powerbox extends Component {
         onPatched(() => {
             const activeCommand = ref.el.querySelector(".o-we-command.active");
             if (activeCommand) {
-                activeCommand.scrollIntoView({ block: "nearest", inline: "nearest" });
+                activeCommand.scrollIntoView({block: "nearest", inline: "nearest"});
             }
         });
 

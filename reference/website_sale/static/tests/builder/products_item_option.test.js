@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains, defineModels, models, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains, defineModels, models, onRpc} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,

@@ -1114,7 +1114,7 @@ class TestSalesTeam(SaleCommon):
 class TestSaleMailComposerUI(MailCommon, HttpCase):
     @classmethod
     def setUpClass(cls):
-        super(TestSaleMailComposerUI, cls).setUpClass()
+        super().setUpClass()
         cls.env['mail.alias.domain'].create({'name': 'example.com'})
         cls.partner = cls.env['res.partner'].create({
             'name': 'test customer',

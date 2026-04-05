@@ -1,7 +1,9 @@
-import requests
 import logging
 
+import requests
+
 from odoo import _
+
 REQUEST_TIMEOUT = 10
 
 _logger = logging.getLogger(__name__)

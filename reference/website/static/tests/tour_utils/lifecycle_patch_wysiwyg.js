@@ -1,12 +1,12 @@
-import { onMounted, onWillRender } from "@odoo/owl";
-import { patch } from "@web/core/utils/patch";
+import {onMounted, onWillRender} from "@odoo/owl";
+import {patch} from "@web/core/utils/patch";
 
 odoo.loader.bus.addEventListener("module-started", (e) => {
     if (e.detail.moduleName !== "@website/components/wysiwyg_adapter/wysiwyg_adapter") {
         return;
     }
 
-    const { WysiwygAdapterComponent } = e.detail.module;
+    const {WysiwygAdapterComponent} = e.detail.module;
 
     // Duplicated from "@website/../tests/tour_utils/lifecycle_dep_interaction"
     // Cannot be imported for some reason, probably because of this being lazy

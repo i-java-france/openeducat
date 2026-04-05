@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 function logText(displayText) {
     console.log(
@@ -14,8 +14,8 @@ registry.category("web_tour.tours").add("tourSessionOpenProductPerformance", {
             {
                 trigger: "body",
                 timeout: 25000,
-                async run({ waitFor }) {
-                    await waitFor("body:not(:has(.pos-loader))", { timeout: 20000 });
+                async run({waitFor}) {
+                    await waitFor("body:not(:has(.pos-loader))", {timeout: 20000});
                     const startTime = performance.timeOrigin;
                     const endTime = Date.now();
                     const loadingTimeSec = (endTime - startTime) / 1000;

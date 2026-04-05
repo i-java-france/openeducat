@@ -1,9 +1,9 @@
-import { parseEmail } from "@mail/utils/common/format";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { useService } from "@web/core/utils/hooks";
-import { isEmail } from "@web/core/utils/strings";
+import {parseEmail} from "@mail/utils/common/format";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {useService} from "@web/core/utils/hooks";
+import {isEmail} from "@web/core/utils/strings";
 
-import { Component, useExternalListener, useRef, useState } from "@odoo/owl";
+import {Component, useExternalListener, useRef, useState} from "@odoo/owl";
 /**
  * This class represents the popover opened when we detect that one of our recipients is missing an email
  * address in the RecipientsInput. It allows the user to correct this error and update the partner
@@ -11,15 +11,15 @@ import { Component, useExternalListener, useRef, useState } from "@odoo/owl";
  */
 export class RecipientsInputTagsListPopover extends Component {
     static props = {
-        tagToUpdate: { type: Object },
-        onUpdateTag: { type: Function },
-        close: { type: Function },
+        tagToUpdate: {type: Object},
+        onUpdateTag: {type: Function},
+        close: {type: Function},
     };
     static template = "mail.RecipientsInputTagsListPopover";
 
     setup() {
         this.orm = useService("orm");
-        this.state = useState({ value: "" });
+        this.state = useState({value: ""});
         this.popoverRef = useRef("tagsListPopoverRef");
         useExternalListener(window, "click", (ev) => {
             if (!this.popoverRef.el?.contains(ev.target)) {

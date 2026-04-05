@@ -3,49 +3,63 @@
 import ast
 import base64
 import datetime
-import dateutil
 import email
 import email.policy
 import encodings
 import hashlib
 import hmac
 import json
-import lxml
 import logging
-import pytz
 import time
-
 from collections import defaultdict, namedtuple
 from collections.abc import Iterable
 from email import message_from_string
 from email.message import EmailMessage
 from xmlrpc import client as xmlrpclib
 
+import dateutil
+import lxml
+import pytz
 from lxml import etree, html
 from markupsafe import Markup, escape
 from requests import Session
 from werkzeug import urls
 
 from odoo import _, api, exceptions, fields, models, tools
-from odoo.addons.mail.tools.discuss import Store
-from odoo.addons.mail.tools.web_push import (
-    push_to_end_point, DeviceUnreachableError,
-    ENCRYPTION_BLOCK_OVERHEAD, ENCRYPTION_HEADER_SIZE, MAX_PAYLOAD_SIZE
-)
-from odoo.exceptions import MissingError, AccessError
+from odoo.exceptions import AccessError, MissingError
 from odoo.fields import Domain
 from odoo.tools import (
-    is_html_empty, html_escape, html2plaintext,
-    clean_context, split_every, Query, SQL,
-    ormcache, is_list_of,
+    SQL,
+    clean_context,
+    html2plaintext,
+    html_escape,
+    is_html_empty,
+    is_list_of,
+    ormcache,
+    split_every,
 )
 from odoo.tools.mail import (
-    append_content_to_html, decode_message_header,
-    email_normalize, email_normalize_all, email_split,
-    email_split_and_format, email_split_and_format_normalize, email_split_and_normalize,
-    formataddr, html_sanitize,
+    append_content_to_html,
+    decode_message_header,
+    email_normalize,
+    email_normalize_all,
+    email_split,
+    email_split_and_format,
+    email_split_and_format_normalize,
+    email_split_and_normalize,
+    formataddr,
     generate_tracking_message_id,
+    html_sanitize,
     unfold_references,
+)
+
+from odoo.addons.mail.tools.discuss import Store
+from odoo.addons.mail.tools.web_push import (
+    ENCRYPTION_BLOCK_OVERHEAD,
+    ENCRYPTION_HEADER_SIZE,
+    MAX_PAYLOAD_SIZE,
+    DeviceUnreachableError,
+    push_to_end_point,
 )
 
 MAX_DIRECT_PUSH = 5
@@ -320,11 +334,11 @@ class MailThread(models.AbstractModel):
             self = self.with_context(mail_post_autofollow_author_skip=True)
 
         if self.env.context.get('tracking_disable'):
-            threads = super(MailThread, self).create(vals_list)
+            threads = super().create(vals_list)
             threads._track_discard()
             return threads
 
-        threads = super(MailThread, self).create(vals_list)
+        threads = super().create(vals_list)
         # subscribe uid unless asked not to
         if not self.env.context.get('mail_create_nosubscribe') and threads and self.env.user.active and not self.env.user.share:
             self.env['mail.followers']._insert_followers(
@@ -336,7 +350,7 @@ class MailThread(models.AbstractModel):
 
         # auto_subscribe: take values and defaults into account
         create_values_list = {}
-        for thread, values in zip(threads, vals_list):
+        for thread, values in zip(threads, vals_list, strict=False):
             create_values = dict(values)
             for key, val in self.env.context.items():
                 if key.startswith('default_') and key[8:] not in create_values:
@@ -402,7 +416,7 @@ class MailThread(models.AbstractModel):
         # discard pending tracking
         self._track_discard()
         self.env['mail.message'].sudo().search([('model', '=', self._name), ('res_id', 'in', self.ids)]).unlink()
-        res = super(MailThread, self).unlink()
+        res = super().unlink()
         self.env['mail.followers'].sudo().search(
             [('res_model', '=', self._name), ('res_id', 'in', self.ids)]
         ).unlink()
@@ -2087,7 +2101,7 @@ class MailThread(models.AbstractModel):
             sort_reverse=True,  # False < True, simplified writing sort
         )
 
-        for mail, partner in zip(emails_all, partners):
+        for mail, partner in zip(emails_all, partners, strict=False):
             mail_key = email_normalize(mail, strict=False) or mail
             for res_id in emails_key_res_ids[mail_key]:
                 # use an "OR" to avoid duplicates in returned recordset
@@ -2474,7 +2488,7 @@ class MailThread(models.AbstractModel):
 
             new_attachments = self._create_attachments_for_post(attachement_values_list, attachement_extra_list)
             attach_cid_mapping, attach_name_mapping = {}, {}
-            for attachment, (cid, name, token, _info) in zip(new_attachments, attachement_extra_list):
+            for attachment, (cid, name, token, _info) in zip(new_attachments, attachement_extra_list, strict=False):
                 if cid:
                     attach_cid_mapping[cid] = (attachment.id, token)
                 if name:
@@ -3231,7 +3245,7 @@ class MailThread(models.AbstractModel):
                 """, {'model_name': self._name, 'author_id': author_id, 'notification_type': notification_type})
         records = self.env.cr.fetchall()
         if records:
-            notif_ids, msg_ids = zip(*records)
+            notif_ids, msg_ids = zip(*records, strict=False)
             msg_ids = list(set(msg_ids))
             if notif_ids:
                 self.env['mail.notification'].browse(notif_ids).sudo().write({'notification_status': 'canceled'})
@@ -4528,7 +4542,7 @@ class MailThread(models.AbstractModel):
     def _get_model_description(self, model_name):
         if not model_name:
             return False
-        if not 'lang' in self.env.context:
+        if 'lang' not in self.env.context:
             raise ValueError(_('At this point lang should be correctly set'))
         return self.env['ir.model']._get(model_name).display_name  # one query for display name
 

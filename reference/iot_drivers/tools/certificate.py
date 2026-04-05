@@ -1,9 +1,10 @@
 import datetime
 import logging
+from pathlib import Path
+
 import requests
 from cryptography import x509
 from cryptography.x509.oid import NameOID
-from pathlib import Path
 
 from odoo.addons.iot_drivers.tools.helpers import (
     get_conf,

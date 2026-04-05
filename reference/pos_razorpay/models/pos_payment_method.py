@@ -1,5 +1,5 @@
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo import fields, models, api, _
 
 from .razorpay_pos_request import RazorpayPosRequest
 

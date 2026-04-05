@@ -1,9 +1,9 @@
-import { Message } from "@mail/core/common/message_model";
-import { patch } from "@web/core/utils/patch";
+import {Message} from "@mail/core/common/message_model";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Message} */
 const messagePatch = {
-    async remove({ removeFromThread = false } = {}) {
+    async remove({removeFromThread = false} = {}) {
         const data = await super.remove(...arguments);
         if (this.thread && removeFromThread) {
             this.thread.messages.forEach((message) => {

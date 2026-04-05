@@ -1,15 +1,15 @@
-import { Component, useState, xml } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
-import { redirect } from "@web/core/utils/urls";
-import { InstallModuleDialog } from "./install_module_dialog";
+import {Component, useState, xml} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {sprintf} from "@web/core/utils/strings";
+import {redirect} from "@web/core/utils/urls";
+import {InstallModuleDialog} from "./install_module_dialog";
 
 export const MODULE_STATUS = {
     NOT_INSTALLED: "NOT_INSTALLED",
@@ -20,7 +20,7 @@ export const MODULE_STATUS = {
 
 export class NewContentSystrayItem extends Component {
     static template = "website.NewContentSystrayItem";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
         onNewPage: Function,
     };
@@ -144,8 +144,8 @@ export class NewContentSystrayItem extends Component {
                 this.canInstall = user.isAdmin;
                 if (this.canInstall) {
                     const moduleNames = this.state.newContentElements
-                        .filter(({ status }) => status === MODULE_STATUS.NOT_INSTALLED)
-                        .map(({ moduleName }) => moduleName);
+                        .filter(({status}) => status === MODULE_STATUS.NOT_INSTALLED)
+                        .map(({moduleName}) => moduleName);
                     this.modulesInfo = {};
                     for (const record of await this.orm
                         .cache()
@@ -154,7 +154,10 @@ export class NewContentSystrayItem extends Component {
                             [["name", "in", moduleNames]],
                             ["id", "name", "shortdesc"]
                         )) {
-                        this.modulesInfo[record.name] = { id: record.id, name: record.shortdesc };
+                        this.modulesInfo[record.name] = {
+                            id: record.id,
+                            name: record.shortdesc,
+                        };
                     }
                 }
             })()
@@ -175,7 +178,7 @@ export class NewContentSystrayItem extends Component {
                     {
                         models: modelsToCheck,
                     },
-                    { cache: true }
+                    {cache: true}
                 );
                 for (const [model, access] of Object.entries(accesses)) {
                     elementsToUpdate[model].isDisplayed = access;
@@ -189,31 +192,33 @@ export class NewContentSystrayItem extends Component {
         // Preload the new page templates so they are ready as soon as possible
         rpc(
             "/website/get_new_page_templates",
-            { context: { website_id: this.website.currentWebsiteId } },
-            { cache: true, silent: true }
+            {context: {website_id: this.website.currentWebsiteId}},
+            {cache: true, silent: true}
         );
     }
 
     get sortedNewContentElements() {
         return this.state.newContentElements
-            .filter(({ status }) => status !== MODULE_STATUS.NOT_INSTALLED)
+            .filter(({status}) => status !== MODULE_STATUS.NOT_INSTALLED)
             .concat(
                 this.state.newContentElements.filter(
-                    ({ status }) => status === MODULE_STATUS.NOT_INSTALLED
+                    ({status}) => status === MODULE_STATUS.NOT_INSTALLED
                 )
             )
             .filter((el) => ("isDisplayed" in el ? el.isDisplayed : user.isSystem));
     }
 
     async installModule(id, redirectUrl) {
-        await this.orm.silent.call("ir.module.module", "button_immediate_install", [id]);
+        await this.orm.silent.call("ir.module.module", "button_immediate_install", [
+            id,
+        ]);
         if (redirectUrl) {
             this.website.prepareOutLoader();
             redirect(redirectUrl);
         } else {
             const {
                 id,
-                metadata: { path, viewXmlid },
+                metadata: {path, viewXmlid},
             } = this.website.currentWebsite;
             const url = new URL(path);
             if (viewXmlid === "website.page_404") {
@@ -223,7 +228,9 @@ export class NewContentSystrayItem extends Component {
             // the feature with patches from the installed module.
             this.website.prepareOutLoader();
             const encodedPath = encodeURIComponent(url.toString());
-            redirect(`/odoo/action-website.website_preview?website_id=${id}&path=${encodedPath}`);
+            redirect(
+                `/odoo/action-website.website_preview?website_id=${id}&path=${encodedPath}`
+            );
         }
     }
 
@@ -232,34 +239,41 @@ export class NewContentSystrayItem extends Component {
             return element.createNewContent();
         }
 
-        const { id, name } = this.modulesInfo[element.moduleName];
+        const {id, name} = this.modulesInfo[element.moduleName];
         const dialogProps = {
             title: element.title,
             installationText: sprintf(this.newContentText.installNeeded, name),
             installModule: async () => {
                 // Update the NewContentElement with installing icon and text.
-                this.state.newContentElements = this.state.newContentElements.map((el) => {
-                    if (el.moduleXmlId === element.moduleXmlId) {
-                        el.status = MODULE_STATUS.INSTALLING;
-                        el.icon = xml`<i class="fa fa-spin fa-circle-o-notch"/>`;
-                        el.title = sprintf(this.newContentText.installPleaseWait, name);
+                this.state.newContentElements = this.state.newContentElements.map(
+                    (el) => {
+                        if (el.moduleXmlId === element.moduleXmlId) {
+                            el.status = MODULE_STATUS.INSTALLING;
+                            el.icon = xml`<i class="fa fa-spin fa-circle-o-notch"/>`;
+                            el.title = sprintf(
+                                this.newContentText.installPleaseWait,
+                                name
+                            );
+                        }
+                        return el;
                     }
-                    return el;
-                });
-                this.website.showLoader({ title: _t("Building your %s", name) });
+                );
+                this.website.showLoader({title: _t("Building your %s", name)});
                 try {
                     await this.installModule(id, element.redirectUrl);
                 } catch (error) {
                     this.website.hideLoader();
                     // Update the NewContentElement with failure icon and text.
-                    this.state.newContentElements = this.state.newContentElements.map((el) => {
-                        if (el.moduleXmlId === element.moduleXmlId) {
-                            el.status = MODULE_STATUS.FAILED_TO_INSTALL;
-                            el.icon = xml`<i class="fa fa-exclamation-triangle"/>`;
-                            el.title = sprintf(this.newContentText.failed, name);
+                    this.state.newContentElements = this.state.newContentElements.map(
+                        (el) => {
+                            if (el.moduleXmlId === element.moduleXmlId) {
+                                el.status = MODULE_STATUS.FAILED_TO_INSTALL;
+                                el.icon = xml`<i class="fa fa-exclamation-triangle"/>`;
+                                el.title = sprintf(this.newContentText.failed, name);
+                            }
+                            return el;
                         }
-                        return el;
-                    });
+                    );
                     console.error(error);
                 }
             },
@@ -278,7 +292,7 @@ export class NewContentSystrayItem extends Component {
             additionalContext: context ? context : {},
             onClose: (infos) => {
                 if (infos && !infos.dismiss) {
-                    this.website.goToWebsite({ path: infos.path, edition: edition });
+                    this.website.goToWebsite({path: infos.path, edition: edition});
                     this.dropdown.close();
                 }
             },
@@ -288,7 +302,7 @@ export class NewContentSystrayItem extends Component {
                         const path = params.computePath();
                         this.action.doAction({
                             type: "ir.actions.act_window_close",
-                            infos: { path },
+                            infos: {path},
                         });
                     }
                 },

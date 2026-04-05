@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { click } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {click} from "@odoo/hoot-dom";
 import {
     defineModels,
     fields,
@@ -11,7 +11,7 @@ import {
 
 class ResConfigSettings extends models.Model {
     _name = "res.config.settings";
-    bar = fields.Boolean({ string: "Bar" });
+    bar = fields.Boolean({string: "Bar"});
 }
 defineModels([ResConfigSettings]);
 
@@ -60,7 +60,7 @@ test("widget upgrade_boolean in a form view - label", async () => {
 });
 
 test("widget upgrade_boolean in a form view - dialog (enterprise version)", async () => {
-    patchWithCleanup(odoo, { info: { isEnterprise: 1 } });
+    patchWithCleanup(odoo, {info: {isEnterprise: 1}});
     await mountView({
         type: "form",
         arch: /* xml */ `
@@ -81,7 +81,7 @@ test("widget upgrade_boolean in a form view - dialog (enterprise version)", asyn
 });
 
 test("widget upgrade_boolean in a form view - label (enterprise version)", async () => {
-    patchWithCleanup(odoo, { info: { isEnterprise: 1 } });
+    patchWithCleanup(odoo, {info: {isEnterprise: 1}});
     await mountView({
         type: "form",
         arch: /* xml */ `

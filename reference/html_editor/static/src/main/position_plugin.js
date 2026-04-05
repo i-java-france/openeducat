@@ -1,7 +1,7 @@
-import { ancestors } from "@html_editor/utils/dom_traversal";
-import { Plugin } from "../plugin";
-import { debounce, throttleForAnimation } from "@web/core/utils/timing";
-import { couldBeScrollableX, couldBeScrollableY } from "@web/core/utils/scrolling";
+import {ancestors} from "@html_editor/utils/dom_traversal";
+import {Plugin} from "../plugin";
+import {debounce, throttleForAnimation} from "@web/core/utils/timing";
+import {couldBeScrollableX, couldBeScrollableY} from "@web/core/utils/scrolling";
 
 /**
  * @typedef {(() => void)[]} layout_geometry_change_handlers
@@ -18,11 +18,14 @@ export class PositionPlugin extends Plugin {
         external_history_step_handlers: this.layoutGeometryChange.bind(this),
         history_reset_from_steps_handlers: this.layoutGeometryChange.bind(this),
         step_added_handlers: this.layoutGeometryChange.bind(this),
-        before_filter_mutation_record_handlers: this.handlePotentialLayoutGeometryChange.bind(this),
+        before_filter_mutation_record_handlers:
+            this.handlePotentialLayoutGeometryChange.bind(this),
     };
 
     setup() {
-        this.layoutGeometryChange = throttleForAnimation(this.layoutGeometryChange.bind(this));
+        this.layoutGeometryChange = throttleForAnimation(
+            this.layoutGeometryChange.bind(this)
+        );
         this.debouncedLayoutGeometryChange = debounce(
             this.layoutGeometryChange.bind(this),
             "animationFrame"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -59,7 +58,7 @@ class MailTemplatePreview(models.TransientModel):
 
     @api.depends('model_id')
     def _compute_no_record(self):
-        for preview, preview_sudo in zip(self, self.sudo()):
+        for preview, preview_sudo in zip(self, self.sudo(), strict=False):
             model_id = preview_sudo.model_id
             preview.no_record = not model_id or not self.env[model_id.model].search_count([])
 

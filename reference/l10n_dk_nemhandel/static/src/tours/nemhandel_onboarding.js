@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { accountTourSteps } from "@account/js/tours/account";
+import {registry} from "@web/core/registry";
+import {accountTourSteps} from "@account/js/tours/account";
 
 registry.category("web_tour.tours").add("nemhandel_onboarding_tour", {
     url: "/odoo",

@@ -4,12 +4,11 @@ import logging
 import re
 from collections import defaultdict
 
-
 from markupsafe import Markup
 
-from odoo import Command, _, api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, LockError, UserError
-from odoo.tools import float_is_zero, float_compare
+from odoo.tools import float_compare, float_is_zero
 
 from odoo.addons.l10n_in.models.account_invoice import EDI_CANCEL_REASON
 
@@ -703,7 +702,7 @@ class AccountMove(models.Model):
         if self.company_currency_id != self.currency_id:
             json_payload["ValDtls"].update({
                 "TotInvValFc": in_round(
-                    (tax_details.get("base_amount_currency") + tax_details.get("tax_amount_currency")))
+                    tax_details.get("base_amount_currency") + tax_details.get("tax_amount_currency"))
             })
         if seller_buyer['seller_details'] != seller_buyer['dispatch_details']:
             json_payload['DispDtls'] = self._get_l10n_in_edi_partner_details(

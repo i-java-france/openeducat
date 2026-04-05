@@ -1,5 +1,5 @@
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
-import { negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
 
 export function clickProduct(productName) {
     return {
@@ -123,9 +123,9 @@ export function verifyIsCheckedAttribute(attribute, values = []) {
         content: `Select value for attribute ${attribute}`,
         trigger: `div h2:contains("${attribute}")`,
         run: () => {
-            const attributesValues = Array.from(document.querySelectorAll("div h2")).find((el) =>
-                el.textContent.includes(attribute)
-            );
+            const attributesValues = Array.from(
+                document.querySelectorAll("div h2")
+            ).find((el) => el.textContent.includes(attribute));
             if (!attributesValues) {
                 throw Error(`${attribute} not found.`);
             }

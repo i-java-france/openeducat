@@ -1,19 +1,19 @@
-import { Component, useState } from "@odoo/owl";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { rpc } from "@web/core/network/rpc";
-import { _t } from "@web/core/l10n/translation";
+import {Component, useState} from "@odoo/owl";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {rpc} from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
 
 const websiteSystrayRegistry = registry.category("website_systray");
 
 export class EditWebsiteSystrayItem extends Component {
     static template = "website.EditWebsiteSystrayItem";
     static props = {
-        onNewPage: { type: Function },
-        onEditPage: { type: Function },
-        iframeEl: { type: HTMLElement },
+        onNewPage: {type: Function},
+        onEditPage: {type: Function},
+        iframeEl: {type: HTMLElement},
     };
     static components = {
         Dropdown,
@@ -25,7 +25,9 @@ export class EditWebsiteSystrayItem extends Component {
         this.notification = useService("notification");
         this.websiteContext = useState(this.websiteService.context);
         // TODO: website service should share a reactive
-        useBus(websiteSystrayRegistry, "CONTENT-UPDATED", () => this.checkPendingTranslations());
+        useBus(websiteSystrayRegistry, "CONTENT-UPDATED", () =>
+            this.checkPendingTranslations()
+        );
         this.isEnteringTranslateMode = false;
     }
 
@@ -49,7 +51,8 @@ export class EditWebsiteSystrayItem extends Component {
     async attemptStartTranslate() {
         // TODO: move on the website part (not html_builder) and add a test tour
         if (this.websiteService.isRestrictedEditor && !this.websiteService.isDesigner) {
-            const pageModelAndId = this.websiteService.currentWebsite.metadata.mainObject;
+            const pageModelAndId =
+                this.websiteService.currentWebsite.metadata.mainObject;
             const recordsOnPage = {
                 [pageModelAndId.model]: pageModelAndId.id,
             };
@@ -60,7 +63,9 @@ export class EditWebsiteSystrayItem extends Component {
                 const model = el.dataset.resModel || el.dataset.oeModel;
                 if (!recordsOnPage[model]) {
                     // Keep one record of each type.
-                    recordsOnPage[model] = parseInt(el.dataset.resId || el.dataset.oeId);
+                    recordsOnPage[model] = parseInt(
+                        el.dataset.resId || el.dataset.oeId
+                    );
                 }
             }
             await rpc("/website/check_can_modify_any", {
@@ -81,7 +86,7 @@ export class EditWebsiteSystrayItem extends Component {
         // We are in translate mode, the pathname starts with '/<url_code>'. By
         // adding a trailing slash we can simply search for the first slash
         // after the language code to remove the language part.
-        const { pathname, search, hash } = this.getLocation();
+        const {pathname, search, hash} = this.getLocation();
         const languagePrefix = `${pathname}/`.indexOf("/", 1);
         const defaultLanguagePathname = pathname.substring(languagePrefix);
         this.websiteService.goToWebsite({
@@ -94,7 +99,7 @@ export class EditWebsiteSystrayItem extends Component {
 
     startTranslate() {
         this.isEnteringTranslateMode = true;
-        const { pathname, search, hash } = this.getLocation();
+        const {pathname, search, hash} = this.getLocation();
         const searchParams = new URLSearchParams(search);
         searchParams.set("edit_translations", "1");
         this.websiteService.goToWebsite({
@@ -106,7 +111,7 @@ export class EditWebsiteSystrayItem extends Component {
 
     async checkPendingTranslations() {
         if (this.translatable && !this.isEnteringTranslateMode) {
-            const { pathname, search, hash } = this.getLocation();
+            const {pathname, search, hash} = this.getLocation();
             const searchParams = new URLSearchParams(search);
             searchParams.set("edit_translations", "1");
             const path = pathname + `?${searchParams.toString() + hash}`;
@@ -116,8 +121,10 @@ export class EditWebsiteSystrayItem extends Component {
             const doc = parser.parseFromString(html, "text/html");
             if (doc.querySelector("#wrap .o_delay_translation")) {
                 this.closeNotification = this.notification.add(
-                    _t('Click on "Edit/Translate" to apply changes made on default language.'),
-                    { type: "info" }
+                    _t(
+                        'Click on "Edit/Translate" to apply changes made on default language.'
+                    ),
+                    {type: "info"}
                 );
             }
         }

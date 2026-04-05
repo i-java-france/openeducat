@@ -12,7 +12,12 @@
 export function scrollItemIntoViewX(
     scrollEl,
     querySelector,
-    { align = "start", edgePadding = 5, minRightGap = 100, scrollBehavior = "smooth" } = {}
+    {
+        align = "start",
+        edgePadding = 5,
+        minRightGap = 100,
+        scrollBehavior = "smooth",
+    } = {}
 ) {
     if (!scrollEl || !querySelector) {
         return;
@@ -34,7 +39,7 @@ export function scrollItemIntoViewX(
         }
 
         const offset = itemRect.left - containerRect.left - edgePadding;
-        scrollEl.scrollBy({ left: offset, behavior: scrollBehavior });
+        scrollEl.scrollBy({left: offset, behavior: scrollBehavior});
         return;
     }
 
@@ -50,5 +55,5 @@ export function scrollItemIntoViewX(
         return;
     }
 
-    scrollEl.scrollBy({ left: offset, behavior: scrollBehavior });
+    scrollEl.scrollBy({left: offset, behavior: scrollBehavior});
 }

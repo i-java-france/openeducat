@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import datetime
 import logging
@@ -6,11 +5,11 @@ from ast import literal_eval
 
 import requests
 
-from odoo import api, fields, release, SUPERUSER_ID
+from odoo import SUPERUSER_ID, api, fields, release
 from odoo.exceptions import UserError
 from odoo.models import AbstractModel
-from odoo.tools.translate import _
 from odoo.tools import config
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 

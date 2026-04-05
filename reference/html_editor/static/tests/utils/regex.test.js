@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { URL_REGEX } from "@html_editor/utils/regex";
+import {expect, test} from "@odoo/hoot";
+import {URL_REGEX} from "@html_editor/utils/regex";
 
-function testUrlRegex(content, { expectedUrl, insideText } = {}) {
+function testUrlRegex(content, {expectedUrl, insideText} = {}) {
     const message = expectedUrl
         ? `should have the text be "${content}" with one link ${expectedUrl}`
         : `should be a link: ${content}`;
@@ -19,7 +19,7 @@ function testUrlRegex(content, { expectedUrl, insideText } = {}) {
     });
 }
 
-function testNotUrlRegex(content, { insideText } = {}) {
+function testNotUrlRegex(content, {insideText} = {}) {
     test(`should NOT be/content a link: ${content}`, () => {
         if (insideText) {
             content = `abc ${content} abc`;
@@ -29,62 +29,62 @@ function testNotUrlRegex(content, { insideText } = {}) {
 }
 
 testUrlRegex("google.com");
-testUrlRegex("a google.com b", { expectedUrl: "google.com" });
+testUrlRegex("a google.com b", {expectedUrl: "google.com"});
 
 // Url separator
-testUrlRegex("google.com/", { expectedUrl: "google.com/" });
-testUrlRegex("google.com?", { expectedUrl: "google.com?" });
-testUrlRegex("google.com#", { expectedUrl: "google.com#" });
+testUrlRegex("google.com/", {expectedUrl: "google.com/"});
+testUrlRegex("google.com?", {expectedUrl: "google.com?"});
+testUrlRegex("google.com#", {expectedUrl: "google.com#"});
 
-testUrlRegex("google.com!", { expectedUrl: "google.com" });
-testUrlRegex("google.com)", { expectedUrl: "google.com" });
-testUrlRegex("google.com(", { expectedUrl: "google.com" });
-testUrlRegex("google.com/ a", { expectedUrl: "google.com/" });
-testUrlRegex("google.com. a", { expectedUrl: "google.com" });
-testUrlRegex("google.com, a", { expectedUrl: "google.com" });
+testUrlRegex("google.com!", {expectedUrl: "google.com"});
+testUrlRegex("google.com)", {expectedUrl: "google.com"});
+testUrlRegex("google.com(", {expectedUrl: "google.com"});
+testUrlRegex("google.com/ a", {expectedUrl: "google.com/"});
+testUrlRegex("google.com. a", {expectedUrl: "google.com"});
+testUrlRegex("google.com, a", {expectedUrl: "google.com"});
 
 // Some special characters should not be included if at the end.
-testUrlRegex("google.com/.", { expectedUrl: "google.com/" });
-testUrlRegex("google.com/,", { expectedUrl: "google.com/" });
-testUrlRegex("google.com/)", { expectedUrl: "google.com/" });
-testUrlRegex("google.com/]", { expectedUrl: "google.com/" });
-testUrlRegex("google.com/}", { expectedUrl: "google.com/" });
-testUrlRegex("google.com/'", { expectedUrl: "google.com/" });
-testUrlRegex('google.com/"', { expectedUrl: "google.com/" });
-testUrlRegex("google.com#.", { expectedUrl: "google.com#" });
-testUrlRegex("google.com#,", { expectedUrl: "google.com#" });
-testUrlRegex("google.com#)", { expectedUrl: "google.com#" });
-testUrlRegex("google.com#]", { expectedUrl: "google.com#" });
-testUrlRegex("google.com#}", { expectedUrl: "google.com#" });
-testUrlRegex("google.com#'", { expectedUrl: "google.com#" });
-testUrlRegex('google.com#"', { expectedUrl: "google.com#" });
-testUrlRegex("google.com?,", { expectedUrl: "google.com?" });
-testUrlRegex("google.com?.", { expectedUrl: "google.com?" });
-testUrlRegex("google.com?)", { expectedUrl: "google.com?" });
-testUrlRegex("google.com?]", { expectedUrl: "google.com?" });
-testUrlRegex("google.com?}", { expectedUrl: "google.com?" });
-testUrlRegex("google.com?'", { expectedUrl: "google.com?" });
-testUrlRegex('google.com?"', { expectedUrl: "google.com?" });
+testUrlRegex("google.com/.", {expectedUrl: "google.com/"});
+testUrlRegex("google.com/,", {expectedUrl: "google.com/"});
+testUrlRegex("google.com/)", {expectedUrl: "google.com/"});
+testUrlRegex("google.com/]", {expectedUrl: "google.com/"});
+testUrlRegex("google.com/}", {expectedUrl: "google.com/"});
+testUrlRegex("google.com/'", {expectedUrl: "google.com/"});
+testUrlRegex('google.com/"', {expectedUrl: "google.com/"});
+testUrlRegex("google.com#.", {expectedUrl: "google.com#"});
+testUrlRegex("google.com#,", {expectedUrl: "google.com#"});
+testUrlRegex("google.com#)", {expectedUrl: "google.com#"});
+testUrlRegex("google.com#]", {expectedUrl: "google.com#"});
+testUrlRegex("google.com#}", {expectedUrl: "google.com#"});
+testUrlRegex("google.com#'", {expectedUrl: "google.com#"});
+testUrlRegex('google.com#"', {expectedUrl: "google.com#"});
+testUrlRegex("google.com?,", {expectedUrl: "google.com?"});
+testUrlRegex("google.com?.", {expectedUrl: "google.com?"});
+testUrlRegex("google.com?)", {expectedUrl: "google.com?"});
+testUrlRegex("google.com?]", {expectedUrl: "google.com?"});
+testUrlRegex("google.com?}", {expectedUrl: "google.com?"});
+testUrlRegex("google.com?'", {expectedUrl: "google.com?"});
+testUrlRegex('google.com?"', {expectedUrl: "google.com?"});
 
 // The previous special character should be included when they are nt at the end.
-testUrlRegex("google.com/.a", { expectedUrl: "google.com/.a" });
-testUrlRegex("google.com/,a", { expectedUrl: "google.com/,a" });
-testUrlRegex("google.com/)a", { expectedUrl: "google.com/)a" });
-testUrlRegex("google.com/]a", { expectedUrl: "google.com/]a" });
-testUrlRegex("google.com/}a", { expectedUrl: "google.com/}a" });
-testUrlRegex("google.com/'a", { expectedUrl: "google.com/'a" });
-testUrlRegex('google.com/"a', { expectedUrl: 'google.com/"a' });
+testUrlRegex("google.com/.a", {expectedUrl: "google.com/.a"});
+testUrlRegex("google.com/,a", {expectedUrl: "google.com/,a"});
+testUrlRegex("google.com/)a", {expectedUrl: "google.com/)a"});
+testUrlRegex("google.com/]a", {expectedUrl: "google.com/]a"});
+testUrlRegex("google.com/}a", {expectedUrl: "google.com/}a"});
+testUrlRegex("google.com/'a", {expectedUrl: "google.com/'a"});
+testUrlRegex('google.com/"a', {expectedUrl: 'google.com/"a'});
 
 // Other special character can be included at the end.
-testUrlRegex("google.com/(", { expectedUrl: "google.com/(" });
-testUrlRegex("google.com/[", { expectedUrl: "google.com/[" });
-testUrlRegex("google.com/{", { expectedUrl: "google.com/{" });
-testUrlRegex("google.com?(", { expectedUrl: "google.com?(" });
-testUrlRegex("google.com?[", { expectedUrl: "google.com?[" });
-testUrlRegex("google.com?{", { expectedUrl: "google.com?{" });
-testUrlRegex("google.com#(", { expectedUrl: "google.com#(" });
-testUrlRegex("google.com#[", { expectedUrl: "google.com#[" });
-testUrlRegex("google.com#{", { expectedUrl: "google.com#{" });
+testUrlRegex("google.com/(", {expectedUrl: "google.com/("});
+testUrlRegex("google.com/[", {expectedUrl: "google.com/["});
+testUrlRegex("google.com/{", {expectedUrl: "google.com/{"});
+testUrlRegex("google.com?(", {expectedUrl: "google.com?("});
+testUrlRegex("google.com?[", {expectedUrl: "google.com?["});
+testUrlRegex("google.com?{", {expectedUrl: "google.com?{"});
+testUrlRegex("google.com#(", {expectedUrl: "google.com#("});
+testUrlRegex("google.com#[", {expectedUrl: "google.com#["});
+testUrlRegex("google.com#{", {expectedUrl: "google.com#{"});
 
 testUrlRegex("google.co.uk");
 testUrlRegex("google123.com");
@@ -114,43 +114,61 @@ testNotUrlRegex("20.08.2022");
 testNotUrlRegex("31.12");
 
 // Url data and anchors count as part of the url.
-testUrlRegex("google.com?data=hello", { expectedUrl: "google.com?data=hello" });
-testUrlRegex("google.com/?data=hello", { expectedUrl: "google.com/?data=hello" });
-testUrlRegex("google.com/foo/?data=hello", { expectedUrl: "google.com/foo/?data=hello" });
+testUrlRegex("google.com?data=hello", {expectedUrl: "google.com?data=hello"});
+testUrlRegex("google.com/?data=hello", {expectedUrl: "google.com/?data=hello"});
+testUrlRegex("google.com/foo/?data=hello", {expectedUrl: "google.com/foo/?data=hello"});
 testUrlRegex("google.com/foo/?data1=hello1&data2=hello2", {
     expectedUrl: "google.com/foo/?data1=hello1&data2=hello2",
 });
-testUrlRegex("google.com/.?data=hello", { expectedUrl: "google.com/.?data=hello" });
-testUrlRegex("google.com?data=hello#anchor", { expectedUrl: "google.com?data=hello#anchor" });
-testUrlRegex("google.com/?data=hello#anchor", { expectedUrl: "google.com/?data=hello#anchor" });
-testUrlRegex("google.com/.?data=hello#anchor", { expectedUrl: "google.com/.?data=hello#anchor" });
+testUrlRegex("google.com/.?data=hello", {expectedUrl: "google.com/.?data=hello"});
+testUrlRegex("google.com?data=hello#anchor", {
+    expectedUrl: "google.com?data=hello#anchor",
+});
+testUrlRegex("google.com/?data=hello#anchor", {
+    expectedUrl: "google.com/?data=hello#anchor",
+});
+testUrlRegex("google.com/.?data=hello#anchor", {
+    expectedUrl: "google.com/.?data=hello#anchor",
+});
 testUrlRegex("google.com/foo/?data=hello&data2=foo#anchor", {
     expectedUrl: "google.com/foo/?data=hello&data2=foo#anchor",
 });
 
 // Url containing some special characters
-testUrlRegex("www.google.com/path/1-2-3", { expectedUrl: "www.google.com/path/1-2-3" });
-testUrlRegex("https://google.com/abc..def", { expectedUrl: "https://google.com/abc..def" });
-testUrlRegex("https://google.com/a/b+c@d", { expectedUrl: "https://google.com/a/b+c@d" });
-testUrlRegex("sub.example-website.com", { expectedUrl: "sub.example-website.com" });
-testUrlRegex("http://sub.example-website.com", { expectedUrl: "http://sub.example-website.com" });
+testUrlRegex("www.google.com/path/1-2-3", {expectedUrl: "www.google.com/path/1-2-3"});
+testUrlRegex("https://google.com/abc..def", {
+    expectedUrl: "https://google.com/abc..def",
+});
+testUrlRegex("https://google.com/a/b+c@d", {expectedUrl: "https://google.com/a/b+c@d"});
+testUrlRegex("sub.example-website.com", {expectedUrl: "sub.example-website.com"});
+testUrlRegex("http://sub.example-website.com", {
+    expectedUrl: "http://sub.example-website.com",
+});
 testUrlRegex("http://user:password@example.com", {
     expectedUrl: "http://user:password@example.com",
 });
-testUrlRegex("http://google.com/a_b", { expectedUrl: "http://google.com/a_b" });
-testUrlRegex("https://google.com?query=ab.cd", { expectedUrl: "https://google.com?query=ab.cd" });
-testUrlRegex(`google.com/'ab'/cd`, { expectedUrl: "google.com/'ab'/cd" });
-testUrlRegex(`www.google.com/a!b/c?d,e,f#g!i`, { expectedUrl: "www.google.com/a!b/c?d,e,f#g!i" });
-testUrlRegex(`www.google.com/a%b%c`, { expectedUrl: "www.google.com/a%b%c" });
-testUrlRegex(`http://google.com?a.b.c&d!e#e'f`, { expectedUrl: "http://google.com?a.b.c&d!e#e'f" });
+testUrlRegex("http://google.com/a_b", {expectedUrl: "http://google.com/a_b"});
+testUrlRegex("https://google.com?query=ab.cd", {
+    expectedUrl: "https://google.com?query=ab.cd",
+});
+testUrlRegex(`google.com/'ab'/cd`, {expectedUrl: "google.com/'ab'/cd"});
+testUrlRegex(`www.google.com/a!b/c?d,e,f#g!i`, {
+    expectedUrl: "www.google.com/a!b/c?d,e,f#g!i",
+});
+testUrlRegex(`www.google.com/a%b%c`, {expectedUrl: "www.google.com/a%b%c"});
+testUrlRegex(`http://google.com?a.b.c&d!e#e'f`, {
+    expectedUrl: "http://google.com?a.b.c&d!e#e'f",
+});
 
 // URL inside text
-testUrlRegex("foo.com", { insideText: true });
-testNotUrlRegex("foo.else", { insideText: true });
-testUrlRegex("www.abc.abc", { insideText: true });
-testUrlRegex("abc.abc.com", { insideText: true });
-testNotUrlRegex("abc.abc.abc", { insideText: true });
-testUrlRegex("http://abc.abc.abc", { insideText: true });
-testUrlRegex("https://abc.abc.abc", { insideText: true });
-testUrlRegex("1234-abc.runbot007.odoo.com/web#id=3&menu_id=221", { insideText: true });
-testUrlRegex("https://1234-abc.runbot007.odoo.com/web#id=3&menu_id=221", { insideText: true });
+testUrlRegex("foo.com", {insideText: true});
+testNotUrlRegex("foo.else", {insideText: true});
+testUrlRegex("www.abc.abc", {insideText: true});
+testUrlRegex("abc.abc.com", {insideText: true});
+testNotUrlRegex("abc.abc.abc", {insideText: true});
+testUrlRegex("http://abc.abc.abc", {insideText: true});
+testUrlRegex("https://abc.abc.abc", {insideText: true});
+testUrlRegex("1234-abc.runbot007.odoo.com/web#id=3&menu_id=221", {insideText: true});
+testUrlRegex("https://1234-abc.runbot007.odoo.com/web#id=3&menu_id=221", {
+    insideText: true,
+});

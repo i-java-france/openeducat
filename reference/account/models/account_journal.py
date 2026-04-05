@@ -1,14 +1,15 @@
-from ast import literal_eval
-from urllib.parse import urlencode
-
-from odoo import api, Command, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.addons.base.models.res_bank import sanitize_account_number
-from odoo.tools import email_normalize, email_normalize_all, groupby, urls
-from odoo.tools.misc import hash_sign
-from collections import defaultdict
 import logging
 import re
+from ast import literal_eval
+from collections import defaultdict
+from urllib.parse import urlencode
+
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import email_normalize, email_normalize_all, groupby, urls
+from odoo.tools.misc import hash_sign
+
+from odoo.addons.base.models.res_bank import sanitize_account_number
 
 _logger = logging.getLogger(__name__)
 
@@ -726,7 +727,7 @@ class AccountJournal(models.Model):
             if accounts <= self:
                 bank_accounts += bank_account
         self.env['account.payment.method.line'].search([('journal_id', 'in', self.ids)]).unlink()
-        ret = super(AccountJournal, self).unlink()
+        ret = super().unlink()
         bank_accounts.unlink()
         return ret
 
@@ -740,7 +741,7 @@ class AccountJournal(models.Model):
             )[0][0])
             for company_id, _ in groupby(vals_list, lambda v: v['company_id'])
         }
-        for journal, vals in zip(self, vals_list):
+        for journal, vals in zip(self, vals_list, strict=False):
             # Find a unique code for the copied journal
             all_journal_codes = code_by_company_id[vals['company_id']]
 
@@ -796,7 +797,7 @@ class AccountJournal(models.Model):
                 if journal_entry:
                     field_string = self._fields['restrict_mode_hash_table'].get_description(self.env)['string']
                     raise UserError(_("You cannot modify the field %s of a journal that already has accounting entries.", field_string))
-        result = super(AccountJournal, self).write(vals)
+        result = super().write(vals)
 
         # Ensure alias coherency when changing type
         if 'type' in vals and not self.env.context.get('account_journal_skip_alias_sync'):
@@ -1022,7 +1023,7 @@ class AccountJournal(models.Model):
 
         journals = super(AccountJournal, self.with_context(mail_create_nolog=True)).create(vals_list)
 
-        for journal, vals in zip(journals, vals_list):
+        for journal, vals in zip(journals, vals_list, strict=False):
             # Create the bank_account_id if necessary
             if journal.type == 'bank' and not journal.bank_account_id and vals.get('bank_acc_number'):
                 journal.set_bank_account(vals.get('bank_acc_number'), vals.get('bank_id'))

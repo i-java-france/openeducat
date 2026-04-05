@@ -1,10 +1,10 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { contains } from "@web/../tests/web_test_helpers";
-import { animationFrame, press, queryFirst } from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
+import {animationFrame, press, queryFirst} from "@odoo/hoot-dom";
 
 defineWebsiteModels();
 
@@ -25,14 +25,20 @@ const getData = (type) => {
                 key: "chart_dataset_1740645626800",
                 label: "One",
                 data: ["25", "75", "30"],
-                backgroundColor: isPieChart ? ["o-color-1", "o-color-2", "o-color-3"] : "o-color-1",
-                borderColor: isPieChart ? ["rgb(255, 127, 80)", "", ""] : "rgb(255, 127, 80)",
+                backgroundColor: isPieChart
+                    ? ["o-color-1", "o-color-2", "o-color-3"]
+                    : "o-color-1",
+                borderColor: isPieChart
+                    ? ["rgb(255, 127, 80)", "", ""]
+                    : "rgb(255, 127, 80)",
             },
             {
                 key: "chart_dataset_1740646194838",
                 label: "Two",
                 data: ["10", "50", "45"],
-                backgroundColor: isPieChart ? ["#4A7B8C", "#963512", "4CCE3A"] : "#4A7B8C",
+                backgroundColor: isPieChart
+                    ? ["#4A7B8C", "#963512", "4CCE3A"]
+                    : "#4A7B8C",
                 borderColor: isPieChart ? ["", "", ""] : "",
             },
         ],
@@ -47,7 +53,9 @@ describe("Differences between pie & non-pie charts", () => {
         expect(data.datasets[0].backgroundColor).toBeOfType("string");
         expect(data.datasets[0].borderColor).toBeOfType("string");
         await contains(":iframe .s_chart").click();
-        await contains(".options-container .dropdown-toggle:contains('Bar Vertical')").click();
+        await contains(
+            ".options-container .dropdown-toggle:contains('Bar Vertical')"
+        ).click();
         await contains("[data-action-id=setChartType][data-action-value=pie]").click();
         expect(":iframe .s_chart").toHaveAttribute("data-type", "pie");
         data = JSON.parse(queryFirst(":iframe .s_chart").dataset.data);
@@ -177,41 +185,41 @@ describe("Add & Delete buttons", () => {
         const type = "bar";
         await setupWebsiteBuilder(chartTemplate(type, getData(type)));
         await contains(":iframe .s_chart").click();
-        expect(".options-container table [data-action-id=removeColumn]:first").toHaveClass(
-            "visually-hidden-focusable"
-        );
+        expect(
+            ".options-container table [data-action-id=removeColumn]:first"
+        ).toHaveClass("visually-hidden-focusable");
         expect(".options-container table [data-action-id=removeRow]:first").toHaveClass(
             "visually-hidden-focusable"
         );
         await contains(
             ".options-container table [data-action-id=updateDatasetValue]:first"
         ).hover();
-        expect(".options-container table [data-action-id=removeColumn]:first").not.toHaveClass(
-            "visually-hidden-focusable"
-        );
-        expect(".options-container table [data-action-id=removeRow]:first").not.toHaveClass(
-            "visually-hidden-focusable"
-        );
+        expect(
+            ".options-container table [data-action-id=removeColumn]:first"
+        ).not.toHaveClass("visually-hidden-focusable");
+        expect(
+            ".options-container table [data-action-id=removeRow]:first"
+        ).not.toHaveClass("visually-hidden-focusable");
     });
     test("Focusing a data input displays the remove row/column buttons", async () => {
         const type = "bar";
         await setupWebsiteBuilder(chartTemplate(type, getData(type)));
         await contains(":iframe .s_chart").click();
-        expect(".options-container table [data-action-id=removeColumn]:first").toHaveClass(
-            "visually-hidden-focusable"
-        );
+        expect(
+            ".options-container table [data-action-id=removeColumn]:first"
+        ).toHaveClass("visually-hidden-focusable");
         expect(".options-container table [data-action-id=removeRow]:first").toHaveClass(
             "visually-hidden-focusable"
         );
         await contains(
             ".options-container table [data-action-id=updateDatasetValue]:first"
         ).focus();
-        expect(".options-container table [data-action-id=removeColumn]:first").not.toHaveClass(
-            "visually-hidden-focusable"
-        );
-        expect(".options-container table [data-action-id=removeRow]:first").not.toHaveClass(
-            "visually-hidden-focusable"
-        );
+        expect(
+            ".options-container table [data-action-id=removeColumn]:first"
+        ).not.toHaveClass("visually-hidden-focusable");
+        expect(
+            ".options-container table [data-action-id=removeRow]:first"
+        ).not.toHaveClass("visually-hidden-focusable");
     });
     test("Adding a row updates the data and available cells", async () => {
         const type = "bar";
@@ -246,7 +254,9 @@ describe("Add & Delete buttons", () => {
         expect(data.datasets[0].data).toHaveLength(3);
         expect(data.labels[0]).toBe("First");
         await contains(":iframe .s_chart").click();
-        await contains(".options-container table [data-action-id=removeRow]:first").click();
+        await contains(
+            ".options-container table [data-action-id=removeRow]:first"
+        ).click();
         data = JSON.parse(queryFirst(":iframe .s_chart").dataset.data);
         expect(data.labels).toHaveLength(2);
         expect(data.datasets[0].data).toHaveLength(2);
@@ -260,7 +270,9 @@ describe("Add & Delete buttons", () => {
         expect(data.datasets).toHaveLength(2);
         expect(data.datasets[0].label).toBe("One");
         await contains(":iframe .s_chart").click();
-        await contains(".options-container table [data-action-id=removeColumn]:first").click();
+        await contains(
+            ".options-container table [data-action-id=removeColumn]:first"
+        ).click();
         data = JSON.parse(queryFirst(":iframe .s_chart").dataset.data);
         expect(data.datasets).toHaveLength(1);
         expect(".options-container table thead tr th").toHaveCount(3);
@@ -334,8 +346,8 @@ describe("Add & Delete buttons", () => {
         expect(data.datasets).toHaveLength(2);
         expect(data.datasets[0].label).toBe("One");
         await contains(".options-container table tbody tr:eq(2) input:last").focus();
-        await press("Tab"); // remove row button
-        await press("Tab"); // add row button
+        await press("Tab"); // Remove row button
+        await press("Tab"); // Add row button
         await press("Tab");
         await press("Enter");
         data = JSON.parse(queryFirst(":iframe .s_chart").dataset.data);
@@ -353,7 +365,9 @@ test("Focusing input displays related data color/data border colorpickers", asyn
     expect(".options-container [data-label='Dataset Color']").toBeVisible();
     expect(".options-container [data-label='Dataset Border']").toBeVisible();
     await contains(".options-container [data-label='Type'] button.o-dropdown").click();
-    await contains(".o_popover [data-action-id='setChartType'][data-action-value='pie']").click();
+    await contains(
+        ".o_popover [data-action-id='setChartType'][data-action-value='pie']"
+    ).click();
     expect(".options-container [data-label='Data Color']").toBeVisible();
     expect(".options-container [data-label='Data Border']").toBeVisible();
     expect(".options-container [data-label='Dataset Color']").not.toHaveCount();
@@ -363,7 +377,7 @@ test("Focusing input displays related data color/data border colorpickers", asyn
 test("CSS colors and CSS custom variables are correctly computed", async () => {
     const type = "bar";
     await setupWebsiteBuilder(chartTemplate(type, getData(type)), {
-        styleContent: /*css*/ `
+        styleContent: /* css*/ `
             html {
                 --o-color-1: rgb(255, 0, 0);
                 --o-color-2: rgb(0, 0, 255);
@@ -372,10 +386,14 @@ test("CSS colors and CSS custom variables are correctly computed", async () => {
     });
     await contains(":iframe .s_chart").click();
     await contains(".options-container table tbody input:eq(1)").click();
-    expect(".options-container [data-label='Dataset Color'] .o_we_color_preview").toHaveStyle({
+    expect(
+        ".options-container [data-label='Dataset Color'] .o_we_color_preview"
+    ).toHaveStyle({
         "background-color": "rgb(255, 0, 0)",
     });
-    expect(".options-container [data-label='Dataset Border'] .o_we_color_preview").toHaveStyle({
+    expect(
+        ".options-container [data-label='Dataset Border'] .o_we_color_preview"
+    ).toHaveStyle({
         "background-color": "rgb(255, 127, 80)",
     });
 });
@@ -394,27 +412,37 @@ test("Adding a new column/row displays the color pickers of the cell in new colu
     await setupWebsiteBuilder(chartTemplate(type, getData(type)));
     await contains(":iframe .s_chart").click();
     expect(".options-container [data-label='Data Color']").toBeVisible();
-    const prevColor = queryFirst(".options-container [data-label='Data Color'] .o_we_color_preview")
-        .style.backgroundColor;
+    const prevColor = queryFirst(
+        ".options-container [data-label='Data Color'] .o_we_color_preview"
+    ).style.backgroundColor;
 
     await contains(".options-container button.add_column").click();
-    expect(".options-container [data-label='Data Color'] .o_we_color_preview").not.toHaveStyle({
+    expect(
+        ".options-container [data-label='Data Color'] .o_we_color_preview"
+    ).not.toHaveStyle({
         backgroundColor: prevColor,
     });
     const columnColor = queryFirst(
         ".options-container [data-label='Data Color'] .o_we_color_preview"
     ).style.backgroundColor;
-    expect(".options-container table tbody tr:first-child td:nth-child(4) input").toHaveStyle({
+    expect(
+        ".options-container table tbody tr:first-child td:nth-child(4) input"
+    ).toHaveStyle({
         border: `2px solid ${columnColor}`,
     });
 
     await contains(".options-container button.add_row").click();
-    expect(".options-container [data-label='Data Color'] .o_we_color_preview").not.toHaveStyle({
+    expect(
+        ".options-container [data-label='Data Color'] .o_we_color_preview"
+    ).not.toHaveStyle({
         backgroundColor: columnColor,
     });
-    const rowColor = queryFirst(".options-container [data-label='Data Color'] .o_we_color_preview")
-        .style.backgroundColor;
-    expect(".options-container table tbody tr:nth-child(4) td:nth-child(2) input").toHaveStyle({
+    const rowColor = queryFirst(
+        ".options-container [data-label='Data Color'] .o_we_color_preview"
+    ).style.backgroundColor;
+    expect(
+        ".options-container table tbody tr:nth-child(4) td:nth-child(2) input"
+    ).toHaveStyle({
         border: `2px solid ${rowColor}`,
     });
 });
@@ -429,11 +457,15 @@ test("Removing a row with the current cell resets the current cell", async () =>
         ".options-container [data-label='Data Color'] .o_we_color_preview"
     ).style.backgroundColor;
 
-    await contains(".options-container table tbody tr:nth-child(1) td:nth-child(3) input").click();
+    await contains(
+        ".options-container table tbody tr:nth-child(1) td:nth-child(3) input"
+    ).click();
     const focusedCellColor = queryFirst(
         ".options-container [data-label='Data Color'] .o_we_color_preview"
     ).style.backgroundColor;
-    expect(".options-container table tbody tr:nth-child(1) td:nth-child(3) input").toHaveStyle({
+    expect(
+        ".options-container table tbody tr:nth-child(1) td:nth-child(3) input"
+    ).toHaveStyle({
         border: `2px solid ${focusedCellColor}`,
     });
 
@@ -442,7 +474,9 @@ test("Removing a row with the current cell resets the current cell", async () =>
     ).click();
     // After removal, the current cell should reset to default (first dataset, first data point)
     // The color picker should now reflect the default cell's color
-    expect(".options-container [data-label='Data Color'] .o_we_color_preview").toHaveStyle({
+    expect(
+        ".options-container [data-label='Data Color'] .o_we_color_preview"
+    ).toHaveStyle({
         backgroundColor: defaultColor,
     });
 });

@@ -1,5 +1,5 @@
-import { useComponent, useEffect, useEnv } from "@odoo/owl";
-import { DROPDOWN_GROUP } from "@web/core/dropdown/dropdown_group";
+import {useComponent, useEffect, useEnv} from "@odoo/owl";
+import {DROPDOWN_GROUP} from "@web/core/dropdown/dropdown_group";
 
 /**
  * @typedef DropdownGroupState
@@ -20,7 +20,10 @@ export function useDropdownGroup() {
     const group = {
         isInGroup: DROPDOWN_GROUP in env,
         get isOpen() {
-            return this.isInGroup && [...env[DROPDOWN_GROUP]].some((dropdown) => dropdown.isOpen);
+            return (
+                this.isInGroup &&
+                [...env[DROPDOWN_GROUP]].some((dropdown) => dropdown.isOpen)
+            );
         },
     };
 

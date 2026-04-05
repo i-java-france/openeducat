@@ -1,15 +1,14 @@
 /** @odoo-module **/
-import { patch } from '@web/core/utils/patch';
-import { patchDynamicContent } from '@web/public/utils';
-import { CustomerAddress } from '@portal/interactions/address';
-
+import {patch} from "@web/core/utils/patch";
+import {patchDynamicContent} from "@web/public/utils";
+import {CustomerAddress} from "@portal/interactions/address";
 
 patch(CustomerAddress.prototype, {
     setup() {
         super.setup();
         patchDynamicContent(this.dynamicContent, {
             'input[name="company_name"]': {
-                't-on-input': this._onChangeCompanyName.bind(this),
+                "t-on-input": this._onChangeCompanyName.bind(this),
             },
         });
     },

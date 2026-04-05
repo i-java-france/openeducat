@@ -1,8 +1,11 @@
-from odoo.addons.account_tax_python.tests.common import TestTaxCommonAccountTaxPython
-from odoo.tests import tagged
 from odoo.exceptions import ValidationError
+from odoo.tests import tagged
 
-from odoo.addons.account_tax_python.tools.formula_utils import check_formula, normalize_formula
+from odoo.addons.account_tax_python.tests.common import TestTaxCommonAccountTaxPython
+from odoo.addons.account_tax_python.tools.formula_utils import (
+    check_formula,
+    normalize_formula,
+)
 
 
 @tagged('post_install', '-at_install')

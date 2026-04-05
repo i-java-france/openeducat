@@ -1,6 +1,6 @@
-import { ResPartner } from "@mail/core/common/res_partner_model";
+import {ResPartner} from "@mail/core/common/res_partner_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Persona} */
 const resPartnerPatch = {

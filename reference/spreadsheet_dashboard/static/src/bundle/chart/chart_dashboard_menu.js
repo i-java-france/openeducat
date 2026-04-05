@@ -1,11 +1,13 @@
-import { components } from "@odoo/o-spreadsheet";
-import { patch } from "@web/core/utils/patch";
+import {components} from "@odoo/o-spreadsheet";
+import {patch} from "@web/core/utils/patch";
 
-const { ChartDashboardMenu } = components;
+const {ChartDashboardMenu} = components;
 
 patch(ChartDashboardMenu.prototype, {
     get granularityOptions() {
-        return this.env.model.getters.getAvailableChartGranularities(this.props.chartId);
+        return this.env.model.getters.getAvailableChartGranularities(
+            this.props.chartId
+        );
     },
 
     onGranularitySelected(ev) {

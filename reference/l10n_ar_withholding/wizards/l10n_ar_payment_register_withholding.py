@@ -1,10 +1,11 @@
 # pylint: disable=protected-access
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
+from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
-from odoo import models, fields, api
+
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 

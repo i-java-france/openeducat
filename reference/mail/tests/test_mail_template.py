@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from markupsafe import Markup
 from unittest.mock import patch
 
-from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
-from odoo.exceptions import AccessError, ValidationError, UserError
+from markupsafe import Markup
+
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import Form, HttpCase, tagged, users
 from odoo.tools import convert_file, mute_logger
+
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 
 
 @tagged('mail_template')
@@ -14,7 +15,7 @@ class TestMailTemplate(MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailTemplate, cls).setUpClass()
+        super().setUpClass()
         # Enable the Jinja rendering restriction
         cls.env['ir.config_parameter'].set_param('mail.restrict.template.rendering', True)
         cls.user_employee.group_ids -= cls.env.ref('mail.group_mail_template_editor')

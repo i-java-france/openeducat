@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -6,12 +5,13 @@ import datetime
 import hmac
 import json
 import logging
-import odoo
-import werkzeug
 
+import werkzeug
+from werkzeug.exceptions import NotFound
+
+import odoo
 from odoo import _, http
 from odoo.http import request
-from werkzeug.exceptions import NotFound
 
 _logger = logging.getLogger(__name__)
 

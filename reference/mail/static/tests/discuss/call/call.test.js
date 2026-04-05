@@ -1,45 +1,50 @@
 import {
+    SIZES,
     click,
     contains,
     createVideoStream,
     defineMailModels,
+    dragenterFiles,
+    dropFiles,
     listenStoreFetch,
-    mockGetMedia,
     makeMockRtcNetwork,
+    mockGetMedia,
     openDiscuss,
     patchUiSize,
     setupChatHub,
-    SIZES,
     start,
     startServer,
     triggerEvents,
     triggerHotkey,
     waitStoreFetch,
-    dragenterFiles,
-    dropFiles,
 } from "@mail/../tests/mail_test_helpers";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 import {
     CROSS_TAB_CLIENT_MESSAGE,
     CROSS_TAB_HOST_MESSAGE,
 } from "@mail/discuss/call/common/rtc_service";
 
-import { beforeEach, describe, expect, getFixture, test } from "@odoo/hoot";
-import { advanceTime, hover, manuallyDispatchProgrammaticEvent, queryFirst } from "@odoo/hoot-dom";
-import { mockSendBeacon, mockUserAgent } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
 import {
-    asyncStep,
+    advanceTime,
+    hover,
+    manuallyDispatchProgrammaticEvent,
+    queryFirst,
+} from "@odoo/hoot-dom";
+import {mockSendBeacon, mockUserAgent} from "@odoo/hoot-mock";
+import {
     Command,
+    asyncStep,
     mockService,
     onRpc,
     patchWithCleanup,
     serverState,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { waitNotifications } from "@bus/../tests/bus_test_helpers";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {waitNotifications} from "@bus/../tests/bus_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -51,7 +56,7 @@ beforeEach(() => {
 
 test("basic rendering", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -59,7 +64,7 @@ test("basic rendering", async () => {
     await contains(".o-discuss-CallParticipantCard[aria-label='Mitchell Admin']");
     await contains(".o-discuss-CallActionList");
     await contains(".o-discuss-CallMenu-buttonContent");
-    await contains(".o-discuss-CallActionList button", { count: 7 });
+    await contains(".o-discuss-CallActionList button", {count: 7});
     await contains("button[aria-label='Unmute'], button[aria-label='Mute']"); // FIXME depends on current browser permission
     await contains("button[aria-label='Voice Settings']");
     await contains(".o-discuss-CallActionList button[aria-label='Turn camera on']");
@@ -68,29 +73,29 @@ test("basic rendering", async () => {
     await contains("[title='More']");
     await contains(".o-discuss-CallActionList button[aria-label='Disconnect']");
     await click("[title='More']");
-    await contains(".o-dropdown-item", { count: 2 });
+    await contains(".o-dropdown-item", {count: 2});
     await contains(".o-dropdown-item:contains('Raise Hand')");
     await contains(".o-dropdown-item:contains('Disable speaker autofocus')");
-    await contains(".o-discuss-Call-layoutActions button", { count: 2 });
+    await contains(".o-discuss-Call-layoutActions button", {count: 2});
     await contains(".o-discuss-Call-layoutActions button[title='Picture in Picture']");
     await contains(".o-discuss-Call-layoutActions button[title='Fullscreen']");
 });
 
 test("mobile UI", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     mockUserAgent("android");
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await contains(".o-discuss-Call");
     expect(isMobileOS()).toBe(true);
-    await contains("[title='Share Screen']", { count: 0 });
+    await contains("[title='Share Screen']", {count: 0});
 });
 
 test("keep the `more` popover active when hovering it", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -106,44 +111,44 @@ test("no call with odoobot", async () => {
     const pyEnv = await startServer();
     const channelId = pyEnv["discuss.channel"].create({
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ partner_id: serverState.odoobotId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({partner_id: serverState.odoobotId}),
         ],
         channel_type: "chat",
     });
     await start();
     await openDiscuss(channelId);
     await contains(".o-mail-DiscussContent-header");
-    await contains("[title='Start Call']", { count: 0 });
+    await contains("[title='Start Call']", {count: 0});
 });
 
 test("should not display call UI when no more members (self disconnect)", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await contains(".o-discuss-Call");
     await click(".o-discuss-CallActionList button[aria-label='Disconnect']");
-    await contains(".o-discuss-Call", { count: 0 });
+    await contains(".o-discuss-Call", {count: 0});
 });
 
 test("show call UI in chat window when in call", async () => {
     const pyEnv = await startServer();
-    pyEnv["discuss.channel"].create({ name: "General" });
+    pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
-    await click(".o-mail-NotificationItem", { text: "General" });
+    await click(".o-mail-NotificationItem", {text: "General"});
     await contains(".o-mail-ChatWindow");
-    await contains(".o-discuss-Call", { count: 0 });
+    await contains(".o-discuss-Call", {count: 0});
     await click(".o-mail-ChatWindow-header [title='Start Call']");
     await contains(".o-discuss-Call");
-    await contains(".o-mail-ChatWindow-header [title='Start Call']", { count: 0 });
+    await contains(".o-mail-ChatWindow-header [title='Start Call']", {count: 0});
 });
 
 test("should disconnect when closing page while in call", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     mockSendBeacon(async (route, data) => {
@@ -156,15 +161,15 @@ test("should disconnect when closing page while in call", async () => {
 
     await click("[title='Start Call']");
     await contains(".o-discuss-Call");
-    // simulate page close
+    // Simulate page close
     await manuallyDispatchProgrammaticEvent(window, "pagehide");
     await waitForSteps([`sendBeacon_leave_call:${channelId}`]);
 });
 
 test("should display invitations", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
-    const partnerId = pyEnv["res.partner"].create({ name: "InvitationSender" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
+    const partnerId = pyEnv["res.partner"].create({name: "InvitationSender"});
     const memberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
         partner_id: partnerId,
@@ -185,17 +190,20 @@ test("should display invitations", async () => {
     await start();
     await waitStoreFetch("init_messaging");
     const [partner] = pyEnv["res.partner"].read(serverState.partnerId);
-    // send after init_messaging because bus subscription is done after init_messaging
+    // Send after init_messaging because bus subscription is done after init_messaging
     pyEnv["bus.bus"]._sendone(
         partner,
         "mail.record/insert",
-        new mailDataHelpers.Store(pyEnv["discuss.channel.rtc.session"].browse(sessionId), {
-            channel_member_id: { id: memberId },
-        })
+        new mailDataHelpers.Store(
+            pyEnv["discuss.channel.rtc.session"].browse(sessionId),
+            {
+                channel_member_id: {id: memberId},
+            }
+        )
             .add(pyEnv["discuss.channel.member"].browse(memberId), {
-                partner_id: { id: partnerId },
-                channel_id: { id: channelId, model: "discuss.channel" },
-                rtc_inviting_session_id: { id: sessionId },
+                partner_id: {id: partnerId},
+                channel_id: {id: channelId, model: "discuss.channel"},
+                rtc_inviting_session_id: {id: sessionId},
             })
             .get_result()
     );
@@ -211,41 +219,41 @@ test("should display invitations", async () => {
             rtc_inviting_session_id: false,
         }).get_result()
     );
-    await contains(".o-discuss-CallInvitation", { count: 0 });
+    await contains(".o-discuss-CallInvitation", {count: 0});
     await waitForSteps(["stop - call-invitation"]);
 });
 
 test("can share screen", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='More']");
     await click("[title='Share Screen']");
     await contains("video");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("[title='More']");
     await click("[title='Stop Sharing Screen']");
-    await contains("video", { count: 0 });
+    await contains("video", {count: 0});
 });
 
 test("can share user camera", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='Turn camera on']");
     await contains("video");
     await click("[title='Stop camera']");
-    await contains("video", { count: 0 });
+    await contains("video", {count: 0});
 });
 
 test("switch front/back camera in mobile", async () => {
     mockGetMedia();
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     // Switch camera action is only available for mobiles
     mockUserAgent("android");
     expect(isMobileOS()).toBe(true);
@@ -260,7 +268,7 @@ test("switch front/back camera in mobile", async () => {
 
 test("Camera video stream stays in focus when on/off", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -269,7 +277,7 @@ test("Camera video stream stays in focus when on/off", async () => {
     await click("[title='Stop camera']");
     await click("[title='Turn camera on']");
     await contains("video[type='camera']:not(.o-inset)");
-    // test screen sharing then camera on to check camera aside
+    // Test screen sharing then camera on to check camera aside
     await click("[title='Stop camera']");
     await click("[title='Share Screen']");
     await click("[title='Turn camera on']");
@@ -279,7 +287,7 @@ test("Camera video stream stays in focus when on/off", async () => {
 
 test("Create a direct message channel when clicking on start a meeting", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "Slytherin" });
+    const channelId = pyEnv["discuss.channel"].create({name: "Slytherin"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "some message",
@@ -292,26 +300,26 @@ test("Create a direct message channel when clicking on start a meeting", async (
     await contains(".o-mail-Thread:contains('Welcome to #Slytherin!')");
     await contains(".o-mail-Message");
     await click("button[title='New Meeting']");
-    await contains(".o-mail-DiscussSidebarChannel", { text: "Mitchell Admin" });
+    await contains(".o-mail-DiscussSidebarChannel", {text: "Mitchell Admin"});
     await contains(".o-discuss-Call");
     await contains(".o-mail-Meeting .o-mail-ActionPanel:contains('Invite people')");
 });
 
 test("Can share user camera and screen together", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='More']");
     await click("[title='Share Screen']");
     await click("[title='Turn camera on']");
-    await contains("video", { count: 2 });
+    await contains("video", {count: 2});
 });
 
 test("Click on inset card should replace the inset and active stream together", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -326,9 +334,9 @@ test("Click on inset card should replace the inset and active stream together", 
 
 test("join/leave sounds are only played on main tab", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
-    const env1 = await start({ asTab: true });
-    const env2 = await start({ asTab: true });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
+    const env1 = await start({asTab: true});
+    const env2 = await start({asTab: true});
     patchWithCleanup(env1.services["mail.sound_effects"], {
         play(name) {
             asyncStep(`tab1 - play - ${name}`);
@@ -339,24 +347,24 @@ test("join/leave sounds are only played on main tab", async () => {
             asyncStep(`tab2 - play - ${name}`);
         },
     });
-    await openDiscuss(channelId, { target: env1 });
-    await openDiscuss(channelId, { target: env2 });
+    await openDiscuss(channelId, {target: env1});
+    await openDiscuss(channelId, {target: env2});
     await click(`${env1.selector} [title='Start Call']`);
     await contains(`${env1.selector} .o-discuss-Call`);
     await contains(`${env2.selector} .o-discuss-Call`);
     await waitForSteps(["tab1 - play - call-join"]);
     await click(`${env1.selector} [title='Disconnect']:not([disabled])`);
-    await contains(`${env1.selector} .o-discuss-Call`, { count: 0 });
-    await contains(`${env2.selector} .o-discuss-Call`, { count: 0 });
+    await contains(`${env1.selector} .o-discuss-Call`, {count: 0});
+    await contains(`${env2.selector} .o-discuss-Call`, {count: 0});
     await waitForSteps(["tab1 - play - call-leave"]);
 });
 
 test("'New Meeting' in mobile", async () => {
-    patchUiSize({ size: SIZES.SM });
+    patchUiSize({size: SIZES.SM});
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Partner 2" });
-    pyEnv["res.users"].create({ partner_id: partnerId });
-    const channelId = pyEnv["discuss.channel"].create({ name: "Slytherin" });
+    const partnerId = pyEnv["res.partner"].create({name: "Partner 2"});
+    pyEnv["res.users"].create({partner_id: partnerId});
+    const channelId = pyEnv["discuss.channel"].create({name: "Slytherin"});
     pyEnv["mail.message"].create({
         author_id: partnerId,
         body: "some message",
@@ -369,17 +377,17 @@ test("'New Meeting' in mobile", async () => {
     await contains(".o-mail-Thread:contains('Welcome to #Slytherin!')");
     await contains(".o-mail-Message");
     await contains("button[title*='Close Chat Window']");
-    await click("button", { text: "Chats" });
+    await click("button", {text: "Chats"});
     await click("button[title='New Meeting']");
-    await click(".o-discuss-ChannelInvitation-selectable", { text: "Partner 2" });
-    await click("button:not([disabled])", { text: "Invite to Group Chat" });
+    await click(".o-discuss-ChannelInvitation-selectable", {text: "Partner 2"});
+    await click("button:not([disabled])", {text: "Invite to Group Chat"});
     await contains(".o-discuss-Call");
     await click("[title='Exit Fullscreen']");
-    // dropdown requires an extra delay before click (because handler is registered in useEffect)
+    // Dropdown requires an extra delay before click (because handler is registered in useEffect)
     await contains("[title='Open Actions Menu']");
     await click("[title='Open Actions Menu']");
-    await click(".o-dropdown-item", { text: "Members" });
-    await contains(".o-discuss-ChannelMember", { text: "Partner 2" });
+    await click(".o-dropdown-item", {text: "Members"});
+    await contains(".o-discuss-ChannelMember", {text: "Partner 2"});
 });
 
 test("Dropzones below fullscreen meeting view are disabled", async () => {
@@ -413,7 +421,7 @@ test("Dropzones below fullscreen meeting view are disabled", async () => {
             );
         },
     };
-    patchWithCleanup(window, { documentPictureInPicture: false });
+    patchWithCleanup(window, {documentPictureInPicture: false});
     patchWithCleanup(browser, {
         open: () => {
             popoutWindow.closed = false;
@@ -423,9 +431,9 @@ test("Dropzones below fullscreen meeting view are disabled", async () => {
     });
 
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Partner 2" });
-    pyEnv["res.users"].create({ partner_id: partnerId });
-    const channelId = pyEnv["discuss.channel"].create({ name: "Slytherin" });
+    const partnerId = pyEnv["res.partner"].create({name: "Partner 2"});
+    pyEnv["res.users"].create({partner_id: partnerId});
+    const channelId = pyEnv["discuss.channel"].create({name: "Slytherin"});
     pyEnv["mail.message"].create([
         {
             author_id: partnerId,
@@ -442,29 +450,33 @@ test("Dropzones below fullscreen meeting view are disabled", async () => {
     ]);
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 2 });
+    await contains(".o-mail-Message", {count: 2});
     await click("button[title='New Meeting']");
     await contains(".o-mail-Meeting.o-fullscreen");
     await click(".o-mail-Meeting button[title='Chat']");
     await contains(".o-mail-Meeting.o-fullscreen .o-mail-ActionPanel .o-mail-Thread");
-    const textFile_1 = new File(["hello, world"], "text-1.txt", { type: "text/plain" });
+    const textFile_1 = new File(["hello, world"], "text-1.txt", {type: "text/plain"});
     await dragenterFiles(".o-mail-Meeting.o-fullscreen .o-mail-Thread", [textFile_1]);
-    await contains(".o-Dropzone"); // only dropzone in meeting view
+    await contains(".o-Dropzone"); // Only dropzone in meeting view
     await dropFiles(".o-Dropzone", [textFile_1]);
     await contains(".o-mail-Meeting .o-mail-AttachmentContainer:not(.o-isUploading)");
-    // check picture-in-picture still enables dropzone
+    // Check picture-in-picture still enables dropzone
     await click("button[title='Picture in Picture']");
-    await contains(".o-mail-Meeting:not(.o-fullscreen)", { target: popoutIframe.contentDocument });
-    const textFile_2 = new File(["hello, world"], "text-2.txt", { type: "text/plain" });
+    await contains(".o-mail-Meeting:not(.o-fullscreen)", {
+        target: popoutIframe.contentDocument,
+    });
+    const textFile_2 = new File(["hello, world"], "text-2.txt", {type: "text/plain"});
     await dragenterFiles(".o-mail-Discuss .o-mail-Thread", [textFile_1]);
-    await contains(".o-Dropzone"); // only dropzone in discuss app
+    await contains(".o-Dropzone"); // Only dropzone in discuss app
     await dropFiles(".o-Dropzone", [textFile_2]);
-    await contains(".o-mail-Discuss .o-mail-AttachmentContainer:not(.o-isUploading)", { count: 2 });
+    await contains(".o-mail-Discuss .o-mail-AttachmentContainer:not(.o-isUploading)", {
+        count: 2,
+    });
 });
 
 test("Systray icon shows latest action", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -479,7 +491,7 @@ test("Systray icon shows latest action", async () => {
     await click("[title='More']");
     await click("[title='Share Screen']");
     await contains(".o-discuss-CallMenu-buttonContent .fa-desktop");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("[title='More']");
     await click(".o-dropdown-item:contains('Raise Hand')");
     await contains(".o-discuss-CallMenu-buttonContent .fa-hand-paper-o");
@@ -487,33 +499,33 @@ test("Systray icon shows latest action", async () => {
 
 test("Systray icon keeps track of earlier actions", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await contains(".o-discuss-CallMenu-buttonContent .fa-microphone");
     await click("[title='More']");
     await click("[title='Share Screen']");
-    // stack: ["share-screen"]
+    // Stack: ["share-screen"]
     await contains(".o-discuss-CallMenu-buttonContent .fa-desktop");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("[title='Turn camera on']");
-    // stack: ["video", "share-screen"]
+    // Stack: ["video", "share-screen"]
     await contains(".o-discuss-CallMenu-buttonContent .fa-video-camera");
     await click("[title='Mute']");
-    // stack: ["mute", "video", "share-screen"]
+    // Stack: ["mute", "video", "share-screen"]
     await contains(".o-discuss-CallMenu-buttonContent .fa-microphone-slash");
     await click("[title='Unmute']");
-    // stack: ["video", "share-screen"]
+    // Stack: ["video", "share-screen"]
     await contains(".o-discuss-CallMenu-buttonContent .fa-video-camera");
     await click("[title='Stop camera']");
-    // stack: ["share-screen"]
+    // Stack: ["share-screen"]
     await contains(".o-discuss-CallMenu-buttonContent .fa-desktop");
 });
 
 test("show call participants in discuss sidebar", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -526,26 +538,26 @@ test("show call participants in discuss sidebar", async () => {
 
 test("Sort call participants in side bar by name", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["discuss.channel.rtc.session"].create([
         {
             channel_member_id: pyEnv["discuss.channel.member"].create({
                 channel_id: channelId,
-                partner_id: pyEnv["res.partner"].create({ name: "CCC" }),
+                partner_id: pyEnv["res.partner"].create({name: "CCC"}),
             }),
             channel_id: channelId,
         },
         {
             channel_member_id: pyEnv["discuss.channel.member"].create({
                 channel_id: channelId,
-                partner_id: pyEnv["res.partner"].create({ name: "AAA" }),
+                partner_id: pyEnv["res.partner"].create({name: "AAA"}),
             }),
             channel_id: channelId,
         },
         {
             channel_member_id: pyEnv["discuss.channel.member"].create({
                 channel_id: channelId,
-                partner_id: pyEnv["res.partner"].create({ name: "BBB" }),
+                partner_id: pyEnv["res.partner"].create({name: "BBB"}),
             }),
             channel_id: channelId,
         },
@@ -573,17 +585,17 @@ test("Sort call participants in side bar by name", async () => {
 test("expand call participants when joining a call", async () => {
     const pyEnv = await startServer();
     const partners = pyEnv["res.partner"].create([
-        { name: "Alice" },
-        { name: "Bob" },
-        { name: "Cathy" },
-        { name: "David" },
-        { name: "Eric" },
-        { name: "Frank" },
-        { name: "Grace" },
-        { name: "Henry" },
-        { name: "Ivy" },
+        {name: "Alice"},
+        {name: "Bob"},
+        {name: "Cathy"},
+        {name: "David"},
+        {name: "Eric"},
+        {name: "Frank"},
+        {name: "Grace"},
+        {name: "Henry"},
+        {name: "Ivy"},
     ]);
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     for (const partner of partners) {
         const memberId = pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
@@ -596,14 +608,14 @@ test("expand call participants when joining a call", async () => {
     }
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-DiscussSidebarCallParticipants img", { count: 7 });
+    await contains(".o-mail-DiscussSidebarCallParticipants img", {count: 7});
     await contains("img[title='Alice']");
     await contains("img[title='Bob']");
     await contains("img[title='Cathy']");
     await contains("img[title='David']");
-    await contains(".o-mail-DiscussSidebarCallParticipants span", { text: "+2" });
+    await contains(".o-mail-DiscussSidebarCallParticipants span", {text: "+2"});
     await click("[title='Join Call']");
-    await contains(".o-mail-DiscussSidebarCallParticipants img", { count: 10 });
+    await contains(".o-mail-DiscussSidebarCallParticipants img", {count: 10});
     await contains("img[title='Alice']");
     await contains("img[title='Bob']");
     await contains("img[title='Cathy']");
@@ -618,36 +630,40 @@ test("start call when accepting from push notification", async () => {
         register: () => Promise.resolve(),
         ready: Promise.resolve(),
     });
-    patchWithCleanup(window.navigator, { serviceWorker });
+    patchWithCleanup(window.navigator, {serviceWorker});
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss("mail.box_inbox");
     await contains(".o-mail-DiscussContent-threadName[title=Inbox]");
     serviceWorker.dispatchEvent(
         new MessageEvent("message", {
-            data: { action: "OPEN_CHANNEL", data: { id: channelId, joinCall: true } },
+            data: {action: "OPEN_CHANNEL", data: {id: channelId, joinCall: true}},
         })
     );
     await contains(".o-mail-DiscussContent-threadName[title=General]");
-    await contains(`.o-discuss-CallParticipantCard[title='${serverState.partnerName}']`);
+    await contains(
+        `.o-discuss-CallParticipantCard[title='${serverState.partnerName}']`
+    );
 });
 
 test("Clicking sidebar call participant opens avatar card", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
-    await click(".o-mail-DiscussSidebarCallParticipants-participant", { text: "Mitchell Admin" });
-    await contains(".o_avatar_card .o_card_user_infos", { text: "Mitchell Admin" });
+    await click(".o-mail-DiscussSidebarCallParticipants-participant", {
+        text: "Mitchell Admin",
+    });
+    await contains(".o_avatar_card .o_card_user_infos", {text: "Mitchell Admin"});
 });
 
 test("Use saved volume settings", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const partnerName = "Another Participant";
-    const partnerId = pyEnv["res.partner"].create({ name: partnerName });
+    const partnerId = pyEnv["res.partner"].create({name: partnerName});
     pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
@@ -675,47 +691,51 @@ test("Use saved volume settings", async () => {
     await contains(".o-discuss-CallContextMenu");
     const rangeInput = queryFirst(".o-discuss-CallContextMenu input[type='range']");
     expect(rangeInput.value).toBe(expectedVolume.toString());
-    rangeInput.dispatchEvent(new Event("change")); // to trigger the volume change
+    rangeInput.dispatchEvent(new Event("change")); // To trigger the volume change
     await click(".o-discuss-CallActionList button[aria-label='Disconnect']");
 });
 
 test("show call participants after stopping screen share", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='Share Screen']");
     await contains("video");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("[title='Stop Sharing Screen']");
-    await contains("video", { count: 0 });
-    // when all participant cards are shown they are minimized
-    await contains(".o-discuss-Call-mainCards .o-discuss-CallParticipantCard .o-minimized");
+    await contains("video", {count: 0});
+    // When all participant cards are shown they are minimized
+    await contains(
+        ".o-discuss-Call-mainCards .o-discuss-CallParticipantCard .o-minimized"
+    );
 });
 
 test("show call participants after stopping camera share", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='Turn camera on']");
     await contains("video");
     await click("[title='Stop camera']");
-    await contains("video", { count: 0 });
-    // when all participant cards are shown they are minimized
-    await contains(".o-discuss-Call-mainCards .o-discuss-CallParticipantCard .o-minimized");
+    await contains("video", {count: 0});
+    // When all participant cards are shown they are minimized
+    await contains(
+        ".o-discuss-Call-mainCards .o-discuss-CallParticipantCard .o-minimized"
+    );
 });
 
 test("Cross tab calls: tabs can interact with calls remotely", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const broadcastChannel = new BroadcastChannel("call_sync_state");
     const sessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
-            partner_id: pyEnv["res.partner"].create({ name: "remoteHost" }),
+            partner_id: pyEnv["res.partner"].create({name: "remoteHost"}),
         }),
         channel_id: channelId,
     });
@@ -739,7 +759,7 @@ test("Cross tab calls: tabs can interact with calls remotely", async () => {
 
     broadcastChannel.onmessage = (event) => {
         if (event.data.type === CROSS_TAB_CLIENT_MESSAGE.REQUEST_ACTION) {
-            asyncStep(`is_muted:${event.data.changes["is_muted"]}`);
+            asyncStep(`is_muted:${event.data.changes.is_muted}`);
         }
     };
     await click("[title='Mute']");
@@ -748,18 +768,22 @@ test("Cross tab calls: tabs can interact with calls remotely", async () => {
 
 test("automatically cancel incoming call after some time", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
-    const [memberId] = pyEnv["discuss.channel.member"].search([["channel_id", "=", channelId]]);
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
+    const [memberId] = pyEnv["discuss.channel.member"].search([
+        ["channel_id", "=", channelId],
+    ]);
     const rtcSessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: memberId,
         channel_id: channelId,
     });
-    pyEnv["discuss.channel.member"].write([memberId], { rtc_inviting_session_id: rtcSessionId });
+    pyEnv["discuss.channel.member"].write([memberId], {
+        rtc_inviting_session_id: rtcSessionId,
+    });
     await start();
     await openDiscuss(channelId);
     await contains(".o-discuss-CallInvitation");
     await advanceTime(30_000);
-    await contains(".o-discuss-CallInvitation", { count: 0 });
+    await contains(".o-discuss-CallInvitation", {count: 0});
 });
 
 test("should also invite to the call when inviting to the channel", async () => {
@@ -768,10 +792,10 @@ test("should also invite to the call when inviting to the channel", async () => 
         email: "testpartner@odoo.com",
         name: "TestPartner",
     });
-    pyEnv["res.users"].create({ partner_id: partnerId });
+    pyEnv["res.users"].create({partner_id: partnerId});
     const channelId = pyEnv["discuss.channel"].create({
         name: "TestChanel",
-        channel_member_ids: [Command.create({ partner_id: serverState.partnerId })],
+        channel_member_ids: [Command.create({partner_id: serverState.partnerId})],
         channel_type: "channel",
     });
     await start();
@@ -780,14 +804,14 @@ test("should also invite to the call when inviting to the channel", async () => 
     await contains(".o-discuss-Call");
     await click(".o-mail-DiscussContent-header button[title='Invite People']");
     await contains(".o-discuss-ChannelInvitation");
-    await click(".o-discuss-ChannelInvitation-selectable", { text: "TestPartner" });
+    await click(".o-discuss-ChannelInvitation-selectable", {text: "TestPartner"});
     await click(".o-discuss-ChannelInvitation [title='Invite']:enabled");
     await contains(".o-discuss-CallParticipantCard.o-isInvitation");
 });
 
 test("can join / leave call from discuss sidebar actions", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Channel Actions']");
@@ -795,19 +819,19 @@ test("can join / leave call from discuss sidebar actions", async () => {
     await contains(".o-discuss-Call");
     await click("[title='Channel Actions']");
     await click(".o-dropdown-item:contains('Disconnect')");
-    await contains(".o-discuss-Call", { count: 0 });
+    await contains(".o-discuss-Call", {count: 0});
 });
 
 test("shows warning on infinite mirror effect (screen-sharing then fullscreen)", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
     await click("[title='More']");
     await click("[title='Share Screen']");
     await contains("video");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("button[title='Fullscreen']");
     await contains(".o-discuss-CallInfiniteMirroringWarning");
     await contains(
@@ -821,12 +845,12 @@ test("shows warning on infinite mirror effect (screen-sharing then fullscreen)",
 test("single 'join' (without camera) button when last call was audio-only", async () => {
     const pyEnv = await startServer();
     onRpc("/mail/rtc/session/notify_call_members", () => true);
-    const alfredPartnerId = pyEnv["res.partner"].create({ name: "Alfred" });
+    const alfredPartnerId = pyEnv["res.partner"].create({name: "Alfred"});
     const channelId = pyEnv["discuss.channel"].create({
         channel_type: "chat",
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ partner_id: alfredPartnerId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({partner_id: alfredPartnerId}),
         ],
     });
     pyEnv["discuss.channel.rtc.session"].create({
@@ -841,18 +865,18 @@ test("single 'join' (without camera) button when last call was audio-only", asyn
     await click("button[title='Join Call']");
     await contains(".o-discuss-Call.o-selfInCall");
     await click("button[title='Disconnect'");
-    await click("button[title='Join Call']", { text: "Join", contains: [".fa-phone"] });
+    await click("button[title='Join Call']", {text: "Join", contains: [".fa-phone"]});
 });
 
 test("single 'join' (with camera) button when last call had camera on", async () => {
     const pyEnv = await startServer();
     onRpc("/mail/rtc/session/notify_call_members", () => true);
-    const alfredPartnerId = pyEnv["res.partner"].create({ name: "Alfred" });
+    const alfredPartnerId = pyEnv["res.partner"].create({name: "Alfred"});
     const channelId = pyEnv["discuss.channel"].create({
         channel_type: "chat",
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ partner_id: alfredPartnerId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({partner_id: alfredPartnerId}),
         ],
     });
     pyEnv["discuss.channel.rtc.session"].create({
@@ -875,18 +899,18 @@ test("single 'join' (with camera) button when last call had camera on", async ()
 
 test("dynamic focus switches to talking participant", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const aliceSessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
-            partner_id: pyEnv["res.partner"].create({ name: "Alice" }),
+            partner_id: pyEnv["res.partner"].create({name: "Alice"}),
         }),
         channel_id: channelId,
     });
     const bobSessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
-            partner_id: pyEnv["res.partner"].create({ name: "Bob" }),
+            partner_id: pyEnv["res.partner"].create({name: "Bob"}),
         }),
         channel_id: channelId,
     });
@@ -900,29 +924,29 @@ test("dynamic focus switches to talking participant", async () => {
     await contains(".o-discuss-CallParticipantCard[title='Bob']", {
         count: 0,
     });
-    rtc.updateSessionInfo({ [bobSessionId]: { isTalking: true } });
+    rtc.updateSessionInfo({[bobSessionId]: {isTalking: true}});
     await contains(".o-discuss-CallParticipantCard[title='Bob']");
-    rtc.updateSessionInfo({ [aliceSessionId]: { isTalking: true } });
+    rtc.updateSessionInfo({[aliceSessionId]: {isTalking: true}});
     await contains(".o-discuss-CallParticipantCard[title='Bob']", {
         count: 0,
     });
     await contains(".o-discuss-CallParticipantCard[title='Alice']");
-    rtc.updateSessionInfo({ [aliceSessionId]: { isTalking: false } });
+    rtc.updateSessionInfo({[aliceSessionId]: {isTalking: false}});
     await contains(".o-discuss-CallParticipantCard[title='Bob']");
     await click("[title='More']");
     await click(".o-dropdown-item:contains('Disable speaker autofocus')");
-    await contains(".o-dropdown-item", { count: 0 });
+    await contains(".o-dropdown-item", {count: 0});
     await click("[title='More']");
     await contains(".o-dropdown-item:contains('Autofocus speaker')");
 });
 
 test("Shows warning badge on mic/camera on non-granted permission in meeting conversations", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId,
-            partner_id: pyEnv["res.partner"].create({ name: "Bob" }),
+            partner_id: pyEnv["res.partner"].create({name: "Bob"}),
         }),
         channel_id: channelId,
     });
@@ -939,8 +963,8 @@ test("Shows warning badge on mic/camera on non-granted permission in meeting con
     await click(".o-mail-DiscussSidebarChannel:text('General')");
     await click("[title='Join Call']");
     await contains("button[title='Turn camera on']");
-    await contains("button[title='Turn camera on'].o-tag-DANGER", { count: 0 });
-    await contains("button[title='Turn camera on'].o-tag-WARNING_BADGE", { count: 0 });
+    await contains("button[title='Turn camera on'].o-tag-DANGER", {count: 0});
+    await contains("button[title='Turn camera on'].o-tag-WARNING_BADGE", {count: 0});
     await click("button[title='Disconnect']");
     await waitNotifications(["discuss.channel.rtc.session/ended"]);
 });
@@ -955,7 +979,7 @@ test("should not show context menu on participant card when not in a call", asyn
         {
             channel_member_id: pyEnv["discuss.channel.member"].create({
                 channel_id: channelId,
-                partner_id: pyEnv["res.partner"].create({ name: "Awesome Partner" }),
+                partner_id: pyEnv["res.partner"].create({name: "Awesome Partner"}),
             }),
             channel_id: channelId,
         },
@@ -965,7 +989,7 @@ test("should not show context menu on participant card when not in a call", asyn
     await contains(".o-discuss-CallParticipantCard[title='Awesome Partner']");
     await contains(
         ".o-discuss-CallParticipantCard[title='Awesome Partner'][data-is-context-menu-available]",
-        { count: 0 }
+        {count: 0}
     );
     await click("[title='Join Call']");
     await contains(
@@ -980,7 +1004,7 @@ test("should not show context menu on participant card when not in a call", asyn
 
 test("all streams are properly closed when abruptly disconnected", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const env = await start();
     const rtc = env.services["discuss.rtc"];
     await openDiscuss(channelId);
@@ -998,7 +1022,7 @@ test("all streams are properly closed when abruptly disconnected", async () => {
     expect(screenStream.getTracks()[0].readyState).toBe("live");
     expect(streams.length).toBe(3);
     pyEnv["discuss.channel.rtc.session"].unlink([rtc.selfSession.id]);
-    await contains(".o-discuss-Call", { count: 0 });
+    await contains(".o-discuss-Call", {count: 0});
     expect(audioStream.getTracks()[0].readyState).toBe("ended");
     expect(cameraStream.getTracks()[0].readyState).toBe("ended");
     expect(screenStream.getTracks()[0].readyState).toBe("ended");
@@ -1006,7 +1030,7 @@ test("all streams are properly closed when abruptly disconnected", async () => {
 
 test("Leaving a call should close all the streams", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -1019,9 +1043,9 @@ test("Leaving a call should close all the streams", async () => {
     expect(streams[0].getTracks()[0].readyState).toBe("live");
     expect(streams[1].getTracks()[0].readyState).toBe("live");
     expect(streams[2].getTracks()[0].readyState).toBe("live");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click(".o-discuss-CallActionList button[aria-label='Disconnect']");
-    await contains(".o-discuss-Call", { count: 0 });
+    await contains(".o-discuss-Call", {count: 0});
     expect(streams[0].getTracks()[0].readyState).toBe("ended");
     expect(streams[1].getTracks()[0].readyState).toBe("ended");
     expect(streams[2].getTracks()[0].readyState).toBe("ended");
@@ -1029,7 +1053,7 @@ test("Leaving a call should close all the streams", async () => {
 
 test("all streams are properly closed when requesting new ones and tuning the features off", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await click("[title='Start Call']");
@@ -1041,71 +1065,73 @@ test("all streams are properly closed when requesting new ones and tuning the fe
     const cameraStream1 = streams.at(-1);
     expect(cameraStream1.getTracks()[0].readyState).toBe("live");
     await click("[title='Stop camera']");
-    await contains(".o-discuss-CallParticipantCard video", { count: 0 });
+    await contains(".o-discuss-CallParticipantCard video", {count: 0});
     await click("[title='Turn camera on']");
     await contains(".o-discuss-CallParticipantCard video");
     const cameraStream2 = streams.at(-1);
     expect(cameraStream1.getTracks()[0].readyState).toBe("ended");
     expect(cameraStream2.getTracks()[0].readyState).toBe("live");
     await click("[title='Stop camera']");
-    await contains(".o-discuss-CallParticipantCard video", { count: 0 });
+    await contains(".o-discuss-CallParticipantCard video", {count: 0});
     await click("[title='Share Screen']");
     await contains(".o-discuss-CallParticipantCard video");
     await contains(".o-mail-DiscussSidebarCallParticipants-status:contains('LIVE')");
     const screenStream = streams.at(-1);
     expect(screenStream.getTracks()[0].readyState).toBe("live");
-    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // show overlay
+    await triggerEvents(".o-discuss-Call-mainCards", ["mousemove"]); // Show overlay
     await click("[title='Stop Sharing Screen']");
     expect(screenStream.getTracks()[0].readyState).toBe("ended");
 });
 
 test("Show connecting state on cards", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const channelMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Bob" }),
+        partner_id: pyEnv["res.partner"].create({name: "Bob"}),
     });
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const bobRemote = network.makeMockRemote(channelMemberId);
     await openDiscuss(channelId);
     await click("[title='Join Call']");
     await contains(".o-discuss-CallParticipantCard[title='Bob']");
     await bobRemote.updateConnectionState("connecting");
-    await contains(".o-discuss-CallParticipantCard[title='Bob'] .fa-exclamation-triangle");
+    await contains(
+        ".o-discuss-CallParticipantCard[title='Bob'] .fa-exclamation-triangle"
+    );
     await bobRemote.updateConnectionState("connected");
     await contains("span[data-connection-state='connected']");
 });
 
 test("Can see raised hands from other call participants", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const channelMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Bob" }),
+        partner_id: pyEnv["res.partner"].create({name: "Bob"}),
     });
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const bobRemote = network.makeMockRemote(channelMemberId);
     await openDiscuss(channelId);
     await click("[title='Join Call']");
     await contains(".o-discuss-CallParticipantCard[title='Bob']");
     await bobRemote.updateConnectionState("connected");
-    await bobRemote.updateInfo({ isRaisingHand: true });
+    await bobRemote.updateInfo({isRaisingHand: true});
     await contains(".o-discuss-CallParticipantCard[title='Bob'] .fa-hand-paper-o");
     await contains(".o-discuss-Call-notification:contains('Bob raised their hand')");
 });
 
 test("Can see videos from other call participants", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const channelMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Bob" }),
+        partner_id: pyEnv["res.partner"].create({name: "Bob"}),
     });
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const bobRemote = network.makeMockRemote(channelMemberId);
     await openDiscuss(channelId);
     await click("[title='Join Call']");
@@ -1117,37 +1143,40 @@ test("Can see videos from other call participants", async () => {
 
 test("show all participants on other user stops screen share", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const channelMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Streamer" }),
+        partner_id: pyEnv["res.partner"].create({name: "Streamer"}),
     });
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const streamerRemote = network.makeMockRemote(channelMemberId);
     await openDiscuss(channelId);
     await click("[title='Join Call']");
     await streamerRemote.updateConnectionState("connected");
-    await contains(".o-discuss-CallParticipantCard-avatar", { count: 2 });
-    await streamerRemote.updateUpload("screen", createVideoStream().getVideoTracks()[0]);
-    await contains(".o-discuss-CallParticipantCard-avatar", { count: 2 });
+    await contains(".o-discuss-CallParticipantCard-avatar", {count: 2});
+    await streamerRemote.updateUpload(
+        "screen",
+        createVideoStream().getVideoTracks()[0]
+    );
+    await contains(".o-discuss-CallParticipantCard-avatar", {count: 2});
     await contains(".o-discuss-CallParticipantCard video");
     await click(".o-discuss-CallParticipantCard[title='Streamer'] video");
     await contains(".o-discuss-CallParticipantCard-avatar");
     await contains(".o-discuss-CallParticipantCard video");
     await streamerRemote.updateUpload("screen", null);
-    await contains(".o-discuss-CallParticipantCard-avatar", { count: 2 });
+    await contains(".o-discuss-CallParticipantCard-avatar", {count: 2});
 });
 
 test("discuss sidebar call participant shows appropriate status icon", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const bobMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "bob" }),
+        partner_id: pyEnv["res.partner"].create({name: "bob"}),
     });
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const bobRemote = network.makeMockRemote(bobMemberId);
     await openDiscuss(channelId);
     await click("[title='Join Call']");
@@ -1160,38 +1189,45 @@ test("discuss sidebar call participant shows appropriate status icon", async () 
     await contains("button[title='Unmute']");
     await click("button[title='Voice Settings']");
     await click(".dropdown-menu button:contains('Deafen')");
-    await contains(".o-mail-DiscussSidebarCallParticipants:contains('Mitchell Admin') .fa-deaf");
+    await contains(
+        ".o-mail-DiscussSidebarCallParticipants:contains('Mitchell Admin') .fa-deaf"
+    );
     await contains(
         ".o-mail-DiscussSidebarCallParticipants:contains('Mitchell Admin') .fa-microphone-slash",
-        { count: 0 }
+        {count: 0}
     );
     await click("button[title='Undeafen']");
-    await contains(".o-mail-DiscussSidebarCallParticipants:contains('Mitchell Admin') .fa-deaf", {
-        count: 0,
-    });
-    await bobRemote.updateInfo({ is_muted: true });
-    await contains(".o-mail-DiscussSidebarCallParticipants:contains('bob') .fa-microphone-slash");
-    await bobRemote.updateInfo({ is_deaf: true });
+    await contains(
+        ".o-mail-DiscussSidebarCallParticipants:contains('Mitchell Admin') .fa-deaf",
+        {
+            count: 0,
+        }
+    );
+    await bobRemote.updateInfo({is_muted: true});
+    await contains(
+        ".o-mail-DiscussSidebarCallParticipants:contains('bob') .fa-microphone-slash"
+    );
+    await bobRemote.updateInfo({is_deaf: true});
     await contains(".o-mail-DiscussSidebarCallParticipants:contains('bob') .fa-deaf");
 });
 
 test("auto-focus participant video in one-to-one call in chat window", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ channel_type: "chat" });
+    const channelId = pyEnv["discuss.channel"].create({channel_type: "chat"});
     pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
         partner_id: serverState.partnerId,
     });
     const channelMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Batman" }),
+        partner_id: pyEnv["res.partner"].create({name: "Batman"}),
     });
-    setupChatHub({ opened: [channelId] });
+    setupChatHub({opened: [channelId]});
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const mockedRemote = network.makeMockRemote(channelMemberId);
     await click("[title='Join Call']");
-    await contains(".o-discuss-CallParticipantCard", { count: 2 });
+    await contains(".o-discuss-CallParticipantCard", {count: 2});
     await mockedRemote.updateConnectionState("connected");
     await mockedRemote.updateUpload("camera", createVideoStream().getVideoTracks()[0]);
     await contains(".o-discuss-CallParticipantCard[title='Batman'] video");
@@ -1202,45 +1238,49 @@ test("auto-focus participant video in one-to-one call in chat window", async () 
     await contains(".o-mail-Meeting");
     await mockedRemote.updateUpload("camera", createVideoStream().getVideoTracks()[0]);
     await contains(".o-discuss-CallParticipantCard[title='Batman'] video");
-    await contains(".o-discuss-CallParticipantCard", { count: 2 }); // card does not get focused in meeting view
+    await contains(".o-discuss-CallParticipantCard", {count: 2}); // Card does not get focused in meeting view
 });
 
 test("show pulse effect on fullscreen mode only when another participant's camera is on", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const aliceMemberId = pyEnv["discuss.channel.member"].create({
         channel_id: channelId,
-        partner_id: pyEnv["res.partner"].create({ name: "Alice" }),
+        partner_id: pyEnv["res.partner"].create({name: "Alice"}),
     });
-    setupChatHub({ opened: [channelId] });
+    setupChatHub({opened: [channelId]});
     const env = await start();
-    const network = await makeMockRtcNetwork({ env, channelId });
+    const network = await makeMockRtcNetwork({env, channelId});
     const aliceRemote = network.makeMockRemote(aliceMemberId);
     await click("[title='Join Call']");
     await aliceRemote.updateConnectionState("connected");
     await contains(".o-discuss-Call");
-    await aliceRemote.updateInfo({ is_camera_on: true });
+    await aliceRemote.updateInfo({is_camera_on: true});
     await contains(".o-discuss-CallActionList-pulse[title='Fullscreen']");
-    await aliceRemote.updateInfo({ is_camera_on: false });
-    await contains(".o-discuss-CallActionList-pulse[title='Fullscreen']", { count: 0 });
+    await aliceRemote.updateInfo({is_camera_on: false});
+    await contains(".o-discuss-CallActionList-pulse[title='Fullscreen']", {count: 0});
 });
 
 test.tags("focus required");
 test("open conversation from call invitation (chat window)", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
-    const [memberId] = pyEnv["discuss.channel.member"].search([["channel_id", "=", channelId]]);
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
+    const [memberId] = pyEnv["discuss.channel.member"].search([
+        ["channel_id", "=", channelId],
+    ]);
     const rtcSessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: memberId,
         channel_id: channelId,
     });
-    pyEnv["discuss.channel.member"].write([memberId], { rtc_inviting_session_id: rtcSessionId });
+    pyEnv["discuss.channel.member"].write([memberId], {
+        rtc_inviting_session_id: rtcSessionId,
+    });
     await start();
     await contains(".o-discuss-CallInvitation");
     await click(".o-mail-CallInvitation-avatar");
     await contains(".o-mail-ChatWindow .o-mail-Composer.o-focused");
     triggerHotkey("Escape");
-    await contains(".o-mail-ChatWindow", { count: 0 });
+    await contains(".o-mail-ChatWindow", {count: 0});
     await contains(".o-discuss-CallInvitation");
     await click("[title='Join Call']");
     await contains(".o-mail-ChatWindow .o-mail-Composer.o-focused");
@@ -1248,17 +1288,21 @@ test("open conversation from call invitation (chat window)", async () => {
 
 test("open conversation from call invitation (discuss app)", async () => {
     const pyEnv = await startServer();
-    const channelId1 = pyEnv["discuss.channel"].create({ name: "General" });
-    const channelId2 = pyEnv["discuss.channel"].create({ name: "Test" });
-    const memberId = pyEnv["discuss.channel.member"].search([["channel_id", "=", channelId1]]);
+    const channelId1 = pyEnv["discuss.channel"].create({name: "General"});
+    const channelId2 = pyEnv["discuss.channel"].create({name: "Test"});
+    const memberId = pyEnv["discuss.channel.member"].search([
+        ["channel_id", "=", channelId1],
+    ]);
     const rtcSessionId = pyEnv["discuss.channel.rtc.session"].create({
         channel_member_id: pyEnv["discuss.channel.member"].create({
             channel_id: channelId1,
-            partner_id: pyEnv["res.partner"].create({ name: "Armstrong" }),
+            partner_id: pyEnv["res.partner"].create({name: "Armstrong"}),
         }),
         channel_id: channelId1,
     });
-    pyEnv["discuss.channel.member"].write(memberId, { rtc_inviting_session_id: rtcSessionId });
+    pyEnv["discuss.channel.member"].write(memberId, {
+        rtc_inviting_session_id: rtcSessionId,
+    });
     await start();
     await openDiscuss(channelId2);
     await contains(".o-discuss-CallInvitation");

@@ -1,6 +1,6 @@
-import { App, blockDom, Component, markup } from "@odoo/owl";
-import { getTemplate } from "@web/core/templates";
-import { appTranslateFn } from "@web/core/l10n/translation";
+import {App, blockDom, Component, markup} from "@odoo/owl";
+import {getTemplate} from "@web/core/templates";
+import {appTranslateFn} from "@web/core/l10n/translation";
 
 export function renderToElement(template, context = {}) {
     const el = render(template, context).firstElementChild;

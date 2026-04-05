@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { FormController } from "@web/views/form/form_controller";
-import { formView } from "@web/views/form/form_view";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {FormController} from "@web/views/form/form_controller";
+import {formView} from "@web/views/form/form_view";
 
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class ExpenseFormController extends FormController {
     setup() {
@@ -24,15 +24,25 @@ export class ExpenseFormController extends FormController {
         ) {
             await record.save();
             return new Promise((resolve) => {
-                this.dialogService.add(ConfirmationDialog, {
-                    body: _t("An expense of same category, amount and date already exists."),
-                    confirm: async () => {
-                        await this.orm.call("hr.expense", "action_approve_duplicates", [record.resId]);
-                        resolve(true);
+                this.dialogService.add(
+                    ConfirmationDialog,
+                    {
+                        body: _t(
+                            "An expense of same category, amount and date already exists."
+                        ),
+                        confirm: async () => {
+                            await this.orm.call(
+                                "hr.expense",
+                                "action_approve_duplicates",
+                                [record.resId]
+                            );
+                            resolve(true);
+                        },
                     },
-                }, {
-                    onClose: resolve.bind(null, false),
-                });
+                    {
+                        onClose: resolve.bind(null, false),
+                    }
+                );
             });
         }
         return super.beforeExecuteActionButton(...arguments);

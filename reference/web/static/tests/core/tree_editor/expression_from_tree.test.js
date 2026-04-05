@@ -1,16 +1,20 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 
-import { complexCondition, condition, expression } from "@web/core/tree_editor/condition_tree";
-import { expressionFromTree } from "@web/core/tree_editor/expression_from_tree";
+import {
+    complexCondition,
+    condition,
+    expression,
+} from "@web/core/tree_editor/condition_tree";
+import {expressionFromTree} from "@web/core/tree_editor/expression_from_tree";
 
 test("expressionFromTree", () => {
     const options = {
         getFieldDef: (name) => {
             if (["foo", "bar"].includes(name)) {
-                return { type: "any" }; // any field
+                return {type: "any"}; // Any field
             }
             if (["foo_ids", "bar_ids"].includes(name)) {
-                return { type: "many2many" };
+                return {type: "many2many"};
             }
             return null;
         },
@@ -133,8 +137,8 @@ test("expressionFromTree", () => {
             result: `"y" not in [1]`,
         },
     ];
-    for (const { expressionTree, result, extraOptions } of toTest) {
-        const o = { ...options, ...extraOptions };
+    for (const {expressionTree, result, extraOptions} of toTest) {
+        const o = {...options, ...extraOptions};
         expect(expressionFromTree(expressionTree, o)).toBe(result);
     }
 });

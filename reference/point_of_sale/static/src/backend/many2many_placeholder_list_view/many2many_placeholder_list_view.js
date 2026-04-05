@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,

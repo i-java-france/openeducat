@@ -1,15 +1,15 @@
-import { expect, test } from "@odoo/hoot";
-import { click, queryAttribute } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {click, queryAttribute} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { TagsList } from "@web/core/tags_list/tags_list";
+import {TagsList} from "@web/core/tags_list/tags_list";
 
 test("Can be rendered with different tags", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { TagsList };
+        static components = {TagsList};
         static template = xml`<TagsList tags="tags" />`;
         setup() {
             this.tags = [
@@ -50,7 +50,7 @@ test("Can be rendered with different tags", async () => {
 test("Tags can be displayed with an image", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { TagsList };
+        static components = {TagsList};
         static template = xml`<TagsList tags="tags" />`;
         setup() {
             this.tags = [
@@ -77,7 +77,7 @@ test("Tags can be displayed with an image", async () => {
 test("Tags can be displayed with an icon", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { TagsList };
+        static components = {TagsList};
         static template = xml`<TagsList tags="tags" />`;
         setup() {
             this.tags = [
@@ -104,7 +104,7 @@ test("Tags can be displayed with an icon", async () => {
 test("Limiting the visible tags displays a counter", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { TagsList };
+        static components = {TagsList};
         static template = xml`<TagsList tags="tags" visibleItemsLimit="state.visibleItemsLimit" />`;
         setup() {
             this.state = useState({
@@ -141,7 +141,7 @@ test("Limiting the visible tags displays a counter", async () => {
     }
 
     const parent = await mountWithCleanup(Parent);
-    // visibleItemsLimit = 3 -> displays 2 tags + 1 counter (4 tags left)
+    // VisibleItemsLimit = 3 -> displays 2 tags + 1 counter (4 tags left)
     expect(".o_tag").toHaveCount(2);
     expect(".rounded").toHaveText("+4", {
         message: "the counter displays 4 more items",
@@ -149,24 +149,24 @@ test("Limiting the visible tags displays a counter", async () => {
     expect(JSON.parse(queryAttribute(".rounded", "data-tooltip-info"))).toEqual(
         {
             tags: [
-                { text: "Fire", id: "tag3" },
-                { text: "Earth", id: "tag4" },
-                { text: "Wind", id: "tag5" },
-                { text: "Dust", id: "tag6" },
+                {text: "Fire", id: "tag3"},
+                {text: "Earth", id: "tag4"},
+                {text: "Wind", id: "tag5"},
+                {text: "Dust", id: "tag6"},
             ],
         },
-        { message: "the counter has a tooltip displaying other items" }
+        {message: "the counter has a tooltip displaying other items"}
     );
 
     parent.state.visibleItemsLimit = 5;
     await animationFrame();
-    // visibleItemsLimit = 5 -> displays 4 tags + 1 counter (2 tags left)
+    // VisibleItemsLimit = 5 -> displays 4 tags + 1 counter (2 tags left)
     expect(".o_tag").toHaveCount(4);
     expect(".rounded").toHaveText("+2");
 
     parent.state.visibleItemsLimit = 6;
     await animationFrame();
-    // visibleItemsLimit = 6 -> displays 6 tags + 0 counter (0 tag left)
+    // VisibleItemsLimit = 6 -> displays 6 tags + 0 counter (0 tag left)
     expect(".o_tag").toHaveCount(6);
     expect(".rounded").toHaveCount(0);
 });
@@ -174,7 +174,7 @@ test("Limiting the visible tags displays a counter", async () => {
 test("Tags with img have a backdrop only if they can be deleted", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { TagsList };
+        static components = {TagsList};
         static template = xml`<TagsList tags="tags" />`;
         setup() {
             this.tags = [

@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 export class SaleUpdateLineButton extends Interaction {
     static selector = ".o_portal_sale_sidebar";
@@ -36,11 +36,13 @@ export class SaleUpdateLineButton extends Interaction {
      */
     async onQuantityChange(ev, currentTargetEl) {
         const quantity = parseInt(currentTargetEl.value);
-        await this.waitFor(this.callUpdateLineRoute(this.orderDetail.orderId, {
-            "access_token": this.orderDetail.token,
-            "input_quantity": quantity >= 0 ? quantity : false,
-            "line_id": currentTargetEl.dataset.lineId,
-        }));
+        await this.waitFor(
+            this.callUpdateLineRoute(this.orderDetail.orderId, {
+                access_token: this.orderDetail.token,
+                input_quantity: quantity >= 0 ? quantity : false,
+                line_id: currentTargetEl.dataset.lineId,
+            })
+        );
         this.refreshOrderUI();
     }
 
@@ -49,11 +51,13 @@ export class SaleUpdateLineButton extends Interaction {
      * @param {HTMLElement} currentTargetEl
      */
     async onUpdateLineClick(ev, currentTargetEl) {
-        await this.waitFor(this.callUpdateLineRoute(this.orderDetail.orderId, {
-            "access_token": this.orderDetail.token,
-            "line_id": currentTargetEl.dataset.lineId,
-            "remove": currentTargetEl.dataset.remove,
-        }));
+        await this.waitFor(
+            this.callUpdateLineRoute(this.orderDetail.orderId, {
+                access_token: this.orderDetail.token,
+                line_id: currentTargetEl.dataset.lineId,
+                remove: currentTargetEl.dataset.remove,
+            })
+        );
         this.refreshOrderUI();
     }
 }

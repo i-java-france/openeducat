@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import random
-import werkzeug.urls
-
 from collections import defaultdict
 from datetime import datetime, timedelta
 
-from odoo import api, exceptions, fields, models, tools, _
+import werkzeug.urls
+
+from odoo import _, api, exceptions, fields, models, tools
+
 
 class SignupError(Exception):
     pass

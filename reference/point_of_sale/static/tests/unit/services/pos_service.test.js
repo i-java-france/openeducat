@@ -1,11 +1,11 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { getFilledOrder, setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { ConnectionLostError } from "@web/core/network/rpc";
-import { onRpc } from "@web/../tests/web_test_helpers";
-import { imageUrl } from "@web/core/utils/urls";
-import { prepareRoundingVals } from "../accounting/utils";
-const { DateTime } = luxon;
+import {describe, expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {ConnectionLostError} from "@web/core/network/rpc";
+import {onRpc} from "@web/../tests/web_test_helpers";
+import {imageUrl} from "@web/core/utils/urls";
+import {prepareRoundingVals} from "../accounting/utils";
+const {DateTime} = luxon;
 
 definePosModels();
 
@@ -26,7 +26,7 @@ describe("pos_store.js", () => {
         const str = store.getStrNotes("string");
         expect(str).toBeOfType("string");
         expect(str).toBe("string");
-        const json2str = store.getStrNotes([{ text: "json", colorIndex: 0 }]);
+        const json2str = store.getStrNotes([{text: "json", colorIndex: 0}]);
         expect(json2str).toBeOfType("string");
         expect(json2str).toBe("json");
     });
@@ -35,18 +35,21 @@ describe("pos_store.js", () => {
         const store = await setupPosEnv();
         const models = store.models;
         const order = await getFilledOrder(store);
-        const serializedOrder = { ...order.raw };
+        const serializedOrder = {...order.raw};
 
         await store.deleteOrders([order]);
         serializedOrder.state = "cancel";
         let isListenerCalled = false;
-        const listenerCleanup = models["pos.order"].addEventListener("update", (data) => {
-            if (data.id === order.id) {
-                const orderToRecompute = models["pos.order"].get(data.id);
-                orderToRecompute.triggerRecomputeAllPrices();
-                isListenerCalled = true;
+        const listenerCleanup = models["pos.order"].addEventListener(
+            "update",
+            (data) => {
+                if (data.id === order.id) {
+                    const orderToRecompute = models["pos.order"].get(data.id);
+                    orderToRecompute.triggerRecomputeAllPrices();
+                    isListenerCalled = true;
+                }
             }
-        });
+        );
         models.connectNewData({
             "pos.order": [serializedOrder],
         });
@@ -122,7 +125,7 @@ describe("pos_store.js", () => {
             expect(order2.lines[0].id).toBeOfType("string");
             expect(order2.lines[1].id).toBeOfType("string");
 
-            await store.syncAllOrders({ orders: [order1] });
+            await store.syncAllOrders({orders: [order1]});
             expect(store.getPendingOrder().orderToCreate).toHaveLength(1);
             expect(order1.lines).toHaveLength(2);
             expect(order1.lines[0].id).toBeOfType("number");
@@ -183,12 +186,15 @@ describe("pos_store.js", () => {
         expect(store.getOrder()).toBe(undefined);
         // Should create order if none exist
         const product = store.models["product.product"].get(5);
-        await store.addLineToCurrentOrder({ product_tmpl_id: product.product_tmpl_id });
+        await store.addLineToCurrentOrder({product_tmpl_id: product.product_tmpl_id});
         expect(store.getOrder()).not.toBe(undefined);
         expect(store.getOrder().lines.length).toBe(1);
         expect(store.getOrder().lines[0].product_id.id).toBe(product.id);
         expect(store.getOrder().lines[0].qty).toBe(1);
-        await store.addLineToCurrentOrder({ product_tmpl_id: product.product_tmpl_id, qty: 3 }, {});
+        await store.addLineToCurrentOrder(
+            {product_tmpl_id: product.product_tmpl_id, qty: 3},
+            {}
+        );
         expect(store.getOrder().lines[0].qty).toBe(4);
     });
 
@@ -230,9 +236,13 @@ describe("pos_store.js", () => {
         order.lines[1].setNote('[{"text":"Wait","colorIndex":0}]');
 
         order.lines[0].setCustomerNote("Test Orderline Customer Note");
-        const orderChange = store.changesToOrder(order, new Set([...pos_categories]), false);
+        const orderChange = store.changesToOrder(
+            order,
+            new Set([...pos_categories]),
+            false
+        );
 
-        const { orderData, changes } = store.generateOrderChange(
+        const {orderData, changes} = store.generateOrderChange(
             order,
             orderChange,
             pos_categories,
@@ -292,7 +302,7 @@ describe("pos_store.js", () => {
 
         const currentOrderChange = {
             new: [
-                { uuid: "combo-parent-uuid", isCombo: true },
+                {uuid: "combo-parent-uuid", isCombo: true},
                 {
                     uuid: "combo-child-a-uuid",
                     combo_parent_uuid: "combo-parent-uuid",
@@ -305,14 +315,17 @@ describe("pos_store.js", () => {
                     product_id: productB.id,
                     isCombo: false,
                 },
-                { uuid: "line1", product_id: productA.id, isCombo: false },
-                { uuid: "line2", product_id: productB.id, isCombo: false },
+                {uuid: "line1", product_id: productA.id, isCombo: false},
+                {uuid: "line2", product_id: productB.id, isCombo: false},
             ],
             cancelled: [],
             noteUpdate: [],
         };
 
-        const filtered = store.filterChangeByCategories(allowedCategories, currentOrderChange);
+        const filtered = store.filterChangeByCategories(
+            allowedCategories,
+            currentOrderChange
+        );
 
         const expectedUuids = ["combo-parent-uuid", "combo-child-a-uuid", "line1"];
         const actualUuids = filtered.new.map((c) => c.uuid);
@@ -389,7 +402,7 @@ describe("pos_store.js", () => {
         // Case 1: Grouping disabled
         store.config.iface_group_by_categ = false;
         let grouped = store.productToDisplayByCateg;
-        expect(grouped.length).toBe(1); //Only one group
+        expect(grouped.length).toBe(1); // Only one group
         expect(grouped[0][0]).toBe("0");
         expect(grouped[0][1].length).toBe(15);
 
@@ -474,14 +487,20 @@ describe("pos_store.js", () => {
 
         store.searchProductWord = "producttest1";
         const groupedSearchTest1 = store.productToDisplayByCateg;
-        const groupedSearchTest1Prods = groupedSearchTest1.find((data) => data[0] == test1.id)[1];
+        const groupedSearchTest1Prods = groupedSearchTest1.find(
+            (data) => data[0] == test1.id
+        )[1];
         expect(groupedSearchTest1).toHaveLength(1);
         expect(groupedSearchTest1Prods).toHaveLength(100);
 
         store.searchProductWord = "producttest";
         const groupedSearchTest = store.productToDisplayByCateg;
-        const groupedSearchTest1Prods2 = groupedSearchTest.find((data) => data[0] == test1.id)[1];
-        const groupedSearchTest2Prods2 = groupedSearchTest.find((data) => data[0] == test2.id)[1];
+        const groupedSearchTest1Prods2 = groupedSearchTest.find(
+            (data) => data[0] == test1.id
+        )[1];
+        const groupedSearchTest2Prods2 = groupedSearchTest.find(
+            (data) => data[0] == test2.id
+        )[1];
         expect(groupedSearchTest).toHaveLength(2);
         expect(groupedSearchTest1Prods2).toHaveLength(100);
         expect(groupedSearchTest2Prods2).toHaveLength(100);
@@ -491,9 +510,9 @@ describe("pos_store.js", () => {
         const groupedSearchTest3 = store.productToDisplayByCateg;
         expect(groupedSearchTest3[groupedSearchTest3.length - 1][0]).toEqual("0");
         expect(groupedSearchTest3[groupedSearchTest3.length - 1][1]).toHaveLength(2);
-        expect(groupedSearchTest3[groupedSearchTest3.length - 1][1].map((p) => p.id)).toEqual(
-            productWoCategory.map((p) => p.id)
-        );
+        expect(
+            groupedSearchTest3[groupedSearchTest3.length - 1][1].map((p) => p.id)
+        ).toEqual(productWoCategory.map((p) => p.id));
 
         store.selectedCategory = test1;
         const groupedSearchTest4 = store.productToDisplayByCateg;
@@ -523,45 +542,57 @@ describe("pos_store.js", () => {
 
     test("pending orders", async () => {
         const store = await setupPosEnv();
-        let { orderToCreate, orderToUpdate, orderToDelete } = store.getPendingOrder();
+        let {orderToCreate, orderToUpdate, orderToDelete} = store.getPendingOrder();
         expect(orderToCreate).toHaveLength(0);
         expect(orderToUpdate).toHaveLength(0);
         expect(orderToDelete).toHaveLength(0);
         const order = await getFilledOrder(store);
-        ({ orderToCreate, orderToUpdate, orderToDelete } = store.getPendingOrder());
+        ({orderToCreate, orderToUpdate, orderToDelete} = store.getPendingOrder());
         expect(order.id).toBe(orderToCreate[0].id);
         // After sync, order should be in 'orderToUpdate'
-        await store.syncAllOrders({ orders: [order] });
+        await store.syncAllOrders({orders: [order]});
         store.addPendingOrder([order.id]);
-        ({ orderToCreate, orderToUpdate, orderToDelete } = store.getPendingOrder());
+        ({orderToCreate, orderToUpdate, orderToDelete} = store.getPendingOrder());
         expect(orderToCreate).toHaveLength(0);
         expect(orderToUpdate).toHaveLength(1);
         // Remove pending order
         store.addPendingOrder([order.id], true);
-        ({ orderToCreate, orderToUpdate, orderToDelete } = store.getPendingOrder());
+        ({orderToCreate, orderToUpdate, orderToDelete} = store.getPendingOrder());
         expect(orderToUpdate).toHaveLength(0);
         expect(orderToDelete).toHaveLength(1);
         // Clear pending orders
         store.clearPendingOrder();
-        ({ orderToCreate, orderToUpdate, orderToDelete } = store.getPendingOrder());
+        ({orderToCreate, orderToUpdate, orderToDelete} = store.getPendingOrder());
         expect(orderToDelete).toHaveLength(0);
     });
 
     test("getPaymentMethodFmtAmount", async () => {
         const store = await setupPosEnv();
         const order = await getFilledOrder(store);
-        const cashPm = store.models["pos.payment.method"].find((pm) => pm.is_cash_count);
+        const cashPm = store.models["pos.payment.method"].find(
+            (pm) => pm.is_cash_count
+        );
 
         // Case 1: No rounding enabled
         expect(store.getPaymentMethodFmtAmount(cashPm, order)).toBeEmpty();
 
         // Case 2: Rounding enabled, not limited to cash
-        const { cashPm: cash1, cardPm: card1 } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+        const {cashPm: cash1, cardPm: card1} = prepareRoundingVals(
+            store,
+            0.05,
+            "HALF-UP",
+            false
+        );
         expect(store.getPaymentMethodFmtAmount(cash1, order)).toBe("$ 17.85");
         expect(store.getPaymentMethodFmtAmount(card1, order)).toBe("$ 17.85");
 
         // Case 3: Rounding enabled, only for cash
-        const { cashPm: cash2, cardPm: card2 } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+        const {cashPm: cash2, cardPm: card2} = prepareRoundingVals(
+            store,
+            0.05,
+            "HALF-UP",
+            true
+        );
         expect(store.getPaymentMethodFmtAmount(cash2, order)).toBe("$ 17.85");
         expect(store.getPaymentMethodFmtAmount(card2, order)).toBeEmpty();
     });
@@ -585,27 +616,31 @@ describe("pos_store.js", () => {
         }
 
         test("correctly cached", async () => {
-            onRpc(getCompanyLogo256Url("<int:id>"), async (request, { id }) => {
+            onRpc(getCompanyLogo256Url("<int:id>"), async (request, {id}) => {
                 expect.step(`Company logo ${id} fetched`);
                 return `Company logo ${id}`;
             });
             const store = await setupPosEnv();
             const companyId = store.company.id;
             expect.verifySteps([`Company logo ${companyId} fetched`]);
-            const { receiptLogoUrl } = store.config;
+            const {receiptLogoUrl} = store.config;
             expect(receiptLogoUrl).toInclude("data:");
-            expect(atob(receiptLogoUrl.split(",")[1])).toInclude(`Company logo ${companyId}`);
+            expect(atob(receiptLogoUrl.split(",")[1])).toInclude(
+                `Company logo ${companyId}`
+            );
         });
 
         test("fetch failed", async () => {
-            onRpc(getCompanyLogo256Url("<int:id>"), async (request, { id }) => {
+            onRpc(getCompanyLogo256Url("<int:id>"), async (request, {id}) => {
                 expect.step(`Company logo ${id} fetched`);
                 throw new Error("Fetch failed");
             });
             const store = await setupPosEnv();
             const companyId = store.company.id;
             expect.verifySteps([`Company logo ${companyId} fetched`]);
-            expect(store.config.receiptLogoUrl).toInclude(getCompanyLogo256Url(companyId));
+            expect(store.config.receiptLogoUrl).toInclude(
+                getCompanyLogo256Url(companyId)
+            );
         });
 
         test("preSyncAllOrders", async () => {

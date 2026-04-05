@@ -1,4 +1,4 @@
-import { assert } from "@stock/../tests/tours/tour_helper";
+import {assert} from "@stock/../tests/tours/tour_helper";
 
 export const catalogSuggestion = {
     /**
@@ -7,7 +7,7 @@ export const catalogSuggestion = {
      * @param {number} [nbDays] The value of the "Replenish for" input (eg. 90)
      * @param {number} [factor] The value of the "x ...%" input (eg. 50)
      */
-    setParameters({ basedOn = false, nbDays = false, factor = false }) {
+    setParameters({basedOn = false, nbDays = false, factor = false}) {
         const steps = [];
         if (nbDays) {
             steps.push({
@@ -26,7 +26,8 @@ export const catalogSuggestion = {
         if (basedOn) {
             steps.push(
                 {
-                    trigger: ".o_TimePeriodSelectionField .o_select_menu .dropdown-toggle:visible",
+                    trigger:
+                        ".o_TimePeriodSelectionField .o_select_menu .dropdown-toggle:visible",
                     run: "click",
                 },
                 {
@@ -47,7 +48,7 @@ export const catalogSuggestion = {
      * @param {number} [nbDays] The value of the "Replenish for" input (eg. 90)
      * @param {number} [factor] The value of the "x ...%" input (eg. 50)
      */
-    assertParameters({ basedOn = false, nbDays = false, factor = false }) {
+    assertParameters({basedOn = false, nbDays = false, factor = false}) {
         const steps = [];
 
         if (nbDays) {
@@ -66,7 +67,11 @@ export const catalogSuggestion = {
                 trigger: "input.o_PurchaseSuggestInput:eq(1)",
                 run() {
                     const percent = parseInt(this.anchor.value, 10);
-                    assert(percent, factor, `Expected percent factor ${factor}, got ${percent}`);
+                    assert(
+                        percent,
+                        factor,
+                        `Expected percent factor ${factor}, got ${percent}`
+                    );
                 },
             });
         }
@@ -76,7 +81,11 @@ export const catalogSuggestion = {
                 trigger: ".o_TimePeriodSelectionField",
                 run() {
                     const drop = this.anchor.querySelector(".o_select_menu_toggler");
-                    assert(drop.value, basedOn, `Expected based on ${basedOn}, got ${drop.value}`);
+                    assert(
+                        drop.value,
+                        basedOn,
+                        `Expected based on ${basedOn}, got ${drop.value}`
+                    );
                 },
             });
         }
@@ -91,7 +100,7 @@ export const catalogSuggestion = {
      * @param {number} [suggest] The product suggested quantity
      * @param {number} [forecast] The product forecasted quantity
      */
-    assertCatalogRecord(productName, { monthly, suggest, forecast } = {}) {
+    assertCatalogRecord(productName, {monthly, suggest, forecast} = {}) {
         const steps = [];
         if (monthly) {
             steps.push({
@@ -138,7 +147,7 @@ export const catalogSuggestion = {
      */
     checkKanbanRecordPosition(product, expectedOrder) {
         const trigger = `.o_purchase_product_kanban_catalog_view article.o_kanban_record:nth-child(${expectedOrder + 1}):contains("${product}")`;
-        return [{ trigger }];
+        return [{trigger}];
     },
 
     removeSuggestFilter() {
@@ -146,15 +155,17 @@ export const catalogSuggestion = {
         const trigger = '.o_facet_value:contains("Suggested")';
         const run = async (actions) => {
             const filters = [...document.querySelectorAll(".o_searchview_facet")];
-            const suggestedFilter = filters.find((el) => el.textContent.includes("Suggested"));
+            const suggestedFilter = filters.find((el) =>
+                el.textContent.includes("Suggested")
+            );
             await actions.click(suggestedFilter.querySelector(".o_facet_remove"));
         };
-        return [{ content, trigger, run }];
+        return [{content, trigger, run}];
     },
 
     addAllSuggestions() {
         const content = "Add all suggestion to the PO";
         const trigger = 'button[name="suggest_add_all"]';
-        return [{ content, trigger, run: "click" }];
+        return [{content, trigger, run: "click"}];
     },
 };

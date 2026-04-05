@@ -1,6 +1,6 @@
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
-import { patch } from "@web/core/utils/patch";
-import { qrCodeSrc } from "@point_of_sale/utils";
+import {patch} from "@web/core/utils/patch";
+import {qrCodeSrc} from "@point_of_sale/utils";
 
 patch(OrderPaymentValidation.prototype, {
     async beforePostPushOrderResolve(order, order_server_ids) {

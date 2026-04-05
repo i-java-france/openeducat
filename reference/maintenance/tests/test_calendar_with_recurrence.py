@@ -1,6 +1,8 @@
-from odoo.tests import HttpCase, tagged
 from datetime import datetime, time
+
 from dateutil.relativedelta import relativedelta
+
+from odoo.tests import HttpCase, tagged
 
 
 @tagged('post_install', '-at_install')

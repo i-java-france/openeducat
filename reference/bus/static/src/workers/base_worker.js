@@ -5,12 +5,12 @@ export class BaseWorker {
     }
 
     handleMessage(event) {
-        const { action } = event.data;
+        const {action} = event.data;
         if (action === "BASE:INIT") {
             if (this.name.includes("shared")) {
-                event.target.postMessage({ type: "BASE:INITIALIZED" });
+                event.target.postMessage({type: "BASE:INITIALIZED"});
             } else {
-                (this.client || globalThis).postMessage({ type: "BASE:INITIALIZED" });
+                (this.client || globalThis).postMessage({type: "BASE:INITIALIZED"});
             }
         }
     }

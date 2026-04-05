@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
-
         <!-- Categories -->
         <record id="product_category_goods" model="product.category">
             <field name="name">Goods</field>
@@ -38,6 +37,5 @@
 there yet otherwise people who have installed the server (even with the without-demo
 parameter) will see those record just disappear.
 -->
-
     </data>
 </odoo>

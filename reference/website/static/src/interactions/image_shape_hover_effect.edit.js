@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { ImageShapeHoverEffect } from "./image_shape_hover_effect";
+import {registry} from "@web/core/registry";
+import {ImageShapeHoverEffect} from "./image_shape_hover_effect";
 
 const ImageShapeHoverEffectEdit = (I) =>
     class extends I {
@@ -23,7 +23,11 @@ const ImageShapeHoverEffectEdit = (I) =>
             this.lastMouseEvent = this.lastMouseEvent.then(
                 () =>
                     new Promise((resolve) => {
-                        if (!this.originalImgSrc || !this.svgInEl || !this.el.dataset.hoverEffect) {
+                        if (
+                            !this.originalImgSrc ||
+                            !this.svgInEl ||
+                            !this.el.dataset.hoverEffect
+                        ) {
                             resolve();
                             return;
                         }
@@ -34,8 +38,12 @@ const ImageShapeHoverEffectEdit = (I) =>
                                 "#hoverEffects animateTransform, #hoverEffects animate"
                             );
                             animateTransformEls.forEach((animateTransformEl) => {
-                                let valuesValue = animateTransformEl.getAttribute("values");
-                                valuesValue = valuesValue.split(";").reverse().join(";");
+                                let valuesValue =
+                                    animateTransformEl.getAttribute("values");
+                                valuesValue = valuesValue
+                                    .split(";")
+                                    .reverse()
+                                    .join(";");
                                 animateTransformEl.setAttribute("values", valuesValue);
                             });
                         }

@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 class WebsiteEventTrackReplaySuggestion extends Interaction {
     static selector = ".owevent_track_replay_suggestion";

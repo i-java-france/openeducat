@@ -1,6 +1,6 @@
 /* global owl */
 
-const { useState, useEnv } = owl;
+const {useState, useEnv} = owl;
 
 export default function useStore() {
     const env = useEnv();

@@ -21,7 +21,7 @@
                 t-if="!props.product.isQuantityAllowed(props.quantity)"
                 class="badge text-bg-danger"
             >
-                <i class="fa fa-circle me-2"/>
+                <i class="fa fa-circle me-2" />
                 <span>Out of Stock</span>
             </span>
             <span

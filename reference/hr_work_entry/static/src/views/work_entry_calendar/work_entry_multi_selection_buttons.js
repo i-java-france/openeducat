@@ -1,7 +1,7 @@
-import { WorkEntryMultiCreatePopover } from "@hr_work_entry/views/work_entry_calendar/work_entry_multi_create_popover";
-import { useService } from "@web/core/utils/hooks";
-import { addFieldDependencies } from "@web/model/relational_model/utils";
-import { MultiSelectionButtons } from "@web/views/view_components/multi_selection_buttons";
+import {WorkEntryMultiCreatePopover} from "@hr_work_entry/views/work_entry_calendar/work_entry_multi_create_popover";
+import {useService} from "@web/core/utils/hooks";
+import {addFieldDependencies} from "@web/model/relational_model/utils";
+import {MultiSelectionButtons} from "@web/views/view_components/multi_selection_buttons";
 
 export class WorkEntryCalendarMultiSelectionButtons extends MultiSelectionButtons {
     static template = "hr_work_entry.WorkEntryCalendarMultiSelectionButtons";
@@ -14,7 +14,7 @@ export class WorkEntryCalendarMultiSelectionButtons extends MultiSelectionButton
                 onQuickReplace: Function,
                 onQuickReset: Function,
             },
-        }
+        },
     };
     static components = {
         ...MultiSelectionButtons.components,
@@ -37,7 +37,7 @@ export class WorkEntryCalendarMultiSelectionButtons extends MultiSelectionButton
         const props = super.getMultiCreatePopoverProps();
         props.onQuickReplace = (values) => {
             this.props.reactive.onQuickReplace(values);
-        }
+        };
         return props;
     }
 
@@ -50,9 +50,9 @@ export class WorkEntryCalendarMultiSelectionButtons extends MultiSelectionButton
             this.multiCreateRecordProps.activeFields,
             this.multiCreateRecordProps.fields,
             [
-                { name: "display_code", type: "char" },
-                { name: "color", type: "integer" },
-                { name: "employee_id", type: "many2one" },
+                {name: "display_code", type: "char"},
+                {name: "color", type: "integer"},
+                {name: "employee_id", type: "many2one"},
             ]
         );
     }

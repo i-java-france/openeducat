@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {runAllTimers} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -11,15 +11,15 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    int_field = fields.Integer({ sortable: true });
-    json_checkboxes_field = fields.Json({ string: "Json Checkboxes Field" });
+    int_field = fields.Integer({sortable: true});
+    json_checkboxes_field = fields.Json({string: "Json Checkboxes Field"});
     _records = [
         {
             id: 1,
             int_field: 10,
             json_checkboxes_field: {
-                key1: { checked: true, label: "First Key" },
-                key2: { checked: false, label: "Second Key" },
+                key1: {checked: true, label: "First Key"},
+                key2: {checked: false, label: "Second Key"},
             },
         },
     ];
@@ -30,12 +30,12 @@ defineModels([Partner]);
 test("JsonCheckBoxesField", async () => {
     const commands = [
         {
-            key1: { checked: true, label: "First Key" },
-            key2: { checked: true, label: "Second Key" },
+            key1: {checked: true, label: "First Key"},
+            key2: {checked: true, label: "Second Key"},
         },
         {
-            key1: { checked: false, label: "First Key" },
-            key2: { checked: true, label: "Second Key" },
+            key1: {checked: false, label: "First Key"},
+            key2: {checked: true, label: "Second Key"},
         },
     ];
     onRpc("web_save", (args) => {
@@ -61,13 +61,13 @@ test("JsonCheckBoxesField", async () => {
 
     expect("div.o_field_widget div.form-check input:disabled").toHaveCount(0);
 
-    // check a value by clicking on input
+    // Check a value by clicking on input
     await contains("div.o_field_widget div.form-check input:eq(1)").click();
     await runAllTimers();
     await clickSave();
     expect("div.o_field_widget div.form-check input:checked").toHaveCount(2);
 
-    // uncheck a value by clicking on label
+    // Uncheck a value by clicking on label
     await contains("div.o_field_widget div.form-check > label").click();
     await runAllTimers();
     await clickSave();
@@ -105,8 +105,8 @@ test("JsonCheckBoxesField (readonly field)", async () => {
 
 test("JsonCheckBoxesField (some readonly)", async () => {
     Partner._records[0].json_checkboxes_field = {
-        key1: { checked: true, label: "First Key" },
-        key2: { checked: false, readonly: true, label: "Second Key" },
+        key1: {checked: true, label: "First Key"},
+        key2: {checked: false, readonly: true, label: "Second Key"},
     };
     await mountView({
         type: "form",
@@ -138,8 +138,12 @@ test("JsonCheckBoxesField (some readonly)", async () => {
 
 test("JsonCheckBoxesField (question circle)", async () => {
     Partner._records[0].json_checkboxes_field = {
-        key1: { checked: true, label: "First Key" },
-        key2: { checked: false, label: "Second Key", question_circle: "Some info about this" },
+        key1: {checked: true, label: "First Key"},
+        key2: {
+            checked: false,
+            label: "Second Key",
+            question_circle: "Some info about this",
+        },
     };
     await mountView({
         type: "form",
@@ -153,7 +157,9 @@ test("JsonCheckBoxesField (question circle)", async () => {
             </form>`,
     });
 
-    expect("div.o_field_widget div.form-check:eq(0) ~ i.fa-question-circle").toHaveCount(0, {
+    expect(
+        "div.o_field_widget div.form-check:eq(0) ~ i.fa-question-circle"
+    ).toHaveCount(0, {
         message: "first checkbox should not have a question circle",
     });
     expect(

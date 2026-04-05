@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -6,9 +5,8 @@ import logging
 from ast import literal_eval
 
 from odoo import _, api, fields, models, tools
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
-from odoo.tools import is_html_empty
 from odoo.tools.safe_eval import safe_eval, time
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +23,7 @@ class MailTemplate(models.Model):
 
     @api.model
     def default_get(self, fields):
-        res = super(MailTemplate, self).default_get(fields)
+        res = super().default_get(fields)
         if res.get('model'):
             res['model_id'] = self.env['ir.model']._get(res.pop('model')).id
         return res
@@ -257,11 +255,11 @@ class MailTemplate(models.Model):
 
     def unlink(self):
         self.unlink_action()
-        return super(MailTemplate, self).unlink()
+        return super().unlink()
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        for vals, template in zip(vals_list, self):
+        for vals, template in zip(vals_list, self, strict=False):
             if 'name' not in (default or {}) and vals.get('name') == template.name:
                 vals['name'] = self.env._("%s (copy)", template.name)
         return vals_list
@@ -274,7 +272,7 @@ class MailTemplate(models.Model):
         copies = super().copy(default=default)
 
         if copy_attachments:
-            for copy, original in zip(copies, self):
+            for copy, original in zip(copies, self, strict=False):
                 # copy attachments, to avoid ownership / ACLs issue
                 # anyway filestore should keep a single reference to content
                 if original.attachment_ids:
@@ -783,7 +781,7 @@ class MailTemplate(models.Model):
             mails = self.env['mail.mail'].sudo().create(values_list)
 
             # manage attachments
-            for mail, attachments in zip(mails, attachments_list):
+            for mail, attachments in zip(mails, attachments_list, strict=False):
                 if attachments:
                     attachments_values = [
                         (0, 0, {

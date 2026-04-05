@@ -209,7 +209,7 @@ class MailTrackingDurationMixin(models.AbstractModel):
 
         # We only need to add a JOIN if the stage table is not already present in the query's _joins attribute.
         from_add_join = ''
-        if not base_query._joins or not stage_table_alias_name in base_query._joins:
+        if not base_query._joins or stage_table_alias_name not in base_query._joins:
             from_add_join = """
                 INNER JOIN %(stage_table)s AS %(stage_table_alias_name)s
                     ON %(stage_table_alias_name)s.id = %(table)s.%(stage_field)s

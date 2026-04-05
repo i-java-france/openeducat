@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class WebsiteSetupEditorPlugin extends Plugin {
     static id = "website.setup_editor_plugin";
@@ -9,4 +9,6 @@ export class WebsiteSetupEditorPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(WebsiteSetupEditorPlugin.id, WebsiteSetupEditorPlugin);
+registry
+    .category("website-plugins")
+    .add(WebsiteSetupEditorPlugin.id, WebsiteSetupEditorPlugin);

@@ -1,7 +1,7 @@
-import { BoardAction } from "@board/board_action";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts, queryOne } from "@odoo/hoot-dom";
+import {BoardAction} from "@board/board_action";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts, queryOne} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -16,13 +16,13 @@ import {
 class Board extends models.Model {}
 
 class Partner extends models.Model {
-    name = fields.Char({ string: "Displayed name", searchable: true });
+    name = fields.Char({string: "Displayed name", searchable: true});
     foo = fields.Char({
         string: "Foo",
         default: "My little Foo Value",
         searchable: true,
     });
-    bar = fields.Boolean({ string: "Bar" });
+    bar = fields.Boolean({string: "Bar"});
     int_field = fields.Integer({
         string: "Integer field",
         aggregator: "sum",
@@ -125,7 +125,9 @@ describe("board_desktop", () => {
                 </form>`,
         });
 
-        expect(".o-dashboard-header").toHaveCount(1, { message: "should have rendered a header" });
+        expect(".o-dashboard-header").toHaveCount(1, {
+            message: "should have rendered a header",
+        });
         expect("div.o-dashboard-layout-2-1").toHaveCount(1, {
             message: "should have rendered a div with layout",
         });
@@ -135,7 +137,9 @@ describe("board_desktop", () => {
         expect("h3 span:contains(ABC)").toHaveCount(1, {
             message: "should have rendered a header with action string",
         });
-        expect("tr.o_data_row").toHaveCount(3, { message: "should have rendered 3 data rows" });
+        expect("tr.o_data_row").toHaveCount(3, {
+            message: "should have rendered 3 data rows",
+        });
 
         expect(".o-dashboard-action .o_list_view").toHaveCount(1);
 
@@ -145,16 +149,16 @@ describe("board_desktop", () => {
 
         await contains("h3 i.fa-window-maximize").click();
 
-        // content is visible again
+        // Content is visible again
         expect(".o-dashboard-action .o_list_view").toHaveCount(1);
         expect.verifySteps(["load action", "edit custom", "edit custom"]);
 
-        // header should have dropdown with correct image
+        // Header should have dropdown with correct image
         expect(
             ".o-dashboard-header .dropdown img[data-src='/board/static/img/layout_2-1.png']"
         ).toHaveCount(1);
 
-        // change layout to 1-1
+        // Change layout to 1-1
         await contains(".o-dashboard-header .dropdown img").click();
         await contains(".dropdown-item:nth-child(2)").click();
         expect(
@@ -349,9 +353,9 @@ describe("board_desktop", () => {
         expect('.o-dashboard-column[data-idx="0"] .o-dashboard-action').toHaveCount(1);
         expect('.o-dashboard-column[data-idx="1"] .o-dashboard-action').toHaveCount(0);
 
-        await contains('.o-dashboard-column[data-idx="0"] .o-dashboard-action-header').dragAndDrop(
-            '.o-dashboard-column[data-idx="1"]'
-        );
+        await contains(
+            '.o-dashboard-column[data-idx="0"] .o-dashboard-action-header'
+        ).dragAndDrop('.o-dashboard-column[data-idx="1"]');
 
         expect('.o-dashboard-column[data-idx="0"] .o-dashboard-action').toHaveCount(0);
         expect('.o-dashboard-column[data-idx="1"] .o-dashboard-action').toHaveCount(1);
@@ -400,7 +404,7 @@ describe("board_desktop", () => {
         onRpc(
             "/web/action/load",
             () =>
-                // server answer if the action doesn't exist anymore
+                // Server answer if the action doesn't exist anymore
                 false
         );
         await mountView({
@@ -513,7 +517,7 @@ describe("board_desktop", () => {
             res_model: "partner",
             views: [[4, "list"]],
         }));
-        onRpc("web_read_group", ({ kwargs }) => {
+        onRpc("web_read_group", ({kwargs}) => {
             expect(kwargs.groupby).toEqual(["bar"]);
         });
         await mountView({
@@ -531,7 +535,8 @@ describe("board_desktop", () => {
     });
 
     test("click on a cell of pivot view inside dashboard", async () => {
-        Partner._views["pivot,4"] = '<pivot><field name="int_field" type="measure"/></pivot>';
+        Partner._views["pivot,4"] =
+            '<pivot><field name="int_field" type="measure"/></pivot>';
         mockService("action", {
             doAction(action) {
                 expect.step("do action");
@@ -571,7 +576,8 @@ describe("board_desktop", () => {
     });
 
     test("graphs in dashboard aren't squashed", async () => {
-        Partner._views["graph,4"] = '<graph><field name="int_field" type="measure"/></graph>';
+        Partner._views["graph,4"] =
+            '<graph><field name="int_field" type="measure"/></graph>';
         onRpc("/web/action/load", () => ({
             res_model: "partner",
             views: [[4, "graph"]],
@@ -590,13 +596,15 @@ describe("board_desktop", () => {
         });
 
         expect(".o-dashboard-action .o_graph_renderer").toHaveCount(1);
-        expect(queryOne(".o-dashboard-action .o_graph_renderer canvas").offsetHeight).toBe(300);
+        expect(
+            queryOne(".o-dashboard-action .o_graph_renderer canvas").offsetHeight
+        ).toBe(300);
     });
 
     test("pivot view with property in pivot_column_groupby", async function () {
         Partner._fields.properties_definition = fields.PropertiesDefinition();
         Partner._fields.properties_definition = fields.PropertiesDefinition();
-        Partner._fields.parent_id = fields.Many2one({ relation: "partner" });
+        Partner._fields.parent_id = fields.Many2one({relation: "partner"});
         Partner._fields.properties = fields.Properties({
             definition_record: "parent_id",
             definition_record_field: "properties_definition",
@@ -605,12 +613,12 @@ describe("board_desktop", () => {
             res_model: "partner",
             views: [[false, "pivot"]],
         }));
-        onRpc(({ method, kwargs }) => {
+        onRpc(({method, kwargs}) => {
             if (method === "get_property_definition") {
                 return {};
             } else if (method === "formatted_read_grouping_sets") {
                 return [
-                    [{ __count: 3, __extra_domain: [] }],
+                    [{__count: 3, __extra_domain: []}],
                     [
                         {
                             "properties.my_char": false,

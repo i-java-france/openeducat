@@ -1,17 +1,17 @@
-import { Component, onWillRender, toRaw, useRef } from "@odoo/owl";
+import {Component, onWillRender, toRaw, useRef} from "@odoo/owl";
 
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { useCallActions } from "@mail/discuss/call/common/call_actions";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { Tooltip } from "@web/core/tooltip/tooltip";
-import { CALL_PROMOTE_FULLSCREEN } from "@mail/discuss/call/common/thread_model_patch";
-import { ActionList } from "@mail/core/common/action_list";
-import { ACTION_TAGS } from "@mail/core/common/action";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {useCallActions} from "@mail/discuss/call/common/call_actions";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {Tooltip} from "@web/core/tooltip/tooltip";
+import {CALL_PROMOTE_FULLSCREEN} from "@mail/discuss/call/common/thread_model_patch";
+import {ActionList} from "@mail/core/common/action_list";
+import {ACTION_TAGS} from "@mail/core/common/action";
 
 export class CallActionList extends Component {
-    static components = { ActionList };
+    static components = {ActionList};
     static props = ["thread", "compact?"];
     static template = "discuss.CallActionList";
 
@@ -20,7 +20,7 @@ export class CallActionList extends Component {
         this.store = useService("mail.store");
         this.rtc = useService("discuss.rtc");
         this.pipService = useService("discuss.pip_service");
-        this.callActions = useCallActions({ thread: () => this.props.thread });
+        this.callActions = useCallActions({thread: () => this.props.thread});
         this.more = useRef("more");
         this.root = useRef("root");
         this.popover = usePopover(Tooltip, {
@@ -28,7 +28,9 @@ export class CallActionList extends Component {
         });
         onWillRender(() => {
             const partition = toRaw(this.callActions).partition;
-            const other = partition.other.filter((a) => !a.tags.includes(ACTION_TAGS.CALL_LAYOUT));
+            const other = partition.other.filter(
+                (a) => !a.tags.includes(ACTION_TAGS.CALL_LAYOUT)
+            );
             const group2 = [];
             for (const groupActions of partition.group) {
                 const filtered = groupActions.filter(
@@ -84,7 +86,7 @@ export class CallActionList extends Component {
 
     onMouseenterMore() {
         if (this.isPromotingFullscreen) {
-            this.popover.open(this.more.el, { tooltip: _t("Enter full screen!") });
+            this.popover.open(this.more.el, {tooltip: _t("Enter full screen!")});
             this.props.thread.promoteFullscreen = CALL_PROMOTE_FULLSCREEN.DISCARDED;
         }
     }

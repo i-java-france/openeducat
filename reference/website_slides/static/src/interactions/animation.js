@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { Animation } from "@website/interactions/animation";
+import {patch} from "@web/core/utils/patch";
+import {Animation} from "@website/interactions/animation";
 
 patch(Animation.prototype, {
     /**
@@ -15,6 +15,8 @@ patch(Animation.prototype, {
      */
     findScrollingElement() {
         const articleContent = document.querySelector(".o_wslide_fs_article_content");
-        return articleContent ? articleContent : super.findScrollingElement(...arguments);
+        return articleContent
+            ? articleContent
+            : super.findScrollingElement(...arguments);
     },
 });

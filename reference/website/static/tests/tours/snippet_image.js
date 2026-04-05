@@ -1,4 +1,4 @@
-import { insertSnippet, registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {insertSnippet, registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "snippet_image",
@@ -7,7 +7,7 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...insertSnippet({ id: "s_image", name: "Image" }, { ignoreLoading: true }),
+        ...insertSnippet({id: "s_image", name: "Image"}, {ignoreLoading: true}),
         {
             content: "Verify if the media dialog opens",
             trigger: ".o_select_media_dialog",
@@ -21,14 +21,15 @@ registerWebsitePreviewTour(
             content: "Verify if the image placeholder has been removed",
             trigger: ":iframe footer:not(:has(.s_image > svg))",
         },
-        ...insertSnippet({ id: "s_image", name: "Image" }, { ignoreLoading: true }),
+        ...insertSnippet({id: "s_image", name: "Image"}, {ignoreLoading: true}),
         {
             content: "Verify that the image placeholder is within the page",
             trigger: ":iframe footer .s_image > svg",
         },
         {
             content: "Click on the image",
-            trigger: ".o_select_media_dialog .o_existing_attachment_cell .o_button_area",
+            trigger:
+                ".o_select_media_dialog .o_existing_attachment_cell .o_button_area",
             run: "click",
         },
         {
@@ -43,7 +44,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check that the image and the image placeholder have been removed",
-            trigger: ":iframe footer:not(:has(.s_image > svg)):not(:has(img.o_we_custom_image))",
+            trigger:
+                ":iframe footer:not(:has(.s_image > svg)):not(:has(img.o_we_custom_image))",
         },
     ]
 );

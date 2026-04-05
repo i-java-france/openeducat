@@ -1,14 +1,17 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
 import {
     buildM2OFieldDescription,
     extractM2OFieldProps,
     m2oSupportedOptions,
     Many2OneField,
 } from "@web/views/fields/many2one/many2one_field";
-import { getProductRelatedModel, Many2XUomTagsAutocomplete } from "../many2x_uom_tags/many2x_uom_tags";
+import {
+    getProductRelatedModel,
+    Many2XUomTagsAutocomplete,
+} from "../many2x_uom_tags/many2x_uom_tags";
 
 // @todo: this extension will be removed in the future
 // when the autocomplete source generation come from a hook.
@@ -19,9 +22,9 @@ class UomMany2One extends Many2One {
     };
     static props = {
         ...super.props,
-        productModel: { type: String, optional: true },
-        productId: { type: Number, optional: true },
-        productQuantity: { type: Number, optional: true },
+        productModel: {type: String, optional: true},
+        productId: {type: Number, optional: true},
+        productQuantity: {type: Number, optional: true},
     };
 
     get many2XAutocompleteProps() {
@@ -36,11 +39,11 @@ class UomMany2One extends Many2One {
 
 export class Many2OneUomField extends Component {
     static template = "uom.Many2OneUomField";
-    static components = { UomMany2One };
+    static components = {UomMany2One};
     static props = {
         ...Many2OneField.props,
-        productField: { type: String, optional: true },
-        quantityField: { type: String, optional: true },
+        productField: {type: String, optional: true},
+        quantityField: {type: String, optional: true},
     };
     static defaultProps = {
         ...Many2OneField.defaultProps,
@@ -51,7 +54,9 @@ export class Many2OneUomField extends Component {
     get m2oProps() {
         const productModel = getProductRelatedModel.call(this);
         let productId = this.props.record.data[this.props.productField]?.id || 0;
-        if (["product.template", "product.product"].includes(this.props.record.resModel)) {
+        if (
+            ["product.template", "product.product"].includes(this.props.record.resModel)
+        ) {
             productId = this.props.record.resId || 0;
         }
         return {

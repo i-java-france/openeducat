@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { queryFirst } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {queryFirst} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -8,7 +8,7 @@ import {
     models,
     mountView,
 } from "@web/../tests/web_test_helpers";
-import { defineAccountModels } from "./account_test_helpers";
+import {defineAccountModels} from "./account_test_helpers";
 
 class Account extends models.Model {
     _name = "account.account";
@@ -63,10 +63,14 @@ test("List: placeholder_field shows as text/placeholder", async () => {
     expect(`${firstCellSelector} input`).toHaveValue("", {
         message: "once in edit mode, should have no value in input",
     });
-    expect(`${firstCellSelector} input`).toHaveAttribute("placeholder", "Placeholder Code", {
-        message: "once in edit mode, should have placeholder_field as placeholder",
-    });
-    await fieldInput("code").edit("100001", { confirm: false });
+    expect(`${firstCellSelector} input`).toHaveAttribute(
+        "placeholder",
+        "Placeholder Code",
+        {
+            message: "once in edit mode, should have placeholder_field as placeholder",
+        }
+    );
+    await fieldInput("code").edit("100001", {confirm: false});
 
     await contains(".o_list_button_save").click();
     expect(firstCellSelector).toHaveText("100001", {

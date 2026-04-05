@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Faktura xmlns="http://crd.gov.pl/wzor/2025/06/25/13775/"
-         xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="utf-8" ?>
+<Faktura
+    xmlns="http://crd.gov.pl/wzor/2025/06/25/13775/"
+    xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
     <Naglowek>
         <KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</KodFormularza>
         <WariantFormularza>3</WariantFormularza>
@@ -15,7 +17,8 @@
         </DaneIdentyfikacyjne>
         <Adres>
             <KodKraju>PL</KodKraju>
-            <AdresL1>250 Executive Park Blvd, Suite 3400 94134 Kędzierzyn-Koźle Polska</AdresL1>
+            <AdresL1
+            >250 Executive Park Blvd, Suite 3400 94134 Kędzierzyn-Koźle Polska</AdresL1>
         </Adres>
         <DaneKontaktowe>
             <Email>it@hadron.eu.com</Email>

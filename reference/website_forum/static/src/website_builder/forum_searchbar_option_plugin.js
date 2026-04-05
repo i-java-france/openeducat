@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 class ForumSearchbarOptionPlugin extends Plugin {
     static id = "forumSearchbarOption";
@@ -33,4 +33,6 @@ class ForumSearchbarOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(ForumSearchbarOptionPlugin.id, ForumSearchbarOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ForumSearchbarOptionPlugin.id, ForumSearchbarOptionPlugin);

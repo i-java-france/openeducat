@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("test_user_group_settings", {
     url: "/odoo/settings?debug=assets,tests",
@@ -140,7 +140,8 @@ registry.category("web_tour.tours").add("test_user_group_settings", {
             content: "check if is Bar Manager group",
         },
         {
-            trigger: '.o_field_many2many[name="user_ids"] .o_data_cell:contains("Marc Demo")',
+            trigger:
+                '.o_field_many2many[name="user_ids"] .o_data_cell:contains("Marc Demo")',
             content: "check if demo user has this group",
         },
     ],

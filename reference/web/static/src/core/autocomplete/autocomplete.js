@@ -1,47 +1,53 @@
-import { Deferred } from "@web/core/utils/concurrency";
-import { useAutofocus, useForwardRefToParent, useService } from "@web/core/utils/hooks";
-import { isScrollableY, scrollTo } from "@web/core/utils/scrolling";
-import { useDebounced } from "@web/core/utils/timing";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { usePosition } from "@web/core/position/position_hook";
-import { Component, onWillUpdateProps, useExternalListener, useRef, useState } from "@odoo/owl";
-import { mergeClasses } from "@web/core/utils/classname";
+import {Deferred} from "@web/core/utils/concurrency";
+import {useAutofocus, useForwardRefToParent, useService} from "@web/core/utils/hooks";
+import {isScrollableY, scrollTo} from "@web/core/utils/scrolling";
+import {useDebounced} from "@web/core/utils/timing";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {usePosition} from "@web/core/position/position_hook";
+import {
+    Component,
+    onWillUpdateProps,
+    useExternalListener,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {mergeClasses} from "@web/core/utils/classname";
 
 export class AutoComplete extends Component {
     static template = "web.AutoComplete";
     static props = {
-        value: { type: String, optional: true },
-        id: { type: String, optional: true },
+        value: {type: String, optional: true},
+        id: {type: String, optional: true},
         sources: {
             type: Array,
             element: {
                 type: Object,
                 shape: {
-                    placeholder: { type: String, optional: true },
+                    placeholder: {type: String, optional: true},
                     options: [Array, Function],
-                    optionSlot: { type: String, optional: true },
+                    optionSlot: {type: String, optional: true},
                 },
             },
         },
-        placeholder: { type: String, optional: true },
-        autocomplete: { type: String, optional: true },
-        autoSelect: { type: Boolean, optional: true },
-        resetOnSelect: { type: Boolean, optional: true },
-        onInput: { type: Function, optional: true },
-        onCancel: { type: Function, optional: true },
-        onChange: { type: Function, optional: true },
-        onBlur: { type: Function, optional: true },
-        onFocus: { type: Function, optional: true },
-        searchOnInputClick: { type: Boolean, optional: true },
-        input: { type: Function, optional: true },
-        inputDebounceDelay: { type: Number, optional: true },
-        dropdown: { type: Boolean, optional: true },
-        autofocus: { type: Boolean, optional: true },
-        class: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        menuPositionOptions: { type: Object, optional: true },
-        menuCssClass: { type: [String, Array, Object], optional: true },
-        selectOnBlur: { type: Boolean, optional: true },
+        placeholder: {type: String, optional: true},
+        autocomplete: {type: String, optional: true},
+        autoSelect: {type: Boolean, optional: true},
+        resetOnSelect: {type: Boolean, optional: true},
+        onInput: {type: Function, optional: true},
+        onCancel: {type: Function, optional: true},
+        onChange: {type: Function, optional: true},
+        onBlur: {type: Function, optional: true},
+        onFocus: {type: Function, optional: true},
+        searchOnInputClick: {type: Boolean, optional: true},
+        input: {type: Function, optional: true},
+        inputDebounceDelay: {type: Number, optional: true},
+        dropdown: {type: Boolean, optional: true},
+        autofocus: {type: Boolean, optional: true},
+        class: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        menuPositionOptions: {type: Object, optional: true},
+        menuCssClass: {type: [String, Array, Object], optional: true},
+        selectOnBlur: {type: Boolean, optional: true},
     };
     static defaultProps = {
         value: "",
@@ -83,7 +89,7 @@ export class AutoComplete extends Component {
         this.inputRef = useForwardRefToParent("input");
         this.listRef = useRef("sourcesList");
         if (this.props.autofocus) {
-            useAutofocus({ refName: "input" });
+            useAutofocus({refName: "input"});
         }
         this.root = useRef("root");
 
@@ -107,7 +113,12 @@ export class AutoComplete extends Component {
 
         useExternalListener(window, "scroll", this.externalClose, true);
         useExternalListener(window, "pointerdown", this.externalClose, true);
-        useExternalListener(window, "mousemove", () => (this.mouseSelectionActive = true), true);
+        useExternalListener(
+            window,
+            "mousemove",
+            () => (this.mouseSelectionActive = true),
+            true
+        );
 
         this.hotkey = useService("hotkey");
         this.hotkeysToRemove = [];
@@ -305,7 +316,9 @@ export class AutoComplete extends Component {
                     }
                 }
 
-                this.state.activeSourceOption = source ? [sourceIndex, optionIndex] : null;
+                this.state.activeSourceOption = source
+                    ? [sourceIndex, optionIndex]
+                    : null;
             } else {
                 let sourceIndex = step < 0 ? this.sources.length - 1 : 0;
                 let source = this.sources[sourceIndex];
@@ -335,7 +348,9 @@ export class AutoComplete extends Component {
         if (this.props.selectOnBlur && !this.isOptionSelected && this.sources[0]) {
             const firstOption = this.sources[0].options[0];
             if (firstOption) {
-                this.state.activeSourceOption = firstOption.unselectable ? null : [0, 0];
+                this.state.activeSourceOption = firstOption.unselectable
+                    ? null
+                    : [0, 0];
                 this.selectOption(this.activeOption);
             }
         }
@@ -489,7 +504,9 @@ export class AutoComplete extends Component {
             return;
         }
         if (isScrollableY(this.listRef.el)) {
-            const element = this.listRef.el.querySelector(`#${this.activeSourceOptionId}`);
+            const element = this.listRef.el.querySelector(
+                `#${this.activeSourceOptionId}`
+            );
             if (element) {
                 scrollTo(element);
             }

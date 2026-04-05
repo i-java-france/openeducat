@@ -4,7 +4,7 @@ import * as TextInputPopup from "@point_of_sale/../tests/generic_helpers/text_in
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 
 export function selectRewardLine(rewardName) {
@@ -29,7 +29,7 @@ export function enterCode(code) {
     ];
 }
 export function clickEWalletButton(text = "eWallet") {
-    return [{ trigger: ProductScreen.controlButtonTrigger(text), run: "click" }];
+    return [{trigger: ProductScreen.controlButtonTrigger(text), run: "click"}];
 }
 export function claimReward(rewardName) {
     return [
@@ -46,7 +46,7 @@ export function claimReward(rewardName) {
     ];
 }
 export function unselectPartner() {
-    return [{ trigger: ".unselect-tag", run: "click" }];
+    return [{trigger: ".unselect-tag", run: "click"}];
 }
 export function clickDiscountButton() {
     return [
@@ -87,7 +87,7 @@ export function isRewardButtonHighlighted(isHighlighted, closeModal = true) {
     }
     return steps;
 }
-export function eWalletButtonState({ highlighted, text = "eWallet", click = false }) {
+export function eWalletButtonState({highlighted, text = "eWallet", click = false}) {
     const step = {
         trigger: highlighted
             ? `.control-buttons button.highlight:contains("${text}")`
@@ -148,7 +148,11 @@ export function finalizeOrder(paymentMethod, amount) {
     ];
 }
 export function removeRewardLine(name) {
-    return [selectRewardLine(name), ProductScreen.clickNumpad("⌫"), Dialog.confirm()].flat();
+    return [
+        selectRewardLine(name),
+        ProductScreen.clickNumpad("⌫"),
+        Dialog.confirm(),
+    ].flat();
 }
 
 export function checkAddedLoyaltyPoints(points) {
